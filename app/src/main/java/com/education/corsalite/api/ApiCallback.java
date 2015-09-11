@@ -14,9 +14,9 @@ public abstract class ApiCallback<T> implements Callback<T> {
     @Override
     public void failure(RetrofitError error) {
         CorsaliteError restError = (CorsaliteError) error.getBodyAs(CorsaliteError.class);
-        if (restError != null)
+        if (restError != null) {
             failure(restError);
-        else {
+        } else {
             CorsaliteError corsaliteError = new CorsaliteError();
             corsaliteError.message = error.getMessage();
             failure(corsaliteError);

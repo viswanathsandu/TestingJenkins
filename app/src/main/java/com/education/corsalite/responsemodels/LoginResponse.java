@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by vissu on 9/11/15.
  */
-public class LoginResponse extends BaseModel{
+public class LoginResponse extends BaseResponseModel {
     @SerializedName("idUser")
     public String userId;
     @SerializedName("idStudent")

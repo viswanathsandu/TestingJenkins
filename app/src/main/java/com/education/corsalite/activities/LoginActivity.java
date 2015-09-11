@@ -53,7 +53,7 @@ public class LoginActivity extends AbstractBaseActivity {
     }
 
     private void login(String username, String password) {
-        ApiClientService.get() .login(username, password, new ApiCallback<LoginResponse>() {
+        ApiClientService.get().login(username, password, new ApiCallback<LoginResponse>() {
             @Override
             public void failure(CorsaliteError error) {
                 showToast("Login failed");
@@ -61,10 +61,14 @@ public class LoginActivity extends AbstractBaseActivity {
 
             @Override
             public void success(LoginResponse loginResponse, Response response) {
-                showToast("Logged in successfully");
-                storeUserCredentials(loginResponse);
-                startActivity(new Intent(LoginActivity.this, UserProfileActivity.class));
-                finish();
+                if(loginResponse.isSuccessful()) {
+                    showToast("Logged in successfully");
+                    storeUserCredentials(loginResponse);
+                    startActivity(new Intent(LoginActivity.this, UserProfileActivity.class));
+                    finish();
+                } else {
+                    showToast("Login failed");
+                }
             }
         });
     }
