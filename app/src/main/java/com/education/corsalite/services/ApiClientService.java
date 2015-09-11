@@ -1,6 +1,7 @@
 package com.education.corsalite.services;
 
 import com.education.corsalite.api.ICorsaliteApi;
+import com.education.corsalite.interceptors.SessionRequestInterceptor;
 import com.squareup.okhttp.OkHttpClient;
 
 import retrofit.RestAdapter;
@@ -16,6 +17,16 @@ public class ApiClientService {
     private static final String STAGING = "https://staging.corsalite.com/v1/webservices/";
 
     private static String ROOT = STAGING;
+
+    private static String setCookie;
+
+    public static void setSetCookie(String cookie) {
+        setCookie = cookie;
+    }
+
+    public static String getSetCookie() {
+        return setCookie;
+    }
 
     static {
         setupRestClient();

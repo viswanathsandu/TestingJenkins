@@ -36,7 +36,9 @@
             android:hint="Email"
             android:id="@+id/username_txt"
             android:textColor="@android:color/black"
-            app:met_primaryColor="@color/green"/>
+            app:met_primaryColor="@color/green"
+            android:singleLine="true"
+            android:text="corpdemo1@demo.com"/>
 
         <com.rengwuxian.materialedittext.MaterialEditText
             android:layout_width="match_parent"
@@ -46,7 +48,9 @@
             android:textColor="@android:color/black"
             app:met_primaryColor="@color/green"
             android:inputType="textPassword"
-            android:layout_marginTop="20dp"/>
+            android:layout_marginTop="20dp"
+            android:singleLine="true"
+            android:text="core@tech"/>
 
         <Button
             android:layout_width="wrap_content"

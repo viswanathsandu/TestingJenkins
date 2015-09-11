@@ -62,6 +62,7 @@ public class LoginActivity extends AbstractBaseActivity {
             @Override
             public void success(LoginResponse loginResponse, Response response) {
                 if(loginResponse.isSuccessful()) {
+                    saveSessionCookie(response);
                     showToast("Logged in successfully");
                     storeUserCredentials(loginResponse);
                     startActivity(new Intent(LoginActivity.this, UserProfileActivity.class));

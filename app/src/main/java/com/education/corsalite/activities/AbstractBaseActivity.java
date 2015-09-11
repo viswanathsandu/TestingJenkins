@@ -12,7 +12,10 @@ import com.education.corsalite.requestmodels.LogoutModel;
 import com.education.corsalite.responsemodels.CorsaliteError;
 import com.education.corsalite.responsemodels.LogoutResponse;
 import com.education.corsalite.services.ApiClientService;
+import com.education.corsalite.utils.CookieUtils;
 import com.google.gson.Gson;
+
+import org.apache.http.cookie.Cookie;
 
 import retrofit.client.Response;
 
@@ -56,5 +59,12 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void saveSessionCookie(Response response) {
+        String cookie = CookieUtils.getCookieString(response);
+        if(cookie != null) {
+            ApiClientService.setSetCookie(cookie);
+        }
     }
 }

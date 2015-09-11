@@ -1,9 +1,12 @@
 package com.education.corsalite.api;
 
 import com.education.corsalite.responsemodels.CorsaliteError;
+import com.education.corsalite.services.ApiClientService;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
+import retrofit.client.Header;
+import retrofit.client.Response;
 
 /**
  * Created by vissu on 9/11/15.
