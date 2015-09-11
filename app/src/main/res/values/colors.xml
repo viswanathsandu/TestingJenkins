@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="dark_blue">#1E589A</color>
+    <color name="blue">#125291</color>
+    <color name="gray">#E6E6E6</color>
+    <color name="green">#289C55</color>
+    <color name="red">#94252A</color>
+
+    <color name="text_gray">#787878</color>
+
+    <!--User Profile-->
+    <color name="user_profile_toolbar">#222222</color>
+    <color name="user_profile_statusbar">#2D2D2D</color>
+</resources>
