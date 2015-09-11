@@ -17,56 +17,12 @@ import com.education.corsalite.services.ApiClientService;
 
 import retrofit.client.Response;
 
-public class UserProfileActivity extends AbstractBaseActivity implements UserProfileDetailsFragment.OnFragmentInteractionListener {
+public class UserProfileActivity extends AbstractBaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
-        fetchUserProfileData();
-        fetchVirtualCurrencyBalance();
-    }
-
-    private void fetchUserProfileData() {
-        ApiClientService.get().getUserProfile(LoginUserCache.getInstance().loginResponse.studentId,
-                new ApiCallback<UserProfileResponse>() {
-                    @Override
-                    public void failure(CorsaliteError error) {
-
-                    }
-
-                    @Override
-                    public void success(UserProfileResponse userProfileResponse, Response response) {
-                        if (userProfileResponse.isSuccessful()) {
-                            showToast("User Profile fetched successfully..." + userProfileResponse.basicProfile.displayName);
-                            // TODO : show data on UI
-
-                        } else {
-                            showToast("Failed to fetch user profile information");
-                        }
-                    }
-                });
-    }
-
-    private void fetchVirtualCurrencyBalance() {
-        ApiClientService.get().getVirtualCurrencyBalance(LoginUserCache.getInstance().loginResponse.studentId,
-            new ApiCallback<VirtualCurrencyBalanceResponse>() {
-                @Override
-                public void failure(CorsaliteError error) {
-
-                }
-
-                @Override
-                public void success(VirtualCurrencyBalanceResponse virtualCurrencyBalanceResponse, Response response) {
-                    if (virtualCurrencyBalanceResponse.isSuccessful()) {
-                        showToast("virtual currency fetched successfully..." + virtualCurrencyBalanceResponse.balance);
-                        // TODO : show data on UI
-
-                    } else {
-                        showToast("Failed to fetch virtual currency information");
-                    }
-                }
-            });
     }
 
     @Override
@@ -89,10 +45,5 @@ public class UserProfileActivity extends AbstractBaseActivity implements UserPro
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
     }
 }

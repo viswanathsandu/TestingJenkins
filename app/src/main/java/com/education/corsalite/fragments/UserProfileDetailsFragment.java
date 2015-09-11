@@ -4,107 +4,113 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.education.corsalite.R;
+import com.education.corsalite.api.ApiCallback;
+import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.responsemodels.BasicProfile;
+import com.education.corsalite.responsemodels.CorsaliteError;
+import com.education.corsalite.responsemodels.UserProfileResponse;
+import com.education.corsalite.responsemodels.VirtualCurrencyBalanceResponse;
+import com.education.corsalite.services.ApiClientService;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link UserProfileDetailsFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link UserProfileDetailsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class UserProfileDetailsFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import retrofit.client.Response;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+public class UserProfileDetailsFragment extends BaseFragment {
 
-    private OnFragmentInteractionListener mListener;
+    @Bind(R.id.iv_userProfilePic) ImageView profilePicImg;
+    @Bind(R.id.tv_userName) TextView usernameTxt;
+    @Bind(R.id.tv_userFullName) TextView userFullNameTxt;
+    @Bind(R.id.tv_emailId) TextView emailTxt;
+    @Bind(R.id.tv_institute) TextView instituteTxt;
+    @Bind(R.id.tv_enrolled_course) TextView enrolledCoursesTxt;
+    @Bind(R.id.tv_virtual_currency_balance) TextView virtualCurrencyBalanceTxt;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment UserProfileDetailsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static UserProfileDetailsFragment newInstance(String param1, String param2) {
         UserProfileDetailsFragment fragment = new UserProfileDetailsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
     public UserProfileDetailsFragment() {
-        // Required empty public constructor
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_user_profile_details, container, false);
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+        View view = inflater.inflate(R.layout.fragment_user_profile_details, container, false);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
+    public void onResume() {
+        super.onResume();
+        fetchUserProfileData();
+        fetchVirtualCurrencyBalance();
+    }
+
+    private void fetchUserProfileData() {
+        ApiClientService.get().getUserProfile(LoginUserCache.getInstance().loginResponse.studentId,
+                new ApiCallback<UserProfileResponse>() {
+                    @Override
+                    public void failure(CorsaliteError error) {
+
+                    }
+
+                    @Override
+                    public void success(UserProfileResponse userProfileResponse, Response response) {
+                        if (userProfileResponse.isSuccessful()) {
+                            showToast("User Profile fetched successfully...");
+                            showProfileData(userProfileResponse.basicProfile);
+
+                        } else {
+                            showToast("Failed to fetch user profile information");
+                        }
+                    }
+                });
+    }
+
+    private void showProfileData(BasicProfile profile) {
+        if(profile.photoUrl != null && !profile.photoUrl.isEmpty()) {
+            Glide.with(getActivity()).load(profile.photoUrl).into(profilePicImg);
         }
+        usernameTxt.setText(profile.displayName);
+        userFullNameTxt.setText(profile.givenName);
+        emailTxt.setText(profile.emailId);
+        setEnrolledCourses(profile.enrolledCourses);
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
+    private void fetchVirtualCurrencyBalance() {
+        ApiClientService.get().getVirtualCurrencyBalance(LoginUserCache.getInstance().loginResponse.studentId,
+                new ApiCallback<VirtualCurrencyBalanceResponse>() {
+                    @Override
+                    public void failure(CorsaliteError error) {
+
+                    }
+
+                    @Override
+                    public void success(VirtualCurrencyBalanceResponse virtualCurrencyBalanceResponse, Response response) {
+                        if (virtualCurrencyBalanceResponse.isSuccessful()) {
+                            showToast("virtual currency fetched successfully...");
+                            virtualCurrencyBalanceTxt.setText(virtualCurrencyBalanceResponse.balance.toString());
+                        } else {
+                            showToast("Failed to fetch virtual currency information");
+                        }
+                    }
+                });
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
+    private void setEnrolledCourses(String courses) {
+        enrolledCoursesTxt.setText(Html.fromHtml("<b><font color=#000000>Courses Enrolled:</font></b>&nbsp; "+courses));
     }
 
 }
