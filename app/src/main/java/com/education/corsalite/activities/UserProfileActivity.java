@@ -9,7 +9,7 @@ import android.view.MenuItem;
 import com.education.corsalite.R;
 import com.education.corsalite.fragments.UserProfileDetailsFragment;
 
-public class UserProfileActivity extends AppCompatActivity implements UserProfileDetailsFragment.OnFragmentInteractionListener {
+public class UserProfileActivity extends AbstractBaseActivity implements UserProfileDetailsFragment.OnFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
