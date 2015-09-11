@@ -1,6 +1,9 @@
 package com.education.corsalite.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,6 +15,7 @@ import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
+import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.requestmodels.LoginUser;
 import com.education.corsalite.responsemodels.CorsaliteError;
 import com.education.corsalite.responsemodels.LoginResponse;
@@ -58,10 +62,16 @@ public class LoginActivity extends AbstractBaseActivity {
             @Override
             public void success(LoginResponse loginResponse, Response response) {
                 showToast("Logged in successfully");
+                storeUserCredentials(loginResponse);
                 startActivity(new Intent(LoginActivity.this, UserProfileActivity.class));
                 finish();
             }
         });
+    }
+
+    // cache the response
+    private void storeUserCredentials(LoginResponse response) {
+        LoginUserCache.getInstance().setLoginResponse(response);
     }
 
     @Override
