@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.education.corsalite.R;
@@ -30,8 +31,10 @@ import retrofit.client.Response;
 public class LoginActivity extends AbstractBaseActivity {
 
     Button loginBtn;
+    TextView forgotPasswordTxt;
     EditText usernameTxt;
     EditText passwordTxt;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,10 +47,19 @@ public class LoginActivity extends AbstractBaseActivity {
                 login(usernameTxt.getText().toString(), Encryption.md5(passwordTxt.getText().toString()));
             }
         });
+        forgotPasswordTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, WebviewActivity.class);
+                intent.putExtra("URL", "http://app.corsalite.com/v1/login/forgotPassword");
+                startActivity(intent);
+            }
+        });
     }
 
     private void initUi() {
         loginBtn = (Button)findViewById(R.id.login_btn);
+        forgotPasswordTxt = (TextView) findViewById(R.id.tv_forgot_password);
         usernameTxt = (EditText) findViewById(R.id.username_txt);
         passwordTxt = (EditText) findViewById(R.id.password_txt);
     }
