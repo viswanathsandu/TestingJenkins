@@ -6,27 +6,62 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.education.corsalite.R;
+import com.education.corsalite.api.ApiCallback;
+import com.education.corsalite.requestmodels.LoginUser;
+import com.education.corsalite.responsemodels.CorsaliteError;
+import com.education.corsalite.responsemodels.LoginResponse;
+import com.education.corsalite.services.ApiClientService;
+import com.education.corsalite.utils.Encryption;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
-public class LoginActivity extends AppCompatActivity {
+import java.security.MessageDigest;
+
+import retrofit.client.Response;
+
+public class LoginActivity extends AbstractBaseActivity {
+
+    Button loginBtn;
+    EditText usernameTxt;
+    EditText passwordTxt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        findViewById(R.id.login_btn).setOnClickListener(new View.OnClickListener() {
+        initUi();
+        loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                login("", "");
+                login(usernameTxt.getText().toString(), Encryption.md5(passwordTxt.getText().toString()));
             }
         });
     }
 
+    private void initUi() {
+        loginBtn = (Button)findViewById(R.id.login_btn);
+        usernameTxt = (EditText) findViewById(R.id.username_txt);
+        passwordTxt = (EditText) findViewById(R.id.password_txt);
+    }
+
     private void login(String username, String password) {
-        startActivity(new Intent(LoginActivity.this, UserProfileActivity.class));
+        ApiClientService.get() .login(username, password, new ApiCallback<LoginResponse>() {
+            @Override
+            public void failure(CorsaliteError error) {
+                showToast("Login failed");
+            }
+
+            @Override
+            public void success(LoginResponse loginResponse, Response response) {
+                showToast("Logged in successfully");
+                startActivity(new Intent(LoginActivity.this, UserProfileActivity.class));
+                finish();
+            }
+        });
     }
 
     @Override
