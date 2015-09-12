@@ -7,7 +7,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:name="com.education.corsalite.fragments.UserProfileDetailsFragment"
-        android:id="@+id/fragment"
+        android:id="@+id/user_profile_fragment"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
+
+    <View
+        android:layout_below="@+id/user_profile_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="#ADAEAF"/>
 </RelativeLayout>

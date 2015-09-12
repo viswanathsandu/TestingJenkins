@@ -17,11 +17,11 @@
 
         <ImageView
             android:id="@+id/iv_userProfilePic"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
             android:layout_gravity="left"
             android:scaleType="fitCenter"
-            android:src="@drawable/user_profile_pic" />
+            android:src="@drawable/user" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -40,7 +40,7 @@
                     android:paddingBottom="12dp"
                     android:text="Shailene"
                     android:textAllCaps="true"
-                    android:textColor="#0BC6A0"
+                    android:textColor="#21A656"
                     android:textSize="@dimen/abc_text_size_large_material"
                     android:textStyle="bold" />
 
