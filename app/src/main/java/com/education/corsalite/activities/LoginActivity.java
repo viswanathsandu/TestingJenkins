@@ -26,21 +26,27 @@ import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import java.security.MessageDigest;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import retrofit.client.Response;
 
 public class LoginActivity extends AbstractBaseActivity {
 
-    Button loginBtn;
-    TextView forgotPasswordTxt;
-    EditText usernameTxt;
-    EditText passwordTxt;
+    @Bind(R.id.login_btn) Button loginBtn;
+    @Bind(R.id.tv_forgot_password) TextView forgotPasswordTxt;
+    @Bind(R.id.username_txt) EditText usernameTxt;
+    @Bind(R.id.password_txt) EditText passwordTxt;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        initUi();
+        ButterKnife.bind(this);
+        setListeners();
+    }
+
+    private void setListeners() {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,13 +61,6 @@ public class LoginActivity extends AbstractBaseActivity {
                 startActivity(intent);
             }
         });
-    }
-
-    private void initUi() {
-        loginBtn = (Button)findViewById(R.id.login_btn);
-        forgotPasswordTxt = (TextView) findViewById(R.id.tv_forgot_password);
-        usernameTxt = (EditText) findViewById(R.id.username_txt);
-        passwordTxt = (EditText) findViewById(R.id.password_txt);
     }
 
     private void login(String username, String password) {
