@@ -1,24 +1,18 @@
 package com.education.corsalite.activities;
 
-import android.app.ActionBar;
-import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.education.corsalite.R;
-import com.education.corsalite.api.ApiCallback;
-import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.fragments.UserProfileDetailsFragment;
-import com.education.corsalite.responsemodels.CorsaliteError;
-import com.education.corsalite.responsemodels.UserProfileResponse;
-import com.education.corsalite.responsemodels.VirtualCurrencyBalanceResponse;
-import com.education.corsalite.services.ApiClientService;
-
-import retrofit.client.Response;
+import com.education.corsalite.adapters.UserTabFragmentAdapter;
 
 public class UserProfileActivity extends AbstractBaseActivity {
+
+    TabLayout userProfileLayout ;
+    ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +23,19 @@ public class UserProfileActivity extends AbstractBaseActivity {
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setHomeButtonEnabled(true);
         actionBar.setIcon(R.drawable.ic_drawer);
+        initUI();
+        setTabView();
+    }
+
+    private void initUI() {
+        userProfileLayout = (TabLayout)findViewById(R.id.tl_userprofile);
+        viewPager = (ViewPager)findViewById(R.id.pager);
+    }
+
+    private void setTabView() {
+
+        viewPager.setAdapter(new UserTabFragmentAdapter(getSupportFragmentManager()));
+        userProfileLayout.setupWithViewPager(viewPager);
     }
 
     @Override

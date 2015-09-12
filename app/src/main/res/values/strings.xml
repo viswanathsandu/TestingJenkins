@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Corsalite</string>
 
-    <string name="hello_world">Hello world!</string>
+    <string name="in_progress">In Progress</string>
     <string name="action_logout">Logout</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_user_profile">My Profile</string>
