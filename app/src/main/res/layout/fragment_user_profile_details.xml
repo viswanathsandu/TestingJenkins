@@ -29,16 +29,45 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <TextView
-                android:id="@+id/tv_userName"
+            <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="12dp"
-                android:text="Shailene"
-                android:textAllCaps="true"
-                android:textColor="#0BC6A0"
-                android:textSize="@dimen/abc_text_size_large_material"
-                android:textStyle="bold" />
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_userName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="12dp"
+                    android:text="Shailene"
+                    android:textAllCaps="true"
+                    android:textColor="#0BC6A0"
+                    android:textSize="@dimen/abc_text_size_large_material"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_alignParentRight="true">
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="16dp"
+                        android:background="@drawable/shape_rounded_corners"
+                        android:padding="16dp"
+                        android:text="DEFAULT COURSE"
+                        android:textColor="#FFFFFF" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/shape_rounded_corners"
+                        android:text="EDIT"
+                        android:textColor="#ffffff" />
+
+                </LinearLayout>
+            </RelativeLayout>
+
 
             <TextView
                 android:id="@+id/tv_userFullName"
@@ -96,31 +125,16 @@
 
         </LinearLayout>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="16dp"
-            android:background="@drawable/shape_rounded_corners"
-            android:padding="16dp"
-            android:text="DEFAULT COURSE"
-            android:textColor="#FFFFFF" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/shape_rounded_corners"
-            android:text="EDIT"
-            android:textColor="#ffffff" />
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:background="#d3d3d3" />
-
     </LinearLayout>
 
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="#d3d3d3" />
 
     <LinearLayout
         android:layout_width="150dp"

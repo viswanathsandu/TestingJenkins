@@ -101,7 +101,7 @@ public class UserProfileDetailsFragment extends BaseFragment {
                     public void success(VirtualCurrencyBalanceResponse virtualCurrencyBalanceResponse, Response response) {
                         if (virtualCurrencyBalanceResponse.isSuccessful()) {
                             showToast("virtual currency fetched successfully...");
-                            virtualCurrencyBalanceTxt.setText(virtualCurrencyBalanceResponse.balance.toString());
+                            virtualCurrencyBalanceTxt.setText(virtualCurrencyBalanceResponse.balance.intValue()+"");
                         } else {
                             showToast("Failed to fetch virtual currency information");
                         }
