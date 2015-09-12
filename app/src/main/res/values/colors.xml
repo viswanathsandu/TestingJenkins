@@ -7,6 +7,8 @@
     <color name="red">#94252A</color>
 
     <color name="text_gray">#787878</color>
+    <color name="black">#000000</color>
+    <color name="dark_gray">#a9a9a9</color>
 
     <!--User Profile-->
     <color name="user_profile_toolbar">#222222</color>
