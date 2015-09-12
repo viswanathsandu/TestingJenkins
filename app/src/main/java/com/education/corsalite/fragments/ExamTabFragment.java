@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.ExamAdapter;
-import com.education.corsalite.responsemodels.BaseModel;
 import com.education.corsalite.responsemodels.ExamDetail;
 
 import java.util.ArrayList;

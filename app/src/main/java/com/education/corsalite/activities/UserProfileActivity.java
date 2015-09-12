@@ -8,15 +8,30 @@ import android.view.MenuItem;
 
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.UserTabBaseAdapter;
+import com.education.corsalite.api.ApiCallback;
+import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.fragments.UserProfileDetailsFragment;
+import com.education.corsalite.responsemodels.CorsaliteError;
 import com.education.corsalite.responsemodels.ExamDetail;
+import com.education.corsalite.responsemodels.Message;
+import com.education.corsalite.responsemodels.MessageResponse;
+import com.education.corsalite.responsemodels.UserProfileResponse;
+import com.education.corsalite.responsemodels.VirtualCurrencySummaryResponse;
+import com.education.corsalite.responsemodels.VirtualCurrencyTransaction;
+import com.education.corsalite.services.ApiClientService;
 
 import java.util.List;
+
+import retrofit.client.Response;
 
 public class UserProfileActivity extends AbstractBaseActivity implements UserProfileDetailsFragment.UpdateExamData{
 
     TabLayout userProfileLayout ;
     ViewPager viewPager;
+    List<ExamDetail> examDetails;
+    List<Message> messages;
+    List<VirtualCurrencyTransaction> virtualCurrencyTransactions;
+    public static String BALANCE_CURRENCY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

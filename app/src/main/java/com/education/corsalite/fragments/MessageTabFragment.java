@@ -7,28 +7,27 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
+import android.widget.LinearLayout;
 
 import com.education.corsalite.R;
-import com.education.corsalite.adapters.CurrencyAdapter;
-import com.education.corsalite.adapters.ExamAdapter;
 import com.education.corsalite.adapters.MessageAdapter;
-import com.education.corsalite.responsemodels.BaseModel;
-import com.education.corsalite.responsemodels.ExamDetail;
-import com.education.corsalite.responsemodels.Message;
-import com.education.corsalite.responsemodels.VirtualCurrencyTransaction;
+import com.education.corsalite.api.ApiCallback;
+import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.responsemodels.CorsaliteError;
+import com.education.corsalite.responsemodels.MessageResponse;
+import com.education.corsalite.services.ApiClientService;
 
-import java.util.ArrayList;
-import java.util.List;
+import retrofit.client.Response;
 
 /**
- * Created by mt0060 on 12/09/15.
+ * Created by Girish on 12/09/15.
  */
 public class MessageTabFragment extends BaseFragment {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private LinearLayout layoutEmpty;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,13 +40,14 @@ public class MessageTabFragment extends BaseFragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_message,container,false);
         mRecyclerView = (RecyclerView) v.findViewById(R.id.userdetail_recyclerView);
+        layoutEmpty = (LinearLayout)v.findViewById(R.id.layout_empty);
 
         //mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setVisibility(View.VISIBLE);
+        layoutEmpty.setVisibility(View.GONE);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        List<Message> messageList = (List<Message>) getArguments().getSerializable("adapter_type");
-        mAdapter = new MessageAdapter((ArrayList)messageList,inflater);
-        mRecyclerView.setAdapter(mAdapter);
+        getMessage(inflater);
         return v;
     }
 
@@ -60,6 +60,33 @@ public class MessageTabFragment extends BaseFragment {
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    private void getMessage(final LayoutInflater inflater) {
+        ApiClientService.get().getMessages(LoginUserCache.getInstance().loginResponse.studentId,
+                new ApiCallback<MessageResponse>() {
+                    @Override
+                    public void failure(CorsaliteError error) {
+                        hideRecyclerView();
+                    }
+
+                    @Override
+                    public void success(MessageResponse messageResponse, Response response) {
+                        if (messageResponse.isSuccessful() && messageResponse != null &&
+                                messageResponse.messages != null && messageResponse.messages.size() > 0) {
+                            mAdapter = new MessageAdapter(messageResponse.messages, inflater);
+                            mRecyclerView.setAdapter(mAdapter);
+                        } else {
+                            hideRecyclerView();
+                        }
+                    }
+                });
+    }
+
+    private void hideRecyclerView() {
+
+        mRecyclerView.setVisibility(View.GONE);
+        layoutEmpty.setVisibility(View.VISIBLE);
     }
 
 }

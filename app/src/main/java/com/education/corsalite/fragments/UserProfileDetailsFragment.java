@@ -1,9 +1,7 @@
 package com.education.corsalite.fragments;
 
 import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.education.corsalite.R;
+import com.education.corsalite.activities.UserProfileActivity;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.responsemodels.BasicProfile;
@@ -119,6 +118,7 @@ public class UserProfileDetailsFragment extends BaseFragment {
                     public void success(VirtualCurrencyBalanceResponse virtualCurrencyBalanceResponse, Response response) {
                         if (virtualCurrencyBalanceResponse.isSuccessful()) {
                             showToast("virtual currency fetched successfully...");
+                            UserProfileActivity.BALANCE_CURRENCY = String.valueOf(virtualCurrencyBalanceResponse.balance.intValue());
                             virtualCurrencyBalanceTxt.setText(virtualCurrencyBalanceResponse.balance.intValue()+"");
                         } else {
                             showToast("Failed to fetch virtual currency information");
