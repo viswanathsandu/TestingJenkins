@@ -3,8 +3,10 @@ package com.education.corsalite.api;
 import com.education.corsalite.requestmodels.LoginUser;
 import com.education.corsalite.responsemodels.LoginResponse;
 import com.education.corsalite.responsemodels.LogoutResponse;
+import com.education.corsalite.responsemodels.MessageResponse;
 import com.education.corsalite.responsemodels.UserProfileResponse;
 import com.education.corsalite.responsemodels.VirtualCurrencyBalanceResponse;
+import com.education.corsalite.responsemodels.VirtualCurrencySummaryResponse;
 
 import retrofit.http.Body;
 import retrofit.http.GET;
@@ -27,4 +29,10 @@ public interface ICorsaliteApi {
 
     @GET("/VirtualCurrencyBalance")
     void getVirtualCurrencyBalance(@Query("idStudent") String studentId, ApiCallback<VirtualCurrencyBalanceResponse> callback);
+
+    @GET("/VirtualCurrencyTransaction")
+    void getVirtualCurrencyTransactions(@Query("idStudent") String studentId, ApiCallback<VirtualCurrencySummaryResponse> callback);
+
+    @GET("/Message")
+    void getMessages(@Query("idStudent") String studentId, ApiCallback<MessageResponse> callback);
 }
