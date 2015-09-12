@@ -7,7 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.education.corsalite.R;
-import com.education.corsalite.adapters.UserTabFragmentAdapter;
+import com.education.corsalite.adapters.UserTabBaseAdapter;
 
 public class UserProfileActivity extends AbstractBaseActivity {
 
@@ -33,8 +33,7 @@ public class UserProfileActivity extends AbstractBaseActivity {
     }
 
     private void setTabView() {
-
-        viewPager.setAdapter(new UserTabFragmentAdapter(getSupportFragmentManager()));
+        viewPager.setAdapter(new UserTabBaseAdapter(getSupportFragmentManager()));
         userProfileLayout.setupWithViewPager(viewPager);
     }
 

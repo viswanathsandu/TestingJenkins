@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.education.corsalite.R;
-import com.education.corsalite.adapters.UserProfileDetailAdapter;
+import com.education.corsalite.adapters.UserTabDetailAdapter;
 import com.education.corsalite.responsemodels.BaseModel;
 
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 /**
  * Created by Girish on 12/09/15.
  */
-public class UserProfileTab extends BaseFragment {
+public class UserProfileTabFragment extends BaseFragment {
 
     private static final String ADAPTER_TYPE = "adapter_type";
 
@@ -41,7 +41,7 @@ public class UserProfileTab extends BaseFragment {
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
         ArrayList<BaseModel> examDetail = new ArrayList<>();
-        mAdapter = new UserProfileDetailAdapter(examDetail, getArguments().getString(ADAPTER_TYPE),inflater);
+        mAdapter = new UserTabDetailAdapter(examDetail, getArguments().getString(ADAPTER_TYPE),inflater);
         mRecyclerView.setAdapter(mAdapter);
         return v;
     }

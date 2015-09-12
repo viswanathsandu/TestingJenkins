@@ -4,13 +4,13 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.education.corsalite.fragments.UserProfileTab;
+import com.education.corsalite.fragments.UserProfileTabFragment;
 
 /**
  * Created by Girish on 12/09/15.
  */
-public class UserTabFragmentAdapter extends FragmentPagerAdapter {
-    public UserTabFragmentAdapter(android.support.v4.app.FragmentManager fm) {
+public class UserTabBaseAdapter extends FragmentPagerAdapter {
+    public UserTabBaseAdapter(android.support.v4.app.FragmentManager fm) {
         super(fm);
     }
 
@@ -20,17 +20,17 @@ public class UserTabFragmentAdapter extends FragmentPagerAdapter {
         Bundle args = new Bundle();
         switch (i) {
             case 0:
-                fragment = new UserProfileTab();
+                fragment = new UserProfileTabFragment();
                 args.putString("adapter_type", "exam");
                 fragment.setArguments(args);
                 break;
             case 1:
-                fragment = new UserProfileTab();
+                fragment = new UserProfileTabFragment();
                 args.putString("adapter_type", "messages");
                 fragment.setArguments(args);
                 break;
             case 2:
-                fragment = new UserProfileTab();
+                fragment = new UserProfileTabFragment();
                 args.putString("adapter_type", "virtualCurrency");
                 fragment.setArguments(args);
                 break;
