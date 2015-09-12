@@ -5,32 +5,39 @@
     android:orientation="horizontal">
 
     <TextView
+        android:gravity="center"
+        android:layout_weight="1"
         android:id="@+id/tv_exam"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="15dp"
         android:text="Exam" />
 
     <TextView
+        android:gravity="center"
+        android:layout_weight="1"
         android:id="@+id/tv_days_remaining"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="15dp"
         android:text="Days Remaining" />
 
     <TextView
+        android:gravity="center"
+        android:layout_weight="1"
         android:id="@+id/tv_exam_date"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="15dp"
         android:text="Exam Date" />
 
     <TextView
+        android:gravity="center"
+        android:layout_weight="1"
         android:id="@+id/tv_hall_ticket_number"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="15dp"
         android:text="Hall Ticket Number" />
-
 
 </LinearLayout>

@@ -17,9 +17,12 @@ import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.responsemodels.BasicProfile;
 import com.education.corsalite.responsemodels.CorsaliteError;
+import com.education.corsalite.responsemodels.ExamDetail;
 import com.education.corsalite.responsemodels.UserProfileResponse;
 import com.education.corsalite.responsemodels.VirtualCurrencyBalanceResponse;
 import com.education.corsalite.services.ApiClientService;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -35,12 +38,23 @@ public class UserProfileDetailsFragment extends BaseFragment {
     @Bind(R.id.tv_enrolled_course) TextView enrolledCoursesTxt;
     @Bind(R.id.tv_virtual_currency_balance) TextView virtualCurrencyBalanceTxt;
 
+    UpdateExamData updateExamData;
+
     public static UserProfileDetailsFragment newInstance(String param1, String param2) {
         UserProfileDetailsFragment fragment = new UserProfileDetailsFragment();
         return fragment;
     }
 
     public UserProfileDetailsFragment() {
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if(updateExamData == null) {
+            updateExamData = (UpdateExamData)activity;
+        }
+
     }
 
     @Override
@@ -71,6 +85,10 @@ public class UserProfileDetailsFragment extends BaseFragment {
                         if (userProfileResponse.isSuccessful()) {
                             showToast("User Profile fetched successfully...");
                             showProfileData(userProfileResponse.basicProfile);
+
+                            if(updateExamData != null) {
+                                updateExamData.getExamData(userProfileResponse.examDetails);
+                            }
 
                         } else {
                             showToast("Failed to fetch user profile information");
@@ -111,6 +129,10 @@ public class UserProfileDetailsFragment extends BaseFragment {
 
     private void setEnrolledCourses(String courses) {
         enrolledCoursesTxt.setText(Html.fromHtml("<b><font color=#000000>Courses Enrolled:</font></b>&nbsp; "+courses));
+    }
+
+    public interface UpdateExamData{
+        void getExamData(List<ExamDetail> examDetailList);
     }
 
 }

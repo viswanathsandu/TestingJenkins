@@ -7,19 +7,24 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 
 import com.education.corsalite.R;
-import com.education.corsalite.adapters.UserTabDetailAdapter;
+import com.education.corsalite.adapters.CurrencyAdapter;
+import com.education.corsalite.adapters.ExamAdapter;
+import com.education.corsalite.adapters.MessageAdapter;
 import com.education.corsalite.responsemodels.BaseModel;
+import com.education.corsalite.responsemodels.ExamDetail;
+import com.education.corsalite.responsemodels.Message;
+import com.education.corsalite.responsemodels.VirtualCurrencyTransaction;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Created by Girish on 12/09/15.
+ * Created by mt0060 on 12/09/15.
  */
-public class UserProfileTabFragment extends BaseFragment {
-
-    private static final String ADAPTER_TYPE = "adapter_type";
+public class MessageTabFragment extends BaseFragment {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -34,14 +39,14 @@ public class UserProfileTabFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_user_profile_tab,container,false);
+        View v = inflater.inflate(R.layout.fragment_message,container,false);
         mRecyclerView = (RecyclerView) v.findViewById(R.id.userdetail_recyclerView);
 
         //mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        ArrayList<BaseModel> examDetail = new ArrayList<>();
-        mAdapter = new UserTabDetailAdapter(examDetail, getArguments().getString(ADAPTER_TYPE),inflater);
+        List<Message> messageList = (List<Message>) getArguments().getSerializable("adapter_type");
+        mAdapter = new MessageAdapter((ArrayList)messageList,inflater);
         mRecyclerView.setAdapter(mAdapter);
         return v;
     }

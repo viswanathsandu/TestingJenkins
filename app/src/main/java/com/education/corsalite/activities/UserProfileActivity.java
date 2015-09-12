@@ -8,8 +8,12 @@ import android.view.MenuItem;
 
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.UserTabBaseAdapter;
+import com.education.corsalite.fragments.UserProfileDetailsFragment;
+import com.education.corsalite.responsemodels.ExamDetail;
 
-public class UserProfileActivity extends AbstractBaseActivity {
+import java.util.List;
+
+public class UserProfileActivity extends AbstractBaseActivity implements UserProfileDetailsFragment.UpdateExamData{
 
     TabLayout userProfileLayout ;
     ViewPager viewPager;
@@ -24,7 +28,6 @@ public class UserProfileActivity extends AbstractBaseActivity {
         actionBar.setHomeButtonEnabled(true);
         actionBar.setIcon(R.drawable.ic_drawer);
         initUI();
-        setTabView();
     }
 
     private void initUI() {
@@ -32,8 +35,8 @@ public class UserProfileActivity extends AbstractBaseActivity {
         viewPager = (ViewPager)findViewById(R.id.pager);
     }
 
-    private void setTabView() {
-        viewPager.setAdapter(new UserTabBaseAdapter(getSupportFragmentManager()));
+    private void setTabView(List<ExamDetail> examDetailList) {
+        viewPager.setAdapter(new UserTabBaseAdapter(getSupportFragmentManager(), examDetailList));
         userProfileLayout.setupWithViewPager(viewPager);
     }
 
@@ -47,5 +50,10 @@ public class UserProfileActivity extends AbstractBaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void getExamData(List<ExamDetail> examDetailList) {
+        setTabView(examDetailList);
     }
 }
