@@ -15,7 +15,7 @@ import butterknife.ButterKnife;
 /**
  * Created by Aastha on 05/09/15.
  */
-public class UserProfileDetailAdapter extends AbstractRecycleViewAdapter {
+public class UserTabDetailAdapter extends AbstractRecycleViewAdapter {
 
 
     private static String USERPROFILE_EXAMS = "exams";
@@ -24,7 +24,7 @@ public class UserProfileDetailAdapter extends AbstractRecycleViewAdapter {
     private String type;
     LayoutInflater inflater;
 
-    public UserProfileDetailAdapter(ArrayList<BaseModel> data, String type, LayoutInflater inflater) {
+    public UserTabDetailAdapter(ArrayList<BaseModel> data, String type, LayoutInflater inflater) {
         this.type = type;
         this.inflater = inflater;
     }
