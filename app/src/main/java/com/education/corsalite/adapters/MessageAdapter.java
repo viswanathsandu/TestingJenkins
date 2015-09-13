@@ -7,17 +7,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
-import com.education.corsalite.responsemodels.ExamDetail;
 import com.education.corsalite.responsemodels.Message;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * Created by mt0060 on 12/09/15.
+ * Created by Girish on 12/09/15.
  */
 public class MessageAdapter extends AbstractRecycleViewAdapter {
 
@@ -39,10 +37,14 @@ public class MessageAdapter extends AbstractRecycleViewAdapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((MessageDataHolder) holder).bindData(position, (Message)getItem(position));
+        ((MessageDataHolder) holder).bindData(position, (Message) getItem(position));
     }
 
     public class MessageDataHolder extends RecyclerView.ViewHolder {
+
+        @Bind(R.id.tv_effectivedate) TextView effectiveDateTxt;
+        @Bind(R.id.tv_termdate) TextView termDateTxt;
+        @Bind(R.id.tv_message) TextView messageTxt;
 
         public MessageDataHolder(View view) {
             super(view);
@@ -50,6 +52,9 @@ public class MessageAdapter extends AbstractRecycleViewAdapter {
         }
 
         public void bindData(final int position, final Message message) {
+            effectiveDateTxt.setText(message.effectiveDate);
+            termDateTxt.setText(message.termDate);
+            messageTxt.setText(message.message);
         }
     }
 }

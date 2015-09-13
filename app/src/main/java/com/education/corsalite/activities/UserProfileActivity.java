@@ -12,14 +12,19 @@ import com.education.corsalite.R;
 import com.education.corsalite.adapters.UserTabBaseAdapter;
 import com.education.corsalite.fragments.UserProfileDetailsFragment;
 import com.education.corsalite.responsemodels.ExamDetail;
+import com.education.corsalite.responsemodels.Message;
+import com.education.corsalite.responsemodels.VirtualCurrencyTransaction;
 
 import java.util.List;
 
-public class UserProfileActivity extends AbstractBaseActivity
-        implements UserProfileDetailsFragment.UpdateExamData{
+public class UserProfileActivity extends AbstractBaseActivity implements UserProfileDetailsFragment.UpdateExamData{
 
     TabLayout userProfileLayout ;
     ViewPager viewPager;
+    List<ExamDetail> examDetails;
+    List<Message> messages;
+    List<VirtualCurrencyTransaction> virtualCurrencyTransactions;
+    public static String BALANCE_CURRENCY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

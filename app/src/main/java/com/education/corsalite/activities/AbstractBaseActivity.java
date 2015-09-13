@@ -15,8 +15,6 @@ import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.CookieUtils;
 import com.google.gson.Gson;
 
-import org.apache.http.cookie.Cookie;
-
 import retrofit.client.Response;
 
 /**

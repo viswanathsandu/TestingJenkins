@@ -50,7 +50,6 @@ public class VirtualCurrencyFragment extends BaseFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-
     }
 
     @Override
@@ -68,12 +67,10 @@ public class VirtualCurrencyFragment extends BaseFragment {
 
                     @Override
                     public void success(VirtualCurrencySummaryResponse virtualCurrencySummaryResponse, Response response) {
-                        if(virtualCurrencySummaryResponse != null && virtualCurrencySummaryResponse.virtualCurrencyTransaction != null &&
-                                virtualCurrencySummaryResponse.virtualCurrencyTransaction.size() > 0) {
-                            mAdapter = new CurrencyAdapter(virtualCurrencySummaryResponse.virtualCurrencyTransaction, inflater);
-                            mRecyclerView.setAdapter(mAdapter);
-                        }
+                        mAdapter = new CurrencyAdapter(virtualCurrencySummaryResponse.virtualCurrencyTransaction, inflater);
+                        mRecyclerView.setAdapter(mAdapter);
                     }
                 });
-        }
+    }
+
 }

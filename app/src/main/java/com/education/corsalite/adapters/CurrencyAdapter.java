@@ -7,17 +7,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
-import com.education.corsalite.responsemodels.ExamDetail;
+import com.education.corsalite.activities.UserProfileActivity;
 import com.education.corsalite.responsemodels.VirtualCurrencyTransaction;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * Created by mt0060 on 12/09/15.
+ * Created by Girish on 12/09/15.
  */
 public class CurrencyAdapter extends AbstractRecycleViewAdapter {
 
@@ -33,24 +32,40 @@ public class CurrencyAdapter extends AbstractRecycleViewAdapter {
     }
 
     @Override
-    public ExamDataHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ExamDataHolder(inflater.inflate(R.layout.row_virtual_currency_list, parent, false));
+    public CurrencyDataHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new CurrencyDataHolder(inflater.inflate(R.layout.row_virtual_currency_list, parent, false));
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((ExamDataHolder) holder).bindData(position, (VirtualCurrencyTransaction)getItem(position));
+        ((CurrencyDataHolder) holder).bindData(position, (VirtualCurrencyTransaction)getItem(position));
     }
 
-    public class ExamDataHolder extends RecyclerView.ViewHolder {
+    public class CurrencyDataHolder extends RecyclerView.ViewHolder {
 
-        public ExamDataHolder(View view) {
+        @Bind(R.id.tv_date) TextView dateTxt;
+        @Bind(R.id.tv_time) TextView timeTxt;
+        @Bind(R.id.tv_event) TextView eventTxt;
+        @Bind(R.id.tv_earned) TextView earnedTxt;
+        @Bind(R.id.tv_balance) TextView balanceTxt;
+
+        public CurrencyDataHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
         }
 
         public void bindData(final int position, final VirtualCurrencyTransaction virtualCurrencyTransaction) {
 
+            if(virtualCurrencyTransaction.eventDate != null && virtualCurrencyTransaction.eventDate.contains(" ")) {
+                dateTxt.setText(virtualCurrencyTransaction.eventDate.split(" ")[0]);
+                timeTxt.setText(virtualCurrencyTransaction.eventDate.split(" ")[1]);
+            } else {
+                dateTxt.setText(virtualCurrencyTransaction.eventDate);
+                timeTxt.setText("");
+            }
+            eventTxt.setText(virtualCurrencyTransaction.eventName);
+            earnedTxt.setText(virtualCurrencyTransaction.earnedVirtualCurrency);
+            balanceTxt.setText(UserProfileActivity.BALANCE_CURRENCY);
         }
     }
 }

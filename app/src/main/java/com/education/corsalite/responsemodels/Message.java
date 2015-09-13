@@ -2,10 +2,12 @@ package com.education.corsalite.responsemodels;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by vissu on 9/12/15.
  */
-public class Message extends BaseModel {
+public class Message extends BaseModel  implements Serializable {
 
     @SerializedName("idStudent")
     public String studentId;

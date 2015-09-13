@@ -5,7 +5,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.education.corsalite.R;
-import com.education.corsalite.fragments.VirtualCurrencyFragment;
 
 /**
  * Created by GIRISH on 13/09/15.
@@ -21,14 +20,6 @@ public class VirtualCurrencyActivity extends AbstractBaseActivity {
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setHomeButtonEnabled(true);
         actionBar.setIcon(R.drawable.ic_drawer);
-
-        if(savedInstanceState == null) {
-            VirtualCurrencyFragment fragment = new VirtualCurrencyFragment();
-            fragment.
-        }
-    }
-
-    private void initUI() {
 
     }
 

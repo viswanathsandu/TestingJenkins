@@ -5,6 +5,7 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/headerLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#AAAAAAAA">
@@ -13,9 +14,15 @@
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
+        android:layout_below="@id/headerLayout"
         android:id="@+id/userdetail_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="vertical" />
+
+    <include layout="@layout/layout_nodata"
+        android:layout_below="@id/headerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </RelativeLayout>

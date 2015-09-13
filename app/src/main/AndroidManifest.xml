@@ -25,7 +25,7 @@
             android:label="@string/title_activity_webview"></activity>
         <activity
             android:name=".activities.VirtualCurrencyActivity"
-            android:label="@string/title_activity_webview"
+            android:label="@string/title_activity_currency"
             android:theme="@style/UserProfileTheme"></activity>
 
     </application>
