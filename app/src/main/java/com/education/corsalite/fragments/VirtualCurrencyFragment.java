@@ -10,20 +10,18 @@ import android.view.ViewGroup;
 
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.CurrencyAdapter;
-import com.education.corsalite.adapters.ExamAdapter;
-import com.education.corsalite.responsemodels.BaseModel;
-import com.education.corsalite.responsemodels.ExamDetail;
-import com.education.corsalite.responsemodels.VirtualCurrencyTransaction;
+import com.education.corsalite.api.ApiCallback;
+import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.responsemodels.CorsaliteError;
+import com.education.corsalite.responsemodels.VirtualCurrencySummaryResponse;
+import com.education.corsalite.services.ApiClientService;
 
-import java.util.ArrayList;
-import java.util.List;
+import retrofit.client.Response;
 
 /**
- * Created by mt0060 on 12/09/15.
+ * Created by Girish on 12/09/15.
  */
 public class VirtualCurrencyFragment extends BaseFragment {
-
-    private static final String ADAPTER_TYPE = "adapter_type";
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -44,9 +42,7 @@ public class VirtualCurrencyFragment extends BaseFragment {
         //mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        List<VirtualCurrencyTransaction> virtualCurrencyTransactionList = new ArrayList<>();
-        mAdapter = new CurrencyAdapter(virtualCurrencyTransactionList, inflater);
-        mRecyclerView.setAdapter(mAdapter);
+        getTransactionHistory(inflater);
         return v;
     }
 
@@ -54,6 +50,7 @@ public class VirtualCurrencyFragment extends BaseFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+
     }
 
     @Override
@@ -61,4 +58,22 @@ public class VirtualCurrencyFragment extends BaseFragment {
         super.onDetach();
     }
 
+    private void getTransactionHistory(final LayoutInflater inflater) {
+        ApiClientService.get().getVirtualCurrencyTransactions(LoginUserCache.getInstance().loginResponse.studentId,
+                new ApiCallback<VirtualCurrencySummaryResponse>() {
+                    @Override
+                    public void failure(CorsaliteError error) {
+
+                    }
+
+                    @Override
+                    public void success(VirtualCurrencySummaryResponse virtualCurrencySummaryResponse, Response response) {
+                        if(virtualCurrencySummaryResponse != null && virtualCurrencySummaryResponse.virtualCurrencyTransaction != null &&
+                                virtualCurrencySummaryResponse.virtualCurrencyTransaction.size() > 0) {
+                            mAdapter = new CurrencyAdapter(virtualCurrencySummaryResponse.virtualCurrencyTransaction, inflater);
+                            mRecyclerView.setAdapter(mAdapter);
+                        }
+                    }
+                });
+        }
 }

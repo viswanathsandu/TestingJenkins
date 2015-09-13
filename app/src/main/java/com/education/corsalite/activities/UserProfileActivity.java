@@ -1,10 +1,12 @@
 package com.education.corsalite.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.UserTabBaseAdapter;
@@ -13,7 +15,8 @@ import com.education.corsalite.responsemodels.ExamDetail;
 
 import java.util.List;
 
-public class UserProfileActivity extends AbstractBaseActivity implements UserProfileDetailsFragment.UpdateExamData{
+public class UserProfileActivity extends AbstractBaseActivity
+        implements UserProfileDetailsFragment.UpdateExamData{
 
     TabLayout userProfileLayout ;
     ViewPager viewPager;
@@ -55,5 +58,10 @@ public class UserProfileActivity extends AbstractBaseActivity implements UserPro
     @Override
     public void getExamData(List<ExamDetail> examDetailList) {
         setTabView(examDetailList);
+    }
+
+    public void onClickIntent(View view) {
+        Intent intent = new Intent(this, VirtualCurrencyActivity.class);
+        startActivity(intent);
     }
 }

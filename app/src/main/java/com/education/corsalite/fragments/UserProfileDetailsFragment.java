@@ -38,6 +38,7 @@ public class UserProfileDetailsFragment extends BaseFragment {
     @Bind(R.id.tv_enrolled_course) TextView enrolledCoursesTxt;
     @Bind(R.id.tv_virtual_currency_balance) TextView virtualCurrencyBalanceTxt;
 
+
     UpdateExamData updateExamData;
 
     public static UserProfileDetailsFragment newInstance(String param1, String param2) {
