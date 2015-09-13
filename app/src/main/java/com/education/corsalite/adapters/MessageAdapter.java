@@ -7,20 +7,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
-import com.education.corsalite.api.ApiCallback;
-import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.responsemodels.CorsaliteError;
-import com.education.corsalite.responsemodels.ExamDetail;
 import com.education.corsalite.responsemodels.Message;
-import com.education.corsalite.responsemodels.MessageResponse;
-import com.education.corsalite.services.ApiClientService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import retrofit.client.Response;
 
 /**
  * Created by Girish on 12/09/15.

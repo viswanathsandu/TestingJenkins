@@ -1,10 +1,6 @@
 package com.education.corsalite.activities;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,19 +8,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.requestmodels.LoginUser;
 import com.education.corsalite.responsemodels.CorsaliteError;
 import com.education.corsalite.responsemodels.LoginResponse;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.Encryption;
-import com.readystatesoftware.systembartint.SystemBarTintManager;
-
-import java.security.MessageDigest;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

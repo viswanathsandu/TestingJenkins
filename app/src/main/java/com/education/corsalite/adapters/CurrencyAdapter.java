@@ -8,10 +8,8 @@ import android.widget.TextView;
 
 import com.education.corsalite.R;
 import com.education.corsalite.activities.UserProfileActivity;
-import com.education.corsalite.responsemodels.ExamDetail;
 import com.education.corsalite.responsemodels.VirtualCurrencyTransaction;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;

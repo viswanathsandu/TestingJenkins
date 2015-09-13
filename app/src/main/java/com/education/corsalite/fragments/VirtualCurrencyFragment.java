@@ -10,18 +10,11 @@ import android.view.ViewGroup;
 
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.CurrencyAdapter;
-import com.education.corsalite.adapters.ExamAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.responsemodels.BaseModel;
 import com.education.corsalite.responsemodels.CorsaliteError;
-import com.education.corsalite.responsemodels.ExamDetail;
 import com.education.corsalite.responsemodels.VirtualCurrencySummaryResponse;
-import com.education.corsalite.responsemodels.VirtualCurrencyTransaction;
 import com.education.corsalite.services.ApiClientService;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import retrofit.client.Response;
 
