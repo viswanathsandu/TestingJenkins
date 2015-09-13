@@ -4,14 +4,25 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.education.corsalite.fragments.UserProfileTabFragment;
+import com.education.corsalite.fragments.ExamTabFragment;
+import com.education.corsalite.fragments.MessageTabFragment;
+import com.education.corsalite.fragments.VirtualCurrencyFragment;
+import com.education.corsalite.responsemodels.ExamDetail;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Girish on 12/09/15.
  */
 public class UserTabBaseAdapter extends FragmentPagerAdapter {
-    public UserTabBaseAdapter(android.support.v4.app.FragmentManager fm) {
+
+    List<ExamDetail> examDetailList;
+
+    public UserTabBaseAdapter(android.support.v4.app.FragmentManager fm, List<ExamDetail> examDetailList) {
         super(fm);
+        this.examDetailList = examDetailList;
     }
 
     @Override
@@ -20,25 +31,25 @@ public class UserTabBaseAdapter extends FragmentPagerAdapter {
         Bundle args = new Bundle();
         switch (i) {
             case 0:
-                fragment = new UserProfileTabFragment();
-                args.putString("adapter_type", "exam");
+                fragment = new ExamTabFragment();
+                args.putSerializable("adapter_type", (Serializable) examDetailList);
                 fragment.setArguments(args);
                 break;
             case 1:
-                fragment = new UserProfileTabFragment();
-                args.putString("adapter_type", "messages");
+                fragment = new MessageTabFragment();
+                args.putSerializable("adapter_type", new ArrayList<>());
                 fragment.setArguments(args);
                 break;
             case 2:
-                fragment = new UserProfileTabFragment();
-                args.putString("adapter_type", "virtualCurrency");
+                fragment = new VirtualCurrencyFragment();
+                args.putSerializable("adapter_type", new ArrayList<>());
                 fragment.setArguments(args);
                 break;
 
         }
         return fragment;
-
     }
+
 
     @Override
     public int getCount() {

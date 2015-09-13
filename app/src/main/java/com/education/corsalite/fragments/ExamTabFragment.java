@@ -9,15 +9,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.education.corsalite.R;
-import com.education.corsalite.adapters.UserTabDetailAdapter;
-import com.education.corsalite.responsemodels.BaseModel;
+import com.education.corsalite.adapters.ExamAdapter;
+import com.education.corsalite.responsemodels.ExamDetail;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Girish on 12/09/15.
  */
-public class UserProfileTabFragment extends BaseFragment {
+public class ExamTabFragment extends BaseFragment {
 
     private static final String ADAPTER_TYPE = "adapter_type";
 
@@ -40,8 +41,8 @@ public class UserProfileTabFragment extends BaseFragment {
         //mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        ArrayList<BaseModel> examDetail = new ArrayList<>();
-        mAdapter = new UserTabDetailAdapter(examDetail, getArguments().getString(ADAPTER_TYPE),inflater);
+        List<ExamDetail> examDetailList = (List<ExamDetail>) getArguments().getSerializable("adapter_type");
+        mAdapter = new ExamAdapter((ArrayList)examDetailList,inflater);
         mRecyclerView.setAdapter(mAdapter);
         return v;
     }
