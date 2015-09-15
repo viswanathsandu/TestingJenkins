@@ -54,7 +54,7 @@ public class UserTabBaseAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-       return 3;
+        return 3;
     }
 
     @Override
@@ -70,7 +70,8 @@ public class UserTabBaseAdapter extends FragmentPagerAdapter {
             case 2:
                 title = "Virtual Currency Summary";
                 break;
-        };
-       return title;
+        }
+        ;
+        return title;
     }
 }

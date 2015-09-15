@@ -35,14 +35,14 @@ public class ExamTabFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_user_profile_tab,container,false);
+        View v = inflater.inflate(R.layout.fragment_user_profile_tab, container, false);
         mRecyclerView = (RecyclerView) v.findViewById(R.id.userdetail_recyclerView);
 
         //mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
         List<ExamDetail> examDetailList = (List<ExamDetail>) getArguments().getSerializable(ADAPTER_TYPE);
-        mAdapter = new ExamAdapter((ArrayList)examDetailList,inflater);
+        mAdapter = new ExamAdapter((ArrayList) examDetailList, inflater);
         mRecyclerView.setAdapter(mAdapter);
         return v;
     }
