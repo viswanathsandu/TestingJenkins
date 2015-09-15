@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.CurrencyAdapter;
@@ -26,6 +27,7 @@ public class VirtualCurrencyFragment extends BaseFragment {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private LinearLayout layoutEmpty;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,8 +40,11 @@ public class VirtualCurrencyFragment extends BaseFragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_currencylist, container, false);
         mRecyclerView = (RecyclerView) v.findViewById(R.id.userdetail_recyclerView);
+        layoutEmpty = (LinearLayout) v.findViewById(R.id.layout_empty);
 
         //mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setVisibility(View.VISIBLE);
+        layoutEmpty.setVisibility(View.GONE);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
         getTransactionHistory(inflater);
@@ -62,15 +67,26 @@ public class VirtualCurrencyFragment extends BaseFragment {
                 new ApiCallback<VirtualCurrencySummaryResponse>() {
                     @Override
                     public void failure(CorsaliteError error) {
-
+                        hideRecyclerView();
                     }
 
                     @Override
                     public void success(VirtualCurrencySummaryResponse virtualCurrencySummaryResponse, Response response) {
-                        mAdapter = new CurrencyAdapter(virtualCurrencySummaryResponse.virtualCurrencyTransaction, inflater);
-                        mRecyclerView.setAdapter(mAdapter);
+                        if(virtualCurrencySummaryResponse != null &&
+                                virtualCurrencySummaryResponse.virtualCurrencyTransaction != null &&
+                                virtualCurrencySummaryResponse.virtualCurrencyTransaction.size() > 0) {
+                            mAdapter = new CurrencyAdapter(virtualCurrencySummaryResponse.virtualCurrencyTransaction, inflater);
+                            mRecyclerView.setAdapter(mAdapter);
+                        } else {
+                            hideRecyclerView();
+                        }
                     }
                 });
+    }
+
+    private void hideRecyclerView() {
+        mRecyclerView.setVisibility(View.GONE);
+        layoutEmpty.setVisibility(View.VISIBLE);
     }
 
 }
