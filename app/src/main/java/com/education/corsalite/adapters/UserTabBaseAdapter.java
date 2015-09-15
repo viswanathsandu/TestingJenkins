@@ -18,6 +18,7 @@ import java.util.List;
  */
 public class UserTabBaseAdapter extends FragmentPagerAdapter {
 
+    private final String ADAPTER_TYPE = "adapter_type";
     List<ExamDetail> examDetailList;
 
     public UserTabBaseAdapter(android.support.v4.app.FragmentManager fm, List<ExamDetail> examDetailList) {
@@ -32,17 +33,17 @@ public class UserTabBaseAdapter extends FragmentPagerAdapter {
         switch (i) {
             case 0:
                 fragment = new ExamTabFragment();
-                args.putSerializable("adapter_type", (Serializable) examDetailList);
+                args.putSerializable(ADAPTER_TYPE, (Serializable) examDetailList);
                 fragment.setArguments(args);
                 break;
             case 1:
                 fragment = new MessageTabFragment();
-                args.putSerializable("adapter_type", new ArrayList<>());
+                args.putSerializable(ADAPTER_TYPE, new ArrayList<>());
                 fragment.setArguments(args);
                 break;
             case 2:
                 fragment = new VirtualCurrencyFragment();
-                args.putSerializable("adapter_type", new ArrayList<>());
+                args.putSerializable(ADAPTER_TYPE, new ArrayList<>());
                 fragment.setArguments(args);
                 break;
 
@@ -53,7 +54,7 @@ public class UserTabBaseAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-       return 3;
+        return 3;
     }
 
     @Override
@@ -69,7 +70,8 @@ public class UserTabBaseAdapter extends FragmentPagerAdapter {
             case 2:
                 title = "Virtual Currency Summary";
                 break;
-        };
-       return title;
+        }
+        ;
+        return title;
     }
 }

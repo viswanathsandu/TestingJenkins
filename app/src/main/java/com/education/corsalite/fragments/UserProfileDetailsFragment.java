@@ -29,13 +29,21 @@ import retrofit.client.Response;
 
 public class UserProfileDetailsFragment extends BaseFragment {
 
-    @Bind(R.id.iv_userProfilePic) ImageView profilePicImg;
-    @Bind(R.id.tv_userName) TextView usernameTxt;
-    @Bind(R.id.tv_userFullName) TextView userFullNameTxt;
-    @Bind(R.id.tv_emailId) TextView emailTxt;
-    @Bind(R.id.tv_institute) TextView instituteTxt;
-    @Bind(R.id.tv_enrolled_course) TextView enrolledCoursesTxt;
-    @Bind(R.id.tv_virtual_currency_balance) TextView virtualCurrencyBalanceTxt;
+    private final String COURSES_ENROLLED_HTML = "<b><font color=#000000>Courses Enrolled:</font></b>&nbsp; ";
+    @Bind(R.id.iv_userProfilePic)
+    ImageView profilePicImg;
+    @Bind(R.id.tv_userName)
+    TextView usernameTxt;
+    @Bind(R.id.tv_userFullName)
+    TextView userFullNameTxt;
+    @Bind(R.id.tv_emailId)
+    TextView emailTxt;
+    @Bind(R.id.tv_institute)
+    TextView instituteTxt;
+    @Bind(R.id.tv_enrolled_course)
+    TextView enrolledCoursesTxt;
+    @Bind(R.id.tv_virtual_currency_balance)
+    TextView virtualCurrencyBalanceTxt;
 
 
     UpdateExamData updateExamData;
@@ -51,8 +59,8 @@ public class UserProfileDetailsFragment extends BaseFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        if(updateExamData == null) {
-            updateExamData = (UpdateExamData)activity;
+        if (updateExamData == null) {
+            updateExamData = (UpdateExamData) activity;
         }
 
     }
@@ -83,22 +91,22 @@ public class UserProfileDetailsFragment extends BaseFragment {
                     @Override
                     public void success(UserProfileResponse userProfileResponse, Response response) {
                         if (userProfileResponse.isSuccessful()) {
-                            showToast("User Profile fetched successfully...");
+                            showToast(getActivity().getResources().getString(R.string.profile_fetched));
                             showProfileData(userProfileResponse.basicProfile);
 
-                            if(updateExamData != null) {
+                            if (updateExamData != null) {
                                 updateExamData.getExamData(userProfileResponse.examDetails);
                             }
 
                         } else {
-                            showToast("Failed to fetch user profile information");
+                            showToast(getActivity().getResources().getString(R.string.failed_fetch));
                         }
                     }
                 });
     }
 
     private void showProfileData(BasicProfile profile) {
-        if(profile.photoUrl != null && !profile.photoUrl.isEmpty()) {
+        if (profile.photoUrl != null && !profile.photoUrl.isEmpty()) {
             Glide.with(getActivity()).load(profile.photoUrl).into(profilePicImg);
         }
         usernameTxt.setText(profile.displayName);
@@ -118,21 +126,21 @@ public class UserProfileDetailsFragment extends BaseFragment {
                     @Override
                     public void success(VirtualCurrencyBalanceResponse virtualCurrencyBalanceResponse, Response response) {
                         if (virtualCurrencyBalanceResponse.isSuccessful()) {
-                            showToast("virtual currency fetched successfully...");
+                            showToast(getActivity().getResources().getString(R.string.virtual_currency_fetched));
                             UserProfileActivity.BALANCE_CURRENCY = String.valueOf(virtualCurrencyBalanceResponse.balance.intValue());
-                            virtualCurrencyBalanceTxt.setText(virtualCurrencyBalanceResponse.balance.intValue()+"");
+                            virtualCurrencyBalanceTxt.setText(virtualCurrencyBalanceResponse.balance.intValue() + "");
                         } else {
-                            showToast("Failed to fetch virtual currency information");
+                            showToast(getResources().getString(R.string.virtual_currency_fetch_failed));
                         }
                     }
                 });
     }
 
     private void setEnrolledCourses(String courses) {
-        enrolledCoursesTxt.setText(Html.fromHtml("<b><font color=#000000>Courses Enrolled:</font></b>&nbsp; "+courses));
+        enrolledCoursesTxt.setText(Html.fromHtml(COURSES_ENROLLED_HTML + courses));
     }
 
-    public interface UpdateExamData{
+    public interface UpdateExamData {
         void getExamData(List<ExamDetail> examDetailList);
     }
 

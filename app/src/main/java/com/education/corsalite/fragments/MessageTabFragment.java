@@ -38,9 +38,9 @@ public class MessageTabFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_message,container,false);
+        View v = inflater.inflate(R.layout.fragment_message, container, false);
         mRecyclerView = (RecyclerView) v.findViewById(R.id.userdetail_recyclerView);
-        layoutEmpty = (LinearLayout)v.findViewById(R.id.layout_empty);
+        layoutEmpty = (LinearLayout) v.findViewById(R.id.layout_empty);
 
         //mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setVisibility(View.VISIBLE);

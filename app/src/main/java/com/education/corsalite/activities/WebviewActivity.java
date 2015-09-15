@@ -13,6 +13,7 @@ import butterknife.ButterKnife;
 
 public class WebviewActivity extends AppCompatActivity {
 
+    private final String URL = "URL";
     @Bind(R.id.webview) WebView webview;
 
     @Override
@@ -22,9 +23,9 @@ public class WebviewActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         Bundle bundle = getIntent().getExtras();
-        if(bundle.containsKey("URL")) {
+        if(bundle.containsKey(URL)) {
             webview.getSettings().setJavaScriptEnabled(true);
-            webview.loadUrl(bundle.getString("URL"));
+            webview.loadUrl(bundle.getString(URL));
         }
     }
 

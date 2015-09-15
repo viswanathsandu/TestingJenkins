@@ -14,7 +14,7 @@ public class LoginUserCache {
     }
 
     public static LoginUserCache getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new LoginUserCache();
         }
         return instance;
