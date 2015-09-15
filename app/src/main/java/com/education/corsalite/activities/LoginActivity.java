@@ -15,6 +15,7 @@ import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.responsemodels.CorsaliteError;
 import com.education.corsalite.responsemodels.LoginResponse;
 import com.education.corsalite.services.ApiClientService;
+import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.Encryption;
 
 import butterknife.Bind;
@@ -23,6 +24,8 @@ import retrofit.client.Response;
 
 public class LoginActivity extends AbstractBaseActivity {
 
+
+    private final String URL = "URL";
     @Bind(R.id.login_btn) Button loginBtn;
     @Bind(R.id.tv_forgot_password) TextView forgotPasswordTxt;
     @Bind(R.id.username_txt) EditText usernameTxt;
@@ -48,7 +51,7 @@ public class LoginActivity extends AbstractBaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, WebviewActivity.class);
-                intent.putExtra("URL", "http://app.corsalite.com/v1/login/forgotPassword");
+                intent.putExtra(URL, Constants.FORGOT_PASSWORD_URL);
                 startActivity(intent);
             }
         });
@@ -58,19 +61,19 @@ public class LoginActivity extends AbstractBaseActivity {
         ApiClientService.get().login(username, password, new ApiCallback<LoginResponse>() {
             @Override
             public void failure(CorsaliteError error) {
-                showToast("Login failed");
+                showToast(getResources().getString(R.string.login_failed));
             }
 
             @Override
             public void success(LoginResponse loginResponse, Response response) {
                 if(loginResponse.isSuccessful()) {
                     saveSessionCookie(response);
-                    showToast("Logged in successfully");
+                    showToast(getResources().getString(R.string.login_successful));
                     storeUserCredentials(loginResponse);
                     startActivity(new Intent(LoginActivity.this, UserProfileActivity.class));
                     finish();
                 } else {
-                    showToast("Login failed");
+                    showToast(getResources().getString(R.string.login_failed));
                 }
             }
         });

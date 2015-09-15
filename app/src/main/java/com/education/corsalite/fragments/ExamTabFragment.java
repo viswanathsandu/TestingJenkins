@@ -41,7 +41,7 @@ public class ExamTabFragment extends BaseFragment {
         //mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        List<ExamDetail> examDetailList = (List<ExamDetail>) getArguments().getSerializable("adapter_type");
+        List<ExamDetail> examDetailList = (List<ExamDetail>) getArguments().getSerializable(ADAPTER_TYPE);
         mAdapter = new ExamAdapter((ArrayList)examDetailList,inflater);
         mRecyclerView.setAdapter(mAdapter);
         return v;

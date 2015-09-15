@@ -11,4 +11,12 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_webview">WebviewActivity</string>
     <string name="action_settings">Settings</string>
+    <string name="logout_failed">Logout failed</string>
+    <string name="logout_successful">Logged out Successfully</string>
+    <string name="login_failed">Login failed</string>
+    <string name="login_successful">Logout Successfully</string>
+    <string name="profile_fetched">User Profile fetched successfully...</string>
+    <string name="failed_fetch">Failed to fetch user profile information</string>
+    <string name="virtual_currency_fetched">Virtual currency fetched successfully...</string>
+    <string name="virtual_currency_fetch_failed">Failed to fetch virtual currency information</string>
 </resources>

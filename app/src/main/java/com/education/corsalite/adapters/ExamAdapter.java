@@ -41,6 +41,7 @@ public class ExamAdapter extends AbstractRecycleViewAdapter {
     }
 
     public class ExamDataHolder extends RecyclerView.ViewHolder {
+        private final String EMPTY_STRING = "";
         @Bind(R.id.tv_exam) TextView examTxt;
         @Bind(R.id.tv_days_remaining) TextView daysRemainingTxt;
         @Bind(R.id.tv_exam_date) TextView examDateTxt;
@@ -52,10 +53,10 @@ public class ExamAdapter extends AbstractRecycleViewAdapter {
         }
 
         public void bindData(final int position, final ExamDetail examDetail) {
-            examTxt.setText(examDetail.name == null ? "" : examDetail.name);
-            daysRemainingTxt.setText(examDetail.daysRemaining == null ? "" : String.valueOf(examDetail.daysRemaining));
-            examDateTxt.setText(examDetail.examDate == null ? "" : examDetail.examDate);
-            hallTicketTxt.setText(examDetail.hallTicketNumber == null ? "" : examDetail.hallTicketNumber);
+            examTxt.setText(examDetail.name == null ? EMPTY_STRING : examDetail.name);
+            daysRemainingTxt.setText(examDetail.daysRemaining == null ? EMPTY_STRING : String.valueOf(examDetail.daysRemaining));
+            examDateTxt.setText(examDetail.examDate == null ? EMPTY_STRING : examDetail.examDate);
+            hallTicketTxt.setText(examDetail.hallTicketNumber == null ? EMPTY_STRING : examDetail.hallTicketNumber);
         }
     }
 }

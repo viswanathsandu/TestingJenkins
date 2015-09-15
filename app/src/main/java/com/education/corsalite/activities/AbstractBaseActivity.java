@@ -45,13 +45,13 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         ApiClientService.get().logout(new Gson().toJson(logout), new ApiCallback<LogoutResponse>() {
             @Override
             public void failure(CorsaliteError error) {
-                showToast("Logout failed");
+                showToast(getResources().getString(R.string.logout_failed));
             }
 
             @Override
             public void success(LogoutResponse logoutResponse, Response response) {
                 if(logoutResponse.isSuccessful()) {
-                    showToast("Logged out Succesfully");
+                    showToast(getResources().getString(R.string.logout_successful));
                     startActivity(new Intent(AbstractBaseActivity.this, LoginActivity.class));
                     finish();
                 }

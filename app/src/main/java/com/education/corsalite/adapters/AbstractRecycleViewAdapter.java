@@ -9,7 +9,7 @@ import java.util.List;
  * Created by Girish Kumar on 12/09/15.
  */
 public abstract class AbstractRecycleViewAdapter<V, K extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<K>{
-    private static final String TAG = AbstractRecycleViewAdapter.class.getSimpleName();
+    private final String TAG = AbstractRecycleViewAdapter.class.getSimpleName();
 
     protected List<V> data = new ArrayList<V>();
 
