@@ -5,9 +5,4 @@ package com.education.corsalite.responsemodels;
  */
 public abstract class BaseModel {
 
-    public abstract String toString();
-
-    public abstract int hashCode();
-
-    public abstract boolean equals(Object obj);
 }

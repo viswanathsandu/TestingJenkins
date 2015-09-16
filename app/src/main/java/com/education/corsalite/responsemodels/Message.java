@@ -19,19 +19,4 @@ public class Message extends BaseModel  implements Serializable {
     public String effectiveDate;
     @SerializedName("TermDate")
     public String termDate;
-
-    @Override
-    public String toString() {
-        return null;
-    }
-
-    @Override
-    public int hashCode() {
-        return 0;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return false;
-    }
 }
