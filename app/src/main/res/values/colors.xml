@@ -15,4 +15,6 @@
     <color name="user_profile_toolbar">#222222</color>
     <color name="user_profile_statusbar">#2D2D2D</color>
     <color name="tab_recycler_header">#9EAAB4</color>
+    <color name="tab_recycler_alternate_row">#F7F8F9</color>
+
 </resources>

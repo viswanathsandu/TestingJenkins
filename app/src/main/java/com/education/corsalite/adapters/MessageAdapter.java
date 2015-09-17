@@ -46,12 +46,18 @@ public class MessageAdapter extends AbstractRecycleViewAdapter {
         @Bind(R.id.tv_termdate) TextView termDateTxt;
         @Bind(R.id.tv_message) TextView messageTxt;
 
+        View parent;
+
         public MessageDataHolder(View view) {
             super(view);
+            this.parent = view;
             ButterKnife.bind(this, view);
         }
 
         public void bindData(final int position, final Message message) {
+            if((position+1)% 2 == 0) {
+                parent.setBackgroundColor(inflater.getContext().getResources().getColor(R.color.tab_recycler_alternate_row));
+            }
             effectiveDateTxt.setText(message.effectiveDate);
             termDateTxt.setText(message.termDate);
             messageTxt.setText(message.message);

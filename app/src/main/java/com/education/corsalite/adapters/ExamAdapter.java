@@ -47,12 +47,18 @@ public class ExamAdapter extends AbstractRecycleViewAdapter {
         @Bind(R.id.tv_exam_date) TextView examDateTxt;
         @Bind(R.id.tv_hall_ticket_number) TextView hallTicketTxt;
 
+        View parent;
+
         public ExamDataHolder(View view) {
             super(view);
+            this.parent = view;
             ButterKnife.bind(this, view);
         }
 
         public void bindData(final int position, final ExamDetail examDetail) {
+            if((position+1)% 2 == 0) {
+                parent.setBackgroundColor(inflater.getContext().getResources().getColor(R.color.tab_recycler_alternate_row));
+            }
             examTxt.setText(examDetail.name == null ? EMPTY_STRING : examDetail.name);
             daysRemainingTxt.setText(examDetail.daysRemaining == null ? EMPTY_STRING : String.valueOf(examDetail.daysRemaining));
             examDateTxt.setText(examDetail.examDate == null ? EMPTY_STRING : examDetail.examDate);

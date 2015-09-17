@@ -49,13 +49,19 @@ public class CurrencyAdapter extends AbstractRecycleViewAdapter {
         @Bind(R.id.tv_earned) TextView earnedTxt;
         @Bind(R.id.tv_balance) TextView balanceTxt;
 
+        View parent;
+
         public CurrencyDataHolder(View view) {
             super(view);
+            this.parent = view;
             ButterKnife.bind(this, view);
         }
 
         public void bindData(final int position, final VirtualCurrencyTransaction virtualCurrencyTransaction) {
-
+            // different color for alternate rows
+            if((position+1)% 2 == 0) {
+                parent.setBackgroundColor(inflater.getContext().getResources().getColor(R.color.tab_recycler_alternate_row));
+            }
             if(virtualCurrencyTransaction.eventDate != null && virtualCurrencyTransaction.eventDate.contains(" ")) {
                 dateTxt.setText(virtualCurrencyTransaction.eventDate.split(" ")[0]);
                 timeTxt.setText(virtualCurrencyTransaction.eventDate.split(" ")[1]);
