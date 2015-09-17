@@ -1,5 +1,6 @@
 package com.education.corsalite.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +20,7 @@ import com.google.gson.Gson;
 
 import retrofit.client.Response;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * Created by vissu on 9/11/15.
@@ -29,9 +31,14 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                .setDefaultFontPath("fonts/Roboto-Regular.ttf")
+                .setDefaultFontPath(getString(R.string.roboto_medium))
                 .setFontAttrId(R.attr.fontPath)
                 .build());
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
     public void showToast(String message) {

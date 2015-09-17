@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#f3f3f3"
     android:orientation="horizontal"
-    android:paddingBottom="10dp">
+    android:paddingBottom="10dp"
+    tools:ignore="MissingPrefix">
 
     <LinearLayout
         android:layout_width="0dp"
@@ -93,7 +95,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_userFullName"
                 android:paddingBottom="10dp"
-                android:textColor="@color/text_gray" />
+                android:textColor="@color/text_gray"/>
 
             <TextView
                 android:id="@+id/tv_instituteHeader"
@@ -119,7 +121,9 @@
                 android:layout_below="@id/tv_instituteHeader"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:textColor="@color/text_gray" />
+                android:lineSpacingMultiplier="1.5"
+                android:textColor="@color/text_gray"
+                android:paddingTop="5dp"/>
 
         </RelativeLayout>
     </LinearLayout>

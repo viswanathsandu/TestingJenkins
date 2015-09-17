@@ -110,8 +110,6 @@ public class UserProfileDetailsFragment extends BaseFragment {
                             if (updateExamData != null) {
                                 updateExamData.getExamData(userProfileResponse.examDetails);
                             }
-                        } else {
-                            showToast(getActivity().getResources().getString(R.string.failed_fetch));
                         }
                     }
                 });
@@ -120,7 +118,6 @@ public class UserProfileDetailsFragment extends BaseFragment {
     private void loadCoursesData(BasicProfile profile) {
         if(profile != null && profile.enrolledCourses != null) {
             String [] coursesArr = profile.enrolledCourses.split(",");
-            showToast(coursesArr+"");
             CourseList courseList = new CourseList(Arrays.asList(coursesArr)) ;
             showCourses(courseList.courses);
             DbManager.getInstance(getActivity()).saveCourseList(courseList);
@@ -159,8 +156,6 @@ public class UserProfileDetailsFragment extends BaseFragment {
                     if (virtualCurrencyBalanceResponse.isSuccessful()) {
                         UserProfileActivity.BALANCE_CURRENCY = String.valueOf(virtualCurrencyBalanceResponse.balance.intValue());
                         virtualCurrencyBalanceTxt.setText(virtualCurrencyBalanceResponse.balance.intValue() + "");
-                    } else {
-                        showToast(getResources().getString(R.string.virtual_currency_fetch_failed));
                     }
                 }
             });

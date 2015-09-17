@@ -6,7 +6,8 @@
 
     <!-- Base application theme. -->
     <style name="UserProfileTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        stye
+        <item name="android:textColorSecondary">@color/white</item>
+        <item name="android:spinnerDropDownItemStyle">@style/spinnerItemStyle</item>
     </style>
 
     <style name="title_style">
