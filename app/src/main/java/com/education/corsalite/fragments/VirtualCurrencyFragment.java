@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.CurrencyAdapter;
 import com.education.corsalite.api.ApiCallback;
+import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.responsemodels.CorsaliteError;
 import com.education.corsalite.responsemodels.VirtualCurrencySummaryResponse;
@@ -63,7 +64,7 @@ public class VirtualCurrencyFragment extends BaseFragment {
     }
 
     private void getTransactionHistory(final LayoutInflater inflater) {
-        ApiClientService.get().getVirtualCurrencyTransactions(LoginUserCache.getInstance().loginResponse.studentId,
+        ApiManager.getInstance(getActivity()).getVirtualCurrencyTransactions(LoginUserCache.getInstance().loginResponse.studentId,
                 new ApiCallback<VirtualCurrencySummaryResponse>() {
                     @Override
                     public void failure(CorsaliteError error) {

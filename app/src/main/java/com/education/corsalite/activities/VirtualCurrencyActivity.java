@@ -19,7 +19,7 @@ public class VirtualCurrencyActivity extends AbstractBaseActivity {
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setHomeButtonEnabled(true);
-        actionBar.setIcon(R.drawable.ic_drawer);
+        actionBar.setIcon(R.drawable.ico_actionbar_slidemenu);
 
     }
 

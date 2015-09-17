@@ -14,7 +14,7 @@
     <string name="logout_failed">Logout failed</string>
     <string name="logout_successful">Logged out Successfully</string>
     <string name="login_failed">Login failed</string>
-    <string name="login_successful">Logout Successfully</string>
+    <string name="login_successful">Login Successfully</string>
     <string name="profile_fetched">User Profile fetched successfully...</string>
     <string name="failed_fetch">Failed to fetch user profile information</string>
     <string name="virtual_currency_fetched">Virtual currency fetched successfully...</string>

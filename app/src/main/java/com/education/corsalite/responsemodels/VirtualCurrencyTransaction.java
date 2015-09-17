@@ -15,19 +15,4 @@ public class VirtualCurrencyTransaction extends BaseModel implements Serializabl
     public String eventName;
     @SerializedName("EarnedVirtualCurrency")
     public String earnedVirtualCurrency;
-
-    @Override
-    public String toString() {
-        return null;
-    }
-
-    @Override
-    public int hashCode() {
-        return 0;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return false;
-    }
 }
