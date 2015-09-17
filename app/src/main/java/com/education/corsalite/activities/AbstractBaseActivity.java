@@ -1,6 +1,7 @@
 package com.education.corsalite.activities;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -17,11 +18,21 @@ import com.education.corsalite.utils.CookieUtils;
 import com.google.gson.Gson;
 
 import retrofit.client.Response;
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 /**
  * Created by vissu on 9/11/15.
  */
 public abstract class AbstractBaseActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                .setDefaultFontPath("fonts/Roboto-Regular.ttf")
+                .setFontAttrId(R.attr.fontPath)
+                .build());
+    }
 
     public void showToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
@@ -33,7 +44,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.action_logout) {
+        if (item.getItemId() == R.id.action_logout) {
             logout();
             return true;
         }
@@ -62,7 +73,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     public void saveSessionCookie(Response response) {
         String cookie = CookieUtils.getCookieString(response);
-        if(cookie != null) {
+        if (cookie != null) {
             ApiClientService.setSetCookie(cookie);
         }
     }
