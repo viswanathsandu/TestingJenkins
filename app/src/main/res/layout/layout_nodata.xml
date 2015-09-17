@@ -5,11 +5,16 @@
     android:gravity="center"
     android:visibility="gone"
     android:id="@+id/layout_empty"
-    android:orientation="vertical">
+    android:orientation="horizontal">
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ico_info"/>
 
+    <TextView
+        android:paddingLeft="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_no_data"/>
 </LinearLayout>

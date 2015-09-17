@@ -3,10 +3,12 @@ package com.education.corsalite.fragments;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.MessageAdapter;
@@ -27,6 +29,7 @@ public class MessageTabFragment extends BaseFragment {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private LinearLayout layoutEmpty;
+    private TextView tvNoData;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,6 +43,9 @@ public class MessageTabFragment extends BaseFragment {
         View v = inflater.inflate(R.layout.fragment_message, container, false);
         mRecyclerView = (RecyclerView) v.findViewById(R.id.userdetail_recyclerView);
         layoutEmpty = (LinearLayout) v.findViewById(R.id.layout_empty);
+        tvNoData = (TextView)v.findViewById(R.id.tv_no_data);
+
+        tvNoData.setText("No Message Found");
 
         //mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setVisibility(View.VISIBLE);
@@ -55,6 +61,9 @@ public class MessageTabFragment extends BaseFragment {
                 new ApiCallback<MessageResponse>() {
                     @Override
                     public void failure(CorsaliteError error) {
+                        if(error!= null && !TextUtils.isEmpty(error.message)) {
+                            showToast(error.message);
+                        }
                         hideRecyclerView();
                     }
 

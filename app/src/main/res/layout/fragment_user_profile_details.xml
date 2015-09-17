@@ -37,30 +37,45 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingRight="5dp"
-                    android:text="Shailene"
                     android:layout_alignParentLeft="true"
                     android:textAllCaps="true"
                     android:textColor="#21A656"
                     android:textSize="@dimen/abc_text_size_large_material"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:layout_toLeftOf="@+id/sp_default_course"/>
 
                 <Spinner
                     android:id="@+id/sp_default_course"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/tv_userName"
+                    android:layout_width="140dp"
+                    android:layout_height="35dp"
                     android:background="@drawable/shape_rounded_corners_black"
                     android:textColor="#FFFFFF"
-                    android:spinnerMode="dropdown"/>
+                    android:spinnerMode="dropdown"
+                    android:layout_toLeftOf="@+id/btn_edit" />
 
                 <Button
+                    android:id="@+id/btn_default_course"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/shape_rounded_corners_black"
+                    android:text="Default Course"
+                    android:textColor="#ffffff"
+                    android:layout_alignLeft="@+id/sp_default_course"
+                    android:layout_alignTop="@+id/sp_default_course"
+                    android:layout_alignRight="@+id/sp_default_course"
+                    android:layout_alignBottom="@+id/sp_default_course"/>
+
+                <Button
+                    android:id="@+id/btn_edit"
+                    android:layout_width="70dp"
+                    android:layout_height="35dp"
                     android:layout_alignParentRight="true"
                     android:background="@drawable/shape_rounded_corners_black"
                     android:text="EDIT"
-
-                    android:textColor="#ffffff" />
+                    android:textColor="#ffffff"
+                    android:layout_marginLeft="10dp"/>
             </RelativeLayout>
 
             <TextView
@@ -68,7 +83,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/ll_user_name"
-                android:text="Shailene Woodley"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/abc_text_size_large_material"
                 android:textStyle="bold" />
@@ -79,7 +93,6 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_userFullName"
                 android:paddingBottom="10dp"
-                android:text="shailenewoodley@live.com"
                 android:textColor="@color/text_gray" />
 
             <TextView
@@ -87,7 +100,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_emailId"
-                android:text="Institute:"
+                android:text="Institute: "
                 android:textColor="@android:color/black"
                 android:textStyle="bold" />
 
@@ -97,7 +110,6 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_emailId"
                 android:layout_toRightOf="@id/tv_instituteHeader"
-                android:text="Corsalite Demo"
                 android:textColor="@color/text_gray" />
 
             <TextView

@@ -1,6 +1,7 @@
 package com.education.corsalite.activities;
 
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -11,16 +12,11 @@ import com.education.corsalite.R;
  */
 public class VirtualCurrencyActivity extends AbstractBaseActivity {
 
+    private Toolbar mToolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_currency);
-
-        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
-        actionBar.setIcon(R.drawable.ico_actionbar_slidemenu);
-
     }
 
     @Override

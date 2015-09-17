@@ -49,6 +49,7 @@ public class UserProfileActivity extends AbstractBaseActivity implements UserPro
 
 
     private void setTabView(List<ExamDetail> examDetailList) {
+        viewPager.setOffscreenPageLimit(2);
         viewPager.setAdapter(new UserTabBaseAdapter(getSupportFragmentManager(), examDetailList));
         userProfileLayout.setupWithViewPager(viewPager);
     }
