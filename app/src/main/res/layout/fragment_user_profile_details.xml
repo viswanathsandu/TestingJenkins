@@ -37,7 +37,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingRight="5dp"
-                    android:text="Shailene"
                     android:layout_alignParentLeft="true"
                     android:textAllCaps="true"
                     android:textColor="#21A656"
@@ -68,7 +67,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/ll_user_name"
-                android:text="Shailene Woodley"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/abc_text_size_large_material"
                 android:textStyle="bold" />
@@ -79,7 +77,6 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_userFullName"
                 android:paddingBottom="10dp"
-                android:text="shailenewoodley@live.com"
                 android:textColor="@color/text_gray" />
 
             <TextView
@@ -87,7 +84,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_emailId"
-                android:text="Institute:"
+                android:text="Institute: "
                 android:textColor="@android:color/black"
                 android:textStyle="bold" />
 
@@ -97,7 +94,6 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_emailId"
                 android:layout_toRightOf="@id/tv_instituteHeader"
-                android:text="Corsalite Demo"
                 android:textColor="@color/text_gray" />
 
             <TextView
