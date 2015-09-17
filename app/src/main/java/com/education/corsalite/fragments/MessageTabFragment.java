@@ -52,17 +52,6 @@ public class MessageTabFragment extends BaseFragment {
         return v;
     }
 
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
     private void getMessage(final LayoutInflater inflater) {
         ApiManager.getInstance(getActivity()).getMessages(LoginUserCache.getInstance().loginResponse.studentId,
                 new ApiCallback<MessageResponse>() {
