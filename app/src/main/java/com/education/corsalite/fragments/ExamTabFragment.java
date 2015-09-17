@@ -52,17 +52,6 @@ public class ExamTabFragment extends BaseFragment {
         return v;
     }
 
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
     private void hideRecyclerView() {
         mRecyclerView.setVisibility(View.GONE);
         layoutEmpty.setVisibility(View.VISIBLE);

@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:padding="15dp"
         android:text="Effective Date"
+        android:textStyle="bold"
         android:textAllCaps="true"/>
 
     <TextView
@@ -23,6 +24,7 @@
         android:layout_height="wrap_content"
         android:padding="15dp"
         android:text="Term Date"
+        android:textStyle="bold"
         android:textAllCaps="true"/>
 
     <TextView
@@ -33,6 +35,7 @@
         android:layout_height="wrap_content"
         android:padding="15dp"
         android:text="Message"
+        android:textStyle="bold"
         android:textAllCaps="true"/>
 
 </LinearLayout>
