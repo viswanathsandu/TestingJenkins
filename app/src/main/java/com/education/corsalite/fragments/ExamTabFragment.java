@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.ExamAdapter;
@@ -26,6 +27,7 @@ public class ExamTabFragment extends BaseFragment {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private LinearLayout layoutEmpty;
+    private TextView tvNoData;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -34,6 +36,9 @@ public class ExamTabFragment extends BaseFragment {
         View v = inflater.inflate(R.layout.fragment_user_profile_tab, container, false);
         mRecyclerView = (RecyclerView) v.findViewById(R.id.userdetail_recyclerView);
         layoutEmpty = (LinearLayout) v.findViewById(R.id.layout_empty);
+        tvNoData = (TextView)v.findViewById(R.id.tv_no_data);
+
+        tvNoData.setText("No Exam Data Found");
 
         mRecyclerView.setVisibility(View.VISIBLE);
         layoutEmpty.setVisibility(View.GONE);
