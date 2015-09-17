@@ -11,7 +11,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="15dp"
-        android:text="DATE" />
+        android:text="Date"
+        android:textAllCaps="true"/>
 
     <TextView
         android:gravity="center"
@@ -20,7 +21,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="15dp"
-        android:text="TIME" />
+        android:text="Time"
+        android:textAllCaps="true"/>
 
     <TextView
         android:gravity="center"
@@ -29,7 +31,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="15dp"
-        android:text="EVENT" />
+        android:text="EVENT"
+        android:textAllCaps="true"/>
 
     <TextView
         android:gravity="center"
@@ -38,7 +41,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="15dp"
-        android:text="CURRENCY EARNED" />
+        android:text="Currency Earned"
+        android:textAllCaps="true"/>
 
     <TextView
         android:gravity="center"
@@ -47,6 +51,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="15dp"
-        android:text="BALANCE" />
+        android:text="Balance"
+        android:textAllCaps="true"/>
 
 </LinearLayout>

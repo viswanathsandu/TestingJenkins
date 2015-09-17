@@ -20,7 +20,6 @@ import com.education.corsalite.responsemodels.CorsaliteError;
 import com.education.corsalite.responsemodels.ExamDetail;
 import com.education.corsalite.responsemodels.UserProfileResponse;
 import com.education.corsalite.responsemodels.VirtualCurrencyBalanceResponse;
-import com.education.corsalite.services.ApiClientService;
 
 import java.util.List;
 
@@ -30,7 +29,7 @@ import retrofit.client.Response;
 
 public class UserProfileDetailsFragment extends BaseFragment {
 
-    private final String COURSES_ENROLLED_HTML = "<b><font color=#000000>Courses Enrolled:</font></b>&nbsp; ";
+    private final String COURSES_ENROLLED_HTML = "<b><font color=#000000>Enrolled Courses:</font></b>&nbsp; ";
     @Bind(R.id.iv_userProfilePic)
     ImageView profilePicImg;
     @Bind(R.id.tv_userName)
