@@ -1,0 +1,19 @@
+{
+  "BasicProfile": {
+    "idStudent": "a123",
+    "PhotoUrl": "url",
+    "DisplayName": "Some Nickname",
+    "GivenName": "My First Name",
+    "SurName": "My Last Name",
+    "EmailID": "someone@somewhere.com"
+  },
+  "ExamDetails": [
+    {
+      "idExam": "e123",
+      "Name": "JEE 2015 Exam",
+      "HallTicketNumber": "abc123",
+      "ExamDate": "2015-09-20 02:20:20",
+      "DaysRemaining": 999
+    }
+  ]
+}

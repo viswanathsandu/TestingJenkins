@@ -44,7 +44,7 @@ public class UserProfileActivity extends AbstractBaseActivity implements UserPro
     protected void initToolbar() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar_profile);
         setSupportActionBar(mToolbar);
-        mToolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_drawer));
+        mToolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ico_actionbar_slidemenu));
     }
 
 

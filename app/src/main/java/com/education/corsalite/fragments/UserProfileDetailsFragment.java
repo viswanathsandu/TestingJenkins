@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.education.corsalite.R;
 import com.education.corsalite.activities.UserProfileActivity;
 import com.education.corsalite.api.ApiCallback;
+import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.responsemodels.BasicProfile;
 import com.education.corsalite.responsemodels.CorsaliteError;
@@ -81,7 +82,7 @@ public class UserProfileDetailsFragment extends BaseFragment {
     }
 
     private void fetchUserProfileData() {
-        ApiClientService.get().getUserProfile(LoginUserCache.getInstance().loginResponse.studentId,
+        ApiManager.getInstance(getActivity()).getUserProfile(LoginUserCache.getInstance().loginResponse.studentId,
                 new ApiCallback<UserProfileResponse>() {
                     @Override
                     public void failure(CorsaliteError error) {
@@ -116,7 +117,7 @@ public class UserProfileDetailsFragment extends BaseFragment {
     }
 
     private void fetchVirtualCurrencyBalance() {
-        ApiClientService.get().getVirtualCurrencyBalance(LoginUserCache.getInstance().loginResponse.studentId,
+        ApiManager.getInstance(getActivity()).getVirtualCurrencyBalance(LoginUserCache.getInstance().loginResponse.studentId,
                 new ApiCallback<VirtualCurrencyBalanceResponse>() {
                     @Override
                     public void failure(CorsaliteError error) {
@@ -143,5 +144,4 @@ public class UserProfileDetailsFragment extends BaseFragment {
     public interface UpdateExamData {
         void getExamData(List<ExamDetail> examDetailList);
     }
-
 }

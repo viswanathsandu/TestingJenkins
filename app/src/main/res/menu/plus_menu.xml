@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
     <item
         android:id="@+id/action_change_text_size"
-        android:icon="@drawable/btn_float_add"
+        android:icon="@drawable/ico_actionbar_add"
         app:showAsAction="always"
         android:title="@string/title_activity_user_profile" />
 </menu>

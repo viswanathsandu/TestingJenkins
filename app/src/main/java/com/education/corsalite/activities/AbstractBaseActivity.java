@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
+import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.requestmodels.LogoutModel;
 import com.education.corsalite.responsemodels.CorsaliteError;
@@ -42,7 +43,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     private void logout() {
         LogoutModel logout = new LogoutModel();
         logout.AuthToken = LoginUserCache.getInstance().getLongResponse().authtoken;
-        ApiClientService.get().logout(new Gson().toJson(logout), new ApiCallback<LogoutResponse>() {
+        ApiManager.getInstance(this).logout(new Gson().toJson(logout), new ApiCallback<LogoutResponse>() {
             @Override
             public void failure(CorsaliteError error) {
                 showToast(getResources().getString(R.string.logout_failed));
@@ -50,7 +51,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
             @Override
             public void success(LogoutResponse logoutResponse, Response response) {
-                if(logoutResponse.isSuccessful()) {
+                if (logoutResponse.isSuccessful()) {
                     showToast(getResources().getString(R.string.logout_successful));
                     startActivity(new Intent(AbstractBaseActivity.this, LoginActivity.class));
                     finish();

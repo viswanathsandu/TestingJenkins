@@ -1,40 +1,44 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.education.corsalite.activities.UserProfileActivity">
-
-    <fragment
-        android:id="@+id/user_profile_fragment"
-        android:name="com.education.corsalite.fragments.UserProfileDetailsFragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+    android:orientation="vertical">
 
     <include
-        android:layout_alignTop="@+id/user_profile_fragment"
         android:id="@+id/toolbar_profile"
-        layout="@layout/exam_profile_toolbar"
-        android:layout_above="@id/user_profile_fragment" />
+        layout="@layout/exam_profile_toolbar" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_below="@id/user_profile_fragment"
-        android:layout_marginTop="1dp"
-        android:background="@color/dark_gray" />
-
-    <android.support.design.widget.TabLayout
-        android:id="@+id/tl_userprofile"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/user_profile_fragment"
-        android:layout_marginTop="5dp"
-        android:background="#ffffff" />
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/pager"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/tl_userprofile"
-        android:background="#ffffff" />
-</RelativeLayout>
+        tools:context="com.education.corsalite.activities.UserProfileActivity">
+
+        <fragment
+            android:id="@+id/user_profile_fragment"
+            android:name="com.education.corsalite.fragments.UserProfileDetailsFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_below="@id/user_profile_fragment"
+            android:layout_marginTop="1dp"
+            android:background="@color/dark_gray" />
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tl_userprofile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/user_profile_fragment"
+            android:layout_marginTop="5dp"
+            android:background="#ffffff" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/tl_userprofile"
+            android:background="#ffffff" />
+    </RelativeLayout>
+</LinearLayout>

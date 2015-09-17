@@ -1,0 +1,19 @@
+{
+  "VirtualCurrencyTransaction": [
+    {
+      "EventDate": "2015-09-20 02:20:20",
+      "EventName": "Schedule Test Completion",
+      "EarnedVirtualCurrency": "-100"
+    },
+    {
+      "EventDate": "2015-09-20 02:20:20",
+      "EventName": "Schedule Test Completion",
+      "EarnedVirtualCurrency": "-100"
+    },
+    {
+      "EventDate": "2015-09-20 02:20:20",
+      "EventName": "Schedule Test Completion",
+      "EarnedVirtualCurrency": "-100"
+    }
+  ]
+}
