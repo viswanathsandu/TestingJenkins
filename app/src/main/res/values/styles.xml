@@ -9,7 +9,7 @@
     </style>
 
     <!-- Base application theme. -->
-    <style name="UserProfileTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="UserProfileTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:colorPrimary">@color/user_profile_toolbar</item>
@@ -21,6 +21,20 @@
         <item name="fontPath">fonts/Roboto-Regular.ttf</item>
         <item name="android:textSize">18sp</item>
         <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="UserProfileCustomTabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabMaxWidth">@dimen/tab_max_width</item>
+        <item name="tabIndicatorColor">@color/dark_blue</item>
+        <item name="tabIndicatorHeight">2dp</item>
+        <item name="tabBackground">?attr/selectableItemBackground</item>
+        <item name="tabTextAppearance">@style/MyCustomTabTextAppearance</item>
+        <item name="tabSelectedTextColor">@color/dark_blue</item>
+    </style>
+    <style name="MyCustomTabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/dark_gray</item>
+        <item name="textAllCaps">false</item>
     </style>
 
 </resources>

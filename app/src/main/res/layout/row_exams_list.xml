@@ -11,7 +11,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="15dp"
-        android:text="Exam" />
+        android:text="Exam"
+        android:textAllCaps="true"/>
 
     <TextView
         android:gravity="center"
@@ -20,7 +21,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="15dp"
-        android:text="Days Remaining" />
+        android:text="Days Remaining"
+        android:textAllCaps="true"/>
 
     <TextView
         android:gravity="center"
@@ -29,7 +31,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="15dp"
-        android:text="Exam Date" />
+        android:text="Exam Date"
+        android:textAllCaps="true"/>
 
     <TextView
         android:gravity="center"
@@ -38,6 +41,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="15dp"
-        android:text="Hall Ticket Number" />
+        android:text="Hall Ticket Number"
+        android:textAllCaps="true"
+        />
 
 </LinearLayout>
