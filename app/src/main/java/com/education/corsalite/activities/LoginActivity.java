@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
+import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.responsemodels.CorsaliteError;
 import com.education.corsalite.responsemodels.LoginResponse;
@@ -58,7 +59,7 @@ public class LoginActivity extends AbstractBaseActivity {
     }
 
     private void login(String username, String password) {
-        ApiClientService.get().login(username, password, new ApiCallback<LoginResponse>() {
+        ApiManager.getInstance(this).login(username, password, new ApiCallback<LoginResponse>() {
             @Override
             public void failure(CorsaliteError error) {
                 showToast(getResources().getString(R.string.login_failed));
