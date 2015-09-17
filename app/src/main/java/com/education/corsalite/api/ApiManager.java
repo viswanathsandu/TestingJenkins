@@ -62,9 +62,9 @@ public class ApiManager {
         if(isApiOnline()) {
             ApiClientService.get().logout(update, callback);
         } else {
-//            String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/logout.json");
-//            L.info("Response for 'api/logout.json' is "+jsonResponse);
-//            callback.success(new Gson().fromJson(jsonResponse, LogoutResponse.class), getRetrofitResponse());
+            String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/logout.json");
+            L.info("Response for 'api/logout.json' is "+jsonResponse);
+            callback.success(new Gson().fromJson(jsonResponse, LogoutResponse.class), getRetrofitResponse());
         }
     }
 
@@ -72,9 +72,9 @@ public class ApiManager {
         if(isApiOnline()) {
             ApiClientService.get().getUserProfile(studentId, callback);
         } else {
-//            String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/user_profile.json");
-//            L.info("Response for 'api/user_profile.json' is "+jsonResponse);
-//            callback.success(new Gson().fromJson(jsonResponse, UserProfileResponse.class), getRetrofitResponse());
+            String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/user_profile.json");
+            L.info("Response for 'api/user_profile.json' is "+jsonResponse);
+            callback.success(new Gson().fromJson(jsonResponse, UserProfileResponse.class), getRetrofitResponse());
         }
     }
 
@@ -82,9 +82,9 @@ public class ApiManager {
         if(isApiOnline()) {
             ApiClientService.get().getVirtualCurrencyBalance(studentId, callback);
         } else {
-//            String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/virtual_currency_balance.json");
-//            L.info("Response for 'api/virtual_currency_balance.json' is "+jsonResponse);
-//            callback.success(new Gson().fromJson(jsonResponse, VirtualCurrencyBalanceResponse.class), getRetrofitResponse());
+            String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/virtual_currency_balance.json");
+            L.info("Response for 'api/virtual_currency_balance.json' is "+jsonResponse);
+            callback.success(new Gson().fromJson(jsonResponse, VirtualCurrencyBalanceResponse.class), getRetrofitResponse());
         }
     }
 
@@ -92,9 +92,9 @@ public class ApiManager {
         if(isApiOnline()) {
             ApiClientService.get().getVirtualCurrencyTransactions(studentId, callback);
         } else {
-//            String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/virtual_currency_summary.json");
-//            L.info("Response for 'api/virtual_currency_summary.json' is "+jsonResponse);
-//            callback.success(new Gson().fromJson(jsonResponse, VirtualCurrencySummaryResponse.class), getRetrofitResponse());
+            String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/virtual_currency_summary.json");
+            L.info("Response for 'api/virtual_currency_summary.json' is "+jsonResponse);
+            callback.success(new Gson().fromJson(jsonResponse, VirtualCurrencySummaryResponse.class), getRetrofitResponse());
         }
     }
 
@@ -102,9 +102,9 @@ public class ApiManager {
         if(isApiOnline()) {
             ApiClientService.get().getMessages(studentId, callback);
         } else {
-//            String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/messages.json");
-//            L.info("Response for 'api/messages.json' is "+jsonResponse);
-//            callback.success(new Gson().fromJson(jsonResponse, MessageResponse.class), getRetrofitResponse());
+            String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/messages.json");
+            L.info("Response for 'api/messages.json' is "+jsonResponse);
+            callback.success(new Gson().fromJson(jsonResponse, MessageResponse.class), getRetrofitResponse());
         }
     }
 }
