@@ -17,9 +17,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.UserProfileActivity"
-            android:label="@string/title_activity_user_profile"
-            android:theme="@style/UserProfileTheme"></activity>
+            android:name=".activities.UserProfileActivity">
+           </activity>
         <activity
             android:name=".activities.WebviewActivity"
             android:label="@string/title_activity_webview"></activity>

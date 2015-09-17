@@ -2,16 +2,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="com.education.corsalite.activities.UserProfileActivity">
 
     <fragment
         android:id="@+id/user_profile_fragment"
         android:name="com.education.corsalite.fragments.UserProfileDetailsFragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true" />
+        android:layout_height="wrap_content" />
+
+    <include
+        android:layout_alignTop="@+id/user_profile_fragment"
+        android:id="@+id/toolbar_profile"
+        layout="@layout/exam_profile_toolbar"
+        android:layout_above="@id/user_profile_fragment" />
 
     <View
         android:layout_width="match_parent"

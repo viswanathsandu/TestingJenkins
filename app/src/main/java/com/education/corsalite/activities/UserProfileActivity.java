@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,23 +26,27 @@ public class UserProfileActivity extends AbstractBaseActivity implements UserPro
     List<Message> messages;
     List<VirtualCurrencyTransaction> virtualCurrencyTransactions;
     public static String BALANCE_CURRENCY;
+    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
-
-        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
-        actionBar.setIcon(R.drawable.ic_drawer);
         initUI();
+        initToolbar();
     }
 
     private void initUI() {
         userProfileLayout = (TabLayout)findViewById(R.id.tl_userprofile);
         viewPager = (ViewPager)findViewById(R.id.pager);
     }
+
+    protected void initToolbar() {
+        mToolbar = (Toolbar) findViewById(R.id.toolbar_profile);
+        setSupportActionBar(mToolbar);
+        mToolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_drawer));
+    }
+
 
     private void setTabView(List<ExamDetail> examDetailList) {
         viewPager.setAdapter(new UserTabBaseAdapter(getSupportFragmentManager(), examDetailList));
@@ -51,7 +56,7 @@ public class UserProfileActivity extends AbstractBaseActivity implements UserPro
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_user_profile, menu);
+        getMenuInflater().inflate(R.menu.plus_menu, menu);
         return true;
     }
 
