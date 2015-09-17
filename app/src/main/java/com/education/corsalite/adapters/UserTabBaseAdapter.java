@@ -20,10 +20,18 @@ public class UserTabBaseAdapter extends FragmentPagerAdapter {
 
     private final String ADAPTER_TYPE = "adapter_type";
     List<ExamDetail> examDetailList;
+    String examTitle = "";
 
     public UserTabBaseAdapter(android.support.v4.app.FragmentManager fm, List<ExamDetail> examDetailList) {
         super(fm);
         this.examDetailList = examDetailList;
+        setExamTitle();
+    }
+
+    private void setExamTitle() {
+        if(examDetailList != null && examDetailList.size() > 0) {
+            examTitle = " ("+examDetailList.size()+")";
+        }
     }
 
     @Override
@@ -62,7 +70,7 @@ public class UserTabBaseAdapter extends FragmentPagerAdapter {
         String title = null;
         switch (position) {
             case 0:
-                title = "Exam Schedule";
+                title = "Exam Schedule"+examTitle;
                 break;
             case 1:
                 title = "Messages";
