@@ -1,6 +1,6 @@
 package com.education.corsalite.cache;
 
-import com.education.corsalite.responsemodels.LoginResponse;
+import com.education.corsalite.models.responsemodels.LoginResponse;
 
 /**
  * Created by vissu on 9/12/15.

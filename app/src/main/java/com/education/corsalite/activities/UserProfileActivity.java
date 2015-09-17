@@ -12,9 +12,9 @@ import android.view.View;
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.UserTabBaseAdapter;
 import com.education.corsalite.fragments.UserProfileDetailsFragment;
-import com.education.corsalite.responsemodels.ExamDetail;
-import com.education.corsalite.responsemodels.Message;
-import com.education.corsalite.responsemodels.VirtualCurrencyTransaction;
+import com.education.corsalite.models.responsemodels.ExamDetail;
+import com.education.corsalite.models.responsemodels.Message;
+import com.education.corsalite.models.responsemodels.VirtualCurrencyTransaction;
 
 import java.util.List;
 

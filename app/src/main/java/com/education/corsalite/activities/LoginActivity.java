@@ -13,8 +13,8 @@ import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.responsemodels.CorsaliteError;
-import com.education.corsalite.responsemodels.LoginResponse;
+import com.education.corsalite.models.responsemodels.CorsaliteError;
+import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.Encryption;
 

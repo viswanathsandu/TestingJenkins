@@ -1,6 +1,4 @@
-package com.education.corsalite.responsemodels;
-
-import com.google.gson.annotations.SerializedName;
+package com.education.corsalite.models.responsemodels;
 
 import java.util.List;
 

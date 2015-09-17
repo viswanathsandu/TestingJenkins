@@ -15,11 +15,11 @@ import com.education.corsalite.activities.UserProfileActivity;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.responsemodels.BasicProfile;
-import com.education.corsalite.responsemodels.CorsaliteError;
-import com.education.corsalite.responsemodels.ExamDetail;
-import com.education.corsalite.responsemodels.UserProfileResponse;
-import com.education.corsalite.responsemodels.VirtualCurrencyBalanceResponse;
+import com.education.corsalite.models.responsemodels.BasicProfile;
+import com.education.corsalite.models.responsemodels.CorsaliteError;
+import com.education.corsalite.models.responsemodels.ExamDetail;
+import com.education.corsalite.models.responsemodels.UserProfileResponse;
+import com.education.corsalite.models.responsemodels.VirtualCurrencyBalanceResponse;
 
 import java.util.List;
 

@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.education.corsalite.fragments.ExamTabFragment;
 import com.education.corsalite.fragments.MessageTabFragment;
 import com.education.corsalite.fragments.VirtualCurrencyFragment;
-import com.education.corsalite.responsemodels.ExamDetail;
+import com.education.corsalite.models.responsemodels.ExamDetail;
 
 import java.io.Serializable;
 import java.util.ArrayList;

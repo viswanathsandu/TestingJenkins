@@ -5,12 +5,12 @@ import android.content.res.AssetManager;
 
 import com.education.corsalite.config.AppConfig;
 import com.education.corsalite.enums.NetworkMode;
-import com.education.corsalite.responsemodels.LoginResponse;
-import com.education.corsalite.responsemodels.LogoutResponse;
-import com.education.corsalite.responsemodels.MessageResponse;
-import com.education.corsalite.responsemodels.UserProfileResponse;
-import com.education.corsalite.responsemodels.VirtualCurrencyBalanceResponse;
-import com.education.corsalite.responsemodels.VirtualCurrencySummaryResponse;
+import com.education.corsalite.models.responsemodels.LoginResponse;
+import com.education.corsalite.models.responsemodels.LogoutResponse;
+import com.education.corsalite.models.responsemodels.MessageResponse;
+import com.education.corsalite.models.responsemodels.UserProfileResponse;
+import com.education.corsalite.models.responsemodels.VirtualCurrencyBalanceResponse;
+import com.education.corsalite.models.responsemodels.VirtualCurrencySummaryResponse;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.FileUtils;
 import com.education.corsalite.utils.L;

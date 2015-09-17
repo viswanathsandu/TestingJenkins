@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
-import com.education.corsalite.responsemodels.ExamDetail;
+import com.education.corsalite.models.responsemodels.ExamDetail;
 
 import java.util.List;
 

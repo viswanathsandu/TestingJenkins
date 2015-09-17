@@ -1,4 +1,4 @@
-package com.education.corsalite.responsemodels;
+package com.education.corsalite.models.responsemodels;
 
 import com.google.gson.annotations.SerializedName;
 

@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.education.corsalite.R;
 import com.education.corsalite.activities.UserProfileActivity;
-import com.education.corsalite.responsemodels.VirtualCurrencyTransaction;
+import com.education.corsalite.models.responsemodels.VirtualCurrencyTransaction;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package com.education.corsalite.api;
 
-import com.education.corsalite.responsemodels.CorsaliteError;
+import com.education.corsalite.models.responsemodels.CorsaliteError;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;

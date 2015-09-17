@@ -1,4 +1,4 @@
-package com.education.corsalite.responsemodels;
+package com.education.corsalite.models.responsemodels;
 
 /**
  * Created by vissu on 9/11/15.

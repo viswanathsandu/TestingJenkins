@@ -1,6 +1,5 @@
 package com.education.corsalite.fragments;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,7 +10,7 @@ import android.widget.LinearLayout;
 
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.ExamAdapter;
-import com.education.corsalite.responsemodels.ExamDetail;
+import com.education.corsalite.models.responsemodels.ExamDetail;
 
 import java.util.ArrayList;
 import java.util.List;

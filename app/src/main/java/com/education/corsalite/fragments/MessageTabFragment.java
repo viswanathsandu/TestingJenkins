@@ -1,6 +1,5 @@
 package com.education.corsalite.fragments;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,9 +13,8 @@ import com.education.corsalite.adapters.MessageAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.responsemodels.CorsaliteError;
-import com.education.corsalite.responsemodels.MessageResponse;
-import com.education.corsalite.services.ApiClientService;
+import com.education.corsalite.models.responsemodels.CorsaliteError;
+import com.education.corsalite.models.responsemodels.MessageResponse;
 
 import retrofit.client.Response;
 
