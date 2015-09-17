@@ -21,8 +21,7 @@
         android:scrollbars="vertical" />
 
     <include layout="@layout/layout_nodata"
-        android:layout_below="@id/headerLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
 </RelativeLayout>

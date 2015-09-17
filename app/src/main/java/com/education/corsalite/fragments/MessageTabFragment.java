@@ -81,7 +81,6 @@ public class MessageTabFragment extends BaseFragment {
     }
 
     private void hideRecyclerView() {
-        mRecyclerView.setVisibility(View.GONE);
         layoutEmpty.setVisibility(View.VISIBLE);
     }
 
