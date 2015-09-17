@@ -15,7 +15,6 @@ import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.responsemodels.CorsaliteError;
 import com.education.corsalite.responsemodels.LoginResponse;
-import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.Encryption;
 

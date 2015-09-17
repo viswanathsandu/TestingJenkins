@@ -106,7 +106,6 @@
                 android:layout_below="@id/tv_instituteHeader"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:text="Courses Enrolled:"
                 android:textColor="@color/text_gray" />
 
         </RelativeLayout>

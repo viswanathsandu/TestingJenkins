@@ -23,7 +23,6 @@
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_below="@id/user_profile_fragment"
-            android:layout_marginTop="1dp"
             android:background="@color/dark_gray" />
 
         <android.support.design.widget.TabLayout
@@ -31,14 +30,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/user_profile_fragment"
-            android:layout_marginTop="5dp"
-            android:background="#ffffff" />
+            android:layout_marginTop="2dp"
+            style="@style/UserProfileCustomTabLayout"
+            android:background="@color/white" />
 
         <android.support.v4.view.ViewPager
             android:id="@+id/pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/tl_userprofile"
-            android:background="#ffffff" />
+            android:background="@color/white" />
     </RelativeLayout>
 </LinearLayout>
