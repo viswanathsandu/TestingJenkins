@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -28,6 +29,7 @@ import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.ExamDetail;
 import com.education.corsalite.models.responsemodels.UserProfileResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencyBalanceResponse;
+import com.education.corsalite.utils.L;
 
 import java.util.Arrays;
 import java.util.List;
@@ -49,7 +51,8 @@ public class UserProfileDetailsFragment extends BaseFragment {
     @Bind(R.id.sp_default_course) Spinner coursesSpinner;
     @Bind(R.id.btn_default_course) Button coursesBtn;
 
-    UpdateExamData updateExamData;
+    private UpdateExamData updateExamData;
+    private int defaultcourseIndex;
 
     public static UserProfileDetailsFragment newInstance(String param1, String param2) {
         UserProfileDetailsFragment fragment = new UserProfileDetailsFragment();
@@ -79,8 +82,22 @@ public class UserProfileDetailsFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        loadCourseDataFromDb();
         fetchUserProfileData();
         fetchVirtualCurrencyBalance();
+    }
+
+    private void loadCourseDataFromDb() {
+        CourseList list = DbManager.getInstance(getActivity()).getCourseList();
+        if(list != null && list.courses != null) {
+            this.defaultcourseIndex = list.defaultCourseIndex;
+            showCourses(list.courses);
+            loadCoursesDataInToolbar(list);
+        }
+    }
+
+    private void saveDefaultCourseIndex(int index) {
+        DbManager.getInstance(getActivity()).saveDefaultCourse(index);
     }
 
     private void setListeners() {
@@ -90,38 +107,56 @@ public class UserProfileDetailsFragment extends BaseFragment {
                 coursesSpinner.performClick();
             }
         });
+        coursesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                defaultcourseIndex = position;
+                L.info("Position : "+position);
+                saveDefaultCourseIndex(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
     }
 
     private void fetchUserProfileData() {
         ApiManager.getInstance(getActivity()).getUserProfile(LoginUserCache.getInstance().loginResponse.studentId,
-                new ApiCallback<UserProfileResponse>() {
-                    @Override
-                    public void failure(CorsaliteError error) {
-                        if(error!= null && !TextUtils.isEmpty(error.message)) {
-                            showToast(error.message);
-                        }
+            new ApiCallback<UserProfileResponse>() {
+                @Override
+                public void failure(CorsaliteError error) {
+                    if (error != null && !TextUtils.isEmpty(error.message)) {
+                        showToast(error.message);
                     }
+                }
 
-                    @Override
-                    public void success(UserProfileResponse userProfileResponse, Response response) {
-                        if (userProfileResponse.isSuccessful()) {
-                            showProfileData(userProfileResponse.basicProfile);
-                            loadCoursesData(userProfileResponse.basicProfile);
-                            if (updateExamData != null) {
-                                updateExamData.getExamData(userProfileResponse.examDetails);
-                            }
+                @Override
+                public void success(UserProfileResponse userProfileResponse, Response response) {
+                    if (userProfileResponse.isSuccessful()) {
+                        showProfileData(userProfileResponse.basicProfile);
+                        loadCoursesData(userProfileResponse.basicProfile);
+                        if (updateExamData != null) {
+                            updateExamData.getExamData(userProfileResponse.examDetails);
                         }
                     }
-                });
+                }
+            });
     }
 
     private void loadCoursesData(BasicProfile profile) {
         if(profile != null && profile.enrolledCourses != null) {
             String [] coursesArr = profile.enrolledCourses.split(",");
             CourseList courseList = new CourseList(Arrays.asList(coursesArr)) ;
+            courseList.defaultCourseIndex = defaultcourseIndex;
             showCourses(courseList.courses);
             DbManager.getInstance(getActivity()).saveCourseList(courseList);
+            loadCoursesDataInToolbar(courseList);
         }
+    }
+
+    private void loadCoursesDataInToolbar(CourseList courseList) {
+        ((UserProfileActivity)getActivity()).showCoursesInToolbar(courseList);
     }
 
     private void showCourses(List<String> courses) {
@@ -129,6 +164,7 @@ public class UserProfileDetailsFragment extends BaseFragment {
                 R.layout.spinner_title_textview, courses);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         coursesSpinner.setAdapter(dataAdapter);
+        coursesSpinner.setSelection(defaultcourseIndex);
     }
 
     private void showProfileData(BasicProfile profile) {

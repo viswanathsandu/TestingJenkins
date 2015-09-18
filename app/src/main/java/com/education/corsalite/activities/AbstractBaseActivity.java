@@ -71,6 +71,8 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             public void success(LogoutResponse logoutResponse, Response response) {
                 if (logoutResponse.isSuccessful()) {
                     showToast(getResources().getString(R.string.logout_successful));
+                    LoginUserCache.getInstance().clearCache();
+                    deleteSessionCookie();
                     startActivity(new Intent(AbstractBaseActivity.this, LoginActivity.class));
                     finish();
                 }
@@ -83,5 +85,9 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         if (cookie != null) {
             ApiClientService.setSetCookie(cookie);
         }
+    }
+
+    public void deleteSessionCookie() {
+        ApiClientService.setSetCookie(null);
     }
 }

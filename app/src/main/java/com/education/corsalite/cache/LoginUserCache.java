@@ -27,4 +27,8 @@ public class LoginUserCache {
     public void setLoginResponse(LoginResponse response) {
         this.loginResponse = response;
     }
+
+    public void clearCache() {
+        this.loginResponse = null;
+    }
 }

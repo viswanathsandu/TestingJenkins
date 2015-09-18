@@ -5,7 +5,6 @@
     android:orientation="vertical">
 
     <include
-        android:id="@+id/toolbar_profile"
         layout="@layout/exam_profile_toolbar" />
 
     <RelativeLayout

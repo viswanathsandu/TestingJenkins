@@ -4,10 +4,11 @@
     <string name="in_progress">In Progress</string>
     <string name="action_logout">Logout</string>
     <string name="title_activity_login">LoginActivity</string>
-    <string name="title_activity_user_profile">Add</string>
+    <string name="title_activity_user_profile">My Profile</string>
     <string name="title_activity_currency">Virtual Currency Summary</string>
 
-<!-- TODO: Remove or change this placeholder text -->
+    
+    <string name="menu_add">Add</string>
     <string name="logout">Logout</string>
     <string name="title_activity_webview">WebviewActivity</string>
     <string name="action_settings">Settings</string>

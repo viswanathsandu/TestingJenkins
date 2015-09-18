@@ -13,10 +13,18 @@ import com.education.corsalite.R;
 public class VirtualCurrencyActivity extends AbstractBaseActivity {
 
     private Toolbar mToolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_currency);
+        initToolbar();
+    }
+
+    protected void initToolbar() {
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+        mToolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ico_actionbar_slidemenu));
     }
 
     @Override
