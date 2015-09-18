@@ -88,4 +88,9 @@ public class UserProfileActivity extends AbstractBaseActivity implements UserPro
     public void getExamData(List<ExamDetail> examDetailList) {
         setTabView(examDetailList);
     }
+
+    public void onClickIntent(View view) {
+        Intent intent = new Intent(this, VirtualCurrencyActivity.class);
+        startActivity(intent);
+    }
 }

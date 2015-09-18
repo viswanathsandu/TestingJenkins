@@ -38,8 +38,7 @@
             android:id="@+id/username_txt"
             android:textColor="@android:color/black"
             app:met_primaryColor="@color/green"
-            android:singleLine="true"
-            android:text="corpdemo1@demo.com"/>
+            android:singleLine="true"/>
 
         <com.rengwuxian.materialedittext.MaterialEditText
             android:layout_width="match_parent"
@@ -50,8 +49,7 @@
             app:met_primaryColor="@color/green"
             android:inputType="textPassword"
             android:layout_marginTop="20dp"
-            android:singleLine="true"
-            android:text="core@tech"/>
+            android:singleLine="true"/>
 
         <Button
             android:layout_width="wrap_content"
