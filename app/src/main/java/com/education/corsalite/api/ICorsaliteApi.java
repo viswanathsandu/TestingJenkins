@@ -1,5 +1,6 @@
 package com.education.corsalite.api;
 
+import com.education.corsalite.models.requestmodels.EditProfileModel;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
 import com.education.corsalite.models.responsemodels.MessageResponse;
@@ -33,4 +34,7 @@ public interface ICorsaliteApi {
 
     @GET("/Message")
     void getMessages(@Query("idStudent") String studentId, ApiCallback<MessageResponse> callback);
+
+    @POST("/UserProfile")
+    void updateUserProfile(@Query("Update")String userProfile, ApiCallback<EditProfileModel> callback);
 }

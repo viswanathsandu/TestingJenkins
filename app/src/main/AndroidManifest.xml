@@ -40,6 +40,11 @@
             android:label="@string/title_activity_currency"
             android:theme="@style/UserProfileTheme" />
 
+        <activity
+            android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
+            android:name=".activities.EditProfileActivity"
+            android:label="@string/title_activity_editprofile"
+            android:theme="@style/EditProfileTheme" />
     </application>
 
 </manifest>
