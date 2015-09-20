@@ -14,10 +14,10 @@
 
         <include
             android:id="@+id/toolbar"
-            layout="@layout/exam_profile_toolbar" />
+            layout="@layout/user_profile_toolbar" />
 
         <FrameLayout
-            android:id="@+id/frame"
+            android:id="@+id/activity_layout_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -27,7 +27,6 @@
 
     <android.support.design.widget.NavigationView
         android:id="@+id/navigation_view"
-        android:background="@color/dark_blue"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"

@@ -41,6 +41,7 @@
 
     <style name="nav_view_style">
         <item name="android:textSize">18sp</item>
-        <item name="android:fontFamily">fonts/Roboto-Regular.ttf</item>
+        <item name="android:fontFamily">@string/roboto_regular</item>
+        <item name="android:background">@color/dark_blue</item>
     </style>
 </resources>

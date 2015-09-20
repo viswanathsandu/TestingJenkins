@@ -42,7 +42,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.navigation_drawer_layout);
-        frameLayout = (FrameLayout) findViewById(R.id.frame);
+        frameLayout = (FrameLayout) findViewById(R.id.activity_layout_container);
         initNavigationDrawer();
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
                 .setDefaultFontPath(getString(R.string.roboto_medium))
@@ -53,13 +53,11 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     private void initNavigationDrawer() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ico_actionbar_slidemenu));
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
-                if (menuItem.isChecked()) menuItem.setChecked(false);
-                else menuItem.setChecked(true);
+                menuItem.setChecked(!menuItem.isChecked());
                 drawerLayout.closeDrawers();
                 switch (menuItem.getItemId()) {
                     default:
