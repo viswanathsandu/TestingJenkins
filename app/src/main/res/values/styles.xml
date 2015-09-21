@@ -2,6 +2,9 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@color/primary_color</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/white</item>
     </style>
 
     <!-- Base application theme. -->
@@ -25,6 +28,7 @@
         <item name="tabTextAppearance">@style/MyCustomTabTextAppearance</item>
         <item name="tabSelectedTextColor">@color/dark_blue</item>
     </style>
+
     <style name="MyCustomTabTextAppearance" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/black</item>
@@ -33,5 +37,11 @@
 
     <style name="spinnerItemStyle" parent="@android:style/Widget.Holo.DropDownItem.Spinner">
         <item name="android:textColorSecondary">@color/white</item>
+    </style>
+
+    <style name="nav_view_style">
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@string/roboto_regular</item>
+        <item name="android:background">@color/dark_blue</item>
     </style>
 </resources>

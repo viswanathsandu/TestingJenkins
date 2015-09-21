@@ -27,4 +27,12 @@
     <string name="roboto_medium">fonts/Roboto-Medium.ttf</string>
     <string name="roboto_bold">fonts/Roboto-Bold.ttf</string>
 
+    <!--Menu Drawer-->
+    <string name="my_groups">My Groups</string>
+    <string name="virtual_currency">Virtual Currency</string>
+    <string name="invite_friends">Invite Friends</string>
+    <string name="exam_schedule">Exam Schedule</string>
+    <string name="open_drawer">Open</string>
+    <string name="close_drawer">Closed</string>
+
 </resources>
