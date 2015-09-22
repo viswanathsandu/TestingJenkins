@@ -27,11 +27,13 @@
 
     <android.support.design.widget.NavigationView
         android:id="@+id/navigation_view"
+        style="@style/nav_view_style"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        style="@style/nav_view_style"
-        app:itemTextColor="@color/white"
-        app:headerLayout="@layout/header"
-        app:menu="@menu/drawer_menu" />
+        app:itemTextColor="@color/white">
+
+        <include layout="@layout/navigation_view_body" />
+
+    </android.support.design.widget.NavigationView>
 </android.support.v4.widget.DrawerLayout>
