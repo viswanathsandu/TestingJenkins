@@ -29,29 +29,33 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:hint="Display Name" />
+                    android:hint="Display Name"
+                    android:id="@+id/et_display_name"/>
             </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent">
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:hint="SurName"/>
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:hint="SurName"
+                        android:id="@+id/et_surname"/>
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_height="wrap_content"
-                    android:layout_width="match_parent">
+                    android:layout_width="match_parent"
+                    android:clickable="true">
 
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="date"
                     android:singleLine="true"
-                    android:hint="Date of Birth"/>
+                    android:hint="Date of Birth"
+                    android:id="@+id/dob"/>
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
@@ -63,7 +67,8 @@
                     android:layout_height="wrap_content"
                     android:inputType="phone"
                     android:singleLine="true"
-                    android:hint="Phone"/>
+                    android:hint="Phone"
+                android:id="@+id/et_phone"/>
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
@@ -73,7 +78,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:hint="Address 2"/>
+                    android:hint="Address 2"
+
+                    android:id="@+id/et_address2"/>
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
@@ -83,7 +90,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:hint="State"/>
+                    android:hint="State"
+                    android:id="@+id/et_state"/>
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
@@ -94,7 +102,8 @@
                     android:layout_height="wrap_content"
                     android:enabled="false"
                     android:singleLine="true"
-                    android:hint="FaceBook Id"/>
+                    android:hint="FaceBook Id"
+                    android:id="@+id/et_facebook_id"/>
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
@@ -105,7 +114,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:hint="Admission Number"/>
+                    android:hint="Admission Number"
+
+                    android:id="@+id/et_admission_number"/>
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
@@ -117,7 +128,8 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
                     android:singleLine="true"
-                    android:hint="Password"/>
+                    android:hint="Password"
+                    android:id="@+id/et_password"/>
                 </android.support.design.widget.TextInputLayout>
 
                   </LinearLayout>
@@ -136,7 +148,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:hint="Given Name"/>
+                    android:hint="Given Name"
+                    android:id="@+id/et_given_name"/>
             </android.support.design.widget.TextInputLayout>
 
                 <TextView
@@ -149,15 +162,19 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_marginBottom="7dp"
-                    android:layout_marginTop="4dp">
+                    android:layout_marginTop="4dp"
+                    android:id="@+id/rg_gender"
+                    >
                     <RadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Male"/>
+                        android:text="Male"
+                        android:id="@+id/rb_gender_male"/>
                     <RadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Female"/>
+                        android:text="Female"
+                        android:id="@+id/rb_gender_female"/>
                 </RadioGroup>
 
 
@@ -170,7 +187,8 @@
                     android:layout_height="wrap_content"
                     android:inputType="phone"
                     android:singleLine="true"
-                    android:hint="Mobile"/>
+                    android:hint="Mobile"
+                    android:id="@+id/et_mobile"/>
             </android.support.design.widget.TextInputLayout>
                 <android.support.design.widget.TextInputLayout
                     android:layout_height="wrap_content"
@@ -180,7 +198,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:hint="Address1"/>
+                    android:hint="Address1"
+                    android:id="@+id/et_address1"/>
                 </android.support.design.widget.TextInputLayout>
                 <android.support.design.widget.TextInputLayout
                     android:layout_height="wrap_content"
@@ -190,7 +209,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:hint="City"/>
+                    android:hint="City"
+                    android:id="@+id/et_city"/>
                 </android.support.design.widget.TextInputLayout>
                 <android.support.design.widget.TextInputLayout
                     android:layout_height="wrap_content"
@@ -201,7 +221,8 @@
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:singleLine="true"
-                    android:hint="Pincode"/>
+                    android:hint="Pincode"
+                    android:id="@+id/et_pincode"/>
                 </android.support.design.widget.TextInputLayout>
                 <android.support.design.widget.TextInputLayout
                     android:layout_height="wrap_content"
@@ -212,7 +233,8 @@
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
                     android:singleLine="true"
-                    android:hint="Email"/>
+                    android:hint="Email"
+                    android:id="@+id/et_email"/>
                 </android.support.design.widget.TextInputLayout>
                 <android.support.design.widget.TextInputLayout
                     android:layout_height="wrap_content"
@@ -222,7 +244,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:hint="Residence Status"/>
+                    android:hint="Residence Status"
+                    android:id="@+id/et_residence_status"/>
                 </android.support.design.widget.TextInputLayout>
                 <android.support.design.widget.TextInputLayout
                     android:layout_height="wrap_content"
@@ -233,7 +256,8 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
                     android:singleLine="true"
-                    android:hint="Confirm Password"/>
+                    android:hint="Confirm Password"
+                    android:id="@+id/et_confirm_password"/>
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
         </LinearLayout>
@@ -246,5 +270,4 @@
             android:text="Save and Continue"
             android:id="@+id/profile_save"/>
 </LinearLayout>
-
 </ScrollView>

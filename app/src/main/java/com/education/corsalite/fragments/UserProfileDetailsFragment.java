@@ -114,7 +114,7 @@ public class UserProfileDetailsFragment extends BaseFragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), EditProfileActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("basic_profile", user.basicProfile);
+                bundle.putSerializable("user_profile_response", user);
                 intent.putExtra("user_profile", bundle);
                 startActivity(intent);
             }
