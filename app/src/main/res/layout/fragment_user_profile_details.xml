@@ -19,9 +19,9 @@
             android:layout_width="180dp"
             android:layout_height="190dp"
             android:layout_gravity="left"
-            android:scaleType="fitCenter"
+            android:scaleType="centerCrop"
             android:src="@drawable/user"
-            android:paddingTop="10dp"/>
+            android:layout_marginTop="10dp"/>
 
         <RelativeLayout
 

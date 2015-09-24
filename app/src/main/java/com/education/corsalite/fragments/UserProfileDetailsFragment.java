@@ -29,8 +29,11 @@ import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.ExamDetail;
 import com.education.corsalite.models.responsemodels.UserProfileResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencyBalanceResponse;
+import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.L;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
@@ -123,7 +126,7 @@ public class UserProfileDetailsFragment extends BaseFragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 defaultcourseIndex = position;
-                L.info("Position : "+position);
+                L.info("Position : " + position);
                 saveDefaultCourseIndex(position);
             }
 
@@ -182,7 +185,12 @@ public class UserProfileDetailsFragment extends BaseFragment {
 
     private void showProfileData(BasicProfile profile) {
         if (profile.photoUrl != null && !profile.photoUrl.isEmpty()) {
-            Glide.with(getActivity()).load(profile.photoUrl).into(profilePicImg);
+            try {
+                URL url = new URL(new URL(ApiClientService.getBaseUrl()), profile.photoUrl);
+                Glide.with(getActivity()).load(url).into(profilePicImg);
+            } catch (MalformedURLException e) {
+                L.error(e.getMessage(), e);
+            }
         }
         usernameTxt.setText(profile.displayName);
         userFullNameTxt.setText(profile.givenName);

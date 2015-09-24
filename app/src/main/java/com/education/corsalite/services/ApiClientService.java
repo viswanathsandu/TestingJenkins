@@ -20,6 +20,10 @@ public class ApiClientService {
 
     private static String setCookie;
 
+    public static String getBaseUrl() {
+        return ROOT.replace("webservices/", "");
+    }
+
     public static void setSetCookie(String cookie) {
         setCookie = cookie;
     }
