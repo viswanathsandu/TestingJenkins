@@ -12,9 +12,13 @@ import com.education.corsalite.R;
 import com.education.corsalite.adapters.GridRecyclerAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
-import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.models.responsemodels.CompletionStatus;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.StudyCenter;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import retrofit.client.Response;
 
@@ -65,5 +69,19 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                         }
                     }
                 });
+    }
+
+    private void setUpStudyCentreData(StudyCenter mStudyCenter){
+        HashMap<String, List<CompletionStatus>> tilesMap = new HashMap<>();
+        for(CompletionStatus completionStatus : mStudyCenter.getCompletionStatus()){
+            if(tilesMap.containsKey(completionStatus.getSubjectName())){
+                ArrayList<CompletionStatus> arrayList = (ArrayList<CompletionStatus>) tilesMap.get(completionStatus.getSubjectName());
+                arrayList.add(completionStatus);
+            }else{
+                ArrayList<CompletionStatus> arrayList=new ArrayList<CompletionStatus>();
+                arrayList.add(completionStatus);
+                tilesMap.put(completionStatus.getSubjectName(),arrayList);
+            }
+        }
     }
 }
