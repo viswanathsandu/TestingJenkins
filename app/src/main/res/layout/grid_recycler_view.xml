@@ -8,10 +8,18 @@
 
     <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/grid_recycler_view"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
         android:paddingLeft="16dp"
         android:paddingTop="16dp"/>
+
+    <ProgressBar
+        android:id="@+id/headerProgress"
+        android:visibility="visible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+    </ProgressBar>
 
 </LinearLayout>

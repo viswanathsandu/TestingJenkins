@@ -10,9 +10,12 @@ import android.widget.Toast;
 import com.education.corsalite.R;
 import com.education.corsalite.models.responsemodels.CompletionStatus;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapter.TextViewHolder> {
     private HashMap<String, List<CompletionStatus>> completionStatuses;
@@ -34,6 +37,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         ArrayList<CompletionStatus> list = (ArrayList<CompletionStatus>) completionStatuses.get(key);
         final String label = list.get(position).getChapterName();
         holder.textView.setText(label);
+        holder.timespent.setText(getDateFromMillis(Long.parseLong(list.get(position).getTimeSpent())));
         holder.textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,10 +54,17 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
 
     public class TextViewHolder extends RecyclerView.ViewHolder {
         public TextView textView;
+        public TextView timespent;
 
         public TextViewHolder(View itemView) {
             super(itemView);
             textView = (TextView) itemView.findViewById(R.id.subject_name);
+            timespent = (TextView) itemView.findViewById(R.id.clock);
         }
+    }
+
+    private String getDateFromMillis(long millis) {
+        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+        return formatter.format(new Date(millis));
     }
 }

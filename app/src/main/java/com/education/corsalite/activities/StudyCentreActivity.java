@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
@@ -33,6 +34,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     private TextView subject1;
     private TextView subject2;
     private TextView subject3;
+    private ProgressBar progressBar;
     private StudyCenter mStudyCenter;
 
     @Override
@@ -54,6 +56,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         subject1 = (TextView) findViewById(R.id.subject1);
         subject2 = (TextView) findViewById(R.id.subject2);
         subject3 = (TextView) findViewById(R.id.subject3);
+        progressBar = (ProgressBar) findViewById(R.id.headerProgress);
         setListeners();
     }
 
@@ -63,6 +66,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
             public void onClick(View v) {
                 mAdapter = new GridRecyclerAdapter(mStudyCenter.tilesMap,subject1.getText().toString());
                 recyclerView.setAdapter(mAdapter);
+                showList();
             }
         });
 
@@ -71,16 +75,23 @@ public class StudyCentreActivity extends AbstractBaseActivity {
             public void onClick(View v) {
                 mAdapter = new GridRecyclerAdapter(mStudyCenter.tilesMap,subject2.getText().toString());
                 recyclerView.setAdapter(mAdapter);
+                showList();
             }
         });
 
         subject3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mAdapter = new GridRecyclerAdapter(mStudyCenter.tilesMap,subject3.getText().toString());
+                mAdapter = new GridRecyclerAdapter(mStudyCenter.tilesMap, subject3.getText().toString());
                 recyclerView.setAdapter(mAdapter);
+                showList();
             }
         });
+    }
+
+    private void showList() {
+        recyclerView.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.GONE);
     }
 
     private void getStudyCentreData() {
@@ -93,7 +104,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                         if (error != null && !TextUtils.isEmpty(error.message)) {
                             showToast(error.message);
                         }
-//                        hideRecyclerView();
+                        hideRecyclerView();
                     }
 
                     @Override
@@ -102,10 +113,14 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                             StudyCentreActivity.this.mStudyCenter = mStudyCenter;
                             setUpStudyCentreData(mStudyCenter);
                         } else {
-//                            hideRecyclerView();
+                            hideRecyclerView();
                         }
                     }
                 });
+    }
+
+    private void hideRecyclerView() {
+        recyclerView.setVisibility(View.GONE);
     }
 
     private void setUpStudyCentreData(StudyCenter mStudyCenter){
