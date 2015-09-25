@@ -57,6 +57,7 @@
         <activity
             android:name=".activities.StudyCentreActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
+            android:label="Study Center"
             android:theme="@style/UserProfileTheme" />
     </application>
 

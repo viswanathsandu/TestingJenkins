@@ -12,58 +12,75 @@
     <TextView
         android:id="@+id/subject_name"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:text="Subject name"
         android:maxLines="2"
-        android:layout_gravity="center_horizontal"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@android:color/black" />
+        android:ellipsize="end"
+        android:lineSpacingMultiplier="1.2"
+        android:layout_gravity="left"
+        android:gravity="left|center_vertical"
+        android:textSize="14sp"
+        android:textColor="@android:color/white"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:visibility="gone"
-        android:weightSum="1">
+        android:layout_marginTop="10dp"
+        android:weightSum="3">
 
         <TextView
             android:id="@+id/clock"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_weight="0.33"
-            android:drawableLeft="@drawable/clock"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/tiles_timer"
             android:drawablePadding="4dp"
-            android:gravity="center_vertical"
+            android:gravity="center_vertical|left"
             android:text="00:45:40"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@android:color/black" />
+            android:textSize="12sp"
+            android:textColor="@android:color/white" />
 
         <TextView
             android:id="@+id/star"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_weight="0.33"
-            android:drawableLeft="@drawable/star_off"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/tiles_star"
             android:drawablePadding="4dp"
-            android:gravity="center_vertical"
+            android:gravity="center_vertical|left"
             android:text="28/347"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@android:color/black" />
+            android:textSize="12sp"
+            android:textColor="@android:color/white" />
 
         <TextView
             android:id="@+id/level"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_weight="0.33"
-            android:drawableLeft="@drawable/nm_signal"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/tiles_levels"
             android:drawablePadding="4dp"
-            android:gravity="center_vertical"
+            android:gravity="center_vertical|left"
             android:text="level 2"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@android:color/black" />
+            android:textSize="12sp"
+            android:textColor="@android:color/white" />
     </LinearLayout>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Completed Topics"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:lineSpacingMultiplier="1.2"
+        android:layout_gravity="left"
+        android:gravity="left|center_vertical"
+        android:textSize="14sp"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="5dp"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/tiles_progress"/>
 </LinearLayout>
