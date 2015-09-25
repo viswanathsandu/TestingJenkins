@@ -26,6 +26,11 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         this.key = key;
     }
 
+    public void updateData(HashMap<String, List<CompletionStatus>> completionStatuses, String key) {
+        this.completionStatuses = completionStatuses;
+        this.key = key;
+    }
+
     @Override
     public TextViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.study_centre_grid_view, parent, false);
@@ -38,6 +43,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         final String label = list.get(position).getChapterName();
         holder.textView.setText(label);
         holder.timespent.setText(getDateFromMillis(Long.parseLong(list.get(position).getTimeSpent())));
+        holder.level.setText("Level"+list.get(position).getCompletedTopics());
         holder.textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,11 +61,13 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
     public class TextViewHolder extends RecyclerView.ViewHolder {
         public TextView textView;
         public TextView timespent;
+        public TextView level;
 
         public TextViewHolder(View itemView) {
             super(itemView);
             textView = (TextView) itemView.findViewById(R.id.subject_name);
             timespent = (TextView) itemView.findViewById(R.id.clock);
+            level = (TextView) itemView.findViewById(R.id.level);
         }
     }
 

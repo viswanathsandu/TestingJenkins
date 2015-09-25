@@ -7,8 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
@@ -41,11 +41,18 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        LinearLayout myView = (LinearLayout) inflater.inflate(R.layout.grid_recycler_view, null);
+        RelativeLayout myView = (RelativeLayout) inflater.inflate(R.layout.grid_recycler_view, null);
         frameLayout.addView(myView);
-        initUI();
         toolbar.setTitle(getResources().getString(R.string.study_centre));
+        initUI();
+        setListeners();
         getStudyCentreData();
+    }
+
+    private void initDataAdapter(HashMap<String, List<CompletionStatus>> tilesMap) {
+        showList();
+        mAdapter = new GridRecyclerAdapter(tilesMap, "Physics");
+        recyclerView.setAdapter(mAdapter);
     }
 
     private void initUI() {
@@ -57,6 +64,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         subject2 = (TextView) findViewById(R.id.subject2);
         subject3 = (TextView) findViewById(R.id.subject3);
         progressBar = (ProgressBar) findViewById(R.id.headerProgress);
+        progressBar.setVisibility(View.VISIBLE);
         setListeners();
     }
 
@@ -64,27 +72,34 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         subject1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mAdapter = new GridRecyclerAdapter(mStudyCenter.tilesMap,subject1.getText().toString());
-                recyclerView.setAdapter(mAdapter);
                 showList();
+                if (mStudyCenter != null && mStudyCenter.tilesMap != null) {
+                    mAdapter.updateData(mStudyCenter.tilesMap, subject1.getText().toString());
+                    mAdapter.notifyDataSetChanged();
+                }
             }
         });
 
         subject2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mAdapter = new GridRecyclerAdapter(mStudyCenter.tilesMap,subject2.getText().toString());
-                recyclerView.setAdapter(mAdapter);
                 showList();
+                if (mStudyCenter != null && mStudyCenter.tilesMap != null) {
+                    mAdapter.updateData(mStudyCenter.tilesMap, subject2.getText().toString());
+                    mAdapter.notifyDataSetChanged();
+                }
             }
         });
 
         subject3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mAdapter = new GridRecyclerAdapter(mStudyCenter.tilesMap, subject3.getText().toString());
-                recyclerView.setAdapter(mAdapter);
+
                 showList();
+                if (mStudyCenter != null && mStudyCenter.tilesMap != null) {
+                    mAdapter.updateData(mStudyCenter.tilesMap, subject3.getText().toString());
+                    mAdapter.notifyDataSetChanged();
+                }
             }
         });
     }
@@ -112,6 +127,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                         if (mStudyCenter != null && mStudyCenter.getCompletionStatus() != null && mStudyCenter.getCompletionStatus().size() > 0) {
                             StudyCentreActivity.this.mStudyCenter = mStudyCenter;
                             setUpStudyCentreData(mStudyCenter);
+                            initDataAdapter(mStudyCenter.tilesMap);
                         } else {
                             hideRecyclerView();
                         }
@@ -123,16 +139,16 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         recyclerView.setVisibility(View.GONE);
     }
 
-    private void setUpStudyCentreData(StudyCenter mStudyCenter){
+    private void setUpStudyCentreData(StudyCenter mStudyCenter) {
         HashMap<String, List<CompletionStatus>> tilesMap = new HashMap<>();
-        for(CompletionStatus completionStatus : mStudyCenter.getCompletionStatus()){
-            if(tilesMap.containsKey(completionStatus.getSubjectName())){
+        for (CompletionStatus completionStatus : mStudyCenter.getCompletionStatus()) {
+            if (tilesMap.containsKey(completionStatus.getSubjectName())) {
                 ArrayList<CompletionStatus> arrayList = (ArrayList<CompletionStatus>) tilesMap.get(completionStatus.getSubjectName());
                 arrayList.add(completionStatus);
-            }else{
-                ArrayList<CompletionStatus> arrayList=new ArrayList<CompletionStatus>();
+            } else {
+                ArrayList<CompletionStatus> arrayList = new ArrayList<CompletionStatus>();
                 arrayList.add(completionStatus);
-                tilesMap.put(completionStatus.getSubjectName(),arrayList);
+                tilesMap.put(completionStatus.getSubjectName(), arrayList);
             }
         }
         mStudyCenter.tilesMap = tilesMap;
