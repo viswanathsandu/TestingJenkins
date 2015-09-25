@@ -37,4 +37,7 @@ public interface ICorsaliteApi {
 
     @POST("/UserProfile")
     void updateUserProfile(@Query("Update")UserProfileResponse userProfile, ApiCallback<EditProfileModel> callback);
+
+    @GET("/CourseStudyCenterData")
+    void getCourseStudyCenterData(@Query("idStudent") String studentId, String idCourse, ApiCallback<MessageResponse> callback);
 }

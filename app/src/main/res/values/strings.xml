@@ -21,6 +21,7 @@
     <string name="failed_fetch">Failed to fetch user profile information</string>
     <string name="virtual_currency_fetched">Virtual currency fetched successfully...</string>
     <string name="virtual_currency_fetch_failed">Failed to fetch virtual currency information</string>
+    <string name="study_centre">Study Centre</string>
 
     <!--Fonts-->
     <string name="roboto_regular">fonts/Roboto-Regular.ttf</string>
@@ -35,5 +36,9 @@
     <string name="exam_schedule">Exam Schedule</string>
     <string name="open_drawer">Open</string>
     <string name="close_drawer">Closed</string>
+
+    <string name="subject1">Physics</string>
+    <string name="subject2">Chemistry</string>
+    <string name="subject3">Maths</string>
 
 </resources>
