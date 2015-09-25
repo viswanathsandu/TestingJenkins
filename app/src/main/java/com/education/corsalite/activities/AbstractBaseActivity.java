@@ -130,6 +130,10 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         });
     }
 
+    private void goToStudyCentre(){
+        startActivity(new Intent(AbstractBaseActivity.this, LoginActivity.class));
+    }
+
     public void saveSessionCookie(Response response) {
         String cookie = CookieUtils.getCookieString(response);
         if (cookie != null) {

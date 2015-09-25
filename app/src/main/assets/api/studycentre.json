@@ -1,0 +1,3126 @@
+{
+  "CompletionStatus" : [
+    {
+      "idCourseSubject" : "51",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Units, Dimensions, Measurement & Error Analysis",
+      "idCourseSubjectchapter" : "1279",
+      "TimeSpent" : "36129",
+      "SubjectName" : "Physics",
+      "CompletedTopics" : "4"
+    },
+    {
+      "idCourseSubject" : "53",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Atomic Structure",
+      "idCourseSubjectchapter" : "1308",
+      "TimeSpent" : "2210",
+      "SubjectName" : "Chemistry",
+      "CompletedTopics" : "6"
+    },
+    {
+      "idCourseSubject" : "52",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Trigonometric Ratios, Functions and Identities",
+      "idCourseSubjectchapter" : "1283",
+      "TimeSpent" : "13655",
+      "SubjectName" : "Maths",
+      "CompletedTopics" : "4"
+    },
+    {
+      "idCourseSubject" : "51",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Motion in a Straight Line",
+      "idCourseSubjectchapter" : "1270",
+      "TimeSpent" : "3271",
+      "SubjectName" : "Physics",
+      "CompletedTopics" : "2"
+    },
+    {
+      "idCourseSubject" : "53",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "States of Matter",
+      "idCourseSubjectchapter" : "1310",
+      "TimeSpent" : "281",
+      "SubjectName" : "Chemistry",
+      "CompletedTopics" : "2"
+    },
+    {
+      "idCourseSubject" : "53",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Stoichiometry",
+      "idCourseSubjectchapter" : "1311",
+      "TimeSpent" : "168",
+      "SubjectName" : "Chemistry",
+      "CompletedTopics" : "2"
+    },
+    {
+      "idCourseSubject" : "51",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Newtons Laws of Motion",
+      "idCourseSubjectchapter" : "1268",
+      "TimeSpent" : "11384",
+      "SubjectName" : "Physics",
+      "CompletedTopics" : "6"
+    },
+    {
+      "idCourseSubject" : "51",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Motion in a Plane and Relative Motion",
+      "idCourseSubjectchapter" : "1269",
+      "TimeSpent" : "1934",
+      "SubjectName" : "Physics",
+      "CompletedTopics" : "2"
+    },
+    {
+      "idCourseSubject" : "51",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Vectors - Physics",
+      "idCourseSubjectchapter" : "1273",
+      "TimeSpent" : "974",
+      "SubjectName" : "Physics",
+      "CompletedTopics" : "4"
+    },
+    {
+      "idCourseSubject" : "53",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Thermodynamics & Thermochemistry",
+      "idCourseSubjectchapter" : "1312",
+      "TimeSpent" : "4",
+      "SubjectName" : "Chemistry",
+      "CompletedTopics" : "1"
+    },
+    {
+      "idCourseSubject" : "51",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Work, Power and Energy",
+      "idCourseSubjectchapter" : "1265",
+      "TimeSpent" : "1033",
+      "SubjectName" : "Physics",
+      "CompletedTopics" : "6"
+    },
+    {
+      "idCourseSubject" : "51",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Circular Motion",
+      "idCourseSubjectchapter" : "1281",
+      "TimeSpent" : "1548",
+      "SubjectName" : "Physics",
+      "CompletedTopics" : "2"
+    },
+    {
+      "idCourseSubject" : "52",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Properties and Solutions of Triangles",
+      "idCourseSubjectchapter" : "1292",
+      "TimeSpent" : "5",
+      "SubjectName" : "Maths",
+      "CompletedTopics" : "1"
+    },
+    {
+      "idCourseSubject" : "51",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Center of Mass and Collision",
+      "idCourseSubjectchapter" : "1271",
+      "TimeSpent" : "1369",
+      "SubjectName" : "Physics",
+      "CompletedTopics" : "2"
+    },
+    {
+      "idCourseSubject" : "52",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Inverse Trigonometric Functions",
+      "idCourseSubjectchapter" : "1294",
+      "TimeSpent" : "641",
+      "SubjectName" : "Maths",
+      "CompletedTopics" : "3"
+    },
+    {
+      "idCourseSubject" : "53",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Chemical Equilibrium",
+      "idCourseSubjectchapter" : "1319",
+      "TimeSpent" : "62",
+      "SubjectName" : "Chemistry",
+      "CompletedTopics" : "2"
+    },
+    {
+      "idCourseSubject" : "53",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Ionic Equilibrium",
+      "idCourseSubjectchapter" : "1314",
+      "TimeSpent" : "657",
+      "SubjectName" : "Chemistry",
+      "CompletedTopics" : "3"
+    },
+    {
+      "idCourseSubject" : "53",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "S-Block Elements",
+      "idCourseSubjectchapter" : "1317",
+      "TimeSpent" : "50",
+      "SubjectName" : "Chemistry",
+      "CompletedTopics" : "2"
+    },
+    {
+      "idCourseSubject" : "51",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Friction",
+      "idCourseSubjectchapter" : "1267",
+      "TimeSpent" : "169",
+      "SubjectName" : "Physics",
+      "CompletedTopics" : "2"
+    },
+    {
+      "idCourseSubject" : "53",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Periodic Table",
+      "idCourseSubjectchapter" : "1313",
+      "TimeSpent" : "117",
+      "SubjectName" : "Chemistry",
+      "CompletedTopics" : "1"
+    },
+    {
+      "idCourseSubject" : "52",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Vectors - Maths",
+      "idCourseSubjectchapter" : "1285",
+      "TimeSpent" : "4",
+      "SubjectName" : "Maths",
+      "CompletedTopics" : "1"
+    },
+    {
+      "idCourseSubject" : "51",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Rotational Motion",
+      "idCourseSubjectchapter" : "1277",
+      "TimeSpent" : "2594",
+      "SubjectName" : "Physics",
+      "CompletedTopics" : "1"
+    },
+    {
+      "idCourseSubject" : "52",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Functions",
+      "idCourseSubjectchapter" : "1282",
+      "TimeSpent" : "379",
+      "SubjectName" : "Maths",
+      "CompletedTopics" : "4"
+    },
+    {
+      "idCourseSubject" : "51",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Gravitation",
+      "idCourseSubjectchapter" : "1274",
+      "TimeSpent" : "174",
+      "SubjectName" : "Physics",
+      "CompletedTopics" : "2"
+    },
+    {
+      "idCourseSubject" : "53",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Chemical Bonding",
+      "idCourseSubjectchapter" : "1318",
+      "TimeSpent" : "211",
+      "SubjectName" : "Chemistry",
+      "CompletedTopics" : "2"
+    },
+    {
+      "idCourseSubject" : "51",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Elasticity",
+      "idCourseSubjectchapter" : "2503",
+      "TimeSpent" : "189",
+      "SubjectName" : "Physics",
+      "CompletedTopics" : "1"
+    },
+    {
+      "idCourseSubject" : "52",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Matrices & Determinants",
+      "idCourseSubjectchapter" : "1286",
+      "TimeSpent" : "165",
+      "SubjectName" : "Maths",
+      "CompletedTopics" : "2"
+    },
+    {
+      "idCourseSubject" : "53",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Hydrogen & its Compounds",
+      "idCourseSubjectchapter" : "1316",
+      "TimeSpent" : null,
+      "SubjectName" : "Chemistry",
+      "CompletedTopics" : "0"
+    },
+    {
+      "idCourseSubject" : "51",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Surface Tension",
+      "idCourseSubjectchapter" : "1280",
+      "TimeSpent" : "341",
+      "SubjectName" : "Physics",
+      "CompletedTopics" : "1"
+    },
+    {
+      "idCourseSubject" : "51",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Fluid Mechanics",
+      "idCourseSubjectchapter" : "1266",
+      "TimeSpent" : "107",
+      "SubjectName" : "Physics",
+      "CompletedTopics" : "1"
+    },
+    {
+      "idCourseSubject" : "53",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Environmental Chemistry",
+      "idCourseSubjectchapter" : "1320",
+      "TimeSpent" : null,
+      "SubjectName" : "Chemistry",
+      "CompletedTopics" : "0"
+    },
+    {
+      "idCourseSubject" : "53",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "General Organic Chemistry",
+      "idCourseSubjectchapter" : "1309",
+      "TimeSpent" : "49",
+      "SubjectName" : "Chemistry",
+      "CompletedTopics" : "1"
+    },
+    {
+      "idCourseSubject" : "52",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Coordinate System",
+      "idCourseSubjectchapter" : "1296",
+      "TimeSpent" : "626",
+      "SubjectName" : "Maths",
+      "CompletedTopics" : "2"
+    },
+    {
+      "idCourseSubject" : "53",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Hydrocarbons",
+      "idCourseSubjectchapter" : "1315",
+      "TimeSpent" : "1394",
+      "SubjectName" : "Chemistry",
+      "CompletedTopics" : "4"
+    },
+    {
+      "idCourseSubject" : "52",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Straight Lines",
+      "idCourseSubjectchapter" : "1295",
+      "TimeSpent" : "1973",
+      "SubjectName" : "Maths",
+      "CompletedTopics" : "6"
+    },
+    {
+      "idCourseSubject" : "51",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Thermal Properties Of Matter & Kinetic Theory Of Gases",
+      "idCourseSubjectchapter" : "1278",
+      "TimeSpent" : "47",
+      "SubjectName" : "Physics",
+      "CompletedTopics" : "1"
+    },
+    {
+      "idCourseSubject" : "52",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Pair of Straight Lines",
+      "idCourseSubjectchapter" : "1288",
+      "TimeSpent" : "4",
+      "SubjectName" : "Maths",
+      "CompletedTopics" : "1"
+    },
+    {
+      "idCourseSubject" : "52",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Three Dimensional Geometry",
+      "idCourseSubjectchapter" : "1284",
+      "TimeSpent" : null,
+      "SubjectName" : "Maths",
+      "CompletedTopics" : "0"
+    },
+    {
+      "idCourseSubject" : "51",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Thermodynamics and Transmission of Heat",
+      "idCourseSubjectchapter" : "1276",
+      "TimeSpent" : "195",
+      "SubjectName" : "Physics",
+      "CompletedTopics" : "1"
+    },
+    {
+      "idCourseSubject" : "52",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Limits",
+      "idCourseSubjectchapter" : "1291",
+      "TimeSpent" : "61",
+      "SubjectName" : "Maths",
+      "CompletedTopics" : "1"
+    },
+    {
+      "idCourseSubject" : "52",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Continuity and Differantability",
+      "idCourseSubjectchapter" : "1290",
+      "TimeSpent" : "318",
+      "SubjectName" : "Maths",
+      "CompletedTopics" : "1"
+    },
+    {
+      "idCourseSubject" : "51",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Simple Harmonic Motion",
+      "idCourseSubjectchapter" : "1275",
+      "TimeSpent" : "69",
+      "SubjectName" : "Physics",
+      "CompletedTopics" : "1"
+    },
+    {
+      "idCourseSubject" : "52",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Differentiation",
+      "idCourseSubjectchapter" : "1293",
+      "TimeSpent" : "159",
+      "SubjectName" : "Maths",
+      "CompletedTopics" : "3"
+    },
+    {
+      "idCourseSubject" : "52",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Tangents and Normals",
+      "idCourseSubjectchapter" : "1289",
+      "TimeSpent" : null,
+      "SubjectName" : "Maths",
+      "CompletedTopics" : "0"
+    },
+    {
+      "idCourseSubject" : "52",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Maxima and Minima",
+      "idCourseSubjectchapter" : "1287",
+      "TimeSpent" : null,
+      "SubjectName" : "Maths",
+      "CompletedTopics" : "0"
+    },
+    {
+      "idCourseSubject" : "51",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Current Electricity",
+      "idCourseSubjectchapter" : "1272",
+      "TimeSpent" : "1443",
+      "SubjectName" : "Physics",
+      "CompletedTopics" : "3"
+    },
+    {
+      "idCourseSubject" : "53",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Solutions",
+      "idCourseSubjectchapter" : "1324",
+      "TimeSpent" : "32",
+      "SubjectName" : "Chemistry",
+      "CompletedTopics" : "1"
+    },
+    {
+      "idCourseSubject" : "51",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Wave Optics",
+      "idCourseSubjectchapter" : "1304",
+      "TimeSpent" : "279",
+      "SubjectName" : "Physics",
+      "CompletedTopics" : "1"
+    },
+    {
+      "idCourseSubject" : "52",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Complex Numbers",
+      "idCourseSubjectchapter" : "1346",
+      "TimeSpent" : null,
+      "SubjectName" : "Maths",
+      "CompletedTopics" : "0"
+    },
+    {
+      "idCourseSubject" : "51",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Ray Optics",
+      "idCourseSubjectchapter" : "1301",
+      "TimeSpent" : "4",
+      "SubjectName" : "Physics",
+      "CompletedTopics" : "1"
+    },
+    {
+      "idCourseSubject" : "53",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Solid State",
+      "idCourseSubjectchapter" : "1323",
+      "TimeSpent" : "70",
+      "SubjectName" : "Chemistry",
+      "CompletedTopics" : "2"
+    },
+    {
+      "idCourseSubject" : "52",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Quadratic Equations, Expression and Inequations",
+      "idCourseSubjectchapter" : "1345",
+      "TimeSpent" : null,
+      "SubjectName" : "Maths",
+      "CompletedTopics" : "1"
+    },
+    {
+      "idCourseSubject" : "53",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Chemistry in Everyday Life",
+      "idCourseSubjectchapter" : "3422",
+      "TimeSpent" : "144",
+      "SubjectName" : "Chemistry",
+      "CompletedTopics" : "1"
+    },
+    {
+      "idCourseSubject" : "51",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Electrostatics",
+      "idCourseSubjectchapter" : "1300",
+      "TimeSpent" : "1031",
+      "SubjectName" : "Physics",
+      "CompletedTopics" : "5"
+    },
+    {
+      "idCourseSubject" : "53",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Chemical Kinetics",
+      "idCourseSubjectchapter" : "1330",
+      "TimeSpent" : null,
+      "SubjectName" : "Chemistry",
+      "CompletedTopics" : "0"
+    },
+    {
+      "idCourseSubject" : "51",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Capacitor & RC Circuit",
+      "idCourseSubjectchapter" : "1298",
+      "TimeSpent" : "173",
+      "SubjectName" : "Physics",
+      "CompletedTopics" : "1"
+    },
+    {
+      "idCourseSubject" : "53",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Electro Chemistry",
+      "idCourseSubjectchapter" : "1331",
+      "TimeSpent" : "95",
+      "SubjectName" : "Chemistry",
+      "CompletedTopics" : "7"
+    },
+    {
+      "idCourseSubject" : "52",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Permutations and Combinations",
+      "idCourseSubjectchapter" : "1337",
+      "TimeSpent" : "11",
+      "SubjectName" : "Maths",
+      "CompletedTopics" : "2"
+    },
+    {
+      "idCourseSubject" : "53",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Surface Chemistry",
+      "idCourseSubjectchapter" : "1325",
+      "TimeSpent" : "11",
+      "SubjectName" : "Chemistry",
+      "CompletedTopics" : "1"
+    },
+    {
+      "idCourseSubject" : "51",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Magnetism",
+      "idCourseSubjectchapter" : "3480",
+      "TimeSpent" : "257",
+      "SubjectName" : "Physics",
+      "CompletedTopics" : "2"
+    },
+    {
+      "idCourseSubject" : "52",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Binomial Theorem",
+      "idCourseSubjectchapter" : "1335",
+      "TimeSpent" : "102",
+      "SubjectName" : "Maths",
+      "CompletedTopics" : "2"
+    },
+    {
+      "idCourseSubject" : "53",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "P-Block Elements",
+      "idCourseSubjectchapter" : "1328",
+      "TimeSpent" : "218",
+      "SubjectName" : "Chemistry",
+      "CompletedTopics" : "2"
+    },
+    {
+      "idCourseSubject" : "51",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Electromagnetism",
+      "idCourseSubjectchapter" : "1299",
+      "TimeSpent" : "18",
+      "SubjectName" : "Physics",
+      "CompletedTopics" : "2"
+    },
+    {
+      "idCourseSubject" : "53",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Co-ordination Compounds & Transition of Elements",
+      "idCourseSubjectchapter" : "1329",
+      "TimeSpent" : "76",
+      "SubjectName" : "Chemistry",
+      "CompletedTopics" : "2"
+    },
+    {
+      "idCourseSubject" : "51",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Electromagnetic Induction",
+      "idCourseSubjectchapter" : "1302",
+      "TimeSpent" : null,
+      "SubjectName" : "Physics",
+      "CompletedTopics" : "0"
+    },
+    {
+      "idCourseSubject" : "52",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Probability",
+      "idCourseSubjectchapter" : "1336",
+      "TimeSpent" : null,
+      "SubjectName" : "Maths",
+      "CompletedTopics" : "0"
+    },
+    {
+      "idCourseSubject" : "53",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Metallurgy",
+      "idCourseSubjectchapter" : "1322",
+      "TimeSpent" : null,
+      "SubjectName" : "Chemistry",
+      "CompletedTopics" : "0"
+    },
+    {
+      "idCourseSubject" : "51",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Alternate Current",
+      "idCourseSubjectchapter" : "1303",
+      "TimeSpent" : "188",
+      "SubjectName" : "Physics",
+      "CompletedTopics" : "1"
+    },
+    {
+      "idCourseSubject" : "51",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Modern Physics",
+      "idCourseSubjectchapter" : "1306",
+      "TimeSpent" : "222",
+      "SubjectName" : "Physics",
+      "CompletedTopics" : "1"
+    },
+    {
+      "idCourseSubject" : "53",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Alkyle and Aryl Halides",
+      "idCourseSubjectchapter" : "1326",
+      "TimeSpent" : null,
+      "SubjectName" : "Chemistry",
+      "CompletedTopics" : "0"
+    },
+    {
+      "idCourseSubject" : "51",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Waves",
+      "idCourseSubjectchapter" : "1297",
+      "TimeSpent" : "115",
+      "SubjectName" : "Physics",
+      "CompletedTopics" : "3"
+    },
+    {
+      "idCourseSubject" : "53",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Alcohol, Phenol and Ethers",
+      "idCourseSubjectchapter" : "1327",
+      "TimeSpent" : null,
+      "SubjectName" : "Chemistry",
+      "CompletedTopics" : "0"
+    },
+    {
+      "idCourseSubject" : "52",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Circles",
+      "idCourseSubjectchapter" : "1349",
+      "TimeSpent" : "224",
+      "SubjectName" : "Maths",
+      "CompletedTopics" : "3"
+    },
+    {
+      "idCourseSubject" : "53",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Carbonyl Compounds (Aldehydes & Ketones)",
+      "idCourseSubjectchapter" : "1321",
+      "TimeSpent" : null,
+      "SubjectName" : "Chemistry",
+      "CompletedTopics" : "0"
+    },
+    {
+      "idCourseSubject" : "52",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Areas",
+      "idCourseSubjectchapter" : "1344",
+      "TimeSpent" : "6",
+      "SubjectName" : "Maths",
+      "CompletedTopics" : "1"
+    },
+    {
+      "idCourseSubject" : "51",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Electromagnetic Waves",
+      "idCourseSubjectchapter" : "1305",
+      "TimeSpent" : "24",
+      "SubjectName" : "Physics",
+      "CompletedTopics" : "1"
+    },
+    {
+      "idCourseSubject" : "53",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Carboxylic Acids and their Derivatives",
+      "idCourseSubjectchapter" : "1333",
+      "TimeSpent" : null,
+      "SubjectName" : "Chemistry",
+      "CompletedTopics" : "0"
+    },
+    {
+      "idCourseSubject" : "52",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Parabola",
+      "idCourseSubjectchapter" : "1348",
+      "TimeSpent" : null,
+      "SubjectName" : "Maths",
+      "CompletedTopics" : "0"
+    },
+    {
+      "idCourseSubject" : "51",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Semiconductor Devices & Communication System",
+      "idCourseSubjectchapter" : "1307",
+      "TimeSpent" : null,
+      "SubjectName" : "Physics",
+      "CompletedTopics" : "0"
+    },
+    {
+      "idCourseSubject" : "52",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Hyperbola",
+      "idCourseSubjectchapter" : "1350",
+      "TimeSpent" : null,
+      "SubjectName" : "Maths",
+      "CompletedTopics" : "1"
+    },
+    {
+      "idCourseSubject" : "53",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Nitrogen Containing Compounds",
+      "idCourseSubjectchapter" : "1334",
+      "TimeSpent" : null,
+      "SubjectName" : "Chemistry",
+      "CompletedTopics" : "0"
+    },
+    {
+      "idCourseSubject" : "52",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Ellipse",
+      "idCourseSubjectchapter" : "1341",
+      "TimeSpent" : null,
+      "SubjectName" : "Maths",
+      "CompletedTopics" : "0"
+    },
+    {
+      "idCourseSubject" : "53",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Biomolecules Chem-II",
+      "idCourseSubjectchapter" : "1332",
+      "TimeSpent" : null,
+      "SubjectName" : "Chemistry",
+      "CompletedTopics" : "0"
+    },
+    {
+      "idCourseSubject" : "52",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Indefinite Integrals",
+      "idCourseSubjectchapter" : "1339",
+      "TimeSpent" : null,
+      "SubjectName" : "Maths",
+      "CompletedTopics" : "0"
+    },
+    {
+      "idCourseSubject" : "52",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Definite Integrals",
+      "idCourseSubjectchapter" : "1338",
+      "TimeSpent" : null,
+      "SubjectName" : "Maths",
+      "CompletedTopics" : "0"
+    },
+    {
+      "idCourseSubject" : "52",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Differential Equations",
+      "idCourseSubjectchapter" : "1343",
+      "TimeSpent" : null,
+      "SubjectName" : "Maths",
+      "CompletedTopics" : "0"
+    },
+    {
+      "idCourseSubject" : "52",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Sequence and Series",
+      "idCourseSubjectchapter" : "1340",
+      "TimeSpent" : null,
+      "SubjectName" : "Maths",
+      "CompletedTopics" : "0"
+    },
+    {
+      "idCourseSubject" : "52",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Sets and Relations",
+      "idCourseSubjectchapter" : "1342",
+      "TimeSpent" : null,
+      "SubjectName" : "Maths",
+      "CompletedTopics" : "0"
+    },
+    {
+      "idCourseSubject" : "52",
+      "PendingExerciseTopics" : "0",
+      "ChapterName" : "Mathematical Reasoning",
+      "idCourseSubjectchapter" : "1347",
+      "TimeSpent" : null,
+      "SubjectName" : "Maths",
+      "CompletedTopics" : "0"
+    }
+  ],
+  "NotesCount" : [
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "NotesCount" : "7",
+      "ChapterName" : "Units, Dimensions, Measurement & Error Analysis",
+      "idCourseSubjectchapter" : "1279"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "NotesCount" : "2",
+      "ChapterName" : "Trigonometric Ratios, Functions and Identities",
+      "idCourseSubjectchapter" : "1283"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "NotesCount" : "3",
+      "ChapterName" : "Atomic Structure",
+      "idCourseSubjectchapter" : "1308"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "NotesCount" : "1",
+      "ChapterName" : "Motion in a Straight Line",
+      "idCourseSubjectchapter" : "1270"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "NotesCount" : "1",
+      "ChapterName" : "Motion in a Plane and Relative Motion",
+      "idCourseSubjectchapter" : "1269"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "NotesCount" : "1",
+      "ChapterName" : "Work, Power and Energy",
+      "idCourseSubjectchapter" : "1265"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "NotesCount" : "2",
+      "ChapterName" : "Center of Mass and Collision",
+      "idCourseSubjectchapter" : "1271"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "NotesCount" : "1",
+      "ChapterName" : "Rotational Motion",
+      "idCourseSubjectchapter" : "1277"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "NotesCount" : "1",
+      "ChapterName" : "Elasticity",
+      "idCourseSubjectchapter" : "2503"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "NotesCount" : "1",
+      "ChapterName" : "Current Electricity",
+      "idCourseSubjectchapter" : "1272"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "NotesCount" : "1",
+      "ChapterName" : "Solutions",
+      "idCourseSubjectchapter" : "1324"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "NotesCount" : "2",
+      "ChapterName" : "Electrostatics",
+      "idCourseSubjectchapter" : "1300"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "NotesCount" : "1",
+      "ChapterName" : "Binomial Theorem",
+      "idCourseSubjectchapter" : "1335"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "NotesCount" : "2",
+      "ChapterName" : "Alternate Current",
+      "idCourseSubjectchapter" : "1303"
+    }
+  ],
+  "PassedComplexity" : [
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Work, Power and Energy",
+      "idCourseSubjectchapter" : "1265"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Fluid Mechanics",
+      "idCourseSubjectchapter" : "1266"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Friction",
+      "idCourseSubjectchapter" : "1267"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Newtons Laws of Motion",
+      "idCourseSubjectchapter" : "1268"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Motion in a Plane and Relative Motion",
+      "idCourseSubjectchapter" : "1269"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Motion in a Straight Line",
+      "idCourseSubjectchapter" : "1270"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Center of Mass and Collision",
+      "idCourseSubjectchapter" : "1271"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Current Electricity",
+      "idCourseSubjectchapter" : "1272"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Vectors - Physics",
+      "idCourseSubjectchapter" : "1273"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Gravitation",
+      "idCourseSubjectchapter" : "1274"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "PassedComplexity" : "3",
+      "ChapterName" : "Simple Harmonic Motion",
+      "idCourseSubjectchapter" : "1275"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Thermodynamics and Transmission of Heat",
+      "idCourseSubjectchapter" : "1276"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Rotational Motion",
+      "idCourseSubjectchapter" : "1277"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Thermal Properties Of Matter & Kinetic Theory Of Gases",
+      "idCourseSubjectchapter" : "1278"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Units, Dimensions, Measurement & Error Analysis",
+      "idCourseSubjectchapter" : "1279"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Surface Tension",
+      "idCourseSubjectchapter" : "1280"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Circular Motion",
+      "idCourseSubjectchapter" : "1281"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Waves",
+      "idCourseSubjectchapter" : "1297"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Capacitor & RC Circuit",
+      "idCourseSubjectchapter" : "1298"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Electromagnetism",
+      "idCourseSubjectchapter" : "1299"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Electrostatics",
+      "idCourseSubjectchapter" : "1300"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Ray Optics",
+      "idCourseSubjectchapter" : "1301"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Electromagnetic Induction",
+      "idCourseSubjectchapter" : "1302"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Alternate Current",
+      "idCourseSubjectchapter" : "1303"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Wave Optics",
+      "idCourseSubjectchapter" : "1304"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Electromagnetic Waves",
+      "idCourseSubjectchapter" : "1305"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Modern Physics",
+      "idCourseSubjectchapter" : "1306"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Semiconductor Devices & Communication System",
+      "idCourseSubjectchapter" : "1307"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Elasticity",
+      "idCourseSubjectchapter" : "2503"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "PassedComplexity" : "1",
+      "ChapterName" : "Magnetism",
+      "idCourseSubjectchapter" : "3480"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Functions",
+      "idCourseSubjectchapter" : "1282"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Trigonometric Ratios, Functions and Identities",
+      "idCourseSubjectchapter" : "1283"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Three Dimensional Geometry",
+      "idCourseSubjectchapter" : "1284"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Vectors - Maths",
+      "idCourseSubjectchapter" : "1285"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "PassedComplexity" : "3",
+      "ChapterName" : "Matrices & Determinants",
+      "idCourseSubjectchapter" : "1286"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Maxima and Minima",
+      "idCourseSubjectchapter" : "1287"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Pair of Straight Lines",
+      "idCourseSubjectchapter" : "1288"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Tangents and Normals",
+      "idCourseSubjectchapter" : "1289"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Continuity and Differantability",
+      "idCourseSubjectchapter" : "1290"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Limits",
+      "idCourseSubjectchapter" : "1291"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Properties and Solutions of Triangles",
+      "idCourseSubjectchapter" : "1292"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "PassedComplexity" : "1",
+      "ChapterName" : "Differentiation",
+      "idCourseSubjectchapter" : "1293"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Inverse Trigonometric Functions",
+      "idCourseSubjectchapter" : "1294"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Straight Lines",
+      "idCourseSubjectchapter" : "1295"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Coordinate System",
+      "idCourseSubjectchapter" : "1296"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "PassedComplexity" : "1",
+      "ChapterName" : "Binomial Theorem",
+      "idCourseSubjectchapter" : "1335"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Probability",
+      "idCourseSubjectchapter" : "1336"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Permutations and Combinations",
+      "idCourseSubjectchapter" : "1337"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Definite Integrals",
+      "idCourseSubjectchapter" : "1338"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Indefinite Integrals",
+      "idCourseSubjectchapter" : "1339"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Sequence and Series",
+      "idCourseSubjectchapter" : "1340"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Ellipse",
+      "idCourseSubjectchapter" : "1341"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Sets and Relations",
+      "idCourseSubjectchapter" : "1342"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Differential Equations",
+      "idCourseSubjectchapter" : "1343"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Areas",
+      "idCourseSubjectchapter" : "1344"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Quadratic Equations, Expression and Inequations",
+      "idCourseSubjectchapter" : "1345"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Complex Numbers",
+      "idCourseSubjectchapter" : "1346"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Mathematical Reasoning",
+      "idCourseSubjectchapter" : "1347"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Parabola",
+      "idCourseSubjectchapter" : "1348"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Circles",
+      "idCourseSubjectchapter" : "1349"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Hyperbola",
+      "idCourseSubjectchapter" : "1350"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Atomic Structure",
+      "idCourseSubjectchapter" : "1308"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "PassedComplexity" : "0",
+      "ChapterName" : "General Organic Chemistry",
+      "idCourseSubjectchapter" : "1309"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "PassedComplexity" : "0",
+      "ChapterName" : "States of Matter",
+      "idCourseSubjectchapter" : "1310"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Stoichiometry",
+      "idCourseSubjectchapter" : "1311"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Thermodynamics & Thermochemistry",
+      "idCourseSubjectchapter" : "1312"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Periodic Table",
+      "idCourseSubjectchapter" : "1313"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Ionic Equilibrium",
+      "idCourseSubjectchapter" : "1314"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Hydrocarbons",
+      "idCourseSubjectchapter" : "1315"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Hydrogen & its Compounds",
+      "idCourseSubjectchapter" : "1316"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "PassedComplexity" : "0",
+      "ChapterName" : "S-Block Elements",
+      "idCourseSubjectchapter" : "1317"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Chemical Bonding",
+      "idCourseSubjectchapter" : "1318"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Chemical Equilibrium",
+      "idCourseSubjectchapter" : "1319"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Environmental Chemistry",
+      "idCourseSubjectchapter" : "1320"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Carbonyl Compounds (Aldehydes & Ketones)",
+      "idCourseSubjectchapter" : "1321"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Metallurgy",
+      "idCourseSubjectchapter" : "1322"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Solid State",
+      "idCourseSubjectchapter" : "1323"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Solutions",
+      "idCourseSubjectchapter" : "1324"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Surface Chemistry",
+      "idCourseSubjectchapter" : "1325"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Alkyle and Aryl Halides",
+      "idCourseSubjectchapter" : "1326"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Alcohol, Phenol and Ethers",
+      "idCourseSubjectchapter" : "1327"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "PassedComplexity" : "0",
+      "ChapterName" : "P-Block Elements",
+      "idCourseSubjectchapter" : "1328"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Co-ordination Compounds & Transition of Elements",
+      "idCourseSubjectchapter" : "1329"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Chemical Kinetics",
+      "idCourseSubjectchapter" : "1330"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Electro Chemistry",
+      "idCourseSubjectchapter" : "1331"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Biomolecules Chem-II",
+      "idCourseSubjectchapter" : "1332"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "PassedComplexity" : "1",
+      "ChapterName" : "Carboxylic Acids and their Derivatives",
+      "idCourseSubjectchapter" : "1333"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Nitrogen Containing Compounds",
+      "idCourseSubjectchapter" : "1334"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "PassedComplexity" : "0",
+      "ChapterName" : "Chemistry in Everyday Life",
+      "idCourseSubjectchapter" : "3422"
+    }
+  ],
+  "ScoreThreshold" : [
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "ScoreRed" : "70",
+      "ChapterName" : "Units, Dimensions, Measurement & Error Analysis",
+      "idCourseSubjectchapter" : "1279",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "ScoreRed" : "70",
+      "ChapterName" : "Motion in a Straight Line",
+      "idCourseSubjectchapter" : "1270",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "ScoreRed" : "70",
+      "ChapterName" : "Newtons Laws of Motion",
+      "idCourseSubjectchapter" : "1268",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "ScoreRed" : "70",
+      "ChapterName" : "Motion in a Plane and Relative Motion",
+      "idCourseSubjectchapter" : "1269",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "ScoreRed" : "70",
+      "ChapterName" : "Vectors - Physics",
+      "idCourseSubjectchapter" : "1273",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "ScoreRed" : "70",
+      "ChapterName" : "Work, Power and Energy",
+      "idCourseSubjectchapter" : "1265",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "ScoreRed" : "70",
+      "ChapterName" : "Circular Motion",
+      "idCourseSubjectchapter" : "1281",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "ScoreRed" : "70",
+      "ChapterName" : "Center of Mass and Collision",
+      "idCourseSubjectchapter" : "1271",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "ScoreRed" : "70",
+      "ChapterName" : "Friction",
+      "idCourseSubjectchapter" : "1267",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "ScoreRed" : "70",
+      "ChapterName" : "Rotational Motion",
+      "idCourseSubjectchapter" : "1277",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "ScoreRed" : "70",
+      "ChapterName" : "Gravitation",
+      "idCourseSubjectchapter" : "1274",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "ScoreRed" : "70",
+      "ChapterName" : "Elasticity",
+      "idCourseSubjectchapter" : "2503",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "ScoreRed" : "70",
+      "ChapterName" : "Surface Tension",
+      "idCourseSubjectchapter" : "1280",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "ScoreRed" : "70",
+      "ChapterName" : "Fluid Mechanics",
+      "idCourseSubjectchapter" : "1266",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "ScoreRed" : "70",
+      "ChapterName" : "Thermal Properties Of Matter & Kinetic Theory Of Gases",
+      "idCourseSubjectchapter" : "1278",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "ScoreRed" : "70",
+      "ChapterName" : "Thermodynamics and Transmission of Heat",
+      "idCourseSubjectchapter" : "1276",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "ScoreRed" : "70",
+      "ChapterName" : "Simple Harmonic Motion",
+      "idCourseSubjectchapter" : "1275",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "ScoreRed" : "70",
+      "ChapterName" : "Current Electricity",
+      "idCourseSubjectchapter" : "1272",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "ScoreRed" : "70",
+      "ChapterName" : "Wave Optics",
+      "idCourseSubjectchapter" : "1304",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "ScoreRed" : "70",
+      "ChapterName" : "Ray Optics",
+      "idCourseSubjectchapter" : "1301",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "ScoreRed" : "70",
+      "ChapterName" : "Electrostatics",
+      "idCourseSubjectchapter" : "1300",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "ScoreRed" : "70",
+      "ChapterName" : "Capacitor & RC Circuit",
+      "idCourseSubjectchapter" : "1298",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "ScoreRed" : "70",
+      "ChapterName" : "Magnetism",
+      "idCourseSubjectchapter" : "3480",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "ScoreRed" : "70",
+      "ChapterName" : "Electromagnetism",
+      "idCourseSubjectchapter" : "1299",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "ScoreRed" : "70",
+      "ChapterName" : "Electromagnetic Induction",
+      "idCourseSubjectchapter" : "1302",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "ScoreRed" : "70",
+      "ChapterName" : "Alternate Current",
+      "idCourseSubjectchapter" : "1303",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "ScoreRed" : "70",
+      "ChapterName" : "Modern Physics",
+      "idCourseSubjectchapter" : "1306",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "ScoreRed" : "70",
+      "ChapterName" : "Waves",
+      "idCourseSubjectchapter" : "1297",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "ScoreRed" : "70",
+      "ChapterName" : "Electromagnetic Waves",
+      "idCourseSubjectchapter" : "1305",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "51",
+      "SubjectName" : "Physics",
+      "ScoreRed" : "70",
+      "ChapterName" : "Semiconductor Devices & Communication System",
+      "idCourseSubjectchapter" : "1307",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "ScoreRed" : "70",
+      "ChapterName" : "Trigonometric Ratios, Functions and Identities",
+      "idCourseSubjectchapter" : "1283",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "ScoreRed" : "70",
+      "ChapterName" : "Properties and Solutions of Triangles",
+      "idCourseSubjectchapter" : "1292",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "ScoreRed" : "70",
+      "ChapterName" : "Inverse Trigonometric Functions",
+      "idCourseSubjectchapter" : "1294",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "ScoreRed" : "70",
+      "ChapterName" : "Vectors - Maths",
+      "idCourseSubjectchapter" : "1285",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "ScoreRed" : "70",
+      "ChapterName" : "Functions",
+      "idCourseSubjectchapter" : "1282",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "ScoreRed" : "70",
+      "ChapterName" : "Matrices & Determinants",
+      "idCourseSubjectchapter" : "1286",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "ScoreRed" : "70",
+      "ChapterName" : "Coordinate System",
+      "idCourseSubjectchapter" : "1296",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "ScoreRed" : "70",
+      "ChapterName" : "Straight Lines",
+      "idCourseSubjectchapter" : "1295",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "ScoreRed" : "70",
+      "ChapterName" : "Pair of Straight Lines",
+      "idCourseSubjectchapter" : "1288",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "ScoreRed" : "70",
+      "ChapterName" : "Three Dimensional Geometry",
+      "idCourseSubjectchapter" : "1284",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "ScoreRed" : "70",
+      "ChapterName" : "Limits",
+      "idCourseSubjectchapter" : "1291",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "ScoreRed" : "70",
+      "ChapterName" : "Continuity and Differantability",
+      "idCourseSubjectchapter" : "1290",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "ScoreRed" : "70",
+      "ChapterName" : "Differentiation",
+      "idCourseSubjectchapter" : "1293",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "ScoreRed" : "70",
+      "ChapterName" : "Tangents and Normals",
+      "idCourseSubjectchapter" : "1289",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "ScoreRed" : "70",
+      "ChapterName" : "Maxima and Minima",
+      "idCourseSubjectchapter" : "1287",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "ScoreRed" : "70",
+      "ChapterName" : "Complex Numbers",
+      "idCourseSubjectchapter" : "1346",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "ScoreRed" : "70",
+      "ChapterName" : "Quadratic Equations, Expression and Inequations",
+      "idCourseSubjectchapter" : "1345",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "ScoreRed" : "70",
+      "ChapterName" : "Permutations and Combinations",
+      "idCourseSubjectchapter" : "1337",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "ScoreRed" : "70",
+      "ChapterName" : "Binomial Theorem",
+      "idCourseSubjectchapter" : "1335",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "ScoreRed" : "70",
+      "ChapterName" : "Probability",
+      "idCourseSubjectchapter" : "1336",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "ScoreRed" : "70",
+      "ChapterName" : "Circles",
+      "idCourseSubjectchapter" : "1349",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "ScoreRed" : "70",
+      "ChapterName" : "Areas",
+      "idCourseSubjectchapter" : "1344",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "ScoreRed" : "70",
+      "ChapterName" : "Parabola",
+      "idCourseSubjectchapter" : "1348",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "ScoreRed" : "70",
+      "ChapterName" : "Ellipse",
+      "idCourseSubjectchapter" : "1341",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "ScoreRed" : "70",
+      "ChapterName" : "Hyperbola",
+      "idCourseSubjectchapter" : "1350",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "ScoreRed" : "70",
+      "ChapterName" : "Indefinite Integrals",
+      "idCourseSubjectchapter" : "1339",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "ScoreRed" : "70",
+      "ChapterName" : "Definite Integrals",
+      "idCourseSubjectchapter" : "1338",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "ScoreRed" : "70",
+      "ChapterName" : "Differential Equations",
+      "idCourseSubjectchapter" : "1343",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "ScoreRed" : "70",
+      "ChapterName" : "Sequence and Series",
+      "idCourseSubjectchapter" : "1340",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "ScoreRed" : "70",
+      "ChapterName" : "Sets and Relations",
+      "idCourseSubjectchapter" : "1342",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "52",
+      "SubjectName" : "Maths",
+      "ScoreRed" : "70",
+      "ChapterName" : "Mathematical Reasoning",
+      "idCourseSubjectchapter" : "1347",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "ScoreRed" : "70",
+      "ChapterName" : "Atomic Structure",
+      "idCourseSubjectchapter" : "1308",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "ScoreRed" : "70",
+      "ChapterName" : "States of Matter",
+      "idCourseSubjectchapter" : "1310",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "ScoreRed" : "70",
+      "ChapterName" : "Stoichiometry",
+      "idCourseSubjectchapter" : "1311",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "ScoreRed" : "70",
+      "ChapterName" : "Thermodynamics & Thermochemistry",
+      "idCourseSubjectchapter" : "1312",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "ScoreRed" : "70",
+      "ChapterName" : "Ionic Equilibrium",
+      "idCourseSubjectchapter" : "1314",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "ScoreRed" : "70",
+      "ChapterName" : "Chemical Equilibrium",
+      "idCourseSubjectchapter" : "1319",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "ScoreRed" : "70",
+      "ChapterName" : "S-Block Elements",
+      "idCourseSubjectchapter" : "1317",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "ScoreRed" : "70",
+      "ChapterName" : "Periodic Table",
+      "idCourseSubjectchapter" : "1313",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "ScoreRed" : "70",
+      "ChapterName" : "Chemical Bonding",
+      "idCourseSubjectchapter" : "1318",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "ScoreRed" : "70",
+      "ChapterName" : "Hydrogen & its Compounds",
+      "idCourseSubjectchapter" : "1316",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "ScoreRed" : "70",
+      "ChapterName" : "Environmental Chemistry",
+      "idCourseSubjectchapter" : "1320",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "ScoreRed" : "70",
+      "ChapterName" : "General Organic Chemistry",
+      "idCourseSubjectchapter" : "1309",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "ScoreRed" : "70",
+      "ChapterName" : "Hydrocarbons",
+      "idCourseSubjectchapter" : "1315",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "ScoreRed" : "70",
+      "ChapterName" : "Solutions",
+      "idCourseSubjectchapter" : "1324",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "ScoreRed" : "70",
+      "ChapterName" : "Solid State",
+      "idCourseSubjectchapter" : "1323",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "ScoreRed" : "70",
+      "ChapterName" : "Chemistry in Everyday Life",
+      "idCourseSubjectchapter" : "3422",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "ScoreRed" : "70",
+      "ChapterName" : "Chemical Kinetics",
+      "idCourseSubjectchapter" : "1330",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "ScoreRed" : "70",
+      "ChapterName" : "Electro Chemistry",
+      "idCourseSubjectchapter" : "1331",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "ScoreRed" : "70",
+      "ChapterName" : "Surface Chemistry",
+      "idCourseSubjectchapter" : "1325",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "ScoreRed" : "70",
+      "ChapterName" : "P-Block Elements",
+      "idCourseSubjectchapter" : "1328",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "ScoreRed" : "70",
+      "ChapterName" : "Co-ordination Compounds & Transition of Elements",
+      "idCourseSubjectchapter" : "1329",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "ScoreRed" : "70",
+      "ChapterName" : "Metallurgy",
+      "idCourseSubjectchapter" : "1322",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "ScoreRed" : "70",
+      "ChapterName" : "Alkyle and Aryl Halides",
+      "idCourseSubjectchapter" : "1326",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "ScoreRed" : "70",
+      "ChapterName" : "Alcohol, Phenol and Ethers",
+      "idCourseSubjectchapter" : "1327",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "ScoreRed" : "70",
+      "ChapterName" : "Carbonyl Compounds (Aldehydes & Ketones)",
+      "idCourseSubjectchapter" : "1321",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "ScoreRed" : "70",
+      "ChapterName" : "Carboxylic Acids and their Derivatives",
+      "idCourseSubjectchapter" : "1333",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "ScoreRed" : "70",
+      "ChapterName" : "Nitrogen Containing Compounds",
+      "idCourseSubjectchapter" : "1334",
+      "ScoreAmber" : "90"
+    },
+    {
+      "idCourseSubject" : "53",
+      "SubjectName" : "Chemistry",
+      "ScoreRed" : "70",
+      "ChapterName" : "Biomolecules Chem-II",
+      "idCourseSubjectchapter" : "1332",
+      "ScoreAmber" : "90"
+    }
+  ],
+  "Scores" : [
+    {
+      "idCourseSubject" : "51",
+      "EarnedMarks" : "0.0000",
+      "ChapterName" : "Electromagnetic Waves",
+      "idCourseSubjectchapter" : "1305",
+      "TotalTestedMarks" : "3.0000",
+      "TotalTopics" : "2",
+      "SubjectName" : "Physics",
+      "TimeTaken" : "1.5900"
+    },
+    {
+      "idCourseSubject" : "52",
+      "EarnedMarks" : "0.0000",
+      "ChapterName" : "Mathematical Reasoning",
+      "idCourseSubjectchapter" : "1347",
+      "TotalTestedMarks" : "4.0000",
+      "TotalTopics" : "1",
+      "SubjectName" : "Maths",
+      "TimeTaken" : "0.0000"
+    },
+    {
+      "idCourseSubject" : "53",
+      "EarnedMarks" : "2.0000",
+      "ChapterName" : "Nitrogen Containing Compounds",
+      "idCourseSubjectchapter" : "1334",
+      "TotalTestedMarks" : "11.0000",
+      "TotalTopics" : "3",
+      "SubjectName" : "Chemistry",
+      "TimeTaken" : "176.9690"
+    },
+    {
+      "idCourseSubject" : "53",
+      "EarnedMarks" : "-3.0000",
+      "ChapterName" : "Chemistry in Everyday Life",
+      "idCourseSubjectchapter" : "3422",
+      "TotalTestedMarks" : "19.0000",
+      "TotalTopics" : "5",
+      "SubjectName" : "Chemistry",
+      "TimeTaken" : "157.3670"
+    },
+    {
+      "idCourseSubject" : "51",
+      "EarnedMarks" : "5.0000",
+      "ChapterName" : "Surface Tension",
+      "idCourseSubjectchapter" : "1280",
+      "TotalTestedMarks" : "22.0000",
+      "TotalTopics" : "1",
+      "SubjectName" : "Physics",
+      "TimeTaken" : "13.1720"
+    },
+    {
+      "idCourseSubject" : "53",
+      "EarnedMarks" : "2.0000",
+      "ChapterName" : "Solid State",
+      "idCourseSubjectchapter" : "1323",
+      "TotalTestedMarks" : "26.0000",
+      "TotalTopics" : "4",
+      "SubjectName" : "Chemistry",
+      "TimeTaken" : "14.3740"
+    },
+    {
+      "idCourseSubject" : "52",
+      "EarnedMarks" : "3.0000",
+      "ChapterName" : "Sequence and Series",
+      "idCourseSubjectchapter" : "1340",
+      "TotalTestedMarks" : "28.0000",
+      "TotalTopics" : "3",
+      "SubjectName" : "Maths",
+      "TimeTaken" : "16.7780"
+    },
+    {
+      "idCourseSubject" : "53",
+      "EarnedMarks" : "0.0000",
+      "ChapterName" : "Biomolecules Chem-II",
+      "idCourseSubjectchapter" : "1332",
+      "TotalTestedMarks" : "29.0000",
+      "TotalTopics" : "4",
+      "SubjectName" : "Chemistry",
+      "TimeTaken" : "53.5790"
+    },
+    {
+      "idCourseSubject" : "52",
+      "EarnedMarks" : "1.0000",
+      "ChapterName" : "Areas",
+      "idCourseSubjectchapter" : "1344",
+      "TotalTestedMarks" : "30.0000",
+      "TotalTopics" : "1",
+      "SubjectName" : "Maths",
+      "TimeTaken" : "18.7290"
+    },
+    {
+      "idCourseSubject" : "52",
+      "EarnedMarks" : "1.0000",
+      "ChapterName" : "Coordinate System",
+      "idCourseSubjectchapter" : "1296",
+      "TotalTestedMarks" : "30.0000",
+      "TotalTopics" : "4",
+      "SubjectName" : "Maths",
+      "TimeTaken" : "325.4370"
+    },
+    {
+      "idCourseSubject" : "53",
+      "EarnedMarks" : "5.0000",
+      "ChapterName" : "Alkyle and Aryl Halides",
+      "idCourseSubjectchapter" : "1326",
+      "TotalTestedMarks" : "30.0000",
+      "TotalTopics" : "3",
+      "SubjectName" : "Chemistry",
+      "TimeTaken" : "36.2750"
+    },
+    {
+      "idCourseSubject" : "53",
+      "EarnedMarks" : "7.0000",
+      "ChapterName" : "Surface Chemistry",
+      "idCourseSubjectchapter" : "1325",
+      "TotalTestedMarks" : "31.0000",
+      "TotalTopics" : "4",
+      "SubjectName" : "Chemistry",
+      "TimeTaken" : "36.0830"
+    },
+    {
+      "idCourseSubject" : "53",
+      "EarnedMarks" : "5.0000",
+      "ChapterName" : "Metallurgy",
+      "idCourseSubjectchapter" : "1322",
+      "TotalTestedMarks" : "31.0000",
+      "TotalTopics" : "3",
+      "SubjectName" : "Chemistry",
+      "TimeTaken" : "34.2130"
+    },
+    {
+      "idCourseSubject" : "52",
+      "EarnedMarks" : "12.0000",
+      "ChapterName" : "Differentiation",
+      "idCourseSubjectchapter" : "1293",
+      "TotalTestedMarks" : "33.0000",
+      "TotalTopics" : "4",
+      "SubjectName" : "Maths",
+      "TimeTaken" : "140.4580"
+    },
+    {
+      "idCourseSubject" : "53",
+      "EarnedMarks" : "9.0000",
+      "ChapterName" : "Carboxylic Acids and their Derivatives",
+      "idCourseSubjectchapter" : "1333",
+      "TotalTestedMarks" : "34.0000",
+      "TotalTopics" : "3",
+      "SubjectName" : "Chemistry",
+      "TimeTaken" : "16.6560"
+    },
+    {
+      "idCourseSubject" : "52",
+      "EarnedMarks" : "-1.0000",
+      "ChapterName" : "Three Dimensional Geometry",
+      "idCourseSubjectchapter" : "1284",
+      "TotalTestedMarks" : "34.0000",
+      "TotalTopics" : "4",
+      "SubjectName" : "Maths",
+      "TimeTaken" : "7.9980"
+    },
+    {
+      "idCourseSubject" : "53",
+      "EarnedMarks" : "4.0000",
+      "ChapterName" : "Hydrogen & its Compounds",
+      "idCourseSubjectchapter" : "1316",
+      "TotalTestedMarks" : "34.0000",
+      "TotalTopics" : "3",
+      "SubjectName" : "Chemistry",
+      "TimeTaken" : "124.8240"
+    },
+    {
+      "idCourseSubject" : "53",
+      "EarnedMarks" : "-6.0000",
+      "ChapterName" : "Environmental Chemistry",
+      "idCourseSubjectchapter" : "1320",
+      "TotalTestedMarks" : "36.0000",
+      "TotalTopics" : "4",
+      "SubjectName" : "Chemistry",
+      "TimeTaken" : "46.0710"
+    },
+    {
+      "idCourseSubject" : "52",
+      "EarnedMarks" : "8.0000",
+      "ChapterName" : "Definite Integrals",
+      "idCourseSubjectchapter" : "1338",
+      "TotalTestedMarks" : "38.0000",
+      "TotalTopics" : "3",
+      "SubjectName" : "Maths",
+      "TimeTaken" : "37.2710"
+    },
+    {
+      "idCourseSubject" : "51",
+      "EarnedMarks" : "0.0000",
+      "ChapterName" : "Elasticity",
+      "idCourseSubjectchapter" : "2503",
+      "TotalTestedMarks" : "39.0000",
+      "TotalTopics" : "3",
+      "SubjectName" : "Physics",
+      "TimeTaken" : "139.4810"
+    },
+    {
+      "idCourseSubject" : "53",
+      "EarnedMarks" : "2.0000",
+      "ChapterName" : "Chemical Kinetics",
+      "idCourseSubjectchapter" : "1330",
+      "TotalTestedMarks" : "41.0000",
+      "TotalTopics" : "3",
+      "SubjectName" : "Chemistry",
+      "TimeTaken" : "261.5770"
+    },
+    {
+      "idCourseSubject" : "53",
+      "EarnedMarks" : "7.0000",
+      "ChapterName" : "Chemical Bonding",
+      "idCourseSubjectchapter" : "1318",
+      "TotalTestedMarks" : "42.0000",
+      "TotalTopics" : "4",
+      "SubjectName" : "Chemistry",
+      "TimeTaken" : "19.1280"
+    },
+    {
+      "idCourseSubject" : "53",
+      "EarnedMarks" : "8.0000",
+      "ChapterName" : "Alcohol, Phenol and Ethers",
+      "idCourseSubjectchapter" : "1327",
+      "TotalTestedMarks" : "43.0000",
+      "TotalTopics" : "4",
+      "SubjectName" : "Chemistry",
+      "TimeTaken" : "145.5630"
+    },
+    {
+      "idCourseSubject" : "51",
+      "EarnedMarks" : "-3.0000",
+      "ChapterName" : "Electromagnetic Induction",
+      "idCourseSubjectchapter" : "1302",
+      "TotalTestedMarks" : "45.0000",
+      "TotalTopics" : "2",
+      "SubjectName" : "Physics",
+      "TimeTaken" : "154.2400"
+    },
+    {
+      "idCourseSubject" : "52",
+      "EarnedMarks" : "5.0000",
+      "ChapterName" : "Ellipse",
+      "idCourseSubjectchapter" : "1341",
+      "TotalTestedMarks" : "46.0000",
+      "TotalTopics" : "3",
+      "SubjectName" : "Maths",
+      "TimeTaken" : "19.0230"
+    },
+    {
+      "idCourseSubject" : "53",
+      "EarnedMarks" : "11.0000",
+      "ChapterName" : "Ionic Equilibrium",
+      "idCourseSubjectchapter" : "1314",
+      "TotalTestedMarks" : "50.0000",
+      "TotalTopics" : "5",
+      "SubjectName" : "Chemistry",
+      "TimeTaken" : "26.0840"
+    },
+    {
+      "idCourseSubject" : "52",
+      "EarnedMarks" : "8.0000",
+      "ChapterName" : "Hyperbola",
+      "idCourseSubjectchapter" : "1350",
+      "TotalTestedMarks" : "50.0000",
+      "TotalTopics" : "4",
+      "SubjectName" : "Maths",
+      "TimeTaken" : "20.4320"
+    },
+    {
+      "idCourseSubject" : "52",
+      "EarnedMarks" : "1.0000",
+      "ChapterName" : "Quadratic Equations, Expression and Inequations",
+      "idCourseSubjectchapter" : "1345",
+      "TotalTestedMarks" : "51.0000",
+      "TotalTopics" : "4",
+      "SubjectName" : "Maths",
+      "TimeTaken" : "30.1980"
+    },
+    {
+      "idCourseSubject" : "52",
+      "EarnedMarks" : "-2.0000",
+      "ChapterName" : "Pair of Straight Lines",
+      "idCourseSubjectchapter" : "1288",
+      "TotalTestedMarks" : "53.0000",
+      "TotalTopics" : "4",
+      "SubjectName" : "Maths",
+      "TimeTaken" : "90.8570"
+    },
+    {
+      "idCourseSubject" : "52",
+      "EarnedMarks" : "10.0000",
+      "ChapterName" : "Inverse Trigonometric Functions",
+      "idCourseSubjectchapter" : "1294",
+      "TotalTestedMarks" : "54.0000",
+      "TotalTopics" : "2",
+      "SubjectName" : "Maths",
+      "TimeTaken" : "1618.1930"
+    },
+    {
+      "idCourseSubject" : "52",
+      "EarnedMarks" : "-1.0000",
+      "ChapterName" : "Tangents and Normals",
+      "idCourseSubjectchapter" : "1289",
+      "TotalTestedMarks" : "55.0000",
+      "TotalTopics" : "3",
+      "SubjectName" : "Maths",
+      "TimeTaken" : "43.3880"
+    },
+    {
+      "idCourseSubject" : "52",
+      "EarnedMarks" : "13.0000",
+      "ChapterName" : "Differential Equations",
+      "idCourseSubjectchapter" : "1343",
+      "TotalTestedMarks" : "58.0000",
+      "TotalTopics" : "4",
+      "SubjectName" : "Maths",
+      "TimeTaken" : "629.6030"
+    },
+    {
+      "idCourseSubject" : "51",
+      "EarnedMarks" : "2.0000",
+      "ChapterName" : "Electromagnetism",
+      "idCourseSubjectchapter" : "1299",
+      "TotalTestedMarks" : "58.0000",
+      "TotalTopics" : "3",
+      "SubjectName" : "Physics",
+      "TimeTaken" : "255.7520"
+    },
+    {
+      "idCourseSubject" : "52",
+      "EarnedMarks" : "7.0000",
+      "ChapterName" : "Vectors - Maths",
+      "idCourseSubjectchapter" : "1285",
+      "TotalTestedMarks" : "59.0000",
+      "TotalTopics" : "4",
+      "SubjectName" : "Maths",
+      "TimeTaken" : "102.7150"
+    },
+    {
+      "idCourseSubject" : "52",
+      "EarnedMarks" : "7.0000",
+      "ChapterName" : "Permutations and Combinations",
+      "idCourseSubjectchapter" : "1337",
+      "TotalTestedMarks" : "62.0000",
+      "TotalTopics" : "6",
+      "SubjectName" : "Maths",
+      "TimeTaken" : "110.8320"
+    },
+    {
+      "idCourseSubject" : "53",
+      "EarnedMarks" : "4.0000",
+      "ChapterName" : "Chemical Equilibrium",
+      "idCourseSubjectchapter" : "1319",
+      "TotalTestedMarks" : "62.0000",
+      "TotalTopics" : "5",
+      "SubjectName" : "Chemistry",
+      "TimeTaken" : "123.9600"
+    },
+    {
+      "idCourseSubject" : "51",
+      "EarnedMarks" : "-3.0000",
+      "ChapterName" : "Capacitor & RC Circuit",
+      "idCourseSubjectchapter" : "1298",
+      "TotalTestedMarks" : "66.0000",
+      "TotalTopics" : "4",
+      "SubjectName" : "Physics",
+      "TimeTaken" : "91.9940"
+    },
+    {
+      "idCourseSubject" : "52",
+      "EarnedMarks" : "0.0000",
+      "ChapterName" : "Probability",
+      "idCourseSubjectchapter" : "1336",
+      "TotalTestedMarks" : "66.0000",
+      "TotalTopics" : "6",
+      "SubjectName" : "Maths",
+      "TimeTaken" : "26.8980"
+    },
+    {
+      "idCourseSubject" : "52",
+      "EarnedMarks" : "15.0000",
+      "ChapterName" : "Matrices & Determinants",
+      "idCourseSubjectchapter" : "1286",
+      "TotalTestedMarks" : "66.0000",
+      "TotalTopics" : "5",
+      "SubjectName" : "Maths",
+      "TimeTaken" : "590.3150"
+    },
+    {
+      "idCourseSubject" : "53",
+      "EarnedMarks" : "8.0000",
+      "ChapterName" : "Carbonyl Compounds (Aldehydes & Ketones)",
+      "idCourseSubjectchapter" : "1321",
+      "TotalTestedMarks" : "68.0000",
+      "TotalTopics" : "4",
+      "SubjectName" : "Chemistry",
+      "TimeTaken" : "301.2110"
+    },
+    {
+      "idCourseSubject" : "53",
+      "EarnedMarks" : "-1.0000",
+      "ChapterName" : "Hydrocarbons",
+      "idCourseSubjectchapter" : "1315",
+      "TotalTestedMarks" : "68.0000",
+      "TotalTopics" : "5",
+      "SubjectName" : "Chemistry",
+      "TimeTaken" : "169.1820"
+    },
+    {
+      "idCourseSubject" : "53",
+      "EarnedMarks" : "13.0000",
+      "ChapterName" : "Periodic Table",
+      "idCourseSubjectchapter" : "1313",
+      "TotalTestedMarks" : "68.0000",
+      "TotalTopics" : "6",
+      "SubjectName" : "Chemistry",
+      "TimeTaken" : "153.5020"
+    },
+    {
+      "idCourseSubject" : "53",
+      "EarnedMarks" : "2.0000",
+      "ChapterName" : "Thermodynamics & Thermochemistry",
+      "idCourseSubjectchapter" : "1312",
+      "TotalTestedMarks" : "69.0000",
+      "TotalTopics" : "6",
+      "SubjectName" : "Chemistry",
+      "TimeTaken" : "122.0681"
+    },
+    {
+      "idCourseSubject" : "51",
+      "EarnedMarks" : "28.0000",
+      "ChapterName" : "Magnetism",
+      "idCourseSubjectchapter" : "3480",
+      "TotalTestedMarks" : "69.0000",
+      "TotalTopics" : "5",
+      "SubjectName" : "Physics",
+      "TimeTaken" : "605.4990"
+    },
+    {
+      "idCourseSubject" : "53",
+      "EarnedMarks" : "2.0000",
+      "ChapterName" : "States of Matter",
+      "idCourseSubjectchapter" : "1310",
+      "TotalTestedMarks" : "69.0000",
+      "TotalTopics" : "6",
+      "SubjectName" : "Chemistry",
+      "TimeTaken" : "248.7430"
+    },
+    {
+      "idCourseSubject" : "52",
+      "EarnedMarks" : "-2.0000",
+      "ChapterName" : "Maxima and Minima",
+      "idCourseSubjectchapter" : "1287",
+      "TotalTestedMarks" : "70.0000",
+      "TotalTopics" : "4",
+      "SubjectName" : "Maths",
+      "TimeTaken" : "21.0780"
+    },
+    {
+      "idCourseSubject" : "51",
+      "EarnedMarks" : "3.0000",
+      "ChapterName" : "Rotational Motion",
+      "idCourseSubjectchapter" : "1277",
+      "TotalTestedMarks" : "71.0000",
+      "TotalTopics" : "5",
+      "SubjectName" : "Physics",
+      "TimeTaken" : "639.3199"
+    },
+    {
+      "idCourseSubject" : "53",
+      "EarnedMarks" : "10.0000",
+      "ChapterName" : "Co-ordination Compounds & Transition of Elements",
+      "idCourseSubjectchapter" : "1329",
+      "TotalTestedMarks" : "71.0000",
+      "TotalTopics" : "6",
+      "SubjectName" : "Chemistry",
+      "TimeTaken" : "110.2540"
+    },
+    {
+      "idCourseSubject" : "52",
+      "EarnedMarks" : "12.0000",
+      "ChapterName" : "Indefinite Integrals",
+      "idCourseSubjectchapter" : "1339",
+      "TotalTestedMarks" : "71.0000",
+      "TotalTopics" : "5",
+      "SubjectName" : "Maths",
+      "TimeTaken" : "221.2490"
+    },
+    {
+      "idCourseSubject" : "51",
+      "EarnedMarks" : "8.0000",
+      "ChapterName" : "Modern Physics",
+      "idCourseSubjectchapter" : "1306",
+      "TotalTestedMarks" : "75.0000",
+      "TotalTopics" : "6",
+      "SubjectName" : "Physics",
+      "TimeTaken" : "158.4860"
+    },
+    {
+      "idCourseSubject" : "52",
+      "EarnedMarks" : "-2.0000",
+      "ChapterName" : "Straight Lines",
+      "idCourseSubjectchapter" : "1295",
+      "TotalTestedMarks" : "76.0000",
+      "TotalTopics" : "7",
+      "SubjectName" : "Maths",
+      "TimeTaken" : "37.6570"
+    },
+    {
+      "idCourseSubject" : "52",
+      "EarnedMarks" : "15.0000",
+      "ChapterName" : "Binomial Theorem",
+      "idCourseSubjectchapter" : "1335",
+      "TotalTestedMarks" : "76.0000",
+      "TotalTopics" : "4",
+      "SubjectName" : "Maths",
+      "TimeTaken" : "518.2050"
+    },
+    {
+      "idCourseSubject" : "51",
+      "EarnedMarks" : "1.0000",
+      "ChapterName" : "Semiconductor Devices & Communication System",
+      "idCourseSubjectchapter" : "1307",
+      "TotalTestedMarks" : "77.0000",
+      "TotalTopics" : "5",
+      "SubjectName" : "Physics",
+      "TimeTaken" : "348.3460"
+    },
+    {
+      "idCourseSubject" : "53",
+      "EarnedMarks" : "3.0000",
+      "ChapterName" : "Stoichiometry",
+      "idCourseSubjectchapter" : "1311",
+      "TotalTestedMarks" : "78.0000",
+      "TotalTopics" : "6",
+      "SubjectName" : "Chemistry",
+      "TimeTaken" : "328.9980"
+    },
+    {
+      "idCourseSubject" : "53",
+      "EarnedMarks" : "4.0000",
+      "ChapterName" : "Electro Chemistry",
+      "idCourseSubjectchapter" : "1331",
+      "TotalTestedMarks" : "80.0000",
+      "TotalTopics" : "5",
+      "SubjectName" : "Chemistry",
+      "TimeTaken" : "359.1990"
+    },
+    {
+      "idCourseSubject" : "52",
+      "EarnedMarks" : "-3.0000",
+      "ChapterName" : "Limits",
+      "idCourseSubjectchapter" : "1291",
+      "TotalTestedMarks" : "81.0000",
+      "TotalTopics" : "4",
+      "SubjectName" : "Maths",
+      "TimeTaken" : "882.4550"
+    },
+    {
+      "idCourseSubject" : "52",
+      "EarnedMarks" : "3.0000",
+      "ChapterName" : "Complex Numbers",
+      "idCourseSubjectchapter" : "1346",
+      "TotalTestedMarks" : "84.0000",
+      "TotalTopics" : "8",
+      "SubjectName" : "Maths",
+      "TimeTaken" : "163.6110"
+    },
+    {
+      "idCourseSubject" : "51",
+      "EarnedMarks" : "5.0000",
+      "ChapterName" : "Waves",
+      "idCourseSubjectchapter" : "1297",
+      "TotalTestedMarks" : "86.0000",
+      "TotalTopics" : "5",
+      "SubjectName" : "Physics",
+      "TimeTaken" : "161.9860"
+    },
+    {
+      "idCourseSubject" : "53",
+      "EarnedMarks" : "-2.0000",
+      "ChapterName" : "S-Block Elements",
+      "idCourseSubjectchapter" : "1317",
+      "TotalTestedMarks" : "87.0000",
+      "TotalTopics" : "3",
+      "SubjectName" : "Chemistry",
+      "TimeTaken" : "214.3950"
+    },
+    {
+      "idCourseSubject" : "52",
+      "EarnedMarks" : "10.0000",
+      "ChapterName" : "Continuity and Differantability",
+      "idCourseSubjectchapter" : "1290",
+      "TotalTestedMarks" : "91.0000",
+      "TotalTopics" : "2",
+      "SubjectName" : "Maths",
+      "TimeTaken" : "84.8740"
+    },
+    {
+      "idCourseSubject" : "51",
+      "EarnedMarks" : "4.0000",
+      "ChapterName" : "Alternate Current",
+      "idCourseSubjectchapter" : "1303",
+      "TotalTestedMarks" : "92.0000",
+      "TotalTopics" : "3",
+      "SubjectName" : "Physics",
+      "TimeTaken" : "401.5289"
+    },
+    {
+      "idCourseSubject" : "51",
+      "EarnedMarks" : "5.0000",
+      "ChapterName" : "Wave Optics",
+      "idCourseSubjectchapter" : "1304",
+      "TotalTestedMarks" : "93.0000",
+      "TotalTopics" : "4",
+      "SubjectName" : "Physics",
+      "TimeTaken" : "381.0030"
+    },
+    {
+      "idCourseSubject" : "51",
+      "EarnedMarks" : "10.0000",
+      "ChapterName" : "Simple Harmonic Motion",
+      "idCourseSubjectchapter" : "1275",
+      "TotalTestedMarks" : "93.0000",
+      "TotalTopics" : "5",
+      "SubjectName" : "Physics",
+      "TimeTaken" : "153.3600"
+    },
+    {
+      "idCourseSubject" : "53",
+      "EarnedMarks" : "4.0000",
+      "ChapterName" : "Solutions",
+      "idCourseSubjectchapter" : "1324",
+      "TotalTestedMarks" : "94.0000",
+      "TotalTopics" : "8",
+      "SubjectName" : "Chemistry",
+      "TimeTaken" : "284.6350"
+    },
+    {
+      "idCourseSubject" : "53",
+      "EarnedMarks" : "-3.0000",
+      "ChapterName" : "General Organic Chemistry",
+      "idCourseSubjectchapter" : "1309",
+      "TotalTestedMarks" : "95.0000",
+      "TotalTopics" : "6",
+      "SubjectName" : "Chemistry",
+      "TimeTaken" : "864.8460"
+    },
+    {
+      "idCourseSubject" : "52",
+      "EarnedMarks" : "6.0000",
+      "ChapterName" : "Functions",
+      "idCourseSubjectchapter" : "1282",
+      "TotalTestedMarks" : "97.0000",
+      "TotalTopics" : "7",
+      "SubjectName" : "Maths",
+      "TimeTaken" : "326.6750"
+    },
+    {
+      "idCourseSubject" : "52",
+      "EarnedMarks" : "8.0000",
+      "ChapterName" : "Properties and Solutions of Triangles",
+      "idCourseSubjectchapter" : "1292",
+      "TotalTestedMarks" : "99.0000",
+      "TotalTopics" : "6",
+      "SubjectName" : "Maths",
+      "TimeTaken" : "254.1850"
+    },
+    {
+      "idCourseSubject" : "52",
+      "EarnedMarks" : "5.0000",
+      "ChapterName" : "Parabola",
+      "idCourseSubjectchapter" : "1348",
+      "TotalTestedMarks" : "103.0000",
+      "TotalTopics" : "4",
+      "SubjectName" : "Maths",
+      "TimeTaken" : "80.1910"
+    },
+    {
+      "idCourseSubject" : "51",
+      "EarnedMarks" : "9.0000",
+      "ChapterName" : "Circular Motion",
+      "idCourseSubjectchapter" : "1281",
+      "TotalTestedMarks" : "105.0000",
+      "TotalTopics" : "1",
+      "SubjectName" : "Physics",
+      "TimeTaken" : "504.7250"
+    },
+    {
+      "idCourseSubject" : "52",
+      "EarnedMarks" : "-2.0000",
+      "ChapterName" : "Circles",
+      "idCourseSubjectchapter" : "1349",
+      "TotalTestedMarks" : "112.0000",
+      "TotalTopics" : "5",
+      "SubjectName" : "Maths",
+      "TimeTaken" : "263.3200"
+    },
+    {
+      "idCourseSubject" : "53",
+      "EarnedMarks" : "18.0000",
+      "ChapterName" : "P-Block Elements",
+      "idCourseSubjectchapter" : "1328",
+      "TotalTestedMarks" : "116.0000",
+      "TotalTopics" : "6",
+      "SubjectName" : "Chemistry",
+      "TimeTaken" : "404.5970"
+    },
+    {
+      "idCourseSubject" : "51",
+      "EarnedMarks" : "16.0000",
+      "ChapterName" : "Friction",
+      "idCourseSubjectchapter" : "1267",
+      "TotalTestedMarks" : "124.0000",
+      "TotalTopics" : "5",
+      "SubjectName" : "Physics",
+      "TimeTaken" : "580.3740"
+    },
+    {
+      "idCourseSubject" : "51",
+      "EarnedMarks" : "18.0000",
+      "ChapterName" : "Gravitation",
+      "idCourseSubjectchapter" : "1274",
+      "TotalTestedMarks" : "129.0000",
+      "TotalTopics" : "5",
+      "SubjectName" : "Physics",
+      "TimeTaken" : "346.1279"
+    },
+    {
+      "idCourseSubject" : "51",
+      "EarnedMarks" : "11.0000",
+      "ChapterName" : "Ray Optics",
+      "idCourseSubjectchapter" : "1301",
+      "TotalTestedMarks" : "144.0000",
+      "TotalTopics" : "7",
+      "SubjectName" : "Physics",
+      "TimeTaken" : "148.8060"
+    },
+    {
+      "idCourseSubject" : "51",
+      "EarnedMarks" : "12.0000",
+      "ChapterName" : "Motion in a Plane and Relative Motion",
+      "idCourseSubjectchapter" : "1269",
+      "TotalTestedMarks" : "148.0000",
+      "TotalTopics" : "4",
+      "SubjectName" : "Physics",
+      "TimeTaken" : "287.7260"
+    },
+    {
+      "idCourseSubject" : "51",
+      "EarnedMarks" : "26.0000",
+      "ChapterName" : "Vectors - Physics",
+      "idCourseSubjectchapter" : "1273",
+      "TotalTestedMarks" : "156.0000",
+      "TotalTopics" : "5",
+      "SubjectName" : "Physics",
+      "TimeTaken" : "1086.5430"
+    },
+    {
+      "idCourseSubject" : "51",
+      "EarnedMarks" : "5.0000",
+      "ChapterName" : "Thermodynamics and Transmission of Heat",
+      "idCourseSubjectchapter" : "1276",
+      "TotalTestedMarks" : "163.0000",
+      "TotalTopics" : "12",
+      "SubjectName" : "Physics",
+      "TimeTaken" : "1105.9130"
+    },
+    {
+      "idCourseSubject" : "51",
+      "EarnedMarks" : "12.0000",
+      "ChapterName" : "Thermal Properties Of Matter & Kinetic Theory Of Gases",
+      "idCourseSubjectchapter" : "1278",
+      "TotalTestedMarks" : "166.0000",
+      "TotalTopics" : "6",
+      "SubjectName" : "Physics",
+      "TimeTaken" : "1686.2140"
+    },
+    {
+      "idCourseSubject" : "51",
+      "EarnedMarks" : "17.0000",
+      "ChapterName" : "Current Electricity",
+      "idCourseSubjectchapter" : "1272",
+      "TotalTestedMarks" : "172.0000",
+      "TotalTopics" : "8",
+      "SubjectName" : "Physics",
+      "TimeTaken" : "521.3451"
+    },
+    {
+      "idCourseSubject" : "53",
+      "EarnedMarks" : "53.0000",
+      "ChapterName" : "Atomic Structure",
+      "idCourseSubjectchapter" : "1308",
+      "TotalTestedMarks" : "178.0000",
+      "TotalTopics" : "6",
+      "SubjectName" : "Chemistry",
+      "TimeTaken" : "1082.8520"
+    },
+    {
+      "idCourseSubject" : "52",
+      "EarnedMarks" : "53.0000",
+      "ChapterName" : "Trigonometric Ratios, Functions and Identities",
+      "idCourseSubjectchapter" : "1283",
+      "TotalTestedMarks" : "183.0000",
+      "TotalTopics" : "5",
+      "SubjectName" : "Maths",
+      "TimeTaken" : "396.7270"
+    },
+    {
+      "idCourseSubject" : "51",
+      "EarnedMarks" : "28.0000",
+      "ChapterName" : "Center of Mass and Collision",
+      "idCourseSubjectchapter" : "1271",
+      "TotalTestedMarks" : "208.0000",
+      "TotalTopics" : "3",
+      "SubjectName" : "Physics",
+      "TimeTaken" : "718.2960"
+    },
+    {
+      "idCourseSubject" : "51",
+      "EarnedMarks" : "14.0000",
+      "ChapterName" : "Fluid Mechanics",
+      "idCourseSubjectchapter" : "1266",
+      "TotalTestedMarks" : "211.0000",
+      "TotalTopics" : "3",
+      "SubjectName" : "Physics",
+      "TimeTaken" : "611.7260"
+    },
+    {
+      "idCourseSubject" : "51",
+      "EarnedMarks" : "21.0000",
+      "ChapterName" : "Electrostatics",
+      "idCourseSubjectchapter" : "1300",
+      "TotalTestedMarks" : "245.0000",
+      "TotalTopics" : "8",
+      "SubjectName" : "Physics",
+      "TimeTaken" : "1451.0491"
+    },
+    {
+      "idCourseSubject" : "51",
+      "EarnedMarks" : "34.0000",
+      "ChapterName" : "Units, Dimensions, Measurement & Error Analysis",
+      "idCourseSubjectchapter" : "1279",
+      "TotalTestedMarks" : "292.0000",
+      "TotalTopics" : "3",
+      "SubjectName" : "Physics",
+      "TimeTaken" : "2984.9690"
+    },
+    {
+      "idCourseSubject" : "51",
+      "EarnedMarks" : "27.0000",
+      "ChapterName" : "Work, Power and Energy",
+      "idCourseSubjectchapter" : "1265",
+      "TotalTestedMarks" : "338.0000",
+      "TotalTopics" : "4",
+      "SubjectName" : "Physics",
+      "TimeTaken" : "1140.2660"
+    },
+    {
+      "idCourseSubject" : "51",
+      "EarnedMarks" : "36.0000",
+      "ChapterName" : "Motion in a Straight Line",
+      "idCourseSubjectchapter" : "1270",
+      "TotalTestedMarks" : "389.0000",
+      "TotalTopics" : "1",
+      "SubjectName" : "Physics",
+      "TimeTaken" : "2645.0410"
+    },
+    {
+      "idCourseSubject" : "51",
+      "EarnedMarks" : "55.0000",
+      "ChapterName" : "Newtons Laws of Motion",
+      "idCourseSubjectchapter" : "1268",
+      "TotalTestedMarks" : "415.0000",
+      "TotalTopics" : "5",
+      "SubjectName" : "Physics",
+      "TimeTaken" : "1661.5460"
+    }
+  ]
+}

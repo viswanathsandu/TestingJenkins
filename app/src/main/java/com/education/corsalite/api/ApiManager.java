@@ -107,4 +107,14 @@ public class ApiManager {
             callback.success(new Gson().fromJson(jsonResponse, MessageResponse.class), getRetrofitResponse());
         }
     }
+
+    public void getStudyCentreData(String loginId, String passwordHash, ApiCallback<LoginResponse> callback) {
+        if(isApiOnline()) {
+            ApiClientService.get().login(loginId, passwordHash, callback);
+        } else {
+            String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/studycentre.json");
+            L.info("Response for 'api/studycentre.json' is "+jsonResponse);
+            callback.success(new Gson().fromJson(jsonResponse, LoginResponse.class), getRetrofitResponse());
+        }
+    }
 }
