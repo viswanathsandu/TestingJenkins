@@ -43,7 +43,9 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     }
 
     private void getStudyCentreData() {
-        ApiManager.getInstance(this).getStudyCentreData(LoginUserCache.getInstance().loginResponse.studentId, "13",
+        // TODO : passing static data
+        ApiManager.getInstance(this).getStudyCentreData("1154", //LoginUserCache.getInstance().loginResponse.studentId,
+                "13",
                 new ApiCallback<StudyCenter>() {
                     @Override
                     public void failure(CorsaliteError error) {
