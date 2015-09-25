@@ -4,54 +4,54 @@
 package com.education.corsalite.models.responsemodels;
 
 public class NotesCount {
-    private String chaptername;
-    private String subjectname;
-    private String idcoursesubject;
-    private String idcoursesubjectchapter;
-    private String notescount;
+    private String ChapterName;
+    private String SubjectName;
+    private String idCourseSubject;
+    private String idCourseSubjectChapter;
+    private String NotesCount;
 
-    public void setChaptername(String chaptername) {
-        this.chaptername = chaptername;
+    public void setChapterName(String chapterName) {
+        this.ChapterName = chapterName;
     }
 
-    public String getChaptername() {
-        return chaptername;
-    }
-
-
-    public void setSubjectname(String subjectname) {
-        this.subjectname = subjectname;
-    }
-
-    public String getSubjectname() {
-        return subjectname;
+    public String getChapterName() {
+        return ChapterName;
     }
 
 
-    public void setIdcoursesubject(String idcoursesubject) {
-        this.idcoursesubject = idcoursesubject;
+    public void setSubjectName(String subjectName) {
+        this.SubjectName = subjectName;
     }
 
-    public String getIdcoursesubject() {
-        return idcoursesubject;
-    }
-
-
-    public void setIdcoursesubjectchapter(String idcoursesubjectchapter) {
-        this.idcoursesubjectchapter = idcoursesubjectchapter;
-    }
-
-    public String getIdcoursesubjectchapter() {
-        return idcoursesubjectchapter;
+    public String getSubjectName() {
+        return SubjectName;
     }
 
 
-    public void setNotescount(String notescount) {
-        this.notescount = notescount;
+    public void setIdCourseSubject(String idCourseSubject) {
+        this.idCourseSubject = idCourseSubject;
     }
 
-    public String getNotescount() {
-        return notescount;
+    public String getIdCourseSubject() {
+        return idCourseSubject;
+    }
+
+
+    public void setIdCourseSubjectChapter(String idCourseSubjectChapter) {
+        this.idCourseSubjectChapter = idCourseSubjectChapter;
+    }
+
+    public String getIdCourseSubjectChapter() {
+        return idCourseSubjectChapter;
+    }
+
+
+    public void setNotesCount(String notesCount) {
+        this.NotesCount = notesCount;
+    }
+
+    public String getNotesCount() {
+        return NotesCount;
     }
 
 }

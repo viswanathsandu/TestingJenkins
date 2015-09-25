@@ -4,54 +4,54 @@
 package com.education.corsalite.models.responsemodels;
 
 public class PassedComplexity {
-    private String chaptername;
-    private String subjectname;
-    private String idcoursesubject;
-    private String idcoursesubjectchapter;
-    private String passedcomplexity;
+    private String ChapterName;
+    private String SubjectName;
+    private String idCourseSubject;
+    private String idCourseSubjectChapter;
+    private String PassedComplexity;
 
-    public void setChaptername(String chaptername) {
-        this.chaptername = chaptername;
+    public void setChapterName(String chapterName) {
+        this.ChapterName = chapterName;
     }
 
-    public String getChaptername() {
-        return chaptername;
-    }
-
-
-    public void setSubjectname(String subjectname) {
-        this.subjectname = subjectname;
-    }
-
-    public String getSubjectname() {
-        return subjectname;
+    public String getChapterName() {
+        return ChapterName;
     }
 
 
-    public void setIdcoursesubject(String idcoursesubject) {
-        this.idcoursesubject = idcoursesubject;
+    public void setSubjectName(String subjectName) {
+        this.SubjectName = subjectName;
     }
 
-    public String getIdcoursesubject() {
-        return idcoursesubject;
-    }
-
-
-    public void setIdcoursesubjectchapter(String idcoursesubjectchapter) {
-        this.idcoursesubjectchapter = idcoursesubjectchapter;
-    }
-
-    public String getIdcoursesubjectchapter() {
-        return idcoursesubjectchapter;
+    public String getSubjectName() {
+        return SubjectName;
     }
 
 
-    public void setPassedcomplexity(String passedcomplexity) {
-        this.passedcomplexity = passedcomplexity;
+    public void setIdCourseSubject(String idCourseSubject) {
+        this.idCourseSubject = idCourseSubject;
     }
 
-    public String getPassedcomplexity() {
-        return passedcomplexity;
+    public String getIdCourseSubject() {
+        return idCourseSubject;
+    }
+
+
+    public void setIdCourseSubjectChapter(String idCourseSubjectChapter) {
+        this.idCourseSubjectChapter = idCourseSubjectChapter;
+    }
+
+    public String getIdCourseSubjectChapter() {
+        return idCourseSubjectChapter;
+    }
+
+
+    public void setPassedComplexity(String passedComplexity) {
+        this.PassedComplexity = passedComplexity;
+    }
+
+    public String getPassedComplexity() {
+        return PassedComplexity;
     }
 
 }

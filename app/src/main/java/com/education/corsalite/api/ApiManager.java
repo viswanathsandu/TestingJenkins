@@ -8,6 +8,7 @@ import com.education.corsalite.enums.NetworkMode;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
 import com.education.corsalite.models.responsemodels.MessageResponse;
+import com.education.corsalite.models.responsemodels.StudyCenter;
 import com.education.corsalite.models.responsemodels.UserProfileResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencyBalanceResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencySummaryResponse;
@@ -103,18 +104,20 @@ public class ApiManager {
             ApiClientService.get().getMessages(studentId, callback);
         } else {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/messages.json");
-            L.info("Response for 'api/messages.json' is "+jsonResponse);
+            L.info("Response for 'api/messages.json' is " + jsonResponse);
             callback.success(new Gson().fromJson(jsonResponse, MessageResponse.class), getRetrofitResponse());
         }
     }
 
-    public void getStudyCentreData(String loginId, String passwordHash, ApiCallback<LoginResponse> callback) {
+    public void getStudyCentreData(String studentId, String courseID, ApiCallback<StudyCenter> callback) {
         if(isApiOnline()) {
-            ApiClientService.get().login(loginId, passwordHash, callback);
+            ApiClientService.get().getCourseStudyCenterData(studentId, courseID, callback);
         } else {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/studycentre.json");
-            L.info("Response for 'api/studycentre.json' is "+jsonResponse);
-            callback.success(new Gson().fromJson(jsonResponse, LoginResponse.class), getRetrofitResponse());
+            System.out.print("Response for 'api/studycentre.json' is " + jsonResponse);
+            callback.success(new Gson().fromJson(jsonResponse, StudyCenter.class), getRetrofitResponse());
         }
     }
+
+
 }

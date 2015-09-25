@@ -3,55 +3,57 @@
 
 package com.education.corsalite.models.responsemodels;
 
+import java.util.ArrayList;
+
 public class StudyCenter {
-    private Scores[] scores;
-    private NotesCount[] notescount;
-    private ScoreThreshold[] scorethreshold;
-    private CompletionStatus[] completionstatus;
-    private PassedComplexity[] passedcomplexity;
+    private ArrayList<Scores> Scores;
+    private ArrayList<NotesCount> NotesCount;
+    private ArrayList<ScoreThreshold> ScoreThreshold;
+    private ArrayList<CompletionStatus> CompletionStatus;
+    private ArrayList<PassedComplexity> PassedComplexity;
 
-    public void setScores(Scores[] scores) {
-        this.scores = scores;
+    public void setScores(ArrayList<Scores> scores) {
+        this.Scores = scores;
     }
 
-    public Scores[] getScores() {
-        return scores;
-    }
-
-
-    public void setNotescount(NotesCount[] notescount) {
-        this.notescount = notescount;
-    }
-
-    public NotesCount[] getNotescount() {
-        return notescount;
+    public ArrayList<Scores> getScores() {
+        return Scores;
     }
 
 
-    public void setScorethreshold(ScoreThreshold[] scorethreshold) {
-        this.scorethreshold = scorethreshold;
+    public void setNotesCount(ArrayList<NotesCount> notesCount) {
+        this.NotesCount = notesCount;
     }
 
-    public ScoreThreshold[] getScorethreshold() {
-        return scorethreshold;
-    }
-
-
-    public void setCompletionstatus(CompletionStatus[] completionstatus) {
-        this.completionstatus = completionstatus;
-    }
-
-    public CompletionStatus[] getCompletionstatus() {
-        return completionstatus;
+    public ArrayList<NotesCount> getNotesCount() {
+        return NotesCount;
     }
 
 
-    public void setPassedcomplexity(PassedComplexity[] passedcomplexity) {
-        this.passedcomplexity = passedcomplexity;
+    public void setScoreThreshold(ArrayList<ScoreThreshold> scoreThreshold) {
+        this.ScoreThreshold = scoreThreshold;
     }
 
-    public PassedComplexity[] getPassedcomplexity() {
-        return passedcomplexity;
+    public ArrayList<ScoreThreshold> getScoreThreshold() {
+        return ScoreThreshold;
+    }
+
+
+    public void setCompletionStatus(ArrayList<CompletionStatus> completionStatus) {
+        this.CompletionStatus = completionStatus;
+    }
+
+    public ArrayList<CompletionStatus> getCompletionStatus() {
+        return CompletionStatus;
+    }
+
+
+    public void setPassedComplexity(ArrayList<PassedComplexity> passedComplexity) {
+        this.PassedComplexity = passedComplexity;
+    }
+
+    public ArrayList<PassedComplexity> getPassedComplexity() {
+        return PassedComplexity;
     }
 
 }
