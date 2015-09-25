@@ -4,6 +4,8 @@
 package com.education.corsalite.models.responsemodels;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class StudyCenter {
     private ArrayList<Scores> Scores;
@@ -11,6 +13,7 @@ public class StudyCenter {
     private ArrayList<ScoreThreshold> ScoreThreshold;
     private ArrayList<CompletionStatus> CompletionStatus;
     private ArrayList<PassedComplexity> PassedComplexity;
+    public HashMap<String, List<CompletionStatus>> tilesMap;
 
     public void setScores(ArrayList<Scores> scores) {
         this.Scores = scores;
