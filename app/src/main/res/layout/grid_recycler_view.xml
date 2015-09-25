@@ -10,8 +10,6 @@
         android:id="@+id/grid_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:paddingLeft="16dp"
-        android:paddingTop="16dp"/>
+        android:clipToPadding="false"/>
 
 </LinearLayout>

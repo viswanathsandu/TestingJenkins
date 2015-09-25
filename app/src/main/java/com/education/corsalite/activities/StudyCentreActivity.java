@@ -41,9 +41,16 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         LinearLayout myView = (LinearLayout) inflater.inflate(R.layout.grid_recycler_view, null);
         frameLayout.addView(myView);
-        initUI();
         toolbar.setTitle(getResources().getString(R.string.study_centre));
+        initUI();
+        initDataAdapter();
+        setListeners();
         getStudyCentreData();
+    }
+
+    private void initDataAdapter() {
+        mAdapter = new GridRecyclerAdapter(new HashMap<String, List<CompletionStatus>>(), "");
+        recyclerView.setAdapter(mAdapter);
     }
 
     private void initUI() {
@@ -54,31 +61,36 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         subject1 = (TextView) findViewById(R.id.subject1);
         subject2 = (TextView) findViewById(R.id.subject2);
         subject3 = (TextView) findViewById(R.id.subject3);
-        setListeners();
     }
 
     private void setListeners() {
         subject1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mAdapter = new GridRecyclerAdapter(mStudyCenter.tilesMap,subject1.getText().toString());
-                recyclerView.setAdapter(mAdapter);
+                if(mStudyCenter != null && mStudyCenter.tilesMap != null) {
+                    mAdapter.updateData(mStudyCenter.tilesMap, subject1.getText().toString());
+                    mAdapter.notifyDataSetChanged();
+                }
             }
         });
 
         subject2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mAdapter = new GridRecyclerAdapter(mStudyCenter.tilesMap,subject2.getText().toString());
-                recyclerView.setAdapter(mAdapter);
+                if(mStudyCenter != null && mStudyCenter.tilesMap != null) {
+                    mAdapter.updateData(mStudyCenter.tilesMap, subject2.getText().toString());
+                    mAdapter.notifyDataSetChanged();
+                }
             }
         });
 
         subject3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mAdapter = new GridRecyclerAdapter(mStudyCenter.tilesMap,subject3.getText().toString());
-                recyclerView.setAdapter(mAdapter);
+                if(mStudyCenter != null && mStudyCenter.tilesMap != null) {
+                    mAdapter.updateData(mStudyCenter.tilesMap, subject3.getText().toString());
+                    mAdapter.notifyDataSetChanged();
+                }
             }
         });
     }

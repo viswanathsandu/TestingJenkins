@@ -23,6 +23,11 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         this.key = key;
     }
 
+    public void updateData(HashMap<String, List<CompletionStatus>> completionStatuses, String key) {
+        this.completionStatuses = completionStatuses;
+        this.key = key;
+    }
+
     @Override
     public TextViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.study_centre_grid_view, parent, false);
