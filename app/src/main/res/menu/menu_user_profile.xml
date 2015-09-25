@@ -8,6 +8,16 @@
         app:showAsAction="always"
         android:visible="false"
         android:title="@string/menu_add" />
+
+    <item
+        android:id="@+id/action_add_guardian"
+        app:showAsAction="never"
+        android:title="@string/menu_add_guardian" />
+    <item
+        android:id="@+id/action_add_courses"
+        app:showAsAction="never"
+        android:title="@string/menu_add_courses" />
+
     <item
         android:id="@+id/action_logout"
         app:showAsAction="never"

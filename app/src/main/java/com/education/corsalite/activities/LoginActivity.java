@@ -26,7 +26,7 @@ import retrofit.client.Response;
 public class LoginActivity extends AbstractBaseActivity {
 
 
-    private final String URL = "URL";
+    public static final String URL = "URL";
     @Bind(R.id.login_btn) Button loginBtn;
     @Bind(R.id.tv_forgot_password) TextView forgotPasswordTxt;
     @Bind(R.id.username_txt) EditText usernameTxt;
@@ -53,6 +53,7 @@ public class LoginActivity extends AbstractBaseActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, WebviewActivity.class);
                 intent.putExtra(URL, Constants.FORGOT_PASSWORD_URL);
+                intent.putExtra("clear_cookies", true);
                 startActivity(intent);
             }
         });
