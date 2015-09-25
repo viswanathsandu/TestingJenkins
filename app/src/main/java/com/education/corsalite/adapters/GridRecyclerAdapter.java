@@ -11,12 +11,16 @@ import com.education.corsalite.R;
 import com.education.corsalite.models.responsemodels.CompletionStatus;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapter.TextViewHolder> {
-    private ArrayList<CompletionStatus> completionStatuses;
+    private HashMap<String, List<CompletionStatus>> completionStatuses;
+    private String key;
 
-    public GridRecyclerAdapter(ArrayList<CompletionStatus> completionStatuses) {
+    public GridRecyclerAdapter(HashMap<String, List<CompletionStatus>> completionStatuses, String key) {
         this.completionStatuses = completionStatuses;
+        this.key = key;
     }
 
     @Override
@@ -27,7 +31,8 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
 
     @Override
     public void onBindViewHolder(final TextViewHolder holder, final int position) {
-        final String label = completionStatuses.get(position).getChapterName();
+        ArrayList<CompletionStatus> list = (ArrayList<CompletionStatus>) completionStatuses.get(key);
+        final String label = list.get(position).getChapterName();
         holder.textView.setText(label);
         holder.textView.setOnClickListener(new View.OnClickListener() {
             @Override
