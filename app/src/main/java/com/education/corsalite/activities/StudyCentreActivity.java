@@ -41,7 +41,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        RelativeLayout myView = (RelativeLayout) inflater.inflate(R.layout.grid_recycler_view, null);
+        RelativeLayout myView = (RelativeLayout) inflater.inflate(R.layout.activity_study_center, null);
         frameLayout.addView(myView);
         toolbar.setTitle(getResources().getString(R.string.study_centre));
         initUI();

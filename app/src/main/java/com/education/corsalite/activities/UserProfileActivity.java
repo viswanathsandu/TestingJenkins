@@ -32,6 +32,7 @@ public class UserProfileActivity extends AbstractBaseActivity implements UserPro
     List<ExamDetail> examDetails;
     List<Message> messages;
     List<VirtualCurrencyTransaction> virtualCurrencyTransactions;
+    UserTabBaseAdapter userTabAdapter;
     public static String BALANCE_CURRENCY;
 
     @Override
@@ -51,7 +52,12 @@ public class UserProfileActivity extends AbstractBaseActivity implements UserPro
 
     private void setTabView(List<ExamDetail> examDetailList) {
         viewPager.setOffscreenPageLimit(2);
-        viewPager.setAdapter(new UserTabBaseAdapter(getSupportFragmentManager(), examDetailList));
+        if(userTabAdapter == null) {
+            userTabAdapter = new UserTabBaseAdapter(getSupportFragmentManager(), examDetailList);
+            viewPager.setAdapter(userTabAdapter);
+        } else {
+            userTabAdapter.updateExamDetailData(examDetailList);
+        }
         userProfileLayout.setupWithViewPager(viewPager);
     }
 
