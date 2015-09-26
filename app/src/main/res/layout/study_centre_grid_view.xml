@@ -34,7 +34,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableLeft="@drawable/tiles_timer"
+            android:drawableLeft="@drawable/ico_tile_time"
             android:drawablePadding="4dp"
             android:gravity="center_vertical|left"
             android:text="00:45:40"
@@ -46,7 +46,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableLeft="@drawable/tiles_star"
+            android:drawableLeft="@drawable/ico_tile_score"
             android:drawablePadding="4dp"
             android:gravity="center_vertical|left"
             android:text="28/347"
@@ -58,7 +58,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableLeft="@drawable/tiles_levels"
+            android:drawableLeft="@drawable/ico_tile_level_two"
             android:drawablePadding="4dp"
             android:gravity="center_vertical|left"
             android:text="level 2"
@@ -82,5 +82,5 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/tiles_progress"/>
+        android:src="@drawable/progress_outline"/>
 </LinearLayout>

@@ -19,7 +19,7 @@
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="60dp"
-                android:src="@drawable/navigation_myprofile" />
+                android:src="@drawable/ico_sidemenu_myprofile" />
 
             <TextView
                 android:id="@+id/option_text_1"
@@ -41,7 +41,7 @@
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="60dp"
-                android:src="@drawable/navigation_mygroup" />
+                android:src="@drawable/ico_sidemenu_groups" />
 
             <TextView
                 android:id="@+id/option_text_2"
@@ -63,7 +63,7 @@
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="60dp"
-                android:src="@drawable/navigation_vurtualcurrency" />
+                android:src="@drawable/ico_sidemenu_currency" />
 
             <TextView
                 android:id="@+id/option_text_3"
@@ -85,7 +85,7 @@
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="60dp"
-                android:src="@drawable/navigation_invitefriend" />
+                android:src="@drawable/ico_sidemenu_invite_friend" />
 
             <TextView
                 android:id="@+id/option_text_4"
@@ -107,7 +107,7 @@
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="60dp"
-                android:src="@drawable/navigation_examschedule" />
+                android:src="@drawable/ico_sidemenu_calendar" />
 
             <TextView
                 android:id="@+id/option_text_5"

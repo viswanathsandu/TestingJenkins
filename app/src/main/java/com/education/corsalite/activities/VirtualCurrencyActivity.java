@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import com.education.corsalite.R;
@@ -18,7 +19,7 @@ import com.education.corsalite.utils.Constants;
 public class VirtualCurrencyActivity extends AbstractBaseActivity {
 
     private Toolbar mToolbar;
-    private ImageView redeemBtn;
+    private Button redeemBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +32,7 @@ public class VirtualCurrencyActivity extends AbstractBaseActivity {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         mToolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ico_actionbar_slidemenu));
-        redeemBtn = (ImageView)findViewById(R.id.redeem_btn);
+        redeemBtn = (Button)findViewById(R.id.redeem_btn);
         redeemBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
