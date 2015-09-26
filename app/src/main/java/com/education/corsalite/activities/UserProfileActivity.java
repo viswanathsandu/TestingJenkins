@@ -20,6 +20,7 @@ import com.education.corsalite.models.db.CourseList;
 import com.education.corsalite.models.responsemodels.ExamDetail;
 import com.education.corsalite.models.responsemodels.Message;
 import com.education.corsalite.models.responsemodels.VirtualCurrencyTransaction;
+import com.education.corsalite.utils.Constants;
 
 import java.util.List;
 
@@ -73,7 +74,27 @@ public class UserProfileActivity extends AbstractBaseActivity implements UserPro
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_add_guardian :
+                addGuardian();
+                return true;
+            case R.id.action_add_courses :
+                addCourses();
+                return true;
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void addGuardian() {
+        Intent intent = new Intent(this, WebviewActivity.class);
+        intent.putExtra(LoginActivity.URL, Constants.ADD_GUARDIAN_URL);
+        startActivity(intent);
+    }
+
+    private void addCourses() {
+        Intent intent = new Intent(this, WebviewActivity.class);
+        intent.putExtra(LoginActivity.URL, Constants.ADD_COURSES_URL);
+        startActivity(intent);
     }
 
     @Override

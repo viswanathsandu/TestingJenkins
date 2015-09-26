@@ -4,84 +4,85 @@
 package com.education.corsalite.models.responsemodels;
 
 public class Scores {
-    private String chaptername;
-    private String totaltopics;
-    private String timetaken;
-    private String subjectname;
-    private String totaltestedmarks;
-    private String idcoursesubject;
-    private String idcoursesubjectchapter;
-    private String earnedmarks;
+    private String ChapterName;
+    private String TotalTopics;
+    private String TimeTaken;
+    private String SubjectName;
+    private String TotalTestedMarks;
+    private String idCourseSubject;
+    private String idCourseSubjectChapter;
+    private String EarnedMarks;
+    
 
-    public void setChaptername(String chaptername) {
-        this.chaptername = chaptername;
+    public void setChapterName(String chapterName) {
+        this.ChapterName = chapterName;
     }
 
-    public String getChaptername() {
-        return chaptername;
-    }
-
-
-    public void setTotaltopics(String totaltopics) {
-        this.totaltopics = totaltopics;
-    }
-
-    public String getTotaltopics() {
-        return totaltopics;
+    public String getChapterName() {
+        return ChapterName;
     }
 
 
-    public void setTimetaken(String timetaken) {
-        this.timetaken = timetaken;
+    public void setTotalTopics(String totalTopics) {
+        this.TotalTopics = totalTopics;
     }
 
-    public String getTimetaken() {
-        return timetaken;
+    public String getTotalTopics() {
+        return TotalTopics;
+    }
+
+
+    public void setTimeTaken(String timeTaken) {
+        this.TimeTaken = timeTaken;
+    }
+
+    public String getTimeTaken() {
+        return TimeTaken;
     }
 
 
     public void setSubjectname(String subjectname) {
-        this.subjectname = subjectname;
+        this.SubjectName = subjectname;
     }
 
     public String getSubjectname() {
-        return subjectname;
+        return SubjectName;
     }
 
 
-    public void setTotaltestedmarks(String totaltestedmarks) {
-        this.totaltestedmarks = totaltestedmarks;
+    public void setTotalTestedMarks(String totalTestedMarks) {
+        this.TotalTestedMarks = totalTestedMarks;
     }
 
-    public String getTotaltestedmarks() {
-        return totaltestedmarks;
-    }
-
-
-    public void setIdcoursesubject(String idcoursesubject) {
-        this.idcoursesubject = idcoursesubject;
-    }
-
-    public String getIdcoursesubject() {
-        return idcoursesubject;
+    public String getTotalTestedMarks() {
+        return TotalTestedMarks;
     }
 
 
-    public void setIdcoursesubjectchapter(String idcoursesubjectchapter) {
-        this.idcoursesubjectchapter = idcoursesubjectchapter;
+    public void setIdCourseSubject(String idCourseSubject) {
+        this.idCourseSubject = idCourseSubject;
     }
 
-    public String getIdcoursesubjectchapter() {
-        return idcoursesubjectchapter;
+    public String getIdCourseSubject() {
+        return idCourseSubject;
     }
 
 
-    public void setEarnedmarks(String earnedmarks) {
-        this.earnedmarks = earnedmarks;
+    public void setIdCourseSubjectChapter(String idCourseSubjectChapter) {
+        this.idCourseSubjectChapter = idCourseSubjectChapter;
     }
 
-    public String getEarnedmarks() {
-        return earnedmarks;
+    public String getIdCourseSubjectChapter() {
+        return idCourseSubjectChapter;
+    }
+
+
+    public void setEarnedMarks(String earnedMarks) {
+        this.EarnedMarks = earnedMarks;
+    }
+
+    public String getEarnedMarks() {
+        return EarnedMarks;
     }
 
 }

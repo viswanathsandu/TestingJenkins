@@ -4,64 +4,64 @@
 package com.education.corsalite.models.responsemodels;
 
 public class ScoreThreshold {
-    private String chaptername;
-    private String scoreamber;
-    private String scorered;
-    private String subjectname;
-    private String idcoursesubject;
-    private String idcoursesubjectchapter;
+    private String ChapterName;
+    private String ScoreAmber;
+    private String ScoreRed;
+    private String SubjectName;
+    private String idCourseSubject;
+    private String idCourseSubjectChapter;
 
-    public void setChaptername(String chaptername) {
-        this.chaptername = chaptername;
+    public void setChapterName(String chapterName) {
+        this.ChapterName = chapterName;
     }
 
-    public String getChaptername() {
-        return chaptername;
-    }
-
-
-    public void setScoreamber(String scoreamber) {
-        this.scoreamber = scoreamber;
-    }
-
-    public String getScoreamber() {
-        return scoreamber;
+    public String getChapterName() {
+        return ChapterName;
     }
 
 
-    public void setScorered(String scorered) {
-        this.scorered = scorered;
+    public void setScoreAmber(String scoreAmber) {
+        this.ScoreAmber = scoreAmber;
     }
 
-    public String getScorered() {
-        return scorered;
-    }
-
-
-    public void setSubjectname(String subjectname) {
-        this.subjectname = subjectname;
-    }
-
-    public String getSubjectname() {
-        return subjectname;
+    public String getScoreAmber() {
+        return ScoreAmber;
     }
 
 
-    public void setIdcoursesubject(String idcoursesubject) {
-        this.idcoursesubject = idcoursesubject;
+    public void setScoreRed(String scoreRed) {
+        this.ScoreRed = scoreRed;
     }
 
-    public String getIdcoursesubject() {
-        return idcoursesubject;
+    public String getScoreRed() {
+        return ScoreRed;
     }
 
 
-    public void setIdcoursesubjectchapter(String idcoursesubjectchapter) {
-        this.idcoursesubjectchapter = idcoursesubjectchapter;
+    public void setSubjectName(String subjectName) {
+        this.SubjectName = subjectName;
     }
 
-    public String getIdcoursesubjectchapter() {
-        return idcoursesubjectchapter;
+    public String getSubjectName() {
+        return SubjectName;
+    }
+
+
+    public void setIdCourseSubject(String idCourseSubject) {
+        this.idCourseSubject = idCourseSubject;
+    }
+
+    public String getIdCourseSubject() {
+        return idCourseSubject;
+    }
+
+
+    public void setIdCourseSubjectChapter(String idCourseSubjectChapter) {
+        this.idCourseSubjectChapter = idCourseSubjectChapter;
+    }
+
+    public String getIdCourseSubjectChapter() {
+        return idCourseSubjectChapter;
     }
 
 }
