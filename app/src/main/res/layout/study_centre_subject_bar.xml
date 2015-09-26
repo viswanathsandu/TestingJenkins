@@ -3,47 +3,46 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/gray"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:padding="10dp">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
+        android:layout_centerVertical="true"
         android:orientation="horizontal"
-        android:weightSum="1">
+        android:gravity="center_vertical"
+        android:paddingLeft="15dp">
 
         <TextView
             android:id="@+id/subject1"
-            android:layout_width="160dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="0.33"
-            android:paddingTop="32dp"
-            android:paddingBottom="32dp"
-            android:paddingLeft="32dp"
+            android:layout_weight="1"
             android:text="@string/subject1"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@android:color/black" />
+            android:textColor="@android:color/black"
+            android:paddingLeft="10dp"
+            android:paddingRight="5dp" />
 
         <TextView
             android:id="@+id/subject2"
-            android:layout_width="160dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:paddingTop="32dp"
-            android:paddingBottom="32dp"
+            android:layout_weight="1"
             android:text="@string/subject2"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
             android:textColor="@android:color/black" />
 
         <TextView
             android:id="@+id/subject3"
-            android:layout_width="160dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="0.33"
-            android:paddingTop="32dp"
-            android:paddingBottom="32dp"
+            android:layout_weight="1"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
             android:text="@string/subject3"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/black" />
     </LinearLayout>
 
@@ -55,10 +54,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:orientation="horizontal"
-        android:paddingBottom="32dp"
-        android:paddingLeft="32dp"
-        android:paddingRight="32dp"
-        android:paddingTop="24dp"
+        android:gravity="center_vertical"
         android:weightSum="1">
 
         <View
@@ -74,7 +70,7 @@
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="30dp"
+            android:layout_marginLeft="15dp"
             android:layout_weight="0.25"
             android:background="@drawable/blueshape" />
 
@@ -83,7 +79,7 @@
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="30dp"
+            android:layout_marginLeft="15dp"
             android:layout_weight="0.25"
             android:background="@drawable/yellowshape" />
 
@@ -92,7 +88,7 @@
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="30dp"
+            android:layout_marginLeft="15dp"
             android:layout_weight="0.25"
             android:background="@drawable/greenshape" />
     </LinearLayout>
