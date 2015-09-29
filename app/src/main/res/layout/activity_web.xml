@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#FFFFFF"
     tools:context="com.education.corsalite.activities.WebActivity">
 
     <include
@@ -10,6 +11,7 @@
         layout="@layout/webview_subject_bar" />
 
     <WebView
+        android:layout_marginTop="5dp"
         android:layout_weight="1"
         android:id="@+id/webView_content_reading"
         android:layout_width="match_parent"

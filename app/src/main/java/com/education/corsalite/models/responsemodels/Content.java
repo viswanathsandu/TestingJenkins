@@ -5,23 +5,23 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 /**
- * Created by mt0060 on 30/09/15.
+ * Created by Girish on 30/09/15.
  */
 public class Content extends BaseModel implements Serializable {
 
-    Number idContent;
-    Number idEntity;
+    public Number idContent;
+    public Number idEntity;
     @SerializedName("Type")
-    String type;
+    public String type;
     @SerializedName("Name")
-    String name;
-    String url;
+    public String name;
+    public String url;
     @SerializedName("ContentHtml")
-    String contentHtml;
+    public String contentHtml;
     @SerializedName("Status")
-    String status;
+    public String status;
     @SerializedName("UpdateTime")
-    String updateTime;
+    public String updateTime;
 
     @Override
     public boolean equals(Object o) {

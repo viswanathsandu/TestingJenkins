@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Base64;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,6 +18,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
+import com.education.corsalite.models.responsemodels.ContentResponse;
+import com.education.corsalite.utils.FileUtilities;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -25,7 +29,6 @@ import butterknife.ButterKnife;
  */
 public class WebActivity extends AbstractBaseActivity {
 
-    private final String URL = "URL";
     @Bind(R.id.subject1) TextView tvSubject1;
     @Bind(R.id.subject2) TextView tvSubject2;
     @Bind(R.id.subject3) TextView tvSubject3;
@@ -35,6 +38,8 @@ public class WebActivity extends AbstractBaseActivity {
     @Bind(R.id.iv_forum) ImageView ivForum;
 
     @Bind(R.id.webView_content_reading) WebView webviewContentReading;
+
+    private ContentResponse mContentResponse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,12 +54,43 @@ public class WebActivity extends AbstractBaseActivity {
         if(bundle.containsKey("clear_cookies")) {
             webviewContentReading.clearCache(true);
         }
-        if (bundle.containsKey(URL)) {
-            webviewContentReading.getSettings().setJavaScriptEnabled(true);
-            webviewContentReading.setWebViewClient(new MyWebViewClient());
-            webviewContentReading.loadUrl(bundle.getString(URL));
+        if(bundle.containsKey("contentData")) {
+            mContentResponse = (ContentResponse)bundle.getSerializable("contentData");
+        }
+
+        String url = mContentResponse.contents.get(0).idContent.toString();
+        FileUtilities fileUtilities = new FileUtilities(this);
+
+        try {
+            byte[] data = Base64.decode(mContentResponse.contents.get(0).contentHtml, Base64.DEFAULT);
+            String text = new String(data, "UTF-8");
+            String htmlUrl = fileUtilities.write(url+".html", text);
+            if(htmlUrl != null) {
+                htmlUrl = "file:///" + htmlUrl;
+                loadWeb(htmlUrl);
+            }
+        }catch (Exception e) {
+            Log.e("corsalite", e.toString());
         }
         setListeners();
+    }
+
+    private void loadWeb(String htmlUrl) {
+        // Initialize the WebView
+        webviewContentReading.getSettings().setSupportZoom(true);
+        webviewContentReading.getSettings().setBuiltInZoomControls(true);
+        webviewContentReading.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
+        webviewContentReading.setScrollbarFadingEnabled(true);
+        webviewContentReading.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        webviewContentReading.getSettings().setLoadsImagesAutomatically(true);
+        webviewContentReading.getSettings().setJavaScriptEnabled(true);
+        webviewContentReading.getSettings().setAppCachePath(getExternalCacheDir().getAbsolutePath());
+        webviewContentReading.getSettings().setAppCacheMaxSize(1024 * 1024 * 8);
+        webviewContentReading.loadUrl(htmlUrl);
+
+
+        // Load the URLs inside the WebView, not in the external web browser
+        webviewContentReading.setWebViewClient(new MyWebViewClient());
     }
 
     @Override
@@ -115,9 +151,11 @@ public class WebActivity extends AbstractBaseActivity {
                 case R.id.subject1:
                 case R.id.subject2:
                 case R.id.subject3:
+                    showToast("Subject is clicked");
                     break;
 
                 case R.id.exercise:
+                    showToast("Exercise is clicked");
                     break;
 
                 case R.id.iv_forum:
