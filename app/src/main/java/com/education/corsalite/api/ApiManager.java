@@ -5,6 +5,7 @@ import android.content.res.AssetManager;
 
 import com.education.corsalite.config.AppConfig;
 import com.education.corsalite.enums.NetworkMode;
+import com.education.corsalite.models.responsemodels.ContentIndexResponse;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
 import com.education.corsalite.models.responsemodels.MessageResponse;
@@ -116,6 +117,16 @@ public class ApiManager {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/studycentre.json");
             System.out.print("Response for 'api/studycentre.json' is " + jsonResponse);
             callback.success(new Gson().fromJson(jsonResponse, StudyCenter.class), getRetrofitResponse());
+        }
+    }
+
+    public void getContentIndex(String courseID, String studentId, ApiCallback<ContentIndexResponse> callback) {
+        if(isApiOnline()) {
+            ApiClientService.get().getContentIndexData(studentId, courseID, callback);
+        } else {
+            String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/content_index.json");
+            System.out.print("Response for 'api/studycentre.json' is " + jsonResponse);
+            callback.success(new Gson().fromJson(jsonResponse, ContentIndexResponse.class), getRetrofitResponse());
         }
     }
 

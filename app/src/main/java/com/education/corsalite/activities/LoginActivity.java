@@ -51,7 +51,7 @@ public class LoginActivity extends AbstractBaseActivity {
         forgotPasswordTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, WebviewActivity.class);
+                Intent intent = new Intent(LoginActivity.this, WebActivity.class);
                 intent.putExtra(URL, Constants.FORGOT_PASSWORD_URL);
                 intent.putExtra("clear_cookies", true);
                 startActivity(intent);

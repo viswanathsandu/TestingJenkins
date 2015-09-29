@@ -124,7 +124,8 @@ public class StudyCentreActivity extends AbstractBaseActivity {
 
                     @Override
                     public void success(StudyCenter mStudyCenter, Response response) {
-                        if (mStudyCenter != null && mStudyCenter.getCompletionStatus() != null && mStudyCenter.getCompletionStatus().size() > 0) {
+                        if (mStudyCenter != null && mStudyCenter.getCompletionStatus() != null &&
+                                mStudyCenter.getCompletionStatus().size() > 0) {
                             StudyCentreActivity.this.mStudyCenter = mStudyCenter;
                             setUpStudyCentreData(mStudyCenter);
                             initDataAdapter(mStudyCenter.tilesMap);
