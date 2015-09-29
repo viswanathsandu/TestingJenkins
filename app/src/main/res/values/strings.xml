@@ -42,5 +42,6 @@
     <string name="subject1">Physics</string>
     <string name="subject2">Chemistry</string>
     <string name="subject3">Maths</string>
+    <string name="level_text">level</string>
 
 </resources>
