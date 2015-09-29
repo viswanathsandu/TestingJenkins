@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/green">
+
+    <TextView
+        android:id="@+id/tv_accuracy"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:drawableTop="@drawable/ico_dart"
+        android:drawablePadding="5dp"
+        android:text="Accuracy vs Speed"
+        android:textAlignment="center"
+        android:onClick="onClickTitle"/>
+    <TextView
+        android:id="@+id/tv_progress_report"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:drawableTop="@drawable/ico_dart"
+        android:drawablePadding="5dp"
+        android:text="Progress Report"
+        android:textAlignment="center"
+        android:onClick="onClickTitle"/>
+    <TextView
+        android:id="@+id/tv_test_coverage"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:drawableTop="@drawable/ico_dart"
+        android:drawablePadding="5dp"
+        android:text="Test Coverage"
+        android:textAlignment="center"
+        android:onClick="onClickTitle"/>
+    <TextView
+        android:id="@+id/tv_time_management"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:drawablePadding="5dp"
+        android:drawableTop="@drawable/ico_dart"
+        android:text="Time Management"
+        android:textAlignment="center"
+        android:onClick="onClickTitle"/>
+    <TextView
+        android:id="@+id/tv_recommended_reading"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:drawablePadding="5dp"
+        android:drawableTop="@drawable/ico_dart"
+        android:text="Recommended Reading"
+        android:textAlignment="center"
+        android:onClick="onClickTitle"/>
+</LinearLayout>

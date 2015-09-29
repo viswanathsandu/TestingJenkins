@@ -27,4 +27,8 @@
         android:id="@+id/study_centre"
         app:showAsAction="never"
         android:title="@string/study_centre" />
+    <item
+        android:id="@+id/analytics"
+        app:showAsAction="never"
+        android:title="@string/analytics" />
 </menu>
