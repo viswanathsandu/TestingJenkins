@@ -4,27 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="horizontal">
 
-    <TextView
-        android:gravity="center"
-        android:layout_weight="1"
-        android:id="@+id/tv_effectivedate"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:padding="15dp"
-        android:text="Effective Date"
-        android:textStyle="bold"
-        android:textAllCaps="true"/>
-
-    <TextView
-        android:gravity="center"
-        android:layout_weight="1"
-        android:id="@+id/tv_termdate"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:padding="15dp"
-        android:text="Term Date"
-        android:textStyle="bold"
-        android:textAllCaps="true"/>
 
     <TextView
         android:gravity="center"
@@ -34,7 +13,6 @@
         android:layout_height="wrap_content"
         android:padding="15dp"
         android:text="Message"
-        android:textStyle="bold"
-        android:textAllCaps="true"/>
+        android:textStyle="bold"/>
 
 </LinearLayout>
