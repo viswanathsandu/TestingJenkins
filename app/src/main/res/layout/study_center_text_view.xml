@@ -6,4 +6,4 @@
     android:paddingLeft="10dp"
     android:paddingRight="20dp"
     android:text="@string/subject1"
-    android:textColor="@android:color/black" />
+    style="@style/study_center_title_style"/>

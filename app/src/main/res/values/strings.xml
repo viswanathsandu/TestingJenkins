@@ -11,6 +11,13 @@
     <string name="menu_add">Add</string>
     <string name="menu_add_guardian">Add Guardian</string>
     <string name="menu_add_courses">Add Courses</string>
+    <string name="menu_read_offline">Read Offline</string>
+    <string name="menu_download_pdf">Download PDF</string>
+    <string name="menu_view_notes">View Notes</string>
+    <string name="menu_rate_it">Rate It</string>
+    <string name="menu_content_reading">Content Reading</string>
+
+
     <string name="logout">Logout</string>
     <string name="title_activity_webview">WebviewActivity</string>
     <string name="title_activity_editprofile">Edit Profile</string>
@@ -43,5 +50,6 @@
     <string name="subject2">Chemistry</string>
     <string name="subject3">Maths</string>
     <string name="level_text">level</string>
+    <string name="exercise">Exercise</string>
 
 </resources>
