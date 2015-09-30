@@ -1,6 +1,7 @@
 package com.education.corsalite.api;
 
 import com.education.corsalite.models.requestmodels.EditProfileModel;
+import com.education.corsalite.models.responsemodels.CourseAnalysisResponse;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
 import com.education.corsalite.models.responsemodels.MessageResponse;
@@ -41,4 +42,16 @@ public interface ICorsaliteApi {
 
     @GET("/CourseStudyCenterData")
     void getCourseStudyCenterData(@Query("idStudent") String studentId, @Query("idCourse") String courseId, ApiCallback<StudyCenter> callback);
+
+    //http://staging.corsalite.com/v1/webservices/GetCourseAnalysis?idStudent=36&idCourse=13&idSubject=51&GroupLevel=Chapter&BreakupByDate=Month&DurationInDays=365&ReturnAllRowsWithoutPerfDataAlso=true
+    @GET("/GetCourseAnalysis")
+    void getCourseAnalysis(@Query("idStudent") String studentId,
+                                  @Query("idCourse") String courseId,
+                                  @Query("idSubject")String subjectID,
+                                  @Query("GroupLevel")String groupLevel,
+                                  @Query("BreakupByDate")String breakUpByDate,
+                                  @Query("DurationInDays")String durationInDays,
+                                  @Query("ReturnAllRowsWithoutPerfDataAlso")String returnAllRowsWithourPerfData,
+                                  ApiCallback<CourseAnalysisResponse> callback);
+
 }

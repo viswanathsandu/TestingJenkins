@@ -3,7 +3,6 @@ package com.education.corsalite.activities;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.LinearLayout;
 
 import com.education.corsalite.R;
@@ -21,11 +20,11 @@ import butterknife.ButterKnife;
  */
 public class AnalyticsActivity extends AbstractBaseActivity implements AnalyticsTitleFragment.IAnalyticsTitleFragmentListener {
 
-    final String K_TITLE_ACCURACY = "accuracy";
-    final String K_TITLE_RECOMMENDED_READING = "recommendedReading";
-    final String K_TITLE_TEST_COVERAGE = "testCoverage";
-    final String K_TITLE_TIME_MANAGEMENT = "timeManagement";
-    final String K_TITLE_PROGRESS_REPORT= "progressReport";
+    public static final String K_TITLE_ACCURACY = "accuracy";
+    public static final String K_TITLE_RECOMMENDED_READING = "recommendedReading";
+    public static final String K_TITLE_TEST_COVERAGE = "testCoverage";
+    public static final String K_TITLE_TIME_MANAGEMENT = "timeManagement";
+    public static final String K_TITLE_PROGRESS_REPORT= "progressReport";
 
 
     @Override
@@ -73,25 +72,4 @@ public class AnalyticsActivity extends AbstractBaseActivity implements Analytics
         }
     }
 
-    public void onClickTitle(final View view){
-        String title = null;
-        switch (view.getId()){
-            case R.id.tv_accuracy:
-                title= K_TITLE_ACCURACY;
-                break;
-            case R.id.tv_recommended_reading:
-                title = K_TITLE_RECOMMENDED_READING;
-                break;
-            case R.id.tv_test_coverage:
-                title = K_TITLE_TEST_COVERAGE;
-                break;
-            case R.id.tv_time_management:
-                title = K_TITLE_TIME_MANAGEMENT;
-                break;
-            case R.id.tv_progress_report:
-                title = K_TITLE_PROGRESS_REPORT;
-                break;
-        }
-        onAnalyticsTitleSelected(title);
-    }
 }
