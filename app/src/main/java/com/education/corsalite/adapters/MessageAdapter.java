@@ -42,8 +42,6 @@ public class MessageAdapter extends AbstractRecycleViewAdapter {
 
     public class MessageDataHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.tv_effectivedate) TextView effectiveDateTxt;
-        @Bind(R.id.tv_termdate) TextView termDateTxt;
         @Bind(R.id.tv_message) TextView messageTxt;
 
         View parent;
@@ -58,8 +56,6 @@ public class MessageAdapter extends AbstractRecycleViewAdapter {
             if((position+1)% 2 == 0) {
                 parent.setBackgroundColor(inflater.getContext().getResources().getColor(R.color.tab_recycler_alternate_row));
             }
-            effectiveDateTxt.setText(message.effectiveDate);
-            termDateTxt.setText(message.termDate);
             messageTxt.setText(message.message);
         }
     }
