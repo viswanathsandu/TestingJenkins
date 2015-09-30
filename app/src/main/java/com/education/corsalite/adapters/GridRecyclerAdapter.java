@@ -61,22 +61,22 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
     private void getLevelDrawable(TextViewHolder holder, int level) {
         switch (level) {
             case 0:
-                holder.level.setCompoundDrawables(studyCentreActivity.getResources().getDrawable(R.drawable.ico_tile_level_zero), null, null, null);
+                holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_zero, 0, 0, 0);
                 break;
             case 1:
-                holder.level.setCompoundDrawables(studyCentreActivity.getResources().getDrawable(R.drawable.ico_tile_level_one), null, null, null);
+                holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_one, 0, 0, 0);
                 break;
             case 2:
-                holder.level.setCompoundDrawables(studyCentreActivity.getResources().getDrawable(R.drawable.ico_tile_level_two), null, null, null);
+                holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_two, 0, 0, 0);
                 break;
             case 3:
-                holder.level.setCompoundDrawables(studyCentreActivity.getResources().getDrawable(R.drawable.ico_tile_level_three), null, null, null);
+                holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_three, 0, 0, 0);
                 break;
             case 4:
-                holder.level.setCompoundDrawables(studyCentreActivity.getResources().getDrawable(R.drawable.ico_tile_level_four), null, null, null);
+                holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_four, 0, 0, 0);
                 break;
             case 5:
-                holder.level.setCompoundDrawables(studyCentreActivity.getResources().getDrawable(R.drawable.ico_tile_level_five), null, null, null);
+                holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_five, 0, 0, 0);
                 break;
         }
     }

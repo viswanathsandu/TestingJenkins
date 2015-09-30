@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -33,80 +34,38 @@ import retrofit.client.Response;
 public class StudyCentreActivity extends AbstractBaseActivity {
     private GridRecyclerAdapter mAdapter;
     private RecyclerView recyclerView;
-    //    private TextView subject1;
-//    private TextView subject2;
-//    private TextView subject3;
     private ProgressBar progressBar;
     private StudyCenter mStudyCenter;
     private LinearLayout linearLayout;
+    private ArrayList<String> subjects;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         RelativeLayout myView = (RelativeLayout) inflater.inflate(R.layout.activity_study_center, null);
-        linearLayout = (LinearLayout) findViewById(R.id.subjects_name_id);
+        linearLayout = (LinearLayout) myView.findViewById(R.id.subjects_name_id);
         frameLayout.addView(myView);
         toolbar.setTitle(getResources().getString(R.string.study_centre));
         initUI();
-        setListeners();
         getStudyCentreData();
     }
 
-    private void initDataAdapter(HashMap<String, List<CompletionStatus>> tilesMap) {
+    private void initDataAdapter(HashMap<String, List<CompletionStatus>> tilesMap, String subject) {
         showList();
-        mAdapter = new GridRecyclerAdapter(tilesMap, "Physics", this);
+        mAdapter = new GridRecyclerAdapter(tilesMap, subject, this);
         recyclerView.setAdapter(mAdapter);
     }
 
     private void initUI() {
         recyclerView = (RecyclerView) findViewById(R.id.grid_recycler_view);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
         recyclerView.setAdapter(mAdapter);
-//        subject1 = (TextView) findViewById(R.id.subject1);
-//        subject2 = (TextView) findViewById(R.id.subject2);
-//        subject3 = (TextView) findViewById(R.id.subject3);
         progressBar = (ProgressBar) findViewById(R.id.headerProgress);
         progressBar.setVisibility(View.VISIBLE);
-        setListeners();
     }
 
-    private void setListeners() {
-//        subject1.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                showList();
-//                if (mStudyCenter != null && mStudyCenter.tilesMap != null) {
-//                    mAdapter.updateData(mStudyCenter.tilesMap, subject1.getText().toString());
-//                    mAdapter.notifyDataSetChanged();
-//                }
-//            }
-//        });
-//
-//        subject2.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                showList();
-//                if (mStudyCenter != null && mStudyCenter.tilesMap != null) {
-//                    mAdapter.updateData(mStudyCenter.tilesMap, subject2.getText().toString());
-//                    mAdapter.notifyDataSetChanged();
-//                }
-//            }
-//        });
-//
-//        subject3.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                showList();
-//                if (mStudyCenter != null && mStudyCenter.tilesMap != null) {
-//                    mAdapter.updateData(mStudyCenter.tilesMap, subject3.getText().toString());
-//                    mAdapter.notifyDataSetChanged();
-//                }
-//            }
-//        });
-    }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -141,7 +100,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                         if (mStudyCenter != null && mStudyCenter.getCompletionStatus() != null && mStudyCenter.getCompletionStatus().size() > 0) {
                             StudyCentreActivity.this.mStudyCenter = mStudyCenter;
                             setUpStudyCentreData(mStudyCenter);
-                            initDataAdapter(mStudyCenter.tilesMap);
+                            initDataAdapter(mStudyCenter.tilesMap, subjects.get(0));
                         } else {
                             hideRecyclerView();
                         }
@@ -155,7 +114,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
 
     private void setUpStudyCentreData(StudyCenter mStudyCenter) {
         HashMap<String, List<CompletionStatus>> tilesMap = new HashMap<>();
-        ArrayList<String> subjects = new ArrayList<String>();
+        subjects = new ArrayList<String>();
         for (CompletionStatus completionStatus : mStudyCenter.getCompletionStatus()) {
             if (tilesMap.containsKey(completionStatus.getSubjectName())) {
                 ArrayList<CompletionStatus> arrayList = (ArrayList<CompletionStatus>) tilesMap.get(completionStatus.getSubjectName());
@@ -169,13 +128,34 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         }
         mStudyCenter.tilesMap = tilesMap;
         for (String subject : subjects) {
-            linearLayout.addView(getTextView(subject));
+            TextView tv = getTextView(subject);
+            linearLayout.addView(tv);
         }
     }
 
     private TextView getTextView(String text) {
-        TextView t = (TextView) findViewById(R.id.subject);
-        t.setText(text);
-        return t;
+        View v = getView();
+        TextView tv = (TextView) v.findViewById(R.id.subject);
+        tv.setText(text);
+        setListener(tv, text);
+        return tv;
+    }
+
+    private void setListener(final TextView textView, final String text) {
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showList();
+                if (mStudyCenter != null && mStudyCenter.tilesMap != null) {
+                    mAdapter.updateData(mStudyCenter.tilesMap, text);
+                    mAdapter.notifyDataSetChanged();
+                }
+            }
+        });
+    }
+
+    private View getView() {
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        return inflater.inflate(R.layout.study_center_text_view, null);
     }
 }
