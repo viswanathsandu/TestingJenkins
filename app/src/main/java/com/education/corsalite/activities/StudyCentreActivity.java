@@ -1,11 +1,14 @@
 package com.education.corsalite.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -16,9 +19,11 @@ import com.education.corsalite.adapters.GridRecyclerAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.models.responsemodels.CompletionStatus;
+import com.education.corsalite.models.responsemodels.ContentResponse;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.StudyCenter;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,6 +41,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     private TextView subject3;
     private ProgressBar progressBar;
     private StudyCenter mStudyCenter;
+    private ContentResponse mContentResponse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +52,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         toolbar.setTitle(getResources().getString(R.string.study_centre));
         initUI();
         setListeners();
+        getContentData();
         getStudyCentreData();
     }
 
@@ -53,6 +60,28 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         showList();
         mAdapter = new GridRecyclerAdapter(tilesMap, "Physics");
         recyclerView.setAdapter(mAdapter);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_study_center, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_content_reading :
+                Intent intent = new Intent(StudyCentreActivity.this, WebActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("contentData", mContentResponse);
+                intent.putExtras(bundle);
+                startActivity(intent);
+
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void initUI() {
@@ -109,6 +138,27 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         progressBar.setVisibility(View.GONE);
     }
 
+    private void getContentData() {
+        // TODO : passing static data
+        ApiManager.getInstance(this).getContent("1154", "",
+                new ApiCallback<ContentResponse>() {
+                    @Override
+                    public void failure(CorsaliteError error) {
+                        if (error != null && !TextUtils.isEmpty(error.message)) {
+                            showToast(error.message);
+                        }
+                        hideRecyclerView();
+                    }
+
+                    @Override
+                    public void success(ContentResponse mContentResponse, Response response) {
+                        if (mContentResponse != null) {
+                            StudyCentreActivity.this.mContentResponse = mContentResponse;
+                        }
+                    }
+                });
+    }
+
     private void getStudyCentreData() {
         // TODO : passing static data
         ApiManager.getInstance(this).getStudyCentreData("1154", //LoginUserCache.getInstance().loginResponse.studentId,
@@ -124,7 +174,8 @@ public class StudyCentreActivity extends AbstractBaseActivity {
 
                     @Override
                     public void success(StudyCenter mStudyCenter, Response response) {
-                        if (mStudyCenter != null && mStudyCenter.getCompletionStatus() != null && mStudyCenter.getCompletionStatus().size() > 0) {
+                        if (mStudyCenter != null && mStudyCenter.getCompletionStatus() != null &&
+                                mStudyCenter.getCompletionStatus().size() > 0) {
                             StudyCentreActivity.this.mStudyCenter = mStudyCenter;
                             setUpStudyCentreData(mStudyCenter);
                             initDataAdapter(mStudyCenter.tilesMap);

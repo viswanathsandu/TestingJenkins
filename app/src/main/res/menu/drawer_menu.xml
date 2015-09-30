@@ -31,5 +31,17 @@
             android:checked="false"
             android:icon="@drawable/abc_ratingbar_full_material"
             android:title="@string/exam_schedule" />
+
+        <item
+            android:id="@+id/action_study_center_temp"
+            android:checked="false"
+            android:icon="@drawable/abc_ratingbar_full_material"
+            android:title="Study Center" />
+
+        <item
+            android:id="@+id/action_content_reading_temp"
+            android:checked="false"
+            android:icon="@drawable/abc_ratingbar_full_material"
+            android:title="Content Reading" />
     </group>
 </menu>
