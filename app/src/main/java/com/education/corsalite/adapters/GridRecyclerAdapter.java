@@ -8,6 +8,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.education.corsalite.R;
+import com.education.corsalite.activities.StudyCentreActivity;
 import com.education.corsalite.models.responsemodels.CompletionStatus;
 
 import java.text.SimpleDateFormat;
@@ -20,10 +21,12 @@ import java.util.Locale;
 public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapter.TextViewHolder> {
     private HashMap<String, List<CompletionStatus>> completionStatuses;
     private String key;
+    private StudyCentreActivity studyCentreActivity;
 
-    public GridRecyclerAdapter(HashMap<String, List<CompletionStatus>> completionStatuses, String key) {
+    public GridRecyclerAdapter(HashMap<String, List<CompletionStatus>> completionStatuses, String key, StudyCentreActivity studyCentreActivity) {
         this.completionStatuses = completionStatuses;
         this.key = key;
+        this.studyCentreActivity = studyCentreActivity;
     }
 
     public void updateData(HashMap<String, List<CompletionStatus>> completionStatuses, String key) {
@@ -43,7 +46,9 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         final String label = list.get(position).getChapterName();
         holder.textView.setText(label);
         holder.timespent.setText(getDateFromMillis(Long.parseLong(list.get(position).getTimeSpent())));
-        holder.level.setText("Level"+list.get(position).getCompletedTopics());
+        String level = list.get(position).getCompletedTopics();
+        holder.level.setText(studyCentreActivity.getResources().getString(R.string.level_text) + level);
+        getLevelDrawable(holder, Integer.parseInt(level));
         holder.textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -51,6 +56,32 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
                         holder.textView.getContext(), label, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void getLevelDrawable(TextViewHolder holder, int level) {
+        switch (level) {
+            case 0:
+                holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_zero, 0, 0, 0);
+                break;
+            case 1:
+                holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_one, 0, 0, 0);
+                break;
+            case 2:
+                holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_two, 0, 0, 0);
+                break;
+            case 3:
+                holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_three, 0, 0, 0);
+                break;
+            case 4:
+                holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_four, 0, 0, 0);
+                break;
+            case 5:
+                holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_five, 0, 0, 0);
+                break;
+            default:
+                holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_five, 0, 0, 0);
+                break;
+        }
     }
 
     @Override

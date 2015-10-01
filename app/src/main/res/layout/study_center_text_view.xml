@@ -1,0 +1,9 @@
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/subject"
+    android:layout_width="0dp"
+    android:layout_height="match_parent"
+    android:layout_weight="0.5"
+    android:paddingLeft="10dp"
+    android:paddingRight="20dp"
+    android:text="@string/subject1"
+    style="@style/study_center_title_style"/>
