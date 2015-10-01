@@ -44,7 +44,6 @@ public class CurrencyAdapter extends AbstractRecycleViewAdapter {
     public class CurrencyDataHolder extends RecyclerView.ViewHolder {
 
         @Bind(R.id.tv_date) TextView dateTxt;
-        @Bind(R.id.tv_time) TextView timeTxt;
         @Bind(R.id.tv_event) TextView eventTxt;
         @Bind(R.id.tv_earned) TextView earnedTxt;
         @Bind(R.id.tv_balance) TextView balanceTxt;
@@ -62,12 +61,8 @@ public class CurrencyAdapter extends AbstractRecycleViewAdapter {
             if((position+1)% 2 == 0) {
                 parent.setBackgroundColor(inflater.getContext().getResources().getColor(R.color.tab_recycler_alternate_row));
             }
-            if(virtualCurrencyTransaction.eventDate != null && virtualCurrencyTransaction.eventDate.contains(" ")) {
-                dateTxt.setText(virtualCurrencyTransaction.eventDate.split(" ")[0]);
-                timeTxt.setText(virtualCurrencyTransaction.eventDate.split(" ")[1]);
-            } else {
+            if(virtualCurrencyTransaction.eventDate != null ) {
                 dateTxt.setText(virtualCurrencyTransaction.eventDate);
-                timeTxt.setText("");
             }
             eventTxt.setText(virtualCurrencyTransaction.eventName);
             earnedTxt.setText(virtualCurrencyTransaction.earnedVirtualCurrency);

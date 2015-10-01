@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.education.corsalite.R;
@@ -84,6 +85,11 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
 
         actionBarDrawerToggle.syncState();
+    }
+
+    protected void setToolbarTitle(String title){
+        TextView textView = (TextView) findViewById(R.id.toolbar_title);
+        textView.setText(title);
     }
 
     @Override

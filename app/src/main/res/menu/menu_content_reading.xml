@@ -1,0 +1,30 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.education.corsalite.activities.UserProfileActivity">
+    <item
+        android:id="@+id/action_change_text_size"
+        android:icon="@drawable/ico_actionbar_add"
+        app:showAsAction="always"
+        android:visible="false"
+        android:title="" />
+
+    <item
+        android:id="@+id/action_read_offline"
+        app:showAsAction="never"
+        android:title="@string/menu_read_offline" />
+    <item
+        android:id="@+id/action_download_pdf"
+        app:showAsAction="never"
+        android:title="@string/menu_download_pdf" />
+
+    <item
+        android:id="@+id/action_view_notes"
+        app:showAsAction="never"
+        android:title="@string/menu_view_notes" />
+
+    <item
+        android:id="@+id/action_rate_it"
+        app:showAsAction="never"
+        android:title="@string/menu_rate_it" />
+</menu>

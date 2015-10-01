@@ -2,6 +2,8 @@ package com.education.corsalite.api;
 
 import com.education.corsalite.models.requestmodels.EditProfileModel;
 import com.education.corsalite.models.responsemodels.CourseAnalysisResponse;
+import com.education.corsalite.models.responsemodels.ContentIndexResponse;
+import com.education.corsalite.models.responsemodels.ContentResponse;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
 import com.education.corsalite.models.responsemodels.MessageResponse;
@@ -54,4 +56,9 @@ public interface ICorsaliteApi {
                                   @Query("ReturnAllRowsWithoutPerfDataAlso")String returnAllRowsWithourPerfData,
                                   ApiCallback<CourseAnalysisResponse> callback);
 
+    @GET("/ContentIndex")
+    void getContentIndexData(@Query("idCourse") String courseId, @Query("idStudent") String studentId, ApiCallback<ContentIndexResponse> callback);
+
+    @GET("/Content")
+    void getContentData(@Query("idContents") String idContents, @Query("UpdateTime") String UpdateTime, ApiCallback<ContentResponse> callback);
 }
