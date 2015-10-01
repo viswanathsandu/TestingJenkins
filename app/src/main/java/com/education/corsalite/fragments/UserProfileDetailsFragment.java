@@ -218,6 +218,10 @@ public class UserProfileDetailsFragment extends BaseFragment {
             });
     }
 
+
+
+
+
     private void setEnrolledCourses(String courses) {
         enrolledCoursesTxt.setText(Html.fromHtml(COURSES_ENROLLED_HTML + courses));
     }

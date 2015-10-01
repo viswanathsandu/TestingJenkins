@@ -5,6 +5,8 @@ import android.content.res.AssetManager;
 
 import com.education.corsalite.config.AppConfig;
 import com.education.corsalite.enums.NetworkMode;
+import com.education.corsalite.models.responsemodels.CourseAnalysis;
+import com.education.corsalite.models.responsemodels.CourseAnalysisResponse;
 import com.education.corsalite.models.responsemodels.ContentIndexResponse;
 import com.education.corsalite.models.responsemodels.ContentResponse;
 import com.education.corsalite.models.responsemodels.LoginResponse;
@@ -18,6 +20,9 @@ import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.FileUtils;
 import com.education.corsalite.utils.L;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 
 import java.util.ArrayList;
 
@@ -69,6 +74,30 @@ public class ApiManager {
             L.info("Response for 'api/logout.json' is "+jsonResponse);
             callback.success(new Gson().fromJson(jsonResponse, LogoutResponse.class), getRetrofitResponse());
         }
+    }
+    public void getCourseAnalysisData(String studentId,String courseId,String subjectId,
+                                      String groupLevel,String breakUpByDate,
+                                      String durationInDays,String returnAllRowsWithourPerfData,
+                                      ApiCallback<CourseAnalysisResponse> callback){
+        if(isApiOnline()) {
+            ApiClientService.get().getCourseAnalysis(studentId,courseId,subjectId,groupLevel,breakUpByDate,durationInDays,returnAllRowsWithourPerfData, callback );
+        } else {
+            String jsonResponse=null;
+            if(groupLevel.equalsIgnoreCase("chapter")) {
+                jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/course_analysis_by_chapter.json");
+            }else if(groupLevel.equalsIgnoreCase("dates")) {
+                L.info("Response for 'api/course_analysis_by_dates.json' is " + jsonResponse);
+            }
+            JsonParser jsonParser = new JsonParser();
+            JsonArray analyticsarray= jsonParser.parse(jsonResponse).getAsJsonArray();
+            CourseAnalysisResponse response = new CourseAnalysisResponse();
+            for ( JsonElement aUser : analyticsarray ) {
+                CourseAnalysis courseAnalysis = new Gson().fromJson(aUser, CourseAnalysis.class);
+                response.courseAnalysisList.add(courseAnalysis);
+            }
+            callback.success(response, getRetrofitResponse());
+        }
+
     }
 
     public void getUserProfile(String studentId, ApiCallback<UserProfileResponse> callback) {
@@ -140,6 +169,8 @@ public class ApiManager {
             callback.success(new Gson().fromJson(jsonResponse, ContentResponse.class), getRetrofitResponse());
         }
     }
+
+
 
 
 }

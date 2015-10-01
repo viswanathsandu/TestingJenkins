@@ -103,7 +103,8 @@
                 android:layout_below="@id/tv_emailId"
                 android:text="Institute: "
                 android:textColor="@android:color/black"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/tv_institute"
@@ -111,13 +112,14 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_emailId"
                 android:layout_toRightOf="@id/tv_instituteHeader"
-                android:textColor="@color/text_gray" />
+                android:textColor="@color/text_gray"
+                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/tv_enrolled_course"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tv_instituteHeader"
+                android:layout_below="@id/tv_emailId"
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:lineSpacingMultiplier="1.5"

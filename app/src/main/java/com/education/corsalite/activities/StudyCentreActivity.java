@@ -42,7 +42,6 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     private StudyCenter mStudyCenter;
     private LinearLayout linearLayout;
     private ArrayList<String> subjects;
-    private ContentResponse mContentResponse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +52,6 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         frameLayout.addView(myView);
         setToolbarTitle(getResources().getString(R.string.study_centre));
         initUI();
-//        getContentData();
         getStudyCentreData();
     }
 
@@ -74,12 +72,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_content_reading :
-                Intent intent = new Intent(StudyCentreActivity.this, WebActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("contentData", mContentResponse);
-                intent.putExtras(bundle);
-                startActivity(intent);
-
+                getContentData();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -108,27 +101,6 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     private void showList() {
         recyclerView.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
-    }
-
-    private void getContentData() {
-        // TODO : passing static data
-        ApiManager.getInstance(this).getContent("1154", "",
-                new ApiCallback<ContentResponse>() {
-                    @Override
-                    public void failure(CorsaliteError error) {
-                        if (error != null && !TextUtils.isEmpty(error.message)) {
-                            showToast(error.message);
-                        }
-                        hideRecyclerView();
-                    }
-
-                    @Override
-                    public void success(ContentResponse mContentResponse, Response response) {
-                        if (mContentResponse != null) {
-                            StudyCentreActivity.this.mContentResponse = mContentResponse;
-                        }
-                    }
-                });
     }
 
     private void getStudyCentreData() {

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:gravity="center"
+        android:id="@+id/tv_subject_name"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:padding="15dp"
+        android:textStyle="bold"
+        android:text="Subject"
+        android:textAllCaps="true"
+        android:singleLine="true"
+        android:ellipsize="end"/>
+
+    <TextView
+        android:gravity="center"
+        android:layout_weight="1"
+        android:id="@+id/tv_chapter"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:textStyle="bold"
+        android:text="Chapter"
+        android:textAllCaps="true"
+        android:singleLine="true"
+        android:ellipsize="end"/>
+
+
+    <TextView
+        android:gravity="center"
+        android:layout_weight="1"
+        android:id="@+id/tv_topic"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:textStyle="bold"
+        android:text="Topic"
+        android:textAllCaps="true"
+        android:singleLine="true"
+        android:ellipsize="end"/>
+
+    <TextView
+        android:gravity="center"
+        android:layout_weight="1"
+        android:id="@+id/tv_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:textStyle="bold"
+        android:text="Date"
+        android:textAllCaps="true"
+        android:singleLine="true"
+        android:ellipsize="end"/>
+
+    <TextView
+        android:gravity="center"
+        android:layout_weight="1"
+        android:id="@+id/tv_time"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:textStyle="bold"
+        android:text="Time"
+        android:textAllCaps="true"
+        android:singleLine="true"
+        android:ellipsize="end"/>
+
+    <TextView
+        android:gravity="center"
+        android:layout_weight="1"
+        android:id="@+id/tv_marks"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:textStyle="bold"
+        android:text="Marks"
+        android:textAllCaps="true"
+        android:singleLine="true"
+        android:ellipsize="end"/>
+
+    <TextView
+        android:gravity="center"
+        android:layout_weight="1"
+        android:id="@+id/tv_accuracy"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:textStyle="bold"
+        android:text="Accuracy"
+        android:textAllCaps="true"
+        android:singleLine="true"
+        android:ellipsize="end"/>
+
+    <TextView
+        android:gravity="center"
+        android:layout_weight="1"
+        android:id="@+id/tv_speed"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:textStyle="bold"
+        android:text="Speed"
+        android:textAllCaps="true"
+        android:singleLine="true"
+        android:ellipsize="end"/>
+</LinearLayout>

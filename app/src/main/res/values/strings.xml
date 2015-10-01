@@ -31,6 +31,9 @@
     <string name="virtual_currency_fetched">Virtual currency fetched successfully...</string>
     <string name="virtual_currency_fetch_failed">Failed to fetch virtual currency information</string>
     <string name="study_centre">Study Centre</string>
+    <string name="analytics">Analytics</string>
+
+
 
     <!--Fonts-->
     <string name="roboto_regular">fonts/Roboto-Regular.ttf</string>
