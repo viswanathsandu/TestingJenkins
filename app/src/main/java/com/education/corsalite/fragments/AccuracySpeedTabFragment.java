@@ -11,9 +11,19 @@ import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
+import com.education.corsalite.models.responsemodels.CourseAnalysis;
 import com.education.corsalite.models.responsemodels.CourseAnalysisResponse;
 import com.education.corsalite.utils.L;
 import com.github.mikephil.charting.charts.ScatterChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.ScatterData;
+import com.github.mikephil.charting.data.ScatterDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -24,6 +34,8 @@ import retrofit.client.Response;
  */
 public class AccuracySpeedTabFragment extends Fragment   {
 
+    private final String CHAPTER = "chapter";
+    private final String DATES = "dates";
     @Bind(R.id.sch_accuray_chapter)ScatterChart accuracyChapterChart;
     @Bind(R.id.sch_accuray_date)ScatterChart accuracyDateChart;
 
@@ -44,7 +56,7 @@ public class AccuracySpeedTabFragment extends Fragment   {
 
                     @Override
                     public void success(CourseAnalysisResponse courseAnalysis, Response response) {
-                        buildChapterGraphData();
+                        buildChapterGraphData(courseAnalysis,CHAPTER);
                     }
                 });
 
@@ -57,7 +69,7 @@ public class AccuracySpeedTabFragment extends Fragment   {
 
                     @Override
                     public void success(CourseAnalysisResponse courseAnalysis, Response response) {
-                        buildDateGraphData();
+                        buildChapterGraphData(courseAnalysis,DATES);
                     }
                 });
 
@@ -65,17 +77,57 @@ public class AccuracySpeedTabFragment extends Fragment   {
     }
 
     private void initializeGraph(){
+        Legend l = accuracyChapterChart.getLegend();
+        l.setPosition(Legend.LegendPosition.RIGHT_OF_CHART);
+        Legend l1 = accuracyDateChart.getLegend();
+        l1.setPosition(Legend.LegendPosition.RIGHT_OF_CHART);
+    }
 
+    private void buildChapterGraphData(CourseAnalysisResponse courseAnalysisResponse,String graphType){
+        ArrayList<String> xVals = new ArrayList<>();
 
+        HashMap<String,ArrayList<Entry>> numYValEntries = new HashMap<>();
+        for (CourseAnalysis analysisDetail: courseAnalysisResponse.courseAnalysisList) {
+            if(analysisDetail.speed == null || analysisDetail.accuracy == null) {
+                analysisDetail.speed = "0";
+                analysisDetail.accuracy = "0";
+            }
+
+            xVals.add(analysisDetail.speed);
+
+            if (numYValEntries.get(analysisDetail.chapterName) == null) {
+                    ArrayList<Entry> list = new ArrayList<>();
+                    list.add(new Entry(Float.valueOf(analysisDetail.accuracy), xVals.indexOf(analysisDetail.speed)));
+                    numYValEntries.put(analysisDetail.chapterName, list);
+            } else {
+                    ArrayList<Entry> list = numYValEntries.get(analysisDetail.chapterName);
+                    list.add(new Entry(Float.valueOf(analysisDetail.accuracy), xVals.indexOf(analysisDetail.speed)));
+                    numYValEntries.put(analysisDetail.chapterName, list);
+            }
+        }
+
+        ArrayList<ScatterDataSet> scatterDataSetList = new ArrayList<>();
+
+        int i=0;
+        for (Map.Entry<String,ArrayList<Entry>> entry : numYValEntries.entrySet()) {
+            ScatterDataSet dataSet = new ScatterDataSet(entry.getValue(),entry.getKey());
+            scatterDataSetList.add(dataSet);
+            dataSet.setColor(ColorTemplate.COLORFUL_COLORS[i%5]);
+            dataSet.setScatterShape(ScatterChart.getAllPossibleShapes()[i % 4]);
+            dataSet.setScatterShapeSize(8f);
+            i++;
+        }
+
+        ScatterData data = new ScatterData(xVals, scatterDataSetList);
+        if(graphType.equalsIgnoreCase(CHAPTER)) {
+            accuracyChapterChart.setData(data);
+            accuracyChapterChart.invalidate();
+        }else{
+            accuracyDateChart.setData(data);
+            accuracyDateChart.invalidate();
+        }
 
 
     }
 
-    private void buildChapterGraphData(){
-
-    }
-
-    private void buildDateGraphData(){
-
-    }
 }

@@ -85,7 +85,9 @@ public class ApiManager {
             String jsonResponse=null;
             if(groupLevel.equalsIgnoreCase("chapter")) {
                 jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/course_analysis_by_chapter.json");
+                L.info("Response for 'api/course_analysis_by_chapter.json' is " + jsonResponse);
             }else if(groupLevel.equalsIgnoreCase("dates")) {
+                jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/course_analysis_by_date.json");
                 L.info("Response for 'api/course_analysis_by_dates.json' is " + jsonResponse);
             }
             JsonParser jsonParser = new JsonParser();
