@@ -11,7 +11,7 @@
         <include layout="@layout/header" />
 
         <LinearLayout
-            android:id="@+id/menu_option_1"
+            android:id="@+id/menu_profile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -33,7 +33,7 @@
 
 
         <LinearLayout
-            android:id="@+id/menu_option_2"
+            android:id="@+id/menu_groups"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -55,7 +55,7 @@
 
 
         <LinearLayout
-            android:id="@+id/menu_option_3"
+            android:id="@+id/menu_virtual_currency"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -77,7 +77,7 @@
 
 
         <LinearLayout
-            android:id="@+id/menu_option_4"
+            android:id="@+id/menu_invite_friends"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -99,7 +99,7 @@
 
 
         <LinearLayout
-            android:id="@+id/menu_option_5"
+            android:id="@+id/menu_exam_schedule"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -116,6 +116,70 @@
                 android:layout_gravity="center_vertical"
                 android:paddingLeft="16dp"
                 android:text="@string/exam_schedule"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/menu_study_center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="60dp"
+                android:src="@drawable/ico_sidemenu_invite_friend" />
+
+            <TextView
+                android:id="@+id/option_text_6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:paddingLeft="16dp"
+                android:text="Study Center"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/menu_content_reading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="60dp"
+                android:src="@drawable/ico_sidemenu_calendar" />
+
+            <TextView
+                android:id="@+id/option_text_7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:paddingLeft="16dp"
+                android:text="Content Reading"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/menu_analytics"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="60dp"
+                android:src="@drawable/ico_sidemenu_invite_friend" />
+
+            <TextView
+                android:id="@+id/option_analytics"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:paddingLeft="16dp"
+                android:text="Analytics"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </LinearLayout>
     </LinearLayout>
