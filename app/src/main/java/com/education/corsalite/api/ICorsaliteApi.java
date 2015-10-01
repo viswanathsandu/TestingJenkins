@@ -8,6 +8,7 @@ import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
 import com.education.corsalite.models.responsemodels.MessageResponse;
 import com.education.corsalite.models.responsemodels.StudyCenter;
+import com.education.corsalite.models.responsemodels.TestCoverage;
 import com.education.corsalite.models.responsemodels.UserProfileResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencyBalanceResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencySummaryResponse;
@@ -57,6 +58,12 @@ public interface ICorsaliteApi {
                                   @Query("DurationInDays")String durationInDays,
                                   @Query("ReturnAllRowsWithoutPerfDataAlso")String returnAllRowsWithourPerfData,
                                   ApiCallback<List<CourseAnalysis>> callback);
+
+    @GET("/GetTestCoverage")
+    void getTestCoverage(@Query("idStudent") String studentId,
+                           @Query("idCourse") String courseId,
+                           ApiCallback<List<TestCoverage>> callback);
+
 
     @GET("/ContentIndex")
     void getContentIndexData(@Query("idCourse") String courseId, @Query("idStudent") String studentId, ApiCallback<ContentIndexResponse> callback);

@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
@@ -23,7 +24,9 @@ import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -34,36 +37,19 @@ import retrofit.client.Response;
  */
 public class TimeManagementTabFragment extends Fragment {
 
-    @Bind(R.id.pc_chemistry)PieChart graphChemistry;
-    @Bind(R.id.pc_maths)PieChart graphMaths;
-    @Bind(R.id.pc_english)PieChart graphEnglish;
-    @Bind(R.id.pc_lr)PieChart graphLogicalReasoning;
-    @Bind(R.id.pc_physics)PieChart graphPhysics;
     @Bind(R.id.pc_subject)PieChart graphBySubject;
+    @Bind(R.id.ll_time_mgmnt)LinearLayout mLinearLayout;
 
-
+    HashMap<String,List<CourseAnalysis>> courseDataMap;
     final String SUBJECT = "subject";
     final String CHAPTER = "chapter";
-
-    final String SUBJECT_PHYSICS = "Physics";
-    final String SUBJECT_CHEMISTRY = "Chemistry";
-    final String SUBJECT_MATHS = "Maths";
-    final String SUBJECT_ENGLISH = "English";
-    final String SUBJECT_LOGICAL_REASONING = "LogicalReasoning";
-
-    List<CourseAnalysis> physicsDataList = new ArrayList<>();
-    List<CourseAnalysis> chemistryDataList = new ArrayList<>();
-    List<CourseAnalysis> mathsDataList = new ArrayList<>();
-    List<CourseAnalysis> englishDataList = new ArrayList<>();
-    List<CourseAnalysis> lrDataList = new ArrayList<>();
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_time_management_tab,container,false);
-        ButterKnife.bind(this,v);
+        ButterKnife.bind(this, v);
 
-        initializeGraph();
         ApiManager.getInstance(getActivity()).getCourseAnalysisData("1154", "13", null, "Subject", "None", "30", "true",
                 new ApiCallback<List<CourseAnalysis>>() {
                     @Override
@@ -73,6 +59,7 @@ public class TimeManagementTabFragment extends Fragment {
 
                     @Override
                     public void success(List<CourseAnalysis> courseAnalysisList, Response response) {
+                        initializeGraph(graphBySubject);
                         buildGraphData(courseAnalysisList, SUBJECT, graphBySubject);
                     }
                 });
@@ -88,32 +75,12 @@ public class TimeManagementTabFragment extends Fragment {
                     @Override
                     public void success(List<CourseAnalysis> courseAnalysisList, Response response) {
                         buildChapterData(courseAnalysisList);
-                        if(physicsDataList.size() == 0){
-                            graphPhysics.setVisibility(View.GONE);
-                        }else{
-                            buildGraphData(physicsDataList, CHAPTER, graphPhysics);
+                        for (Map.Entry<String,List<CourseAnalysis>> entry : courseDataMap.entrySet()) {
+                            PieChart chart = new PieChart(getActivity());
+                            mLinearLayout.addView(chart,new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,800));
+                            initializeGraph(chart);
+                            buildGraphData(entry.getValue(), CHAPTER, chart);
                         }
-                        if(chemistryDataList.size() == 0){
-                            graphChemistry.setVisibility(View.GONE);
-                        }else{
-                            buildGraphData(chemistryDataList, CHAPTER, graphChemistry);
-                        }
-                        if(mathsDataList.size() == 0){
-                            graphMaths.setVisibility(View.GONE);
-                        }else{
-                            buildGraphData(mathsDataList,CHAPTER,graphMaths);
-                        }
-                        if(lrDataList.size() == 0){
-                            graphLogicalReasoning.setVisibility(View.GONE);
-                        }else{
-                            buildGraphData(lrDataList,CHAPTER,graphLogicalReasoning);
-                        }
-                        if(englishDataList.size() == 0){
-                            graphEnglish.setVisibility(View.GONE);
-                        }else{
-                            buildGraphData(englishDataList,CHAPTER,graphEnglish);
-                        }
-
                     }
                 });
 
@@ -121,50 +88,26 @@ public class TimeManagementTabFragment extends Fragment {
         return v;
     }
 
-    private void initializeGraph(){
-        graphBySubject.setDrawHoleEnabled(false);
-        graphPhysics.setDrawHoleEnabled(false);
-        graphEnglish.setDrawHoleEnabled(false);
-        graphChemistry.setDrawHoleEnabled(false);
-        graphMaths.setDrawHoleEnabled(false);
-        graphLogicalReasoning.setDrawHoleEnabled(false);
+    private void initializeGraph(PieChart mChart){
+        mChart.setDrawHoleEnabled(false);
+        mChart.setUsePercentValues(true);
+        mChart.getLegend().setPosition(Legend.LegendPosition.RIGHT_OF_CHART);
 
-        graphBySubject.setUsePercentValues(true);
-        graphLogicalReasoning.setUsePercentValues(true);
-        graphMaths.setUsePercentValues(true);
-        graphPhysics.setUsePercentValues(true);
-        graphChemistry.setUsePercentValues(true);
-        graphEnglish.setUsePercentValues(true);
-
-
-        graphBySubject.getLegend().setPosition(Legend.LegendPosition.RIGHT_OF_CHART);
-        graphLogicalReasoning.getLegend().setPosition(Legend.LegendPosition.RIGHT_OF_CHART);
-        graphPhysics.getLegend().setPosition(Legend.LegendPosition.RIGHT_OF_CHART);
-        graphMaths.getLegend().setPosition(Legend.LegendPosition.RIGHT_OF_CHART);
-        graphChemistry.getLegend().setPosition(Legend.LegendPosition.RIGHT_OF_CHART);
-        graphEnglish.getLegend().setPosition(Legend.LegendPosition.RIGHT_OF_CHART);
-
-
-        }
+    }
 
     private void buildChapterData(List<CourseAnalysis> courseAnalysisList){
+
+        courseDataMap = new HashMap<>();
+
         for(CourseAnalysis course:courseAnalysisList){
-            switch (course.subjectName){
-                case SUBJECT_PHYSICS:
-                    physicsDataList.add(course);
-                    break;
-                case SUBJECT_CHEMISTRY:
-                    chemistryDataList.add(course);
-                    break;
-                case SUBJECT_ENGLISH:
-                    englishDataList.add(course);
-                    break;
-                case SUBJECT_MATHS:
-                    mathsDataList.add(course);
-                    break;
-                case SUBJECT_LOGICAL_REASONING:
-                    lrDataList.add(course);
-                    break;
+            if(courseDataMap.get(course.subjectName) == null){
+                ArrayList<CourseAnalysis> courseDataList = new ArrayList<>();
+                courseDataList.add(course);
+                courseDataMap.put(course.subjectName,courseDataList);
+            }else{
+                List<CourseAnalysis> courseDataList = courseDataMap.get(course.subjectName);
+                courseDataList.add(course);
+                courseDataMap.put(course.subjectName,courseDataList);
             }
         }
     }

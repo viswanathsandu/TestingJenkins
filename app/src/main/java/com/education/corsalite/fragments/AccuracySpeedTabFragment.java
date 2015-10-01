@@ -110,7 +110,7 @@ public class AccuracySpeedTabFragment extends Fragment   {
                     list.add(new Entry(Float.valueOf(analysisDetail.accuracy), xVals.indexOf(analysisDetail.speed)));
                     numYValEntries.put(key, list);
             } else {
-                    ArrayList<Entry> list = numYValEntries.get(analysisDetail.chapterName);
+                    ArrayList<Entry> list = numYValEntries.get(key);
                     list.add(new Entry(Float.valueOf(analysisDetail.accuracy), xVals.indexOf(analysisDetail.speed)));
                     numYValEntries.put(key, list);
             }

@@ -12,6 +12,7 @@ import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
 import com.education.corsalite.models.responsemodels.MessageResponse;
 import com.education.corsalite.models.responsemodels.StudyCenter;
+import com.education.corsalite.models.responsemodels.TestCoverage;
 import com.education.corsalite.models.responsemodels.UserProfileResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencyBalanceResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencySummaryResponse;
@@ -98,6 +99,24 @@ public class ApiManager {
                 courseAnalysisList.add(courseAnalysis);
             }
             callback.success(courseAnalysisList, getRetrofitResponse());
+        }
+
+    }
+
+    public void getTestCoverage(String studentId,String courseId,ApiCallback<List<TestCoverage>> callback){
+        if(isApiOnline()) {
+            ApiClientService.get().getTestCoverage(studentId, courseId, callback);
+        } else {
+            String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/test_coverage.json");
+            L.info("Response for 'api/test_coverage.json' is " + jsonResponse);
+            JsonParser jsonParser = new JsonParser();
+            JsonArray analyticsarray= jsonParser.parse(jsonResponse).getAsJsonArray();
+            List<TestCoverage> testCoverageList = new ArrayList<>();
+            for ( JsonElement aUser : analyticsarray ) {
+                TestCoverage testCoverage = new Gson().fromJson(aUser, TestCoverage.class);
+                testCoverageList.add(testCoverage);
+            }
+            callback.success(testCoverageList, getRetrofitResponse());
         }
 
     }
