@@ -12,7 +12,6 @@ import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.CourseAnalysis;
-import com.education.corsalite.models.responsemodels.CourseAnalysisResponse;
 import com.education.corsalite.utils.L;
 import com.github.mikephil.charting.charts.ScatterChart;
 import com.github.mikephil.charting.components.Legend;
@@ -23,6 +22,7 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -48,28 +48,28 @@ public class AccuracySpeedTabFragment extends Fragment   {
         initializeGraph();
         //TODO: Build from api response later
         ApiManager.getInstance(getActivity()).getCourseAnalysisData("1154", "13", "51", "Chapter", "Month", "365", "true",
-                new ApiCallback<CourseAnalysisResponse>() {
+                new ApiCallback<List<CourseAnalysis>>() {
                     @Override
                     public void failure(CorsaliteError error) {
                         L.error(error.message);
                     }
 
                     @Override
-                    public void success(CourseAnalysisResponse courseAnalysis, Response response) {
-                        buildChapterGraphData(courseAnalysis,CHAPTER);
+                    public void success(List<CourseAnalysis> courseAnalysisList, Response response) {
+                        buildChapterGraphData(courseAnalysisList,CHAPTER);
                     }
                 });
 
         ApiManager.getInstance(getActivity()).getCourseAnalysisData("1154", "13", "51", "Dates", "Month", "365", "true",
-                new ApiCallback<CourseAnalysisResponse>() {
+                new ApiCallback<List<CourseAnalysis>>() {
                     @Override
                     public void failure(CorsaliteError error) {
                         L.error(error.message);
                     }
 
                     @Override
-                    public void success(CourseAnalysisResponse courseAnalysis, Response response) {
-                        buildChapterGraphData(courseAnalysis,DATES);
+                    public void success(List<CourseAnalysis> courseAnalysisList, Response response) {
+                        buildChapterGraphData(courseAnalysisList,DATES);
                     }
                 });
 
@@ -81,13 +81,17 @@ public class AccuracySpeedTabFragment extends Fragment   {
         l.setPosition(Legend.LegendPosition.RIGHT_OF_CHART);
         Legend l1 = accuracyDateChart.getLegend();
         l1.setPosition(Legend.LegendPosition.RIGHT_OF_CHART);
+        setMarkerView();
     }
 
-    private void buildChapterGraphData(CourseAnalysisResponse courseAnalysisResponse,String graphType){
+    private void setMarkerView(){
+        //TODO
+    }
+    private void buildChapterGraphData(List<CourseAnalysis> courseAnalysisList,String graphType){
         ArrayList<String> xVals = new ArrayList<>();
 
         HashMap<String,ArrayList<Entry>> numYValEntries = new HashMap<>();
-        for (CourseAnalysis analysisDetail: courseAnalysisResponse.courseAnalysisList) {
+        for (CourseAnalysis analysisDetail: courseAnalysisList) {
             if(analysisDetail.speed == null || analysisDetail.accuracy == null) {
                 analysisDetail.speed = "0";
                 analysisDetail.accuracy = "0";
@@ -95,14 +99,20 @@ public class AccuracySpeedTabFragment extends Fragment   {
 
             xVals.add(analysisDetail.speed);
 
-            if (numYValEntries.get(analysisDetail.chapterName) == null) {
+            String key = null;
+            if(graphType.equalsIgnoreCase(CHAPTER)){
+                key = analysisDetail.chapterName;
+            }else if(graphType.equalsIgnoreCase(DATES)){
+                key = analysisDetail.date;
+            }
+            if (numYValEntries.get(key) == null) {
                     ArrayList<Entry> list = new ArrayList<>();
                     list.add(new Entry(Float.valueOf(analysisDetail.accuracy), xVals.indexOf(analysisDetail.speed)));
-                    numYValEntries.put(analysisDetail.chapterName, list);
+                    numYValEntries.put(key, list);
             } else {
                     ArrayList<Entry> list = numYValEntries.get(analysisDetail.chapterName);
                     list.add(new Entry(Float.valueOf(analysisDetail.accuracy), xVals.indexOf(analysisDetail.speed)));
-                    numYValEntries.put(analysisDetail.chapterName, list);
+                    numYValEntries.put(key, list);
             }
         }
 
