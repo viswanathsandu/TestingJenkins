@@ -1,6 +1,7 @@
 package com.education.corsalite.fragments;
 
 import android.app.Fragment;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
@@ -54,11 +55,21 @@ public class TestCoverageTabFragment extends Fragment {
             public void success(List<TestCoverage> testCoverages, Response response) {
                 buildTestData(testCoverages);
                 for (Map.Entry<String,List<TestCoverage>> entry : courseTestDataMap.entrySet()) {
+
+                    TextView mTableDesc = new TextView(getActivity());
+                    mTableDesc.setText("Test Coverage (%) by Subject - " + entry.getKey());
+                    mTableDesc.setTypeface(null, Typeface.BOLD);
+                    mTableDesc.setTextSize(20);
+                    mTableDesc.setGravity(Gravity.CENTER);
+                    mTableDesc.setPadding(5, 5, 5, 5);
+                    mLinearLayout.addView(mTableDesc);
+
                     TableLayout mTableLayout = new TableLayout(getActivity());
-                    mLinearLayout.addView(mTableLayout,new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
                     buildTable(entry.getValue(), mTableLayout);
-                    mTableLayout.setPadding(15, 15, 10, 20);
+                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+                    lp.setMargins(5, 20, 5, 100);
                     mTableLayout.setGravity(Gravity.CENTER);
+                    mLinearLayout.addView(mTableLayout,lp);
                 }
             }
         });
@@ -95,8 +106,13 @@ public class TestCoverageTabFragment extends Fragment {
         for(int i=1;i<=maxLevel;i++){
             levelRowData[i]=new TextView(getActivity());
             levelRowData[i].setText("Level " + i);
+            levelRowData[i].setTextSize(16);
+            levelRowData[i].setTypeface(null, Typeface.BOLD);
+            levelRowData[i].setPadding(10, 2, 10, 2);
+            levelRowData[i].setGravity(Gravity.CENTER);
             levelRow.addView(levelRowData[i]);
         }
+
         tableLayout.addView(levelRow);
 
         for (Map.Entry<String, String[]> entry : tableDataMap.entrySet()) {
@@ -105,23 +121,54 @@ public class TestCoverageTabFragment extends Fragment {
             TableRow tableRow = new TableRow(getActivity());
             tableRowData[index] = new TextView(getActivity());
             tableRowData[index].setText(entry.getKey());
+            tableRowData[index].setTextSize(16);
+            tableRowData[index].setTypeface(null, Typeface.BOLD);
+            tableRowData[index].setPadding(5, 2, 5, 2);
+            tableRowData[index].setGravity(Gravity.RIGHT);
             tableRow.addView(tableRowData[index]);
+
             String[] row = entry.getValue();
             for (int i=1;i<row.length;i++) {
                 index +=1;
                 tableRowData[index] = new TextView(getActivity());
                 tableRowData[index].setText(row[i]);
+                setTextViewLayouParams(tableRowData[index]);
                 tableRow.addView(tableRowData[index]);
             }
+
             tableLayout.addView(tableRow);
         }
     }
 
 
+
+    private void setTextViewLayouParams(TextView textViewLayoutParams){
+        textViewLayoutParams.setPadding(10, 2, 10, 2);
+        textViewLayoutParams.setGravity(Gravity.CENTER);
+        if(textViewLayoutParams.getText() == null || textViewLayoutParams.getText().toString().isEmpty()){
+            return;
+        }
+        float value = Float.parseFloat(textViewLayoutParams.getText().toString());
+            if(value < 20.0 && value>=0.0 ){
+                textViewLayoutParams.setBackgroundColor(getResources().getColor(R.color.table_level_1));
+            }else if(value>=20.0 && value< 40.0){
+                textViewLayoutParams.setBackgroundColor(getResources().getColor(R.color.table_level_2));
+
+            }else if(value>=40.0 && value< 60.0){
+                textViewLayoutParams.setBackgroundColor(getResources().getColor(R.color.table_level_3));
+
+            }else if(value>=60.0 && value< 80.0){
+                textViewLayoutParams.setBackgroundColor(getResources().getColor(R.color.table_level_4));
+
+            }else if(value>=80.0 && value <= 100.0){
+                textViewLayoutParams.setBackgroundColor(getResources().getColor(R.color.table_level_5));
+
+            }
+        //TODO add focusable to textview
+    }
+
     private void buildTestData(List<TestCoverage> testCoverages){
-
         courseTestDataMap = new HashMap<>();
-
         for(TestCoverage testCoverage:testCoverages){
             if(courseTestDataMap.get(testCoverage.subject) == null){
                 ArrayList<TestCoverage> courseDataList = new ArrayList<>();

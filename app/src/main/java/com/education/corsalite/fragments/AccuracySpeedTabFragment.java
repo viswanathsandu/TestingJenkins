@@ -1,11 +1,13 @@
 package com.education.corsalite.fragments;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
@@ -15,9 +17,11 @@ import com.education.corsalite.models.responsemodels.CourseAnalysis;
 import com.education.corsalite.utils.L;
 import com.github.mikephil.charting.charts.ScatterChart;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.ScatterData;
 import com.github.mikephil.charting.data.ScatterDataSet;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
@@ -60,7 +64,7 @@ public class AccuracySpeedTabFragment extends Fragment   {
                     }
                 });
 
-        ApiManager.getInstance(getActivity()).getCourseAnalysisData("1154", "13", "51", "Dates", "Month", "365", "true",
+        ApiManager.getInstance(getActivity()).getCourseAnalysisData("1154", "13", "51", "Subject", "Month", "365", "true",
                 new ApiCallback<List<CourseAnalysis>>() {
                     @Override
                     public void failure(CorsaliteError error) {
@@ -77,6 +81,9 @@ public class AccuracySpeedTabFragment extends Fragment   {
     }
 
     private void initializeGraph(){
+        accuracyChapterChart.setDescription("Accuracy Vs Speed based on recent 365 days performance");
+        accuracyDateChart.setDescription("Accuracy Vs Speed based on recent 365 days performance");
+
         Legend l = accuracyChapterChart.getLegend();
         l.setPosition(Legend.LegendPosition.RIGHT_OF_CHART);
         Legend l1 = accuracyDateChart.getLegend();
@@ -85,10 +92,16 @@ public class AccuracySpeedTabFragment extends Fragment   {
     }
 
     private void setMarkerView(){
-        //TODO
+        accuracyChapterChart.setMarkerView(new CustomMarkerView(getActivity(),R.layout.marker_view_chart,CHAPTER));
+        accuracyDateChart.setMarkerView(new CustomMarkerView(getActivity(),R.layout.marker_view_chart,DATES));
     }
+
+    ArrayList<String> xVals = new ArrayList<>();
+    ArrayList<String> chapterList = new ArrayList<>();
+    ArrayList<String> dateList = new ArrayList<>();
+    ArrayList<String> subjectName = new ArrayList<>();
     private void buildChapterGraphData(List<CourseAnalysis> courseAnalysisList,String graphType){
-        ArrayList<String> xVals = new ArrayList<>();
+
 
         HashMap<String,ArrayList<Entry>> numYValEntries = new HashMap<>();
         for (CourseAnalysis analysisDetail: courseAnalysisList) {
@@ -98,6 +111,9 @@ public class AccuracySpeedTabFragment extends Fragment   {
             }
 
             xVals.add(analysisDetail.speed);
+            chapterList.add(analysisDetail.chapterName);
+            dateList.add(analysisDetail.date);
+            subjectName.add(analysisDetail.subjectName);
 
             String key = null;
             if(graphType.equalsIgnoreCase(CHAPTER)){
@@ -140,4 +156,41 @@ public class AccuracySpeedTabFragment extends Fragment   {
 
     }
 
+    class CustomMarkerView extends MarkerView {
+
+        private TextView markerViewLine1;
+        private TextView markerViewLine2;
+        String chartType;
+
+        public CustomMarkerView (Context context, int layoutResource,String chartType) {
+            super(context, layoutResource);
+            markerViewLine1 = (TextView) findViewById(R.id.tv_chapterDate);
+            markerViewLine2 = (TextView) findViewById(R.id.tv_accuracy_speed);
+            this.chartType = chartType;
+        }
+
+        // callbacks everytime the MarkerView is redrawn, can be used to update the
+        // content (user-interface)
+        @Override
+        public void refreshContent(Entry e, Highlight highlight) {
+            if(chartType.equalsIgnoreCase(CHAPTER)) {
+                markerViewLine1.setText(chapterList.get(e.getXIndex()) + "," + dateList.get(e.getXIndex()));
+            }else if(chartType.equalsIgnoreCase(DATES)) {
+                markerViewLine1.setText(chapterList.get(e.getXIndex()) + "," + subjectName.get(e.getXIndex()));
+            }
+            markerViewLine2.setText("Accuracy:" + e.getVal() + "," + "Speed:" + xVals.get(e.getXIndex()));
+        }
+
+        @Override
+        public int getXOffset() {
+            // this will center the marker-view horizontally
+            return -(getWidth() / 2);
+        }
+
+        @Override
+        public int getYOffset() {
+            // this will cause the marker-view to be above the selected value
+            return -getHeight();
+        }
+    }
 }
