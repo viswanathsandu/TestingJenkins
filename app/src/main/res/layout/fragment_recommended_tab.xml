@@ -9,7 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/tab_recycler_header">
-
         <include layout="@layout/row_recommended_list" />
     </LinearLayout>
 
@@ -17,5 +16,6 @@
         android:id="@+id/rv_analytics_recommended"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/headerLayout" />
+        android:layout_below="@id/headerLayout"
+        android:scrollbars="vertical"/>
 </RelativeLayout>

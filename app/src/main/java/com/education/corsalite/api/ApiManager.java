@@ -5,14 +5,14 @@ import android.content.res.AssetManager;
 
 import com.education.corsalite.config.AppConfig;
 import com.education.corsalite.enums.NetworkMode;
-import com.education.corsalite.models.responsemodels.CourseAnalysis;
-import com.education.corsalite.models.responsemodels.CourseAnalysisResponse;
 import com.education.corsalite.models.responsemodels.ContentIndexResponse;
 import com.education.corsalite.models.responsemodels.ContentResponse;
+import com.education.corsalite.models.responsemodels.CourseAnalysis;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
 import com.education.corsalite.models.responsemodels.MessageResponse;
 import com.education.corsalite.models.responsemodels.StudyCenter;
+import com.education.corsalite.models.responsemodels.TestCoverage;
 import com.education.corsalite.models.responsemodels.UserProfileResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencyBalanceResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencySummaryResponse;
@@ -25,6 +25,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit.client.Header;
 import retrofit.client.Response;
@@ -78,24 +79,44 @@ public class ApiManager {
     public void getCourseAnalysisData(String studentId,String courseId,String subjectId,
                                       String groupLevel,String breakUpByDate,
                                       String durationInDays,String returnAllRowsWithourPerfData,
-                                      ApiCallback<CourseAnalysisResponse> callback){
+                                      ApiCallback<List<CourseAnalysis>> callback){
         if(isApiOnline()) {
-            ApiClientService.get().getCourseAnalysis(studentId,courseId,subjectId,groupLevel,breakUpByDate,durationInDays,returnAllRowsWithourPerfData, callback );
+            ApiClientService.get().getCourseAnalysis(studentId, courseId, subjectId, groupLevel, breakUpByDate, durationInDays, returnAllRowsWithourPerfData, callback);
         } else {
             String jsonResponse=null;
             if(groupLevel.equalsIgnoreCase("chapter")) {
                 jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/course_analysis_by_chapter.json");
+                L.info("Response for 'api/course_analysis_by_chapter.json' is " + jsonResponse);
             }else if(groupLevel.equalsIgnoreCase("dates")) {
+                jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/course_analysis_by_date.json");
                 L.info("Response for 'api/course_analysis_by_dates.json' is " + jsonResponse);
             }
             JsonParser jsonParser = new JsonParser();
             JsonArray analyticsarray= jsonParser.parse(jsonResponse).getAsJsonArray();
-            CourseAnalysisResponse response = new CourseAnalysisResponse();
+            List<CourseAnalysis> courseAnalysisList = new ArrayList<>();
             for ( JsonElement aUser : analyticsarray ) {
                 CourseAnalysis courseAnalysis = new Gson().fromJson(aUser, CourseAnalysis.class);
-                response.courseAnalysisList.add(courseAnalysis);
+                courseAnalysisList.add(courseAnalysis);
             }
-            callback.success(response, getRetrofitResponse());
+            callback.success(courseAnalysisList, getRetrofitResponse());
+        }
+
+    }
+
+    public void getTestCoverage(String studentId,String courseId,ApiCallback<List<TestCoverage>> callback){
+        if(isApiOnline()) {
+            ApiClientService.get().getTestCoverage(studentId, courseId, callback);
+        } else {
+            String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/test_coverage.json");
+            L.info("Response for 'api/test_coverage.json' is " + jsonResponse);
+            JsonParser jsonParser = new JsonParser();
+            JsonArray analyticsarray= jsonParser.parse(jsonResponse).getAsJsonArray();
+            List<TestCoverage> testCoverageList = new ArrayList<>();
+            for ( JsonElement aUser : analyticsarray ) {
+                TestCoverage testCoverage = new Gson().fromJson(aUser, TestCoverage.class);
+                testCoverageList.add(testCoverage);
+            }
+            callback.success(testCoverageList, getRetrofitResponse());
         }
 
     }

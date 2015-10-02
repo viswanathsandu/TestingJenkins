@@ -1,16 +1,19 @@
 package com.education.corsalite.api;
 
 import com.education.corsalite.models.requestmodels.EditProfileModel;
-import com.education.corsalite.models.responsemodels.CourseAnalysisResponse;
 import com.education.corsalite.models.responsemodels.ContentIndexResponse;
 import com.education.corsalite.models.responsemodels.ContentResponse;
+import com.education.corsalite.models.responsemodels.CourseAnalysis;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
 import com.education.corsalite.models.responsemodels.MessageResponse;
 import com.education.corsalite.models.responsemodels.StudyCenter;
+import com.education.corsalite.models.responsemodels.TestCoverage;
 import com.education.corsalite.models.responsemodels.UserProfileResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencyBalanceResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencySummaryResponse;
+
+import java.util.List;
 
 import retrofit.http.GET;
 import retrofit.http.POST;
@@ -54,7 +57,13 @@ public interface ICorsaliteApi {
                                   @Query("BreakupByDate")String breakUpByDate,
                                   @Query("DurationInDays")String durationInDays,
                                   @Query("ReturnAllRowsWithoutPerfDataAlso")String returnAllRowsWithourPerfData,
-                                  ApiCallback<CourseAnalysisResponse> callback);
+                                  ApiCallback<List<CourseAnalysis>> callback);
+
+    @GET("/GetTestCoverage")
+    void getTestCoverage(@Query("idStudent") String studentId,
+                           @Query("idCourse") String courseId,
+                           ApiCallback<List<TestCoverage>> callback);
+
 
     @GET("/ContentIndex")
     void getContentIndexData(@Query("idCourse") String courseId, @Query("idStudent") String studentId, ApiCallback<ContentIndexResponse> callback);
