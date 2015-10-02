@@ -60,12 +60,31 @@ public class RecommendationsAdapter extends  AbstractRecycleViewAdapter {
                 parent.setBackgroundColor(inflater.getContext().getResources().getColor(R.color.tab_recycler_alternate_row));
             }
             subject.setText(course.subjectName);
+            subject.setAllCaps(false);
             chapter.setText(course.chapterName);
+            chapter.setAllCaps(false);
             topic.setText(course.topic);
+            topic.setAllCaps(false);
             dateTime.setText(course.date);
+            dateTime.setAllCaps(false);
             marks.setText(course.earnedMarks);
+            marks.setAllCaps(false);
+
+
             accuracy.setText(course.accuracy);
-            //TODO :accuracy color red,amber or green
+            if(accuracy.getText() != null && !accuracy.getText().toString().isEmpty()){
+                float accuracyF = Float.parseFloat(accuracy.getText().toString());
+                float scoreRed = Float.parseFloat(course.scoreRed);
+                float scoreAmber = Float.parseFloat(course.scoreAmber);
+                if(accuracyF <= scoreRed){
+                    accuracy.setTextColor(inflater.getContext().getResources().getColor(R.color.red));
+                }else if(accuracyF > scoreRed && accuracyF <= scoreAmber){
+                    accuracy.setTextColor(inflater.getContext().getResources().getColor(R.color.amber));
+                }else {
+                    accuracy.setTextColor(inflater.getContext().getResources().getColor(R.color.green));
+                }
+            }
+
             speed.setText(course.speed);
 
         }

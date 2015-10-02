@@ -77,6 +77,7 @@ public class TimeManagementTabFragment extends Fragment {
                         buildChapterData(courseAnalysisList);
                         for (Map.Entry<String,List<CourseAnalysis>> entry : courseDataMap.entrySet()) {
                             PieChart chart = new PieChart(getActivity());
+                            chart.setPadding(5,10,5,10);
                             mLinearLayout.addView(chart,new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,800));
                             initializeGraph(chart);
                             buildGraphData(entry.getValue(), CHAPTER, chart);
@@ -90,8 +91,9 @@ public class TimeManagementTabFragment extends Fragment {
 
     private void initializeGraph(PieChart mChart){
         mChart.setDrawHoleEnabled(false);
+        mChart.setDescription("");
         mChart.setUsePercentValues(true);
-        mChart.getLegend().setPosition(Legend.LegendPosition.RIGHT_OF_CHART);
+        mChart.getLegend().setPosition(Legend.LegendPosition.RIGHT_OF_CHART_CENTER);
 
     }
 
@@ -136,7 +138,7 @@ public class TimeManagementTabFragment extends Fragment {
         }
 
 
-        PieDataSet dataSet = new PieDataSet(yVals1, "Accuracy By"+graphType);
+        PieDataSet dataSet = new PieDataSet(yVals1, "Accuracy By "+graphType);
         dataSet.setSliceSpace(3f);
         dataSet.setSelectionShift(5);
 
