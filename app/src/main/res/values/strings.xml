@@ -54,5 +54,6 @@
     <string name="subject3">Maths</string>
     <string name="level_text">level</string>
     <string name="exercise">Exercise</string>
+    <string name="completed_topics">Completed Topics</string>
 
 </resources>

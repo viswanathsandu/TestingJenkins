@@ -1,5 +1,7 @@
 package com.education.corsalite.models.responsemodels;
 
+import android.util.Log;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -19,9 +21,13 @@ public class ExamDetail extends BaseModel implements Serializable {
     @SerializedName("DaysRemaining")
     public Integer daysRemaining;
 
-    public boolean isExamDetailsAvailable(){
-        if(hallTicketNumber.isEmpty() || examDate.isEmpty()){
-            return false;
+    public boolean isExamDetailsAvailable() {
+        Log.v("","Date1:"+examDate +":::"+hallTicketNumber);
+        if (hallTicketNumber != null && examDate!=null){
+            Log.v("","Date2:"+examDate +":::"+hallTicketNumber);
+            if(hallTicketNumber.isEmpty() || examDate.isEmpty()) {
+                return false;
+            }
         }
         return true;
     }

@@ -12,11 +12,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:weightSum="1"
-        android:paddingLeft="15dp">
-    </LinearLayout>
+        android:orientation="horizontal"
+        android:paddingLeft="15dp"
+        android:weightSum="1"></LinearLayout>
 
 
     <LinearLayout
@@ -25,9 +24,56 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:orientation="horizontal"
         android:gravity="center_vertical"
+        android:orientation="horizontal"
         android:weightSum="1">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <View
+                    android:id="@+id/view1"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/redshape" />
+
+                <View
+                    android:id="@+id/view2"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/blueshape" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <View
+                    android:id="@+id/view3"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/greenshape" />
+
+                <View
+                    android:id="@+id/view4"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/yellowshape" />
+            </LinearLayout>
+        </LinearLayout>
 
         <View
             android:id="@+id/redView"
