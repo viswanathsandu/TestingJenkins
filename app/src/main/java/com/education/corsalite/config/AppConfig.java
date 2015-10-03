@@ -8,6 +8,6 @@ import com.education.corsalite.enums.NetworkMode;
  */
 public class AppConfig {
 
-    public static final NetworkMode NETWORK_MODE = NetworkMode.ONLINE;
-    public static final LoggerMode LOGGER_MODE = LoggerMode.RELEASE;
+    public static final NetworkMode NETWORK_MODE = NetworkMode.OFFLINE;
+    public static final LoggerMode LOGGER_MODE = LoggerMode.DEVELOPMENT;
 }
