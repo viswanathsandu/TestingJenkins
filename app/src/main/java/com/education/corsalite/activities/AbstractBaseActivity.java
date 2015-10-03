@@ -164,10 +164,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             logout();
             return true;
         }
-        if (item.getItemId() == R.id.study_centre) {
-            goToStudyCentre();
-            return true;
-        }
         return super.onOptionsItemSelected(item);
     }
 

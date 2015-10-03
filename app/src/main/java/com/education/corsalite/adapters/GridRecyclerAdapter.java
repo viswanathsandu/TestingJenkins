@@ -1,9 +1,11 @@
 package com.education.corsalite.adapters;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,7 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapter.TextViewHolder> {
+public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapter.StudyCenterSubjectViewHolder> {
     private HashMap<String, List<CompletionStatus>> completionStatuses;
     private String key;
     private StudyCentreActivity studyCentreActivity;
@@ -35,17 +37,17 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
     }
 
     @Override
-    public TextViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public StudyCenterSubjectViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.study_centre_grid_view, parent, false);
-        return new TextViewHolder(view);
+        return new StudyCenterSubjectViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final TextViewHolder holder, final int position) {
+    public void onBindViewHolder(final StudyCenterSubjectViewHolder holder, final int position) {
         ArrayList<CompletionStatus> list = (ArrayList<CompletionStatus>) completionStatuses.get(key);
         final String label = list.get(position).getChapterName();
         holder.textView.setText(label);
-        holder.timespent.setText(getDateFromMillis(Long.parseLong(list.get(position).getTimeSpent())));
+        holder.timeSpent.setText(getDateFromMillis(Long.parseLong(list.get(position).getTimeSpent())));
         String level = list.get(position).getCompletedTopics();
         holder.level.setText(studyCentreActivity.getResources().getString(R.string.level_text) + level);
         getLevelDrawable(holder, Integer.parseInt(level));
@@ -56,9 +58,25 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
                         holder.textView.getContext(), label, Toast.LENGTH_SHORT).show();
             }
         });
+        removeLogic(holder, position);
     }
 
-    private void getLevelDrawable(TextViewHolder holder, int level) {
+    private void removeLogic(StudyCenterSubjectViewHolder holder, int position) {
+        Log.v("kpfinerifn","position:"+position);
+        if (position >= 2) {
+            if (position > 5) {
+                holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.blueshape));
+            } else {
+                holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.greenshape));
+            }
+        } else if (position == 0) {
+            holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.redshape));
+        }else if (position <2){
+            holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.greenshape));
+        }
+    }
+
+    private void getLevelDrawable(StudyCenterSubjectViewHolder holder, int level) {
         switch (level) {
             case 0:
                 holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_zero, 0, 0, 0);
@@ -89,16 +107,18 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         return completionStatuses.size();
     }
 
-    public class TextViewHolder extends RecyclerView.ViewHolder {
+    public class StudyCenterSubjectViewHolder extends RecyclerView.ViewHolder {
         public TextView textView;
-        public TextView timespent;
+        public TextView timeSpent;
         public TextView level;
+        public LinearLayout gridLayout;
 
-        public TextViewHolder(View itemView) {
+        public StudyCenterSubjectViewHolder(View itemView) {
             super(itemView);
             textView = (TextView) itemView.findViewById(R.id.subject_name);
-            timespent = (TextView) itemView.findViewById(R.id.clock);
+            timeSpent = (TextView) itemView.findViewById(R.id.clock);
             level = (TextView) itemView.findViewById(R.id.level);
+            gridLayout = (LinearLayout) itemView.findViewById(R.id.grid_layout);
         }
     }
 

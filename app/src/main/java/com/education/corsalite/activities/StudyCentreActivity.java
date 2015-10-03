@@ -77,7 +77,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     private void initUI() {
         recyclerView = (RecyclerView) findViewById(R.id.grid_recycler_view);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
         recyclerView.setAdapter(mAdapter);
         progressBar = (ProgressBar) findViewById(R.id.headerProgress);
         progressBar.setVisibility(View.VISIBLE);

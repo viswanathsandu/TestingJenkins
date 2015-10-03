@@ -9,6 +9,7 @@
     <color name="red">#C6352E</color>
     <color name="white">#FFFFFF</color>
     <color name="yellow">#ffff00</color>
+    <color name="amber">#FF7E00</color>
 
     <color name="text_gray">#787878</color>
     <color name="black">#000000</color>
@@ -19,5 +20,11 @@
     <color name="user_profile_statusbar">#2D2D2D</color>
     <color name="tab_recycler_header">#9EAAB4</color>
     <color name="tab_recycler_alternate_row">#F7F8F9</color>
+
+ <color name="table_level_1">#D62D24</color>
+    <color name="table_level_2">#AE4E2D</color>
+    <color name="table_level_3">#876D37</color>
+    <color name="table_level_4">#628B40</color>
+    <color name="table_level_5">#3AAB49</color>
 
 </resources>
