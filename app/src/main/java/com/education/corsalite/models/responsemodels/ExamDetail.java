@@ -19,8 +19,8 @@ public class ExamDetail extends BaseModel implements Serializable {
     @SerializedName("DaysRemaining")
     public Integer daysRemaining;
 
-    public boolean isExamDetailsAvailable(){
-        if(hallTicketNumber.isEmpty() || examDate.isEmpty()){
+    public boolean isExamDetailsAvailable() {
+        if (hallTicketNumber != null && hallTicketNumber.isEmpty() || examDate.isEmpty()) {
             return false;
         }
         return true;
