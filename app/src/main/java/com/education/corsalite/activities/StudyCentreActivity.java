@@ -1,7 +1,6 @@
 package com.education.corsalite.activities;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -20,12 +19,11 @@ import com.education.corsalite.R;
 import com.education.corsalite.adapters.GridRecyclerAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
+import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.responsemodels.CompletionStatus;
-import com.education.corsalite.models.responsemodels.ContentResponse;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.StudyCenter;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -105,7 +103,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
 
     private void getStudyCentreData() {
         // TODO : passing static data
-        ApiManager.getInstance(this).getStudyCentreData("1154", //LoginUserCache.getInstance().loginResponse.studentId,
+        ApiManager.getInstance(this).getStudyCentreData( LoginUserCache.getInstance().loginResponse.studentId,
                 "13",
                 new ApiCallback<StudyCenter>() {
                     @Override

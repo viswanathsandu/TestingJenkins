@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
+import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.TestCoverage;
 import com.education.corsalite.utils.L;
@@ -37,15 +39,16 @@ public class TestCoverageTabFragment extends Fragment {
     HashMap<String,List<TestCoverage>> courseTestDataMap;
 
 
+    @Bind(R.id.progressBar)ProgressBar progressBar;
     @Bind(R.id.ll_test_coverage)LinearLayout mLinearLayout;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_test_coverage,container,false);
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
 
-        ApiManager.getInstance(getActivity()).getTestCoverage("1154", "13", new ApiCallback<List<TestCoverage>>() {
+        ApiManager.getInstance(getActivity()).getTestCoverage(LoginUserCache.getInstance().loginResponse.studentId, "13", new ApiCallback<List<TestCoverage>>() {
             @Override
             public void failure(CorsaliteError error) {
                 L.info(error.message);
@@ -53,8 +56,9 @@ public class TestCoverageTabFragment extends Fragment {
 
             @Override
             public void success(List<TestCoverage> testCoverages, Response response) {
+                progressBar.setVisibility(View.GONE);
                 buildTestData(testCoverages);
-                for (Map.Entry<String,List<TestCoverage>> entry : courseTestDataMap.entrySet()) {
+                for (Map.Entry<String, List<TestCoverage>> entry : courseTestDataMap.entrySet()) {
 
                     TextView mTableDesc = new TextView(getActivity());
                     mTableDesc.setText("Test Coverage (%) by Subject - " + entry.getKey());
@@ -66,10 +70,10 @@ public class TestCoverageTabFragment extends Fragment {
 
                     TableLayout mTableLayout = new TableLayout(getActivity());
                     buildTable(entry.getValue(), mTableLayout);
-                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                     lp.setMargins(5, 20, 5, 100);
                     mTableLayout.setGravity(Gravity.CENTER);
-                    mLinearLayout.addView(mTableLayout,lp);
+                    mLinearLayout.addView(mTableLayout, lp);
                 }
             }
         });

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
+import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.CourseAnalysis;
 import com.education.corsalite.utils.L;
@@ -51,7 +52,7 @@ public class AccuracySpeedTabFragment extends Fragment   {
 
         initializeGraph();
         //TODO: Build from api response later
-        ApiManager.getInstance(getActivity()).getCourseAnalysisData("1154", "13", "51", "Chapter", "Month", "365", "true",
+        ApiManager.getInstance(getActivity()).getCourseAnalysisData(LoginUserCache.getInstance().loginResponse.studentId, "13", "51", "Chapter", "Month", "365", "true",
                 new ApiCallback<List<CourseAnalysis>>() {
                     @Override
                     public void failure(CorsaliteError error) {
@@ -60,11 +61,11 @@ public class AccuracySpeedTabFragment extends Fragment   {
 
                     @Override
                     public void success(List<CourseAnalysis> courseAnalysisList, Response response) {
-                        buildChapterGraphData(courseAnalysisList,CHAPTER);
+                        buildChapterGraphData(courseAnalysisList, CHAPTER);
                     }
                 });
 
-        ApiManager.getInstance(getActivity()).getCourseAnalysisData("1154", "13", "51", "Subject", "Month", "365", "true",
+        ApiManager.getInstance(getActivity()).getCourseAnalysisData(LoginUserCache.getInstance().loginResponse.studentId, "13", "51", "Subject", "Month", "365", "true",
                 new ApiCallback<List<CourseAnalysis>>() {
                     @Override
                     public void failure(CorsaliteError error) {
@@ -88,7 +89,11 @@ public class AccuracySpeedTabFragment extends Fragment   {
         l.setPosition(Legend.LegendPosition.RIGHT_OF_CHART);
         Legend l1 = accuracyDateChart.getLegend();
         l1.setPosition(Legend.LegendPosition.RIGHT_OF_CHART);
+
+
+
         setMarkerView();
+
     }
 
     private void setMarkerView(){
@@ -136,6 +141,21 @@ public class AccuracySpeedTabFragment extends Fragment   {
 
         int i=0;
         for (Map.Entry<String,ArrayList<Entry>> entry : numYValEntries.entrySet()) {
+            /*String key =null;
+            if(entry.getKey()==null){
+                continue;
+            }
+            if( entry.getKey().length()>=25){
+                key= entry.getKey().substring(0,25);
+            }else{
+                String temp = " " ;
+                for(int j=entry.getKey().length();j<25;j++){
+                    temp += " ";
+                }
+                key = entry.getKey().concat(temp);
+                Log.e("aastha",key+key.length());
+            }
+            key =key.concat("|");*/
             ScatterDataSet dataSet = new ScatterDataSet(entry.getValue(),entry.getKey());
             scatterDataSetList.add(dataSet);
             dataSet.setColor(ColorTemplate.COLORFUL_COLORS[i%5]);

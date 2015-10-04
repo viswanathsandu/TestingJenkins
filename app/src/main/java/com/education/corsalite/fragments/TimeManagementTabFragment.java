@@ -4,14 +4,18 @@ import android.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
+import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.CourseAnalysis;
 import com.education.corsalite.utils.L;
@@ -50,7 +54,7 @@ public class TimeManagementTabFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_time_management_tab,container,false);
         ButterKnife.bind(this, v);
 
-        ApiManager.getInstance(getActivity()).getCourseAnalysisData("1154", "13", null, "Subject", "None", "30", "true",
+        ApiManager.getInstance(getActivity()).getCourseAnalysisData(LoginUserCache.getInstance().loginResponse.studentId, "13", null, "Subject", "None", "30", "true",
                 new ApiCallback<List<CourseAnalysis>>() {
                     @Override
                     public void failure(CorsaliteError error) {
@@ -65,7 +69,7 @@ public class TimeManagementTabFragment extends Fragment {
                 });
 
 
-             ApiManager.getInstance(getActivity()).getCourseAnalysisData("1154", "13", null, "Chapter", "None", "30", "true",
+             ApiManager.getInstance(getActivity()).getCourseAnalysisData(LoginUserCache.getInstance().loginResponse.studentId, "13", null, "Chapter", "None", "30", "true",
                 new ApiCallback<List<CourseAnalysis>>() {
                     @Override
                     public void failure(CorsaliteError error) {
@@ -76,11 +80,18 @@ public class TimeManagementTabFragment extends Fragment {
                     public void success(List<CourseAnalysis> courseAnalysisList, Response response) {
                         buildChapterData(courseAnalysisList);
                         for (Map.Entry<String,List<CourseAnalysis>> entry : courseDataMap.entrySet()) {
+                            TextView mDescText = new TextView(getActivity());
+                            mDescText.setText(entry.getKey());
+                            mDescText.setGravity(Gravity.CENTER);
+                            mDescText.setTextSize(16);
+                            mDescText.setPadding(0,10,0,10);
+                            mLinearLayout.addView(mDescText);
                             PieChart chart = new PieChart(getActivity());
-                            chart.setPadding(5,10,5,10);
-                            mLinearLayout.addView(chart,new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,800));
+                            chart.setPadding(5, 10, 5, 10);
+                            mLinearLayout.addView(chart, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, converDPToPX(350)));
                             initializeGraph(chart);
                             buildGraphData(entry.getValue(), CHAPTER, chart);
+
                         }
                     }
                 });
@@ -124,11 +135,11 @@ public class TimeManagementTabFragment extends Fragment {
             }else if(graphType.equalsIgnoreCase(SUBJECT)){
                 xData.add(courseAnalysis.subjectName);
             }
-            if(courseAnalysis.accuracy == null){
+            if(courseAnalysis.timeTaken == null){
                 yData.add(0F);
                 continue;
             }
-            yData.add(Float.parseFloat(courseAnalysis.accuracy));
+            yData.add(Float.parseFloat(courseAnalysis.timeTaken));
         }
 
         ArrayList<Entry> yVals1 = new ArrayList<>();
@@ -173,6 +184,12 @@ public class TimeManagementTabFragment extends Fragment {
         mChart.setData(data);
         mChart.highlightValues(null);
         mChart.invalidate();
+
+    }
+
+    int converDPToPX(float dp){
+        DisplayMetrics displayMetrics = getActivity().getResources().getDisplayMetrics();
+        return (int)((dp * displayMetrics.density) + 0.5);
 
     }
 }
