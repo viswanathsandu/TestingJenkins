@@ -69,7 +69,6 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_content_reading :
-                getContentData();
                 return true;
         }
         return super.onOptionsItemSelected(item);

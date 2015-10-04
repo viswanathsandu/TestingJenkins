@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/layout_webfooter"
+    android:visibility="gone">
+
+    <Button
+        android:text="PREVIOUS"
+        android:layout_alignParentLeft="true"
+        android:layout_width="200dp"
+        android:layout_height="48dp"
+        android:id="@+id/btn_previous"/>
+
+    <Button
+        android:text="NEXT"
+        android:layout_alignParentRight="true"
+        android:layout_width="200dp"
+        android:layout_height="48dp"
+        android:id="@+id/btn_next"/>
+</RelativeLayout>

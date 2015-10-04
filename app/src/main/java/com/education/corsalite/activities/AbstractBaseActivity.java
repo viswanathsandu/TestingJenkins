@@ -20,12 +20,17 @@ import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.requestmodels.LogoutModel;
+import com.education.corsalite.models.responsemodels.Content;
+import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.ContentResponse;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.CookieUtils;
 import com.google.gson.Gson;
+
+import java.io.Serializable;
+import java.util.List;
 
 import retrofit.client.Response;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
@@ -121,7 +126,9 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.menu_content_reading).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getContentData();
+                Intent intent = new Intent(AbstractBaseActivity.this, WebActivity.class);
+                startActivity(intent);
+
             }
         });
 
@@ -186,10 +193,10 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         startActivity(new Intent(AbstractBaseActivity.this, StudyCentreActivity.class));
     }
 
-    protected void getContentData() {
+    protected void getContentData(String courseId, String updateTime) {
         // TODO : passing static data
-        ApiManager.getInstance(this).getContent("1154", "",
-                new ApiCallback<ContentResponse>() {
+        ApiManager.getInstance(this).getContent(courseId, updateTime,
+                new ApiCallback<List<Content>>() {
                     @Override
                     public void failure(CorsaliteError error) {
                         if (error != null && !TextUtils.isEmpty(error.message)) {
@@ -198,11 +205,11 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void success(ContentResponse mContentResponse, Response response) {
+                    public void success(List<Content> mContentResponse, Response response) {
                         if (mContentResponse != null) {
                             Intent intent = new Intent(AbstractBaseActivity.this, WebActivity.class);
                             Bundle bundle = new Bundle();
-                            bundle.putSerializable("contentData", mContentResponse);
+                            bundle.putSerializable("contentData", (Serializable) mContentResponse);
                             intent.putExtras(bundle);
                             startActivity(intent);
 
