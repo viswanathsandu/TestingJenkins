@@ -26,6 +26,7 @@ import com.education.corsalite.models.responsemodels.StudyCenter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 import retrofit.client.Response;
 
@@ -33,12 +34,19 @@ import retrofit.client.Response;
  * Created by ayush on 25/09/15.
  */
 public class StudyCentreActivity extends AbstractBaseActivity {
+
     private GridRecyclerAdapter mAdapter;
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
     private StudyCenter mStudyCenter;
     private LinearLayout linearLayout;
     private ArrayList<String> subjects;
+    private View redView;
+    private View blueView;
+    private View yellowView;
+    private View greenView;
+    private LinearLayout allColorLayout;
+    private String key;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,13 +55,75 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         RelativeLayout myView = (RelativeLayout) inflater.inflate(R.layout.activity_study_center, null);
         linearLayout = (LinearLayout) myView.findViewById(R.id.subjects_name_id);
         frameLayout.addView(myView);
+        setUpViews(myView);
         setToolbarTitle(getResources().getString(R.string.study_centre));
         initUI();
         getStudyCentreData();
     }
 
+    private void setUpViews(RelativeLayout myView) {
+        redView = myView.findViewById(R.id.redView);
+        blueView = myView.findViewById(R.id.blueView);
+        yellowView = myView.findViewById(R.id.yellowView);
+        greenView = myView.findViewById(R.id.greenView);
+        allColorLayout = (LinearLayout) myView.findViewById(R.id.all_colors);
+        setUpListener();
+    }
+
+    private void setUpListener() {
+        redView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAdapter.updateData(getUpdatedTilesMap(0), key);
+                mAdapter.notifyDataSetChanged();
+            }
+        });
+        blueView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAdapter.updateData(getUpdatedTilesMap(1), key);
+                mAdapter.notifyDataSetChanged();
+            }
+        });
+        yellowView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAdapter.updateData(getUpdatedTilesMap(2), key);
+                mAdapter.notifyDataSetChanged();
+            }
+        });
+        greenView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAdapter.updateData(getUpdatedTilesMap(3), key);
+                mAdapter.notifyDataSetChanged();
+            }
+        });
+
+        allColorLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAdapter.updateData(mStudyCenter.tilesMap, key);
+                mAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    private HashMap<String, List<CompletionStatus>> getUpdatedTilesMap(int color) {
+        HashMap<String, List<CompletionStatus>> map = new HashMap<>();
+        ArrayList<CompletionStatus> completionStatuses = new ArrayList<>();
+        for (CompletionStatus completionStatus : mStudyCenter.tilesMap.get(key)) {
+            if (completionStatus.statusColor == color) {
+                completionStatuses.add(completionStatus);
+            }
+        }
+        map.put(key, completionStatuses);
+        return map;
+    }
+
     private void initDataAdapter(HashMap<String, List<CompletionStatus>> tilesMap, String subject) {
         showList();
+        key = subject;
         mAdapter = new GridRecyclerAdapter(tilesMap, subject, this);
         recyclerView.setAdapter(mAdapter);
     }
@@ -68,7 +138,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_content_reading :
+            case R.id.action_content_reading:
                 getContentData();
                 return true;
         }
@@ -137,9 +207,11 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         for (CompletionStatus completionStatus : mStudyCenter.getCompletionStatus()) {
             if (tilesMap.containsKey(completionStatus.getSubjectName())) {
                 ArrayList<CompletionStatus> arrayList = (ArrayList<CompletionStatus>) tilesMap.get(completionStatus.getSubjectName());
+                completionStatus.statusColor = getRandomNumber();
                 arrayList.add(completionStatus);
             } else {
                 ArrayList<CompletionStatus> arrayList = new ArrayList<CompletionStatus>();
+                completionStatus.statusColor = getRandomNumber();
                 arrayList.add(completionStatus);
                 tilesMap.put(completionStatus.getSubjectName(), arrayList);
                 subjects.add(completionStatus.getSubjectName());
@@ -150,6 +222,14 @@ public class StudyCentreActivity extends AbstractBaseActivity {
             TextView tv = getTextView(subject);
             linearLayout.addView(tv);
         }
+    }
+
+    private int getRandomNumber() {
+        Random r = new Random();
+        int Low = 1;
+        int High = 5;
+        int color = r.nextInt(High - Low) + Low;
+        return color;
     }
 
     private TextView getTextView(String text) {
@@ -166,6 +246,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
             public void onClick(View v) {
                 showList();
                 if (mStudyCenter != null && mStudyCenter.tilesMap != null) {
+                    key = text;
                     mAdapter.updateData(mStudyCenter.tilesMap, text);
                     mAdapter.notifyDataSetChanged();
                 }

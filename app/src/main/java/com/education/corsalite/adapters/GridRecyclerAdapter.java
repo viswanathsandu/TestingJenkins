@@ -21,18 +21,18 @@ import java.util.List;
 import java.util.Locale;
 
 public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapter.StudyCenterSubjectViewHolder> {
-    private HashMap<String, List<CompletionStatus>> completionStatuses;
+    private HashMap<String, List<CompletionStatus>> mCompletionStatuses;
     private String key;
     private StudyCentreActivity studyCentreActivity;
 
-    public GridRecyclerAdapter(HashMap<String, List<CompletionStatus>> completionStatuses, String key, StudyCentreActivity studyCentreActivity) {
-        this.completionStatuses = completionStatuses;
+    public GridRecyclerAdapter(HashMap<String, List<CompletionStatus>> mCompletionStatuses, String key, StudyCentreActivity studyCentreActivity) {
+        this.mCompletionStatuses = mCompletionStatuses;
         this.key = key;
         this.studyCentreActivity = studyCentreActivity;
     }
 
     public void updateData(HashMap<String, List<CompletionStatus>> completionStatuses, String key) {
-        this.completionStatuses = completionStatuses;
+        this.mCompletionStatuses = completionStatuses;
         this.key = key;
     }
 
@@ -44,11 +44,13 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
 
     @Override
     public void onBindViewHolder(final StudyCenterSubjectViewHolder holder, final int position) {
-        ArrayList<CompletionStatus> list = (ArrayList<CompletionStatus>) completionStatuses.get(key);
-        final String label = list.get(position).getChapterName();
+        ArrayList<CompletionStatus> completionStatuses = (ArrayList<CompletionStatus>) this.mCompletionStatuses.get(key);
+        if (completionStatuses.isEmpty())
+            return;
+        final String label = completionStatuses.get(position).getChapterName();
         holder.textView.setText(label);
-        holder.timeSpent.setText(getDateFromMillis(Long.parseLong(list.get(position).getTimeSpent())));
-        String level = list.get(position).getCompletedTopics();
+        holder.timeSpent.setText(getDateFromMillis(Long.parseLong(completionStatuses.get(position).getTimeSpent())));
+        String level = completionStatuses.get(position).getCompletedTopics();
         holder.level.setText(studyCentreActivity.getResources().getString(R.string.level_text) + level);
         getLevelDrawable(holder, Integer.parseInt(level));
         holder.textView.setOnClickListener(new View.OnClickListener() {
@@ -58,21 +60,19 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
                         holder.textView.getContext(), label, Toast.LENGTH_SHORT).show();
             }
         });
-        removeLogic(holder, position);
+        removeLogic(holder, position, (ArrayList<CompletionStatus>) this.mCompletionStatuses.get(key));
     }
 
-    private void removeLogic(StudyCenterSubjectViewHolder holder, int position) {
-        Log.v("kpfinerifn","position:"+position);
-        if (position >= 2) {
-            if (position > 5) {
-                holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.blueshape));
-            } else {
-                holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.greenshape));
-            }
-        } else if (position == 0) {
+    private void removeLogic(StudyCenterSubjectViewHolder holder, int position, ArrayList<CompletionStatus> completionStatuses) {
+        Log.v("","color:"+completionStatuses.get(position).statusColor);
+        if (completionStatuses.get(position).statusColor == 1) {
+            holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.blueshape));
+        } else if (completionStatuses.get(position).statusColor == 2) {
             holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.redshape));
-        }else if (position <2){
+        } else if (completionStatuses.get(position).statusColor == 3) {
             holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.greenshape));
+        }else{
+            holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.yellowshape));
         }
     }
 
@@ -104,7 +104,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
 
     @Override
     public int getItemCount() {
-        return completionStatuses.size();
+        return mCompletionStatuses.size();
     }
 
     public class StudyCenterSubjectViewHolder extends RecyclerView.ViewHolder {
