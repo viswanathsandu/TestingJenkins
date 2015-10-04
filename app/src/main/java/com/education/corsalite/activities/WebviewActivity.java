@@ -57,12 +57,13 @@ public class WebviewActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if ((keyCode == KeyEvent.KEYCODE_BACK) && webview.canGoBack()) {
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (webview.canGoBack()) {
             webview.goBack();
-            return true;
+        } else {
+            finish();
         }
-        return super.onKeyDown(keyCode, event);
     }
 
     private class MyWebViewClient extends WebViewClient {
