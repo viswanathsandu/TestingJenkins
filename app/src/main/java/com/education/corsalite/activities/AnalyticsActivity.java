@@ -30,6 +30,7 @@ public class AnalyticsActivity extends AbstractBaseActivity implements Analytics
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setToolbarTitle("Analytics");
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         LinearLayout myView = (LinearLayout) inflater.inflate(R.layout.activity_analytics, null);
         frameLayout.addView(myView);
