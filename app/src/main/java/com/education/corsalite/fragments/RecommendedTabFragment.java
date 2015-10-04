@@ -8,11 +8,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.RecommendationsAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
+import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.CourseAnalysis;
 import com.education.corsalite.utils.L;
@@ -30,6 +32,7 @@ public class RecommendedTabFragment extends Fragment {
 
     @Bind(R.id.rv_analytics_recommended)
     RecyclerView mRecyclerView;
+    @Bind(R.id.progress_bar_tab)ProgressBar mProgressBar;
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerView.Adapter mAdapter;
 
@@ -48,7 +51,8 @@ public class RecommendedTabFragment extends Fragment {
     }
 
     private void getCourseData(final LayoutInflater inflater) {
-        ApiManager.getInstance(getActivity()).getCourseAnalysisData("1154", "13", null, "Topic", "None", "180", "true",
+        //passing static data TODO
+        ApiManager.getInstance(getActivity()).getCourseAnalysisData(LoginUserCache.getInstance().loginResponse.studentId, "13", null, "Topic", "None", "180", "true",
                 new ApiCallback<List<CourseAnalysis>>() {
                     @Override
                     public void failure(CorsaliteError error) {
@@ -58,6 +62,8 @@ public class RecommendedTabFragment extends Fragment {
                     @Override
                     public void success(List<CourseAnalysis> courseAnalysisList, Response response) {
                         if (courseAnalysisList != null) {
+                            mProgressBar.setVisibility(View.GONE);
+                            mRecyclerView.setVisibility(View.VISIBLE);
                             mAdapter = new RecommendationsAdapter(courseAnalysisList, inflater);
                             mRecyclerView.setAdapter(mAdapter);
                         }

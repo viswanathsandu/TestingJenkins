@@ -19,6 +19,7 @@ import com.education.corsalite.R;
 import com.education.corsalite.adapters.GridRecyclerAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
+import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.responsemodels.CompletionStatus;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.StudyCenter;
@@ -171,7 +172,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
 
     private void getStudyCentreData() {
         // TODO : passing static data
-        ApiManager.getInstance(this).getStudyCentreData("1154", //LoginUserCache.getInstance().loginResponse.studentId,
+        ApiManager.getInstance(this).getStudyCentreData( LoginUserCache.getInstance().loginResponse.studentId,
                 "13",
                 new ApiCallback<StudyCenter>() {
                     @Override
