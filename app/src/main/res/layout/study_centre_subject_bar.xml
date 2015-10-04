@@ -82,7 +82,7 @@
             android:layout_height="35dp"
             android:layout_gravity="center_vertical"
             android:layout_weight="0.25"
-            android:background="@drawable/redshape" />
+            android:background="@drawable/red_selector" />
 
         <View
             android:id="@+id/blueView"
@@ -91,7 +91,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="15dp"
             android:layout_weight="0.25"
-            android:background="@drawable/blueshape" />
+            android:background="@drawable/blue_selector" />
 
         <View
             android:id="@+id/greenView"
@@ -100,7 +100,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="15dp"
             android:layout_weight="0.25"
-            android:background="@drawable/yellowshape" />
+            android:background="@drawable/yellow_selector" />
 
         <View
             android:id="@+id/yellowView"
@@ -109,7 +109,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="15dp"
             android:layout_weight="0.25"
-            android:background="@drawable/greenshape" />
+            android:background="@drawable/green_selector" />
     </LinearLayout>
 
 
