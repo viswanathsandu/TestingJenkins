@@ -138,9 +138,16 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 startActivity(new Intent(AbstractBaseActivity.this, AnalyticsActivity.class));
             }
         });
+
+        navigationView.findViewById(R.id.menu_offline).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(AbstractBaseActivity.this, OfflineContentActivity.class));
+            }
+        });
     }
 
-    protected void setToolbarTitle(String title){
+    protected void setToolbarTitle(String title) {
         TextView textView = (TextView) findViewById(R.id.toolbar_title);
         textView.setText(title);
     }
