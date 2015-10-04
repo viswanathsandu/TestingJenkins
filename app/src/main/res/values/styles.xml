@@ -12,6 +12,7 @@
         <item name="android:textColorSecondary">@color/white</item>
         <item name="android:spinnerDropDownItemStyle">@style/spinnerItemStyle</item>
     </style>
+
     <style name="EditProfileTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:textColorSecondary">@color/white</item>
     </style>
@@ -69,4 +70,6 @@
         <item name="android:background">@color/dark_blue</item>
         <item name="android:padding">20dp</item>
     </style>
+
+
 </resources>

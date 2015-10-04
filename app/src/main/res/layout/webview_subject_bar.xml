@@ -11,8 +11,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:orientation="horizontal"
         android:gravity="center_vertical"
+        android:orientation="horizontal"
         android:weightSum="1">
 
         <ImageView
@@ -35,37 +35,37 @@
     </LinearLayout>
 
     <LinearLayout
-        android:weightSum="5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:paddingLeft="15dp">
+        android:orientation="horizontal"
+        android:paddingLeft="15dp"
+        android:weightSum="5">
 
-        <TextView
-            android:id="@+id/subject1"
+        <Spinner
+            android:id="@+id/sp_subject"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/subject1"
-            android:textColor="@android:color/black"
             android:paddingLeft="10dp"
-            android:paddingRight="5dp" />
-
-        <TextView
-            android:id="@+id/subject2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/subject2"
-            android:paddingLeft="5dp"
             android:paddingRight="5dp"
+            android:text="@string/subject1"
             android:textColor="@android:color/black" />
 
-        <TextView
-            android:id="@+id/subject3"
+        <Spinner
+            android:id="@+id/sp_chapter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:text="@string/subject2"
+            android:textColor="@android:color/black" />
+
+        <Spinner
+            android:id="@+id/sp_topic"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -73,17 +73,6 @@
             android:paddingRight="5dp"
             android:text="@string/subject3"
             android:textColor="@android:color/black" />
-
-        <TextView
-            android:id="@+id/exercise"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:text="@string/exercise"
-            android:textColor="@android:color/black" />
     </LinearLayout>
-
 
 </RelativeLayout>

@@ -1,5 +1,7 @@
 package com.education.corsalite.models.responsemodels;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 /**
@@ -7,34 +9,56 @@ import java.io.Serializable;
  */
 public class ContentIndex extends BaseModel implements Serializable {
 
-    private String idEntity;
-    private String idCourse;
-    private String CourseName;
-    private String CourseStatus;
-    private String idCourseSubject;
-    private String SubjectName;
-    private String SubjectStatus;
-    private String ScoreRed;
-    private String ScoreAmber;
-    private String ScoreLevelPassing;
-    private String idCourseSubjectChapter;
-    private String ChapterName;
-    private String ChapterStatus;
-    private String ChapterSortOrder;
-    private String idTopic;
-    private String TopicName;
-    private String TopicStatus;
-    private String TopicSortOrder;
-    private String idContent;
-    private String Type;
-    private String ContentName;
-    private String Status;
-    private String AuthorCopyright;
-    private String UpdateTime;
-    private String NamePrefix;
-    private String GivenName;
-    private String SurName;
-    private String Rating;
+    public String idEntity;
+    public String idCourse;
+    @SerializedName("CourseName")
+    public String courseName;
+    @SerializedName("CourseStatus")
+    public String courseStatus;
+    public String idCourseSubject;
+    @SerializedName("SubjectName")
+    public String subjectName;
+    @SerializedName("SubjectStatus")
+    public String subjectStatus;
+    @SerializedName("ScoreRed")
+    public String scoreRed;
+    @SerializedName("ScoreAmber")
+    public String scoreAmber;
+    @SerializedName("ScoreLevelPassing")
+    public String scoreLevelPassing;
+    public String idCourseSubjectChapter;
+    @SerializedName("ChapterName")
+    public String chapterName;
+    @SerializedName("ChapterStatus")
+    public String chapterStatus;
+    @SerializedName("ChapterSortOrder")
+    public String chapterSortOrder;
+    public String idTopic;
+    @SerializedName("TopicName")
+    public String topicName;
+    @SerializedName("TopicStatus")
+    public String topicStatus;
+    @SerializedName("TopicSortOrder")
+    public String topicSortOrder;
+    public String idContent;
+    @SerializedName("Type")
+    public String type;
+    @SerializedName("ContentName")
+    public String contentName;
+    @SerializedName("Status")
+    public String status;
+    @SerializedName("AuthorCopyright")
+    public String authorCopyright;
+    @SerializedName("UpdateTime")
+    public String updateTime;
+    @SerializedName("NamePrefix")
+    public String namePrefix;
+    @SerializedName("GivenName")
+    public String givenName;
+    @SerializedName("SurName")
+    public String surName;
+    @SerializedName("Rating")
+    public String rating;
 
     @Override
     public boolean equals(Object o) {
@@ -47,53 +71,53 @@ public class ContentIndex extends BaseModel implements Serializable {
             return false;
         if (idCourse != null ? !idCourse.equals(that.idCourse) : that.idCourse != null)
             return false;
-        if (CourseName != null ? !CourseName.equals(that.CourseName) : that.CourseName != null)
+        if (courseName != null ? !courseName.equals(that.courseName) : that.courseName != null)
             return false;
-        if (CourseStatus != null ? !CourseStatus.equals(that.CourseStatus) : that.CourseStatus != null)
+        if (courseStatus != null ? !courseStatus.equals(that.courseStatus) : that.courseStatus != null)
             return false;
         if (idCourseSubject != null ? !idCourseSubject.equals(that.idCourseSubject) : that.idCourseSubject != null)
             return false;
-        if (SubjectName != null ? !SubjectName.equals(that.SubjectName) : that.SubjectName != null)
+        if (subjectName != null ? !subjectName.equals(that.subjectName) : that.subjectName != null)
             return false;
-        if (SubjectStatus != null ? !SubjectStatus.equals(that.SubjectStatus) : that.SubjectStatus != null)
+        if (subjectStatus != null ? !subjectStatus.equals(that.subjectStatus) : that.subjectStatus != null)
             return false;
-        if (ScoreRed != null ? !ScoreRed.equals(that.ScoreRed) : that.ScoreRed != null)
+        if (scoreRed != null ? !scoreRed.equals(that.scoreRed) : that.scoreRed != null)
             return false;
-        if (ScoreAmber != null ? !ScoreAmber.equals(that.ScoreAmber) : that.ScoreAmber != null)
+        if (scoreAmber != null ? !scoreAmber.equals(that.scoreAmber) : that.scoreAmber != null)
             return false;
-        if (ScoreLevelPassing != null ? !ScoreLevelPassing.equals(that.ScoreLevelPassing) : that.ScoreLevelPassing != null)
+        if (scoreLevelPassing != null ? !scoreLevelPassing.equals(that.scoreLevelPassing) : that.scoreLevelPassing != null)
             return false;
         if (idCourseSubjectChapter != null ? !idCourseSubjectChapter.equals(that.idCourseSubjectChapter) : that.idCourseSubjectChapter != null)
             return false;
-        if (ChapterName != null ? !ChapterName.equals(that.ChapterName) : that.ChapterName != null)
+        if (chapterName != null ? !chapterName.equals(that.chapterName) : that.chapterName != null)
             return false;
-        if (ChapterStatus != null ? !ChapterStatus.equals(that.ChapterStatus) : that.ChapterStatus != null)
+        if (chapterStatus != null ? !chapterStatus.equals(that.chapterStatus) : that.chapterStatus != null)
             return false;
-        if (ChapterSortOrder != null ? !ChapterSortOrder.equals(that.ChapterSortOrder) : that.ChapterSortOrder != null)
+        if (chapterSortOrder != null ? !chapterSortOrder.equals(that.chapterSortOrder) : that.chapterSortOrder != null)
             return false;
         if (idTopic != null ? !idTopic.equals(that.idTopic) : that.idTopic != null) return false;
-        if (TopicName != null ? !TopicName.equals(that.TopicName) : that.TopicName != null)
+        if (topicName != null ? !topicName.equals(that.topicName) : that.topicName != null)
             return false;
-        if (TopicStatus != null ? !TopicStatus.equals(that.TopicStatus) : that.TopicStatus != null)
+        if (topicStatus != null ? !topicStatus.equals(that.topicStatus) : that.topicStatus != null)
             return false;
-        if (TopicSortOrder != null ? !TopicSortOrder.equals(that.TopicSortOrder) : that.TopicSortOrder != null)
+        if (topicSortOrder != null ? !topicSortOrder.equals(that.topicSortOrder) : that.topicSortOrder != null)
             return false;
         if (idContent != null ? !idContent.equals(that.idContent) : that.idContent != null)
             return false;
-        if (Type != null ? !Type.equals(that.Type) : that.Type != null) return false;
-        if (ContentName != null ? !ContentName.equals(that.ContentName) : that.ContentName != null)
+        if (type != null ? !type.equals(that.type) : that.type != null) return false;
+        if (contentName != null ? !contentName.equals(that.contentName) : that.contentName != null)
             return false;
-        if (Status != null ? !Status.equals(that.Status) : that.Status != null) return false;
-        if (AuthorCopyright != null ? !AuthorCopyright.equals(that.AuthorCopyright) : that.AuthorCopyright != null)
+        if (status != null ? !status.equals(that.status) : that.status != null) return false;
+        if (authorCopyright != null ? !authorCopyright.equals(that.authorCopyright) : that.authorCopyright != null)
             return false;
-        if (UpdateTime != null ? !UpdateTime.equals(that.UpdateTime) : that.UpdateTime != null)
+        if (updateTime != null ? !updateTime.equals(that.updateTime) : that.updateTime != null)
             return false;
-        if (NamePrefix != null ? !NamePrefix.equals(that.NamePrefix) : that.NamePrefix != null)
+        if (namePrefix != null ? !namePrefix.equals(that.namePrefix) : that.namePrefix != null)
             return false;
-        if (GivenName != null ? !GivenName.equals(that.GivenName) : that.GivenName != null)
+        if (givenName != null ? !givenName.equals(that.givenName) : that.givenName != null)
             return false;
-        if (SurName != null ? !SurName.equals(that.SurName) : that.SurName != null) return false;
-        return !(Rating != null ? !Rating.equals(that.Rating) : that.Rating != null);
+        if (surName != null ? !surName.equals(that.surName) : that.surName != null) return false;
+        return !(rating != null ? !rating.equals(that.rating) : that.rating != null);
 
     }
 
@@ -101,32 +125,32 @@ public class ContentIndex extends BaseModel implements Serializable {
     public int hashCode() {
         int result = idEntity != null ? idEntity.hashCode() : 0;
         result = 31 * result + (idCourse != null ? idCourse.hashCode() : 0);
-        result = 31 * result + (CourseName != null ? CourseName.hashCode() : 0);
-        result = 31 * result + (CourseStatus != null ? CourseStatus.hashCode() : 0);
+        result = 31 * result + (courseName != null ? courseName.hashCode() : 0);
+        result = 31 * result + (courseStatus != null ? courseStatus.hashCode() : 0);
         result = 31 * result + (idCourseSubject != null ? idCourseSubject.hashCode() : 0);
-        result = 31 * result + (SubjectName != null ? SubjectName.hashCode() : 0);
-        result = 31 * result + (SubjectStatus != null ? SubjectStatus.hashCode() : 0);
-        result = 31 * result + (ScoreRed != null ? ScoreRed.hashCode() : 0);
-        result = 31 * result + (ScoreAmber != null ? ScoreAmber.hashCode() : 0);
-        result = 31 * result + (ScoreLevelPassing != null ? ScoreLevelPassing.hashCode() : 0);
+        result = 31 * result + (subjectName != null ? subjectName.hashCode() : 0);
+        result = 31 * result + (subjectStatus != null ? subjectStatus.hashCode() : 0);
+        result = 31 * result + (scoreRed != null ? scoreRed.hashCode() : 0);
+        result = 31 * result + (scoreAmber != null ? scoreAmber.hashCode() : 0);
+        result = 31 * result + (scoreLevelPassing != null ? scoreLevelPassing.hashCode() : 0);
         result = 31 * result + (idCourseSubjectChapter != null ? idCourseSubjectChapter.hashCode() : 0);
-        result = 31 * result + (ChapterName != null ? ChapterName.hashCode() : 0);
-        result = 31 * result + (ChapterStatus != null ? ChapterStatus.hashCode() : 0);
-        result = 31 * result + (ChapterSortOrder != null ? ChapterSortOrder.hashCode() : 0);
+        result = 31 * result + (chapterName != null ? chapterName.hashCode() : 0);
+        result = 31 * result + (chapterStatus != null ? chapterStatus.hashCode() : 0);
+        result = 31 * result + (chapterSortOrder != null ? chapterSortOrder.hashCode() : 0);
         result = 31 * result + (idTopic != null ? idTopic.hashCode() : 0);
-        result = 31 * result + (TopicName != null ? TopicName.hashCode() : 0);
-        result = 31 * result + (TopicStatus != null ? TopicStatus.hashCode() : 0);
-        result = 31 * result + (TopicSortOrder != null ? TopicSortOrder.hashCode() : 0);
+        result = 31 * result + (topicName != null ? topicName.hashCode() : 0);
+        result = 31 * result + (topicStatus != null ? topicStatus.hashCode() : 0);
+        result = 31 * result + (topicSortOrder != null ? topicSortOrder.hashCode() : 0);
         result = 31 * result + (idContent != null ? idContent.hashCode() : 0);
-        result = 31 * result + (Type != null ? Type.hashCode() : 0);
-        result = 31 * result + (ContentName != null ? ContentName.hashCode() : 0);
-        result = 31 * result + (Status != null ? Status.hashCode() : 0);
-        result = 31 * result + (AuthorCopyright != null ? AuthorCopyright.hashCode() : 0);
-        result = 31 * result + (UpdateTime != null ? UpdateTime.hashCode() : 0);
-        result = 31 * result + (NamePrefix != null ? NamePrefix.hashCode() : 0);
-        result = 31 * result + (GivenName != null ? GivenName.hashCode() : 0);
-        result = 31 * result + (SurName != null ? SurName.hashCode() : 0);
-        result = 31 * result + (Rating != null ? Rating.hashCode() : 0);
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        result = 31 * result + (contentName != null ? contentName.hashCode() : 0);
+        result = 31 * result + (status != null ? status.hashCode() : 0);
+        result = 31 * result + (authorCopyright != null ? authorCopyright.hashCode() : 0);
+        result = 31 * result + (updateTime != null ? updateTime.hashCode() : 0);
+        result = 31 * result + (namePrefix != null ? namePrefix.hashCode() : 0);
+        result = 31 * result + (givenName != null ? givenName.hashCode() : 0);
+        result = 31 * result + (surName != null ? surName.hashCode() : 0);
+        result = 31 * result + (rating != null ? rating.hashCode() : 0);
         return result;
     }
 
@@ -135,32 +159,32 @@ public class ContentIndex extends BaseModel implements Serializable {
         return "ContentIndex{" +
                 "idEntity='" + idEntity + '\'' +
                 ", idCourse='" + idCourse + '\'' +
-                ", CourseName='" + CourseName + '\'' +
-                ", CourseStatus='" + CourseStatus + '\'' +
+                ", courseName='" + courseName + '\'' +
+                ", courseStatus='" + courseStatus + '\'' +
                 ", idCourseSubject='" + idCourseSubject + '\'' +
-                ", SubjectName='" + SubjectName + '\'' +
-                ", SubjectStatus='" + SubjectStatus + '\'' +
-                ", ScoreRed='" + ScoreRed + '\'' +
-                ", ScoreAmber='" + ScoreAmber + '\'' +
-                ", ScoreLevelPassing='" + ScoreLevelPassing + '\'' +
+                ", subjectName='" + subjectName + '\'' +
+                ", subjectStatus='" + subjectStatus + '\'' +
+                ", scoreRed='" + scoreRed + '\'' +
+                ", scoreAmber='" + scoreAmber + '\'' +
+                ", scoreLevelPassing='" + scoreLevelPassing + '\'' +
                 ", idCourseSubjectChapter='" + idCourseSubjectChapter + '\'' +
-                ", ChapterName='" + ChapterName + '\'' +
-                ", ChapterStatus='" + ChapterStatus + '\'' +
-                ", ChapterSortOrder='" + ChapterSortOrder + '\'' +
+                ", chapterName='" + chapterName + '\'' +
+                ", chapterStatus='" + chapterStatus + '\'' +
+                ", chapterSortOrder='" + chapterSortOrder + '\'' +
                 ", idTopic='" + idTopic + '\'' +
-                ", TopicName='" + TopicName + '\'' +
-                ", TopicStatus='" + TopicStatus + '\'' +
-                ", TopicSortOrder='" + TopicSortOrder + '\'' +
+                ", topicName='" + topicName + '\'' +
+                ", topicStatus='" + topicStatus + '\'' +
+                ", topicSortOrder='" + topicSortOrder + '\'' +
                 ", idContent='" + idContent + '\'' +
-                ", Type='" + Type + '\'' +
-                ", ContentName='" + ContentName + '\'' +
-                ", Status='" + Status + '\'' +
-                ", AuthorCopyright='" + AuthorCopyright + '\'' +
-                ", UpdateTime='" + UpdateTime + '\'' +
-                ", NamePrefix='" + NamePrefix + '\'' +
-                ", GivenName='" + GivenName + '\'' +
-                ", SurName='" + SurName + '\'' +
-                ", Rating='" + Rating + '\'' +
+                ", type='" + type + '\'' +
+                ", contentName='" + contentName + '\'' +
+                ", status='" + status + '\'' +
+                ", authorCopyright='" + authorCopyright + '\'' +
+                ", updateTime='" + updateTime + '\'' +
+                ", namePrefix='" + namePrefix + '\'' +
+                ", givenName='" + givenName + '\'' +
+                ", surName='" + surName + '\'' +
+                ", rating='" + rating + '\'' +
                 '}';
     }
 }

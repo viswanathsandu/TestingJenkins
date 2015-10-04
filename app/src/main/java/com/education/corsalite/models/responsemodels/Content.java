@@ -9,8 +9,8 @@ import java.io.Serializable;
  */
 public class Content extends BaseModel implements Serializable {
 
-    public Number idContent;
-    public Number idEntity;
+    public String idContent;
+    public String idEntity;
     @SerializedName("Type")
     public String type;
     @SerializedName("Name")
