@@ -50,6 +50,9 @@ public class AnalyticsTitleFragment extends Fragment{
         testCoverage.setOnClickListener(mTitleSelectedListener);
         recommededReading.setOnClickListener(mTitleSelectedListener);
         timeManagement.setOnClickListener(mTitleSelectedListener);
+        //Default accuracy tab should be selected
+        accuracy.setSelected(true);
+        mTitleSelectedListener.onClick(accuracy);
         return v;
     }
 

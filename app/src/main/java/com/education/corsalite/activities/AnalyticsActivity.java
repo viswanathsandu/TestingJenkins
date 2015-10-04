@@ -35,6 +35,7 @@ public class AnalyticsActivity extends AbstractBaseActivity implements Analytics
         frameLayout.addView(myView);
         ButterKnife.bind(this);
         setUpTitleLayout();
+
     }
     private void setUpTitleLayout(){
         AnalyticsTitleFragment details = new AnalyticsTitleFragment();
