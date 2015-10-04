@@ -29,6 +29,7 @@ public class OfflineContentActivity extends AbstractBaseActivity {
         LinearLayout myView = (LinearLayout) inflater.inflate(R.layout.activity_offline_content, null);
         frameLayout.addView(myView);
         mainNodeLayout = (LinearLayout) findViewById(R.id.main_node);
+        setToolbarTitle("Offline Content");
 
         TreeNode root = TreeNode.root();
 
@@ -53,7 +54,7 @@ public class OfflineContentActivity extends AbstractBaseActivity {
         TreeNode chemistry_file3 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_drive_file, "Video2.mp4"));
 
 
-        TreeNode maths = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, "Chemistry"));
+        TreeNode maths = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, "Maths"));
         TreeNode lesson_one_maths = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, "Lesson one"));
 
 
