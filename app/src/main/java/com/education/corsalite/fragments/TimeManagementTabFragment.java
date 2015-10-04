@@ -45,8 +45,8 @@ public class TimeManagementTabFragment extends Fragment {
     @Bind(R.id.ll_time_mgmnt)LinearLayout mLinearLayout;
 
     HashMap<String,List<CourseAnalysis>> courseDataMap;
-    final String SUBJECT = "subject";
-    final String CHAPTER = "chapter";
+    final String SUBJECT = "Subject";
+    final String CHAPTER = "Chapter";
 
     @Nullable
     @Override
@@ -84,10 +84,9 @@ public class TimeManagementTabFragment extends Fragment {
                             mDescText.setText(entry.getKey());
                             mDescText.setGravity(Gravity.CENTER);
                             mDescText.setTextSize(16);
-                            mDescText.setPadding(0,10,0,10);
+                            mDescText.setPadding(0, 10, 0, 10);
                             mLinearLayout.addView(mDescText);
                             PieChart chart = new PieChart(getActivity());
-                            chart.setPadding(5, 10, 5, 10);
                             mLinearLayout.addView(chart, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, converDPToPX(350)));
                             initializeGraph(chart);
                             buildGraphData(entry.getValue(), CHAPTER, chart);
@@ -104,6 +103,7 @@ public class TimeManagementTabFragment extends Fragment {
         mChart.setDrawHoleEnabled(false);
         mChart.setDescription("");
         mChart.setUsePercentValues(true);
+        mChart.setPadding(5, 10, 5, 10);
         mChart.getLegend().setPosition(Legend.LegendPosition.RIGHT_OF_CHART_CENTER);
 
     }
@@ -135,8 +135,9 @@ public class TimeManagementTabFragment extends Fragment {
             }else if(graphType.equalsIgnoreCase(SUBJECT)){
                 xData.add(courseAnalysis.subjectName);
             }
-            if(courseAnalysis.timeTaken == null){
-                yData.add(0F);
+            if(courseAnalysis.timeTaken == null ){
+                continue;
+            }else if(Float.parseFloat(courseAnalysis.timeTaken) == 0){
                 continue;
             }
             yData.add(Float.parseFloat(courseAnalysis.timeTaken));
@@ -150,7 +151,7 @@ public class TimeManagementTabFragment extends Fragment {
 
 
         PieDataSet dataSet = new PieDataSet(yVals1, "Accuracy By "+graphType);
-        dataSet.setSliceSpace(3f);
+        dataSet.setSliceSpace(1f);
         dataSet.setSelectionShift(5);
 
         // add a lot of colors
