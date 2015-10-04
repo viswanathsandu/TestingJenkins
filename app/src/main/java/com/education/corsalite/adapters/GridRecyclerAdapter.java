@@ -64,11 +64,11 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
     }
 
     private void removeLogic(StudyCenterSubjectViewHolder holder, int position, ArrayList<CompletionStatus> completionStatuses) {
-        if (completionStatuses.get(position).statusColor == 1) {
+        if (completionStatuses.get(position).statusColor == 2) {
             holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.blueshape));
-        } else if (completionStatuses.get(position).statusColor == 0) {
+        } else if (completionStatuses.get(position).statusColor == 1) {
             holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.redshape));
-        } else if (completionStatuses.get(position).statusColor == 2) {
+        } else if (completionStatuses.get(position).statusColor == 3) {
             holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.greenshape));
         }else{
             holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.yellowshape));
