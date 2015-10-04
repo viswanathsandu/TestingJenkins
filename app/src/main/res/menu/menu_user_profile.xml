@@ -22,9 +22,4 @@
         android:id="@+id/action_logout"
         app:showAsAction="never"
         android:title="@string/logout" />
-
-    <item
-        android:id="@+id/analytics"
-        app:showAsAction="never"
-        android:title="@string/analytics" />
 </menu>

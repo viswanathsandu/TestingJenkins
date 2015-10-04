@@ -8,6 +8,7 @@ public class CompletionStatus {
     private String SubjectName;
     private String idCourseSubjectChapter;
     private String idCourseSubject;
+    public int statusColor;
 
     public void setChapterName(String chapterName) {
         this.ChapterName = chapterName;
