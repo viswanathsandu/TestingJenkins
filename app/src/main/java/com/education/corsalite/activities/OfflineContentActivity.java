@@ -31,6 +31,10 @@ public class OfflineContentActivity extends AbstractBaseActivity {
         mainNodeLayout = (LinearLayout) findViewById(R.id.main_node);
         setToolbarTitle("Offline Content");
 
+        initNodes();
+    }
+
+    private void initNodes() {
         TreeNode root = TreeNode.root();
 
         TreeNode contentRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_laptop, "Content"));
@@ -42,7 +46,6 @@ public class OfflineContentActivity extends AbstractBaseActivity {
         TreeNode physics_file1 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_drive_file, "Content.Html"));
         TreeNode physics_file2 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_drive_file, "Video.mp4"));
         TreeNode physics_file3 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_drive_file, "Video2.mp4"));
-
 
 
         TreeNode chemistry = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, "Chemistry"));
@@ -79,13 +82,6 @@ public class OfflineContentActivity extends AbstractBaseActivity {
         tView.setDefaultNodeLongClickListener(nodeLongClickListener);
         tView.setDefaultContainerStyle(R.style.TreeNodeStyleCustom);
         mainNodeLayout.addView(tView.getView());
-
-        if (savedInstanceState != null) {
-            String state = savedInstanceState.getString("tState");
-            if (!TextUtils.isEmpty(state)) {
-                tView.restoreState(state);
-            }
-        }
     }
 
     private TreeNode.TreeNodeClickListener nodeClickListener = new TreeNode.TreeNodeClickListener() {
