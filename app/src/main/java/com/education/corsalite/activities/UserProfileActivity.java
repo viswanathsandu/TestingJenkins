@@ -87,9 +87,6 @@ public class UserProfileActivity extends AbstractBaseActivity implements UserPro
             case R.id.action_add_courses :
                 addCourses();
                 return true;
-            case R.id.analytics:
-                Intent i = new Intent(UserProfileActivity.this,AnalyticsActivity.class);
-                startActivity(i);
         }
         return super.onOptionsItemSelected(item);
     }
