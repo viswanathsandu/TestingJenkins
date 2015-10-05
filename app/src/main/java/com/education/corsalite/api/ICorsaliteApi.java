@@ -1,11 +1,20 @@
 package com.education.corsalite.api;
 
+import com.education.corsalite.models.requestmodels.EditProfileModel;
+import com.education.corsalite.models.responsemodels.Content;
+import com.education.corsalite.models.responsemodels.ContentIndex;
+import com.education.corsalite.models.responsemodels.ContentIndexResponse;
+import com.education.corsalite.models.responsemodels.CourseAnalysis;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
 import com.education.corsalite.models.responsemodels.MessageResponse;
+import com.education.corsalite.models.responsemodels.StudyCenter;
+import com.education.corsalite.models.responsemodels.TestCoverage;
 import com.education.corsalite.models.responsemodels.UserProfileResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencyBalanceResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencySummaryResponse;
+
+import java.util.List;
 
 import retrofit.http.GET;
 import retrofit.http.POST;
@@ -33,4 +42,33 @@ public interface ICorsaliteApi {
 
     @GET("/Message")
     void getMessages(@Query("idStudent") String studentId, ApiCallback<MessageResponse> callback);
+
+    @POST("/UserProfile")
+    void updateUserProfile(@Query("Update")UserProfileResponse userProfile, ApiCallback<EditProfileModel> callback);
+
+    @GET("/CourseStudyCenterData")
+    void getCourseStudyCenterData(@Query("idStudent") String studentId, @Query("idCourse") String courseId, ApiCallback<StudyCenter> callback);
+
+    //http://staging.corsalite.com/v1/webservices/GetCourseAnalysis?idStudent=36&idCourse=13&idSubject=51&GroupLevel=Chapter&BreakupByDate=Month&DurationInDays=365&ReturnAllRowsWithoutPerfDataAlso=true
+    @GET("/GetCourseAnalysis")
+    void getCourseAnalysis(@Query("idStudent") String studentId,
+                                  @Query("idCourse") String courseId,
+                                  @Query("idSubject")String subjectID,
+                                  @Query("GroupLevel")String groupLevel,
+                                  @Query("BreakupByDate")String breakUpByDate,
+                                  @Query("DurationInDays")String durationInDays,
+                                  @Query("ReturnAllRowsWithoutPerfDataAlso")String returnAllRowsWithourPerfData,
+                                  ApiCallback<List<CourseAnalysis>> callback);
+
+    @GET("/GetTestCoverage")
+    void getTestCoverage(@Query("idStudent") String studentId,
+                           @Query("idCourse") String courseId,
+                           ApiCallback<List<TestCoverage>> callback);
+
+
+    @GET("/ContentIndex")
+    void getContentIndexData(@Query("idCourse") String courseId, @Query("idStudent") String studentId, ApiCallback<List<ContentIndex>> callback);
+
+    @GET("/Content")
+    void getContentData(@Query("idContents") String idContents, @Query("UpdateTime") String UpdateTime, ApiCallback<List<Content>> callback);
 }

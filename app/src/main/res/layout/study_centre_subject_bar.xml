@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/gray"
+    android:orientation="horizontal"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:id="@+id/subjects_name_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="15dp"
+        android:weightSum="1"></LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/color_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dp"
+            android:id="@+id/all_colors"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <View
+                    android:id="@+id/view1"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/redshape" />
+
+                <View
+                    android:id="@+id/view2"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/blueshape" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <View
+                    android:id="@+id/view3"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/greenshape" />
+
+                <View
+                    android:id="@+id/view4"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/yellowshape" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:id="@+id/redView"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.25"
+            android:background="@drawable/red_selector" />
+
+        <View
+            android:id="@+id/blueView"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="15dp"
+            android:layout_weight="0.25"
+            android:background="@drawable/blue_selector" />
+
+        <View
+            android:id="@+id/greenView"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="15dp"
+            android:layout_weight="0.25"
+            android:background="@drawable/yellow_selector" />
+
+        <View
+            android:id="@+id/yellowView"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="15dp"
+            android:layout_weight="0.25"
+            android:background="@drawable/green_selector" />
+    </LinearLayout>
+
+
+</RelativeLayout>

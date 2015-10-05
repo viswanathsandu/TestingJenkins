@@ -61,7 +61,7 @@ public class ExamAdapter extends AbstractRecycleViewAdapter {
             }
             examTxt.setText(examDetail.name == null ? EMPTY_STRING : examDetail.name);
             daysRemainingTxt.setText(examDetail.daysRemaining == null ? EMPTY_STRING : String.valueOf(examDetail.daysRemaining));
-            examDateTxt.setText(examDetail.examDate == null ? EMPTY_STRING : examDetail.examDate);
+            examDateTxt.setText(examDetail.examDate == null ? EMPTY_STRING : examDetail.examDate.split("")[0]);
             hallTicketTxt.setText(examDetail.hallTicketNumber == null ? EMPTY_STRING : examDetail.hallTicketNumber);
         }
     }

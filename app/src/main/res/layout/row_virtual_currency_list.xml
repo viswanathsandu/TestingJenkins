@@ -11,20 +11,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="15dp"
-        android:text="Date"
-        android:textStyle="bold"
-        android:textAllCaps="true"/>
+        android:text="Effective Date"
+        android:textStyle="bold"/>
 
-    <TextView
-        android:gravity="center"
-        android:layout_weight="1"
-        android:id="@+id/tv_time"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:padding="15dp"
-        android:text="Time"
-        android:textStyle="bold"
-        android:textAllCaps="true"/>
 
     <TextView
         android:gravity="center"
@@ -34,8 +23,7 @@
         android:layout_height="wrap_content"
         android:padding="15dp"
         android:text="EVENT"
-        android:textStyle="bold"
-        android:textAllCaps="true"/>
+        android:textStyle="bold"/>
 
     <TextView
         android:gravity="center"
@@ -45,8 +33,7 @@
         android:layout_height="wrap_content"
         android:padding="15dp"
         android:text="Currency Earned"
-        android:textStyle="bold"
-        android:textAllCaps="true"/>
+        android:textStyle="bold"/>
 
     <TextView
         android:gravity="center"
@@ -56,7 +43,6 @@
         android:layout_height="wrap_content"
         android:padding="15dp"
         android:text="Balance"
-        android:textStyle="bold"
-        android:textAllCaps="true"/>
+        android:textStyle="bold"/>
 
 </LinearLayout>

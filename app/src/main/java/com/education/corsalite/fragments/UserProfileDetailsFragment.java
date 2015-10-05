@@ -1,7 +1,7 @@
 package com.education.corsalite.fragments;
 
 import android.app.Activity;
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
@@ -13,11 +13,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.education.corsalite.R;
+import com.education.corsalite.activities.EditProfileActivity;
 import com.education.corsalite.activities.UserProfileActivity;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
@@ -29,8 +29,11 @@ import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.ExamDetail;
 import com.education.corsalite.models.responsemodels.UserProfileResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencyBalanceResponse;
+import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.L;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
@@ -50,7 +53,9 @@ public class UserProfileDetailsFragment extends BaseFragment {
     @Bind(R.id.tv_virtual_currency_balance) TextView virtualCurrencyBalanceTxt;
     @Bind(R.id.sp_default_course) Spinner coursesSpinner;
     @Bind(R.id.btn_default_course) Button coursesBtn;
+    @Bind(R.id.btn_edit)Button editProfileBtn;
 
+    private UserProfileResponse user;
     private UpdateExamData updateExamData;
     private int defaultcourseIndex;
 
@@ -107,11 +112,21 @@ public class UserProfileDetailsFragment extends BaseFragment {
                 coursesSpinner.performClick();
             }
         });
+        editProfileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), EditProfileActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("user_profile_response", user);
+                intent.putExtra("user_profile", bundle);
+                startActivity(intent);
+            }
+        });
         coursesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 defaultcourseIndex = position;
-                L.info("Position : "+position);
+                L.info("Position : " + position);
                 saveDefaultCourseIndex(position);
             }
 
@@ -134,6 +149,7 @@ public class UserProfileDetailsFragment extends BaseFragment {
                 @Override
                 public void success(UserProfileResponse userProfileResponse, Response response) {
                     if (userProfileResponse.isSuccessful()) {
+                        user = userProfileResponse;
                         showProfileData(userProfileResponse.basicProfile);
                         loadCoursesData(userProfileResponse.basicProfile);
                         if (updateExamData != null) {
@@ -169,7 +185,12 @@ public class UserProfileDetailsFragment extends BaseFragment {
 
     private void showProfileData(BasicProfile profile) {
         if (profile.photoUrl != null && !profile.photoUrl.isEmpty()) {
-            Glide.with(getActivity()).load(profile.photoUrl).into(profilePicImg);
+            try {
+                URL url = new URL(new URL(ApiClientService.getBaseUrl()), profile.photoUrl);
+                Glide.with(getActivity()).load(url).into(profilePicImg);
+            } catch (MalformedURLException e) {
+                L.error(e.getMessage(), e);
+            }
         }
         usernameTxt.setText(profile.displayName);
         userFullNameTxt.setText(profile.givenName);
@@ -179,23 +200,27 @@ public class UserProfileDetailsFragment extends BaseFragment {
 
     private void fetchVirtualCurrencyBalance() {
         ApiManager.getInstance(getActivity()).getVirtualCurrencyBalance(LoginUserCache.getInstance().loginResponse.studentId,
-            new ApiCallback<VirtualCurrencyBalanceResponse>() {
-                @Override
-                public void failure(CorsaliteError error) {
-                    if(error!= null && !TextUtils.isEmpty(error.message)) {
-                        showToast(error.message);
+                new ApiCallback<VirtualCurrencyBalanceResponse>() {
+                    @Override
+                    public void failure(CorsaliteError error) {
+                        if (error != null && !TextUtils.isEmpty(error.message)) {
+                            showToast(error.message);
+                        }
                     }
-                }
 
-                @Override
-                public void success(VirtualCurrencyBalanceResponse virtualCurrencyBalanceResponse, Response response) {
-                    if (virtualCurrencyBalanceResponse.isSuccessful()) {
-                        UserProfileActivity.BALANCE_CURRENCY = String.valueOf(virtualCurrencyBalanceResponse.balance.intValue());
-                        virtualCurrencyBalanceTxt.setText(virtualCurrencyBalanceResponse.balance.intValue() + "");
-                    }
+                    @Override
+                    public void success(VirtualCurrencyBalanceResponse virtualCurrencyBalanceResponse, Response response) {
+                        if (virtualCurrencyBalanceResponse.isSuccessful()) {
+                            UserProfileActivity.BALANCE_CURRENCY = String.valueOf(virtualCurrencyBalanceResponse.balance.intValue());
+                            virtualCurrencyBalanceTxt.setText(virtualCurrencyBalanceResponse.balance.intValue() + "");
+                        }
                 }
             });
     }
+
+
+
+
 
     private void setEnrolledCourses(String courses) {
         enrolledCoursesTxt.setText(Html.fromHtml(COURSES_ENROLLED_HTML + courses));
