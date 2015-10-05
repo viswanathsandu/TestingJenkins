@@ -71,5 +71,9 @@
         <item name="android:padding">20dp</item>
     </style>
 
+    <style name="TreeNodeStyleCustom">
+        <item name="android:paddingLeft">20dp</item>
+    </style>
+
 
 </resources>

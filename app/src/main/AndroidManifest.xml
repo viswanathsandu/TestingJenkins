@@ -71,6 +71,11 @@
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="Analytics"
             android:theme="@style/UserProfileTheme" />
+        <activity
+            android:name=".activities.OfflineContentActivity"
+            android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
+            android:label="Analytics"
+            android:theme="@style/UserProfileTheme" />
     </application>
 
 </manifest>
