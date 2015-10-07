@@ -40,7 +40,7 @@
             android:layout_weight="1"
             android:drawableLeft="@drawable/ico_tile_time"
             android:drawablePadding="4dp"
-            android:gravity="center_vertical|left"
+            android:gravity="center_vertical|center_horizontal"
             android:paddingLeft="4dp"
             tools:text="00:45:40" />
 
@@ -52,7 +52,7 @@
             android:layout_weight="1"
             android:drawableLeft="@drawable/ico_tile_score"
             android:drawablePadding="4dp"
-            android:gravity="center_vertical|left"
+            android:gravity="center_vertical|center_horizontal"
             android:paddingLeft="4dp"
             android:text="28/347" />
 
@@ -64,7 +64,7 @@
             android:layout_weight="1"
             android:drawableLeft="@drawable/ico_tile_level_two"
             android:drawablePadding="4dp"
-            android:gravity="center_vertical|left"
+            android:gravity="center_vertical|center_horizontal"
             android:paddingLeft="4dp"
             tools:text="level 2" />
     </LinearLayout>

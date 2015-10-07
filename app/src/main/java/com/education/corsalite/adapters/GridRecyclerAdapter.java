@@ -53,6 +53,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         holder.progressBar.setMax(Integer.parseInt(chapter.getTotalTopics()));
         holder.progressBar.setProgress(chapter.getCompletedTopics());
         getLevelDrawable(holder, chapter.getCompletedTopics());
+        holder.star.setText(chapter.getEarnedMarks()+"/"+chapter.getTotalTestedMarks());
         holder.gridLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
