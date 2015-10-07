@@ -14,28 +14,24 @@ import android.widget.TextView;
 
 import com.education.corsalite.R;
 import com.education.corsalite.activities.StudyCentreActivity;
+import com.education.corsalite.models.responsemodels.Chapters;
 import com.education.corsalite.models.responsemodels.CompletionStatus;
+import com.education.corsalite.models.responsemodels.StudyCenter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
 public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapter.StudyCenterSubjectViewHolder> {
-    private HashMap<String, List<CompletionStatus>> mCompletionStatuses;
+    private List<Chapters> chapters;
     private String key;
     private StudyCentreActivity studyCentreActivity;
 
-    public GridRecyclerAdapter(HashMap<String, List<CompletionStatus>> mCompletionStatuses, String key, StudyCentreActivity studyCentreActivity) {
-        this.mCompletionStatuses = mCompletionStatuses;
-        this.key = key;
+    public GridRecyclerAdapter(List<Chapters> chapters, StudyCentreActivity studyCentreActivity, String key) {
+        this.chapters = chapters;
         this.studyCentreActivity = studyCentreActivity;
-    }
-
-    public void updateData(HashMap<String, List<CompletionStatus>> completionStatuses, String key) {
-        this.mCompletionStatuses = completionStatuses;
         this.key = key;
     }
 
@@ -47,24 +43,27 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
 
     @Override
     public void onBindViewHolder(final StudyCenterSubjectViewHolder holder, final int position) {
-        ArrayList<CompletionStatus> completionStatuses = (ArrayList<CompletionStatus>) this.mCompletionStatuses.get(key);
-        if (completionStatuses.isEmpty())
-            return;
-        final String label = completionStatuses.get(position).getChapterName();
+
+        Chapters chapter = chapters.get(position);
+        String label = chapter.getChapterName();
         holder.textView.setText(label);
-        holder.timeSpent.setText(getDateFromMillis(Long.parseLong(completionStatuses.get(position).getTimeSpent())));
-        String level = completionStatuses.get(position).getCompletedTopics();
-        holder.level.setText(studyCentreActivity.getResources().getString(R.string.level_text) + level);
-        holder.progressBar.setMax(20);
-        holder.progressBar.setProgress(4);
-        getLevelDrawable(holder, Integer.parseInt(level));
+        holder.timeSpent.setText(getDateFromMillis((chapter.getTimeSpent())));
+        holder.level.setText(studyCentreActivity.getResources().getString(R.string.level_text) + chapter.getCompletedTopics());
+        setColor(holder, chapter);
+        holder.progressBar.setMax(Integer.parseInt(chapter.getTotalTopics()));
+        holder.progressBar.setProgress(chapter.getCompletedTopics());
+        getLevelDrawable(holder, chapter.getCompletedTopics());
         holder.gridLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getAlertDialog(v, holder);
             }
         });
-        removeLogic(holder, position, (ArrayList<CompletionStatus>) this.mCompletionStatuses.get(key));
+    }
+
+    public void updateData(List<Chapters> chapters, String key) {
+        this.chapters = chapters;
+        this.key = key;
     }
 
     private void getAlertDialog(View v, StudyCenterSubjectViewHolder holder) {
@@ -81,15 +80,15 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         dialog.getWindow().setLayout(300, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 
-    private void removeLogic(StudyCenterSubjectViewHolder holder, int position, ArrayList<CompletionStatus> completionStatuses) {
-        if (completionStatuses.get(position).statusColor == 2) {
+    private void setColor(StudyCenterSubjectViewHolder holder, Chapters chapter) {
+        if (chapter.getEarnedMarks() == 0 && chapter.getTotalTestedMarks() == 0) {
             holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.blueshape));
-        } else if (completionStatuses.get(position).statusColor == 1) {
-            holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.redshape));
-        } else if (completionStatuses.get(position).statusColor == 3) {
-            holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.greenshape));
-        }else{
+        } else if (chapter.getScoreAmber() <= 90 && chapter.getScoreRed() >= 70) {
             holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.yellowshape));
+        } else if (chapter.getScoreAmber() > 90) {
+            holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.greenshape));
+        } else {
+            holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.redshape));
         }
     }
 
@@ -121,13 +120,14 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
 
     @Override
     public int getItemCount() {
-        return mCompletionStatuses.size();
+        return chapters.size();
     }
 
     public class StudyCenterSubjectViewHolder extends RecyclerView.ViewHolder {
         public TextView textView;
         public TextView timeSpent;
         public TextView level;
+        public TextView star;
         public LinearLayout gridLayout;
         public ProgressBar progressBar;
 
@@ -136,6 +136,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
             textView = (TextView) itemView.findViewById(R.id.subject_name);
             timeSpent = (TextView) itemView.findViewById(R.id.clock);
             level = (TextView) itemView.findViewById(R.id.level);
+            star = (TextView) itemView.findViewById(R.id.star);
             gridLayout = (LinearLayout) itemView.findViewById(R.id.grid_layout);
             progressBar = (ProgressBar) itemView.findViewById(R.id.progress_id);
         }
