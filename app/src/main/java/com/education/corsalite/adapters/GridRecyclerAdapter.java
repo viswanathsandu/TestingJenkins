@@ -1,13 +1,16 @@
 package com.education.corsalite.adapters;
 
+import android.content.Context;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.activities.StudyCentreActivity;
@@ -52,15 +55,30 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         holder.timeSpent.setText(getDateFromMillis(Long.parseLong(completionStatuses.get(position).getTimeSpent())));
         String level = completionStatuses.get(position).getCompletedTopics();
         holder.level.setText(studyCentreActivity.getResources().getString(R.string.level_text) + level);
+        holder.progressBar.setMax(20);
+        holder.progressBar.setProgress(4);
         getLevelDrawable(holder, Integer.parseInt(level));
-        holder.textView.setOnClickListener(new View.OnClickListener() {
+        holder.gridLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(
-                        holder.textView.getContext(), label, Toast.LENGTH_SHORT).show();
+                getAlertDialog(v, holder);
             }
         });
         removeLogic(holder, position, (ArrayList<CompletionStatus>) this.mCompletionStatuses.get(key));
+    }
+
+    private void getAlertDialog(View v, StudyCenterSubjectViewHolder holder) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(holder.gridLayout.getContext());
+        LayoutInflater li = (LayoutInflater) studyCentreActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View dialogView = li.inflate(R.layout.layout_list_item_view_popup, null);
+        builder.setView(dialogView);
+        AlertDialog dialog = builder.create();
+        WindowManager.LayoutParams wmlp = dialog.getWindow().getAttributes();
+        wmlp.gravity = Gravity.TOP | Gravity.LEFT;
+        wmlp.x = (int) v.getX();
+        wmlp.y = (int) v.getY() + 160;
+        dialog.show();
+        dialog.getWindow().setLayout(300, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 
     private void removeLogic(StudyCenterSubjectViewHolder holder, int position, ArrayList<CompletionStatus> completionStatuses) {
@@ -111,6 +129,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         public TextView timeSpent;
         public TextView level;
         public LinearLayout gridLayout;
+        public ProgressBar progressBar;
 
         public StudyCenterSubjectViewHolder(View itemView) {
             super(itemView);
@@ -118,6 +137,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
             timeSpent = (TextView) itemView.findViewById(R.id.clock);
             level = (TextView) itemView.findViewById(R.id.level);
             gridLayout = (LinearLayout) itemView.findViewById(R.id.grid_layout);
+            progressBar = (ProgressBar) itemView.findViewById(R.id.progress_id);
         }
     }
 

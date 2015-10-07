@@ -148,7 +148,11 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     private void initUI() {
         recyclerView = (RecyclerView) findViewById(R.id.grid_recycler_view);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        } else {
+            recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        }
         recyclerView.setAdapter(mAdapter);
         progressBar = (ProgressBar) findViewById(R.id.headerProgress);
         progressBar.setVisibility(View.VISIBLE);
@@ -159,9 +163,9 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
-        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         }
     }
 
