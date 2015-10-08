@@ -120,8 +120,8 @@ public class StudyCentreActivity extends AbstractBaseActivity {
 
     private List<Chapters> getChaptersForSubject() {
         for (StudyCenter studyCenter : courseData.StudyCenter) {
-            if (studyCenter.getSubjectName().equals(key)) {
-                return studyCenter.getChapters();
+            if (studyCenter.SubjectName.equals(key)) {
+                return studyCenter.Chapters;
             }
         }
         return null;
@@ -205,7 +205,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         subjects = new ArrayList<String>();
         for (StudyCenter studyCenter : courseData.StudyCenter) {
             addSubjectsAndCreateViews(studyCenter);
-            for (Chapters chapter : studyCenter.getChapters()) {
+            for (Chapters chapter : studyCenter.Chapters) {
                 if (chapter.getEarnedMarks() == 0 && chapter.getTotalTestedMarks() == 0) {
                     courseData.blueListChapters.add(chapter);
                 } else if (chapter.getScoreAmber() <= 90 && chapter.getScoreRed() >= 70) {
@@ -224,7 +224,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     }
 
     private void addSubjectsAndCreateViews(StudyCenter studyCenter) {
-        String subject = studyCenter.getSubjectName();
+        String subject = studyCenter.SubjectName;
         subjects.add(subject);
         TextView tv = getTextView(subject);
         linearLayout.addView(tv);
