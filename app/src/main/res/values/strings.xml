@@ -30,7 +30,7 @@
     <string name="failed_fetch">Failed to fetch user profile information</string>
     <string name="virtual_currency_fetched">Virtual currency fetched successfully...</string>
     <string name="virtual_currency_fetch_failed">Failed to fetch virtual currency information</string>
-    <string name="study_centre">Study Centre</string>
+    <string name="study_centre">Study Center</string>
     <string name="analytics">Analytics</string>
 
 
