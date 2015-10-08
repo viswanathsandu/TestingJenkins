@@ -20,14 +20,13 @@ import com.education.corsalite.adapters.GridRecyclerAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.models.responsemodels.CompletionStatus;
+import com.education.corsalite.models.responsemodels.Chapters;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
+import com.education.corsalite.models.responsemodels.CourseData;
 import com.education.corsalite.models.responsemodels.StudyCenter;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
 
 import retrofit.client.Response;
 
@@ -39,9 +38,10 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     private GridRecyclerAdapter mAdapter;
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
-    private StudyCenter mStudyCenter;
+    private CourseData courseData;
     private LinearLayout linearLayout;
     private ArrayList<String> subjects;
+    private ArrayList<Chapters> allChapters = new ArrayList<>();
     private View redView;
     private View blueView;
     private View yellowView;
@@ -75,28 +75,28 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         redView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mAdapter.updateData(getUpdatedTilesMap(0), key);
+                mAdapter.updateData(courseData.redListChapters, key);
                 mAdapter.notifyDataSetChanged();
             }
         });
         blueView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mAdapter.updateData(getUpdatedTilesMap(1), key);
+                mAdapter.updateData(courseData.blueListChapters, key);
                 mAdapter.notifyDataSetChanged();
             }
         });
         yellowView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mAdapter.updateData(getUpdatedTilesMap(2), key);
+                mAdapter.updateData(courseData.amberListChapters, key);
                 mAdapter.notifyDataSetChanged();
             }
         });
         greenView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mAdapter.updateData(getUpdatedTilesMap(3), key);
+                mAdapter.updateData(courseData.greenListChapters, key);
                 mAdapter.notifyDataSetChanged();
             }
         });
@@ -104,29 +104,27 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         allColorLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mAdapter.updateData(mStudyCenter.tilesMap, key);
+                mAdapter.updateData(allChapters, key);
                 mAdapter.notifyDataSetChanged();
             }
         });
     }
 
-    private HashMap<String, List<CompletionStatus>> getUpdatedTilesMap(int color) {
-        HashMap<String, List<CompletionStatus>> map = new HashMap<>();
-        ArrayList<CompletionStatus> completionStatuses = new ArrayList<>();
-        for (CompletionStatus completionStatus : mStudyCenter.tilesMap.get(key)) {
-            if (completionStatus.statusColor == color) {
-                completionStatuses.add(completionStatus);
-            }
-        }
-        map.put(key, completionStatuses);
-        return map;
-    }
 
-    private void initDataAdapter(HashMap<String, List<CompletionStatus>> tilesMap, String subject) {
+    private void initDataAdapter(String subject) {
         showList();
         key = subject;
-        mAdapter = new GridRecyclerAdapter(tilesMap, subject, this);
+        mAdapter = new GridRecyclerAdapter(getChaptersForSubject(), this, key);
         recyclerView.setAdapter(mAdapter);
+    }
+
+    private List<Chapters> getChaptersForSubject() {
+        for (StudyCenter studyCenter : courseData.StudyCenter) {
+            if (studyCenter.SubjectName.equals(key)) {
+                return studyCenter.Chapters;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -139,7 +137,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_content_reading :
+            case R.id.action_content_reading:
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -176,9 +174,8 @@ public class StudyCentreActivity extends AbstractBaseActivity {
 
     private void getStudyCentreData() {
         // TODO : passing static data
-        ApiManager.getInstance(this).getStudyCentreData( LoginUserCache.getInstance().loginResponse.studentId,
-                "13",
-                new ApiCallback<StudyCenter>() {
+        ApiManager.getInstance(this).getStudyCentreData(LoginUserCache.getInstance().loginResponse.studentId,
+                "13", new ApiCallback<CourseData>() {
                     @Override
                     public void failure(CorsaliteError error) {
                         if (error != null && !TextUtils.isEmpty(error.message)) {
@@ -188,12 +185,11 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                     }
 
                     @Override
-                    public void success(StudyCenter mStudyCenter, Response response) {
-                        if (mStudyCenter != null && mStudyCenter.getCompletionStatus() != null &&
-                                mStudyCenter.getCompletionStatus().size() > 0) {
-                            StudyCentreActivity.this.mStudyCenter = mStudyCenter;
-                            setUpStudyCentreData(mStudyCenter);
-                            initDataAdapter(mStudyCenter.tilesMap, subjects.get(0));
+                    public void success(CourseData courseData, Response response) {
+                        if (courseData != null && courseData.StudyCenter != null && courseData.StudyCenter.size() > 0) {
+                            StudyCentreActivity.this.courseData = courseData;
+                            setUpStudyCentreData(courseData);
+                            initDataAdapter(subjects.get(0));
                         } else {
                             hideRecyclerView();
                         }
@@ -205,35 +201,33 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         recyclerView.setVisibility(View.GONE);
     }
 
-    private void setUpStudyCentreData(StudyCenter mStudyCenter) {
-        HashMap<String, List<CompletionStatus>> tilesMap = new HashMap<>();
+    private void setUpStudyCentreData(CourseData courseData) {
         subjects = new ArrayList<String>();
-        for (CompletionStatus completionStatus : mStudyCenter.getCompletionStatus()) {
-            if (tilesMap.containsKey(completionStatus.getSubjectName())) {
-                ArrayList<CompletionStatus> arrayList = (ArrayList<CompletionStatus>) tilesMap.get(completionStatus.getSubjectName());
-                completionStatus.statusColor = getRandomNumber();
-                arrayList.add(completionStatus);
-            } else {
-                ArrayList<CompletionStatus> arrayList = new ArrayList<CompletionStatus>();
-                completionStatus.statusColor = getRandomNumber();
-                arrayList.add(completionStatus);
-                tilesMap.put(completionStatus.getSubjectName(), arrayList);
-                subjects.add(completionStatus.getSubjectName());
+        for (StudyCenter studyCenter : courseData.StudyCenter) {
+            addSubjectsAndCreateViews(studyCenter);
+            for (Chapters chapter : studyCenter.Chapters) {
+                if (chapter.earnedMarks == 0 && chapter.totalTestedMarks == 0) {
+                    courseData.blueListChapters.add(chapter);
+                } else if (chapter.scoreAmber <= 90 && chapter.scoreRed >= 70) {
+                    courseData.amberListChapters.add(chapter);
+                } else if (chapter.scoreAmber > 90) {
+                    courseData.greenListChapters.add(chapter);
+                } else {
+                    courseData.redListChapters.add(chapter);
+                }
             }
         }
-        mStudyCenter.tilesMap = tilesMap;
-        for (String subject : subjects) {
-            TextView tv = getTextView(subject);
-            linearLayout.addView(tv);
-        }
+        allChapters.addAll(courseData.blueListChapters);
+        allChapters.addAll(courseData.greenListChapters);
+        allChapters.addAll(courseData.amberListChapters);
+        allChapters.addAll(courseData.redListChapters);
     }
 
-    private int getRandomNumber() {
-        Random r = new Random();
-        int Low = 1;
-        int High = 5;
-        int color = r.nextInt(High - Low) + Low;
-        return color;
+    private void addSubjectsAndCreateViews(StudyCenter studyCenter) {
+        String subject = studyCenter.SubjectName;
+        subjects.add(subject);
+        TextView tv = getTextView(subject);
+        linearLayout.addView(tv);
     }
 
     private TextView getTextView(String text) {
@@ -249,9 +243,9 @@ public class StudyCentreActivity extends AbstractBaseActivity {
             @Override
             public void onClick(View v) {
                 showList();
-                if (mStudyCenter != null && mStudyCenter.tilesMap != null) {
+                if (courseData != null && courseData.StudyCenter != null) {
                     key = text;
-                    mAdapter.updateData(mStudyCenter.tilesMap, text);
+                    mAdapter.updateData(getChaptersForSubject(), text);
                     mAdapter.notifyDataSetChanged();
                 }
             }
