@@ -206,11 +206,11 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         for (StudyCenter studyCenter : courseData.StudyCenter) {
             addSubjectsAndCreateViews(studyCenter);
             for (Chapters chapter : studyCenter.Chapters) {
-                if (chapter.getEarnedMarks() == 0 && chapter.getTotalTestedMarks() == 0) {
+                if (chapter.earnedMarks == 0 && chapter.totalTestedMarks == 0) {
                     courseData.blueListChapters.add(chapter);
-                } else if (chapter.getScoreAmber() <= 90 && chapter.getScoreRed() >= 70) {
+                } else if (chapter.scoreAmber <= 90 && chapter.scoreRed >= 70) {
                     courseData.amberListChapters.add(chapter);
-                } else if (chapter.getScoreAmber() > 90) {
+                } else if (chapter.scoreAmber > 90) {
                     courseData.greenListChapters.add(chapter);
                 } else {
                     courseData.redListChapters.add(chapter);

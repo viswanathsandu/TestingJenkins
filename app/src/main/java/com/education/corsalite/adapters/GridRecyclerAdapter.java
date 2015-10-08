@@ -45,15 +45,15 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
     public void onBindViewHolder(final StudyCenterSubjectViewHolder holder, final int position) {
 
         Chapters chapter = chapters.get(position);
-        String label = chapter.getChapterName();
+        String label = chapter.chapterName;
         holder.textView.setText(label);
-        holder.timeSpent.setText(getDateFromMillis((chapter.getTimeSpent())));
-        holder.level.setText(studyCentreActivity.getResources().getString(R.string.level_text) + chapter.getCompletedTopics());
+        holder.timeSpent.setText(getDateFromMillis((chapter.timeSpent)));
+        holder.level.setText(studyCentreActivity.getResources().getString(R.string.level_text) + chapter.completedTopics);
         setColor(holder, chapter);
-        holder.progressBar.setMax(Integer.parseInt(chapter.getTotalTopics()));
-        holder.progressBar.setProgress(chapter.getCompletedTopics());
-        getLevelDrawable(holder, chapter.getCompletedTopics());
-        holder.star.setText(chapter.getEarnedMarks()+"/"+chapter.getTotalTestedMarks());
+        holder.progressBar.setMax(Integer.parseInt(chapter.totalTopics));
+        holder.progressBar.setProgress(chapter.completedTopics);
+        getLevelDrawable(holder, chapter.completedTopics);
+        holder.star.setText(chapter.earnedMarks+"/"+chapter.totalTestedMarks);
         holder.gridLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,11 +82,11 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
     }
 
     private void setColor(StudyCenterSubjectViewHolder holder, Chapters chapter) {
-        if (chapter.getEarnedMarks() == 0 && chapter.getTotalTestedMarks() == 0) {
+        if (chapter.earnedMarks == 0 && chapter.totalTestedMarks == 0) {
             holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.blueshape));
-        } else if (chapter.getScoreAmber() <= 90 && chapter.getScoreRed() >= 70) {
+        } else if (chapter.scoreAmber <= 90 && chapter.scoreRed >= 70) {
             holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.yellowshape));
-        } else if (chapter.getScoreAmber() > 90) {
+        } else if (chapter.scoreAmber > 90) {
             holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.greenshape));
         } else {
             holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.redshape));
