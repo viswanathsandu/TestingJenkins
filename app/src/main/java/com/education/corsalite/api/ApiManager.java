@@ -10,6 +10,7 @@ import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.ContentIndexResponse;
 import com.education.corsalite.models.responsemodels.ContentResponse;
 import com.education.corsalite.models.responsemodels.CourseAnalysis;
+import com.education.corsalite.models.responsemodels.CourseData;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
 import com.education.corsalite.models.responsemodels.MessageResponse;
@@ -163,13 +164,17 @@ public class ApiManager {
         }
     }
 
-    public void getStudyCentreData(String studentId, String courseID, ApiCallback<StudyCenter> callback) {
+    public void getStudyCentreData(String studentId, String courseID, ApiCallback<CourseData> callback) {
         if(isApiOnline()) {
-            ApiClientService.get().getCourseStudyCenterData(studentId, courseID, callback);
+            //TODO adding this for now, change it when the api is active
+//            ApiClientService.get().getCourseStudyCenterData(studentId, courseID, callback);
+            String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/studycentre.json");
+            System.out.print("Response for 'api/studycentre.json' is " + jsonResponse);
+            callback.success(new Gson().fromJson(jsonResponse, CourseData.class), getRetrofitResponse());
         } else {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/studycentre.json");
             System.out.print("Response for 'api/studycentre.json' is " + jsonResponse);
-            callback.success(new Gson().fromJson(jsonResponse, StudyCenter.class), getRetrofitResponse());
+            callback.success(new Gson().fromJson(jsonResponse, CourseData.class), getRetrofitResponse());
         }
     }
 
