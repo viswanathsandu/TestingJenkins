@@ -1,6 +1,7 @@
 package com.education.corsalite.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -250,8 +251,19 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                     mAdapter.updateData(mStudyCenter.tilesMap, text);
                     mAdapter.notifyDataSetChanged();
                 }
+
+                Intent intent = new Intent(StudyCentreActivity.this, WebActivity.class);
+                intent.putExtra("courseId", "11");
+                intent.putExtra("subjectId", "37");
+                intent.putExtra("chapterId", "1068");
+                intent.putExtra("topicId", "887");
+                intent.putExtra("contentId", "1536");
+                startActivity(intent);
+
+
             }
         });
+
     }
 
     private View getView() {
