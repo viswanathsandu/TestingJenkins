@@ -75,7 +75,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         AlertDialog dialog = builder.create();
         WindowManager.LayoutParams wmlp = dialog.getWindow().getAttributes();
         wmlp.gravity = Gravity.TOP | Gravity.LEFT;
-        wmlp.x = (int) v.getX();
+        wmlp.x = (int) v.getX() + 50;
         wmlp.y = (int) v.getY() + 160;
         dialog.show();
         dialog.getWindow().setLayout(300, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -111,8 +111,6 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
                 holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_four, 0, 0, 0);
                 break;
             case 5:
-                holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_five, 0, 0, 0);
-                break;
             default:
                 holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_five, 0, 0, 0);
                 break;
