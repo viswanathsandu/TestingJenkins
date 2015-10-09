@@ -49,6 +49,8 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     private View greenView;
     private LinearLayout allColorLayout;
     private String key;
+    private Integer mCourseId = 13; // using offline
+    private Integer mSubjectId = 51; // using offline
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -189,6 +191,8 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                     public void success(CourseData courseData, Response response) {
                         if (courseData != null && courseData.StudyCenter != null && courseData.StudyCenter.size() > 0) {
                             StudyCentreActivity.this.courseData = courseData;
+                            setupSubjects(courseData);
+                            key = courseData.StudyCenter.get(0).SubjectName;
                             setUpStudyCentreData(courseData);
                             initDataAdapter(subjects.get(0));
                         } else {
@@ -202,20 +206,42 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         recyclerView.setVisibility(View.GONE);
     }
 
-    private void setUpStudyCentreData(CourseData courseData) {
+    private void setupSubjects(CourseData courseData) {
         subjects = new ArrayList<String>();
         for (StudyCenter studyCenter : courseData.StudyCenter) {
             addSubjectsAndCreateViews(studyCenter);
-            for (Chapters chapter : studyCenter.Chapters) {
-                if (chapter.earnedMarks == 0 && chapter.totalTestedMarks == 0) {
-                    courseData.blueListChapters.add(chapter);
-                } else if (chapter.scoreAmber <= 90 && chapter.scoreRed >= 70) {
-                    courseData.amberListChapters.add(chapter);
-                } else if (chapter.scoreAmber > 90) {
-                    courseData.greenListChapters.add(chapter);
-                } else {
-                    courseData.redListChapters.add(chapter);
+        }
+    }
+
+    private void resetColorsVisibility() {
+        blueView.setVisibility(View.GONE);
+        yellowView.setVisibility(View.GONE);
+        greenView.setVisibility(View.GONE);
+        redView.setVisibility(View.GONE);
+    }
+
+    private void setUpStudyCentreData(CourseData courseData) {
+        resetColorsVisibility();
+        courseData.resetColoredLists();
+        allChapters.clear();
+        for (StudyCenter studyCenter : courseData.StudyCenter) {
+            if(key.equalsIgnoreCase(studyCenter.SubjectName)) {
+                for (Chapters chapter : studyCenter.Chapters) {
+                    if (chapter.earnedMarks == 0 && chapter.totalTestedMarks == 0) {
+                        courseData.blueListChapters.add(chapter);
+                        blueView.setVisibility(View.VISIBLE);
+                    } else if (chapter.scoreAmber <= 90 && chapter.scoreRed >= 70) {
+                        courseData.amberListChapters.add(chapter);
+                        yellowView.setVisibility(View.VISIBLE);
+                    } else if (chapter.scoreAmber > 90) {
+                        courseData.greenListChapters.add(chapter);
+                        greenView.setVisibility(View.VISIBLE);
+                    } else {
+                        courseData.redListChapters.add(chapter);
+                        redView.setVisibility(View.VISIBLE);
+                    }
                 }
+                break;
             }
         }
         allChapters.addAll(courseData.blueListChapters);
@@ -246,22 +272,22 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                 showList();
                 if (courseData != null && courseData.StudyCenter != null) {
                     key = text;
+                    setUpStudyCentreData(courseData);
                     mAdapter.updateData(getChaptersForSubject(), text);
                     mAdapter.notifyDataSetChanged();
                 }
-
-                Intent intent = new Intent(StudyCentreActivity.this, WebActivity.class);
-                intent.putExtra("courseId", "11");
-                intent.putExtra("subjectId", "37");
-                intent.putExtra("chapterId", "1068");
-                intent.putExtra("topicId", "887");
-                intent.putExtra("contentId", "1536");
-                startActivity(intent);
-
-
             }
         });
+    }
 
+    private void navigateToContentReading() {
+        Intent intent = new Intent(StudyCentreActivity.this, WebActivity.class);
+        intent.putExtra("courseId", "11");
+        intent.putExtra("subjectId", "37");
+        intent.putExtra("chapterId", "1068");
+        intent.putExtra("topicId", "887");
+        intent.putExtra("contentId", "1536");
+        startActivity(intent);
     }
 
     private View getView() {
