@@ -230,15 +230,15 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                     if (chapter.earnedMarks == 0 && chapter.totalTestedMarks == 0) {
                         courseData.blueListChapters.add(chapter);
                         blueView.setVisibility(View.VISIBLE);
-                    } else if (chapter.scoreAmber <= 90 && chapter.scoreRed >= 70) {
-                        courseData.amberListChapters.add(chapter);
-                        yellowView.setVisibility(View.VISIBLE);
-                    } else if (chapter.scoreAmber > 90) {
-                        courseData.greenListChapters.add(chapter);
-                        greenView.setVisibility(View.VISIBLE);
-                    } else {
+                    } else if(chapter.earnedMarks < chapter.scoreRed){
                         courseData.redListChapters.add(chapter);
                         redView.setVisibility(View.VISIBLE);
+                    } else if (chapter.earnedMarks < chapter.scoreAmber) {
+                        courseData.amberListChapters.add(chapter);
+                        yellowView.setVisibility(View.VISIBLE);
+                    } else {
+                        courseData.greenListChapters.add(chapter);
+                        greenView.setVisibility(View.VISIBLE);
                     }
                 }
                 break;

@@ -84,12 +84,12 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
     private void setColor(StudyCenterSubjectViewHolder holder, Chapters chapter) {
         if (chapter.earnedMarks == 0 && chapter.totalTestedMarks == 0) {
             holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.blueshape));
-        } else if (chapter.scoreAmber <= 90 && chapter.scoreRed >= 70) {
-            holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.yellowshape));
-        } else if (chapter.scoreAmber > 90) {
-            holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.greenshape));
-        } else {
+        } else if(chapter.earnedMarks < chapter.scoreRed){
             holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.redshape));
+        } else if (chapter.earnedMarks < chapter.scoreAmber) {
+            holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.yellowshape));
+        } else {
+            holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.greenshape));
         }
     }
 
