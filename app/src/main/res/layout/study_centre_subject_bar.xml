@@ -94,7 +94,7 @@
             android:background="@drawable/blue_selector" />
 
         <View
-            android:id="@+id/greenView"
+            android:id="@+id/yellowView"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_gravity="center_vertical"
@@ -103,7 +103,7 @@
             android:background="@drawable/yellow_selector" />
 
         <View
-            android:id="@+id/yellowView"
+            android:id="@+id/greenView"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_gravity="center_vertical"

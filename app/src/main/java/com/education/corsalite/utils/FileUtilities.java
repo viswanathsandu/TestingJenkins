@@ -26,16 +26,26 @@ public class FileUtilities {
 
     public String write(String fileName, String data) {
         File root = Environment.getExternalStorageDirectory();
-        File outDir = new File(root.getAbsolutePath() + File.separator + "Corsalite");
+        File outDir = new File(root.getAbsolutePath() + File.separator + Constants.PARENT_FOLDER);
         if (!outDir.isDirectory()) {
             outDir.mkdir();
         }
+
+        File savingDirectory ;
+        if(fileName.endsWith(".html")) {
+            savingDirectory = new File(outDir.getAbsolutePath() + File.separator + Constants.HTML_FOLDER);
+        } else {
+            savingDirectory = new File(outDir.getAbsolutePath() + File.separator + Constants.VIDEO_FOLDER);
+        }
+        if (!savingDirectory.isDirectory()) {
+            savingDirectory.mkdir();
+        }
         try {
-            if (!outDir.isDirectory()) {
+            if (!savingDirectory.isDirectory()) {
                 throw new IOException(
                         "Unable to create directory Corsalite. Maybe the SD card is mounted?");
             }
-            File outputFile = new File(outDir, fileName);
+            File outputFile = new File(savingDirectory, fileName);
             writer = new BufferedWriter(new FileWriter(outputFile));
             writer.write(data);
             writer.close();

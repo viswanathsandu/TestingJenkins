@@ -33,6 +33,7 @@
             android:background="#AA000000"/>
 
         <WebView
+            android:layout_marginLeft="10dp"
             android:id="@+id/webView_content_reading"
             android:layout_width="match_parent"
             android:layout_height="0dp"
