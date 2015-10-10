@@ -26,8 +26,7 @@
         android:id="@+id/spinner_nav"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="right"
-        android:visibility="invisible"/>
+        android:gravity="right"/>
     </LinearLayout>
 
 </android.support.v7.widget.Toolbar>

@@ -15,7 +15,7 @@
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingLeft="15dp"
-        android:weightSum="1"></LinearLayout>
+        android:weightSum="1" />
 
 
     <LinearLayout
@@ -38,21 +38,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="2dp">
+                android:layout_marginBottom="1dp">
 
                 <View
                     android:id="@+id/view1"
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:layout_marginRight="2dp"
+                    android:layout_width="11dp"
+                    android:layout_height="11dp"
+                    android:layout_marginRight="1dp"
                     android:layout_gravity="center_vertical"
                     android:background="@color/red" />
 
                 <View
                     android:id="@+id/view2"
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:layout_marginLeft="2dp"
+                    android:layout_width="11dp"
+                    android:layout_height="11dp"
+                    android:layout_marginLeft="1dp"
                     android:layout_gravity="center_vertical"
                     android:background="@color/blue" />
             </LinearLayout>
@@ -61,21 +61,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="2dp">
+                android:layout_marginTop="1dp">
 
                 <View
                     android:id="@+id/view3"
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:layout_marginRight="2dp"
+                    android:layout_width="11dp"
+                    android:layout_height="11dp"
+                    android:layout_marginRight="1dp"
                     android:layout_gravity="center_vertical"
                     android:background="@color/green" />
 
                 <View
                     android:id="@+id/view4"
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:layout_marginLeft="2dp"
+                    android:layout_width="11dp"
+                    android:layout_height="11dp"
+                    android:layout_marginLeft="1dp"
                     android:layout_gravity="center_vertical"
                     android:background="@color/amber" />
             </LinearLayout>
@@ -83,8 +83,8 @@
 
         <View
             android:id="@+id/redView"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
             android:layout_gravity="center_vertical"
             android:layout_weight="0.25"
             android:layout_marginLeft="15dp"
@@ -93,8 +93,8 @@
 
         <View
             android:id="@+id/blueView"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="15dp"
             android:layout_weight="0.25"
@@ -103,8 +103,8 @@
 
         <View
             android:id="@+id/yellowView"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="15dp"
             android:layout_weight="0.25"
@@ -113,8 +113,8 @@
 
         <View
             android:id="@+id/greenView"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="15dp"
             android:layout_weight="0.25"

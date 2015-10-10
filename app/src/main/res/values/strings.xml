@@ -15,7 +15,12 @@
     <string name="menu_download_pdf">Download PDF</string>
     <string name="menu_view_notes">View Notes</string>
     <string name="menu_rate_it">Rate It</string>
-    <string name="menu_content_reading">Content Reading</string>
+    <string name="menu_take_test">Take Test</string>
+    <string name="menu_scheduled_test">Scheduled Test</string>
+    <string name="menu_challenge_your_friends">Challenge your friends</string>
+    <string name="menu_exam_history">Exam History</string>
+    <string name="menu_recommended_reading">Recommended Reading</string>
+    <string name="menu_progress_card">Progress Card</string>
 
 
     <string name="logout">Logout</string>

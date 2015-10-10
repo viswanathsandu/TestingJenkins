@@ -141,7 +141,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_content_reading:
+            case R.id.action_take_test:
                 return true;
         }
         return super.onOptionsItemSelected(item);
