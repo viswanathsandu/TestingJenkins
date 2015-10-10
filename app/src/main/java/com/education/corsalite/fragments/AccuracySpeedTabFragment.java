@@ -4,12 +4,15 @@ import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
+import com.education.corsalite.adapters.CustomLegendAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
@@ -43,6 +46,12 @@ public class AccuracySpeedTabFragment extends Fragment   {
     private final String DATES = "dates";
     @Bind(R.id.sch_accuray_chapter)ScatterChart accuracyChapterChart;
     @Bind(R.id.sch_accuray_date)ScatterChart accuracyDateChart;
+    @Bind(R.id.rv_chapter_legend)RecyclerView rvChapterLegend;
+    @Bind(R.id.rv_dates_legend)RecyclerView rvDatesLegend;
+    LinearLayoutManager mLayoutManagerDates;
+    LinearLayoutManager mLayoutManagerChapter;
+    RecyclerView.Adapter customLegendAdapter;
+
 
     @Nullable
     @Override
@@ -50,6 +59,10 @@ public class AccuracySpeedTabFragment extends Fragment   {
         View view = inflater.inflate(R.layout.fragment_accuracy_tab, container, false);
         ButterKnife.bind(this, view);
 
+        mLayoutManagerDates = new LinearLayoutManager(getActivity());
+        mLayoutManagerChapter = new LinearLayoutManager(getActivity());
+        rvChapterLegend.setLayoutManager(mLayoutManagerChapter);
+        rvDatesLegend.setLayoutManager(mLayoutManagerDates);
         initializeGraph();
         //TODO: Build from api response later
         ApiManager.getInstance(getActivity()).getCourseAnalysisData(LoginUserCache.getInstance().loginResponse.studentId, "13", "51", "Chapter", "Month", "365", "true",
@@ -62,6 +75,10 @@ public class AccuracySpeedTabFragment extends Fragment   {
                     @Override
                     public void success(List<CourseAnalysis> courseAnalysisList, Response response) {
                         buildChapterGraphData(courseAnalysisList, CHAPTER);
+                        //create custom legend
+                        Legend chapterLegend = accuracyChapterChart.getLegend();
+                        customLegendAdapter = new CustomLegendAdapter(chapterLegend.getColors(),chapterLegend.getLabels(),getActivity().getLayoutInflater());
+                        rvChapterLegend.setAdapter(customLegendAdapter);
                     }
                 });
 
@@ -74,7 +91,11 @@ public class AccuracySpeedTabFragment extends Fragment   {
 
                     @Override
                     public void success(List<CourseAnalysis> courseAnalysisList, Response response) {
-                        buildChapterGraphData(courseAnalysisList,DATES);
+                        buildChapterGraphData(courseAnalysisList, DATES);
+
+                        Legend datesLegend = accuracyDateChart.getLegend();
+                        customLegendAdapter = new CustomLegendAdapter(datesLegend.getColors(),datesLegend.getLabels(),getActivity().getLayoutInflater());
+                        rvDatesLegend.setAdapter(customLegendAdapter);
                     }
                 });
 
@@ -85,12 +106,8 @@ public class AccuracySpeedTabFragment extends Fragment   {
         accuracyChapterChart.setDescription("Accuracy Vs Speed based on recent 365 days performance");
         accuracyDateChart.setDescription("Accuracy Vs Speed based on recent 365 days performance");
 
-        Legend l = accuracyChapterChart.getLegend();
-        l.setPosition(Legend.LegendPosition.RIGHT_OF_CHART);
-        Legend l1 = accuracyDateChart.getLegend();
-        l1.setPosition(Legend.LegendPosition.RIGHT_OF_CHART);
-
-
+        accuracyDateChart.getLegend().setEnabled(false);
+        accuracyChapterChart.getLegend().setEnabled(false);
 
         setMarkerView();
 
@@ -137,28 +154,24 @@ public class AccuracySpeedTabFragment extends Fragment   {
             }
         }
 
+        ArrayList<Integer> colors = new ArrayList<>();
+
+        for (int c : ColorTemplate.JOYFUL_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.COLORFUL_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.PASTEL_COLORS)
+            colors.add(c);
+
         ArrayList<ScatterDataSet> scatterDataSetList = new ArrayList<>();
 
         int i=0;
         for (Map.Entry<String,ArrayList<Entry>> entry : numYValEntries.entrySet()) {
-            /*String key =null;
-            if(entry.getKey()==null){
-                continue;
-            }
-            if( entry.getKey().length()>=25){
-                key= entry.getKey().substring(0,25);
-            }else{
-                String temp = " " ;
-                for(int j=entry.getKey().length();j<25;j++){
-                    temp += " ";
-                }
-                key = entry.getKey().concat(temp);
-                Log.e("aastha",key+key.length());
-            }
-            key =key.concat("|");*/
             ScatterDataSet dataSet = new ScatterDataSet(entry.getValue(),entry.getKey());
             scatterDataSetList.add(dataSet);
-            dataSet.setColor(ColorTemplate.COLORFUL_COLORS[i%5]);
+            dataSet.setColor(colors.get(i%colors.size()));
             dataSet.setScatterShape(ScatterChart.getAllPossibleShapes()[i % 4]);
             dataSet.setScatterShapeSize(8f);
             i++;
