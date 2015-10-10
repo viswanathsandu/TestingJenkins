@@ -3,6 +3,7 @@ package com.education.corsalite.adapters;
 import android.content.Context;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import com.education.corsalite.activities.StudyCentreActivity;
 import com.education.corsalite.models.responsemodels.Chapters;
 import com.education.corsalite.models.responsemodels.CompletionStatus;
 import com.education.corsalite.models.responsemodels.StudyCenter;
+import com.education.corsalite.utils.Data;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -47,13 +49,14 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         Chapters chapter = chapters.get(position);
         String label = chapter.chapterName;
         holder.textView.setText(label);
-        holder.timeSpent.setText(getDateFromMillis((chapter.timeSpent)));
-        holder.level.setText(studyCentreActivity.getResources().getString(R.string.level_text) + chapter.completedTopics);
+        holder.timeSpent.setText(getDateFromMillis(chapter.timeSpent));
+        holder.level.setText(studyCentreActivity.getResources().getString(R.string.level_text) + Data.getInt(chapter.completedTopics));
         setColor(holder, chapter);
-        holder.progressBar.setMax(Integer.parseInt(chapter.totalTopics));
-        holder.progressBar.setProgress(chapter.completedTopics);
+        int max = Data.getInt(chapter.totalTopics);
+        holder.progressBar.setMax(max==0 ? 1 : max);
+        holder.progressBar.setProgress(Data.getInt(chapter.completedTopics));
         getLevelDrawable(holder, chapter.completedTopics);
-        holder.star.setText(chapter.earnedMarks+"/"+chapter.totalTestedMarks);
+        holder.star.setText(Data.getInt(chapter.earnedMarks)+"/"+Data.getInt(chapter.totalTestedMarks));
         holder.gridLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,38 +85,41 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
     }
 
     private void setColor(StudyCenterSubjectViewHolder holder, Chapters chapter) {
-        if (chapter.earnedMarks == 0 && chapter.totalTestedMarks == 0) {
+        if (Data.getInt(chapter.earnedMarks) == 0 && Data.getInt(chapter.totalTestedMarks) == 0) {
             holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.blueshape));
-        } else if(chapter.earnedMarks < chapter.scoreRed){
+        } else if(Data.getInt(chapter.earnedMarks) < Data.getInt(chapter.scoreRed)){
             holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.redshape));
-        } else if (chapter.earnedMarks < chapter.scoreAmber) {
+        } else if (Data.getInt(chapter.earnedMarks) < Data.getInt(chapter.scoreAmber)) {
             holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.yellowshape));
         } else {
             holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.greenshape));
         }
     }
 
-    private void getLevelDrawable(StudyCenterSubjectViewHolder holder, int level) {
-        switch (level) {
-            case 0:
-                holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_zero, 0, 0, 0);
-                break;
-            case 1:
-                holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_one, 0, 0, 0);
-                break;
-            case 2:
-                holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_two, 0, 0, 0);
-                break;
-            case 3:
-                holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_three, 0, 0, 0);
-                break;
-            case 4:
-                holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_four, 0, 0, 0);
-                break;
-            case 5:
-            default:
-                holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_five, 0, 0, 0);
-                break;
+    private void getLevelDrawable(StudyCenterSubjectViewHolder holder, String levelstr) {
+        if(!TextUtils.isEmpty(levelstr)) {
+            int level = Data.getInt(levelstr);
+            switch (level) {
+                case 0:
+                    holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_zero, 0, 0, 0);
+                    break;
+                case 1:
+                    holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_one, 0, 0, 0);
+                    break;
+                case 2:
+                    holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_two, 0, 0, 0);
+                    break;
+                case 3:
+                    holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_three, 0, 0, 0);
+                    break;
+                case 4:
+                    holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_four, 0, 0, 0);
+                    break;
+                case 5:
+                default:
+                    holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_five, 0, 0, 0);
+                    break;
+            }
         }
     }
 
@@ -141,8 +147,12 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         }
     }
 
-    private String getDateFromMillis(long millis) {
-        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
-        return formatter.format(new Date(millis));
+    private String getDateFromMillis(String millisStr) {
+        if(!TextUtils.isEmpty(millisStr)) {
+            SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+            return formatter.format(new Date(Data.getLong(millisStr)));
+        } else {
+            return "";
+        }
     }
 }

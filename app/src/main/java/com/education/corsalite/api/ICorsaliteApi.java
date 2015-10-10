@@ -48,7 +48,7 @@ public interface ICorsaliteApi {
     void updateUserProfile(@Query("Update")UserProfileResponse userProfile, ApiCallback<EditProfileModel> callback);
 
     @GET("/CourseStudyCenterData")
-    void getCourseStudyCenterData(@Query("idStudent") String studentId, @Query("idCourse") String courseId, ApiCallback<CourseData> callback);
+    void getCourseStudyCenterData(@Query("idStudent") String studentId, @Query("idCourse") String courseId, ApiCallback<List<StudyCenter>> callback);
 
     //http://staging.corsalite.com/v1/webservices/GetCourseAnalysis?idStudent=36&idCourse=13&idSubject=51&GroupLevel=Chapter&BreakupByDate=Month&DurationInDays=365&ReturnAllRowsWithoutPerfDataAlso=true
     @GET("/GetCourseAnalysis")

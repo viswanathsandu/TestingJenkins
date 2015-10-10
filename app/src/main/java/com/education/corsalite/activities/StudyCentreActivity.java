@@ -25,6 +25,7 @@ import com.education.corsalite.models.responsemodels.Chapters;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.CourseData;
 import com.education.corsalite.models.responsemodels.StudyCenter;
+import com.education.corsalite.utils.Data;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -178,7 +179,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     private void getStudyCentreData() {
         // TODO : passing static data
         ApiManager.getInstance(this).getStudyCentreData(LoginUserCache.getInstance().loginResponse.studentId,
-                "13", new ApiCallback<CourseData>() {
+                "13", new ApiCallback<List<StudyCenter>>() {
                     @Override
                     public void failure(CorsaliteError error) {
                         if (error != null && !TextUtils.isEmpty(error.message)) {
@@ -188,7 +189,11 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                     }
 
                     @Override
-                    public void success(CourseData courseData, Response response) {
+                    public void success(List<StudyCenter> studyCenters, Response response) {
+                        if(studyCenters != null) {
+                            courseData = new CourseData();
+                            courseData.StudyCenter = studyCenters;
+                        }
                         if (courseData != null && courseData.StudyCenter != null && courseData.StudyCenter.size() > 0) {
                             StudyCentreActivity.this.courseData = courseData;
                             setupSubjects(courseData);
@@ -227,13 +232,13 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         for (StudyCenter studyCenter : courseData.StudyCenter) {
             if(key.equalsIgnoreCase(studyCenter.SubjectName)) {
                 for (Chapters chapter : studyCenter.Chapters) {
-                    if (chapter.earnedMarks == 0 && chapter.totalTestedMarks == 0) {
+                    if (Data.getInt(chapter.earnedMarks) == 0 && Data.getInt(chapter.totalTestedMarks) == 0) {
                         courseData.blueListChapters.add(chapter);
                         blueView.setVisibility(View.VISIBLE);
-                    } else if(chapter.earnedMarks < chapter.scoreRed){
+                    } else if(Data.getInt(chapter.earnedMarks) < Data.getInt(chapter.scoreRed)){
                         courseData.redListChapters.add(chapter);
                         redView.setVisibility(View.VISIBLE);
-                    } else if (chapter.earnedMarks < chapter.scoreAmber) {
+                    } else if (Data.getInt(chapter.earnedMarks) < Data.getInt(chapter.scoreAmber)) {
                         courseData.amberListChapters.add(chapter);
                         yellowView.setVisibility(View.VISIBLE);
                     } else {
