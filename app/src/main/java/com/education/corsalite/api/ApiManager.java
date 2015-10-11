@@ -164,17 +164,13 @@ public class ApiManager {
         }
     }
 
-    public void getStudyCentreData(String studentId, String courseID, ApiCallback<CourseData> callback) {
+    public void getStudyCentreData(String studentId, String courseID, ApiCallback<List<StudyCenter>> callback) {
         if(isApiOnline()) {
-            //TODO adding this for now, change it when the api is active
-//            ApiClientService.get().getCourseStudyCenterData(studentId, courseID, callback);
-            String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/studycentre.json");
-            System.out.print("Response for 'api/studycentre.json' is " + jsonResponse);
-            callback.success(new Gson().fromJson(jsonResponse, CourseData.class), getRetrofitResponse());
+            ApiClientService.get().getCourseStudyCenterData(studentId, courseID, callback);
         } else {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/studycentre.json");
             System.out.print("Response for 'api/studycentre.json' is " + jsonResponse);
-            callback.success(new Gson().fromJson(jsonResponse, CourseData.class), getRetrofitResponse());
+            callback.success(new Gson().fromJson(jsonResponse, List.class), getRetrofitResponse());
         }
     }
 

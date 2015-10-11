@@ -13,4 +13,11 @@ public class CourseData {
     public List<Chapters> greenListChapters = new ArrayList<>();
     public List<Chapters> blueListChapters = new ArrayList<>();
 
+    public void resetColoredLists() {
+        redListChapters.clear();
+        greenListChapters.clear();
+        amberListChapters.clear();
+        blueListChapters.clear();
+    }
+
 }

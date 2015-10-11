@@ -34,9 +34,9 @@ public class AnalyticsActivity extends AbstractBaseActivity implements Analytics
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         LinearLayout myView = (LinearLayout) inflater.inflate(R.layout.activity_analytics, null);
         frameLayout.addView(myView);
+        setToolbarForAnalytics();
         ButterKnife.bind(this);
         setUpTitleLayout();
-
     }
     private void setUpTitleLayout(){
         AnalyticsTitleFragment details = new AnalyticsTitleFragment();

@@ -6,9 +6,6 @@
     android:orientation="vertical"
     tools:context="com.education.corsalite.activities.VirtualCurrencyActivity">
 
-    <include
-        layout="@layout/toolbar_virtual_currency" />
-
     <fragment
         android:id="@+id/currencyFragment"
         android:name="com.education.corsalite.fragments.VirtualCurrencyFragment"

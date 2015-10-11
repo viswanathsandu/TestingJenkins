@@ -74,7 +74,7 @@ public class LoginActivity extends AbstractBaseActivity {
                     saveSessionCookie(response);
                     showToast(getResources().getString(R.string.login_successful));
                     storeUserCredentials(loginResponse);
-                    startActivity(new Intent(LoginActivity.this, UserProfileActivity.class));
+                    startActivity(new Intent(LoginActivity.this, StudyCentreActivity.class));
                     finish();
                 } else {
                     showToast(getResources().getString(R.string.login_failed));

@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:layout_marginTop="16dp"
+        android:paddingTop="16dp"
         android:layout_marginLeft="16dp"
         android:visibility="gone"/>
 
@@ -26,6 +26,6 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_gravity="center_horizontal"
-        android:visibility="visible"></ProgressBar>
+        android:visibility="visible" />
 
 </RelativeLayout>

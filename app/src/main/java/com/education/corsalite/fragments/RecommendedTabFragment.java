@@ -61,6 +61,9 @@ public class RecommendedTabFragment extends Fragment {
 
                     @Override
                     public void success(List<CourseAnalysis> courseAnalysisList, Response response) {
+                        if(getActivity() == null) {
+                            return;
+                        }
                         if (courseAnalysisList != null) {
                             mProgressBar.setVisibility(View.GONE);
                             mRecyclerView.setVisibility(View.VISIBLE);

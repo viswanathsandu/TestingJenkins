@@ -37,15 +37,26 @@
             android:id="@+id/tv_speed_1"
             android:layout_centerHorizontal="true"/>
 
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_chapter_legend"
+            android:layout_width="150dp"
+            android:layout_height="400dp"
+            android:layout_below="@id/tv_speed_1"
+            android:layout_alignParentRight="true"
+            android:paddingTop="15dp"
+            android:scrollbars="vertical" />
         <com.github.mikephil.charting.charts.ScatterChart
             android:layout_width="match_parent"
             android:layout_height="400dp"
             android:layout_toRightOf="@id/tv_accuracy_1"
+            android:layout_toLeftOf="@id/rv_chapter_legend"
             android:layout_below="@id/tv_speed_1"
             android:id="@+id/sch_accuray_chapter"
             android:layout_marginRight="5dp"
             android:layout_marginBottom="5dp" />
-        />
+
+
     </RelativeLayout>
 
 
@@ -83,10 +94,20 @@
             android:textSize="12sp"
             android:layout_centerHorizontal="true"/>
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_dates_legend"
+            android:layout_width="150dp"
+            android:layout_height="400dp"
+            android:layout_below="@id/tv_speed_2"
+            android:layout_alignParentRight="true"
+            android:scrollbars="vertical"
+            android:paddingTop="15dp" />
+
         <com.github.mikephil.charting.charts.ScatterChart
             android:layout_width="match_parent"
             android:layout_height="400dp"
             android:layout_toRightOf="@id/tv_accuracy_2"
+            android:layout_toLeftOf="@id/rv_dates_legend"
             android:layout_below="@id/tv_speed_2"
             android:id="@+id/sch_accuray_date"
             android:layout_marginRight="5dp"

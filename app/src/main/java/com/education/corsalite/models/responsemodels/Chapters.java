@@ -10,24 +10,24 @@ public class Chapters {
     @SerializedName("TimeTaken")
     public String timeTaken;
     @SerializedName("TotalTestedMarks")
-    public Integer totalTestedMarks;
+    public String totalTestedMarks;
     public String idCourseSubject;
     public String idCourseSubjectChapter;
     @SerializedName("EarnedMarks")
-    public Integer earnedMarks;
+    public String earnedMarks;
     @SerializedName("PendingExerciseTopics")
-    public Integer pendingExerciseTopics;
+    public String pendingExerciseTopics;
     @SerializedName("CompletedTopics")
-    public Integer completedTopics;
+    public String completedTopics;
     @SerializedName("ScoreRed")
-    public Integer scoreRed;
+    public String scoreRed;
     @SerializedName("TimeSpent")
-    public Integer timeSpent;
+    public String timeSpent;
     @SerializedName("PassedComplexity")
-    public Integer passedComplexity;
+    public String passedComplexity;
     @SerializedName("ScoreAmber")
-    public Integer scoreAmber;
+    public String scoreAmber;
     @SerializedName("notesCount")
-    public Integer notesCount;
+    public String notesCount;
 
 }

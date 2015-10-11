@@ -56,6 +56,9 @@ public class TestCoverageTabFragment extends Fragment {
 
             @Override
             public void success(List<TestCoverage> testCoverages, Response response) {
+                if(getActivity() == null) {
+                    return;
+                }
                 progressBar.setVisibility(View.GONE);
                 buildTestData(testCoverages);
                 for (Map.Entry<String, List<TestCoverage>> entry : courseTestDataMap.entrySet()) {

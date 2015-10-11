@@ -91,6 +91,7 @@ public class WebActivity extends AbstractBaseActivity {
         LinearLayout myView = (LinearLayout) inflater.inflate(R.layout.activity_web, null);
         frameLayout.addView(myView);
         ButterKnife.bind(this);
+        setToolbarForContentReading();
         initWebView();
 
 

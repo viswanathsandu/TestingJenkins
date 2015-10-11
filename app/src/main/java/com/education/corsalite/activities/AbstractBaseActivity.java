@@ -58,6 +58,31 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 .build());
     }
 
+    protected void setToolbarForVirtualCurrency() {
+        toolbar.findViewById(R.id.redeem_layout).setVisibility(View.VISIBLE);
+        setToolbarTitle(getResources().getString(R.string.virtual_currency));
+    }
+
+    protected void setToolbarForProfile() {
+        toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
+        setToolbarTitle(getResources().getString(R.string.title_activity_user_profile));
+    }
+
+    protected void setToolbarForStudyCenter() {
+        toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
+        setToolbarTitle(getResources().getString(R.string.study_centre));
+    }
+
+    protected void setToolbarForAnalytics() {
+        toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
+        setToolbarTitle(getResources().getString(R.string.analytics));
+    }
+
+    protected void setToolbarForContentReading() {
+        toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
+        setToolbarTitle(getResources().getString(R.string.content));
+    }
+
     private void initNavigationDrawer() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

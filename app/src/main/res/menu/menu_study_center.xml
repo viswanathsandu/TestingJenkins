@@ -10,7 +10,32 @@
         android:title="@string/menu_add" />
 
     <item
-        android:id="@+id/action_content_reading"
+        android:id="@+id/action_take_test"
         app:showAsAction="never"
-        android:title="@string/menu_content_reading" />
+        android:title="@string/menu_take_test" />
+
+    <item
+        android:id="@+id/action_scheduled_test"
+        app:showAsAction="never"
+        android:title="@string/menu_scheduled_test" />
+
+    <item
+        android:id="@+id/action_challenge_your_friends"
+        app:showAsAction="never"
+        android:title="@string/menu_challenge_your_friends" />
+
+    <item
+        android:id="@+id/action_exam_history"
+        app:showAsAction="never"
+        android:title="@string/menu_exam_history" />
+
+    <item
+        android:id="@+id/action_recommended_reading"
+        app:showAsAction="never"
+        android:title="@string/menu_recommended_reading" />
+
+    <item
+        android:id="@+id/action_progress_Card"
+        app:showAsAction="never"
+        android:title="@string/menu_progress_card" />
 </menu>

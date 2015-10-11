@@ -42,6 +42,7 @@ public class UserProfileActivity extends AbstractBaseActivity implements UserPro
         LinearLayout myView = (LinearLayout) inflater.inflate(R.layout.activity_user_profile, null);
         frameLayout.addView(myView);
         initUI();
+        setToolbarForProfile();
     }
 
     private void initUI() {
