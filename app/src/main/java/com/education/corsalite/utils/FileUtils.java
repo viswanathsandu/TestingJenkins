@@ -1,8 +1,10 @@
 package com.education.corsalite.utils;
 
-import android.content.Context;
 import android.content.res.AssetManager;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -25,5 +27,20 @@ public class FileUtils {
             return null;
         }
         return json;
+    }
+
+    public static String getUrlFromFile(File file) {
+        StringBuilder videoUrl = new StringBuilder();
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                videoUrl.append(line);
+            }
+            br.close();
+        } catch (Exception ignore) {
+        }
+        return videoUrl.toString();
     }
 }

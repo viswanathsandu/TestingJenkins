@@ -8,44 +8,44 @@
     tools:context="com.education.corsalite.activities.WebActivity">
 
     <ViewSwitcher
+        android:id="@+id/vs_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/vs_container">
+        android:layout_height="match_parent">
 
-    <ProgressBar
-        android:id="@+id/headerProgress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center" />
+        <ProgressBar
+            android:id="@+id/headerProgress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <include
-            android:id="@+id/top_layout"
-            layout="@layout/webview_subject_bar" />
-
-        <View
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="#AA000000"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <WebView
-            android:layout_marginLeft="10dp"
-            android:id="@+id/webView_content_reading"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="5dp"
-            android:layout_weight="1"
-            android:gravity="center" />
+            <include
+                android:id="@+id/top_layout"
+                layout="@layout/webview_subject_bar" />
 
-        <include
-            android:id="@+id/footer_layout"
-            layout="@layout/webview_footer" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#AA000000" />
 
-    </LinearLayout>
+            <WebView
+                android:id="@+id/webView_content_reading"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:gravity="center" />
+
+            <include
+                android:id="@+id/footer_layout"
+                layout="@layout/webview_footer" />
+
+        </LinearLayout>
     </ViewSwitcher>
 
 </LinearLayout>
