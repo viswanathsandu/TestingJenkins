@@ -72,6 +72,9 @@ public class TimeManagementTabFragment extends Fragment {
 
                     @Override
                     public void success(List<CourseAnalysis> courseAnalysisList, Response response) {
+                        if(getActivity() == null) {
+                            return;
+                        }
                         initializeGraph(graphBySubject);
                         buildGraphData(courseAnalysisList, SUBJECT, graphBySubject);
                         //Custom Legend
@@ -91,6 +94,9 @@ public class TimeManagementTabFragment extends Fragment {
 
                     @Override
                     public void success(List<CourseAnalysis> courseAnalysisList, Response response) {
+                        if(getActivity() == null) {
+                            return;
+                        }
                         buildChapterData(courseAnalysisList);
                         for (Map.Entry<String,List<CourseAnalysis>> entry : courseDataMap.entrySet()) {
                             TextView mDescText = new TextView(getActivity());

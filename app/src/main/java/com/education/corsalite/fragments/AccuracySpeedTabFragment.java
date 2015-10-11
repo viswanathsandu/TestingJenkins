@@ -74,6 +74,9 @@ public class AccuracySpeedTabFragment extends Fragment   {
 
                     @Override
                     public void success(List<CourseAnalysis> courseAnalysisList, Response response) {
+                        if(getActivity() == null) {
+                            return;
+                        }
                         buildChapterGraphData(courseAnalysisList, CHAPTER);
                         //create custom legend
                         Legend chapterLegend = accuracyChapterChart.getLegend();
@@ -91,8 +94,10 @@ public class AccuracySpeedTabFragment extends Fragment   {
 
                     @Override
                     public void success(List<CourseAnalysis> courseAnalysisList, Response response) {
+                        if(getActivity() == null) {
+                            return;
+                        }
                         buildChapterGraphData(courseAnalysisList, DATES);
-
                         Legend datesLegend = accuracyDateChart.getLegend();
                         customLegendAdapter = new CustomLegendAdapter(datesLegend.getColors(),datesLegend.getLabels(),getActivity().getLayoutInflater());
                         rvDatesLegend.setAdapter(customLegendAdapter);
