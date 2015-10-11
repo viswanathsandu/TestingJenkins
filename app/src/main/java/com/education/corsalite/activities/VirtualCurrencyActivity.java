@@ -1,14 +1,18 @@
 package com.education.corsalite.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.education.corsalite.R;
 import com.education.corsalite.utils.Constants;
@@ -18,21 +22,20 @@ import com.education.corsalite.utils.Constants;
  */
 public class VirtualCurrencyActivity extends AbstractBaseActivity {
 
-    private Toolbar mToolbar;
     private Button redeemBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_currency);
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LinearLayout myView = (LinearLayout) inflater.inflate(R.layout.activity_currency, null);
+        frameLayout.addView(myView);
+        setToolbarForVirtualCurrency();
         initToolbar();
     }
 
     protected void initToolbar() {
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
-        mToolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ico_actionbar_slidemenu));
-        redeemBtn = (Button)findViewById(R.id.redeem_btn);
+        redeemBtn = (Button)toolbar.findViewById(R.id.redeem_btn);
         redeemBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -61,7 +61,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         linearLayout = (LinearLayout) myView.findViewById(R.id.subjects_name_id);
         frameLayout.addView(myView);
         setUpViews(myView);
-        setToolbarTitle(getResources().getString(R.string.study_centre));
+        setToolbarForStudyCenter();
         initUI();
         getStudyCentreData();
     }

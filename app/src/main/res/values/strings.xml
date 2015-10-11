@@ -37,7 +37,7 @@
     <string name="virtual_currency_fetch_failed">Failed to fetch virtual currency information</string>
     <string name="study_centre">Study Center</string>
     <string name="analytics">Analytics</string>
-
+    <string name="content">Content</string>
 
 
     <!--Fonts-->
