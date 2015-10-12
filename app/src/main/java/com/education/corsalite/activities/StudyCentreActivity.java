@@ -240,13 +240,13 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         for (StudyCenter studyCenter : courseData.StudyCenter) {
             if(key.equalsIgnoreCase(studyCenter.SubjectName)) {
                 for (Chapters chapter : studyCenter.Chapters) {
-                    if (Data.getInt(chapter.earnedMarks) == 0 && Data.getInt(chapter.totalTestedMarks) == 0) {
+                    if (Data.getDoubleInInt(chapter.earnedMarks) == 0 && Data.getDoubleInInt(chapter.totalTestedMarks) == 0) {
                         courseData.blueListChapters.add(chapter);
                         blueView.setVisibility(View.VISIBLE);
-                    } else if(Data.getInt(chapter.earnedMarks) < Data.getInt(chapter.scoreRed)){
+                    } else if(Data.getDoubleInInt(chapter.earnedMarks) < Data.getDoubleInInt(chapter.scoreRed)){
                         courseData.redListChapters.add(chapter);
                         redView.setVisibility(View.VISIBLE);
-                    } else if (Data.getInt(chapter.earnedMarks) < Data.getInt(chapter.scoreAmber)) {
+                    } else if (Data.getDoubleInInt(chapter.earnedMarks) < Data.getDoubleInInt(chapter.scoreAmber)) {
                         courseData.amberListChapters.add(chapter);
                         yellowView.setVisibility(View.VISIBLE);
                     } else {
