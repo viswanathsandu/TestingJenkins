@@ -15,7 +15,7 @@
         android:id="@+id/subject_name"
         style="@style/grid_text_style"
         android:layout_width="wrap_content"
-        android:layout_height="60dp"
+        android:layout_height="45dp"
         android:ellipsize="end"
         android:gravity="left|center_vertical"
         android:lineSpacingMultiplier="1.2"
@@ -27,7 +27,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:orientation="horizontal"
         android:paddingLeft="12dp"
         android:weightSum="3">
@@ -42,7 +42,7 @@
             android:drawablePadding="4dp"
             android:gravity="center_vertical|left"
             android:paddingLeft="4dp"
-            tools:text="00:45:40" />
+            tools:text="00:00:00" />
 
         <TextView
             android:id="@+id/star"

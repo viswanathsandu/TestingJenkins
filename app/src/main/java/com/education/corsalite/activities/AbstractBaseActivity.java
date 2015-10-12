@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.Spinner;
@@ -18,16 +19,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.education.corsalite.R;
-import com.education.corsalite.adapters.CoursesAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.models.db.CourseList;
-import com.education.corsalite.models.requestmodels.LoginUser;
 import com.education.corsalite.models.requestmodels.LogoutModel;
 import com.education.corsalite.models.responsemodels.Content;
-import com.education.corsalite.models.responsemodels.ContentIndex;
-import com.education.corsalite.models.responsemodels.ContentResponse;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
@@ -38,6 +34,7 @@ import com.google.gson.Gson;
 import java.io.Serializable;
 import java.util.List;
 
+import de.greenrobot.event.EventBus;
 import retrofit.client.Response;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -62,6 +59,18 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 .setDefaultFontPath(getString(R.string.roboto_medium))
                 .setFontAttrId(R.attr.fontPath)
                 .build());
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
     }
 
     protected void setToolbarForVirtualCurrency() {
@@ -239,20 +248,39 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
             @Override
             public void success(List<Course> courses, Response response) {
-                if(courses != null) {
+                if (courses != null) {
                     showCoursesInToolbar(courses);
                 }
             }
         });
     }
 
-    public void showCoursesInToolbar(List<Course> courses) {
+    public void showCoursesInToolbar(final List<Course> courses) {
         Spinner coursesSpinner =  (Spinner) toolbar.findViewById(R.id.spinner_courses);
         if(coursesSpinner == null) return;
-        CoursesAdapter dataAdapter = new CoursesAdapter(this, courses);
-        // dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<Course> dataAdapter = new ArrayAdapter<Course>(this, R.layout.spinner_title_textview, courses);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         coursesSpinner.setAdapter(dataAdapter);
         // coursesSpinner.setSelection(courseList.defaultCourseIndex);
+        coursesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                getEventbus().post(courses.get(position));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+    }
+
+
+    protected EventBus getEventbus() {
+        return EventBus.getDefault();
+    }
+
+    public void onEvent(Course course) {
+        // DO nothing. this method will be overridden by the classes that subscribes from event bus
     }
 
     protected void getContentData(String courseId, String updateTime) {

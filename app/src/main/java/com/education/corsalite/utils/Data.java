@@ -9,8 +9,8 @@ import android.text.TextUtils;
 public class Data {
 
     public static int getInt(String str) {
-        if(!TextUtils.isEmpty(str)) {
-            try {
+                if(!TextUtils.isEmpty(str)) {
+                    try {
                 int value = Integer.parseInt(str);
                 return value;
             } catch (NumberFormatException e) {
@@ -32,7 +32,19 @@ public class Data {
         return 0l;
     }
 
-    public double getdoubleWithTwoDecimals(String str) {
+    public static int getDoubleInInt(String str) {
+        if(!TextUtils.isEmpty(str)) {
+            try {
+                double value = Double.parseDouble(str);
+                return (int)value;
+            } catch (NumberFormatException e) {
+                L.error("Number Format exception", e);
+            }
+        }
+        return 0;
+    }
+
+    public static double getDoubleWithTwoDecimals(String str) {
         if(!TextUtils.isEmpty(str)) {
             try {
                 double value = Double.parseDouble(str);

@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -23,6 +24,7 @@ import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.responsemodels.Chapters;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
+import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.CourseData;
 import com.education.corsalite.models.responsemodels.StudyCenter;
 import com.education.corsalite.utils.Data;
@@ -63,7 +65,6 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         setUpViews(myView);
         setToolbarForStudyCenter();
         initUI();
-        getStudyCentreData();
     }
 
     private void setUpViews(RelativeLayout myView) {
@@ -176,10 +177,16 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         progressBar.setVisibility(View.GONE);
     }
 
-    private void getStudyCentreData() {
+    @Override
+    public void onEvent(Course course) {
+        getStudyCentreData(course.courseId.toString());
+    }
+
+    private void getStudyCentreData(String courseId) {
         // TODO : passing static data
+        hideRecyclerView();
         ApiManager.getInstance(this).getStudyCentreData(LoginUserCache.getInstance().loginResponse.studentId,
-                "13", new ApiCallback<List<StudyCenter>>() {
+                courseId, new ApiCallback<List<StudyCenter>>() {
                     @Override
                     public void failure(CorsaliteError error) {
                         if (error != null && !TextUtils.isEmpty(error.message)) {
@@ -190,7 +197,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
 
                     @Override
                     public void success(List<StudyCenter> studyCenters, Response response) {
-                        if(studyCenters != null) {
+                        if (studyCenters != null) {
                             courseData = new CourseData();
                             courseData.StudyCenter = studyCenters;
                         }
@@ -212,6 +219,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     }
 
     private void setupSubjects(CourseData courseData) {
+        linearLayout.removeAllViews();
         subjects = new ArrayList<String>();
         for (StudyCenter studyCenter : courseData.StudyCenter) {
             addSubjectsAndCreateViews(studyCenter);

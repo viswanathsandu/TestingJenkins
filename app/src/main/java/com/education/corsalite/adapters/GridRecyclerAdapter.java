@@ -56,7 +56,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         holder.progressBar.setMax(max==0 ? 1 : max);
         holder.progressBar.setProgress(Data.getInt(chapter.completedTopics));
         getLevelDrawable(holder, chapter.completedTopics);
-        holder.star.setText(Data.getInt(chapter.earnedMarks)+"/"+Data.getInt(chapter.totalTestedMarks));
+        holder.star.setText((int)Data.getDoubleInInt(chapter.earnedMarks)+"/"+(int)Data.getDoubleInInt(chapter.totalTestedMarks));
         holder.gridLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,11 +85,11 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
     }
 
     private void setColor(StudyCenterSubjectViewHolder holder, Chapters chapter) {
-        if (Data.getInt(chapter.earnedMarks) == 0 && Data.getInt(chapter.totalTestedMarks) == 0) {
+        if (Data.getDoubleInInt(chapter.earnedMarks) == 0 && Data.getDoubleInInt(chapter.totalTestedMarks) == 0) {
             holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.blueshape));
-        } else if(Data.getInt(chapter.earnedMarks) < Data.getInt(chapter.scoreRed)){
+        } else if(Data.getDoubleInInt(chapter.earnedMarks) < Data.getDoubleInInt(chapter.scoreRed)) {
             holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.redshape));
-        } else if (Data.getInt(chapter.earnedMarks) < Data.getInt(chapter.scoreAmber)) {
+        } else if (Data.getDoubleInInt(chapter.earnedMarks) < Data.getDoubleInInt(chapter.scoreAmber)) {
             holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.yellowshape));
         } else {
             holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.greenshape));
@@ -152,7 +152,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
             SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
             return formatter.format(new Date(Data.getLong(millisStr)));
         } else {
-            return "";
+            return "00:00:00";
         }
     }
 }

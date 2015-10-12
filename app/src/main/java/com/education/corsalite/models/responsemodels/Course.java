@@ -21,4 +21,9 @@ public class Course extends BaseModel  implements Serializable {
     public boolean isDefault() {
         return (!TextUtils.isEmpty(isDefault) && isDefault.equals("Y"));
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }
