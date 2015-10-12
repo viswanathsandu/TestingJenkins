@@ -9,6 +9,7 @@ import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.ContentIndexResponse;
 import com.education.corsalite.models.responsemodels.ContentResponse;
+import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.CourseAnalysis;
 import com.education.corsalite.models.responsemodels.CourseData;
 import com.education.corsalite.models.responsemodels.LoginResponse;
@@ -79,6 +80,17 @@ public class ApiManager {
             callback.success(new Gson().fromJson(jsonResponse, LogoutResponse.class), getRetrofitResponse());
         }
     }
+
+    public void getCourses(String studentId, ApiCallback<List<Course>> callback) {
+        if(isApiOnline()) {
+            ApiClientService.get().getCourses(studentId, callback);
+        } else {
+            String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/courses.json");
+            L.info("Response for 'api/courses.json' is "+jsonResponse);
+            callback.success(new Gson().fromJson(jsonResponse, List.class), getRetrofitResponse());
+        }
+    }
+
     public void getCourseAnalysisData(String studentId,String courseId,String subjectId,
                                       String groupLevel,String breakUpByDate,
                                       String durationInDays,String returnAllRowsWithourPerfData,

@@ -97,7 +97,6 @@ public class UserProfileDetailsFragment extends BaseFragment {
         if(list != null && list.courses != null) {
             this.defaultcourseIndex = list.defaultCourseIndex;
             showCourses(list.courses);
-            loadCoursesDataInToolbar(list);
         }
     }
 
@@ -167,12 +166,7 @@ public class UserProfileDetailsFragment extends BaseFragment {
             courseList.defaultCourseIndex = defaultcourseIndex;
             showCourses(courseList.courses);
             DbManager.getInstance(getActivity()).saveCourseList(courseList);
-            loadCoursesDataInToolbar(courseList);
         }
-    }
-
-    private void loadCoursesDataInToolbar(CourseList courseList) {
-        ((UserProfileActivity)getActivity()).showCoursesInToolbar(courseList);
     }
 
     private void showCourses(List<String> courses) {

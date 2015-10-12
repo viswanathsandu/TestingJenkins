@@ -11,19 +11,25 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.education.corsalite.R;
+import com.education.corsalite.adapters.CoursesAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.models.db.CourseList;
+import com.education.corsalite.models.requestmodels.LoginUser;
 import com.education.corsalite.models.requestmodels.LogoutModel;
 import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.ContentResponse;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
+import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.CookieUtils;
@@ -66,21 +72,25 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     protected void setToolbarForProfile() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
         setToolbarTitle(getResources().getString(R.string.title_activity_user_profile));
+        loadCoursesList();
     }
 
     protected void setToolbarForStudyCenter() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
         setToolbarTitle(getResources().getString(R.string.study_centre));
+        loadCoursesList();
     }
 
     protected void setToolbarForAnalytics() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
         setToolbarTitle(getResources().getString(R.string.analytics));
+        loadCoursesList();
     }
 
     protected void setToolbarForContentReading() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
         setToolbarTitle(getResources().getString(R.string.content));
+        loadCoursesList();
     }
 
     private void initNavigationDrawer() {
@@ -221,8 +231,28 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         });
     }
 
-    private void goToStudyCentre() {
-        startActivity(new Intent(AbstractBaseActivity.this, StudyCentreActivity.class));
+    private void loadCoursesList() {
+        ApiManager.getInstance(this).getCourses(LoginUserCache.getInstance().loginResponse.studentId, new ApiCallback<List<Course>>() {
+            @Override
+            public void failure(CorsaliteError error) {
+            }
+
+            @Override
+            public void success(List<Course> courses, Response response) {
+                if(courses != null) {
+                    showCoursesInToolbar(courses);
+                }
+            }
+        });
+    }
+
+    public void showCoursesInToolbar(List<Course> courses) {
+        Spinner coursesSpinner =  (Spinner) toolbar.findViewById(R.id.spinner_courses);
+        if(coursesSpinner == null) return;
+        CoursesAdapter dataAdapter = new CoursesAdapter(this, courses);
+        // dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        coursesSpinner.setAdapter(dataAdapter);
+        // coursesSpinner.setSelection(courseList.defaultCourseIndex);
     }
 
     protected void getContentData(String courseId, String updateTime) {

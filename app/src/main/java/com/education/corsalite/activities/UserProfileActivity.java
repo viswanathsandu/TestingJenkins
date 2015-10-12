@@ -48,7 +48,6 @@ public class UserProfileActivity extends AbstractBaseActivity implements UserPro
     private void initUI() {
         userProfileLayout = (TabLayout)findViewById(R.id.tl_userprofile);
         viewPager = (ViewPager)findViewById(R.id.pager);
-        coursesSpinner = (Spinner)findViewById(R.id.spinner_nav);
     }
 
     private void setTabView(List<ExamDetail> examDetailList) {
@@ -60,16 +59,6 @@ public class UserProfileActivity extends AbstractBaseActivity implements UserPro
             userTabAdapter.updateExamDetailData(examDetailList);
         }
         userProfileLayout.setupWithViewPager(viewPager);
-    }
-
-    public void showCoursesInToolbar(CourseList courseList) {
-        if(courseList != null) {
-            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
-                    R.layout.spinner_title_textview, courseList.courses);
-            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            coursesSpinner.setAdapter(dataAdapter);
-            coursesSpinner.setSelection(courseList.defaultCourseIndex);
-        }
     }
 
     @Override
