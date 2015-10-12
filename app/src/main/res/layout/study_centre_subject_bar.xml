@@ -6,16 +6,6 @@
     android:orientation="horizontal"
     android:padding="10dp">
 
-    <LinearLayout
-        android:id="@+id/subjects_name_id"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingLeft="15dp"
-        android:weightSum="1" />
 
 
     <LinearLayout
@@ -29,54 +19,54 @@
         android:weightSum="1">
 
         <LinearLayout
+            android:id="@+id/all_colors"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/all_colors"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="1dp">
+                android:layout_marginBottom="1dp"
+                android:orientation="horizontal">
 
                 <View
                     android:id="@+id/view1"
                     android:layout_width="11dp"
                     android:layout_height="11dp"
-                    android:layout_marginRight="1dp"
                     android:layout_gravity="center_vertical"
+                    android:layout_marginRight="1dp"
                     android:background="@color/red" />
 
                 <View
                     android:id="@+id/view2"
                     android:layout_width="11dp"
                     android:layout_height="11dp"
-                    android:layout_marginLeft="1dp"
                     android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="1dp"
                     android:background="@color/blue" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="1dp">
+                android:layout_marginTop="1dp"
+                android:orientation="horizontal">
 
                 <View
                     android:id="@+id/view3"
                     android:layout_width="11dp"
                     android:layout_height="11dp"
-                    android:layout_marginRight="1dp"
                     android:layout_gravity="center_vertical"
+                    android:layout_marginRight="1dp"
                     android:background="@color/green" />
 
                 <View
                     android:id="@+id/view4"
                     android:layout_width="11dp"
                     android:layout_height="11dp"
-                    android:layout_marginLeft="1dp"
                     android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="1dp"
                     android:background="@color/amber" />
             </LinearLayout>
         </LinearLayout>
@@ -86,10 +76,10 @@
             android:layout_width="23dp"
             android:layout_height="23dp"
             android:layout_gravity="center_vertical"
-            android:layout_weight="0.25"
             android:layout_marginLeft="15dp"
+            android:layout_weight="0.25"
             android:background="@color/red"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <View
             android:id="@+id/blueView"
@@ -122,5 +112,23 @@
             android:visibility="gone" />
     </LinearLayout>
 
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@+id/color_bar">
+
+        <LinearLayout
+            android:id="@+id/subjects_name_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="15dp"
+            android:weightSum="1" />
+    </ScrollView>
 
 </RelativeLayout>
