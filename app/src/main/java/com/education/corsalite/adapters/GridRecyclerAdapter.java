@@ -16,12 +16,9 @@ import android.widget.TextView;
 import com.education.corsalite.R;
 import com.education.corsalite.activities.StudyCentreActivity;
 import com.education.corsalite.models.responsemodels.Chapters;
-import com.education.corsalite.models.responsemodels.CompletionStatus;
-import com.education.corsalite.models.responsemodels.StudyCenter;
 import com.education.corsalite.utils.Data;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -85,12 +82,16 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
     }
 
     private void setColor(StudyCenterSubjectViewHolder holder, Chapters chapter) {
-        if (Data.getDoubleInInt(chapter.earnedMarks) == 0 && Data.getDoubleInInt(chapter.totalTestedMarks) == 0) {
+        double totalMarks = Data.getDoubleWithTwoDecimals(chapter.totalTestedMarks);
+        double earnedMarks = Data.getDoubleWithTwoDecimals(chapter.earnedMarks);
+        double scoreRedPercentage = Data.getInt(chapter.scoreRed) * totalMarks / 100;
+        double scoreAmberPercentage = Data.getInt(chapter.scoreAmber) * totalMarks / 100;
+        if (earnedMarks == 0 && totalMarks == 0) {
             holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.blueshape));
-        } else if(Data.getDoubleInInt(chapter.earnedMarks) < Data.getDoubleInInt(chapter.scoreRed)) {
+        } else if(earnedMarks < scoreRedPercentage) {
             holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.redshape));
-        } else if (Data.getDoubleInInt(chapter.earnedMarks) < Data.getDoubleInInt(chapter.scoreAmber)) {
-            holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.yellowshape));
+        } else if (earnedMarks < scoreAmberPercentage) {
+            holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.ambershape));
         } else {
             holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.greenshape));
         }

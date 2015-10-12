@@ -10,7 +10,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -42,18 +41,18 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     private GridRecyclerAdapter mAdapter;
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
-    private CourseData courseData;
+    private StudyCenter studyCenter;
+    private CourseData mCourseData;
     private LinearLayout linearLayout;
     private ArrayList<String> subjects;
-    private ArrayList<Chapters> allChapters = new ArrayList<>();
+    private List<Chapters> allChapters = new ArrayList<>();
     private View redView;
     private View blueView;
     private View yellowView;
     private View greenView;
     private LinearLayout allColorLayout;
     private String key;
-    private Integer mCourseId = 13; // using offline
-    private Integer mSubjectId = 51; // using offline
+    private TextView selectedSubjectTxt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,28 +79,28 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         redView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mAdapter.updateData(courseData.redListChapters, key);
+                mAdapter.updateData(studyCenter.redListChapters, key);
                 mAdapter.notifyDataSetChanged();
             }
         });
         blueView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mAdapter.updateData(courseData.blueListChapters, key);
+                mAdapter.updateData(studyCenter.blueListChapters, key);
                 mAdapter.notifyDataSetChanged();
             }
         });
         yellowView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mAdapter.updateData(courseData.amberListChapters, key);
+                mAdapter.updateData(studyCenter.amberListChapters, key);
                 mAdapter.notifyDataSetChanged();
             }
         });
         greenView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mAdapter.updateData(courseData.greenListChapters, key);
+                mAdapter.updateData(studyCenter.greenListChapters, key);
                 mAdapter.notifyDataSetChanged();
             }
         });
@@ -109,7 +108,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         allColorLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mAdapter.updateData(allChapters, key);
+                mAdapter.updateData(studyCenter.Chapters, key);
                 mAdapter.notifyDataSetChanged();
             }
         });
@@ -119,12 +118,13 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     private void initDataAdapter(String subject) {
         showList();
         key = subject;
-        mAdapter = new GridRecyclerAdapter(getChaptersForSubject(), this, key);
+        allChapters = getChaptersForSubject();
+        mAdapter = new GridRecyclerAdapter(allChapters, this, key);
         recyclerView.setAdapter(mAdapter);
     }
 
     private List<Chapters> getChaptersForSubject() {
-        for (StudyCenter studyCenter : courseData.StudyCenter) {
+        for (StudyCenter studyCenter : mCourseData.StudyCenter) {
             if (studyCenter.SubjectName.equals(key)) {
                 return studyCenter.Chapters;
             }
@@ -183,7 +183,6 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     }
 
     private void getStudyCentreData(String courseId) {
-        // TODO : passing static data
         hideRecyclerView();
         ApiManager.getInstance(this).getStudyCentreData(LoginUserCache.getInstance().loginResponse.studentId,
                 courseId, new ApiCallback<List<StudyCenter>>() {
@@ -198,14 +197,14 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                     @Override
                     public void success(List<StudyCenter> studyCenters, Response response) {
                         if (studyCenters != null) {
-                            courseData = new CourseData();
-                            courseData.StudyCenter = studyCenters;
+                            mCourseData = new CourseData();
+                            mCourseData.StudyCenter = studyCenters;
                         }
-                        if (courseData != null && courseData.StudyCenter != null && courseData.StudyCenter.size() > 0) {
-                            StudyCentreActivity.this.courseData = courseData;
-                            setupSubjects(courseData);
-                            key = courseData.StudyCenter.get(0).SubjectName;
-                            setUpStudyCentreData(courseData);
+                        if (mCourseData != null && mCourseData.StudyCenter != null && !mCourseData.StudyCenter.isEmpty()) {
+                            setupSubjects(mCourseData);
+                            key = mCourseData.StudyCenter.get(0).SubjectName;
+                            studyCenter = mCourseData.StudyCenter.get(0);
+                            setUpStudyCentreData(studyCenter);
                             initDataAdapter(subjects.get(0));
                         } else {
                             hideRecyclerView();
@@ -233,34 +232,30 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         redView.setVisibility(View.GONE);
     }
 
-    private void setUpStudyCentreData(CourseData courseData) {
+    private void setUpStudyCentreData(StudyCenter studyCenter) {
         resetColorsVisibility();
-        courseData.resetColoredLists();
-        allChapters.clear();
-        for (StudyCenter studyCenter : courseData.StudyCenter) {
-            if(key.equalsIgnoreCase(studyCenter.SubjectName)) {
-                for (Chapters chapter : studyCenter.Chapters) {
-                    if (Data.getDoubleInInt(chapter.earnedMarks) == 0 && Data.getDoubleInInt(chapter.totalTestedMarks) == 0) {
-                        courseData.blueListChapters.add(chapter);
-                        blueView.setVisibility(View.VISIBLE);
-                    } else if(Data.getDoubleInInt(chapter.earnedMarks) < Data.getDoubleInInt(chapter.scoreRed)){
-                        courseData.redListChapters.add(chapter);
-                        redView.setVisibility(View.VISIBLE);
-                    } else if (Data.getDoubleInInt(chapter.earnedMarks) < Data.getDoubleInInt(chapter.scoreAmber)) {
-                        courseData.amberListChapters.add(chapter);
-                        yellowView.setVisibility(View.VISIBLE);
-                    } else {
-                        courseData.greenListChapters.add(chapter);
-                        greenView.setVisibility(View.VISIBLE);
-                    }
+        studyCenter.resetColoredLists();
+        if(key.equalsIgnoreCase(studyCenter.SubjectName)) {
+            for (Chapters chapter : studyCenter.Chapters) {
+                double totalMarks = Data.getDoubleWithTwoDecimals(chapter.totalTestedMarks);
+                double earnedMarks = Data.getDoubleWithTwoDecimals(chapter.earnedMarks);
+                double scoreRedPercentage = Data.getInt(chapter.scoreRed) * totalMarks / 100;
+                double scoreAmberPercentage = Data.getInt(chapter.scoreAmber) * totalMarks / 100;
+                if (earnedMarks == 0 && totalMarks == 0) {
+                    studyCenter.blueListChapters.add(chapter);
+                    blueView.setVisibility(View.VISIBLE);
+                } else if(earnedMarks < scoreRedPercentage){
+                    studyCenter.redListChapters.add(chapter);
+                    redView.setVisibility(View.VISIBLE);
+                } else if (earnedMarks < scoreAmberPercentage) {
+                    studyCenter.amberListChapters.add(chapter);
+                    yellowView.setVisibility(View.VISIBLE);
+                } else {
+                    studyCenter.greenListChapters.add(chapter);
+                    greenView.setVisibility(View.VISIBLE);
                 }
-                break;
             }
         }
-        allChapters.addAll(courseData.blueListChapters);
-        allChapters.addAll(courseData.greenListChapters);
-        allChapters.addAll(courseData.amberListChapters);
-        allChapters.addAll(courseData.redListChapters);
     }
 
     private void addSubjectsAndCreateViews(StudyCenter studyCenter) {
@@ -283,11 +278,22 @@ public class StudyCentreActivity extends AbstractBaseActivity {
             @Override
             public void onClick(View v) {
                 showList();
-                if (courseData != null && courseData.StudyCenter != null) {
+                if(selectedSubjectTxt != null) {
+                    selectedSubjectTxt.setSelected(false);
+                }
+                selectedSubjectTxt = textView;
+                selectedSubjectTxt.setSelected(true);
+                if (mCourseData != null && mCourseData.StudyCenter != null) {
                     key = text;
-                    setUpStudyCentreData(courseData);
-                    mAdapter.updateData(getChaptersForSubject(), text);
-                    mAdapter.notifyDataSetChanged();
+                    for(StudyCenter studyCenter : mCourseData.StudyCenter){
+                        if(key.equalsIgnoreCase(studyCenter.SubjectName)) {
+                            StudyCentreActivity.this.studyCenter = studyCenter;
+                            setUpStudyCentreData(studyCenter);
+                            mAdapter.updateData(getChaptersForSubject(), text);
+                            mAdapter.notifyDataSetChanged();
+                            break;
+                        }
+                    }
                 }
             }
         });
