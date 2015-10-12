@@ -32,10 +32,10 @@ public class FileUtilities {
         }
 
         File savingDirectory ;
-        if(fileName.endsWith(".html")) {
-            savingDirectory = new File(outDir.getAbsolutePath() + File.separator + Constants.HTML_FOLDER);
-        } else {
+        if(fileName.endsWith(Constants.VIDEO_FILE)) {
             savingDirectory = new File(outDir.getAbsolutePath() + File.separator + Constants.VIDEO_FOLDER);
+        } else {
+            savingDirectory = new File(outDir.getAbsolutePath() + File.separator + Constants.HTML_FOLDER);
         }
         if (!savingDirectory.isDirectory()) {
             savingDirectory.mkdir();
