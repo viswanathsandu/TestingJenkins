@@ -75,8 +75,8 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         AlertDialog dialog = builder.create();
         WindowManager.LayoutParams wmlp = dialog.getWindow().getAttributes();
         wmlp.gravity = Gravity.TOP | Gravity.LEFT;
-        wmlp.x = (int) v.getX() + 50;
-        wmlp.y = (int) v.getY() + 160;
+        wmlp.x = (int) v.getX() + 15;
+        wmlp.y = (int) v.getY() + 140;
         dialog.show();
         dialog.getWindow().setLayout(300, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
