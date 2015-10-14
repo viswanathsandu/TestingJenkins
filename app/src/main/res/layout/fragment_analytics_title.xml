@@ -3,11 +3,14 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/green"
-    android:gravity="center">
+    android:gravity="center"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
+    android:layout_marginLeft="8dp">
 
     <TextView
         android:id="@+id/tv_accuracy"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_weight="1"
         android:layout_height="0dp"
         android:drawableTop="@drawable/ico_accuracy_unselected"
@@ -19,7 +22,7 @@
         android:paddingRight="10dp"/>
     <TextView
         android:id="@+id/tv_progress_report"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:drawableTop="@drawable/ico_report_unselected"
@@ -31,7 +34,7 @@
         android:paddingRight="10dp"/>
     <TextView
         android:id="@+id/tv_test_coverage"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:drawableTop="@drawable/ico_test_unselected"
@@ -43,7 +46,7 @@
         android:paddingRight="10dp"/>
     <TextView
         android:id="@+id/tv_time_management"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:drawablePadding="5dp"
@@ -55,7 +58,7 @@
         android:textColor="@color/white"/>
     <TextView
         android:id="@+id/tv_recommended_reading"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:drawablePadding="5dp"
