@@ -14,11 +14,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
+import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.adapters.CustomLegendAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
+import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.CourseAnalysis;
 import com.education.corsalite.utils.L;
 import com.github.mikephil.charting.charts.ScatterChart;
@@ -37,6 +39,7 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
 import retrofit.client.Response;
 
 /**
@@ -64,14 +67,36 @@ public class AccuracySpeedTabFragment extends Fragment   {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_accuracy_tab, container, false);
         ButterKnife.bind(this, view);
-
+        EventBus.getDefault().register(this);
         mLayoutManagerDates = new LinearLayoutManager(getActivity());
         mLayoutManagerChapter = new LinearLayoutManager(getActivity());
         rvChapterLegend.setLayoutManager(mLayoutManagerChapter);
         rvDatesLegend.setLayoutManager(mLayoutManagerDates);
         initializeGraph();
-        //TODO: Build from api response later
-        ApiManager.getInstance(getActivity()).getCourseAnalysisData(LoginUserCache.getInstance().loginResponse.studentId, "13", "51", "Chapter", "Month", "365", "true",
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(AbstractBaseActivity.selectedCourse != null) {
+            drawGraphs(AbstractBaseActivity.selectedCourse.courseId+"");
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    public void onEvent(Course course) {
+        drawGraphs(course.courseId+"");
+    }
+
+    private void drawGraphs(String courseId) {
+        ApiManager.getInstance(getActivity()).getCourseAnalysisData(LoginUserCache.getInstance().loginResponse.studentId,
+                courseId, null, "Chapter", "Month", "365", "true",
                 new ApiCallback<List<CourseAnalysis>>() {
                     @Override
                     public void failure(CorsaliteError error)
@@ -95,7 +120,8 @@ public class AccuracySpeedTabFragment extends Fragment   {
                     }
                 });
 
-        ApiManager.getInstance(getActivity()).getCourseAnalysisData(LoginUserCache.getInstance().loginResponse.studentId, "13", "51", "Subject", "Month", "365", "true",
+        ApiManager.getInstance(getActivity()).getCourseAnalysisData(LoginUserCache.getInstance().loginResponse.studentId,
+                courseId, null, "Subject", "Month", "365", "true",
                 new ApiCallback<List<CourseAnalysis>>() {
                     @Override
                     public void failure(CorsaliteError error) {
@@ -119,8 +145,10 @@ public class AccuracySpeedTabFragment extends Fragment   {
                     }
                 });
 
-        return view;
     }
+
+
+
     private void showFailMessage(){
         failCount++;
         if(failCount == 2){

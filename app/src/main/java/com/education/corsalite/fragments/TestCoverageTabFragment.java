@@ -14,10 +14,12 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
+import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
+import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.TestCoverage;
 import com.education.corsalite.utils.L;
 
@@ -28,6 +30,7 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
 import retrofit.client.Response;
 
 /**
@@ -35,20 +38,44 @@ import retrofit.client.Response;
  */
 public class TestCoverageTabFragment extends Fragment {
 
-    HashMap<String,List<TestCoverage>> courseTestDataMap;
-
-
     @Bind(R.id.tv_failure_text)TextView failureText;
     @Bind(R.id.progressBar)ProgressBar progressBar;
     @Bind(R.id.ll_test_coverage)LinearLayout mLinearLayout;
 
+    private HashMap<String,List<TestCoverage>> courseTestDataMap = new HashMap<>();
+
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater    , ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_test_coverage,container,false);
         ButterKnife.bind(this, view);
+        EventBus.getDefault().register(this);
+        return view;
+    }
 
-        ApiManager.getInstance(getActivity()).getTestCoverage(LoginUserCache.getInstance().loginResponse.studentId, "13", new ApiCallback<List<TestCoverage>>() {
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(AbstractBaseActivity.selectedCourse != null) {
+            onEvent(AbstractBaseActivity.selectedCourse);
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    public void onEvent(Course course) {
+        courseTestDataMap.clear();
+        mLinearLayout.removeAllViews();
+        fetchDataFromServer(course.courseId + "");
+    }
+
+    private void fetchDataFromServer(String courseId) {
+        ApiManager.getInstance(getActivity()).getTestCoverage(LoginUserCache.getInstance().loginResponse.studentId,
+                courseId, new ApiCallback<List<TestCoverage>>() {
             @Override
             public void failure(CorsaliteError error) {
                 L.info(error.message);
@@ -83,8 +110,8 @@ public class TestCoverageTabFragment extends Fragment {
             }
         });
 
-        return view;
     }
+
     private void buildTable(List<TestCoverage> testCoverageListBySubject,TableLayout tableLayout) {
         //level on x-axis and chapter along y-axis and testpercentage  as value
         HashMap<String, String[]> tableDataMap = new HashMap<>();
@@ -138,10 +165,13 @@ public class TestCoverageTabFragment extends Fragment {
             String[] row = entry.getValue();
             for (int i=1;i<row.length;i++) {
                 index +=1;
-                tableRowData[index] = new TextView(getActivity());
-                tableRowData[index].setText(row[i]);
-                setTextViewLayouParams(tableRowData[index]);
-                tableRow.addView(tableRowData[index]);
+                // TODO : app is crashing for some courses. Because of arrayindex outofbound issue. Fix it
+                if(index < tableRowData.length) {
+                    tableRowData[index] = new TextView(getActivity());
+                    tableRowData[index].setText(row[i]);
+                    setTextViewLayouParams(tableRowData[index]);
+                    tableRow.addView(tableRowData[index]);
+                }
             }
 
             tableLayout.addView(tableRow);
@@ -177,7 +207,6 @@ public class TestCoverageTabFragment extends Fragment {
     }
 
     private void buildTestData(List<TestCoverage> testCoverages){
-        courseTestDataMap = new HashMap<>();
         for(TestCoverage testCoverage:testCoverages){
             if(courseTestDataMap.get(testCoverage.subject) == null){
                 ArrayList<TestCoverage> courseDataList = new ArrayList<>();

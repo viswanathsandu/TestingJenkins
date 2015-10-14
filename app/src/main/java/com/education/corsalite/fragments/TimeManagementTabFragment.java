@@ -18,11 +18,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
+import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.adapters.CustomLegendAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
+import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.CourseAnalysis;
 import com.education.corsalite.utils.L;
 import com.github.mikephil.charting.charts.PieChart;
@@ -42,6 +44,7 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
 import retrofit.client.Response;
 
 /**
@@ -55,9 +58,8 @@ public class TimeManagementTabFragment extends Fragment {
     @Bind(R.id.tv_failure_text)TextView mFailText;
     @Bind(R.id.progress_bar_tab)ProgressBar progressBar;
 
-
     int failCount =0;
-    HashMap<String,List<CourseAnalysis>> courseDataMap;
+    private HashMap<String,List<CourseAnalysis>> courseDataMap = new HashMap<>();
     final String SUBJECT = "Subject";
     final String CHAPTER = "Chapter";
 
@@ -66,9 +68,34 @@ public class TimeManagementTabFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_time_management_tab,container,false);
         ButterKnife.bind(this, v);
+        EventBus.getDefault().register(this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        return v;
+    }
 
-        ApiManager.getInstance(getActivity()).getCourseAnalysisData(LoginUserCache.getInstance().loginResponse.studentId, "13", null, "Subject", "None", "30", "true",
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(AbstractBaseActivity.selectedCourse != null) {
+            onEvent(AbstractBaseActivity.selectedCourse);
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    public void onEvent(Course course) {
+        courseDataMap.clear();
+        mLinearLayout.removeAllViews();
+        drawGraph(course.courseId + "");
+    }
+
+    private void drawGraph(String courseId) {
+        ApiManager.getInstance(getActivity()).getCourseAnalysisData(LoginUserCache.getInstance().loginResponse.studentId,
+                courseId, null, "Subject", "None", "30", "true",
                 new ApiCallback<List<CourseAnalysis>>() {
                     @Override
                     public void failure(CorsaliteError error) {
@@ -94,7 +121,8 @@ public class TimeManagementTabFragment extends Fragment {
                 });
 
 
-             ApiManager.getInstance(getActivity()).getCourseAnalysisData(LoginUserCache.getInstance().loginResponse.studentId, "13", null, "Chapter", "None", "30", "true",
+        ApiManager.getInstance(getActivity()).getCourseAnalysisData(LoginUserCache.getInstance().loginResponse.studentId,
+                courseId, null, "Chapter", "None", "30", "true",
                 new ApiCallback<List<CourseAnalysis>>() {
                     @Override
                     public void failure(CorsaliteError error) {
@@ -144,8 +172,6 @@ public class TimeManagementTabFragment extends Fragment {
                     }
                 });
 
-
-        return v;
     }
 
     private void initializeGraph(PieChart mChart){
@@ -160,9 +186,6 @@ public class TimeManagementTabFragment extends Fragment {
     }
 
     private void buildChapterData(List<CourseAnalysis> courseAnalysisList){
-
-        courseDataMap = new HashMap<>();
-
         for(CourseAnalysis course:courseAnalysisList){
             if(courseDataMap.get(course.subjectName) == null){
                 ArrayList<CourseAnalysis> courseDataList = new ArrayList<>();
