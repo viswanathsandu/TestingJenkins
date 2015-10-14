@@ -73,7 +73,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         LayoutInflater li = (LayoutInflater) studyCentreActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View dialogView = li.inflate(R.layout.layout_list_item_view_popup, null);
         builder.setView(dialogView);
-        setDataForAlaert(dialogView, holder, chapter);
+        setDataForAlert(dialogView, holder, chapter);
         AlertDialog dialog = builder.create();
         WindowManager.LayoutParams wmlp = dialog.getWindow().getAttributes();
         wmlp.gravity = Gravity.TOP | Gravity.LEFT;
@@ -84,7 +84,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         dialog.getWindow().setLayout(300, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 
-    private void setDataForAlaert(View dialogView, StudyCenterSubjectViewHolder holder, Chapters chapter) {
+    private void setDataForAlert(View dialogView, StudyCenterSubjectViewHolder holder, Chapters chapter) {
         TextView score = (TextView)dialogView.findViewById(R.id.score);
         score.setText(holder.star.getText().toString());
         score.setBackground(holder.gridLayout.getBackground());
