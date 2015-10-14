@@ -45,6 +45,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     public static Course selectedCourse;
+    private List<Course> courses;
     protected Toolbar toolbar;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
@@ -256,6 +257,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             public void success(List<Course> courses, Response response) {
                 super.success(courses, response);
                 if (courses != null) {
+                    AbstractBaseActivity.this.courses = courses;
                     showCoursesInToolbar(courses);
                 }
             }
@@ -288,6 +290,9 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         });
     }
 
+    public List<Course> getcourses() {
+        return courses;
+    }
 
     protected EventBus getEventbus() {
         return EventBus.getDefault();

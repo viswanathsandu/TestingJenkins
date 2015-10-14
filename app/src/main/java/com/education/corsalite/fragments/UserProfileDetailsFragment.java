@@ -14,9 +14,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.education.corsalite.R;
+import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.activities.EditProfileActivity;
 import com.education.corsalite.activities.LoginActivity;
 import com.education.corsalite.activities.UserProfileActivity;
@@ -28,6 +30,7 @@ import com.education.corsalite.db.DbManager;
 import com.education.corsalite.models.db.CourseList;
 import com.education.corsalite.models.responsemodels.BasicProfile;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
+import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.ExamDetail;
 import com.education.corsalite.models.responsemodels.UserProfileResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencyBalanceResponse;
@@ -42,6 +45,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
 import retrofit.client.Response;
 
 public class UserProfileDetailsFragment extends BaseFragment {
@@ -62,6 +66,7 @@ public class UserProfileDetailsFragment extends BaseFragment {
     private UserProfileResponse user;
     private UpdateExamData updateExamData;
     private int defaultcourseIndex;
+    private List<Course> mCourses;
 
     public static UserProfileDetailsFragment newInstance(String param1, String param2) {
         UserProfileDetailsFragment fragment = new UserProfileDetailsFragment();
@@ -84,6 +89,7 @@ public class UserProfileDetailsFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user_profile_details, container, false);
         ButterKnife.bind(this, view);
+        EventBus.getDefault().register(this);
         setListeners();
         return view;
     }
@@ -91,21 +97,23 @@ public class UserProfileDetailsFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        loadCourseDataFromDb();
         fetchUserProfileData();
         fetchVirtualCurrencyBalance();
     }
 
-    private void loadCourseDataFromDb() {
-        CourseList list = DbManager.getInstance(getActivity()).getCourseList();
-        if(list != null && list.courses != null) {
-            this.defaultcourseIndex = list.defaultCourseIndex;
-            showCourses(list.courses);
-        }
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
     }
 
-    private void saveDefaultCourseIndex(int index) {
-        DbManager.getInstance(getActivity()).saveDefaultCourse(index);
+    public void loadCourses() {
+        mCourses = ((AbstractBaseActivity)getActivity()).getcourses();
+    }
+
+    private void saveDefaultCourseIndex(Course course) {
+        // Make an api call to update default course
+
     }
 
     private void setListeners() {
@@ -129,8 +137,7 @@ public class UserProfileDetailsFragment extends BaseFragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 defaultcourseIndex = position;
-                L.info("Position : " + position);
-                saveDefaultCourseIndex(position);
+                saveDefaultCourseIndex(mCourses.get(position));
             }
 
             @Override
@@ -154,27 +161,27 @@ public class UserProfileDetailsFragment extends BaseFragment {
 
     private void fetchUserProfileData() {
         ApiManager.getInstance(getActivity()).getUserProfile(LoginUserCache.getInstance().loginResponse.studentId,
-            new ApiCallback<UserProfileResponse>() {
-                @Override
-                public void failure(CorsaliteError error) {
-                    if (error != null && !TextUtils.isEmpty(error.message)) {
-                        showToast(error.message);
-                    }
-                }
-
-                @Override
-                public void success(UserProfileResponse userProfileResponse, Response response) {
-                    super.success(userProfileResponse, response);
-                    if (userProfileResponse.isSuccessful()) {
-                        user = userProfileResponse;
-                        showProfileData(userProfileResponse.basicProfile);
-                        loadCoursesData(userProfileResponse.basicProfile);
-                        if (updateExamData != null) {
-                            updateExamData.getExamData(userProfileResponse.examDetails);
+                new ApiCallback<UserProfileResponse>() {
+                    @Override
+                    public void failure(CorsaliteError error) {
+                        if (error != null && !TextUtils.isEmpty(error.message)) {
+                            showToast(error.message);
                         }
                     }
-                }
-            });
+
+                    @Override
+                    public void success(UserProfileResponse userProfileResponse, Response response) {
+                        super.success(userProfileResponse, response);
+                        if (userProfileResponse.isSuccessful()) {
+                            user = userProfileResponse;
+                            showProfileData(userProfileResponse.basicProfile);
+                            loadCoursesData(userProfileResponse.basicProfile);
+                            if (updateExamData != null) {
+                                updateExamData.getExamData(userProfileResponse.examDetails);
+                            }
+                        }
+                    }
+                });
     }
 
     private void loadCoursesData(BasicProfile profile) {
@@ -207,7 +214,6 @@ public class UserProfileDetailsFragment extends BaseFragment {
         usernameTxt.setText(profile.displayName);
         userFullNameTxt.setText(profile.givenName);
         emailTxt.setText(profile.emailId);
-        setEnrolledCourses(profile.enrolledCourses);
     }
 
     private void fetchVirtualCurrencyBalance() {
@@ -227,15 +233,20 @@ public class UserProfileDetailsFragment extends BaseFragment {
                             UserProfileActivity.BALANCE_CURRENCY = String.valueOf(virtualCurrencyBalanceResponse.balance.intValue());
                             virtualCurrencyBalanceTxt.setText(virtualCurrencyBalanceResponse.balance.intValue() + "");
                         }
-                }
-            });
+                    }
+                });
     }
 
+    public void onEvent(Course course) {
+        loadCourses();
+        setEnrolledCourses();
+    }
 
-
-
-
-    private void setEnrolledCourses(String courses) {
+    private void setEnrolledCourses() {
+        String courses = "";
+        for(Course course : mCourses) {
+            courses += TextUtils.isEmpty(courses) ? course.name : ", "+course.name;
+        }
         enrolledCoursesTxt.setText(Html.fromHtml(COURSES_ENROLLED_HTML + courses));
     }
 

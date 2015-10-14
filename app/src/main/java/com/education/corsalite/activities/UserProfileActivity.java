@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,6 +18,7 @@ import com.education.corsalite.R;
 import com.education.corsalite.adapters.UserTabBaseAdapter;
 import com.education.corsalite.fragments.UserProfileDetailsFragment;
 import com.education.corsalite.models.db.CourseList;
+import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.ExamDetail;
 import com.education.corsalite.models.responsemodels.Message;
 import com.education.corsalite.models.responsemodels.VirtualCurrencyTransaction;
@@ -26,10 +28,10 @@ import java.util.List;
 
 public class UserProfileActivity extends AbstractBaseActivity implements UserProfileDetailsFragment.UpdateExamData{
 
-    TabLayout userProfileLayout ;
-    ViewPager viewPager;
-    List<VirtualCurrencyTransaction> virtualCurrencyTransactions;
-    UserTabBaseAdapter userTabAdapter;
+    private TabLayout userProfileLayout ;
+    private ViewPager viewPager;
+    private List<VirtualCurrencyTransaction> virtualCurrencyTransactions;
+    private UserTabBaseAdapter userTabAdapter;
     public static String BALANCE_CURRENCY;
 
     @Override
