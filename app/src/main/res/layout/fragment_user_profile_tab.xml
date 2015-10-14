@@ -33,14 +33,4 @@
 
 </RelativeLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_add_exam"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:layout_margin="18dp"
-        android:src="@drawable/btn_float_add"
-        app:layout_anchor="@id/userdetail_recyclerView"
-        app:layout_anchorGravity="bottom|right|end"/>
-
 </android.support.design.widget.CoordinatorLayout>

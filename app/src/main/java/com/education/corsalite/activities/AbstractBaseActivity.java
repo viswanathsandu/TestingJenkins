@@ -44,6 +44,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
  */
 public abstract class AbstractBaseActivity extends AppCompatActivity {
 
+    public static Course selectedCourse;
     protected Toolbar toolbar;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
@@ -285,7 +286,8 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     public void onEvent(Course course) {
-        // DO nothing. this method will be overridden by the classes that subscribes from event bus
+        selectedCourse = course;
+        // this method will be overridden by the classes that subscribes from event bus
     }
 
     protected void getContentData(String courseId, String updateTime) {

@@ -30,7 +30,6 @@ public class ExamTabFragment extends BaseFragment {
     private RecyclerView.LayoutManager mLayoutManager;
     private LinearLayout layoutEmpty;
     private TextView tvNoData;
-    private FloatingActionButton addExam;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,7 +39,6 @@ public class ExamTabFragment extends BaseFragment {
         mRecyclerView = (RecyclerView) v.findViewById(R.id.userdetail_recyclerView);
         layoutEmpty = (LinearLayout) v.findViewById(R.id.layout_empty);
         tvNoData = (TextView)v.findViewById(R.id.tv_no_data);
-        addExam = (FloatingActionButton)v.findViewById(R.id.fab_add_exam);
         tvNoData.setText("No Exam Data Found");
 
         mRecyclerView.setVisibility(View.VISIBLE);
@@ -56,16 +54,6 @@ public class ExamTabFragment extends BaseFragment {
         } else {
             hideRecyclerView();
         }
-        addExam.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AddExamScheduleDialogFragment examScheduleDialogFragment = new AddExamScheduleDialogFragment();
-                Bundle args = new Bundle();
-                args.putSerializable("examDetailList",(Serializable) examDetailList);
-                examScheduleDialogFragment.setArguments(args);
-                examScheduleDialogFragment.show(getActivity().getFragmentManager(),"addExam");
-            }
-        });
         return v;
     }
 
@@ -73,3 +61,5 @@ public class ExamTabFragment extends BaseFragment {
         layoutEmpty.setVisibility(View.VISIBLE);
     }
 }
+
+

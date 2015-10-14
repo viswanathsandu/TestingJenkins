@@ -179,6 +179,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
 
     @Override
     public void onEvent(Course course) {
+        super.onEvent(course);
         getStudyCentreData(course.courseId.toString());
     }
 

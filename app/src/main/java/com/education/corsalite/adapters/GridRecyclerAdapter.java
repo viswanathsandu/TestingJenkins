@@ -1,6 +1,7 @@
 package com.education.corsalite.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 
 import com.education.corsalite.R;
 import com.education.corsalite.activities.StudyCentreActivity;
+import com.education.corsalite.activities.WebActivity;
 import com.education.corsalite.models.responsemodels.Chapters;
 import com.education.corsalite.utils.Data;
 
@@ -84,7 +86,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         dialog.getWindow().setLayout(300, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 
-    private void setDataForAlert(View dialogView, StudyCenterSubjectViewHolder holder, Chapters chapter) {
+    private void setDataForAlert(View dialogView, StudyCenterSubjectViewHolder holder, final Chapters chapter) {
         TextView score = (TextView)dialogView.findViewById(R.id.score);
         score.setText(holder.star.getText().toString());
         score.setBackground(holder.gridLayout.getBackground());
@@ -92,6 +94,20 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         notes.setText(TextUtils.isEmpty(chapter.notesCount) ? "0" : chapter.notesCount);
         TextView completedTopics = (TextView)dialogView.findViewById(R.id.completed_topics);
         completedTopics.setText(getCompletedTopicsPercentage(chapter) + "%");
+        dialogView.findViewById(R.id.start_reading).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+    }
+
+    private void startContentActivity(Chapters chapter) {
+        Intent intent = new Intent(studyCentreActivity, WebActivity.class);
+        intent.putExtra("courseId", "");
+        intent.putExtra("subjectId", chapter.idCourseSubject);
+        intent.putExtra("chapterId", chapter.idCourseSubjectChapter);
+        studyCentreActivity.startActivity(intent);
     }
 
     private double getCompletedTopicsPercentage(Chapters chapter) {
