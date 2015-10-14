@@ -8,7 +8,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.RecommendationsAdapter;
@@ -33,6 +35,8 @@ public class RecommendedTabFragment extends Fragment {
     @Bind(R.id.rv_analytics_recommended)
     RecyclerView mRecyclerView;
     @Bind(R.id.progress_bar_tab)ProgressBar mProgressBar;
+    @Bind(R.id.headerLayout)LinearLayout linearLayout;
+    @Bind(R.id.tv_failure_text)TextView mFailureText;
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerView.Adapter mAdapter;
 
@@ -57,6 +61,8 @@ public class RecommendedTabFragment extends Fragment {
                     @Override
                     public void failure(CorsaliteError error) {
                         L.error(error.message);
+                        mProgressBar.setVisibility(View.GONE);
+                        mFailureText.setVisibility(View.VISIBLE);
                     }
 
                     @Override
@@ -67,9 +73,11 @@ public class RecommendedTabFragment extends Fragment {
                         if (courseAnalysisList != null) {
                             mProgressBar.setVisibility(View.GONE);
                             mRecyclerView.setVisibility(View.VISIBLE);
+                            linearLayout.setVisibility(View.VISIBLE);
                             mAdapter = new RecommendationsAdapter(courseAnalysisList, inflater);
                             mRecyclerView.setAdapter(mAdapter);
                         }
+
                     }
                 });
 

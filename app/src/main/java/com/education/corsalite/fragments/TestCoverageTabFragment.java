@@ -1,7 +1,6 @@
 package com.education.corsalite.fragments;
 
 import android.app.Fragment;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
@@ -39,12 +38,13 @@ public class TestCoverageTabFragment extends Fragment {
     HashMap<String,List<TestCoverage>> courseTestDataMap;
 
 
+    @Bind(R.id.tv_failure_text)TextView failureText;
     @Bind(R.id.progressBar)ProgressBar progressBar;
     @Bind(R.id.ll_test_coverage)LinearLayout mLinearLayout;
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater    , ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_test_coverage,container,false);
         ButterKnife.bind(this, view);
 
@@ -52,6 +52,8 @@ public class TestCoverageTabFragment extends Fragment {
             @Override
             public void failure(CorsaliteError error) {
                 L.info(error.message);
+                progressBar.setVisibility(View.GONE);
+                failureText.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -65,10 +67,9 @@ public class TestCoverageTabFragment extends Fragment {
 
                     TextView mTableDesc = new TextView(getActivity());
                     mTableDesc.setText("Test Coverage (%) by Subject - " + entry.getKey());
-                    mTableDesc.setTypeface(null, Typeface.BOLD);
-                    mTableDesc.setTextSize(20);
                     mTableDesc.setGravity(Gravity.CENTER);
-                    mTableDesc.setPadding(5, 5, 5, 5);
+                    mTableDesc.setTextAppearance(getActivity(), R.style.analytics_title_style);
+                    mTableDesc.setPadding(8, 8, 8, 8);
                     mLinearLayout.addView(mTableDesc);
 
                     TableLayout mTableLayout = new TableLayout(getActivity());
@@ -108,13 +109,13 @@ public class TestCoverageTabFragment extends Fragment {
         TextView[] levelRowData = new TextView[maxLevel + 1];
         levelRowData[0] = new TextView(getActivity());
         levelRowData[0].setText("");
+        levelRowData[0].setTextAppearance(getActivity(),R.style.analytics_subtext_style);
         levelRow.addView(levelRowData[0]);
 
         for(int i=1;i<=maxLevel;i++){
             levelRowData[i]=new TextView(getActivity());
             levelRowData[i].setText("Level " + i);
-            levelRowData[i].setTextSize(16);
-            levelRowData[i].setTypeface(null, Typeface.BOLD);
+            levelRowData[i].setTextAppearance(getActivity(),R.style.analytics_subtext_style);
             levelRowData[i].setPadding(10, 2, 10, 2);
             levelRowData[i].setGravity(Gravity.CENTER);
             levelRow.addView(levelRowData[i]);
@@ -128,8 +129,7 @@ public class TestCoverageTabFragment extends Fragment {
             TableRow tableRow = new TableRow(getActivity());
             tableRowData[index] = new TextView(getActivity());
             tableRowData[index].setText(entry.getKey());
-            tableRowData[index].setTextSize(16);
-            tableRowData[index].setTypeface(null, Typeface.BOLD);
+            tableRowData[index].setTextAppearance(getActivity(), R.style.analytics_subtext_style);
             tableRowData[index].setPadding(5, 2, 5, 2);
             tableRowData[index].setGravity(Gravity.RIGHT);
             tableRow.addView(tableRowData[index]);
@@ -152,6 +152,7 @@ public class TestCoverageTabFragment extends Fragment {
     private void setTextViewLayouParams(TextView textViewLayoutParams){
         textViewLayoutParams.setPadding(10, 2, 10, 2);
         textViewLayoutParams.setGravity(Gravity.CENTER);
+        textViewLayoutParams.setTextAppearance(getActivity(), R.style.analytics_subtext_style);
         if(textViewLayoutParams.getText() == null || textViewLayoutParams.getText().toString().isEmpty()){
             return;
         }
