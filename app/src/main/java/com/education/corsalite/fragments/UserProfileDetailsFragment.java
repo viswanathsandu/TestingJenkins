@@ -189,13 +189,12 @@ public class UserProfileDetailsFragment extends BaseFragment {
             String [] coursesArr = profile.enrolledCourses.split(",");
             CourseList courseList = new CourseList(Arrays.asList(coursesArr)) ;
             courseList.defaultCourseIndex = defaultcourseIndex;
-            showCourses(courseList.courses);
             DbManager.getInstance(getActivity()).saveCourseList(courseList);
         }
     }
 
-    private void showCourses(List<String> courses) {
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(),
+    private void showCourses(List<Course> courses) {
+        ArrayAdapter<Course> dataAdapter = new ArrayAdapter<Course>(getActivity(),
                 R.layout.spinner_title_textview, courses);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         coursesSpinner.setAdapter(dataAdapter);
@@ -240,6 +239,7 @@ public class UserProfileDetailsFragment extends BaseFragment {
     public void onEvent(Course course) {
         loadCourses();
         setEnrolledCourses();
+        showCourses(mCourses);
     }
 
     private void setEnrolledCourses() {
