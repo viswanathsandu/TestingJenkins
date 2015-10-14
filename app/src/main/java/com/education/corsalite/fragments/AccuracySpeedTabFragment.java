@@ -9,8 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
@@ -50,15 +50,13 @@ public class AccuracySpeedTabFragment extends Fragment   {
     @Bind(R.id.sch_accuray_date)ScatterChart accuracyDateChart;
     @Bind(R.id.rv_chapter_legend)RecyclerView rvChapterLegend;
     @Bind(R.id.rv_dates_legend)RecyclerView rvDatesLegend;
-    @Bind(R.id.progress_bar_tab_chapter)ProgressBar progressBarChapter;
-    @Bind(R.id.progress_bar_tab_dates)ProgressBar progressBarDates;
-    @Bind(R.id.tv_failure_text_chapter)TextView chapterFailText ;
-    @Bind(R.id.tv_failure_text_speed)TextView datesFailText;
-    @Bind(R.id.rl_accuracy)RelativeLayout mChapterLayout;
-    @Bind(R.id.rl_speed)RelativeLayout mDatesLayout;
+    @Bind(R.id.progress_bar_tab)ProgressBar mProgressBar;
+    @Bind(R.id.tv_failure_text)TextView mTextViewFail ;
+    @Bind(R.id.ll_accuracy)LinearLayout mParentLayout;
     LinearLayoutManager mLayoutManagerDates;
     LinearLayoutManager mLayoutManagerChapter;
     RecyclerView.Adapter customLegendAdapter;
+    int failCount =0;
 
 
     @Nullable
@@ -79,8 +77,6 @@ public class AccuracySpeedTabFragment extends Fragment   {
                     public void failure(CorsaliteError error)
                     {
                         L.error(error.message);
-                        progressBarChapter.setVisibility(View.GONE);
-                        chapterFailText.setVisibility(View.VISIBLE);
                     }
 
                     @Override
@@ -88,8 +84,8 @@ public class AccuracySpeedTabFragment extends Fragment   {
                         if(getActivity() == null) {
                             return;
                         }
-                        progressBarChapter.setVisibility(View.GONE);
-                        mChapterLayout.setVisibility(View.VISIBLE);
+                        mProgressBar.setVisibility(View.GONE);
+                        mParentLayout.setVisibility(View.VISIBLE);
                         buildChapterGraphData(courseAnalysisList, CHAPTER);
                         //create custom legend
                         Legend chapterLegend = accuracyChapterChart.getLegend();
@@ -103,8 +99,8 @@ public class AccuracySpeedTabFragment extends Fragment   {
                     @Override
                     public void failure(CorsaliteError error) {
                         L.error(error.message);
-                        progressBarDates.setVisibility(View.GONE);
-                        datesFailText.setVisibility(View.VISIBLE);
+                        mProgressBar.setVisibility(View.GONE);
+                        mTextViewFail.setVisibility(View.VISIBLE);
                     }
 
                     @Override
@@ -112,8 +108,8 @@ public class AccuracySpeedTabFragment extends Fragment   {
                         if(getActivity() == null) {
                             return;
                         }
-                        progressBarDates.setVisibility(View.GONE);
-                        mDatesLayout.setVisibility(View.VISIBLE);
+                        mProgressBar.setVisibility(View.GONE);
+                        mParentLayout.setVisibility(View.VISIBLE);
                         buildChapterGraphData(courseAnalysisList, DATES);
                         Legend datesLegend = accuracyDateChart.getLegend();
                         customLegendAdapter = new CustomLegendAdapter(datesLegend.getColors(),datesLegend.getLabels(),getActivity().getLayoutInflater());
@@ -123,7 +119,13 @@ public class AccuracySpeedTabFragment extends Fragment   {
 
         return view;
     }
-
+    private void showFailMessage(){
+        failCount++;
+        if(failCount == 2){
+            mTextViewFail.setVisibility(View.VISIBLE);
+            mProgressBar.setVisibility(View.GONE);
+        }
+    }
     private void initializeGraph(){
 
         accuracyChapterChart.setDescription("");

@@ -52,12 +52,11 @@ public class TimeManagementTabFragment extends Fragment {
     @Bind(R.id.pc_subject)PieChart graphBySubject;
     @Bind(R.id.ll_time_mgmnt)LinearLayout mLinearLayout;
     @Bind(R.id.rv_legend)RecyclerView mRecyclerView;
-    @Bind(R.id.tv_failure_text_chapter)TextView chapterFailText;
-    @Bind(R.id.tv_failure_text_subject)TextView subjectFailText;
-    @Bind(R.id.progress_bar_tab_subject)ProgressBar progressBarSubject;
-    @Bind(R.id.progress_bar_tab_chapter)ProgressBar progressBarChapter;
-    @Bind(R.id.rl_time_subject)RelativeLayout subjectChartParentLayout;
+    @Bind(R.id.tv_failure_text)TextView mFailText;
+    @Bind(R.id.progress_bar_tab)ProgressBar progressBar;
 
+
+    int failCount =0;
     HashMap<String,List<CourseAnalysis>> courseDataMap;
     final String SUBJECT = "Subject";
     final String CHAPTER = "Chapter";
@@ -74,8 +73,7 @@ public class TimeManagementTabFragment extends Fragment {
                     @Override
                     public void failure(CorsaliteError error) {
                         L.error(error.message);
-                        progressBarSubject.setVisibility(View.GONE);
-                        subjectFailText.setVisibility(View.VISIBLE);
+                        showFailMessage();
                     }
 
                     @Override
@@ -83,8 +81,8 @@ public class TimeManagementTabFragment extends Fragment {
                         if(getActivity() == null) {
                             return;
                         }
-                        progressBarSubject.setVisibility(View.GONE);
-                        subjectChartParentLayout.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.GONE);
+                        mLinearLayout.setVisibility(View.VISIBLE);
                         initializeGraph(graphBySubject);
                         buildGraphData(courseAnalysisList, SUBJECT, graphBySubject);
                         //Custom Legend
@@ -100,8 +98,7 @@ public class TimeManagementTabFragment extends Fragment {
                     @Override
                     public void failure(CorsaliteError error) {
                         L.error(error.message);
-                        progressBarChapter.setVisibility(View.GONE);
-                        chapterFailText.setVisibility(View.VISIBLE);
+                        showFailMessage();
                     }
 
                     @Override
@@ -109,7 +106,8 @@ public class TimeManagementTabFragment extends Fragment {
                         if(getActivity() == null) {
                             return;
                         }
-                        progressBarChapter.setVisibility(View.GONE);
+                        mLinearLayout.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.GONE);
                         buildChapterData(courseAnalysisList);
                         for (Map.Entry<String,List<CourseAnalysis>> entry : courseDataMap.entrySet()) {
                             TextView mDescText = new TextView(getActivity());
@@ -173,6 +171,14 @@ public class TimeManagementTabFragment extends Fragment {
                 courseDataList.add(course);
                 courseDataMap.put(course.subjectName,courseDataList);
             }
+        }
+    }
+
+    private void showFailMessage(){
+        failCount++;
+        if(failCount == 2){
+            mFailText.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
         }
     }
 
