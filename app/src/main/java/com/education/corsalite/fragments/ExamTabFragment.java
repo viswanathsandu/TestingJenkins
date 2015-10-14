@@ -38,6 +38,7 @@ public class ExamTabFragment extends BaseFragment implements ExamAdapter.IAddExa
         layoutEmpty = (LinearLayout) v.findViewById(R.id.layout_empty);
         tvNoData = (TextView)v.findViewById(R.id.tv_no_data);
         tvNoData.setText("No Exam Data Found");
+        tvNoData.setTextAppearance(getActivity(),R.style.user_profile_text);
 
         mRecyclerView.setVisibility(View.VISIBLE);
         layoutEmpty.setVisibility(View.GONE);

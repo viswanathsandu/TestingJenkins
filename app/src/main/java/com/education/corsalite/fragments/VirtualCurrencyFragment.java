@@ -47,6 +47,7 @@ public class VirtualCurrencyFragment extends BaseFragment {
         tvNoData = (TextView)v.findViewById(R.id.tv_no_data);
 
         tvNoData.setText("No Currency Summary Found");
+        tvNoData.setTextAppearance(getActivity(),R.style.user_profile_text);
         //mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setVisibility(View.VISIBLE);
         layoutEmpty.setVisibility(View.GONE);
