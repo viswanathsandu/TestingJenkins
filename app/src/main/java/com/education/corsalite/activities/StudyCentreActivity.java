@@ -197,6 +197,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
 
                     @Override
                     public void success(List<StudyCenter> studyCenters, Response response) {
+                        super.success(studyCenters, response);
                         if (studyCenters != null) {
                             mCourseData = new CourseData();
                             mCourseData.StudyCenter = studyCenters;

@@ -65,15 +65,15 @@ public class LoginActivity extends AbstractBaseActivity {
         ApiManager.getInstance(this).login(username, password, new ApiCallback<LoginResponse>() {
             @Override
             public void failure(CorsaliteError error) {
-                if(error!= null && !TextUtils.isEmpty(error.message)) {
+                if (error != null && !TextUtils.isEmpty(error.message)) {
                     showToast(error.message);
                 }
             }
 
             @Override
             public void success(LoginResponse loginResponse, Response response) {
-                if(loginResponse.isSuccessful()) {
-                    saveSessionCookie(response);
+                super.success(loginResponse, response);
+                if (loginResponse.isSuccessful()) {
                     showToast(getResources().getString(R.string.login_successful));
                     storeUserCredentials(loginResponse);
                     startActivity(new Intent(LoginActivity.this, StudyCentreActivity.class));

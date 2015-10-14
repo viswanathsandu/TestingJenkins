@@ -254,6 +254,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
             @Override
             public void success(List<Course> courses, Response response) {
+                super.success(courses, response);
                 if (courses != null) {
                     showCoursesInToolbar(courses);
                 }
@@ -267,6 +268,13 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         ArrayAdapter<Course> dataAdapter = new ArrayAdapter<Course>(this, R.layout.spinner_title_textview, courses);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         coursesSpinner.setAdapter(dataAdapter);
+        if(selectedCourse != null) {
+            for(Course course : courses) {
+                if(course.courseId == selectedCourse.courseId) {
+                    coursesSpinner.setSelection(courses.indexOf(course));
+                }
+            }
+        }
         // coursesSpinner.setSelection(courseList.defaultCourseIndex);
         coursesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -293,30 +301,30 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     protected void getContentData(String courseId, String updateTime) {
         // TODO : passing static data
         ApiManager.getInstance(this).getContent(courseId, updateTime,
-                new ApiCallback<List<Content>>() {
-                    @Override
-                    public void failure(CorsaliteError error) {
-                        if (error != null && !TextUtils.isEmpty(error.message)) {
-                            showToast(error.message);
-                        }
+            new ApiCallback<List<Content>>() {
+                @Override
+                public void failure(CorsaliteError error) {
+                    if (error != null && !TextUtils.isEmpty(error.message)) {
+                        showToast(error.message);
                     }
+                }
 
-                    @Override
-                    public void success(List<Content> mContentResponse, Response response) {
-                        if (mContentResponse != null) {
-                            Intent intent = new Intent(AbstractBaseActivity.this, WebActivity.class);
-                            Bundle bundle = new Bundle();
-                            bundle.putSerializable("contentData", (Serializable) mContentResponse);
-                            intent.putExtras(bundle);
-                            startActivity(intent);
-
-                        }
+                @Override
+                public void success(List<Content> mContentResponse, Response response) {
+                    super.success(mContentResponse, response);
+                    if (mContentResponse != null) {
+                        Intent intent = new Intent(AbstractBaseActivity.this, WebActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("contentData", (Serializable) mContentResponse);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
                     }
-                });
+                }
+            });
     }
 
 
-    public void saveSessionCookie(Response response) {
+    public static void saveSessionCookie(Response response) {
         String cookie = CookieUtils.getCookieString(response);
         if (cookie != null) {
             ApiClientService.setSetCookie(cookie);

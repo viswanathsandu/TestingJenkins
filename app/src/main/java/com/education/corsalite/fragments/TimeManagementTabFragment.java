@@ -78,6 +78,7 @@ public class TimeManagementTabFragment extends Fragment {
 
                     @Override
                     public void success(List<CourseAnalysis> courseAnalysisList, Response response) {
+                        super.success(courseAnalysisList, response);
                         if(getActivity() == null) {
                             return;
                         }
@@ -103,6 +104,7 @@ public class TimeManagementTabFragment extends Fragment {
 
                     @Override
                     public void success(List<CourseAnalysis> courseAnalysisList, Response response) {
+                        super.success(courseAnalysisList, response);
                         if(getActivity() == null) {
                             return;
                         }

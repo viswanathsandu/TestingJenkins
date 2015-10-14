@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
+import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.activities.StudyCentreActivity;
 import com.education.corsalite.activities.WebActivity;
 import com.education.corsalite.models.responsemodels.Chapters;
@@ -97,14 +98,14 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         dialogView.findViewById(R.id.start_reading).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                startContentActivity(chapter);
             }
         });
     }
 
     private void startContentActivity(Chapters chapter) {
         Intent intent = new Intent(studyCentreActivity, WebActivity.class);
-        intent.putExtra("courseId", "");
+        intent.putExtra("courseId", AbstractBaseActivity.selectedCourse.courseId+"");
         intent.putExtra("subjectId", chapter.idCourseSubject);
         intent.putExtra("chapterId", chapter.idCourseSubjectChapter);
         studyCentreActivity.startActivity(intent);

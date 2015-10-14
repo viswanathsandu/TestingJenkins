@@ -164,6 +164,7 @@ public class UserProfileDetailsFragment extends BaseFragment {
 
                 @Override
                 public void success(UserProfileResponse userProfileResponse, Response response) {
+                    super.success(userProfileResponse, response);
                     if (userProfileResponse.isSuccessful()) {
                         user = userProfileResponse;
                         showProfileData(userProfileResponse.basicProfile);
@@ -221,6 +222,7 @@ public class UserProfileDetailsFragment extends BaseFragment {
 
                     @Override
                     public void success(VirtualCurrencyBalanceResponse virtualCurrencyBalanceResponse, Response response) {
+                        super.success(virtualCurrencyBalanceResponse, response);
                         if (virtualCurrencyBalanceResponse.isSuccessful()) {
                             UserProfileActivity.BALANCE_CURRENCY = String.valueOf(virtualCurrencyBalanceResponse.balance.intValue());
                             virtualCurrencyBalanceTxt.setText(virtualCurrencyBalanceResponse.balance.intValue() + "");

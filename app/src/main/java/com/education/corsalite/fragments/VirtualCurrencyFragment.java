@@ -79,6 +79,7 @@ public class VirtualCurrencyFragment extends BaseFragment {
 
                     @Override
                     public void success(VirtualCurrencySummaryResponse virtualCurrencySummaryResponse, Response response) {
+                        super.success(virtualCurrencySummaryResponse, response);
                         if(virtualCurrencySummaryResponse != null &&
                                 virtualCurrencySummaryResponse.virtualCurrencyTransaction != null &&
                                 virtualCurrencySummaryResponse.virtualCurrencyTransaction.size() > 0) {

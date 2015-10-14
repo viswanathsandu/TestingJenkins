@@ -77,6 +77,7 @@ public class EditProfileActivity extends AbstractBaseActivity implements DatePic
 
                     @Override
                     public void success(EditProfileModel editProfileResponse, Response response) {
+                        super.success(editProfileResponse, response);
                         if (editProfileResponse.isSuccessful()) {
                             showToast("Updated User Profile Successfully");
                             Intent intent = new Intent(EditProfileActivity.this, UserProfileActivity.class);

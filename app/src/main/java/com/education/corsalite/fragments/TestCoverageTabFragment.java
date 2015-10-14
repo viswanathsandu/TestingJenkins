@@ -58,6 +58,7 @@ public class TestCoverageTabFragment extends Fragment {
 
             @Override
             public void success(List<TestCoverage> testCoverages, Response response) {
+                super.success(testCoverages, response);
                 if(getActivity() == null) {
                     return;
                 }
