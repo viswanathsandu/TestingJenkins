@@ -168,6 +168,7 @@
             android:textStyle="bold" />
 
         <Button
+            android:id="@+id/redeem_btn"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
             android:layout_marginTop="5dp"
