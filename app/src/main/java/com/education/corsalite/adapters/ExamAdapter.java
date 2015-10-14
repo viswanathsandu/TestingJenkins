@@ -78,8 +78,13 @@ public class ExamAdapter extends AbstractRecycleViewAdapter {
                     }
                 });
             }else{
-
-                examDateTxt.setText(examDetail.examDate.split("")[0]);
+                boolean isWhitespace = examDetail.examDate.matches("^\\s*$");
+                if(isWhitespace) {
+                    examDateTxt.setText(examDetail.examDate.split("")[0]);
+                }else{
+                    examDateTxt.setText(examDetail.examDate);
+                }
+                examDateTxt.setClickable(false);
             }
 
             if(examDetail.hallTicketNumber == null || examDetail.hallTicketNumber.isEmpty()){
@@ -91,6 +96,7 @@ public class ExamAdapter extends AbstractRecycleViewAdapter {
                     }
                 });
             }else{
+                hallTicketTxt.setClickable(false);
                 hallTicketTxt.setText(examDetail.hallTicketNumber);
             }
 

@@ -7,7 +7,8 @@
         android:icon="@drawable/ico_actionbar_add"
         app:showAsAction="always"
         android:visible="false"
-        android:title="@string/menu_add" />
+        android:title="@string/menu_add"
+        />
 
     <item
         android:id="@+id/action_take_test"

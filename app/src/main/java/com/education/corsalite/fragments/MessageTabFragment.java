@@ -69,6 +69,7 @@ public class MessageTabFragment extends BaseFragment {
 
                     @Override
                     public void success(MessageResponse messageResponse, Response response) {
+                        super.success(messageResponse, response);
                         if (messageResponse.isSuccessful() && messageResponse != null &&
                                 messageResponse.messages != null && messageResponse.messages.size() > 0) {
                             mAdapter = new MessageAdapter(messageResponse.messages, inflater);

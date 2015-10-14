@@ -43,11 +43,12 @@
         <activity
             android:name=".activities.WebviewActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
-            android:label="@string/title_activity_webview" />
+            android:label="@string/title_activity_webview"
+            android:theme="@style/UserProfileTheme"/>
         <activity
             android:name=".activities.WebActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
-            android:label="@string/title_activity_webview"
+            android:label=""
             android:theme="@style/UserProfileTheme"/>
         <activity
             android:name=".activities.VirtualCurrencyActivity"
@@ -68,6 +69,7 @@
             android:theme="@style/UserProfileTheme" />
         <activity
             android:name=".activities.AnalyticsActivity"
+            android:screenOrientation="landscape"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="Analytics"
             android:theme="@style/UserProfileTheme" />

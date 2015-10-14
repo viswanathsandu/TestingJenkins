@@ -18,7 +18,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.education.corsalite.R;
 import com.education.corsalite.activities.EditProfileActivity;
+import com.education.corsalite.activities.LoginActivity;
 import com.education.corsalite.activities.UserProfileActivity;
+import com.education.corsalite.activities.WebviewActivity;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
@@ -30,6 +32,7 @@ import com.education.corsalite.models.responsemodels.ExamDetail;
 import com.education.corsalite.models.responsemodels.UserProfileResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencyBalanceResponse;
 import com.education.corsalite.services.ApiClientService;
+import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.L;
 
 import java.net.MalformedURLException;
@@ -54,6 +57,7 @@ public class UserProfileDetailsFragment extends BaseFragment {
     @Bind(R.id.sp_default_course) Spinner coursesSpinner;
     @Bind(R.id.btn_default_course) Button coursesBtn;
     @Bind(R.id.btn_edit)Button editProfileBtn;
+    @Bind(R.id.redeem_btn)Button redeemBtn;
 
     private UserProfileResponse user;
     private UpdateExamData updateExamData;
@@ -133,6 +137,19 @@ public class UserProfileDetailsFragment extends BaseFragment {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+        redeemBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                redeem();
+            }
+        });
+    }
+
+    private void redeem() {
+        Intent intent = new Intent(getActivity(), WebviewActivity.class);
+        intent.putExtra(LoginActivity.TITLE, getString(R.string.redeem));
+        intent.putExtra(LoginActivity.URL, Constants.REDEEM_URL);
+        startActivity(intent);
     }
 
     private void fetchUserProfileData() {
@@ -147,6 +164,7 @@ public class UserProfileDetailsFragment extends BaseFragment {
 
                 @Override
                 public void success(UserProfileResponse userProfileResponse, Response response) {
+                    super.success(userProfileResponse, response);
                     if (userProfileResponse.isSuccessful()) {
                         user = userProfileResponse;
                         showProfileData(userProfileResponse.basicProfile);
@@ -204,6 +222,7 @@ public class UserProfileDetailsFragment extends BaseFragment {
 
                     @Override
                     public void success(VirtualCurrencyBalanceResponse virtualCurrencyBalanceResponse, Response response) {
+                        super.success(virtualCurrencyBalanceResponse, response);
                         if (virtualCurrencyBalanceResponse.isSuccessful()) {
                             UserProfileActivity.BALANCE_CURRENCY = String.valueOf(virtualCurrencyBalanceResponse.balance.intValue());
                             virtualCurrencyBalanceTxt.setText(virtualCurrencyBalanceResponse.balance.intValue() + "");

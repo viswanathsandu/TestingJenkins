@@ -53,7 +53,6 @@ public class ExamTabFragment extends BaseFragment implements ExamAdapter.IAddExa
         } else {
             hideRecyclerView();
         }
-
         return v;
     }
 
@@ -83,3 +82,5 @@ public class ExamTabFragment extends BaseFragment implements ExamAdapter.IAddExa
 
 
 }
+
+

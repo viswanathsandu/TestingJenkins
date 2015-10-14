@@ -1,6 +1,8 @@
 package com.education.corsalite.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -14,7 +16,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
+import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.activities.StudyCentreActivity;
+import com.education.corsalite.activities.WebActivity;
 import com.education.corsalite.models.responsemodels.Chapters;
 import com.education.corsalite.utils.Data;
 
@@ -43,12 +47,12 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
     @Override
     public void onBindViewHolder(final StudyCenterSubjectViewHolder holder, final int position) {
 
-        Chapters chapter = chapters.get(position);
+        final Chapters chapter = chapters.get(position);
         String label = chapter.chapterName;
         holder.textView.setText(label);
         holder.timeSpent.setText(getDateFromMillis(chapter.timeSpent));
         holder.level.setText(studyCentreActivity.getResources().getString(R.string.level_text) + Data.getInt(chapter.completedTopics));
-        setColor(holder, chapter);
+        holder.gridLayout.setBackground(getColorDrawable(holder, chapter));
         int max = Data.getInt(chapter.totalTopics);
         holder.progressBar.setMax(max==0 ? 1 : max);
         holder.progressBar.setProgress(Data.getInt(chapter.completedTopics));
@@ -57,7 +61,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         holder.gridLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getAlertDialog(v, holder);
+                getAlertDialog(v, holder, chapter);
             }
         });
     }
@@ -67,33 +71,66 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         this.key = key;
     }
 
-    private void getAlertDialog(View v, StudyCenterSubjectViewHolder holder) {
+    private void getAlertDialog(View v, StudyCenterSubjectViewHolder holder, Chapters chapter) {
         AlertDialog.Builder builder = new AlertDialog.Builder(holder.gridLayout.getContext());
         LayoutInflater li = (LayoutInflater) studyCentreActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View dialogView = li.inflate(R.layout.layout_list_item_view_popup, null);
         builder.setView(dialogView);
+        setDataForAlert(dialogView, holder, chapter);
         AlertDialog dialog = builder.create();
         WindowManager.LayoutParams wmlp = dialog.getWindow().getAttributes();
         wmlp.gravity = Gravity.TOP | Gravity.LEFT;
-        wmlp.x = (int) v.getX() + 50;
-        wmlp.y = (int) v.getY() + 160;
+        // position the dialog
+        wmlp.x = (int) v.getX() + 15;
+        wmlp.y = (int) v.getY() + 140;
         dialog.show();
         dialog.getWindow().setLayout(300, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 
-    private void setColor(StudyCenterSubjectViewHolder holder, Chapters chapter) {
+    private void setDataForAlert(View dialogView, StudyCenterSubjectViewHolder holder, final Chapters chapter) {
+        TextView score = (TextView)dialogView.findViewById(R.id.score);
+        score.setText(holder.star.getText().toString());
+        score.setBackground(holder.gridLayout.getBackground());
+        TextView notes = (TextView)dialogView.findViewById(R.id.notes);
+        notes.setText(TextUtils.isEmpty(chapter.notesCount) ? "0" : chapter.notesCount);
+        TextView completedTopics = (TextView)dialogView.findViewById(R.id.completed_topics);
+        completedTopics.setText(getCompletedTopicsPercentage(chapter) + "%");
+        dialogView.findViewById(R.id.start_reading).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startContentActivity(chapter);
+            }
+        });
+    }
+
+    private void startContentActivity(Chapters chapter) {
+        Intent intent = new Intent(studyCentreActivity, WebActivity.class);
+        intent.putExtra("courseId", AbstractBaseActivity.selectedCourse.courseId+"");
+        intent.putExtra("subjectId", chapter.idCourseSubject);
+        intent.putExtra("chapterId", chapter.idCourseSubjectChapter);
+        studyCentreActivity.startActivity(intent);
+    }
+
+    private double getCompletedTopicsPercentage(Chapters chapter) {
+        int totalTopics = Integer.parseInt(TextUtils.isEmpty(chapter.totalTopics) ? "0" : chapter.totalTopics);
+        int completedTopics = Integer.parseInt(TextUtils.isEmpty(chapter.completedTopics) ? "0" : chapter.completedTopics);
+        double completedPercentage = (double)completedTopics/(double)totalTopics * 100;
+        return Math.round(completedPercentage * 100.0) / 100.0;
+    }
+
+    private Drawable getColorDrawable(StudyCenterSubjectViewHolder holder, Chapters chapter) {
         double totalMarks = Data.getDoubleWithTwoDecimals(chapter.totalTestedMarks);
         double earnedMarks = Data.getDoubleWithTwoDecimals(chapter.earnedMarks);
         double scoreRedPercentage = Data.getInt(chapter.scoreRed) * totalMarks / 100;
         double scoreAmberPercentage = Data.getInt(chapter.scoreAmber) * totalMarks / 100;
         if (earnedMarks == 0 && totalMarks == 0) {
-            holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.blueshape));
+            return studyCentreActivity.getResources().getDrawable(R.drawable.blueshape);
         } else if(earnedMarks < scoreRedPercentage) {
-            holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.redshape));
+            return studyCentreActivity.getResources().getDrawable(R.drawable.redshape);
         } else if (earnedMarks < scoreAmberPercentage) {
-            holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.ambershape));
+            return studyCentreActivity.getResources().getDrawable(R.drawable.ambershape);
         } else {
-            holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.greenshape));
+            return studyCentreActivity.getResources().getDrawable(R.drawable.greenshape);
         }
     }
 

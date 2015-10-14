@@ -27,6 +27,7 @@ public class LoginActivity extends AbstractBaseActivity {
 
 
     public static final String URL = "URL";
+    public static final String TITLE = "title";
     @Bind(R.id.login_btn) Button loginBtn;
     @Bind(R.id.tv_forgot_password) TextView forgotPasswordTxt;
     @Bind(R.id.username_txt) EditText usernameTxt;
@@ -53,6 +54,7 @@ public class LoginActivity extends AbstractBaseActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, WebviewActivity.class);
                 intent.putExtra(URL, Constants.FORGOT_PASSWORD_URL);
+                intent.putExtra(TITLE, getString(R.string.forgot_password));
                 intent.putExtra("clear_cookies", true);
                 startActivity(intent);
             }
@@ -63,15 +65,15 @@ public class LoginActivity extends AbstractBaseActivity {
         ApiManager.getInstance(this).login(username, password, new ApiCallback<LoginResponse>() {
             @Override
             public void failure(CorsaliteError error) {
-                if(error!= null && !TextUtils.isEmpty(error.message)) {
+                if (error != null && !TextUtils.isEmpty(error.message)) {
                     showToast(error.message);
                 }
             }
 
             @Override
             public void success(LoginResponse loginResponse, Response response) {
-                if(loginResponse.isSuccessful()) {
-                    saveSessionCookie(response);
+                super.success(loginResponse, response);
+                if (loginResponse.isSuccessful()) {
                     showToast(getResources().getString(R.string.login_successful));
                     storeUserCredentials(loginResponse);
                     startActivity(new Intent(LoginActivity.this, StudyCentreActivity.class));
@@ -86,27 +88,5 @@ public class LoginActivity extends AbstractBaseActivity {
     // cache the response
     private void storeUserCredentials(LoginResponse response) {
         LoginUserCache.getInstance().setLoginResponse(response);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_login, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }

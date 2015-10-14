@@ -26,9 +26,6 @@ public class UserProfileActivity extends AbstractBaseActivity implements UserPro
 
     TabLayout userProfileLayout ;
     ViewPager viewPager;
-    Spinner coursesSpinner;
-    List<ExamDetail> examDetails;
-    List<Message> messages;
     List<VirtualCurrencyTransaction> virtualCurrencyTransactions;
     UserTabBaseAdapter userTabAdapter;
     public static String BALANCE_CURRENCY;
@@ -81,12 +78,14 @@ public class UserProfileActivity extends AbstractBaseActivity implements UserPro
 
     private void addGuardian() {
         Intent intent = new Intent(this, WebviewActivity.class);
+        intent.putExtra(LoginActivity.TITLE, getString(R.string.add_guardian));
         intent.putExtra(LoginActivity.URL, Constants.ADD_GUARDIAN_URL);
         startActivity(intent);
     }
 
     private void addCourses() {
         Intent intent = new Intent(this, WebviewActivity.class);
+        intent.putExtra(LoginActivity.TITLE, getString(R.string.add_course));
         intent.putExtra(LoginActivity.URL, Constants.ADD_COURSES_URL);
         startActivity(intent);
     }

@@ -12,8 +12,7 @@
         android:layout_marginTop="7dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:textSize="12sp"
-        android:textColor="@android:color/black"
+        style="@style/analytics_subtext_style"
         android:ellipsize="end"
         android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceSmall" />
@@ -25,9 +24,8 @@
         android:layout_marginTop="7dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:textSize="12sp"
-        android:textColor="@android:color/black"
-        android:ellipsize="end"
+        style="@style/analytics_subtext_style"
+    android:ellipsize="end"
         android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 </LinearLayout>

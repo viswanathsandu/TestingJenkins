@@ -331,6 +331,7 @@ public class WebActivity extends AbstractBaseActivity {
 
                     @Override
                     public void success(List<ContentIndex> mContentIndexs, Response response) {
+                        super.success(mContentIndexs, response);
                         if (mContentIndexs != null) {
                             WebActivity.this.mContentIndexs = mContentIndexs;
                             setUpData();
@@ -403,6 +404,7 @@ public class WebActivity extends AbstractBaseActivity {
 
             @Override
             public void success(List<Content> contents, Response response) {
+                super.success(contents, response);
                 mContents = contents;
                 saveAndLoadWeb(contents);
                 if (mViewSwitcher.getNextView() instanceof LinearLayout) {
