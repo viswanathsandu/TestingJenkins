@@ -9,5 +9,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tv_marker_view_text"
-        android:textColor="@color/black"/>
+        style="@style/analytics_subtext_style"
+        />
 </LinearLayout>
