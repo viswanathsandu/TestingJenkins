@@ -15,6 +15,11 @@ import android.widget.LinearLayout;
 import com.education.corsalite.R;
 import com.education.corsalite.models.responsemodels.ExamDetail;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -78,25 +83,22 @@ public class AddExamScheduleDialogFragment extends DialogFragment {
             public void onClick(View view) {
 
                 if(type.equalsIgnoreCase(ADD_EXAM_DATE)){
-                    String dateString = examDatePicker.getDayOfMonth()+"/" +examDatePicker.getMonth()+"/"+examDatePicker.getYear();
+                    String dateString = examDatePicker.getDayOfMonth()+"/" +(examDatePicker.getMonth()+1)+"/"+examDatePicker.getYear();
                     //Update days remaininig
-                    /*Calendar calendar = Calendar.getInstance();
-
-                    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                    Calendar calendar = Calendar.getInstance();
+                    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                     Date chosenDate = new Date();
-                    Date todayDate = new Date(calendar.getTimeInMillis());
-
+                    Date todayDate = new Date();
                     try
                     {
                         chosenDate = formatter.parse(dateString);
-                        calendar.getTime();
                     } catch(ParseException e)
                     {
 
-                    }*/
+                    }
                     examDetail.examDate = dateString;
-                    /*examDetail.daysRemaining  = ((int)((chosenDate.getTime()/MILLISECS_PER_DAY)
-                                    -(int)(todayDate.getTime()/MILLISECS_PER_DAY)));*/
+                    examDetail.daysRemaining  = ((int)((chosenDate.getTime()/MILLISECS_PER_DAY)
+                                    -(int)(todayDate.getTime()/MILLISECS_PER_DAY)));
 
                 }else if(type.equalsIgnoreCase(ADD_HALL_TICKET))
                 {

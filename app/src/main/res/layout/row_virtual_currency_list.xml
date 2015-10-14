@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:padding="15dp"
         android:text="Effective Date"
-        android:textStyle="bold"/>
+        style="@style/user_profile_text"/>
 
 
     <TextView
@@ -22,8 +22,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="15dp"
-        android:text="EVENT"
-        android:textStyle="bold"/>
+        android:text="Event"
+        style="@style/user_profile_text"/>
 
     <TextView
         android:gravity="center"
@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:padding="15dp"
         android:text="Currency Earned"
-        android:textStyle="bold"/>
+        style="@style/user_profile_text" />
 
     <TextView
         android:gravity="center"
@@ -43,6 +43,6 @@
         android:layout_height="wrap_content"
         android:padding="15dp"
         android:text="Balance"
-        android:textStyle="bold"/>
+        style="@style/user_profile_text"/>
 
 </LinearLayout>

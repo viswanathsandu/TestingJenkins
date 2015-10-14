@@ -87,7 +87,6 @@ public class UserTabBaseAdapter extends FragmentPagerAdapter {
                 title = "Virtual Currency Summary";
                 break;
         }
-        ;
         return title;
     }
 }
