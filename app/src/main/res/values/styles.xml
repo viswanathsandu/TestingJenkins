@@ -117,27 +117,27 @@
     <style name="user_profile_heading_bold">
         <item name="fontPath">@string/roboto_bold</item>
         <item name="android:textSize">22sp</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/text_gray_dark</item>
 
     </style>
 
     <style name="user_profile_heading_caps">
-        <item name="fontPath">@string/roboto_regular</item>
+        <item name="fontPath">@string/roboto_medium</item>
         <item name="android:textSize">22sp</item>
-        <item name="android:textColor">#21A656</item>
+        <item name="android:textColor">@color/green</item>
         <item name="textAllCaps">true</item>
         <item name="android:singleLine">true</item>
         <item name="android:ellipsize">end</item>
     </style>
     <style name="user_profile_text">
         <item name="fontPath">@string/roboto_regular</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/text_gray_dark</item>
     </style>
     <style name="user_profile_text_gray">
         <item name="fontPath">@string/roboto_regular</item>
         <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/text_gray_dark</item>
     </style>
     <style name="user_profile_subheading">
         <item name="fontPath">@string/roboto_bold</item>
