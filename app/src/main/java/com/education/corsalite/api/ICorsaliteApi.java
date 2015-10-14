@@ -9,6 +9,7 @@ import com.education.corsalite.models.responsemodels.CourseAnalysis;
 import com.education.corsalite.models.responsemodels.CourseData;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
+import com.education.corsalite.models.responsemodels.Message;
 import com.education.corsalite.models.responsemodels.MessageResponse;
 import com.education.corsalite.models.responsemodels.StudyCenter;
 import com.education.corsalite.models.responsemodels.TestCoverage;
@@ -46,7 +47,7 @@ public interface ICorsaliteApi {
     void getVirtualCurrencyTransactions(@Query("idStudent") String studentId, ApiCallback<VirtualCurrencySummaryResponse> callback);
 
     @GET("/Message")
-    void getMessages(@Query("idStudent") String studentId, ApiCallback<MessageResponse> callback);
+    void getMessages(@Query("idStudent") String studentId, ApiCallback<List<Message>> callback);
 
     @POST("/UserProfile")
     void updateUserProfile(@Query("Update")UserProfileResponse userProfile, ApiCallback<EditProfileModel> callback);

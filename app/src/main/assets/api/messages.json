@@ -1,25 +1,23 @@
-{
-  "messages": [
-    {
-      "idStudent": "abc123",
-      "idMessage": "msg123",
-      "Message": "message text",
-      "EffectiveDate": "2015-09-20 02:20:20",
-      "TermDate": "2015-10-20 02:20:20"
-    },
-    {
-      "idStudent": "abc123",
-      "idMessage": "msg123",
-      "Message": "message text",
-      "EffectiveDate": "2015-09-20 02:20:20",
-      "TermDate": "2015-10-20 02:20:20"
-    },
-    {
-      "idStudent": "abc123",
-      "idMessage": "msg123",
-      "Message": "message text",
-      "EffectiveDate": "2015-09-20 02:20:20",
-      "TermDate": "2015-10-20 02:20:20"
-    }
-  ]
-}
+[
+  {
+    "idStudent": "abc123",
+    "idMessage": "msg123",
+    "Message": "message text",
+    "EffectiveDate": "2015-09-20 02:20:20",
+    "TermDate": "2015-10-20 02:20:20"
+  },
+  {
+    "idStudent": "abc123",
+    "idMessage": "msg124",
+    "Message": "message text",
+    "EffectiveDate": "2015-09-20 02:20:20",
+    "TermDate": "2015-10-20 02:20:20"
+  },
+  {
+    "idStudent": "abc123",
+    "idMessage": "msg124",
+    "Message": "message text",
+    "EffectiveDate": "2015-09-20 02:20:20",
+    "TermDate": "2015-10-20 02:20:20"
+  }
+]

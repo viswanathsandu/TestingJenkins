@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.education.corsalite.R;
 import com.education.corsalite.models.responsemodels.Message;
+import com.education.corsalite.utils.L;
 
 import java.util.List;
 
@@ -21,13 +22,13 @@ public class MessageAdapter extends AbstractRecycleViewAdapter {
 
     LayoutInflater inflater;
 
-    public MessageAdapter(List<Message> messageList, LayoutInflater inflater) {
-        this(messageList);
+    public MessageAdapter(List<Message> messages, LayoutInflater inflater) {
+        this(messages);
         this.inflater = inflater;
     }
 
-    public MessageAdapter(List<Message> messageList) {
-        addAll(messageList);
+    public MessageAdapter(List<Message> messages) {
+        addAll(messages);
     }
 
     @Override
@@ -37,7 +38,12 @@ public class MessageAdapter extends AbstractRecycleViewAdapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((MessageDataHolder) holder).bindData(position, (Message) getItem(position));
+        // TODO :
+        try {
+            ((MessageDataHolder) holder).bindData(position, (Message)getItem(position));
+        } catch (Exception e) {
+            L.error("Handle it carefully", e);
+        }
     }
 
     public class MessageDataHolder extends RecyclerView.ViewHolder {

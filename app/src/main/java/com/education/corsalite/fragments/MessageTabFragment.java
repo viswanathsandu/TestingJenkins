@@ -16,7 +16,10 @@ import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
+import com.education.corsalite.models.responsemodels.Message;
 import com.education.corsalite.models.responsemodels.MessageResponse;
+
+import java.util.List;
 
 import retrofit.client.Response;
 
@@ -59,7 +62,7 @@ public class MessageTabFragment extends BaseFragment {
 
     private void getMessage(final LayoutInflater inflater) {
         ApiManager.getInstance(getActivity()).getMessages(LoginUserCache.getInstance().loginResponse.studentId,
-                new ApiCallback<MessageResponse>() {
+                new ApiCallback<List<Message>>() {
                     @Override
                     public void failure(CorsaliteError error) {
                         if(error!= null && !TextUtils.isEmpty(error.message)) {
@@ -69,11 +72,10 @@ public class MessageTabFragment extends BaseFragment {
                     }
 
                     @Override
-                    public void success(MessageResponse messageResponse, Response response) {
-                        super.success(messageResponse, response);
-                        if (messageResponse.isSuccessful() && messageResponse != null &&
-                                messageResponse.messages != null && messageResponse.messages.size() > 0) {
-                            mAdapter = new MessageAdapter(messageResponse.messages, inflater);
+                    public void success(List<Message> messages, Response response) {
+                        super.success(messages, response);
+                        if (messages != null && messages.size() > 0) {
+                            mAdapter = new MessageAdapter(messages, inflater);
                             mRecyclerView.setAdapter(mAdapter);
                         } else {
                             hideRecyclerView();
