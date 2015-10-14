@@ -53,7 +53,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     private LinearLayout allColorLayout;
     private String key;
     private TextView selectedSubjectTxt;
-
+    private View selectedColorFilter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +81,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
             public void onClick(View v) {
                 mAdapter.updateData(studyCenter.redListChapters, key);
                 mAdapter.notifyDataSetChanged();
+                updateSelected(redView);
             }
         });
         blueView.setOnClickListener(new View.OnClickListener() {
@@ -88,6 +89,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
             public void onClick(View v) {
                 mAdapter.updateData(studyCenter.blueListChapters, key);
                 mAdapter.notifyDataSetChanged();
+                updateSelected(blueView);
             }
         });
         yellowView.setOnClickListener(new View.OnClickListener() {
@@ -95,6 +97,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
             public void onClick(View v) {
                 mAdapter.updateData(studyCenter.amberListChapters, key);
                 mAdapter.notifyDataSetChanged();
+                updateSelected(yellowView);
             }
         });
         greenView.setOnClickListener(new View.OnClickListener() {
@@ -102,6 +105,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
             public void onClick(View v) {
                 mAdapter.updateData(studyCenter.greenListChapters, key);
                 mAdapter.notifyDataSetChanged();
+                updateSelected(greenView);
             }
         });
 
@@ -110,10 +114,18 @@ public class StudyCentreActivity extends AbstractBaseActivity {
             public void onClick(View v) {
                 mAdapter.updateData(studyCenter.Chapters, key);
                 mAdapter.notifyDataSetChanged();
+                updateSelected(allColorLayout);
             }
         });
     }
 
+    private void updateSelected(View colorView) {
+        if(selectedColorFilter != null) {
+            selectedColorFilter.setSelected(false);
+        }
+        selectedColorFilter = colorView;
+        selectedColorFilter.setSelected(true);
+    }
 
     private void initDataAdapter(String subject) {
         showList();
@@ -208,6 +220,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                             studyCenter = mCourseData.StudyCenter.get(0);
                             setUpStudyCentreData(studyCenter);
                             initDataAdapter(subjects.get(0));
+                            updateSelected(allColorLayout);
                         } else {
                             hideRecyclerView();
                         }
