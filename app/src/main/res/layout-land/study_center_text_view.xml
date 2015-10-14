@@ -1,7 +1,8 @@
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+
     android:id="@+id/subject"
     android:layout_width="0dp"
-    android:maxWidth="100dp"
+    android:maxWidth="150dp"
     android:layout_height="match_parent"
     android:layout_weight="0.5"
     android:paddingLeft="10dp"
