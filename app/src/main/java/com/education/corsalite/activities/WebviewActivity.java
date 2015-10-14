@@ -1,21 +1,20 @@
 package com.education.corsalite.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.LinearLayout;
 
 import com.education.corsalite.R;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class WebviewActivity extends AppCompatActivity {
+public class WebviewActivity extends AbstractBaseActivity {
 
     private final String URL = "URL";
     @Bind(R.id.webview)
@@ -24,36 +23,22 @@ public class WebviewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_webview);
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LinearLayout myView = (LinearLayout) inflater.inflate(R.layout.activity_webview, null);
+        frameLayout.addView(myView);
         ButterKnife.bind(this);
-
         Bundle bundle = getIntent().getExtras();
         if(bundle.containsKey("clear_cookies")) {
             webview.clearCache(true);
         }
+        String title = bundle.getString(LoginActivity.TITLE, "Corsalite");
+        setToolbarForWebActivity(title);
         if (bundle.containsKey(URL)) {
             webview.getSettings().setJavaScriptEnabled(true);
             webview.setWebViewClient(new MyWebViewClient());
-            webview.loadUrl(bundle.getString(URL));
+            String url = bundle.getString(URL);
+            webview.loadUrl(getUrlWithNoHeadersAndFooters(url));
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_webview, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -66,11 +51,23 @@ public class WebviewActivity extends AppCompatActivity {
         }
     }
 
+    private String getUrlWithNoHeadersAndFooters(String url) {
+        if(!url.contains("?")) {
+            url += "?Header=0&Footer=0";
+        } else if(!url.contains("Header=0&Footer=0")) {
+            url += "Header=0&Footer=0";
+        }
+        return url;
+    }
+
     private class MyWebViewClient extends WebViewClient {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            if (Uri.parse(url).getHost().equals("staging.corsalite.com")) {
+            if (url.contains("staging.corsalite.com")) {
+                if(!url.contains("?") || !url.contains("Header=0&Footer=0")) {
+                    view.loadUrl(getUrlWithNoHeadersAndFooters(url));
+                }
                 return false;
             }
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));

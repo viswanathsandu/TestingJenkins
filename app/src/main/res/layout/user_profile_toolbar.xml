@@ -14,7 +14,7 @@
         android:ellipsize="end"
         android:paddingLeft="16dp"
         style="@style/title_style"
-        android:text="@string/title_activity_user_profile"
+        android:text="@string/app_name"
         android:singleLine="true" />
 
     <LinearLayout
@@ -37,13 +37,16 @@
         android:layout_height="wrap_content"
         android:gravity="right|center_vertical"
         android:id="@+id/redeem_layout"
+        android:padding="10dp"
         android:visibility="gone">
         <Button
             android:id="@+id/redeem_btn"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="35dp"
             android:text="REDEEM"
-            android:background="@drawable/ambershape"/>
+            fontPath="@string/roboto_medium"
+            android:textColor="@color/black"
+            android:background="@drawable/yellowshape_selector"/>
     </LinearLayout>
 
 

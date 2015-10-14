@@ -70,7 +70,6 @@ public interface ICorsaliteApi {
                            @Query("idCourse") String courseId,
                            ApiCallback<List<TestCoverage>> callback);
 
-
     @GET("/ContentIndex")
     void getContentIndexData(@Query("idCourse") String courseId, @Query("idStudent") String studentId, ApiCallback<List<ContentIndex>> callback);
 

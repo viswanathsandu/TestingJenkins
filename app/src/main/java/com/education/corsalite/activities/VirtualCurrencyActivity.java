@@ -46,19 +46,8 @@ public class VirtualCurrencyActivity extends AbstractBaseActivity {
 
     private void redeem() {
         Intent intent = new Intent(this, WebviewActivity.class);
+        intent.putExtra(LoginActivity.TITLE, getString(R.string.redeem));
         intent.putExtra(LoginActivity.URL, Constants.REDEEM_URL);
         startActivity(intent);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_currency, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
     }
 }
