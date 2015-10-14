@@ -56,7 +56,7 @@ public class DatePickerDialogFragment extends DialogFragment {
     View.OnClickListener saveClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            dateSelectionListener.onDateSelect(mDatePicker.getDayOfMonth(),mDatePicker.getMonth(),mDatePicker.getYear());
+            dateSelectionListener.onDateSelect(mDatePicker.getDayOfMonth(),mDatePicker.getMonth()+1,mDatePicker.getYear());
             getDialog().dismiss();
         }
     };
