@@ -37,7 +37,10 @@ public class UserTabBaseAdapter extends FragmentPagerAdapter {
     public void updateExamDetailData(List<ExamDetail> examDetails) {
         this.examDetailList = examDetails;
         notifyDataSetChanged();
+
     }
+
+
 
     @Override
     public Fragment getItem(int i) {

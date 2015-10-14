@@ -1,7 +1,6 @@
 package com.education.corsalite.fragments;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,22 +13,21 @@ import com.education.corsalite.R;
 import com.education.corsalite.adapters.ExamAdapter;
 import com.education.corsalite.models.responsemodels.ExamDetail;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Girish on 12/09/15.
  */
-public class ExamTabFragment extends BaseFragment {
+public class ExamTabFragment extends BaseFragment implements ExamAdapter.IAddExamOnClickListener,AddExamScheduleDialogFragment.IUpdateExamDetailsListener{
 
     private static final String ADAPTER_TYPE = "adapter_type";
-
+    List<ExamDetail> examDetailList;
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private LinearLayout layoutEmpty;
     private TextView tvNoData;
+    ExamAdapter mAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,9 +45,10 @@ public class ExamTabFragment extends BaseFragment {
         //mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        final List<ExamDetail> examDetailList = (List<ExamDetail>) getArguments().getSerializable(ADAPTER_TYPE);
+       examDetailList = (List<ExamDetail>) getArguments().getSerializable(ADAPTER_TYPE);
         if(examDetailList != null && examDetailList.size() > 0) {
             mAdapter = new ExamAdapter((ArrayList) examDetailList, inflater);
+            mAdapter.setAddExamOnClickListener(this);
             mRecyclerView.setAdapter(mAdapter);
         } else {
             hideRecyclerView();
@@ -60,6 +59,28 @@ public class ExamTabFragment extends BaseFragment {
     private void hideRecyclerView() {
         layoutEmpty.setVisibility(View.VISIBLE);
     }
+
+    @Override
+    public void onAddExamClickListener(View view, ExamDetail examDetail,String type,int position) {
+        AddExamScheduleDialogFragment dialogFragment = new AddExamScheduleDialogFragment();
+        dialogFragment.setUpdateExamDetailsListener(this, position);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("examDetail", examDetail);
+        bundle.putString("type",type);
+        dialogFragment.setArguments(bundle);
+        dialogFragment.show(getFragmentManager(),"addExam");
+
+    }
+
+    @Override
+    public void onUpdateExamDetails(View view, ExamDetail examDetail,int position) {
+        //TODO UPDATE API
+
+        examDetailList.add(position,examDetail);
+        mAdapter.notifyItemChanged(position);
+    }
+
+
 }
 
 
