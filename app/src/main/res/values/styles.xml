@@ -40,7 +40,7 @@
 
     <style name="study_center_title_style">
         <item name="android:textColor">@color/black</item>
-        <item name="fontPath">@string/roboto_regular</item>
+        <item name="fontPath">@string/roboto_light</item>
         <item name="android:textSize">18sp</item>
         <item name="android:textAllCaps">false</item>
     </style>
