@@ -15,6 +15,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="2dp"
-        android:textSize="12sp"
+        style="@style/analytics_subtext_style"
         android:id="@+id/tv_label"/>
 </LinearLayout>

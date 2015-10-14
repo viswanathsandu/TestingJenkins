@@ -68,7 +68,7 @@ public class AnalyticsTitleFragment extends Fragment{
                     testCoverage.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ico_test_unselected,0,0);
                     recommededReading.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ico_recommend_unselected,0,0);
                     accuracy.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ico_accuracy_unselected,0,0);
-                    progressReport.setBackgroundColor(Color.WHITE);
+                    progressReport.setBackground(getResources().getDrawable(R.drawable.background_rounded_corner_left_bottom));
                     progressReport.setTextColor(getResources().getColor(R.color.green));
                     timeManagement.setBackgroundColor(getResources().getColor(R.color.green));
                     timeManagement.setTextColor(Color.WHITE);
@@ -87,7 +87,7 @@ public class AnalyticsTitleFragment extends Fragment{
                     recommededReading.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ico_recommend_unselected,0,0);
                     accuracy.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ico_accuracy_unselected,0,0);
                     titleSelectedListener.onAnalyticsTitleSelected(AnalyticsActivity.K_TITLE_TIME_MANAGEMENT);
-                    timeManagement.setBackgroundColor(Color.WHITE);
+                    timeManagement.setBackground(getResources().getDrawable(R.drawable.background_rounded_corner_left_bottom));
                     timeManagement.setTextColor(getResources().getColor(R.color.green));
                     progressReport.setBackgroundColor(getResources().getColor(R.color.green));
                     progressReport.setTextColor(Color.WHITE);
@@ -107,7 +107,7 @@ public class AnalyticsTitleFragment extends Fragment{
                     recommededReading.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ico_recommend_unselected, 0, 0);
                     accuracy.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ico_accuracy_unselected, 0, 0);
                     titleSelectedListener.onAnalyticsTitleSelected(AnalyticsActivity.K_TITLE_TEST_COVERAGE);
-                    testCoverage.setBackgroundColor(Color.WHITE);
+                    testCoverage.setBackground(getResources().getDrawable(R.drawable.background_rounded_corner_left_bottom));
                     testCoverage.setTextColor(getResources().getColor(R.color.green));
 
                     timeManagement.setBackgroundColor(getResources().getColor(R.color.green));
@@ -128,7 +128,7 @@ public class AnalyticsTitleFragment extends Fragment{
                     testCoverage.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ico_test_unselected, 0, 0);
                     recommededReading.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ico_recommend_unselected, 0, 0);
                     titleSelectedListener.onAnalyticsTitleSelected(AnalyticsActivity.K_TITLE_ACCURACY);
-                    accuracy.setBackgroundColor(Color.WHITE);
+                    accuracy.setBackground(getResources().getDrawable(R.drawable.background_rounded_corner_left_bottom));
                     accuracy.setTextColor(getResources().getColor(R.color.green));
 
                     timeManagement.setBackgroundColor(getResources().getColor(R.color.green));
@@ -148,7 +148,7 @@ public class AnalyticsTitleFragment extends Fragment{
                     testCoverage.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ico_test_unselected, 0, 0);
                     accuracy.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ico_accuracy_unselected, 0, 0);
                     titleSelectedListener.onAnalyticsTitleSelected(AnalyticsActivity.K_TITLE_RECOMMENDED_READING);
-                    recommededReading.setBackgroundColor(Color.WHITE);
+                    recommededReading.setBackground(getResources().getDrawable(R.drawable.background_rounded_corner_left_bottom));
                     recommededReading.setTextColor(getResources().getColor(R.color.green));
                     timeManagement.setBackgroundColor(getResources().getColor(R.color.green));
                     timeManagement.setTextColor(Color.WHITE);

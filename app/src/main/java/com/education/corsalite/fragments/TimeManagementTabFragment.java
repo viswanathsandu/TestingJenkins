@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -51,7 +52,11 @@ public class TimeManagementTabFragment extends Fragment {
     @Bind(R.id.pc_subject)PieChart graphBySubject;
     @Bind(R.id.ll_time_mgmnt)LinearLayout mLinearLayout;
     @Bind(R.id.rv_legend)RecyclerView mRecyclerView;
+    @Bind(R.id.tv_failure_text)TextView mFailText;
+    @Bind(R.id.progress_bar_tab)ProgressBar progressBar;
 
+
+    int failCount =0;
     HashMap<String,List<CourseAnalysis>> courseDataMap;
     final String SUBJECT = "Subject";
     final String CHAPTER = "Chapter";
@@ -68,6 +73,7 @@ public class TimeManagementTabFragment extends Fragment {
                     @Override
                     public void failure(CorsaliteError error) {
                         L.error(error.message);
+                        showFailMessage();
                     }
 
                     @Override
@@ -75,6 +81,8 @@ public class TimeManagementTabFragment extends Fragment {
                         if(getActivity() == null) {
                             return;
                         }
+                        progressBar.setVisibility(View.GONE);
+                        mLinearLayout.setVisibility(View.VISIBLE);
                         initializeGraph(graphBySubject);
                         buildGraphData(courseAnalysisList, SUBJECT, graphBySubject);
                         //Custom Legend
@@ -90,6 +98,7 @@ public class TimeManagementTabFragment extends Fragment {
                     @Override
                     public void failure(CorsaliteError error) {
                         L.error(error.message);
+                        showFailMessage();
                     }
 
                     @Override
@@ -97,12 +106,14 @@ public class TimeManagementTabFragment extends Fragment {
                         if(getActivity() == null) {
                             return;
                         }
+                        mLinearLayout.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.GONE);
                         buildChapterData(courseAnalysisList);
                         for (Map.Entry<String,List<CourseAnalysis>> entry : courseDataMap.entrySet()) {
                             TextView mDescText = new TextView(getActivity());
                             mDescText.setText(entry.getKey());
                             mDescText.setGravity(Gravity.CENTER);
-                            mDescText.setTextSize(16);
+                            mDescText.setTextAppearance(getActivity(),R.style.analytics_title_style);
                             mDescText.setPadding(0, 10, 0, 10);
                             mLinearLayout.addView(mDescText);
                             PieChart chart = new PieChart(getActivity());
@@ -120,7 +131,7 @@ public class TimeManagementTabFragment extends Fragment {
                             CustomLegendAdapter customLegendAdapter = new CustomLegendAdapter(mLegend.getColors(),mLegend.getLabels(),getActivity().getLayoutInflater());
                             recyclerView.setAdapter(customLegendAdapter);
                             recyclerView.setPadding(0,15,0,0);
-                            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(converDPToPX(150), converDPToPX(400));
+                            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(converDPToPX(200), converDPToPX(400));
                             params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
                             chartLayout.addView(chart, chartPrams);
@@ -163,6 +174,14 @@ public class TimeManagementTabFragment extends Fragment {
         }
     }
 
+    private void showFailMessage(){
+        failCount++;
+        if(failCount == 2){
+            mFailText.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
+        }
+    }
+
     ArrayList<String> xData = new ArrayList<>();
     ArrayList<Float> yData = new ArrayList<>();
 
@@ -190,7 +209,7 @@ public class TimeManagementTabFragment extends Fragment {
         }
 
 
-        PieDataSet dataSet = new PieDataSet(yVals1, "Accuracy By "+graphType);
+        PieDataSet dataSet = new PieDataSet(yVals1, "");
         dataSet.setSliceSpace(1f);
         dataSet.setSelectionShift(5);
 

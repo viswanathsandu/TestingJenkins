@@ -69,6 +69,7 @@
             android:theme="@style/UserProfileTheme" />
         <activity
             android:name=".activities.AnalyticsActivity"
+            android:screenOrientation="landscape"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="Analytics"
             android:theme="@style/UserProfileTheme" />
