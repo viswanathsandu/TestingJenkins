@@ -46,6 +46,7 @@ public class MessageTabFragment extends BaseFragment {
         tvNoData = (TextView)v.findViewById(R.id.tv_no_data);
 
         tvNoData.setText("No Message Found");
+        tvNoData.setTextAppearance(getActivity(),R.style.user_profile_text);
 
         //mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setVisibility(View.VISIBLE);

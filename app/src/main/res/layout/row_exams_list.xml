@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:padding="15dp"
         android:text="Exam"
-        android:textStyle="bold"/>
+        style="@style/user_profile_text"/>
 
     <TextView
         android:gravity="center"
@@ -21,7 +21,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="15dp"
-        android:textStyle="bold"
+        style="@style/user_profile_text"
         android:text="Days Remaining"
      />
 
@@ -32,7 +32,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="15dp"
-        android:textStyle="bold"
+        style="@style/user_profile_text"
         android:text="Exam Date"
     />
 
@@ -43,7 +43,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="15dp"
-        android:textStyle="bold"
+        style="@style/user_profile_text"
         android:text="Hall Ticket Number" />
 
 </LinearLayout>
