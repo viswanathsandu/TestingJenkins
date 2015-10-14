@@ -9,14 +9,12 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.UserTabBaseAdapter;
 import com.education.corsalite.fragments.UserProfileDetailsFragment;
-import com.education.corsalite.models.db.CourseList;
 import com.education.corsalite.models.responsemodels.ExamDetail;
 import com.education.corsalite.models.responsemodels.Message;
 import com.education.corsalite.models.responsemodels.VirtualCurrencyTransaction;
@@ -102,4 +100,5 @@ public class UserProfileActivity extends AbstractBaseActivity implements UserPro
         Intent intent = new Intent(this, VirtualCurrencyActivity.class);
         startActivity(intent);
     }
+
 }

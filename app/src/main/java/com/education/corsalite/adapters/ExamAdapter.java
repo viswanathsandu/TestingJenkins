@@ -1,12 +1,14 @@
 package com.education.corsalite.adapters;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
+import com.education.corsalite.fragments.AddExamScheduleDialogFragment;
 import com.education.corsalite.models.responsemodels.ExamDetail;
 
 import java.util.List;
@@ -20,6 +22,7 @@ import butterknife.ButterKnife;
 public class ExamAdapter extends AbstractRecycleViewAdapter {
 
     LayoutInflater inflater;
+    IAddExamOnClickListener addExamOnClickListener;
 
     public ExamAdapter(List<ExamDetail> examDetailList, LayoutInflater inflater) {
         this(examDetailList);
@@ -37,11 +40,16 @@ public class ExamAdapter extends AbstractRecycleViewAdapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((ExamDataHolder) holder).bindData(position, (ExamDetail)getItem(position));
+        ((ExamDataHolder) holder).bindData(position, (ExamDetail) getItem(position));
     }
 
+
+    public void setAddExamOnClickListener(IAddExamOnClickListener addExamOnClickListener){
+        this.addExamOnClickListener = addExamOnClickListener;
+    }
     public class ExamDataHolder extends RecyclerView.ViewHolder {
         private final String EMPTY_STRING = "";
+        private final String ADD_HTML = "<u><font color=#87CEFA>Add</font></u>&nbsp;";
         @Bind(R.id.tv_exam) TextView examTxt;
         @Bind(R.id.tv_days_remaining) TextView daysRemainingTxt;
         @Bind(R.id.tv_exam_date) TextView examDateTxt;
@@ -61,8 +69,35 @@ public class ExamAdapter extends AbstractRecycleViewAdapter {
             }
             examTxt.setText(examDetail.name == null ? EMPTY_STRING : examDetail.name);
             daysRemainingTxt.setText(examDetail.daysRemaining == null ? EMPTY_STRING : String.valueOf(examDetail.daysRemaining));
-            examDateTxt.setText(examDetail.examDate == null ? EMPTY_STRING : examDetail.examDate.split("")[0]);
-            hallTicketTxt.setText(examDetail.hallTicketNumber == null ? EMPTY_STRING : examDetail.hallTicketNumber);
+            if(examDetail.examDate == null || examDetail.examDate.isEmpty()){
+                examDateTxt.setText(Html.fromHtml(ADD_HTML));
+                examDateTxt.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        addExamOnClickListener.onAddExamClickListener(view, examDetail, AddExamScheduleDialogFragment.ADD_EXAM_DATE,position);
+                    }
+                });
+            }else{
+
+                examDateTxt.setText(examDetail.examDate.split("")[0]);
+            }
+
+            if(examDetail.hallTicketNumber == null || examDetail.hallTicketNumber.isEmpty()){
+                hallTicketTxt.setText(Html.fromHtml(ADD_HTML));
+                hallTicketTxt.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        addExamOnClickListener.onAddExamClickListener(view,examDetail,AddExamScheduleDialogFragment.ADD_HALL_TICKET,position);
+                    }
+                });
+            }else{
+                hallTicketTxt.setText(examDetail.hallTicketNumber);
+            }
+
         }
     }
+    public interface IAddExamOnClickListener {
+        void onAddExamClickListener(View view,ExamDetail examDetail,String type,int position);
+    }
+
 }

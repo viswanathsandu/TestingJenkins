@@ -1,103 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:layout_margin="5dp"
     android:background="@color/white"
     android:layout_centerVertical="true"
     android:orientation="vertical">
 
-    <ViewSwitcher
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/vs_add_exam">
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_margin="16dp">
+            android:layout_margin="16dp"
+            android:id="@+id/ll_add_exam_date"
+            android:visibility="gone">
 
-            <RadioGroup
-                android:id="@+id/rg_add_exam_list"
+            <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-            </RadioGroup>
-
-            <RelativeLayout
+                android:layout_height="wrap_content"
+                android:text="Exam Date:"
+                android:textColor="@color/black"/>
+            <DatePicker
+                android:id="@+id/datePicker"
+                android:layout_gravity="center_horizontal"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:spinnersShown="true"
+                android:calendarViewShown="false"
+                android:datePickerMode="calendar" />
 
-                <TextView
-                    android:id="@+id/tv_next"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp"
-                    android:text="Next"
-                    android:enabled="false"
-                    android:textColor="@color/black"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentRight="true"/>
-                <TextView
-                    android:id="@+id/tv_cancel1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp"
-                    android:text="Cancel"
-                    android:textColor="@color/black"
-                    android:layout_alignParentBottom="true"
-                    android:layout_toLeftOf="@id/tv_next"/>
-
-
-            </RelativeLayout>
         </LinearLayout>
 
-
-
-        <LinearLayout
-            android:layout_width="wrap_content"
+    <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_margin="16dp">
-
-            <EditText
-                android:id="@+id/et_datePicker"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableEnd="@drawable/ico_calendar_gray"
-                android:singleLine="true" />
+            android:layout_margin="16dp"
+            android:id="@+id/ll_add_hall_tckt"
+            android:visibility="gone">
 
             <EditText
                 android:id="@+id/et_hall_ticket"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Hall Ticket Number"
+                android:textColor="@color/black"
                 android:layout_marginTop="10dp"
                 android:singleLine="true"/>
+    </android.support.design.widget.TextInputLayout >
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/btn_submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="Submit"
+            android:textColor="@color/black"
+            android:background="@color/white"
+            android:layout_margin="8dp"
+            android:layout_alignParentRight="true"/>
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="Cancel"
+            android:layout_margin="8dp"
+            android:background="@color/white"
+            android:textColor="@color/black"
+            android:layout_toLeftOf="@id/btn_submit"/>
 
-                <TextView
-                    android:id="@+id/tv_add"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp"
-                    android:text="Add"
-                    android:textColor="@color/black"
-                    android:layout_alignParentRight="true"/>
-                <TextView
-                    android:id="@+id/tv_cancel2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp"
-                    android:text="Cancel"
-                    android:textColor="@color/black"
-                    android:layout_toLeftOf="@id/tv_add"/>
 
-
-            </RelativeLayout>
-        </LinearLayout>
-    </ViewSwitcher>
+    </RelativeLayout>
 </LinearLayout>
