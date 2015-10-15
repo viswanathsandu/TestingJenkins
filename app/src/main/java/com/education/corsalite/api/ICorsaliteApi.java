@@ -1,16 +1,14 @@
 package com.education.corsalite.api;
 
-import com.education.corsalite.models.requestmodels.EditProfileModel;
+import com.education.corsalite.models.responsemodels.DefaultCourseResponse;
+import com.education.corsalite.models.responsemodels.EditProfileModel;
 import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ContentIndex;
-import com.education.corsalite.models.responsemodels.ContentIndexResponse;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.CourseAnalysis;
-import com.education.corsalite.models.responsemodels.CourseData;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
 import com.education.corsalite.models.responsemodels.Message;
-import com.education.corsalite.models.responsemodels.MessageResponse;
 import com.education.corsalite.models.responsemodels.StudyCenter;
 import com.education.corsalite.models.responsemodels.TestCoverage;
 import com.education.corsalite.models.responsemodels.UserProfileResponse;
@@ -50,7 +48,7 @@ public interface ICorsaliteApi {
     void getMessages(@Query("idStudent") String studentId, ApiCallback<List<Message>> callback);
 
     @POST("/UserProfile")
-    void updateUserProfile(@Query("Update")UserProfileResponse userProfile, ApiCallback<EditProfileModel> callback);
+    void updateUserProfile(@Query("Update")String userProfile, ApiCallback<EditProfileModel> callback);
 
     @GET("/CourseStudyCenterData")
     void getCourseStudyCenterData(@Query("idStudent") String studentId, @Query("idCourse") String courseId, ApiCallback<List<StudyCenter>> callback);
@@ -76,4 +74,8 @@ public interface ICorsaliteApi {
 
     @GET("/Content")
     void getContentData(@Query("idContents") String idContents, @Query("UpdateTime") String UpdateTime, ApiCallback<List<Content>> callback);
+
+    @POST("/StudentCourseList")
+    void updateDefaultCourse(@Query("Update") String update, ApiCallback<DefaultCourseResponse> callback);
+
 }

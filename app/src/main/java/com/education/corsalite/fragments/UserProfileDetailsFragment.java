@@ -28,15 +28,18 @@ import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.db.DbManager;
 import com.education.corsalite.models.db.CourseList;
+import com.education.corsalite.models.requestmodels.Defaultcourserequest;
 import com.education.corsalite.models.responsemodels.BasicProfile;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
+import com.education.corsalite.models.responsemodels.DefaultCourseResponse;
 import com.education.corsalite.models.responsemodels.ExamDetail;
 import com.education.corsalite.models.responsemodels.UserProfileResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencyBalanceResponse;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.L;
+import com.google.gson.Gson;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -138,6 +141,7 @@ public class UserProfileDetailsFragment extends BaseFragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 defaultcourseIndex = position;
                 saveDefaultCourseIndex(mCourses.get(position));
+                saveDefaultCourse(mCourses.get(position));
             }
 
             @Override
@@ -150,6 +154,26 @@ public class UserProfileDetailsFragment extends BaseFragment {
                 redeem();
             }
         });
+    }
+
+    private void saveDefaultCourse(Course course) {
+        if(course != null) {
+            String update = new Gson().toJson(new Defaultcourserequest(
+                                LoginUserCache.getInstance().loginResponse.studentId, course.courseId+""));
+
+            ApiManager.getInstance(getActivity()).updateDefaultCourse(update, new ApiCallback<DefaultCourseResponse>() {
+                @Override
+                public void failure(CorsaliteError error) {
+                    showToast("Failed to update Default course...");
+                }
+
+                @Override
+                public void success(DefaultCourseResponse defaultCourseResponse, Response response) {
+                    super.success(defaultCourseResponse, response);
+                    showToast("Default course updated successfully...");
+                }
+            });
+        }
     }
 
     private void redeem() {

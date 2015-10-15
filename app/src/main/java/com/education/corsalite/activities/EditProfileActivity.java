@@ -10,13 +10,19 @@ import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
+import com.education.corsalite.api.ApiManager;
+import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.fragments.DatePickerDialogFragment;
-import com.education.corsalite.models.requestmodels.EditProfileModel;
+import com.education.corsalite.models.requestmodels.UserProfileModel;
+import com.education.corsalite.models.responsemodels.EditProfileModel;
 import com.education.corsalite.models.responsemodels.BasicProfile;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.UserProfileResponse;
-import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.L;
+import com.google.gson.Gson;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -66,9 +72,8 @@ public class EditProfileActivity extends AbstractBaseActivity implements DatePic
                     Toast.makeText(EditProfileActivity.this,"Password and Confirm Password do not match",Toast.LENGTH_LONG).show();
                     return;
                 }
-                BasicProfile userProfile = saveUserProfile(user.basicProfile);
-                user.basicProfile = userProfile;
-                ApiClientService.get().updateUserProfile(user, new ApiCallback<EditProfileModel>() {
+                String userProfileJson = new Gson().toJson(saveUserProfile());
+                ApiManager.getInstance(EditProfileActivity.this).updateUserProfile(userProfileJson, new ApiCallback<EditProfileModel>() {
                     @Override
                     public void failure(CorsaliteError error) {
                         L.error(error.message);
@@ -89,59 +94,35 @@ public class EditProfileActivity extends AbstractBaseActivity implements DatePic
         });
     }
 
-    private BasicProfile saveUserProfile(BasicProfile userProfileResponse){
-        if(!address1.getText().toString().isEmpty()) {
-            userProfileResponse.address1 = address1.getText().toString();
-        }
-        if(!address1.getText().toString().isEmpty()) {
-            userProfileResponse.givenName = givenName.getText().toString();
-        }
-        if(!address2.getText().toString().isEmpty()) {
-            userProfileResponse.address2 = address2.getText().toString();
-        }
-        if(!admissionNumber.getText().toString().isEmpty()) {
-            userProfileResponse.admissionNumber = admissionNumber.getText().toString();
-        }
-        if(!city.getText().toString().isEmpty()) {
-            userProfileResponse.city = city.getText().toString();
-        }
-        if(!state.getText().toString().isEmpty()) {
-            userProfileResponse.state = state.getText().toString();
+    private UserProfileModel saveUserProfile(){
+        UserProfileModel profile = new UserProfileModel();
+        profile.updateTime =  new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date());
+        profile.userId = LoginUserCache.getInstance().loginResponse.userId;
+        if(!givenName.getText().toString().isEmpty()) {
+            profile.givenName = givenName.getText().toString();
         }
         if(!displayName.getText().toString().isEmpty()) {
-            userProfileResponse.displayName = displayName.getText().toString();
+            profile.displayName = displayName.getText().toString();
         }
         if(!dob.getText().toString().isEmpty()) {
-            userProfileResponse.dob = dob.getText().toString();
+            profile.dob = dob.getText().toString();
         }
         if(!email.getText().toString().isEmpty()) {
-            userProfileResponse.emailId = email.getText().toString();
+            profile.emailId = email.getText().toString();
         }
         if(!mobile.getText().toString().isEmpty()) {
-            userProfileResponse.mobile = mobile.getText().toString();
-        }
-        if(!phone.getText().toString().isEmpty()) {
-            userProfileResponse.phone = phone.getText().toString();
-        }
-        if(!residenceStatus.getText().toString().isEmpty()) {
-            userProfileResponse.residenceStatus = residenceStatus.getText().toString();
+            profile.mobile = mobile.getText().toString();
         }
         if(!surname.getText().toString().isEmpty()) {
-            userProfileResponse.surName = surname.getText().toString();
-        }
-        if(!pincode.getText().toString().isEmpty()) {
-            userProfileResponse.pincode = pincode.getText().toString();
+            profile.surName = surname.getText().toString();
         }
         String gender = null;
         if(genderFemale.isSelected()){
-            gender = "female";
+            profile.gender = "Female";
         }else if(genderMale.isSelected()){
-            gender = "male";
+            profile.gender = "Male";
         }
-        userProfileResponse.gender = gender;
-
-        //TODO update password details to services ????
-        return userProfileResponse;
+        return profile;
 
     }
 

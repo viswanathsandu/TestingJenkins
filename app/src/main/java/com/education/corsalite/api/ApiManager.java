@@ -5,17 +5,15 @@ import android.content.res.AssetManager;
 
 import com.education.corsalite.config.AppConfig;
 import com.education.corsalite.enums.NetworkMode;
+import com.education.corsalite.models.responsemodels.DefaultCourseResponse;
+import com.education.corsalite.models.responsemodels.EditProfileModel;
 import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ContentIndex;
-import com.education.corsalite.models.responsemodels.ContentIndexResponse;
-import com.education.corsalite.models.responsemodels.ContentResponse;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.CourseAnalysis;
-import com.education.corsalite.models.responsemodels.CourseData;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
 import com.education.corsalite.models.responsemodels.Message;
-import com.education.corsalite.models.responsemodels.MessageResponse;
 import com.education.corsalite.models.responsemodels.StudyCenter;
 import com.education.corsalite.models.responsemodels.TestCoverage;
 import com.education.corsalite.models.responsemodels.UserProfileResponse;
@@ -204,6 +202,18 @@ public class ApiManager {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/content_data.json");
             System.out.print("Response for 'api/studycentre.json' is " + jsonResponse);
             //callback.success(new Gson().fromJson(jsonResponse, ContentResponse.class), getRetrofitResponse());
+        }
+    }
+
+    public void updateUserProfile(String userProfile, ApiCallback<EditProfileModel> callback) {
+        if(isApiOnline()) {
+            ApiClientService.get().updateUserProfile(userProfile, callback);
+        }
+    }
+
+    public void updateDefaultCourse(String defaultCourse, ApiCallback<DefaultCourseResponse> callback) {
+        if(isApiOnline()) {
+            ApiClientService.get().updateDefaultCourse(defaultCourse, callback);
         }
     }
 }

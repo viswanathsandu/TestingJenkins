@@ -1,4 +1,4 @@
-package com.education.corsalite.models.requestmodels;
+package com.education.corsalite.models.responsemodels;
 
 import com.education.corsalite.models.responsemodels.BaseResponseModel;
 

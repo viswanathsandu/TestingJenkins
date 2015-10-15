@@ -276,6 +276,12 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     coursesSpinner.setSelection(courses.indexOf(course));
                 }
             }
+        } else {
+            for(Course course : courses) {
+                if(course.isDefault()) {
+                    coursesSpinner.setSelection(courses.indexOf(course));
+                }
+            }
         }
         // coursesSpinner.setSelection(courseList.defaultCourseIndex);
         coursesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
