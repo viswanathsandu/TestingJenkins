@@ -70,6 +70,7 @@ public class UserProfileDetailsFragment extends BaseFragment {
     private UpdateExamData updateExamData;
     private int defaultcourseIndex;
     private List<Course> mCourses;
+    private boolean coursesSpinnerCLicked;
 
     public static UserProfileDetailsFragment newInstance(String param1, String param2) {
         UserProfileDetailsFragment fragment = new UserProfileDetailsFragment();
@@ -124,6 +125,7 @@ public class UserProfileDetailsFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 coursesSpinner.performClick();
+                coursesSpinnerCLicked = true;
             }
         });
         editProfileBtn.setOnClickListener(new View.OnClickListener() {
@@ -141,11 +143,15 @@ public class UserProfileDetailsFragment extends BaseFragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 defaultcourseIndex = position;
                 saveDefaultCourseIndex(mCourses.get(position));
-                saveDefaultCourse(mCourses.get(position));
+                if(coursesSpinnerCLicked) {
+                    saveDefaultCourse(mCourses.get(position));
+                }
+                coursesSpinnerCLicked = false;
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+                coursesSpinnerCLicked = false;
             }
         });
         redeemBtn.setOnClickListener(new View.OnClickListener() {
