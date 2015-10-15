@@ -16,6 +16,7 @@ import com.education.corsalite.models.responsemodels.LogoutResponse;
 import com.education.corsalite.models.responsemodels.Message;
 import com.education.corsalite.models.responsemodels.StudyCenter;
 import com.education.corsalite.models.responsemodels.TestCoverage;
+import com.education.corsalite.models.responsemodels.UpdateExamDetailsResponse;
 import com.education.corsalite.models.responsemodels.UserProfileResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencyBalanceResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencySummaryResponse;
@@ -214,6 +215,12 @@ public class ApiManager {
     public void updateDefaultCourse(String defaultCourse, ApiCallback<DefaultCourseResponse> callback) {
         if(isApiOnline()) {
             ApiClientService.get().updateDefaultCourse(defaultCourse, callback);
+        }
+    }
+
+    public void updateExamDetails(String examDetails, ApiCallback<UpdateExamDetailsResponse> callback) {
+        if(isApiOnline()) {
+            ApiClientService.get().updateExamDetails(examDetails, callback);
         }
     }
 }

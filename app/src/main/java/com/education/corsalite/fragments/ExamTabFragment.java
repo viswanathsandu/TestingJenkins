@@ -8,13 +8,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.ExamAdapter;
+import com.education.corsalite.api.ApiCallback;
+import com.education.corsalite.api.ApiManager;
+import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.models.requestmodels.ExamDetailsRequest;
+import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.ExamDetail;
+import com.education.corsalite.models.responsemodels.UpdateExamDetailsResponse;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit.client.Response;
 
 /**
  * Created by Girish on 12/09/15.
@@ -38,7 +48,7 @@ public class ExamTabFragment extends BaseFragment implements ExamAdapter.IAddExa
         layoutEmpty = (LinearLayout) v.findViewById(R.id.layout_empty);
         tvNoData = (TextView)v.findViewById(R.id.tv_no_data);
         tvNoData.setText("No Exam Data Found");
-        tvNoData.setTextAppearance(getActivity(),R.style.user_profile_text);
+        tvNoData.setTextAppearance(getActivity(), R.style.user_profile_text);
 
         mRecyclerView.setVisibility(View.VISIBLE);
         layoutEmpty.setVisibility(View.GONE);
@@ -75,10 +85,23 @@ public class ExamTabFragment extends BaseFragment implements ExamAdapter.IAddExa
 
     @Override
     public void onUpdateExamDetails(View view, ExamDetail examDetail,int position) {
-        //TODO UPDATE API
-
-        examDetailList.add(position,examDetail);
+        examDetailList.add(position, examDetail);
         mAdapter.notifyItemChanged(position);
+        String update = new Gson().toJson(new ExamDetailsRequest(
+                LoginUserCache.getInstance().loginResponse.studentId, examDetail));
+        ApiManager.getInstance(getActivity()).updateExamDetails(update, new ApiCallback<UpdateExamDetailsResponse>() {
+            @Override
+            public void failure(CorsaliteError error) {
+                showToast("Failed to update exam details...");
+            }
+
+            @Override
+            public void success(UpdateExamDetailsResponse updateExamDetailsResponse, Response response) {
+                super.success(updateExamDetailsResponse, response);
+                showToast("Exam details updated successfully...");
+            }
+        });
+
     }
 
 
