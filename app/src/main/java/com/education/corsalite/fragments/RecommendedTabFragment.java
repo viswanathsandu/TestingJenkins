@@ -80,9 +80,10 @@ public class RecommendedTabFragment extends Fragment {
         //passing static data TODO
         ApiManager.getInstance(getActivity()).getCourseAnalysisData(LoginUserCache.getInstance().loginResponse.studentId,
                 courseId, null, "Topic", "None", "180", "true",
-                new ApiCallback<List<CourseAnalysis>>() {
+                new ApiCallback<List<CourseAnalysis>>(getActivity()) {
                     @Override
                     public void failure(CorsaliteError error) {
+                        super.failure(error);
                         L.error(error.message);
                         mProgressBar.setVisibility(View.GONE);
                         mFailureText.setVisibility(View.VISIBLE);

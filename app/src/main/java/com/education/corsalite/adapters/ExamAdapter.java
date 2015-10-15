@@ -68,7 +68,7 @@ public class ExamAdapter extends AbstractRecycleViewAdapter {
                 parent.setBackgroundColor(inflater.getContext().getResources().getColor(R.color.tab_recycler_alternate_row));
             }
             examTxt.setText(examDetail.name == null ? EMPTY_STRING : examDetail.name);
-            daysRemainingTxt.setText(examDetail.daysRemaining == null ? EMPTY_STRING : String.valueOf(examDetail.daysRemaining));
+            daysRemainingTxt.setText(examDetail.daysRemaining == null ? "--" : String.valueOf(examDetail.daysRemaining));
             if(examDetail.examDate == null || examDetail.examDate.isEmpty()){
                 examDateTxt.setText(Html.fromHtml(ADD_HTML));
                 examDateTxt.setOnClickListener(new View.OnClickListener() {

@@ -228,7 +228,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     private void logout() {
         LogoutModel logout = new LogoutModel();
         logout.AuthToken = LoginUserCache.getInstance().getLongResponse().authtoken;
-        ApiManager.getInstance(this).logout(new Gson().toJson(logout), new ApiCallback<LogoutResponse>() {
+        ApiManager.getInstance(this).logout(new Gson().toJson(logout), new ApiCallback<LogoutResponse>(this) {
             @Override
             public void failure(CorsaliteError error) {
                 showToast(getResources().getString(R.string.logout_failed));
@@ -248,9 +248,10 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     private void loadCoursesList() {
-        ApiManager.getInstance(this).getCourses(LoginUserCache.getInstance().loginResponse.studentId, new ApiCallback<List<Course>>() {
+        ApiManager.getInstance(this).getCourses(LoginUserCache.getInstance().loginResponse.studentId, new ApiCallback<List<Course>>(this) {
             @Override
             public void failure(CorsaliteError error) {
+                super.failure(error);
             }
 
             @Override
@@ -312,9 +313,10 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     protected void getContentData(String courseId, String updateTime) {
         // TODO : passing static data
         ApiManager.getInstance(this).getContent(courseId, updateTime,
-            new ApiCallback<List<Content>>() {
+            new ApiCallback<List<Content>>(this) {
                 @Override
                 public void failure(CorsaliteError error) {
+                    super.failure(error);
                     if (error != null && !TextUtils.isEmpty(error.message)) {
                         showToast(error.message);
                     }

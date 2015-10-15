@@ -49,7 +49,6 @@ public class AddExamScheduleDialogFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_add_exam_schedule, container, false);
         ButterKnife.bind(this, v);
-
         examDetail =(ExamDetail) getArguments().getSerializable("examDetail");
         String type = getArguments().getString("type");
         getDialog().setTitle(examDetail.name);

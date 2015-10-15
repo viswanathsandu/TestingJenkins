@@ -62,9 +62,10 @@ public class LoginActivity extends AbstractBaseActivity {
     }
 
     private void login(String username, String password) {
-        ApiManager.getInstance(this).login(username, password, new ApiCallback<LoginResponse>() {
+        ApiManager.getInstance(this).login(username, password, new ApiCallback<LoginResponse>(this) {
             @Override
             public void failure(CorsaliteError error) {
+                super.failure(error);
                 if (error != null && !TextUtils.isEmpty(error.message)) {
                     showToast(error.message);
                 }

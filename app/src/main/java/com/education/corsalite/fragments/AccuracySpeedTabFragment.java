@@ -97,7 +97,7 @@ public class AccuracySpeedTabFragment extends Fragment   {
     private void drawGraphs(String courseId) {
         ApiManager.getInstance(getActivity()).getCourseAnalysisData(LoginUserCache.getInstance().loginResponse.studentId,
                 courseId, null, "Chapter", "Month", "365", "true",
-                new ApiCallback<List<CourseAnalysis>>() {
+                new ApiCallback<List<CourseAnalysis>>(getActivity()) {
                     @Override
                     public void failure(CorsaliteError error)
                     {
@@ -122,9 +122,10 @@ public class AccuracySpeedTabFragment extends Fragment   {
 
         ApiManager.getInstance(getActivity()).getCourseAnalysisData(LoginUserCache.getInstance().loginResponse.studentId,
                 courseId, null, "Subject", "Month", "365", "true",
-                new ApiCallback<List<CourseAnalysis>>() {
+                new ApiCallback<List<CourseAnalysis>>(getActivity()) {
                     @Override
                     public void failure(CorsaliteError error) {
+                        super.failure(error);
                         L.error(error.message);
                         mProgressBar.setVisibility(View.GONE);
                         mTextViewFail.setVisibility(View.VISIBLE);

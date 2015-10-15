@@ -321,9 +321,10 @@ public class WebActivity extends AbstractBaseActivity {
     private void getContentIndex(String courseId, String studentId) {
         // TODO : passing static data
         ApiManager.getInstance(this).getContentIndex(courseId, studentId,
-                new ApiCallback<List<ContentIndex>>() {
+                new ApiCallback<List<ContentIndex>>(this) {
                     @Override
                     public void failure(CorsaliteError error) {
+                        super.failure(error);
                         if (error != null && !TextUtils.isEmpty(error.message)) {
                             showToast(error.message);
                         }
@@ -394,9 +395,10 @@ public class WebActivity extends AbstractBaseActivity {
     }
 
     private void getContent(String contentId) {
-        ApiManager.getInstance(this).getContent(contentId, "", new ApiCallback<List<Content>>() {
+        ApiManager.getInstance(this).getContent(contentId, "", new ApiCallback<List<Content>>(this) {
             @Override
             public void failure(CorsaliteError error) {
+                super.failure(error);
                 if (mViewSwitcher.getNextView() instanceof LinearLayout) {
                     mViewSwitcher.showNext();
                 }

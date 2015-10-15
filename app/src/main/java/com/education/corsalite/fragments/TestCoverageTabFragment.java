@@ -75,9 +75,10 @@ public class TestCoverageTabFragment extends Fragment {
 
     private void fetchDataFromServer(String courseId) {
         ApiManager.getInstance(getActivity()).getTestCoverage(LoginUserCache.getInstance().loginResponse.studentId,
-                courseId, new ApiCallback<List<TestCoverage>>() {
+                courseId, new ApiCallback<List<TestCoverage>>(getActivity()) {
             @Override
             public void failure(CorsaliteError error) {
+                super.failure(error);
                 L.info(error.message);
                 progressBar.setVisibility(View.GONE);
                 failureText.setVisibility(View.VISIBLE);

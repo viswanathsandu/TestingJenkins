@@ -80,7 +80,6 @@ public class ExamTabFragment extends BaseFragment implements ExamAdapter.IAddExa
         bundle.putString("type",type);
         dialogFragment.setArguments(bundle);
         dialogFragment.show(getFragmentManager(),"addExam");
-
     }
 
     @Override
@@ -89,9 +88,10 @@ public class ExamTabFragment extends BaseFragment implements ExamAdapter.IAddExa
         mAdapter.notifyItemChanged(position);
         String update = new Gson().toJson(new ExamDetailsRequest(
                 LoginUserCache.getInstance().loginResponse.studentId, examDetail));
-        ApiManager.getInstance(getActivity()).updateExamDetails(update, new ApiCallback<UpdateExamDetailsResponse>() {
+        ApiManager.getInstance(getActivity()).updateExamDetails(update, new ApiCallback<UpdateExamDetailsResponse>(getActivity()) {
             @Override
             public void failure(CorsaliteError error) {
+                super.failure(error);
                 showToast("Failed to update exam details...");
             }
 

@@ -191,7 +191,6 @@ public class ApiManager {
             ApiClientService.get().getContentIndexData(courseID, studentId, callback);
         } else {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/content_index.json");
-            System.out.print("Response for 'api/studycentre.json' is " + jsonResponse);
             //callback.success(new Gson().fromJson(jsonResponse, ContentIndexResponse.class), getRetrofitResponse());
         }
     }

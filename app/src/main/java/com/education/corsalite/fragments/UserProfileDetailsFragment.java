@@ -131,11 +131,7 @@ public class UserProfileDetailsFragment extends BaseFragment {
         editProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), EditProfileActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("user_profile_response", user);
-                intent.putExtra("user_profile", bundle);
-                startActivity(intent);
+                showEditProfileFragment();
             }
         });
         coursesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -162,14 +158,23 @@ public class UserProfileDetailsFragment extends BaseFragment {
         });
     }
 
+    private void showEditProfileFragment() {
+        EditProfileDialogFragment dialogFragment = new EditProfileDialogFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("user_profile_response", user);
+        dialogFragment.setArguments(bundle);
+        dialogFragment.show(getFragmentManager(),"Edit Profile");
+    }
+
     private void saveDefaultCourse(Course course) {
         if(course != null) {
             String update = new Gson().toJson(new Defaultcourserequest(
                                 LoginUserCache.getInstance().loginResponse.studentId, course.courseId+""));
 
-            ApiManager.getInstance(getActivity()).updateDefaultCourse(update, new ApiCallback<DefaultCourseResponse>() {
+            ApiManager.getInstance(getActivity()).updateDefaultCourse(update, new ApiCallback<DefaultCourseResponse>(getActivity()) {
                 @Override
                 public void failure(CorsaliteError error) {
+                    super.failure(error);
                     showToast("Failed to update Default course...");
                 }
 
@@ -191,9 +196,10 @@ public class UserProfileDetailsFragment extends BaseFragment {
 
     private void fetchUserProfileData() {
         ApiManager.getInstance(getActivity()).getUserProfile(LoginUserCache.getInstance().loginResponse.studentId,
-                new ApiCallback<UserProfileResponse>() {
+                new ApiCallback<UserProfileResponse>(getActivity()) {
                     @Override
                     public void failure(CorsaliteError error) {
+                        super.failure(error);
                         if (error != null && !TextUtils.isEmpty(error.message)) {
                             showToast(error.message);
                         }
@@ -247,9 +253,10 @@ public class UserProfileDetailsFragment extends BaseFragment {
 
     private void fetchVirtualCurrencyBalance() {
         ApiManager.getInstance(getActivity()).getVirtualCurrencyBalance(LoginUserCache.getInstance().loginResponse.studentId,
-                new ApiCallback<VirtualCurrencyBalanceResponse>() {
+                new ApiCallback<VirtualCurrencyBalanceResponse>(getActivity()) {
                     @Override
                     public void failure(CorsaliteError error) {
+                        super.failure(error);
                         if (error != null && !TextUtils.isEmpty(error.message)) {
                             showToast(error.message);
                         }

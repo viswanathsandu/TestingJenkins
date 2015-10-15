@@ -1,7 +1,14 @@
 package com.education.corsalite.api;
 
+import android.content.Context;
+import android.content.Intent;
+import android.text.TextUtils;
+import android.widget.Toast;
+
 import com.education.corsalite.activities.AbstractBaseActivity;
+import com.education.corsalite.activities.LoginActivity;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
+import com.education.corsalite.services.ApiClientService;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -11,7 +18,20 @@ import retrofit.client.Response;
  * Created by vissu on 9/11/15.
  */
 public abstract class ApiCallback<T> implements Callback<T> {
-    public abstract void failure(CorsaliteError error);
+    private Context mContext;
+
+    public ApiCallback(Context context) {
+        this.mContext = context;
+    }
+
+    public void failure(CorsaliteError error) {
+        if(error != null && error.message != null && error.message.equalsIgnoreCase("Unathorized session.")) {
+            Toast.makeText(mContext, "Session expired... \nPlease login to continue...", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(mContext, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            mContext.startActivity(intent);
+        }
+    }
 
     @Override
     public void success(T t, Response response) {

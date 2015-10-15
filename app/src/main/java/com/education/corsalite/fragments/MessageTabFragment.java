@@ -62,9 +62,10 @@ public class MessageTabFragment extends BaseFragment {
 
     private void getMessage(final LayoutInflater inflater) {
         ApiManager.getInstance(getActivity()).getMessages(LoginUserCache.getInstance().loginResponse.studentId,
-                new ApiCallback<List<Message>>() {
+                new ApiCallback<List<Message>>(getActivity()) {
                     @Override
                     public void failure(CorsaliteError error) {
+                        super.failure(error);
                         if(error!= null && !TextUtils.isEmpty(error.message)) {
                             showToast(error.message);
                         }

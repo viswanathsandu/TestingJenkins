@@ -70,9 +70,10 @@ public class VirtualCurrencyFragment extends BaseFragment {
 
     private void getTransactionHistory(final LayoutInflater inflater) {
         ApiManager.getInstance(getActivity()).getVirtualCurrencyTransactions(LoginUserCache.getInstance().loginResponse.studentId,
-                new ApiCallback<VirtualCurrencySummaryResponse>() {
+                new ApiCallback<VirtualCurrencySummaryResponse>(getActivity()) {
                     @Override
                     public void failure(CorsaliteError error) {
+                        super.failure(error);
                         if(error!= null && !TextUtils.isEmpty(error.message)) {
                             showToast(error.message);
                         }

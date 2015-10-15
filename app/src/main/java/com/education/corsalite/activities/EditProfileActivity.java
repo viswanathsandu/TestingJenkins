@@ -73,9 +73,10 @@ public class EditProfileActivity extends AbstractBaseActivity implements DatePic
                     return;
                 }
                 String userProfileJson = new Gson().toJson(saveUserProfile());
-                ApiManager.getInstance(EditProfileActivity.this).updateUserProfile(userProfileJson, new ApiCallback<EditProfileModel>() {
+                ApiManager.getInstance(EditProfileActivity.this).updateUserProfile(userProfileJson, new ApiCallback<EditProfileModel>(EditProfileActivity.this) {
                     @Override
                     public void failure(CorsaliteError error) {
+                        super.failure(error);
                         L.error(error.message);
                         showToast("Failed to update user Profile");
                     }

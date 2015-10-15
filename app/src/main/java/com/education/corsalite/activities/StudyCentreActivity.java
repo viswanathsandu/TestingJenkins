@@ -198,9 +198,10 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     private void getStudyCentreData(String courseId) {
         hideRecyclerView();
         ApiManager.getInstance(this).getStudyCentreData(LoginUserCache.getInstance().loginResponse.studentId,
-                courseId, new ApiCallback<List<StudyCenter>>() {
+                courseId, new ApiCallback<List<StudyCenter>>(this) {
                     @Override
                     public void failure(CorsaliteError error) {
+                        super.failure(error);
                         if (error != null && !TextUtils.isEmpty(error.message)) {
                             showToast(error.message);
                         }

@@ -48,9 +48,6 @@ public interface ICorsaliteApi {
     @GET("/Message")
     void getMessages(@Query("idStudent") String studentId, ApiCallback<List<Message>> callback);
 
-    @POST("/UserProfile")
-    void updateUserProfile(@Query("Update")String userProfile, ApiCallback<EditProfileModel> callback);
-
     @GET("/CourseStudyCenterData")
     void getCourseStudyCenterData(@Query("idStudent") String studentId, @Query("idCourse") String courseId, ApiCallback<List<StudyCenter>> callback);
 
@@ -75,6 +72,9 @@ public interface ICorsaliteApi {
 
     @GET("/Content")
     void getContentData(@Query("idContents") String idContents, @Query("UpdateTime") String UpdateTime, ApiCallback<List<Content>> callback);
+
+    @POST("/UserProfile")
+    void updateUserProfile(@Query("Update")String userProfile, ApiCallback<EditProfileModel> callback);
 
     @POST("/StudentCourseList")
     void updateDefaultCourse(@Query("Update") String update, ApiCallback<DefaultCourseResponse> callback);

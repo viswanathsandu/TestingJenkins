@@ -96,9 +96,10 @@ public class TimeManagementTabFragment extends Fragment {
     private void drawGraph(String courseId) {
         ApiManager.getInstance(getActivity()).getCourseAnalysisData(LoginUserCache.getInstance().loginResponse.studentId,
                 courseId, null, "Subject", "None", "30", "true",
-                new ApiCallback<List<CourseAnalysis>>() {
+                new ApiCallback<List<CourseAnalysis>>(getActivity()) {
                     @Override
                     public void failure(CorsaliteError error) {
+                        super.failure(error);
                         L.error(error.message);
                         showFailMessage();
                     }
@@ -123,9 +124,10 @@ public class TimeManagementTabFragment extends Fragment {
 
         ApiManager.getInstance(getActivity()).getCourseAnalysisData(LoginUserCache.getInstance().loginResponse.studentId,
                 courseId, null, "Chapter", "None", "30", "true",
-                new ApiCallback<List<CourseAnalysis>>() {
+                new ApiCallback<List<CourseAnalysis>>(getActivity()) {
                     @Override
                     public void failure(CorsaliteError error) {
+                        super.failure(error);
                         L.error(error.message);
                         showFailMessage();
                     }
