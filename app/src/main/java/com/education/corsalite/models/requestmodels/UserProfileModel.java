@@ -10,6 +10,8 @@ public class UserProfileModel {
     public String updateTime;
     @SerializedName("idUser")
     public String userId;
+    @SerializedName("idStudent")
+    public String studentId;
     @SerializedName("PhotoBase64Data")
     public String photoBase64Data;
     @SerializedName("DisplayName")

@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by vissu on 9/12/15.
  */
-public class UserProfileResponse extends BaseResponseModel implements Serializable {
+public class UserProfileResponse extends BaseResponseModel{
     @SerializedName("BasicProfile")
     public BasicProfile basicProfile;
     @SerializedName("ExamDetails")

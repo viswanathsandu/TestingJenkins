@@ -160,10 +160,12 @@ public class UserProfileDetailsFragment extends BaseFragment {
 
     private void showEditProfileFragment() {
         EditProfileDialogFragment dialogFragment = new EditProfileDialogFragment();
+        dialogFragment.on
         Bundle bundle = new Bundle();
-        bundle.putSerializable("user_profile_response", user);
+        bundle.putString("user_profile_response", new Gson().toJson(user));
         dialogFragment.setArguments(bundle);
         dialogFragment.show(getFragmentManager(),"Edit Profile");
+
     }
 
     private void saveDefaultCourse(Course course) {
