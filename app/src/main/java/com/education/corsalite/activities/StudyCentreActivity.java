@@ -318,16 +318,6 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         });
     }
 
-    private void navigateToContentReading() {
-        Intent intent = new Intent(StudyCentreActivity.this, WebActivity.class);
-        intent.putExtra("courseId", "11");
-        intent.putExtra("subjectId", "37");
-        intent.putExtra("chapterId", "1068");
-        intent.putExtra("topicId", "887");
-        intent.putExtra("contentId", "1536");
-        startActivity(intent);
-    }
-
     private View getView() {
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         return inflater.inflate(R.layout.study_center_text_view, null);
