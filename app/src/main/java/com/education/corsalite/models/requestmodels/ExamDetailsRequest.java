@@ -24,7 +24,7 @@ public class ExamDetailsRequest {
     }
 
     public ExamDetailsRequest(String studentId, ExamDetail examDetail) {
-        this.updateTime =  new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date());
+        this.updateTime =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
         this.studentId = studentId;
         examDetails = new ArrayList<>();
         examDetails.add(examDetail);

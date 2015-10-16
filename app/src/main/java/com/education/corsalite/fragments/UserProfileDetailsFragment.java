@@ -115,11 +115,6 @@ public class UserProfileDetailsFragment extends BaseFragment {
         mCourses = ((AbstractBaseActivity)getActivity()).getcourses();
     }
 
-    private void saveDefaultCourseIndex(Course course) {
-        // Make an api call to update default course
-
-    }
-
     private void setListeners() {
         coursesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,7 +133,6 @@ public class UserProfileDetailsFragment extends BaseFragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 defaultcourseIndex = position;
-                saveDefaultCourseIndex(mCourses.get(position));
                 if(coursesSpinnerCLicked) {
                     saveDefaultCourse(mCourses.get(position));
                 }
@@ -160,12 +154,10 @@ public class UserProfileDetailsFragment extends BaseFragment {
 
     private void showEditProfileFragment() {
         EditProfileDialogFragment dialogFragment = new EditProfileDialogFragment();
-        dialogFragment.on
         Bundle bundle = new Bundle();
         bundle.putString("user_profile_response", new Gson().toJson(user));
         dialogFragment.setArguments(bundle);
         dialogFragment.show(getFragmentManager(),"Edit Profile");
-
     }
 
     private void saveDefaultCourse(Course course) {

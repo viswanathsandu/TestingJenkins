@@ -23,7 +23,7 @@ public class Defaultcourserequest {
     }
 
     public Defaultcourserequest(String studentId, String courseId) {
-        this.updateTime =  new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date());
+        this.updateTime =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
         this.studentId = studentId;
         this.courseId = courseId;
         isDefault = "Y";

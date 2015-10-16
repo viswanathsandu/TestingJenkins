@@ -97,7 +97,7 @@ public class EditProfileActivity extends AbstractBaseActivity implements DatePic
 
     private UserProfileModel saveUserProfile(){
         UserProfileModel profile = new UserProfileModel();
-        profile.updateTime =  new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date());
+        profile.updateTime =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
         profile.userId = LoginUserCache.getInstance().loginResponse.userId;
         if(!givenName.getText().toString().isEmpty()) {
             profile.givenName = givenName.getText().toString();
