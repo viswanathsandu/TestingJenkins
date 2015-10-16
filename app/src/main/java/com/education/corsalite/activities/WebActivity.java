@@ -363,12 +363,9 @@ public class WebActivity extends AbstractBaseActivity {
     }
 
     private void getContentIndex(String courseId, String studentId) {
-        // TODO : passing static data
-
         if (mViewSwitcher.indexOfChild(mViewSwitcher.getCurrentView()) == 1) {
             mViewSwitcher.showPrevious();
         }
-
         ApiManager.getInstance(this).getContentIndex(courseId, studentId,
                 new ApiCallback<List<ContentIndex>>(this) {
                     @Override
