@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center" />
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -27,25 +27,24 @@
                 android:id="@+id/top_layout"
                 layout="@layout/webview_subject_bar" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="#AA000000" />
-
             <WebView
+                android:layout_below="@id/top_layout"
                 android:id="@+id/webView_content_reading"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="2dp"
                 android:layout_weight="1"
                 android:gravity="center" />
 
             <include
+                android:layout_centerVertical="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:id="@+id/footer_layout"
                 layout="@layout/webview_footer" />
 
-        </LinearLayout>
+        </RelativeLayout>
     </ViewSwitcher>
 
 </LinearLayout>

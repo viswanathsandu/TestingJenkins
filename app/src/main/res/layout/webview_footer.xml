@@ -6,16 +6,16 @@
     android:visibility="gone">
 
     <Button
-        android:text="PREVIOUS"
         android:layout_alignParentLeft="true"
-        android:layout_width="200dp"
+        android:layout_width="48dp"
         android:layout_height="48dp"
+        android:background="@drawable/btn_previous"
         android:id="@+id/btn_previous"/>
 
     <Button
-        android:text="NEXT"
+        android:background="@drawable/btn_next"
         android:layout_alignParentRight="true"
-        android:layout_width="200dp"
+        android:layout_width="48dp"
         android:layout_height="48dp"
         android:id="@+id/btn_next"/>
 </RelativeLayout>
