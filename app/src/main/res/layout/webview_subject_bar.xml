@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="50dp"
+    android:background="@color/gray"
     android:orientation="horizontal"
     android:padding="10dp">
 
@@ -41,38 +42,27 @@
         android:layout_centerVertical="true"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingLeft="15dp"
-        android:weightSum="5">
+        android:paddingLeft="15dp">
 
         <Spinner
             android:id="@+id/sp_subject"
-            android:layout_width="0dp"
+            android:layout_width="130dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingLeft="10dp"
-            android:paddingRight="5dp"
-            android:text="@string/subject1"
-            android:textColor="@android:color/black" />
+            android:paddingLeft="10dp"/>
 
         <Spinner
+            android:layout_marginLeft="5dp"
             android:id="@+id/sp_chapter"
-            android:layout_width="0dp"
+            android:layout_width="130dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:text="@string/subject2"
-            android:textColor="@android:color/black" />
+            android:paddingLeft="5dp" />
 
         <Spinner
+            android:layout_marginLeft="5dp"
             android:id="@+id/sp_topic"
-            android:layout_width="0dp"
+            android:layout_width="130dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:text="@string/subject3"
-            android:textColor="@android:color/black" />
+            android:paddingLeft="5dp"/>
     </LinearLayout>
 
 </RelativeLayout>
