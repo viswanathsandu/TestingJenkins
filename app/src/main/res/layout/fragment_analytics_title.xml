@@ -1,37 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    android:background="@color/green"
-    android:gravity="right"
-    android:paddingTop="10dp"
-    android:paddingBottom="10dp"
-    android:paddingLeft="20dp">
+    android:background="@color/green">
 
-    <TextView
-        android:id="@+id/tv_accuracy"
-        android:drawableTop="@drawable/ico_accuracy_unselected"
-        android:text="Accuracy Trend"
-        style="@style/analytics_title"/>
-    <TextView
-        android:id="@+id/tv_progress_report"
-        android:drawableTop="@drawable/ico_report_unselected"
-        android:text="Progress Report"
-        style="@style/analytics_title"/>
-    <TextView
-        android:id="@+id/tv_test_coverage"
-        android:drawableTop="@drawable/ico_test_unselected"
-        android:text="Test Coverage"
-        style="@style/analytics_title"/>
-    <TextView
-        android:id="@+id/tv_time_management"
-        android:drawableTop="@drawable/ico_time_unselected"
-        android:text="Time Management"
-        style="@style/analytics_title"/>
-    <TextView
-        android:id="@+id/tv_recommended_reading"
-        android:drawableTop="@drawable/ico_recommend_unselected"
-        android:text="Recommended Reading"
-        style="@style/analytics_title"/>
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:orientation="vertical"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp">
+
+        <TextView
+            android:id="@+id/tv_accuracy"
+            style="@style/analytics_title"
+            android:drawableTop="@drawable/ico_accuracy_unselected"
+            android:text="Accuracy Trend" />
+
+        <TextView
+            android:id="@+id/tv_progress_report"
+            style="@style/analytics_title"
+            android:drawableTop="@drawable/ico_report_unselected"
+            android:text="Progress Report" />
+
+        <TextView
+            android:id="@+id/tv_test_coverage"
+            style="@style/analytics_title"
+            android:drawableTop="@drawable/ico_test_unselected"
+            android:text="Test Coverage" />
+
+        <TextView
+            android:id="@+id/tv_time_management"
+            style="@style/analytics_title"
+            android:drawableTop="@drawable/ico_time_unselected"
+            android:text="Time Management" />
+
+        <TextView
+            android:id="@+id/tv_recommended_reading"
+            style="@style/analytics_title"
+            android:drawableTop="@drawable/ico_recommend_unselected"
+            android:text="Recommended Reading" />
+    </LinearLayout>
+</ScrollView>
