@@ -7,42 +7,43 @@
     <TextView
         android:gravity="center"
         android:layout_weight="1"
-        android:id="@+id/tv_date"
+        android:id="@+id/tv_exam"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="15dp"
-        android:text="Effective Date"
-        style="@style/virtual_currency_data_text"/>
-
-
-    <TextView
-        android:gravity="center"
-        android:layout_weight="1"
-        android:id="@+id/tv_event"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:padding="15dp"
-        android:text="Event"
-        style="@style/virtual_currency_data_text"/>
+        android:text="Exam"
+        style="@style/virtual_currency_header_text"/>
 
     <TextView
         android:gravity="center"
         android:layout_weight="1"
-        android:id="@+id/tv_earned"
+        android:id="@+id/tv_days_remaining"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="15dp"
-        android:text="Currency Earned"
-        style="@style/virtual_currency_data_text" />
+        style="@style/virtual_currency_header_text"
+        android:text="Days Remaining"
+     />
 
     <TextView
         android:gravity="center"
         android:layout_weight="1"
-        android:id="@+id/tv_balance"
+        android:id="@+id/tv_exam_date"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="15dp"
-        android:text="Balance"
-        style="@style/virtual_currency_data_text"/>
+        style="@style/virtual_currency_header_text"
+        android:text="Exam Date"
+    />
+
+    <TextView
+        android:gravity="center"
+        android:layout_weight="1"
+        android:id="@+id/tv_hall_ticket_number"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        style="@style/virtual_currency_header_text"
+        android:text="Hall Ticket Number" />
 
 </LinearLayout>

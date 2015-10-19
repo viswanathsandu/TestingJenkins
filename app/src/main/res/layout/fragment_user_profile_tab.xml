@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:background="@color/tab_recycler_header">
 
-        <include layout="@layout/row_exams_list" />
+        <include layout="@layout/row_exams_header_list" />
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView

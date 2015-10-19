@@ -134,6 +134,19 @@
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/text_gray</item>
     </style>
+
+    <style name="virtual_currency_header_text">
+        <item name="fontPath">@string/roboto_regular</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/text_white</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="virtual_currency_data_text">
+        <item name="fontPath">@string/roboto_regular</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/text_gray</item>
+    </style>
     <style name="user_profile_text_gray">
         <item name="fontPath">@string/roboto_regular</item>
         <item name="android:textSize">16sp</item>
