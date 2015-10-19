@@ -226,7 +226,7 @@ public class UserProfileDetailsFragment extends BaseFragment {
     private void showCourses(List<Course> courses) {
         ArrayAdapter<Course> dataAdapter = new ArrayAdapter<Course>(getActivity(),
                 R.layout.spinner_title_textview, courses);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         coursesSpinner.setAdapter(dataAdapter);
         coursesSpinner.setSelection(defaultcourseIndex);
     }

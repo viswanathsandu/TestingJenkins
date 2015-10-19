@@ -269,7 +269,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         Spinner coursesSpinner =  (Spinner) toolbar.findViewById(R.id.spinner_courses);
         if(coursesSpinner == null) return;
         ArrayAdapter<Course> dataAdapter = new ArrayAdapter<Course>(this, R.layout.spinner_title_textview, courses);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         coursesSpinner.setAdapter(dataAdapter);
         if(selectedCourse != null) {
             for(Course course : courses) {
