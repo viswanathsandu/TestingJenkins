@@ -2,25 +2,25 @@
     android:id="@+id/subjectLayout"
     android:layout_width="wrap_content"
     android:layout_height="50dp"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:paddingRight="10dp">
 
-<TextView
-    android:id="@+id/subject"
-    android:layout_width="wrap_content"
-    android:maxWidth="150dp"
-    android:layout_height="50dp"
-    android:paddingLeft="10dp"
-    android:text="@string/subject1"
-    android:singleLine="true"
-    android:ellipsize="end"
-    android:gravity="center_vertical"
-    android:background="@drawable/subject_selector"
-    style="@style/study_center_title_style"/>
+    <TextView
+        android:id="@+id/subject"
+        style="@style/study_center_title_style"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:background="@drawable/subject_selector"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:maxWidth="150dp"
+        android:singleLine="true"
+        android:text="@string/subject1" />
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ico_dropdown_black"
         android:layout_gravity="center_vertical"
-        android:padding="10dp"/>
+        android:padding="10dp"
+        android:src="@drawable/ico_dropdown_black" />
 </LinearLayout>
