@@ -146,7 +146,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     private void setNavigationClickListeners() {
-        navigationView.findViewById(R.id.menu_profile).setOnClickListener(new View.OnClickListener() {
+        navigationView.findViewById(R.id.navigation_profile).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!(AbstractBaseActivity.this instanceof UserProfileActivity)) {
@@ -158,7 +158,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             }
         });
 
-        navigationView.findViewById(R.id.menu_virtual_currency).setOnClickListener(new View.OnClickListener() {
+        navigationView.findViewById(R.id.navigation_currency).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(AbstractBaseActivity.this, VirtualCurrencyActivity.class);
@@ -166,7 +166,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             }
         });
 
-        navigationView.findViewById(R.id.menu_study_center).setOnClickListener(new View.OnClickListener() {
+        navigationView.findViewById(R.id.navigation_study_center).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(AbstractBaseActivity.this, StudyCentreActivity.class);
@@ -174,23 +174,14 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             }
         });
 
-        navigationView.findViewById(R.id.menu_content_reading).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AbstractBaseActivity.this, WebActivity.class);
-                startActivity(intent);
-
-            }
-        });
-
-        navigationView.findViewById(R.id.menu_analytics).setOnClickListener(new View.OnClickListener() {
+        navigationView.findViewById(R.id.navigation_analytics).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(AbstractBaseActivity.this, AnalyticsActivity.class));
             }
         });
 
-        navigationView.findViewById(R.id.menu_offline).setOnClickListener(new View.OnClickListener() {
+        navigationView.findViewById(R.id.navigation_offline).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(AbstractBaseActivity.this, OfflineContentActivity.class));
