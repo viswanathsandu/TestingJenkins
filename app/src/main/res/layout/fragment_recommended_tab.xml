@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:background="@color/tab_recycler_header"
         android:visibility="gone">
-        <include layout="@layout/row_recommended_list" />
+        <include layout="@layout/row_recommended_header_list" />
 
     </LinearLayout>
 
