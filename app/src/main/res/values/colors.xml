@@ -12,14 +12,19 @@
     <color name="yellow">#ffff00</color>
     <color name="amber">#FF7E00</color>
     <color name="golden_yellow">#ffd700</color>
-    <color name="transparent">#00000000</color>
-
-    <color name="text_gray_dark">#4D4E4F</color>
-    <color name="text_gray">#787878</color>
     <color name="black">#000000</color>
     <color name="dark_gray">#a9a9a9</color>
     <color name="light_40">#96F5F5F6</color>
+    <color name="transparent">#00000000</color>
+    <color name="gray_dark_border">#4D4E4F</color>
 
+    <!--Text colors-->
+    <color name="text_gray">#666666</color>
+    <color name="text_red">#c61515</color>
+    <color name="text_white">#ffffff</color>
+    <color name="text_green">#22b552</color>
+    <color name="text_blue">#0f4d92</color>
+    <color name="text_black">#222222</color>
 
     <!--User Profile-->
     <color name="user_profile_toolbar">#222222</color>
@@ -27,7 +32,7 @@
     <color name="tab_recycler_header">#9EAAB4</color>
     <color name="tab_recycler_alternate_row">#F7F8F9</color>
 
- <color name="table_level_1">#D62D24</color>
+    <color name="table_level_1">#D62D24</color>
     <color name="table_level_2">#AE4E2D</color>
     <color name="table_level_3">#876D37</color>
     <color name="table_level_4">#628B40</color>

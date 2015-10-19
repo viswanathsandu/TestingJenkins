@@ -35,7 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Email"
-            android:text="demo01@corsalite.com"
+            android:text="performance01@demo.com"
             fontPath="@string/roboto_regular"
             android:id="@+id/username_txt"
             android:textColor="@android:color/black"
@@ -52,7 +52,7 @@
             app:met_primaryColor="@color/green"
             android:inputType="textPassword"
             android:layout_marginTop="20dp"
-            android:text="core@lite"
+            android:text="test@123"
             android:singleLine="true"/>
 
         <Button
