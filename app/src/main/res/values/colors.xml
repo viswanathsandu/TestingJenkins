@@ -17,6 +17,7 @@
     <color name="light_40">#96F5F5F6</color>
     <color name="transparent">#00000000</color>
     <color name="gray_dark_border">#4D4E4F</color>
+    <color name="header_row_background">#a4aeb9</color>
 
     <!--Text colors-->
     <color name="text_gray">#666666</color>
@@ -29,7 +30,7 @@
     <!--User Profile-->
     <color name="user_profile_toolbar">#222222</color>
     <color name="user_profile_statusbar">#2D2D2D</color>
-    <color name="tab_recycler_header">#9EAAB4</color>
+    <color name="tab_recycler_header">#a4aeb9</color>
     <color name="tab_recycler_alternate_row">#F7F8F9</color>
 
     <color name="table_level_1">#D62D24</color>
