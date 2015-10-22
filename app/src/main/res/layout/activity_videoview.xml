@@ -4,9 +4,21 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <WebView
-        android:id="@+id/wv_video"
+    <ViewSwitcher
+        android:id="@+id/vs_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
 
+        <ProgressBar
+            android:id="@+id/headerProgress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <WebView
+            android:id="@+id/wv_video"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </ViewSwitcher>
 </LinearLayout>

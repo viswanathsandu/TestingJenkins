@@ -36,4 +36,9 @@ public class ContentModel extends BaseModel implements Comparable<ContentModel>,
     public int compareTo(ContentModel another) {
         return Integer.valueOf(this.idContent) - Integer.valueOf(another.idContent);
     }
+
+    @Override
+    public String toString() {
+        return contentName;
+    }
 }

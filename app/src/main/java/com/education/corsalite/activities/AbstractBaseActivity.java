@@ -45,6 +45,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
  */
 public abstract class AbstractBaseActivity extends AppCompatActivity {
 
+    public static int selectedVideoPosition;
     public static Course selectedCourse;
     private List<Course> courses;
     protected Toolbar toolbar;
@@ -324,8 +325,8 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         return EventBus.getDefault();
     }
 
-    public void onEvent(int position) {
-
+    public void onEvent(Integer position) {
+        selectedVideoPosition = position;
     }
 
     public void onEvent(Course course) {

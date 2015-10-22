@@ -51,6 +51,7 @@
             android:label=""
             android:theme="@style/UserProfileTheme"/>
         <activity
+            android:hardwareAccelerated="true"
             android:name=".activities.VideoActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label=""
