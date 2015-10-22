@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 import com.education.corsalite.R;
@@ -28,6 +29,7 @@ import com.education.corsalite.adapters.TopicAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.fragments.VideoListDialog;
 import com.education.corsalite.models.ChapterModel;
 import com.education.corsalite.models.ContentModel;
 import com.education.corsalite.models.SubjectModel;
@@ -41,6 +43,7 @@ import com.education.corsalite.utils.FileUtilities;
 import com.education.corsalite.utils.FileUtils;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,6 +66,7 @@ public class WebActivity extends AbstractBaseActivity {
     @Bind(R.id.footer_layout) RelativeLayout webFooter;
     @Bind(R.id.btn_next) Button btnNext;
     @Bind(R.id.btn_previous) Button btnPrevious;
+    @Bind(R.id.tv_video) TextView tvVideo;
 
 
     private List<ContentIndex> contentIndexList;
@@ -70,9 +74,7 @@ public class WebActivity extends AbstractBaseActivity {
     private List<ChapterModel> chapterModelList;
     private List<TopicModel> topicModelList;
     private List<ContentModel> contentModelList;
-
-    private List<Content> contentList;
-
+    private List<ContentModel> videoModelList;
 
     private String mSubjectId = "";
     private String mChapterId = "";
@@ -224,6 +226,7 @@ public class WebActivity extends AbstractBaseActivity {
         ivForum.setOnClickListener(mClickListener);
         btnNext.setOnClickListener(mClickListener);
         btnPrevious.setOnClickListener(mClickListener);
+        tvVideo.setOnClickListener(mClickListener);
     }
 
     View.OnClickListener mClickListener = new View.OnClickListener() {
@@ -247,6 +250,10 @@ public class WebActivity extends AbstractBaseActivity {
                 case R.id.btn_previous:
                     mContentIdPosition = mContentIdPosition - 1;
                     loadPrevious();
+                    break;
+
+                case R.id.tv_video:
+                    showVideoDialog();
                     break;
             }
         }
@@ -373,7 +380,7 @@ public class WebActivity extends AbstractBaseActivity {
                         super.failure(error);
                         if (error != null && !TextUtils.isEmpty(error.message)) {
                             showToast(error.message);
-                            if(mViewSwitcher.getNextView() instanceof RelativeLayout) {
+                            if (mViewSwitcher.getNextView() instanceof RelativeLayout) {
                                 mViewSwitcher.showNext();
                             }
                         }
@@ -396,7 +403,22 @@ public class WebActivity extends AbstractBaseActivity {
             mViewSwitcher.showPrevious();
         }
 
-        contentModelList = topicModelList.get(topicPosition).contentMap;
+        contentModelList = new ArrayList<>();
+        videoModelList = new ArrayList<>();
+        for(ContentModel contentModel : topicModelList.get(topicPosition).contentMap) {
+            if(contentModel.type.endsWith(Constants.VIDEO_FILE)) {
+                videoModelList.add(contentModel);
+            } else {
+                contentModelList.add(contentModel);
+            }
+        }
+
+        if(videoModelList.size() > 0) {
+            tvVideo.setVisibility(View.VISIBLE);
+        } else {
+            tvVideo.setVisibility(View.GONE);
+        }
+
         String contentId = "";
         String contentIds = "" ;
         for(ContentModel contentModel : contentModelList) {
@@ -430,7 +452,6 @@ public class WebActivity extends AbstractBaseActivity {
             @Override
             public void success(List<Content> contents, Response response) {
                 super.success(contents, response);
-                contentList = contents;
                 saveAndLoadWeb(contents);
                 if (mViewSwitcher.getNextView() instanceof RelativeLayout) {
                     mViewSwitcher.showNext();
@@ -624,5 +645,13 @@ public class WebActivity extends AbstractBaseActivity {
         }
     }
 
+    private void showVideoDialog() {
+        VideoListDialog videoListDialog = new VideoListDialog();
+        Bundle bundle = new Bundle();
+        bundle.putString("title", topicModelList.get(spTopic.getSelectedItemPosition()).topicName);
+        bundle.putSerializable("videolist", (Serializable) videoModelList);
+        videoListDialog.setArguments(bundle);
+        videoListDialog.show(getFragmentManager(), "videoListDialog");
+    }
 
 }

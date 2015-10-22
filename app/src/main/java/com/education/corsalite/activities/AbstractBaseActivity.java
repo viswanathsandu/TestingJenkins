@@ -22,6 +22,7 @@ import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.models.ContentModel;
 import com.education.corsalite.models.requestmodels.LogoutModel;
 import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
@@ -102,6 +103,12 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
         setToolbarTitle(getResources().getString(R.string.content));
         loadCoursesList();
+    }
+
+    protected void setToolbarForVideo(List<ContentModel> videos, int position) {
+        findViewById(R.id.toolbar_title).setVisibility(View.GONE);
+        toolbar.findViewById(R.id.video_layout).setVisibility(View.VISIBLE);
+        showVideoInToolbar(videos, position);
     }
 
     protected void setToolbarForWebActivity(String title) {
@@ -256,6 +263,27 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         });
     }
 
+    public void showVideoInToolbar(final List<ContentModel> videos, int selectedPosition) {
+
+        Spinner videoSpinner =  (Spinner) toolbar.findViewById(R.id.spinner_video);
+        if(videoSpinner == null) return;
+        ArrayAdapter<ContentModel> dataAdapter = new ArrayAdapter<>(this, R.layout.spinner_title_textview, videos);
+        dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        videoSpinner.setAdapter(dataAdapter);
+
+        videoSpinner.setSelection(selectedPosition);
+        videoSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                getEventbus().post(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+    }
+
     public void showCoursesInToolbar(final List<Course> courses) {
         Spinner coursesSpinner =  (Spinner) toolbar.findViewById(R.id.spinner_courses);
         if(coursesSpinner == null) return;
@@ -294,6 +322,10 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     protected EventBus getEventbus() {
         return EventBus.getDefault();
+    }
+
+    public void onEvent(int position) {
+
     }
 
     public void onEvent(Course course) {

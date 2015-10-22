@@ -3,6 +3,7 @@ package com.education.corsalite.models;
 import com.education.corsalite.models.responsemodels.BaseModel;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.SortedSet;
 /**
  * Created by Girish on 02/10/15.
  */
-public class SubjectModel extends BaseModel {
+public class SubjectModel extends BaseModel implements Serializable{
 
     @SerializedName("idCourseSubject")
     public String idSubject;

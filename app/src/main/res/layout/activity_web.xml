@@ -37,6 +37,24 @@
                 android:layout_weight="1"
                 android:gravity="center" />
 
+            <TextView
+                android:id="@+id/tv_video"
+                android:layout_below="@id/top_layout"
+                android:layout_marginTop="20dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Watch Videos"
+                android:drawablePadding="5dp"
+                android:textColor="@color/white"
+                android:drawableLeft="@drawable/ico_video"
+                android:background="@drawable/shape_rounded_corners_black_80"/>
+
             <include
                 android:layout_centerVertical="true"
                 android:layout_width="match_parent"

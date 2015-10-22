@@ -51,6 +51,11 @@
             android:label=""
             android:theme="@style/UserProfileTheme"/>
         <activity
+            android:name=".activities.VideoActivity"
+            android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
+            android:label=""
+            android:theme="@style/UserProfileTheme"/>
+        <activity
             android:name=".activities.VirtualCurrencyActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="@string/title_activity_currency"

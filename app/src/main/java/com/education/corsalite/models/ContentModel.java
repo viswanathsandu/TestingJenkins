@@ -3,12 +3,13 @@ package com.education.corsalite.models;
 import com.education.corsalite.models.responsemodels.BaseModel;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by mt0060 on 03/10/15.
  */
-public class ContentModel extends BaseModel implements Comparable<ContentModel>{
+public class ContentModel extends BaseModel implements Comparable<ContentModel>, Serializable{
 
     public String idContent;
     @SerializedName("Type")
@@ -20,15 +21,15 @@ public class ContentModel extends BaseModel implements Comparable<ContentModel>{
     @SerializedName("AuthorCopyright")
     public String authorCopyright;
     @SerializedName("UpdateTime")
-    String updateTime;
+    public String updateTime;
     @SerializedName("NamePrefix")
-    String namePrefix;
+    public String namePrefix;
     @SerializedName("GivenName")
-    String givenName;
+    public String givenName;
     @SerializedName("SurName")
-    String surName;
+    public String surName;
     @SerializedName("Rating")
-    String rating;
+    public String rating;
 
 
     @Override
