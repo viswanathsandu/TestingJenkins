@@ -9,6 +9,7 @@ import com.education.corsalite.models.responsemodels.CourseAnalysis;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
 import com.education.corsalite.models.responsemodels.Message;
+import com.education.corsalite.models.responsemodels.Note;
 import com.education.corsalite.models.responsemodels.StudyCenter;
 import com.education.corsalite.models.responsemodels.TestCoverage;
 import com.education.corsalite.models.responsemodels.UpdateExamDetailsResponse;
@@ -81,5 +82,8 @@ public interface ICorsaliteApi {
 
     @POST("/StudentExamDetails")
     void updateExamDetails(@Query("Update") String update, ApiCallback<UpdateExamDetailsResponse> callback);
+
+    @GET("/Note")
+    void getNotes(@Query("idSubject") String studentId, @Query("idChapter") String chapterId, @Query("idTopic") String topicId, ApiCallback<List<Note>> callback);
 
 }
