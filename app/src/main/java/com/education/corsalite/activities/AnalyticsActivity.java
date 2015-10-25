@@ -13,8 +13,6 @@ import com.education.corsalite.fragments.RecommendedTabFragment;
 import com.education.corsalite.fragments.TestCoverageTabFragment;
 import com.education.corsalite.fragments.TimeManagementTabFragment;
 
-import butterknife.ButterKnife;
-
 /**
  * Created by Aastha on 27/09/15.
  */
@@ -30,14 +28,14 @@ public class AnalyticsActivity extends AbstractBaseActivity implements Analytics
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setToolbarTitle("Analytics");
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         LinearLayout myView = (LinearLayout) inflater.inflate(R.layout.activity_analytics, null);
         frameLayout.addView(myView);
+
         setToolbarForAnalytics();
-        ButterKnife.bind(this);
         setUpTitleLayout();
     }
+
     private void setUpTitleLayout(){
         AnalyticsTitleFragment details = new AnalyticsTitleFragment();
         getFragmentManager().beginTransaction().replace(R.id.fl_analytics_title, details).commit();
