@@ -208,8 +208,9 @@ public class ApiManager {
 
     public void getNotes(String studentId, String chapterId, String topicId, ApiCallback<List<Note>> callback) {
         if(isApiOnline()) {
-            ApiClientService.get().getNotes(studentId, chapterId, topicId, callback);
-        } else {
+            // TODO : uncomment it when API works fine
+//            ApiClientService.get().getNotes(studentId, chapterId, topicId, callback);
+//        } else {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/content_data.json");
             System.out.print("Response for 'api/notes.json' is " + jsonResponse);
             callback.success(new Gson().fromJson(jsonResponse, List.class), getRetrofitResponse());
