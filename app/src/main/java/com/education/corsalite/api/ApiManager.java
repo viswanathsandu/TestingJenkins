@@ -15,6 +15,7 @@ import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
 import com.education.corsalite.models.responsemodels.Message;
 import com.education.corsalite.models.responsemodels.Note;
+import com.education.corsalite.models.responsemodels.Notes;
 import com.education.corsalite.models.responsemodels.StudyCenter;
 import com.education.corsalite.models.responsemodels.TestCoverage;
 import com.education.corsalite.models.responsemodels.UpdateExamDetailsResponse;
@@ -187,6 +188,19 @@ public class ApiManager {
         }
     }
 
+    public void getNotesData(ApiCallback<List<Note>> callback) {
+        if(isApiOnline()) {
+//            ApiClientService.get().getNotesData(callback);
+            String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/notes.json");
+            System.out.print("Response for 'api/notes.json' is " + jsonResponse);
+            callback.success(new Gson().fromJson(jsonResponse, List.class), getRetrofitResponse());
+        } else {
+            String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/notes.json");
+            System.out.print("Response for 'api/notes.json' is " + jsonResponse);
+            callback.success(new Gson().fromJson(jsonResponse, List.class), getRetrofitResponse());
+        }
+    }
+
     public void getContentIndex(String courseID, String studentId, ApiCallback<List<ContentIndex>> callback) {
         if(isApiOnline()) {
             ApiClientService.get().getContentIndexData(courseID, studentId, callback);
@@ -206,7 +220,7 @@ public class ApiManager {
         }
     }
 
-    public void getNotes(String studentId, String chapterId, String topicId, ApiCallback<List<Note>> callback) {
+    public void getNotes(ApiCallback<List<Note>> callback) {
         if(isApiOnline()) {
             // TODO : uncomment it when API works fine
 //            ApiClientService.get().getNotes(studentId, chapterId, topicId, callback);

@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.education.corsalite">
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name="com.orm.SugarApp"
@@ -44,18 +44,18 @@
             android:name=".activities.WebviewActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="@string/title_activity_webview"
-            android:theme="@style/UserProfileTheme"/>
+            android:theme="@style/UserProfileTheme" />
         <activity
             android:name=".activities.WebActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label=""
-            android:theme="@style/UserProfileTheme"/>
+            android:theme="@style/UserProfileTheme" />
         <activity
-            android:hardwareAccelerated="true"
             android:name=".activities.VideoActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
+            android:hardwareAccelerated="true"
             android:label=""
-            android:theme="@style/UserProfileTheme"/>
+            android:theme="@style/UserProfileTheme" />
         <activity
             android:name=".activities.VirtualCurrencyActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
@@ -75,14 +75,20 @@
             android:theme="@style/UserProfileTheme" />
         <activity
             android:name=".activities.AnalyticsActivity"
-            android:screenOrientation="landscape"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="Analytics"
+            android:screenOrientation="landscape"
             android:theme="@style/UserProfileTheme" />
         <activity
             android:name=".activities.OfflineContentActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="Analytics"
+            android:theme="@style/UserProfileTheme" />
+
+        <activity
+            android:name=".activities.NotesActivity"
+            android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
+            android:label="Notes"
             android:theme="@style/UserProfileTheme" />
     </application>
 

@@ -106,6 +106,12 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         loadCoursesList();
     }
 
+    protected void setToolbarForNotes() {
+        toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
+        setToolbarTitle(getResources().getString(R.string.notes));
+        loadCoursesList();
+    }
+
     protected void setToolbarForVideo(List<ContentModel> videos, int position) {
         findViewById(R.id.toolbar_title).setVisibility(View.GONE);
         toolbar.findViewById(R.id.video_layout).setVisibility(View.VISIBLE);
@@ -195,6 +201,13 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 startActivity(new Intent(AbstractBaseActivity.this, OfflineContentActivity.class));
             }
         });
+
+        navigationView.findViewById(R.id.navigation_notes).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(AbstractBaseActivity.this, NotesActivity.class));
+            }
+        });
     }
 
     protected void setToolbarTitle(String title) {
@@ -266,8 +279,8 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     public void showVideoInToolbar(final List<ContentModel> videos, int selectedPosition) {
 
-        Spinner videoSpinner =  (Spinner) toolbar.findViewById(R.id.spinner_video);
-        if(videoSpinner == null) return;
+        Spinner videoSpinner = (Spinner) toolbar.findViewById(R.id.spinner_video);
+        if (videoSpinner == null) return;
         ArrayAdapter<ContentModel> dataAdapter = new ArrayAdapter<>(this, R.layout.spinner_title_textview, videos);
         dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         videoSpinner.setAdapter(dataAdapter);
@@ -286,20 +299,20 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     public void showCoursesInToolbar(final List<Course> courses) {
-        Spinner coursesSpinner =  (Spinner) toolbar.findViewById(R.id.spinner_courses);
-        if(coursesSpinner == null) return;
+        Spinner coursesSpinner = (Spinner) toolbar.findViewById(R.id.spinner_courses);
+        if (coursesSpinner == null) return;
         ArrayAdapter<Course> dataAdapter = new ArrayAdapter<Course>(this, R.layout.spinner_title_textview, courses);
         dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         coursesSpinner.setAdapter(dataAdapter);
-        if(selectedCourse != null) {
-            for(Course course : courses) {
-                if(course.courseId == selectedCourse.courseId) {
+        if (selectedCourse != null) {
+            for (Course course : courses) {
+                if (course.courseId == selectedCourse.courseId) {
                     coursesSpinner.setSelection(courses.indexOf(course));
                 }
             }
         } else {
-            for(Course course : courses) {
-                if(course.isDefault()) {
+            for (Course course : courses) {
+                if (course.isDefault()) {
                     coursesSpinner.setSelection(courses.indexOf(course));
                 }
             }
@@ -337,27 +350,27 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     protected void getContentData(String courseId, String updateTime) {
         // TODO : passing static data
         ApiManager.getInstance(this).getContent(courseId, updateTime,
-            new ApiCallback<List<Content>>(this) {
-                @Override
-                public void failure(CorsaliteError error) {
-                    super.failure(error);
-                    if (error != null && !TextUtils.isEmpty(error.message)) {
-                        showToast(error.message);
+                new ApiCallback<List<Content>>(this) {
+                    @Override
+                    public void failure(CorsaliteError error) {
+                        super.failure(error);
+                        if (error != null && !TextUtils.isEmpty(error.message)) {
+                            showToast(error.message);
+                        }
                     }
-                }
 
-                @Override
-                public void success(List<Content> mContentResponse, Response response) {
-                    super.success(mContentResponse, response);
-                    if (mContentResponse != null) {
-                        Intent intent = new Intent(AbstractBaseActivity.this, WebActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("contentData", (Serializable) mContentResponse);
-                        intent.putExtras(bundle);
-                        startActivity(intent);
+                    @Override
+                    public void success(List<Content> mContentResponse, Response response) {
+                        super.success(mContentResponse, response);
+                        if (mContentResponse != null) {
+                            Intent intent = new Intent(AbstractBaseActivity.this, WebActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("contentData", (Serializable) mContentResponse);
+                            intent.putExtras(bundle);
+                            startActivity(intent);
+                        }
                     }
-                }
-            });
+                });
     }
 
 

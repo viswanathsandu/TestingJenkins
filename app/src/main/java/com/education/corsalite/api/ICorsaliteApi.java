@@ -10,6 +10,7 @@ import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
 import com.education.corsalite.models.responsemodels.Message;
 import com.education.corsalite.models.responsemodels.Note;
+import com.education.corsalite.models.responsemodels.Notes;
 import com.education.corsalite.models.responsemodels.StudyCenter;
 import com.education.corsalite.models.responsemodels.TestCoverage;
 import com.education.corsalite.models.responsemodels.UpdateExamDetailsResponse;
@@ -52,21 +53,24 @@ public interface ICorsaliteApi {
     @GET("/CourseStudyCenterData")
     void getCourseStudyCenterData(@Query("idStudent") String studentId, @Query("idCourse") String courseId, ApiCallback<List<StudyCenter>> callback);
 
+    @GET("/CourseStudyCenterData")
+    void getNotesData(ApiCallback<List<Note>> callback);
+
     //http://staging.corsalite.com/v1/webservices/GetCourseAnalysis?idStudent=36&idCourse=13&idSubject=51&GroupLevel=Chapter&BreakupByDate=Month&DurationInDays=365&ReturnAllRowsWithoutPerfDataAlso=true
     @GET("/GetCourseAnalysis")
     void getCourseAnalysis(@Query("idStudent") String studentId,
-                                  @Query("idCourse") String courseId,
-                                  @Query("idSubject")String subjectID,
-                                  @Query("GroupLevel")String groupLevel,
-                                  @Query("BreakupByDate")String breakUpByDate,
-                                  @Query("DurationInDays")String durationInDays,
-                                  @Query("ReturnAllRowsWithoutPerfDataAlso")String returnAllRowsWithourPerfData,
-                                  ApiCallback<List<CourseAnalysis>> callback);
+                           @Query("idCourse") String courseId,
+                           @Query("idSubject") String subjectID,
+                           @Query("GroupLevel") String groupLevel,
+                           @Query("BreakupByDate") String breakUpByDate,
+                           @Query("DurationInDays") String durationInDays,
+                           @Query("ReturnAllRowsWithoutPerfDataAlso") String returnAllRowsWithourPerfData,
+                           ApiCallback<List<CourseAnalysis>> callback);
 
     @GET("/GetTestCoverage")
     void getTestCoverage(@Query("idStudent") String studentId,
-                           @Query("idCourse") String courseId,
-                           ApiCallback<List<TestCoverage>> callback);
+                         @Query("idCourse") String courseId,
+                         ApiCallback<List<TestCoverage>> callback);
 
     @GET("/ContentIndex")
     void getContentIndexData(@Query("idCourse") String courseId, @Query("idStudent") String studentId, ApiCallback<List<ContentIndex>> callback);
@@ -75,7 +79,7 @@ public interface ICorsaliteApi {
     void getContentData(@Query("idContents") String idContents, @Query("UpdateTime") String UpdateTime, ApiCallback<List<Content>> callback);
 
     @POST("/UserProfile")
-    void updateUserProfile(@Query("Update")String userProfile, ApiCallback<EditProfileModel> callback);
+    void updateUserProfile(@Query("Update") String userProfile, ApiCallback<EditProfileModel> callback);
 
     @POST("/StudentCourseList")
     void updateDefaultCourse(@Query("Update") String update, ApiCallback<DefaultCourseResponse> callback);
