@@ -34,10 +34,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:layout_margin="8dp"
             android:visibility="gone">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                style="@style/analytics_title_style"
                 android:text="Progress Report based on 365 days of Performance"/>
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -48,11 +50,13 @@
                     android:layout_width="200dp"
                     android:layout_height="400dp"
                     android:layout_alignParentRight="true"
-                    android:paddingTop="15dp" />
+                    android:paddingTop="15dp"
+                    android:scrollbars="vertical"/>
 
                 <com.github.mikephil.charting.charts.LineChart
                     android:layout_width="match_parent"
-                    android:layout_height="450dp"
+                    android:layout_height="400dp"
+                    android:layout_toLeftOf="@id/rv_legend"
                     android:id="@+id/lc_progress_report">
                 </com.github.mikephil.charting.charts.LineChart>
             </RelativeLayout>
@@ -60,6 +64,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                style="@style/analytics_title_style"
                 android:text="Progress Report in Percentile based on Performance in Standard Tests"/>
 
             <RelativeLayout
@@ -70,10 +75,12 @@
                     android:layout_width="200dp"
                     android:layout_height="400dp"
                     android:layout_alignParentRight="true"
-                    android:paddingTop="15dp" />
+                    android:paddingTop="15dp"
+                    android:scrollbars="vertical"/>
                 <com.github.mikephil.charting.charts.LineChart
                     android:layout_width="match_parent"
-                    android:layout_height="450dp"
+                    android:layout_height="400dp"
+                    android:layout_toLeftOf="@id/rv_legend_percentile"
                     android:id="@+id/lc_progress_report_percentile">
                 </com.github.mikephil.charting.charts.LineChart>
 

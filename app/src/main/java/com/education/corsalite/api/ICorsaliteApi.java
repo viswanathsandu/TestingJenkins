@@ -1,5 +1,6 @@
 package com.education.corsalite.api;
 
+import com.education.corsalite.models.responsemodels.CourseAnalysisPercentile;
 import com.education.corsalite.models.responsemodels.DefaultCourseResponse;
 import com.education.corsalite.models.responsemodels.EditProfileModel;
 import com.education.corsalite.models.responsemodels.Content;
@@ -61,6 +62,16 @@ public interface ICorsaliteApi {
                                   @Query("DurationInDays")String durationInDays,
                                   @Query("ReturnAllRowsWithoutPerfDataAlso")String returnAllRowsWithourPerfData,
                                   ApiCallback<List<CourseAnalysis>> callback);
+
+    @GET("/GetCourseAnalysisAsPercentile")
+    void getCourseAnalysisPercentile(@Query("idStudent") String studentId,
+                           @Query("idCourse") String courseId,
+                           @Query("idSubject")String subjectID,
+                           @Query("GroupLevel")String groupLevel,
+                           @Query("BreakupByDate")String breakUpByDate,
+                           @Query("DurationInDays")String durationInDays,
+                           @Query("ReturnAllRowsWithoutPerfDataAlso")String returnAllRowsWithourPerfData,
+                           ApiCallback<List<CourseAnalysisPercentile>> callback);
 
     @GET("/GetTestCoverage")
     void getTestCoverage(@Query("idStudent") String studentId,
