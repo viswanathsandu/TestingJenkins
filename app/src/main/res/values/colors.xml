@@ -18,7 +18,7 @@
     <color name="transparent">#00000000</color>
     <color name="gray_dark_border">#4D4E4F</color>
     <color name="header_row_background">#a4aeb9</color>
-
+    <color name="webview_background_grey">#F7F8F9</color>
     <!--Text colors-->
     <color name="text_gray">#666666</color>
     <color name="text_red">#c61515</color>

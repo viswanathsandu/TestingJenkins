@@ -64,6 +64,12 @@
                 android:drawableLeft="@drawable/ico_sidemenu_calendar"
                 style="@style/navigation_drawer_element" />
 
+            <TextView
+                android:id="@+id/navigation_notes"
+                android:drawableLeft="@drawable/ico_add_note"
+                android:text="@string/notes"
+                style="@style/navigation_drawer_element" />
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
