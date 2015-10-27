@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
+
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.GridRecyclerAdapter;
 import com.education.corsalite.adapters.NotesAdapter;
@@ -31,10 +32,10 @@ public class NotesActivity extends AbstractBaseActivity {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private LayoutInflater inflater;
-    private String mSubjectId = "";
-    private String mChapterId = "";
-    private String mTopicId = "";
-    private String mContentId = "";
+    private String mSubjectId = null;
+    private String mChapterId = null;
+    private String mTopicId = null;
+    private List<SubjectNameSection> mListData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +68,7 @@ public class NotesActivity extends AbstractBaseActivity {
     }
 
     private void setAdapter() {
-        mAdapter = new NotesAdapter(this, new ArrayList<Note>(), inflater);
+        mAdapter = new NotesAdapter(this, new ArrayList<SubjectNameSection>(), inflater);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
@@ -75,7 +76,7 @@ public class NotesActivity extends AbstractBaseActivity {
     }
 
     private void getNotesData() {
-        ApiManager.getInstance(this).getNotes(LoginUserCache.getInstance().loginResponse.studentId,mSubjectId, mChapterId, mTopicId,new ApiCallback<List<Note>>(this) {
+        ApiManager.getInstance(this).getNotes(LoginUserCache.getInstance().loginResponse.studentId, mSubjectId, mChapterId, mTopicId, new ApiCallback<List<Note>>(this) {
             @Override
             public void failure(CorsaliteError error) {
                 super.failure(error);
@@ -87,10 +88,43 @@ public class NotesActivity extends AbstractBaseActivity {
             @Override
             public void success(List<Note> notesList, Response response) {
                 super.success(notesList, response);
+                mListData = new ArrayList<SubjectNameSection>();
                 if (notesList != null) {
-                    ((NotesAdapter)mAdapter).updateNotesList(notesList);
+                    String chapter = "";
+                    for (Note note : notesList) {
+                        if (note != null && note.chapter != null) {
+                            if (!chapter.equals(note.chapter)) {
+                                chapter = note.chapter;
+                                SubjectNameSection item = new SubjectNameSection(SubjectNameSection.SECTION, note);
+                                mListData.add(item);
+                                setItemData(note);
+                            } else {
+                                setItemData(note);
+                            }
+                        }
+                    }
+                    ((NotesAdapter) mAdapter).updateNotesList(mListData);
                 }
             }
         });
     }
+
+    private void setItemData(Note note) {
+        SubjectNameSection listItem = new SubjectNameSection(SubjectNameSection.ITEM, note);
+        mListData.add(listItem);
+    }
+
+    public class SubjectNameSection {
+
+        public static final int SECTION = 0;
+        public static final int ITEM = 1;
+        public final int type;
+        public final Object tag;
+
+        public SubjectNameSection(int type, Object tag) {
+            this.type = type;
+            this.tag = tag;
+        }
+    }
 }
+
