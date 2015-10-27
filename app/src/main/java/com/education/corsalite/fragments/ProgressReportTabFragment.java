@@ -139,11 +139,6 @@ public class ProgressReportTabFragment extends Fragment {
                         mProgressBar.setVisibility(View.GONE);
                         initializeGraph(progressReportChart);
                         buildGraphData(courseAnalysisList, "Total", totalCount++);
-                        setData(progressReportChart);
-                        Legend legend = progressReportChart.getLegend();
-                        customLegendAdapter = new CustomLegendAdapter(legend.getColors(),legend.getLabels(),getActivity().getLayoutInflater());
-                        mLegend.setAdapter(customLegendAdapter);
-
                     }
                 });
 
@@ -197,11 +192,7 @@ public class ProgressReportTabFragment extends Fragment {
                         mProgressBar.setVisibility(View.GONE);
                         initializeGraph(progressReportPercentileChart);
                         buildLineGraphDataPercentile(courseAnalysisList, "Test", totalCount++);
-                        setDataPercentile(progressReportPercentileChart);
 
-                        Legend legend = progressReportPercentileChart.getLegend();
-                        customLegendAdapter = new CustomLegendAdapter(legend.getColors(),legend.getLabels(),getActivity().getLayoutInflater());
-                        mLegendPercentile.setAdapter(customLegendAdapter);
 
 
                     }
@@ -244,13 +235,13 @@ public class ProgressReportTabFragment extends Fragment {
 
     }
 
-    List<LineDataSet> lineDataSets = new ArrayList<>();
-    ArrayList<String> xVals = new ArrayList<>();
-
-    List<LineDataSet> lineDataSetsPercentile = new ArrayList<>();
-    ArrayList<String> xValsPercentile = new ArrayList<>();
+    LineData data ;
+    LineData dataPercentile;
 
     private void buildGraphData(List<CourseAnalysis> courseAnalysisList,String subject,int colorIndex){
+
+        List<LineDataSet> lineDataSets = new ArrayList<>();
+        ArrayList<String> xVals = new ArrayList<>();
         for (int i = 0; i < courseAnalysisList.size(); i++) {
             if(courseAnalysisList.get(i).date != null && !courseAnalysisList.get(i).date.isEmpty()) {
                 xVals.add(courseAnalysisList.get(i).date);
@@ -277,9 +268,22 @@ public class ProgressReportTabFragment extends Fragment {
         set1.setFillColor(AnalyticsHelper.getColors().get(colorIndex));
 
         lineDataSets.add(set1);
+        if(data == null) {
+            data = new LineData(AnalyticsHelper.parseDate(xVals, true), lineDataSets);
+        }else{
+            for (LineDataSet dataset:lineDataSets) {
+                data.addDataSet(dataset);
+            }
+        }
+        progressReportChart.setData(data);
+        Legend legend = progressReportChart.getLegend();
+        customLegendAdapter = new CustomLegendAdapter(legend.getColors(),legend.getLabels(),getActivity().getLayoutInflater());
+        mLegend.setAdapter(customLegendAdapter);
     }
 
     private void buildLineGraphDataPercentile(List<CourseAnalysisPercentile> courseAnalysisList,String subject,int colorIndex){
+        List<LineDataSet> lineDataSetsPercentile = new ArrayList<>();
+        ArrayList<String> xValsPercentile = new ArrayList<>();
         for (int i = 0; i < courseAnalysisList.size(); i++) {
             if(courseAnalysisList.get(i).startTime != null && !courseAnalysisList.get(i).startTime.isEmpty()) {
                 xValsPercentile.add(courseAnalysisList.get(i).startTime);
@@ -306,20 +310,17 @@ public class ProgressReportTabFragment extends Fragment {
         set1.setFillColor(AnalyticsHelper.getColors().get(colorIndex));
 
         lineDataSetsPercentile.add(set1);
+        if(dataPercentile == null) {
+            dataPercentile = new LineData(xValsPercentile, lineDataSetsPercentile);
+        }else{
+            for (LineDataSet dataset:lineDataSetsPercentile) {
+                dataPercentile.addDataSet(dataset);
+            }
+        }
+        progressReportPercentileChart.setData(dataPercentile);
+        Legend legend = progressReportPercentileChart.getLegend();
+        customLegendAdapter = new CustomLegendAdapter(legend.getColors(),legend.getLabels(),getActivity().getLayoutInflater());
+        mLegendPercentile.setAdapter(customLegendAdapter);
     }
 
-    /*private void buildBarGraphData(List<CourseAnalysisPercentile> courseAnalysisPercentiles){
-
-
-    }*/
-
-    private void setDataPercentile(LineChart mChart){
-        LineData data = new LineData(xValsPercentile,lineDataSetsPercentile);
-        mChart.setData(data);
-    }
-
-    private  void setData(LineChart mChart){
-        LineData data = new LineData(AnalyticsHelper.parseDate(xVals,true), lineDataSets);
-        mChart.setData(data);
-    }
 }
