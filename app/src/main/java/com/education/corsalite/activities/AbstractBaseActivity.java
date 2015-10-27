@@ -201,13 +201,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 startActivity(new Intent(AbstractBaseActivity.this, OfflineContentActivity.class));
             }
         });
-
-        navigationView.findViewById(R.id.navigation_notes).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(AbstractBaseActivity.this, NotesActivity.class));
-            }
-        });
     }
 
     protected void setToolbarTitle(String title) {

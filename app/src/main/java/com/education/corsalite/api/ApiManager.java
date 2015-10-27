@@ -48,7 +48,7 @@ public class ApiManager {
     private AssetManager assets;
 
     public static ApiManager getInstance(Context context) {
-        if(instance == null) {
+        if (instance == null) {
             instance = new ApiManager();
         }
         instance.assets = context.getAssets();
@@ -56,7 +56,7 @@ public class ApiManager {
     }
 
     public boolean isApiOnline() {
-        L.info("Network Mode is "+AppConfig.NETWORK_MODE.getValue());
+        L.info("Network Mode is " + AppConfig.NETWORK_MODE.getValue());
         return AppConfig.NETWORK_MODE == NetworkMode.ONLINE;
     }
 
@@ -67,54 +67,54 @@ public class ApiManager {
     }
 
     public void login(String loginId, String passwordHash, ApiCallback<LoginResponse> callback) {
-        if(isApiOnline()) {
+        if (isApiOnline()) {
             ApiClientService.get().login(loginId, passwordHash, callback);
         } else {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/login.json");
-            L.info("Response for 'api/login.json' is "+jsonResponse);
+            L.info("Response for 'api/login.json' is " + jsonResponse);
             callback.success(new Gson().fromJson(jsonResponse, LoginResponse.class), getRetrofitResponse());
         }
     }
 
     public void logout(String update, ApiCallback<LogoutResponse> callback) {
-        if(isApiOnline()) {
+        if (isApiOnline()) {
             ApiClientService.get().logout(update, callback);
         } else {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/logout.json");
-            L.info("Response for 'api/logout.json' is "+jsonResponse);
+            L.info("Response for 'api/logout.json' is " + jsonResponse);
             callback.success(new Gson().fromJson(jsonResponse, LogoutResponse.class), getRetrofitResponse());
         }
     }
 
     public void getCourses(String studentId, ApiCallback<List<Course>> callback) {
-        if(isApiOnline()) {
+        if (isApiOnline()) {
             ApiClientService.get().getCourses(studentId, callback);
         } else {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/courses.json");
-            L.info("Response for 'api/courses.json' is "+jsonResponse);
+            L.info("Response for 'api/courses.json' is " + jsonResponse);
             callback.success(new Gson().fromJson(jsonResponse, List.class), getRetrofitResponse());
         }
     }
 
-    public void getCourseAnalysisData(String studentId,String courseId,String subjectId,
-                                      String groupLevel,String breakUpByDate,
-                                      String durationInDays,String returnAllRowsWithourPerfData,
-                                      ApiCallback<List<CourseAnalysis>> callback){
-        if(isApiOnline()) {
+    public void getCourseAnalysisData(String studentId, String courseId, String subjectId,
+                                      String groupLevel, String breakUpByDate,
+                                      String durationInDays, String returnAllRowsWithourPerfData,
+                                      ApiCallback<List<CourseAnalysis>> callback) {
+        if (isApiOnline()) {
             ApiClientService.get().getCourseAnalysis(studentId, courseId, subjectId, groupLevel, breakUpByDate, durationInDays, returnAllRowsWithourPerfData, callback);
         } else {
-            String jsonResponse=null;
-            if(groupLevel.equalsIgnoreCase("chapter")) {
+            String jsonResponse = null;
+            if (groupLevel.equalsIgnoreCase("chapter")) {
                 jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/course_analysis_by_chapter.json");
                 L.info("Response for 'api/course_analysis_by_chapter.json' is " + jsonResponse);
-            }else if(groupLevel.equalsIgnoreCase("dates")) {
+            } else if (groupLevel.equalsIgnoreCase("dates")) {
                 jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/course_analysis_by_date.json");
                 L.info("Response for 'api/course_analysis_by_dates.json' is " + jsonResponse);
             }
             JsonParser jsonParser = new JsonParser();
-            JsonArray analyticsarray= jsonParser.parse(jsonResponse).getAsJsonArray();
+            JsonArray analyticsarray = jsonParser.parse(jsonResponse).getAsJsonArray();
             List<CourseAnalysis> courseAnalysisList = new ArrayList<>();
-            for ( JsonElement aUser : analyticsarray ) {
+            for (JsonElement aUser : analyticsarray) {
                 CourseAnalysis courseAnalysis = new Gson().fromJson(aUser, CourseAnalysis.class);
                 courseAnalysisList.add(courseAnalysis);
             }
@@ -122,20 +122,21 @@ public class ApiManager {
         }
 
     }
-    public void getCourseAnalysisAsPercentile(String studentId,String courseId,String subjectId,
-                                      String groupLevel,String breakUpByDate,
-                                      String durationInDays,String returnAllRowsWithourPerfData,
-                                      ApiCallback<List<CourseAnalysisPercentile>> callback){
-        if(isApiOnline()) {
+
+    public void getCourseAnalysisAsPercentile(String studentId, String courseId, String subjectId,
+                                              String groupLevel, String breakUpByDate,
+                                              String durationInDays, String returnAllRowsWithourPerfData,
+                                              ApiCallback<List<CourseAnalysisPercentile>> callback) {
+        if (isApiOnline()) {
             ApiClientService.get().getCourseAnalysisPercentile(studentId, courseId, subjectId, groupLevel, breakUpByDate, durationInDays, returnAllRowsWithourPerfData, callback);
         } else {
-            String jsonResponse=null;
+            String jsonResponse = null;
             jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/course_analysis_percentile.json");
             L.info("Response for 'api/course_analysis_percentile.json' is " + jsonResponse);
             JsonParser jsonParser = new JsonParser();
-            JsonArray analyticsarray= jsonParser.parse(jsonResponse).getAsJsonArray();
+            JsonArray analyticsarray = jsonParser.parse(jsonResponse).getAsJsonArray();
             List<CourseAnalysisPercentile> courseAnalysisList = new ArrayList<>();
-            for ( JsonElement aUser : analyticsarray ) {
+            for (JsonElement aUser : analyticsarray) {
                 CourseAnalysisPercentile courseAnalysisPercentile = new Gson().fromJson(aUser, CourseAnalysisPercentile.class);
                 courseAnalysisList.add(courseAnalysisPercentile);
             }
@@ -143,16 +144,17 @@ public class ApiManager {
         }
 
     }
-    public void getTestCoverage(String studentId,String courseId,ApiCallback<List<TestCoverage>> callback){
-        if(isApiOnline()) {
+
+    public void getTestCoverage(String studentId, String courseId, ApiCallback<List<TestCoverage>> callback) {
+        if (isApiOnline()) {
             ApiClientService.get().getTestCoverage(studentId, courseId, callback);
         } else {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/test_coverage.json");
             L.info("Response for 'api/test_coverage.json' is " + jsonResponse);
             JsonParser jsonParser = new JsonParser();
-            JsonArray analyticsarray= jsonParser.parse(jsonResponse).getAsJsonArray();
+            JsonArray analyticsarray = jsonParser.parse(jsonResponse).getAsJsonArray();
             List<TestCoverage> testCoverageList = new ArrayList<>();
-            for ( JsonElement aUser : analyticsarray ) {
+            for (JsonElement aUser : analyticsarray) {
                 TestCoverage testCoverage = new Gson().fromJson(aUser, TestCoverage.class);
                 testCoverageList.add(testCoverage);
             }
@@ -162,37 +164,37 @@ public class ApiManager {
     }
 
     public void getUserProfile(String studentId, ApiCallback<UserProfileResponse> callback) {
-        if(isApiOnline()) {
+        if (isApiOnline()) {
             ApiClientService.get().getUserProfile(studentId, callback);
         } else {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/user_profile.json");
-            L.info("Response for 'api/user_profile.json' is "+jsonResponse);
+            L.info("Response for 'api/user_profile.json' is " + jsonResponse);
             callback.success(new Gson().fromJson(jsonResponse, UserProfileResponse.class), getRetrofitResponse());
         }
     }
 
     public void getVirtualCurrencyBalance(String studentId, ApiCallback<VirtualCurrencyBalanceResponse> callback) {
-        if(isApiOnline()) {
+        if (isApiOnline()) {
             ApiClientService.get().getVirtualCurrencyBalance(studentId, callback);
         } else {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/virtual_currency_balance.json");
-            L.info("Response for 'api/virtual_currency_balance.json' is "+jsonResponse);
+            L.info("Response for 'api/virtual_currency_balance.json' is " + jsonResponse);
             callback.success(new Gson().fromJson(jsonResponse, VirtualCurrencyBalanceResponse.class), getRetrofitResponse());
         }
     }
 
     public void getVirtualCurrencyTransactions(String studentId, ApiCallback<VirtualCurrencySummaryResponse> callback) {
-        if(isApiOnline()) {
+        if (isApiOnline()) {
             ApiClientService.get().getVirtualCurrencyTransactions(studentId, callback);
         } else {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/virtual_currency_summary.json");
-            L.info("Response for 'api/virtual_currency_summary.json' is "+jsonResponse);
+            L.info("Response for 'api/virtual_currency_summary.json' is " + jsonResponse);
             callback.success(new Gson().fromJson(jsonResponse, VirtualCurrencySummaryResponse.class), getRetrofitResponse());
         }
     }
 
     public void getMessages(String studentId, ApiCallback<List<Message>> callback) {
-        if(isApiOnline()) {
+        if (isApiOnline()) {
             ApiClientService.get().getMessages(studentId, callback);
         } else {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/messages.json");
@@ -202,7 +204,7 @@ public class ApiManager {
     }
 
     public void getStudyCentreData(String studentId, String courseID, ApiCallback<List<StudyCenter>> callback) {
-        if(isApiOnline()) {
+        if (isApiOnline()) {
             ApiClientService.get().getCourseStudyCenterData(studentId, courseID, callback);
         } else {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/studycentre.json");
@@ -212,7 +214,7 @@ public class ApiManager {
     }
 
     public void getContentIndex(String courseID, String studentId, ApiCallback<List<ContentIndex>> callback) {
-        if(isApiOnline()) {
+        if (isApiOnline()) {
             ApiClientService.get().getContentIndexData(courseID, studentId, callback);
         } else {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/content_index.json");
@@ -221,7 +223,7 @@ public class ApiManager {
     }
 
     public void getContent(String idContents, String UpdateTime, ApiCallback<List<Content>> callback) {
-        if(isApiOnline()) {
+        if (isApiOnline()) {
             ApiClientService.get().getContentData(idContents, UpdateTime, callback);
         } else {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/content_data.json");
@@ -230,33 +232,34 @@ public class ApiManager {
         }
     }
 
-    public void getNotes(ApiCallback<List<Note>> callback) {
-        if(isApiOnline()) {
+    public void getNotes(String studentId, String mSubjectId, String mChapterId, String mTopicId, ApiCallback<List<Note>> callback) {
+        if (isApiOnline()) {
             // TODO : uncomment it when API works fine
-//            ApiClientService.get().getNotes(studentId, chapterId, topicId, callback);
-//        } else {
+            ApiClientService.get().getNotes(studentId, mSubjectId, mChapterId, mTopicId, callback);
+        } else {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/notes.json");
             System.out.print("Response for 'api/notes.json' is " + jsonResponse);
-            Type listType = new TypeToken<ArrayList<Note>>() {}.getType();
+            Type listType = new TypeToken<ArrayList<Note>>() {
+            }.getType();
             List<Note> notes = new Gson().fromJson(jsonResponse, listType);
             callback.success(notes, getRetrofitResponse());
         }
     }
 
     public void updateUserProfile(String userProfile, ApiCallback<EditProfileModel> callback) {
-        if(isApiOnline()) {
+        if (isApiOnline()) {
             ApiClientService.get().updateUserProfile(userProfile, callback);
         }
     }
 
     public void updateDefaultCourse(String defaultCourse, ApiCallback<DefaultCourseResponse> callback) {
-        if(isApiOnline()) {
+        if (isApiOnline()) {
             ApiClientService.get().updateDefaultCourse(defaultCourse, callback);
         }
     }
 
     public void updateExamDetails(String examDetails, ApiCallback<UpdateExamDetailsResponse> callback) {
-        if(isApiOnline()) {
+        if (isApiOnline()) {
             ApiClientService.get().updateExamDetails(examDetails, callback);
         }
     }

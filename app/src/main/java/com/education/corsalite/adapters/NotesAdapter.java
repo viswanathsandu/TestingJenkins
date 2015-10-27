@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
@@ -50,7 +51,7 @@ public class NotesAdapter extends AbstractRecycleViewAdapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((NotesDataHolder)holder).bindData(notesList.get(position));
+        ((NotesDataHolder)holder).bindData(notesList.get(position),position);
     }
 
     @Override
@@ -61,11 +62,13 @@ public class NotesAdapter extends AbstractRecycleViewAdapter {
     public class NotesDataHolder extends RecyclerView.ViewHolder {
 
         public TextView notesHeading;
+        public Button deleteBtn;
         public WebView notesContentWebview;
 
         public NotesDataHolder(View itemView) {
             super(itemView);
             notesHeading = (TextView) itemView.findViewById(R.id.chapter_name);
+            deleteBtn = (Button) itemView.findViewById(R.id.delete_btn);
             notesContentWebview = (WebView) itemView.findViewById(R.id.notes_content_webview);
             notesContentWebview.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
             notesContentWebview.setScrollbarFadingEnabled(true);
@@ -88,9 +91,20 @@ public class NotesAdapter extends AbstractRecycleViewAdapter {
             });
         }
 
-        public void bindData(final Note note) {
+        public void bindData(final Note note, final int position) {
             notesContentWebview.loadData(note.noteHtml, "text/html", "UTF-8");
             notesHeading.setText(note.chapter);
+            deleteBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    removeAt(position);
+                }
+            });
+        }
+
+        private void removeAt(int itemPosition) {
+            notesList.remove(itemPosition);
+            notifyItemRemoved(itemPosition);
         }
     }
 }
