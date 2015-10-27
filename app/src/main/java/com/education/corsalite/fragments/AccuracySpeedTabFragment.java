@@ -22,6 +22,7 @@ import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.CourseAnalysis;
+import com.education.corsalite.utils.AnalyticsHelper;
 import com.education.corsalite.utils.L;
 import com.github.mikephil.charting.charts.ScatterChart;
 import com.github.mikephil.charting.components.Legend;
@@ -30,9 +31,9 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.ScatterData;
 import com.github.mikephil.charting.data.ScatterDataSet;
 import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -80,7 +81,7 @@ public class AccuracySpeedTabFragment extends Fragment   {
     public void onResume() {
         super.onResume();
         if(AbstractBaseActivity.selectedCourse != null) {
-            drawGraphs(AbstractBaseActivity.selectedCourse.courseId+"");
+            onEvent(AbstractBaseActivity.selectedCourse);
         }
     }
 
@@ -102,6 +103,7 @@ public class AccuracySpeedTabFragment extends Fragment   {
                     public void failure(CorsaliteError error)
                     {
                         L.error(error.message);
+                        showFailMessage();
                     }
 
                     @Override
@@ -127,8 +129,7 @@ public class AccuracySpeedTabFragment extends Fragment   {
                     public void failure(CorsaliteError error) {
                         super.failure(error);
                         L.error(error.message);
-                        mProgressBar.setVisibility(View.GONE);
-                        mTextViewFail.setVisibility(View.VISIBLE);
+                        showFailMessage();
                     }
 
                     @Override
@@ -141,14 +142,16 @@ public class AccuracySpeedTabFragment extends Fragment   {
                         mParentLayout.setVisibility(View.VISIBLE);
                         buildChapterGraphData(courseAnalysisList, DATES);
                         Legend datesLegend = accuracyDateChart.getLegend();
-                        customLegendAdapter = new CustomLegendAdapter(datesLegend.getColors(),datesLegend.getLabels(),getActivity().getLayoutInflater());
+                        ArrayList<String> dates = new ArrayList<String>(Arrays.asList(datesLegend.getLabels()));
+                        Object[] objectArray =  AnalyticsHelper.parseDate(dates,false).toArray();
+                        customLegendAdapter = new CustomLegendAdapter(datesLegend.getColors()
+                                ,Arrays.asList(objectArray).toArray(new String[objectArray.length])
+                                ,getActivity().getLayoutInflater());
                         rvDatesLegend.setAdapter(customLegendAdapter);
                     }
                 });
 
     }
-
-
 
     private void showFailMessage(){
         failCount++;
@@ -210,24 +213,13 @@ public class AccuracySpeedTabFragment extends Fragment   {
             }
         }
 
-        ArrayList<Integer> colors = new ArrayList<>();
-
-        for (int c : ColorTemplate.JOYFUL_COLORS)
-            colors.add(c);
-
-        for (int c : ColorTemplate.COLORFUL_COLORS)
-            colors.add(c);
-
-        for (int c : ColorTemplate.PASTEL_COLORS)
-            colors.add(c);
-
         ArrayList<ScatterDataSet> scatterDataSetList = new ArrayList<>();
 
         int i=0;
         for (Map.Entry<String,ArrayList<Entry>> entry : numYValEntries.entrySet()) {
             ScatterDataSet dataSet = new ScatterDataSet(entry.getValue(),entry.getKey());
             scatterDataSetList.add(dataSet);
-            dataSet.setColor(colors.get(i%colors.size()));
+            dataSet.setColor(AnalyticsHelper.getColors().get(i % AnalyticsHelper.getColors().size()));
             dataSet.setScatterShape(ScatterChart.getAllPossibleShapes()[i % 4]);
             dataSet.setScatterShapeSize(8f);
             i++;

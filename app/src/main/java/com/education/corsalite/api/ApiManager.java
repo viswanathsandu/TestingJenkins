@@ -5,12 +5,13 @@ import android.content.res.AssetManager;
 
 import com.education.corsalite.config.AppConfig;
 import com.education.corsalite.enums.NetworkMode;
-import com.education.corsalite.models.responsemodels.DefaultCourseResponse;
-import com.education.corsalite.models.responsemodels.EditProfileModel;
 import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.CourseAnalysis;
+import com.education.corsalite.models.responsemodels.CourseAnalysisPercentile;
+import com.education.corsalite.models.responsemodels.DefaultCourseResponse;
+import com.education.corsalite.models.responsemodels.EditProfileModel;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
 import com.education.corsalite.models.responsemodels.Message;
@@ -118,7 +119,27 @@ public class ApiManager {
         }
 
     }
+    public void getCourseAnalysisAsPercentile(String studentId,String courseId,String subjectId,
+                                      String groupLevel,String breakUpByDate,
+                                      String durationInDays,String returnAllRowsWithourPerfData,
+                                      ApiCallback<List<CourseAnalysisPercentile>> callback){
+        if(isApiOnline()) {
+            ApiClientService.get().getCourseAnalysisPercentile(studentId, courseId, subjectId, groupLevel, breakUpByDate, durationInDays, returnAllRowsWithourPerfData, callback);
+        } else {
+            String jsonResponse=null;
+            jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/course_analysis_percentile.json");
+            L.info("Response for 'api/course_analysis_percentile.json' is " + jsonResponse);
+            JsonParser jsonParser = new JsonParser();
+            JsonArray analyticsarray= jsonParser.parse(jsonResponse).getAsJsonArray();
+            List<CourseAnalysisPercentile> courseAnalysisList = new ArrayList<>();
+            for ( JsonElement aUser : analyticsarray ) {
+                CourseAnalysisPercentile courseAnalysisPercentile = new Gson().fromJson(aUser, CourseAnalysisPercentile.class);
+                courseAnalysisList.add(courseAnalysisPercentile);
+            }
+            callback.success(courseAnalysisList, getRetrofitResponse());
+        }
 
+    }
     public void getTestCoverage(String studentId,String courseId,ApiCallback<List<TestCoverage>> callback){
         if(isApiOnline()) {
             ApiClientService.get().getTestCoverage(studentId, courseId, callback);

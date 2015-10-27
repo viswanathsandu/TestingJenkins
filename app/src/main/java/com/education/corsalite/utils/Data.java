@@ -1,6 +1,5 @@
 package com.education.corsalite.utils;
 
-import android.content.Intent;
 import android.text.TextUtils;
 
 /**
@@ -55,4 +54,6 @@ public class Data {
         }
         return 0l;
     }
+
+
 }
