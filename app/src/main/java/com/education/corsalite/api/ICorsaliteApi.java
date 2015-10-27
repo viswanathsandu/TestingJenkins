@@ -99,6 +99,6 @@ public interface ICorsaliteApi {
     void updateExamDetails(@Query("Update") String update, ApiCallback<UpdateExamDetailsResponse> callback);
 
     @GET("/Note")
-    void getNotes(@Query("idSubject") String studentId, @Query("idChapter") String chapterId, @Query("idTopic") String topicId, ApiCallback<List<Note>> callback);
+    void getNotes(@Query("idStudent") String studentId, @Query("idSubject") String subjectId , @Query("idChapter") String chapterId, @Query("idTopic") String topicId, ApiCallback<List<Note>> callback);
 
 }
