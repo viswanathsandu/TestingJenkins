@@ -3,7 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/webview_background_grey"
+    android:layout_margin="10dp">
 
 
     <TextView
@@ -15,12 +17,33 @@
         style="@style/notes_heading"
         android:layout_width="wrap_content" />
 
-    <TextView
-        android:gravity="center"
-        android:id="@+id/notes_text"
+    <WebView
+        android:id="@+id/notes_content_webview"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Message"
-        style="@style/user_profile_text"
-        android:layout_width="wrap_content" />
+        android:background="@color/webview_background_grey"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="right"
+        android:paddingTop="10dp">
+        <Button
+            android:id="@+id/delete_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:text="Delete"
+            android:background="@drawable/red_shape_selector"
+            android:textColor="@color/text_white" />
+
+        <Button
+            android:id="@+id/edit_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:text="Edit"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/blueshape_selector"
+            android:textColor="@color/text_white" />
+    </LinearLayout>
 </LinearLayout>

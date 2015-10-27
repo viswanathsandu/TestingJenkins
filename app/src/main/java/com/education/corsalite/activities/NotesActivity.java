@@ -2,6 +2,7 @@ package com.education.corsalite.activities;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -13,6 +14,8 @@ import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Note;
 import com.education.corsalite.models.responsemodels.Notes;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit.client.Response;
@@ -24,16 +27,17 @@ public class NotesActivity extends AbstractBaseActivity {
     private LinearLayout linearLayout;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
-
+    private LayoutInflater inflater;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         LinearLayout myView = (LinearLayout) inflater.inflate(R.layout.activity_notes, null);
         linearLayout = (LinearLayout) myView.findViewById(R.id.notes_layout);
         frameLayout.addView(myView);
-        setToolbarForNotes();
+//        setToolbarForNotes();
         initUI();
+        setAdapter();
         getNotesData();
     }
 
@@ -41,24 +45,31 @@ public class NotesActivity extends AbstractBaseActivity {
         recyclerView = (RecyclerView) findViewById(R.id.notes_list);
     }
 
-    private void getNotesData() {
-        ApiManager.getInstance(this).getNotesData(new ApiCallback<List<Note>>(this) {
-                    @Override
-                    public void failure(CorsaliteError error) {
-                        super.failure(error);
-                        if (error != null && !TextUtils.isEmpty(error.message)) {
-                            showToast(error.message);
-                        }
-                    }
+    private void setAdapter() {
+        mAdapter = new NotesAdapter(this, new ArrayList<Note>(), inflater);
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(llm);
+        recyclerView.setAdapter(mAdapter);
+    }
 
-                    @Override
-                    public void success(List<Note> notesList, Response response) {
-                        super.success(notesList, response);
-                        if (notesList != null) {
-                            mAdapter = new NotesAdapter(notesList);
-                            recyclerView.setAdapter(mAdapter);
-                        }
-                    }
-                });
+    private void getNotesData() {
+        ApiManager.getInstance(this).getNotes(new ApiCallback<List<Note>>(this) {
+            @Override
+            public void failure(CorsaliteError error) {
+                super.failure(error);
+                if (error != null && !TextUtils.isEmpty(error.message)) {
+                    showToast(error.message);
+                }
+            }
+
+            @Override
+            public void success(List<Note> notesList, Response response) {
+                super.success(notesList, response);
+                if (notesList != null) {
+                    ((NotesAdapter)mAdapter).updateNotesList(notesList);
+                }
+            }
+        });
     }
 }
