@@ -2,6 +2,7 @@ package com.education.corsalite.fragments;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
@@ -49,7 +50,7 @@ import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
 import retrofit.client.Response;
 
-public class UserProfileDetailsFragment extends BaseFragment {
+public class UserProfileDetailsFragment extends BaseFragment implements EditProfilePicDialogFragment.IUpdateProfilePicListener {
 
     private final String COURSES_ENROLLED_HTML = "<b><font color=#000000>Enrolled Courses:</font></b>&nbsp;";
     @Bind(R.id.iv_userProfilePic) ImageView profilePicImg;
@@ -62,6 +63,7 @@ public class UserProfileDetailsFragment extends BaseFragment {
     @Bind(R.id.sp_default_course) Spinner coursesSpinner;
     @Bind(R.id.btn_default_course) Button coursesBtn;
     @Bind(R.id.redeem_btn)Button redeemBtn;
+    @Bind(R.id.btn_edit_pic)ImageView editProfilePic;
 
     private UserProfileResponse user;
     private UpdateExamData updateExamData;
@@ -126,11 +128,17 @@ public class UserProfileDetailsFragment extends BaseFragment {
                 showEditProfileFragment();
             }
         });
+        editProfilePic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showEditProfilePicDialogFragment();
+            }
+        });
         coursesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 defaultcourseIndex = position;
-                if(coursesSpinnerCLicked) {
+                if (coursesSpinnerCLicked) {
                     saveDefaultCourse(mCourses.get(position));
                 }
                 coursesSpinnerCLicked = false;
@@ -154,7 +162,22 @@ public class UserProfileDetailsFragment extends BaseFragment {
         Bundle bundle = new Bundle();
         bundle.putString("user_profile_response", new Gson().toJson(user));
         dialogFragment.setArguments(bundle);
-        dialogFragment.show(getFragmentManager(),"Edit Profile");
+        dialogFragment.show(getFragmentManager(), "Edit Profile");
+    }
+
+    private void showEditProfilePicDialogFragment(){
+        EditProfilePicDialogFragment dialogFragment = new EditProfilePicDialogFragment();
+        dialogFragment.setUpdateProfilePicListener(this);
+        Bundle bundle = new Bundle();
+        bundle.putString("user_profile_response", new Gson().toJson(user));
+        dialogFragment.setArguments(bundle);
+        dialogFragment.show(getFragmentManager(), "Edit Profile Picture");
+    }
+
+
+    @Override
+    public void onUpdateProfilePic(Bitmap image) {
+        profilePicImg.setImageBitmap(image);
     }
 
     private void saveDefaultCourse(Course course) {
