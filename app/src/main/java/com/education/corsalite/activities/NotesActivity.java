@@ -31,9 +31,9 @@ public class NotesActivity extends AbstractBaseActivity {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private LayoutInflater inflater;
-    private String mSubjectId = "";
-    private String mChapterId = "";
-    private String mTopicId = "";
+    private String mSubjectId;
+    private String mChapterId;
+    private String mTopicId;
     private String mContentId = "";
 
     @Override

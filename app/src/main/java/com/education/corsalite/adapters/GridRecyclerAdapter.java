@@ -129,8 +129,8 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
 
     private void putIntentExtras(Chapters chapter, Intent intent, String courseId, String subjectId, String chapterId) {
         intent.putExtra(courseId, AbstractBaseActivity.selectedCourse.courseId.toString());
-        intent.putExtra(subjectId, chapter.idCourseSubject);
-        intent.putExtra(chapterId, chapter.idCourseSubjectChapter);
+        intent.putExtra(subjectId, studyCentreActivity.getSelectedSubjectId());
+        intent.putExtra(chapterId, chapter.idCourseSubjectchapter);
     }
 
     private double getCompletedTopicsPercentage(Chapters chapter) {
