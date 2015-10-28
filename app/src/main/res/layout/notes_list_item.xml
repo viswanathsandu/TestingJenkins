@@ -7,16 +7,6 @@
     android:background="@color/webview_background_grey"
     android:layout_margin="10dp">
 
-
-    <TextView
-        android:gravity="center"
-        android:id="@+id/chapter_name"
-        android:layout_height="wrap_content"
-        android:text="Message"
-        android:paddingBottom="16dp"
-        style="@style/notes_heading"
-        android:layout_width="wrap_content" />
-
     <WebView
         android:id="@+id/notes_content_webview"
         android:layout_width="match_parent"
