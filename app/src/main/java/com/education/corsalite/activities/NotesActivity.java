@@ -43,7 +43,7 @@ public class NotesActivity extends AbstractBaseActivity {
         LinearLayout myView = (LinearLayout) inflater.inflate(R.layout.activity_notes, null);
         linearLayout = (LinearLayout) myView.findViewById(R.id.notes_layout);
         frameLayout.addView(myView);
-//        setToolbarForNotes();
+        setToolbarForNotes();
         getBundleData();
         initUI();
         setAdapter();
