@@ -18,14 +18,5 @@
         <item name="android:textColorSecondary">@color/white</item>
     </style>
 
-    <!-- Base application theme. -->
-    <style name="WebActivityTheme" parent="ThemeOverlay.AppCompat.Dark">
-        <!-- Customize your theme here. -->
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:colorPrimary">@color/user_profile_toolbar</item>
-        <item name="android:colorPrimaryDark">@color/user_profile_statusbar</item>
-        <item name="android:spinnerDropDownItemStyle">@style/spinnerItemStyle</item>
-        <item name="android:textColorSecondary">@color/white</item>
-    </style>
     
 </resources>
