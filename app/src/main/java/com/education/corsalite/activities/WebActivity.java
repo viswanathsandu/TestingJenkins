@@ -11,6 +11,9 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.JavascriptInterface;
+import android.webkit.JsResult;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
@@ -41,6 +44,7 @@ import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.FileUtilities;
 import com.education.corsalite.utils.FileUtils;
+import com.education.corsalite.utils.L;
 
 import java.io.File;
 import java.io.Serializable;
@@ -81,6 +85,8 @@ public class WebActivity extends AbstractBaseActivity {
     private String mTopicId = "";
     private String mContentId = "";
     private int mContentIdPosition;
+
+    private String selectedText = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,6 +143,26 @@ public class WebActivity extends AbstractBaseActivity {
         }
         webviewContentReading.getSettings().setAppCacheMaxSize(1024 * 1024 * 8);
 
+        webviewContentReading.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
+                L.info("JS return value "+message);
+                selectedText = message;
+                result.confirm();
+                return true;
+            }
+        });
+        webviewContentReading.addJavascriptInterface(new Object() {
+            @JavascriptInterface
+            public void test() {
+                L.debug("JS", "test");
+            }
+
+            @JavascriptInterface
+            public void onData(String value) {
+                L.info("JS data" + value);
+            }
+        }, "android");
         // Load the URLs inside the WebView, not in the external web browser
         webviewContentReading.setWebViewClient(new MyWebViewClient());
 
@@ -240,6 +266,7 @@ public class WebActivity extends AbstractBaseActivity {
 
                 case R.id.iv_editnotes:
                     showToast("Add is clicked");
+                    webviewContentReading.loadUrl("javascript:alert(copy())");
                     break;
 
                 case R.id.btn_next:
@@ -332,7 +359,13 @@ public class WebActivity extends AbstractBaseActivity {
                 String contentType = mContentResponse.get(i).type + "";
                 String text = contentType.equalsIgnoreCase(Constants.VIDEO_FILE) ?
                         mContentResponse.get(i).url :
-                        mContentResponse.get(i).contentHtml;
+                        "<script type='text/javascript'>" +
+                                "function copy() {" +
+                                "    var t = (document.all) ? document.selection.createRange().text : document.getSelection();" +
+                                "    return t;" +
+                                "}" +
+                                "</script>" + mContentResponse.get(i).contentHtml;
+                L.info("Content : "+text);
                 if(!contentType.isEmpty()) {
                     htmlUrl = fileUtilities.write(contentId + "." + contentType.trim(), text);
                 } else {
