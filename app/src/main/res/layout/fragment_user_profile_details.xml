@@ -13,6 +13,9 @@
         android:layout_weight="1"
         android:orientation="horizontal">
 
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
         <ImageView
             android:id="@+id/iv_userProfilePic"
             android:layout_width="180dp"
@@ -21,6 +24,13 @@
             android:scaleType="centerCrop"
             android:src="@drawable/user"
             android:layout_marginTop="10dp"/>
+            <ImageView
+                android:id="@+id/btn_edit_pic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ico_edit_pic"
+                android:layout_gravity="right|bottom"/>
+        </FrameLayout>
 
         <RelativeLayout
 
@@ -31,16 +41,18 @@
             <RelativeLayout
                 android:id="@+id/ll_user_name"
                 android:layout_width="wrap_content"
+                android:layout_margin="5dp"
                 android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/tv_userName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingRight="8dp"
-                    android:layout_alignParentLeft="true"
-                    style="@style/user_profile_heading_caps"
-                    android:layout_toLeftOf="@+id/sp_default_course"/>
+                    <TextView
+                        android:id="@+id/tv_userName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingRight="8dp"
+                        android:layout_alignParentLeft="true"
+                        android:drawableEnd="@drawable/ico_edit"
+                        style="@style/user_profile_heading_caps"/>
+
 
                 <Spinner
                     android:id="@+id/sp_default_course"
@@ -49,7 +61,7 @@
                     android:background="@drawable/shape_rounded_corners_black"
                     android:textColor="@color/white"
                     android:spinnerMode="dropdown"
-                    android:layout_toLeftOf="@+id/btn_edit" />
+                    android:layout_alignParentRight="true"/>
 
                 <Button
                     android:id="@+id/btn_default_course"
@@ -64,16 +76,6 @@
                     android:layout_alignBottom="@+id/sp_default_course"
                     fontPath="@string/roboto_medium"/>
 
-                <Button
-                    android:id="@+id/btn_edit"
-                    android:layout_width="70dp"
-                    android:layout_height="35dp"
-                    android:layout_alignParentRight="true"
-                    android:background="@drawable/shape_rounded_corners_black"
-                    android:text="EDIT"
-                    android:textColor="@color/white"
-                    android:layout_marginLeft="10dp"
-                    fontPath="@string/roboto_medium"/>
             </RelativeLayout>
 
             <TextView

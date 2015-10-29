@@ -3,11 +3,12 @@ package com.education.corsalite.models.responsemodels;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by vissu on 10/25/15.
+ * Created by ayush on 9/12/15.
  */
-public class Note extends BaseResponseModel {
+public class Notes extends BaseModel {
+
     @SerializedName("idSubject")
-    public String studentId;
+    public String subjectId;
     @SerializedName("Subject")
     public String subject;
     @SerializedName("idChapter")
@@ -23,7 +24,7 @@ public class Note extends BaseResponseModel {
     @SerializedName("Content")
     public String content;
     @SerializedName("idNotes")
-    public String idNotes;
+    public String notesId;
     @SerializedName("NoteHtml")
     public String noteHtml;
 }

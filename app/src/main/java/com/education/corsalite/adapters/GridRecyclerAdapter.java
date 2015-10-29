@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
+import com.education.corsalite.activities.NotesActivity;
 import com.education.corsalite.activities.StudyCentreActivity;
 import com.education.corsalite.activities.WebActivity;
 import com.education.corsalite.models.responsemodels.Chapters;
@@ -28,6 +29,9 @@ import java.util.List;
 import java.util.Locale;
 
 public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapter.StudyCenterSubjectViewHolder> {
+    public static final String COURSE_ID = "courseId";
+    public static final String SUBJECT_ID = "subjectId";
+    public static final String CHAPTER_ID = "chapterId";
     private List<Chapters> chapters;
     private String key;
     private StudyCentreActivity studyCentreActivity;
@@ -102,14 +106,31 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
                 startContentActivity(chapter);
             }
         });
+        dialogView.findViewById(R.id.notes_layout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+                startNotesActivity(chapter);
+            }
+        });
+    }
+
+    private void startNotesActivity(Chapters chapter) {
+        Intent intent = new Intent(studyCentreActivity, NotesActivity.class);
+        putIntentExtras(chapter, intent, COURSE_ID, SUBJECT_ID, CHAPTER_ID);
+        studyCentreActivity.startActivity(intent);
     }
 
     private void startContentActivity(Chapters chapter) {
         Intent intent = new Intent(studyCentreActivity, WebActivity.class);
-        intent.putExtra("courseId", AbstractBaseActivity.selectedCourse.courseId+"");
-        intent.putExtra("subjectId", chapter.idCourseSubject);
-        intent.putExtra("chapterId", chapter.idCourseSubjectChapter);
+        putIntentExtras(chapter, intent, COURSE_ID, SUBJECT_ID, CHAPTER_ID);
         studyCentreActivity.startActivity(intent);
+    }
+
+    private void putIntentExtras(Chapters chapter, Intent intent, String courseId, String subjectId, String chapterId) {
+        intent.putExtra(courseId, AbstractBaseActivity.selectedCourse.courseId.toString());
+        intent.putExtra(subjectId, studyCentreActivity.getSelectedSubjectId());
+        intent.putExtra(chapterId, chapter.idCourseSubjectchapter);
     }
 
     private double getCompletedTopicsPercentage(Chapters chapter) {

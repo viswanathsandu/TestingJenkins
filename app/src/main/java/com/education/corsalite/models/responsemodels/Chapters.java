@@ -13,8 +13,8 @@ public class Chapters {
     public String earnedMarks;
     @SerializedName("TotalTestedMarks")
     public String totalTestedMarks;
-    public String idCourseSubject;
-    public String idCourseSubjectChapter;
+    @SerializedName("IdCourseSubjectchapter")
+    public String idCourseSubjectchapter;
     @SerializedName("PendingExerciseTopics")
     public String pendingExerciseTopics;
     @SerializedName("CompletedTopics")

@@ -26,6 +26,7 @@ import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.CourseAnalysis;
+import com.education.corsalite.utils.AnalyticsHelper;
 import com.education.corsalite.utils.L;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
@@ -35,7 +36,6 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -240,23 +240,7 @@ public class TimeManagementTabFragment extends Fragment {
         dataSet.setSliceSpace(1f);
         dataSet.setSelectionShift(5);
 
-        // add a lot of colors
-
-        ArrayList<Integer> colors = new ArrayList<>();
-
-
-        for (int c : ColorTemplate.JOYFUL_COLORS)
-            colors.add(c);
-
-        for (int c : ColorTemplate.COLORFUL_COLORS)
-            colors.add(c);
-
-        for (int c : ColorTemplate.PASTEL_COLORS)
-            colors.add(c);
-
-        //colors.add(ColorTemplate.getHoloBlue());
-
-        dataSet.setColors(colors);
+        dataSet.setColors(AnalyticsHelper.getColors());
 
         PieData data = new PieData(xData, dataSet);
         data.setValueFormatter(new PercentFormatter());
@@ -284,13 +268,9 @@ public class TimeManagementTabFragment extends Fragment {
             markerViewLine = (TextView) findViewById(R.id.tv_marker_view_text);
         }
 
-        // callbacks everytime the MarkerView is redrawn, can be used to update the
-        // content (user-interface)
         @Override
         public void refreshContent(Entry e, Highlight highlight) {
             markerViewLine.setText(xData.get(e.getXIndex())+", "+ yData.get(e.getXIndex()));
-
-
         }
 
         @Override

@@ -14,12 +14,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
-import com.education.corsalite.activities.EditProfileActivity;
 import com.education.corsalite.activities.LoginActivity;
 import com.education.corsalite.activities.UserProfileActivity;
 import com.education.corsalite.activities.WebviewActivity;
@@ -63,7 +61,6 @@ public class UserProfileDetailsFragment extends BaseFragment {
     @Bind(R.id.tv_virtual_currency_balance) TextView virtualCurrencyBalanceTxt;
     @Bind(R.id.sp_default_course) Spinner coursesSpinner;
     @Bind(R.id.btn_default_course) Button coursesBtn;
-    @Bind(R.id.btn_edit)Button editProfileBtn;
     @Bind(R.id.redeem_btn)Button redeemBtn;
 
     private UserProfileResponse user;
@@ -123,7 +120,7 @@ public class UserProfileDetailsFragment extends BaseFragment {
                 coursesSpinnerCLicked = true;
             }
         });
-        editProfileBtn.setOnClickListener(new View.OnClickListener() {
+        usernameTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showEditProfileFragment();

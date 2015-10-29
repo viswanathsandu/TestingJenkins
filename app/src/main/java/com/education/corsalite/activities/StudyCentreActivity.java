@@ -277,18 +277,26 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     private void addSubjectsAndCreateViews(StudyCenter studyCenter) {
         String subject = studyCenter.SubjectName;
         subjects.add(subject);
-        linearLayout.addView(getSubjectView(subject, subjects.size() == 1));
+        linearLayout.addView(getSubjectView(subject, studyCenter.idCourseSubject+"", subjects.size() == 1));
     }
 
-    private View getSubjectView(String text, boolean isSelected) {
+    public String getSelectedSubjectId() {
+        if(selectedSubjectTxt != null) {
+            return selectedSubjectTxt.getTag().toString();
+        }
+        return null;
+    }
+
+    private View getSubjectView(String subjectName, String subjectId, boolean isSelected) {
         View v = getView();
         TextView tv = (TextView) v.findViewById(R.id.subject);
-        tv.setText(text);
+        tv.setText(subjectName);
+        tv.setTag(subjectId);
         if(isSelected) {
             tv.setSelected(true);
             selectedSubjectTxt = tv;
         }
-        setListener(tv, text);
+        setListener(tv, subjectName);
         return v;
     }
 
