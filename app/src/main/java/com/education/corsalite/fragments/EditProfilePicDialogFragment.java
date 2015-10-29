@@ -48,7 +48,7 @@ public class EditProfilePicDialogFragment extends DialogFragment {
     TextView takePicCamera;
     @Bind(R.id.upload_pic_gallery)
     TextView uploadPicGallery;
-    @Bind(R.id.delete_pic) TextView deletePic;
+    @Bind(R.id.cancel) TextView cancel;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -90,11 +90,10 @@ public class EditProfilePicDialogFragment extends DialogFragment {
                     }
                 });
 
-        deletePic.setOnClickListener(new View.OnClickListener() {
+        cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getDialog().cancel();
-                updateUserProfile(null);
             }
         });
     }
@@ -165,11 +164,11 @@ public class EditProfilePicDialogFragment extends DialogFragment {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
             byte[] b = baos.toByteArray();
-            model.photoBase64Data = Base64.encodeToString(b, Base64.DEFAULT);
+            model.photoBase64Data = Base64.encodeToString(b, Base64.NO_WRAP);
         }else{
             model.photoBase64Data = null;
         }
-        updateProfilePicListener.onUpdateProfilePic(image);
+        //updateProfilePicListener.onUpdateProfilePic(image);
         return model;
     }
     public interface IUpdateProfilePicListener {
