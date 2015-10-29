@@ -44,25 +44,70 @@
         android:orientation="horizontal"
         android:paddingLeft="15dp">
 
-        <Spinner
-            android:id="@+id/sp_subject"
+        <RelativeLayout
             android:layout_width="130dp"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dp"/>
+            android:layout_height="wrap_content">
 
-        <Spinner
-            android:layout_marginLeft="5dp"
-            android:id="@+id/sp_chapter"
-            android:layout_width="130dp"
-            android:layout_height="wrap_content"
-            android:paddingLeft="5dp" />
+            <Spinner
+                android:background="@null"
+                android:id="@+id/sp_subject"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp" />
 
-        <Spinner
-            android:layout_marginLeft="5dp"
-            android:id="@+id/sp_topic"
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:padding="10dp"
+                android:src="@drawable/ico_dropdown_black" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
             android:layout_width="130dp"
-            android:layout_height="wrap_content"
-            android:paddingLeft="5dp"/>
+            android:layout_height="wrap_content">
+
+            <Spinner
+                android:background="@null"
+                android:id="@+id/sp_chapter"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:paddingLeft="5dp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:padding="10dp"
+                android:src="@drawable/ico_dropdown_black" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="130dp"
+            android:layout_height="wrap_content">
+
+            <Spinner
+                android:background="@null"
+                android:id="@+id/sp_topic"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:dropDownSelector="@drawable/ico_dropdown_black"
+                android:paddingLeft="5dp"
+                android:spinnerMode="dropdown" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:padding="10dp"
+                android:src="@drawable/ico_dropdown_black" />
+
+        </RelativeLayout>
     </LinearLayout>
 
 </RelativeLayout>

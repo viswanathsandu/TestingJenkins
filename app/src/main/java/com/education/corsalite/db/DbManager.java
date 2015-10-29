@@ -2,6 +2,7 @@ package com.education.corsalite.db;
 
 import android.content.Context;
 
+import com.education.corsalite.models.db.ContentIndexResponse;
 import com.education.corsalite.models.db.CourseList;
 
 import java.util.Iterator;
@@ -50,6 +51,14 @@ public class DbManager {
     public CourseList getCourseList() {
         Iterator<CourseList> iterator = CourseList.findAll(CourseList.class);
         return (iterator!= null && iterator.hasNext()) ? iterator.next() : null;
+    }
+
+    public void saveContentIndexList(ContentIndexResponse contentIndexResponse) {
+        ContentIndexResponse contentIndexResponses = ContentIndexResponse.findById(ContentIndexResponse.class, 1l);
+        if(contentIndexResponses != null) {
+            return;
+        }
+        contentIndexResponse.save();
     }
 
 }
