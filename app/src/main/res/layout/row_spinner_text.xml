@@ -4,8 +4,11 @@
     android:layout_height="48dp"
     android:id="@+id/tv_spn"
     android:gravity="left|center_vertical"
-    android:padding="15dp"
-    android:textStyle="bold" >
+    android:padding="5dp"
+    android:textSize="18sp"
+    android:singleLine="true"
+    style="?android:attr/spinnerDropDownItemStyle"
+    fontPath="@string/roboto_light">
 
 
 </TextView>
