@@ -32,7 +32,6 @@ import com.education.corsalite.adapters.TopicAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.db.DbManager;
 import com.education.corsalite.fragments.VideoListDialog;
 import com.education.corsalite.models.ChapterModel;
 import com.education.corsalite.models.ContentModel;
@@ -149,6 +148,7 @@ public class WebActivity extends AbstractBaseActivity {
             @Override
             public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
                 L.info("JS return value "+message);
+                showToast("Adding '"+message+"' to the notes");
                 selectedText = message;
                 result.confirm();
                 return true;
@@ -267,7 +267,6 @@ public class WebActivity extends AbstractBaseActivity {
                     break;
 
                 case R.id.iv_editnotes:
-                    showToast("Add is clicked");
                     webviewContentReading.loadUrl("javascript:alert(copy())");
                     break;
 
