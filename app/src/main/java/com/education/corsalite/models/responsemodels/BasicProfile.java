@@ -23,20 +23,4 @@ public class BasicProfile  implements Serializable {
     @SerializedName("EnrolledCourses")
     public String enrolledCourses;
 
-    public String address1;
-    public String address2;
-    public String dob;
-    public String phone;
-    public String mobile;
-    public String state;
-    public String city;
-    public String pincode;
-    public String gender;
-    public String admissionNumber;
-    public String residenceStatus;
-    public String faceBookId;
-
-
-
-
 }
