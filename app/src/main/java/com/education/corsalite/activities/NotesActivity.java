@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
@@ -20,7 +21,6 @@ import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.CourseData;
 import com.education.corsalite.models.responsemodels.Note;
-import com.education.corsalite.models.responsemodels.Notes;
 import com.education.corsalite.models.responsemodels.StudyCenter;
 
 import java.util.ArrayList;
@@ -43,23 +43,34 @@ public class NotesActivity extends AbstractBaseActivity {
     private List<SubjectNameSection> mListData;
     private CourseData mCourseData;
     private ArrayList<String> subjects;
-    private LinearLayout linearLayout;
+    private RelativeLayout relativeLayout;
     private TextView selectedSubjectTxt;
     private String key;
+    private LinearLayout notesLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        LinearLayout myView = (LinearLayout) inflater.inflate(R.layout.activity_notes, null);
-        linearLayout = (LinearLayout) myView.findViewById(R.id.notes_layout);
+        RelativeLayout myView = (RelativeLayout) inflater.inflate(R.layout.activity_notes, null);
+        relativeLayout = (RelativeLayout) myView.findViewById(R.id.notes_layout);
         subjectLayout = (LinearLayout) myView.findViewById(R.id.subjects_name_id);
+        notesLayout= (LinearLayout) myView.findViewById(R.id.no_notes);
         frameLayout.addView(myView);
         setToolbarForNotes();
         getBundleData();
         initUI();
         setAdapter();
         getNotesData();
+    }
+
+    private void hideList(){
+        recyclerView.setVisibility(View.GONE);
+    }
+
+    private void showData(){
+        recyclerView.setVisibility(View.VISIBLE);
+        notesLayout.setVisibility(View.GONE);
     }
 
     private void getBundleData() {
@@ -173,6 +184,7 @@ public class NotesActivity extends AbstractBaseActivity {
     }
 
     private void callNotesData(TextView textView) {
+        hideList();
         mSubjectId = textView.getTag().toString();
         mChapterId = null;
         getNotesData();
@@ -194,6 +206,7 @@ public class NotesActivity extends AbstractBaseActivity {
                 super.success(notesList, response);
                 mListData = new ArrayList<SubjectNameSection>();
                 if (notesList != null) {
+                    showData();
                     String chapter = "";
                     for (Note note : notesList) {
                         if (note != null && note.chapter != null) {
@@ -208,6 +221,9 @@ public class NotesActivity extends AbstractBaseActivity {
                         }
                     }
                     ((NotesAdapter) mAdapter).updateNotesList(mListData);
+                }else{
+                    recyclerView.setVisibility(View.GONE);
+                    notesLayout.setVisibility(View.VISIBLE);
                 }
             }
         });
