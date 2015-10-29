@@ -157,7 +157,9 @@ public class NotesActivity extends AbstractBaseActivity {
     }
     private View getView() {
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        return inflater.inflate(R.layout.study_center_text_view, null);
+        View view = inflater.inflate(R.layout.study_center_text_view, null);
+        view.findViewById(R.id.arrow_img).setVisibility(View.GONE);
+        return view;
     }
 
     private void setListener(final TextView textView, final String text) {

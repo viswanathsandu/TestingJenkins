@@ -15,7 +15,6 @@ import com.education.corsalite.R;
 import com.education.corsalite.activities.NotesActivity;
 import com.education.corsalite.models.responsemodels.Note;
 import com.education.corsalite.services.ApiClientService;
-import com.education.corsalite.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -133,8 +132,10 @@ public class NotesAdapter extends AbstractRecycleViewAdapter {
         }
 
         private void removeAt(int itemPosition) {
-            notesList.remove(itemPosition);
-            notifyItemRemoved(itemPosition);
+            if(notesList.size() > itemPosition) {
+                notesList.remove(itemPosition);
+                notifyItemRemoved(itemPosition);
+            }
         }
     }
 }
