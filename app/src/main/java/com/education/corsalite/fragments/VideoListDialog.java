@@ -57,8 +57,8 @@ public class VideoListDialog extends DialogFragment implements VideoListAdapter.
             mVideoList = (List<ContentModel>) getArguments().getSerializable("videolist");
         }
 
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-        rvVideoList.setLayoutManager(mLayoutManager);
+        final LinearLayoutManager layoutManager = new org.solovyev.android.views.llm.LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        rvVideoList.setLayoutManager(layoutManager);
         VideoListAdapter videoListAdapter = new VideoListAdapter(mVideoList, getActivity().getLayoutInflater());
         videoListAdapter.setVideoSelectedListener(this);
         rvVideoList.setAdapter(videoListAdapter);
