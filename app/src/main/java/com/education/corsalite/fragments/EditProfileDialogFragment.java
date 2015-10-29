@@ -1,37 +1,28 @@
 package com.education.corsalite.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
-import com.education.corsalite.activities.UserProfileActivity;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.requestmodels.UserProfileModel;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.EditProfileModel;
-import com.education.corsalite.models.responsemodels.ExamDetail;
 import com.education.corsalite.models.responsemodels.UserProfileResponse;
 import com.education.corsalite.utils.L;
 import com.google.gson.Gson;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 import butterknife.Bind;
@@ -43,7 +34,7 @@ import retrofit.client.Response;
  */
 public class EditProfileDialogFragment extends DialogFragment {
 
-    IUpdateExamDetailsListener updateExamDetailsListener;
+    IUpdateProfileDetailsListener updateProfileDetailsListener;
     private UserProfileResponse user;
     @Bind(R.id.username_txt) EditText usernameTxt;
     @Bind(R.id.firstname_txt) EditText firstNameTxt;
@@ -130,8 +121,8 @@ public class EditProfileDialogFragment extends DialogFragment {
         emailIdTxt.setText(user.basicProfile.emailId);
     }
 
-    public interface IUpdateExamDetailsListener {
-        void onUpdateExamDetails(View view, ExamDetail data, int position);
+    public interface IUpdateProfileDetailsListener {
+        void onUpdateProfileDetails(UserProfileModel userProfileModel);
     }
 
 }
