@@ -5,25 +5,43 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <ScrollView
-        android:id="@+id/horizontal_scroll"
+    <!--<ScrollView-->
+        <!--android:id="@+id/horizontal_scroll"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:scrollbars="horizontal">-->
+
+        <!--<LinearLayout-->
+            <!--android:id="@+id/subjects_name_id"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="horizontal"-->
+            <!--android:paddingLeft="15dp" />-->
+    <!--</ScrollView>-->
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scrollbars="horizontal">
-
-        <LinearLayout
-            android:id="@+id/subjects_name_id"
+        android:background="@color/light_40"
+        android:padding="10dp"
+        android:visibility="gone"
+        android:id="@+id/spinner_layout">
+        <Spinner
+            android:id="@+id/spinner"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:paddingLeft="15dp" />
-    </ScrollView>
+            android:layout_height="wrap_content"
+            android:drawSelectorOnTop="true"
+            android:background="@drawable/spinner_bg"
+            android:paddingLeft="10dp"
+            android:paddingRight="6dp"
+            />
+    </LinearLayout>
 
     <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/notes_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/horizontal_scroll"
+        android:layout_below="@+id/spinner_layout"
         android:clipToPadding="false"
         android:paddingLeft="16dp"
         android:paddingTop="16dp" />
