@@ -271,7 +271,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     public void showVideoInToolbar(final List<ContentModel> videos, int selectedPosition) {
-
         Spinner videoSpinner = (Spinner) toolbar.findViewById(R.id.spinner_video);
         if (videoSpinner == null) return;
         ArrayAdapter<ContentModel> dataAdapter = new ArrayAdapter<>(this, R.layout.spinner_title_textview, videos);
@@ -292,9 +291,9 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     public void showCoursesInToolbar(final List<Course> courses) {
-        Spinner coursesSpinner = (Spinner) toolbar.findViewById(R.id.spinner_courses);
+        final Spinner coursesSpinner = (Spinner) toolbar.findViewById(R.id.spinner_courses);
         if (coursesSpinner == null) return;
-        ArrayAdapter<Course> dataAdapter = new ArrayAdapter<Course>(this, R.layout.spinner_title_textview, courses);
+        ArrayAdapter<Course> dataAdapter = new ArrayAdapter<Course>(this, R.layout.spinner_title_textview_notes, courses);
         dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         coursesSpinner.setAdapter(dataAdapter);
         if (selectedCourse != null) {
@@ -310,10 +309,11 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 }
             }
         }
-        // coursesSpinner.setSelection(courseList.defaultCourseIndex);
+        // courseSpinner.setSelection(courseList.defaultCourseIndex);
         coursesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                ((TextView) coursesSpinner.getSelectedView()).setTextColor(getResources().getColor(R.color.white));
                 getEventbus().post(courses.get(position));
             }
 

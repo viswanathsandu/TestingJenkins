@@ -7,8 +7,11 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
@@ -33,7 +36,7 @@ import retrofit.client.Response;
  */
 public class NotesActivity extends AbstractBaseActivity {
 
-    private LinearLayout subjectLayout;
+    private LinearLayout spinnerLayout;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private LayoutInflater inflater;
@@ -44,6 +47,7 @@ public class NotesActivity extends AbstractBaseActivity {
     private CourseData mCourseData;
     private ArrayList<String> subjects;
     private RelativeLayout relativeLayout;
+    Spinner courseSpinner;
     private TextView selectedSubjectTxt;
     private String key;
     private LinearLayout notesLayout;
@@ -54,8 +58,9 @@ public class NotesActivity extends AbstractBaseActivity {
         inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         RelativeLayout myView = (RelativeLayout) inflater.inflate(R.layout.activity_notes, null);
         relativeLayout = (RelativeLayout) myView.findViewById(R.id.notes_layout);
-        subjectLayout = (LinearLayout) myView.findViewById(R.id.subjects_name_id);
-        notesLayout= (LinearLayout) myView.findViewById(R.id.no_notes);
+        courseSpinner = (Spinner) myView.findViewById(R.id.spinner);
+        notesLayout = (LinearLayout) myView.findViewById(R.id.no_notes);
+        spinnerLayout = (LinearLayout) myView.findViewById(R.id.spinner_layout);
         frameLayout.addView(myView);
         setToolbarForNotes();
         getBundleData();
@@ -64,11 +69,11 @@ public class NotesActivity extends AbstractBaseActivity {
         getNotesData();
     }
 
-    private void hideList(){
+    private void hideList() {
         recyclerView.setVisibility(View.GONE);
     }
 
-    private void showData(){
+    private void showData() {
         recyclerView.setVisibility(View.VISIBLE);
         notesLayout.setVisibility(View.GONE);
     }
@@ -129,32 +134,38 @@ public class NotesActivity extends AbstractBaseActivity {
     }
 
     private void setupSubjects(CourseData courseData) {
-        subjectLayout.removeAllViews();
         subjects = new ArrayList<String>();
+        List<String> courses = new ArrayList<>();
         for (StudyCenter studyCenter : courseData.StudyCenter) {
-            addSubjectsAndCreateViews(studyCenter);
+            courses.add(studyCenter.SubjectName.toString());
         }
+        spinnerLayout.setVisibility(View.VISIBLE);
+        addSubjectsAndCreateViews(courses);
+//        courseSpinner.setSelection(0,true);
     }
 
-    private void addSubjectsAndCreateViews(StudyCenter studyCenter) {
-        String subject = studyCenter.SubjectName;
-        subjects.add(subject);
-        subjectLayout.addView(getSubjectView(subject, studyCenter.idCourseSubject + "", subjects.size() == 1));
+    private void addSubjectsAndCreateViews(List<String> courses) {
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, R.layout.spinner_title_textview, courses);
+        dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        courseSpinner.setAdapter(dataAdapter);
+        courseSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                key = courseSpinner.getSelectedItem().toString();
+                for (StudyCenter studyCenter : mCourseData.StudyCenter) {
+                    if (key.equalsIgnoreCase(studyCenter.SubjectName)) {
+                        ((TextView) courseSpinner.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
+                        callNotesData(studyCenter.idCourseSubject);
+                        break;
+                    }
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
     }
 
-    private View getSubjectView(String subjectName, String subjectId, boolean isSelected) {
-        View v = getView();
-        TextView tv = (TextView) v.findViewById(R.id.subject);
-        tv.setText(subjectName);
-        tv.setTag(subjectId);
-        if(isSelected) {
-            tv.setSelected(true);
-            callNotesData(tv);
-            selectedSubjectTxt = tv;
-        }
-        setListener(tv, subjectName);
-        return v;
-    }
     private View getView() {
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.study_center_text_view, null);
@@ -166,7 +177,6 @@ public class NotesActivity extends AbstractBaseActivity {
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                showList();
                 if (selectedSubjectTxt != null) {
                     selectedSubjectTxt.setSelected(false);
                 }
@@ -176,7 +186,7 @@ public class NotesActivity extends AbstractBaseActivity {
                     key = text;
                     for (StudyCenter studyCenter : mCourseData.StudyCenter) {
                         if (key.equalsIgnoreCase(studyCenter.SubjectName)) {
-                            callNotesData(textView);
+//                            callNotesData(studyCenter.textView);
                             break;
                         }
                     }
@@ -185,9 +195,9 @@ public class NotesActivity extends AbstractBaseActivity {
         });
     }
 
-    private void callNotesData(TextView textView) {
+    private void callNotesData(Integer idCourseSubject) {
         hideList();
-        mSubjectId = textView.getTag().toString();
+        mSubjectId = idCourseSubject.toString();
         mChapterId = null;
         getNotesData();
         mAdapter.notifyDataSetChanged();
@@ -210,25 +220,41 @@ public class NotesActivity extends AbstractBaseActivity {
                 if (notesList != null) {
                     showData();
                     String chapter = "";
+                    String topic = "";
                     for (Note note : notesList) {
                         if (note != null && note.chapter != null) {
                             if (!chapter.equals(note.chapter)) {
                                 chapter = note.chapter;
                                 SubjectNameSection item = new SubjectNameSection(SubjectNameSection.SECTION, note);
                                 mListData.add(item);
-                                setItemData(note);
+                                if (!topic.equals(note.topic)) {
+                                    topic = setItemAndSection(note);
+                                }
                             } else {
-                                setItemData(note);
+                                if (topic.equals(note.topic)) {
+                                    setItemData(note);
+                                } else {
+                                    topic = setItemAndSection(note);
+                                }
                             }
                         }
                     }
                     ((NotesAdapter) mAdapter).updateNotesList(mListData);
-                }else{
+                } else {
                     recyclerView.setVisibility(View.GONE);
                     notesLayout.setVisibility(View.VISIBLE);
                 }
             }
         });
+    }
+
+    private String setItemAndSection(Note note) {
+        String topic;
+        topic = note.topic;
+        SubjectNameSection subitem = new SubjectNameSection(SubjectNameSection.SUBSECTION, note);
+        mListData.add(subitem);
+        setItemData(note);
+        return topic;
     }
 
     private void setItemData(Note note) {
@@ -239,7 +265,8 @@ public class NotesActivity extends AbstractBaseActivity {
     public class SubjectNameSection {
 
         public static final int SECTION = 0;
-        public static final int ITEM = 1;
+        public static final int SUBSECTION = 1;
+        public static final int ITEM = 2;
         public final int type;
         public final Object tag;
 

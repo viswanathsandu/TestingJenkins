@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
@@ -42,15 +43,14 @@ public class NotesAdapter extends AbstractRecycleViewAdapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemLayoutView;
         if (viewType == NotesActivity.SubjectNameSection.SECTION) {
-            itemLayoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.section_header, parent, false);
-            SectionHeaderViewHolder headerViewHolder = new SectionHeaderViewHolder(itemLayoutView);
-            return headerViewHolder;
+            return new SectionHeaderViewHolder(inflater.inflate(R.layout.section_header, parent, false));
         } else if (viewType == NotesActivity.SubjectNameSection.ITEM) {
             return new NotesDataHolder(inflater.inflate(R.layout.notes_list_item, parent, false));
+        } else {
+            View v = inflater.inflate(R.layout.sub_section_header, parent, false);
+            return new SubSectionHeaderViewHolder(v);
         }
-        return null;
     }
 
     @Override
@@ -60,6 +60,9 @@ public class NotesAdapter extends AbstractRecycleViewAdapter {
             headerViewHolder.bindData(notesList.get(position), position);
         } else if (notesList.get(position).type == NotesActivity.SubjectNameSection.ITEM && holder instanceof NotesDataHolder) {
             NotesDataHolder itemViewHolder = (NotesDataHolder) holder;
+            itemViewHolder.bindData(notesList.get(position), position);
+        } else {
+            SubSectionHeaderViewHolder itemViewHolder = (SubSectionHeaderViewHolder) holder;
             itemViewHolder.bindData(notesList.get(position), position);
         }
     }
@@ -86,6 +89,21 @@ public class NotesAdapter extends AbstractRecycleViewAdapter {
 
         public void bindData(final NotesActivity.SubjectNameSection note, final int position) {
             chapterName.setText(((Note) note.tag).chapter);
+        }
+    }
+
+    public static class SubSectionHeaderViewHolder extends RecyclerView.ViewHolder {
+        public TextView topicName;
+        public View rootView;
+
+        public SubSectionHeaderViewHolder(View itemLayoutView) {
+            super(itemLayoutView);
+            this.rootView = itemLayoutView;
+            topicName = (TextView) itemLayoutView.findViewById(R.id.topic_name);
+        }
+
+        public void bindData(final NotesActivity.SubjectNameSection note, final int position) {
+            topicName.setText(((Note) note.tag).topic);
         }
     }
 
