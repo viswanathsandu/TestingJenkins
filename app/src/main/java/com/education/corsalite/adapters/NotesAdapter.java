@@ -2,6 +2,7 @@ package com.education.corsalite.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import com.education.corsalite.R;
 import com.education.corsalite.activities.NotesActivity;
+import com.education.corsalite.fragments.EditorDialogFragment;
 import com.education.corsalite.models.responsemodels.Note;
 import com.education.corsalite.services.ApiClientService;
 
@@ -109,11 +111,13 @@ public class NotesAdapter extends AbstractRecycleViewAdapter {
 
     public class NotesDataHolder extends RecyclerView.ViewHolder {
 
+        public Button editBtn;
         public Button deleteBtn;
         public WebView notesContentWebview;
 
         public NotesDataHolder(View itemView) {
             super(itemView);
+            editBtn = (Button) itemView.findViewById(R.id.edit_btn);
             deleteBtn = (Button) itemView.findViewById(R.id.delete_btn);
             notesContentWebview = (WebView) itemView.findViewById(R.id.notes_content_webview);
             notesContentWebview.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
@@ -125,22 +129,32 @@ public class NotesAdapter extends AbstractRecycleViewAdapter {
                 @Override
                 public boolean shouldOverrideUrlLoading(WebView view, String url) {
                     return false;
-                    // TODO : uncomment it after dicussing with client
-                    /*if (Uri.parse(url).getHost().equals("staging.corsalite.com")) {
-                        return false;
-                    }
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                    context.startActivity(intent);
-                    return true;
-                    */
                 }
             });
         }
 
         public void bindData(final NotesActivity.SubjectNameSection note, final int position) {
             String baseUrl = ApiClientService.getBaseUrl().replace("/v1", "");
-            String htmlContent = ((Note) note.tag).noteHtml.replace("\"", "");
+            final String htmlContent = ((Note) note.tag).noteHtml.replace("\"", "");
             notesContentWebview.loadDataWithBaseURL(baseUrl, htmlContent, "text/html", "UTF-8", null);
+            editBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(note.tag instanceof Note) {
+                        Note noteObj = (Note) note.tag;
+                        EditorDialogFragment fragment = new EditorDialogFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("type", "Notes");
+                        bundle.putString("operation", "Edit");
+                        bundle.putString("student_id", noteObj.studentId);
+                        bundle.putString("topic_id", noteObj.topicId);
+                        bundle.putString("content_id", noteObj.contentId);
+                        bundle.putString("content", htmlContent);
+                        fragment.setArguments(bundle);
+                        fragment.show(((NotesActivity) context).getSupportFragmentManager(), "NotesEditorDialog");
+                    }
+                }
+            });
             deleteBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
