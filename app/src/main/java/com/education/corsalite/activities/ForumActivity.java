@@ -66,7 +66,7 @@ public class ForumActivity extends AbstractBaseActivity {
         setToolbarForNotes();
         getBundleData();
         initUI();
-//        setAdapter();
+        setAdapter();
         getNotesData();
     }
 
@@ -97,13 +97,13 @@ public class ForumActivity extends AbstractBaseActivity {
         recyclerView = (RecyclerView) findViewById(R.id.notes_list);
     }
 
-//    private void setAdapter() {
-//        mAdapter = new NotesAdapter(this, new ArrayList<SubjectNameSection>(), inflater);
-//        LinearLayoutManager llm = new LinearLayoutManager(this);
-//        llm.setOrientation(LinearLayoutManager.VERTICAL);
-//        recyclerView.setLayoutManager(llm);
-//        recyclerView.setAdapter(mAdapter);
-//    }
+    private void setAdapter() {
+        mAdapter = new ForumAdapter(this, new ArrayList<SubjectNameSection>(), inflater);
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(llm);
+        recyclerView.setAdapter(mAdapter);
+    }
 
     @Override
     public void onEvent(Course course) {
