@@ -39,6 +39,8 @@
     <string name="analytics">Analytics</string>
     <string name="content">Content</string>
     <string name="notes">Notes</string>
+    <string name="no_notes">No notes available</string>
+    <string name="no_posts">No posts available</string>
 
 
     <!--Fonts-->
@@ -84,5 +86,9 @@
     <string name="add_course">Add Course</string>
     <string name="add_guardian">Add Guardian</string>
     <string name="redeem">Redeem</string>
+    <string name="bookmark">Bookmark</string>
+    <string name="like">Like</string>
+    <string name="comment">Comment</string>
+
 
 </resources>

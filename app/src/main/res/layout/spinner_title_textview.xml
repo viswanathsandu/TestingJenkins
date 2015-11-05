@@ -6,4 +6,5 @@
     android:layout_height="wrap_content"
     android:ellipsize="marquee"
     android:textAlignment="inherit"
+    fontPath="@string/roboto_regular"
     android:textColor="@color/white"/>

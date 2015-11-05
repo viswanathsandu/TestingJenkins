@@ -34,7 +34,7 @@ import retrofit.client.Response;
 /**
  * Created by ayush on 27/10/15.
  */
-public class NotesActivity extends AbstractBaseActivity {
+public class ForumActivity extends AbstractBaseActivity {
 
     private LinearLayout spinnerLayout;
     private RecyclerView recyclerView;
@@ -56,7 +56,7 @@ public class NotesActivity extends AbstractBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        RelativeLayout myView = (RelativeLayout) inflater.inflate(R.layout.activity_notes, null);
+        RelativeLayout myView = (RelativeLayout) inflater.inflate(R.layout.activity_forum, null);
         relativeLayout = (RelativeLayout) myView.findViewById(R.id.notes_layout);
         courseSpinner = (Spinner) myView.findViewById(R.id.spinner);
         notesLayout = (LinearLayout) myView.findViewById(R.id.no_notes);
