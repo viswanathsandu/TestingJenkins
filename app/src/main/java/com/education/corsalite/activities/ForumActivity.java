@@ -15,6 +15,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
+import com.education.corsalite.adapters.ForumAdapter;
 import com.education.corsalite.adapters.GridRecyclerAdapter;
 import com.education.corsalite.adapters.NotesAdapter;
 import com.education.corsalite.api.ApiCallback;
@@ -57,7 +58,7 @@ public class ForumActivity extends AbstractBaseActivity {
         super.onCreate(savedInstanceState);
         inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         RelativeLayout myView = (RelativeLayout) inflater.inflate(R.layout.activity_forum, null);
-        relativeLayout = (RelativeLayout) myView.findViewById(R.id.notes_layout);
+        relativeLayout = (RelativeLayout) myView.findViewById(R.id.forum_layout);
         courseSpinner = (Spinner) myView.findViewById(R.id.spinner);
         notesLayout = (LinearLayout) myView.findViewById(R.id.no_notes);
         spinnerLayout = (LinearLayout) myView.findViewById(R.id.spinner_layout);
@@ -65,7 +66,7 @@ public class ForumActivity extends AbstractBaseActivity {
         setToolbarForNotes();
         getBundleData();
         initUI();
-        setAdapter();
+//        setAdapter();
         getNotesData();
     }
 
@@ -96,13 +97,13 @@ public class ForumActivity extends AbstractBaseActivity {
         recyclerView = (RecyclerView) findViewById(R.id.notes_list);
     }
 
-    private void setAdapter() {
-        mAdapter = new NotesAdapter(this, new ArrayList<SubjectNameSection>(), inflater);
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(llm);
-        recyclerView.setAdapter(mAdapter);
-    }
+//    private void setAdapter() {
+//        mAdapter = new NotesAdapter(this, new ArrayList<SubjectNameSection>(), inflater);
+//        LinearLayoutManager llm = new LinearLayoutManager(this);
+//        llm.setOrientation(LinearLayoutManager.VERTICAL);
+//        recyclerView.setLayoutManager(llm);
+//        recyclerView.setAdapter(mAdapter);
+//    }
 
     @Override
     public void onEvent(Course course) {
@@ -241,7 +242,7 @@ public class ForumActivity extends AbstractBaseActivity {
                             }
                         }
                     }
-                    ((NotesAdapter) mAdapter).updateNotesList(mListData);
+                    ((ForumAdapter) mAdapter).updateNotesList(mListData);
                 } else {
                     recyclerView.setVisibility(View.GONE);
                     notesLayout.setVisibility(View.VISIBLE);
