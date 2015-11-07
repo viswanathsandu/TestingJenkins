@@ -29,26 +29,6 @@ public class IconTreeItemHolder extends TreeNode.BaseNodeViewHolder<IconTreeItem
 
         arrowView = (PrintView) view.findViewById(R.id.arrow_icon);
 
-        view.findViewById(R.id.btn_addFolder).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TreeNode newFolder = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.completed_topics, "New Folder"));
-                getTreeView().addNode(node, newFolder);
-            }
-        });
-
-        view.findViewById(R.id.btn_delete).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getTreeView().removeNode(node);
-            }
-        });
-
-        //if My computer
-        if (node.getLevel() == 1) {
-            view.findViewById(R.id.btn_delete).setVisibility(View.GONE);
-        }
-
         return view;
     }
 

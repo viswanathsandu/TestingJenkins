@@ -228,7 +228,7 @@ public class ApiManager {
             ApiClientService.get().getContentData(idContents, UpdateTime, callback);
         } else {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/content_data.json");
-            System.out.print("Response for 'api/studycentre.json' is " + jsonResponse);
+            System.out.print("Response for 'api/content_data.json' is " + jsonResponse);
             //callback.success(new Gson().fromJson(jsonResponse, ContentResponse.class), getRetrofitResponse());
         }
     }
