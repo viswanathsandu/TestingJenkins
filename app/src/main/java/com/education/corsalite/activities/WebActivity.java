@@ -27,11 +27,13 @@ import android.widget.ViewSwitcher;
 
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.ChapterAdapter;
+import com.education.corsalite.adapters.ExerciseAdapter;
 import com.education.corsalite.adapters.SubjectAdapter;
 import com.education.corsalite.adapters.TopicAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.db.DbManager;
 import com.education.corsalite.fragments.VideoListDialog;
 import com.education.corsalite.models.ChapterModel;
 import com.education.corsalite.models.ContentModel;
@@ -42,13 +44,18 @@ import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
+import com.education.corsalite.models.responsemodels.ExerciseModel;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.FileUtilities;
 import com.education.corsalite.utils.FileUtils;
 import com.education.corsalite.utils.L;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
 import java.io.Serializable;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,6 +74,8 @@ public class WebActivity extends AbstractBaseActivity {
     @Bind(R.id.sp_subject) Spinner spSubject;
     @Bind(R.id.sp_chapter) Spinner spChapter;
     @Bind(R.id.sp_topic) Spinner spTopic;
+    @Bind(R.id.sp_exercise) Spinner spExercise;
+    @Bind(R.id.layout_exercise) RelativeLayout layoutExercise;
     @Bind(R.id.vs_container) ViewSwitcher mViewSwitcher;
     @Bind(R.id.footer_layout) RelativeLayout webFooter;
     @Bind(R.id.btn_next) Button btnNext;
@@ -80,6 +89,7 @@ public class WebActivity extends AbstractBaseActivity {
     private List<TopicModel> topicModelList;
     private List<ContentModel> contentModelList;
     private List<ContentModel> videoModelList;
+    public static List<ExerciseModel> exerciseModelList;
 
     private String mSubjectId = "";
     private String mChapterId = "";
@@ -131,7 +141,7 @@ public class WebActivity extends AbstractBaseActivity {
 
     private void initWebView() {
         webviewContentReading.getSettings().setSupportZoom(true);
-        webviewContentReading.getSettings().setBuiltInZoomControls(true);
+        webviewContentReading.getSettings().setBuiltInZoomControls(false);
         webviewContentReading.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
         webviewContentReading.setScrollbarFadingEnabled(true);
         webviewContentReading.getSettings().setLoadsImagesAutomatically(true);
@@ -407,6 +417,12 @@ public class WebActivity extends AbstractBaseActivity {
         if (mViewSwitcher.indexOfChild(mViewSwitcher.getCurrentView()) == 1) {
             mViewSwitcher.showPrevious();
         }
+
+        if(getContentIndexResponse()) {
+            showSubject();
+            return;
+        }
+
         ApiManager.getInstance(this).getContentIndex(courseId, studentId,
                 new ApiCallback<List<ContentIndex>>(this) {
                     @Override
@@ -425,11 +441,28 @@ public class WebActivity extends AbstractBaseActivity {
                         super.success(mContentIndexs, response);
                         if (mContentIndexs != null) {
                             contentIndexList = mContentIndexs;
-                            ContentIndexResponse mContentIndexResponse = new ContentIndexResponse();
-                            mContentIndexResponse.contentIndexes = contentIndexList;
-              //              DbManager.getInstance(WebActivity.this).saveContentIndexList(mContentIndexResponse);
+                            saveContentIndexResponse();
                             showSubject();
                         }
+                    }
+                });
+    }
+
+    private void getExercise(int topicPosition) {
+        ApiManager.getInstance(this).getExercise(topicModelList.get(topicPosition).idTopic, selectedCourse.courseId.toString(),
+                "", new ApiCallback<List<ExerciseModel>>(this) {
+                    @Override
+                    public void failure(CorsaliteError error) {
+                        super.failure(error);
+
+                    }
+
+                    @Override
+                    public void success(List<ExerciseModel> exerciseModels, Response response) {
+                        super.success(exerciseModels, response);
+                        exerciseModelList = exerciseModels;
+                        showExcercise();
+
                     }
                 });
     }
@@ -650,9 +683,33 @@ public class WebActivity extends AbstractBaseActivity {
         });
     }
 
+    private void showExcercise() {
+        layoutExercise.setVisibility(View.GONE);
+        if(exerciseModelList != null && exerciseModelList.size() > 0) {
+            layoutExercise.setVisibility(View.VISIBLE);
+            ExerciseAdapter exerciseAdapter = new ExerciseAdapter(exerciseModelList, this);
+            spExercise.setAdapter(exerciseAdapter);
+
+            spExercise.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                    if(position != 0) {
+                        Intent intent = new Intent(WebActivity.this, ExerciseActivity.class);
+                        intent.putExtra(Constants.SELECTED_POSITION, position);
+                        startActivity(intent);
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+        }
+    }
+
     private void showTopic(final int chapterPosition) {
-
-
         topicModelList = new ArrayList<>(chapterModelList.get(chapterPosition).topicMap);
         if(topicModelList != null) {
             TopicAdapter topicAdapter = new TopicAdapter(topicModelList, this);
@@ -671,6 +728,7 @@ public class WebActivity extends AbstractBaseActivity {
             spTopic.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    getExercise(position);
                     getContentData(position);
                 }
 
@@ -680,6 +738,25 @@ public class WebActivity extends AbstractBaseActivity {
                 }
             });
         }
+    }
+
+    private void saveContentIndexResponse() {
+        Type contentIndexType = new TypeToken<List<ContentIndex>>() {
+        }.getType();
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String jsonObject = gson.toJson(contentIndexList, contentIndexType);
+        DbManager.getInstance(WebActivity.this).saveContentIndexList(jsonObject, selectedCourse.courseId.toString(), LoginUserCache.getInstance().loginResponse.studentId);
+    }
+
+    private boolean getContentIndexResponse() {
+        ContentIndexResponse contentIndexResponse = DbManager.getInstance(WebActivity.this).getContentIndexList(selectedCourse.courseId.toString(),
+                LoginUserCache.getInstance().loginResponse.studentId);
+        if(contentIndexResponse == null) {
+            return false;
+        }
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        contentIndexList = gson.fromJson(contentIndexResponse.contentIndexesJson, new TypeToken<List<ContentIndex>>(){}.getType());
+        return true;
     }
 
     private void showVideoDialog() {

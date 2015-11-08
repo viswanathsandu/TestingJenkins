@@ -12,6 +12,7 @@ import com.education.corsalite.models.responsemodels.CourseAnalysis;
 import com.education.corsalite.models.responsemodels.CourseAnalysisPercentile;
 import com.education.corsalite.models.responsemodels.DefaultCourseResponse;
 import com.education.corsalite.models.responsemodels.EditProfileModel;
+import com.education.corsalite.models.responsemodels.ExerciseModel;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
 import com.education.corsalite.models.responsemodels.Message;
@@ -225,6 +226,16 @@ public class ApiManager {
     public void getContent(String idContents, String UpdateTime, ApiCallback<List<Content>> callback) {
         if (isApiOnline()) {
             ApiClientService.get().getContentData(idContents, UpdateTime, callback);
+        } else {
+            String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/content_data.json");
+            System.out.print("Response for 'api/studycentre.json' is " + jsonResponse);
+            //callback.success(new Gson().fromJson(jsonResponse, ContentResponse.class), getRetrofitResponse());
+        }
+    }
+
+    public void getExercise(String topicId, String courseId, String UpdateTime, ApiCallback<List<ExerciseModel>> callback) {
+        if (isApiOnline()) {
+            ApiClientService.get().getExerciseData(topicId, courseId, UpdateTime, callback);
         } else {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/content_data.json");
             System.out.print("Response for 'api/studycentre.json' is " + jsonResponse);
