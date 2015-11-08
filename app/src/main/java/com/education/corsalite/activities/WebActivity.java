@@ -34,6 +34,7 @@ import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.db.DbManager;
+import com.education.corsalite.fragments.EditorDialogFragment;
 import com.education.corsalite.fragments.VideoListDialog;
 import com.education.corsalite.models.ChapterModel;
 import com.education.corsalite.models.ContentModel;
@@ -45,6 +46,7 @@ import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.ExerciseModel;
+import com.education.corsalite.models.responsemodels.Note;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.FileUtilities;
 import com.education.corsalite.utils.FileUtils;
@@ -157,9 +159,8 @@ public class WebActivity extends AbstractBaseActivity {
         webviewContentReading.setWebChromeClient(new WebChromeClient() {
             @Override
             public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
-                L.info("JS return value "+message);
-                showToast("Adding '"+message+"' to the notes");
                 selectedText = message;
+                addToNote(selectedText);
                 result.confirm();
                 return true;
             }
@@ -178,6 +179,19 @@ public class WebActivity extends AbstractBaseActivity {
         // Load the URLs inside the WebView, not in the external web browser
         webviewContentReading.setWebViewClient(new MyWebViewClient());
 
+    }
+
+    private void addToNote(String htmlText) {
+        EditorDialogFragment fragment = new EditorDialogFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("type", "Notes");
+        bundle.putString("operation", "Add");
+        bundle.putString("student_id", LoginUserCache.getInstance().getLongResponse().studentId);
+        bundle.putString("topic_id", mTopicId);
+        bundle.putString("content_id", mContentId);
+        bundle.putString("content", htmlText);
+        fragment.setArguments(bundle);
+        fragment.show(getSupportFragmentManager(), "NotesEditorDialog");
     }
 
     private void loadWeb(String htmlUrl) {

@@ -2,6 +2,7 @@ package com.education.corsalite.api;
 
 import com.education.corsalite.models.responsemodels.CourseAnalysisPercentile;
 import com.education.corsalite.models.responsemodels.DefaultCourseResponse;
+import com.education.corsalite.models.responsemodels.DefaultNoteResponse;
 import com.education.corsalite.models.responsemodels.EditProfileModel;
 import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ContentIndex;
@@ -105,4 +106,9 @@ public interface ICorsaliteApi {
     @GET("/Note")
     void getNotes(@Query("idStudent") String studentId, @Query("idSubject") String subjectId , @Query("idChapter") String chapterId, @Query("idTopic") String topicId, ApiCallback<List<Note>> callback);
 
+    @POST("/Note")
+    void addNote(@Query("Insert") String insert, ApiCallback<DefaultNoteResponse> callback);
+
+    @POST("/Note")
+    void updateNote(@Query("Update") String insert, ApiCallback<DefaultNoteResponse> callback);
 }

@@ -11,6 +11,7 @@ import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.CourseAnalysis;
 import com.education.corsalite.models.responsemodels.CourseAnalysisPercentile;
 import com.education.corsalite.models.responsemodels.DefaultCourseResponse;
+import com.education.corsalite.models.responsemodels.DefaultNoteResponse;
 import com.education.corsalite.models.responsemodels.EditProfileModel;
 import com.education.corsalite.models.responsemodels.ExerciseModel;
 import com.education.corsalite.models.responsemodels.LoginResponse;
@@ -254,6 +255,18 @@ public class ApiManager {
             }.getType();
             List<Note> notes = new Gson().fromJson(jsonResponse, listType);
             callback.success(notes, getRetrofitResponse());
+        }
+    }
+
+    public void addNote(String insertNote, ApiCallback<DefaultNoteResponse> callback) {
+        if(isApiOnline()) {
+            ApiClientService.get().addNote(insertNote, callback);
+        }
+    }
+
+    public void updateNote(String updateNote, ApiCallback<DefaultNoteResponse> callback) {
+        if(isApiOnline()) {
+            ApiClientService.get().updateNote(updateNote, callback);
         }
     }
 
