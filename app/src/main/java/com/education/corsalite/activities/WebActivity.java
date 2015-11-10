@@ -43,7 +43,6 @@ import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
-import com.education.corsalite.models.responsemodels.Note;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.FileUtilities;
 import com.education.corsalite.utils.FileUtils;
@@ -534,7 +533,7 @@ public class WebActivity extends AbstractBaseActivity {
     }
 
     File root;
-    private File getgetFile(String fileName) {
+    private File getFile(String fileName) {
         root = Environment.getExternalStorageDirectory();
         File file;
         if(fileName.endsWith(Constants.VIDEO_FILE)) {
@@ -554,7 +553,7 @@ public class WebActivity extends AbstractBaseActivity {
         String fileName;
         for(int i = 0; i < htmlFile.length; i++) {
             fileName = htmlFile[i];
-            f = getgetFile(fileName);
+            f = getFile(fileName);
             if(f.exists()) {
                 if(htmlFile.length == contentModelList.size()) {
                     mContentIdPosition = i;
@@ -578,7 +577,7 @@ public class WebActivity extends AbstractBaseActivity {
         String fileName;
         for (int i = 0; i < htmlFile.length; i++) {
             fileName = htmlFile[i];
-            f = getgetFile(fileName);
+            f = getFile(fileName);
             if (f.exists()) {
                 if (!mContentId.isEmpty() && mContentId.equalsIgnoreCase(htmlFile[i].split(".")[0])) {
                     if(htmlFile.length == contentModelList.size()) {

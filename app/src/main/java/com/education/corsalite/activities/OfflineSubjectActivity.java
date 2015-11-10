@@ -3,15 +3,18 @@ package com.education.corsalite.activities;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.holders.IconTreeItemHolder;
+import com.education.corsalite.holders.CheckedItemViewHolder;
 import com.education.corsalite.models.ChapterModel;
 import com.education.corsalite.models.SubjectModel;
 import com.education.corsalite.models.db.ContentIndexResponse;
@@ -44,15 +47,50 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
     private List<ContentIndex> contentIndexList;
     private ArrayList<SubjectModel> subjectModelList;
     private ArrayList<ChapterModel> chapterModelList;
+    private LinearLayout downloadImage;
+    Bundle savedInstanceState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.savedInstanceState = savedInstanceState;
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         LinearLayout myView = (LinearLayout) inflater.inflate(R.layout.activity_offline_content, null);
         frameLayout.addView(myView);
         mainNodeLayout = (LinearLayout) findViewById(R.id.main_node);
-        setToolbarTitle("Offline Content");
+        downloadImage = (LinearLayout) findViewById(R.id.download);
+        downloadImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loopCheckedViews();
+            }
+        });
+        setToolbarForOfflineContentReading();
+        getBundleData();
+        getContentIndex(mCourseId, LoginUserCache.getInstance().loginResponse.studentId);
+        initNodes();
+    }
+
+    private void loopCheckedViews(){
+        TreeNode rootnode  = root.getChildren().get(0);
+        if(((CheckBox)root.getViewHolder().getNodeItemsView().getChildAt(0).findViewById(R.id.node_selector)).isChecked()){
+
+        }else {
+            for (TreeNode n : root.getChildren()) {
+                for (TreeNode innerNode : n.getChildren()) {
+                    if(((CheckBox)innerNode.getViewHolder().getNodeItemsView().getChildAt(0).findViewById(R.id.node_selector)).isChecked()){
+
+                    }else{
+                        for(TreeNode innerMostNode: innerNode.getChildren()){
+
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void getBundleData() {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             if (bundle.containsKey("subjectId") && bundle.getString("subjectId") != null) {
@@ -74,8 +112,6 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
                 mCourseId = bundle.getString("courseId");
             }
         }
-        getContentIndex(mCourseId, LoginUserCache.getInstance().loginResponse.studentId);
-        initNodes();
     }
 
     private void getContentIndex(String courseId, String studentId) {
@@ -122,7 +158,7 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
         if (!mChapterId.isEmpty()) {
             int listSize = chapterModelList.size();
             for (int i = 0; i < listSize; i++) {
-                setChapterNameAndChilds(chapterModelList.get(i).chapterName,i);
+                setChapterNameAndChildren(chapterModelList.get(i), i);
             }
         }
     }
@@ -132,44 +168,33 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
         tView = new AndroidTreeView(this, root);
         tView.setDefaultAnimation(true);
         tView.setDefaultViewHolder(IconTreeItemHolder.class);
-        tView.setDefaultNodeClickListener(nodeClickListener);
-        tView.setDefaultNodeLongClickListener(nodeLongClickListener);
         tView.setDefaultContainerStyle(R.style.TreeNodeStyleCustom);
+        tView.setSelectionModeEnabled(true);
         mainNodeLayout.addView(tView.getView());
+        if (savedInstanceState != null) {
+            String state = savedInstanceState.getString("tState");
+            if (!TextUtils.isEmpty(state)) {
+                tView.restoreState(state);
+            }
+        }
     }
 
-    private void setChapterNameAndChilds(String subName,int pos) {
-        TreeNode subjectName = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, subName));
-        TreeNode file1 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_drive_file, subName+".html"));
-        TreeNode file2 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_drive_file, subName+"_video.mpg"));
+    private void setChapterNameAndChildren(ChapterModel chapters, int pos) {
+        TreeNode subjectName = new TreeNode(chapters.chapterName).setViewHolder(new CheckedItemViewHolder(this));
+        TreeNode file1 = new TreeNode(chapters.chapterName.toString() + ".html").setViewHolder(new CheckedItemViewHolder(this));
+        TreeNode file2 = new TreeNode(chapters.chapterName.toString() + "_video.mpg").setViewHolder(new CheckedItemViewHolder(this));
         subjectName.addChildren(file1, file2);
-        contentRoot.addChildren(subjectName);
+        contentRoot.addChild(subjectName);
     }
 
     private void initNodes() {
         root = TreeNode.root();
-        contentRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_laptop, mSubjectName));
+        contentRoot = new TreeNode(mSubjectName).setViewHolder(new CheckedItemViewHolder(this));
     }
-
-    private TreeNode.TreeNodeClickListener nodeClickListener = new TreeNode.TreeNodeClickListener() {
-        @Override
-        public void onClick(TreeNode node, Object value) {
-            IconTreeItemHolder.IconTreeItem item = (IconTreeItemHolder.IconTreeItem) value;
-        }
-    };
-
-    private TreeNode.TreeNodeLongClickListener nodeLongClickListener = new TreeNode.TreeNodeLongClickListener() {
-        @Override
-        public boolean onLongClick(TreeNode node, Object value) {
-            IconTreeItemHolder.IconTreeItem item = (IconTreeItemHolder.IconTreeItem) value;
-            Toast.makeText(OfflineSubjectActivity.this, "Long click: " + item.text, Toast.LENGTH_SHORT).show();
-            return true;
-        }
-    };
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-//        outState.putString("tState", tView.getSaveState());
+        outState.putString("tState", tView.getSaveState());
     }
 }
