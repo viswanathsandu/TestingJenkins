@@ -149,6 +149,7 @@ public class NotesAdapter extends AbstractRecycleViewAdapter {
                         bundle.putString("student_id", noteObj.studentId);
                         bundle.putString("topic_id", noteObj.topicId);
                         bundle.putString("content_id", noteObj.contentId);
+                        bundle.putString("notes_id", noteObj.idNotes);
                         bundle.putString("content", htmlContent);
                         fragment.setArguments(bundle);
                         fragment.show(((NotesActivity) context).getSupportFragmentManager(), "NotesEditorDialog");
