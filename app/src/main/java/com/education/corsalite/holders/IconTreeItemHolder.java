@@ -3,15 +3,15 @@ package com.education.corsalite.holders;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
-import com.github.johnkil.print.PrintView;
 import com.unnamed.b.atv.model.TreeNode;
 
 public class IconTreeItemHolder extends TreeNode.BaseNodeViewHolder<IconTreeItemHolder.IconTreeItem> {
     private TextView tvValue;
-    private PrintView arrowView;
+    private ImageView arrowView;
 
     public IconTreeItemHolder(Context context) {
         super(context);
@@ -24,16 +24,16 @@ public class IconTreeItemHolder extends TreeNode.BaseNodeViewHolder<IconTreeItem
         tvValue = (TextView) view.findViewById(R.id.node_value);
         tvValue.setText(value.text);
 
-        final PrintView iconView = (PrintView) view.findViewById(R.id.icon);
-        iconView.setIconText(context.getResources().getString(value.icon));
+        final ImageView iconView = (ImageView) view.findViewById(R.id.icon);
+        iconView.setImageDrawable(context.getResources().getDrawable(value.icon));
 
-        arrowView = (PrintView) view.findViewById(R.id.arrow_icon);
+        arrowView = (ImageView) view.findViewById(R.id.arrow_icon);
 
         view.findViewById(R.id.btn_addFolder).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TreeNode newFolder = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.completed_topics, "New Folder"));
-                getTreeView().addNode(node, newFolder);
+                //TreeNode newFolder = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.completed_topics, "New Folder"));
+                //getTreeView().addNode(node, newFolder);
             }
         });
 
@@ -41,12 +41,14 @@ public class IconTreeItemHolder extends TreeNode.BaseNodeViewHolder<IconTreeItem
             @Override
             public void onClick(View v) {
                 getTreeView().removeNode(node);
+                //TODO Update Database
             }
         });
 
-        //if My computer
+        //Subject
         if (node.getLevel() == 1) {
             view.findViewById(R.id.btn_delete).setVisibility(View.GONE);
+            view.setBackgroundColor(context.getResources().getColor(R.color.yellow));
         }
 
         return view;
@@ -54,7 +56,8 @@ public class IconTreeItemHolder extends TreeNode.BaseNodeViewHolder<IconTreeItem
 
     @Override
     public void toggle(boolean active) {
-        arrowView.setIconText(context.getResources().getString(active ? R.string.ic_keyboard_arrow_down : R.string.ic_keyboard_arrow_right));
+        arrowView.setImageDrawable(context.getResources().getDrawable(active ? R.drawable.ico_offline_arrow_down_black : R.drawable.ico_offline_arrow_black));
+
     }
 
     public static class IconTreeItem {

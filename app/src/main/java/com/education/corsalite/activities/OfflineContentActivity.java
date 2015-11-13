@@ -22,6 +22,7 @@ import com.google.gson.reflect.TypeToken;
 import com.unnamed.b.atv.model.TreeNode;
 import com.unnamed.b.atv.view.AndroidTreeView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -51,32 +52,38 @@ public class OfflineContentActivity extends AbstractBaseActivity {
     }
 
     private boolean getContentIndexResponse() {
-        ContentIndexResponse contentIndexResponse = DbManager.getInstance(OfflineContentActivity.this).getContentIndexList(selectedCourse.courseId.toString(),
-                LoginUserCache.getInstance().loginResponse.studentId);
-        if(contentIndexResponse == null) {
+        List<ContentIndexResponse> contentIndexResponseList = DbManager.getInstance(OfflineContentActivity.this).getContentIndexLists(LoginUserCache.getInstance().loginResponse.studentId);
+        if(contentIndexResponseList == null) {
             return false;
         }
+        contentIndexList = new ArrayList<>();
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        contentIndexList = gson.fromJson(contentIndexResponse.contentIndexesJson, new TypeToken<List<ContentIndex>>(){}.getType());
+        for(int i=0;i<contentIndexResponseList.size();i++) {
+            List<ContentIndex> mLocalList = gson.fromJson(contentIndexResponseList.get(i).contentIndexesJson, new TypeToken<List<ContentIndex>>() {
+            }.getType());
+            for (ContentIndex contentIndex:mLocalList) {
+                contentIndexList.add(contentIndex);
+            }
+        }
         return true;
     }
 
     private void initNodes() {
         TreeNode root = TreeNode.root();
         for (ContentIndex contentResponse: contentIndexList) {
-            TreeNode contentResponseRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_laptop, contentResponse.courseName));
+            TreeNode contentResponseRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_subject, contentResponse.courseName));
             root.addChild(contentResponseRoot);
             for (SubjectModel subject : contentResponse.subjectModelList) {
-                TreeNode subjectRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, subject.subjectName));
+                TreeNode subjectRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_subject, subject.subjectName));
                 contentResponseRoot.addChild(subjectRoot);
                 for (ChapterModel chapter : subject.chapters) {
-                    TreeNode chapterRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, chapter.chapterName));
+                    TreeNode chapterRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_chapter, chapter.chapterName));
                     subjectRoot.addChild(chapterRoot);
                     for (TopicModel topic : chapter.topicMap) {
-                        TreeNode topicRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, topic.topicName));
+                        TreeNode topicRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_chapter, topic.topicName));
                         chapterRoot.addChild(topicRoot);
                         for (ContentModel content : topic.contentMap) {
-                            TreeNode contentRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_drive_file,content.contentName +"."+ content.type));
+                            TreeNode contentRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_topics,content.contentName +"."+ content.type));
                             topicRoot.addChild(contentRoot);
                         }
                     }
