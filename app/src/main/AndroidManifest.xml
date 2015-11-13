@@ -78,11 +78,16 @@
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="Analytics"
             android:theme="@style/UserProfileTheme" />
-
         <activity
             android:name=".activities.NotesActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="Notes"
+            android:theme="@style/UserProfileTheme" />
+
+        <activity
+            android:name=".activities.ExamHistoryActivity"
+            android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
+            android:label="ExamHistory"
             android:theme="@style/UserProfileTheme" />
     </application>
 

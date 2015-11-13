@@ -13,11 +13,11 @@ import com.education.corsalite.models.responsemodels.CourseAnalysisPercentile;
 import com.education.corsalite.models.responsemodels.DefaultCourseResponse;
 import com.education.corsalite.models.responsemodels.DefaultNoteResponse;
 import com.education.corsalite.models.responsemodels.EditProfileModel;
+import com.education.corsalite.models.responsemodels.ExamHistory;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
 import com.education.corsalite.models.responsemodels.Message;
 import com.education.corsalite.models.responsemodels.Note;
-import com.education.corsalite.models.responsemodels.Notes;
 import com.education.corsalite.models.responsemodels.StudyCenter;
 import com.education.corsalite.models.responsemodels.TestCoverage;
 import com.education.corsalite.models.responsemodels.UpdateExamDetailsResponse;
@@ -203,6 +203,17 @@ public class ApiManager {
             callback.success(new Gson().fromJson(jsonResponse, List.class), getRetrofitResponse());
         }
     }
+
+    public void getExamHistory(String studentId,String beginRowNumber,String numRows, ApiCallback<List<ExamHistory>> callback) {
+        if (isApiOnline()) {
+            ApiClientService.get().getExamHistory(studentId, beginRowNumber, numRows, callback);
+        } else {
+            String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/exam_history.json");
+            L.info("Response for 'api/exam_history.json' is " + jsonResponse);
+            callback.success(new Gson().fromJson(jsonResponse, List.class), getRetrofitResponse());
+        }
+    }
+
 
     public void getStudyCentreData(String studentId, String courseID, ApiCallback<List<StudyCenter>> callback) {
         if (isApiOnline()) {
