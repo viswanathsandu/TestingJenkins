@@ -2,16 +2,27 @@ package com.education.corsalite.activities;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.education.corsalite.R;
+import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.db.DbManager;
 import com.education.corsalite.holders.IconTreeItemHolder;
+import com.education.corsalite.models.ChapterModel;
+import com.education.corsalite.models.ContentModel;
+import com.education.corsalite.models.SubjectModel;
+import com.education.corsalite.models.TopicModel;
+import com.education.corsalite.models.db.ContentIndexResponse;
+import com.education.corsalite.models.responsemodels.ContentIndex;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.unnamed.b.atv.model.TreeNode;
 import com.unnamed.b.atv.view.AndroidTreeView;
+
+import java.util.List;
 
 /**
  * Created by ayush on 05/10/15.
@@ -21,6 +32,7 @@ public class OfflineContentActivity extends AbstractBaseActivity {
     private int counter = 0;
     private LinearLayout mainNodeLayout;
     private AndroidTreeView tView;
+    List<ContentIndex> contentIndexList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,49 +43,46 @@ public class OfflineContentActivity extends AbstractBaseActivity {
         mainNodeLayout = (LinearLayout) findViewById(R.id.main_node);
         setToolbarTitle("Offline Content");
 
-        initNodes();
+        if(getContentIndexResponse()) {
+            initNodes();
+        }else{
+            Toast.makeText(OfflineContentActivity.this, "No offline content available" , Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private boolean getContentIndexResponse() {
+        ContentIndexResponse contentIndexResponse = DbManager.getInstance(OfflineContentActivity.this).getContentIndexList(selectedCourse.courseId.toString(),
+                LoginUserCache.getInstance().loginResponse.studentId);
+        if(contentIndexResponse == null) {
+            return false;
+        }
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        contentIndexList = gson.fromJson(contentIndexResponse.contentIndexesJson, new TypeToken<List<ContentIndex>>(){}.getType());
+        return true;
     }
 
     private void initNodes() {
         TreeNode root = TreeNode.root();
-
-        TreeNode contentRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_laptop, "Content"));
-
-        TreeNode physics = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, "Physics"));
-        TreeNode lesson_one_physics = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, "Lesson one"));
-
-
-        TreeNode physics_file1 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_drive_file, "Content.Html"));
-        TreeNode physics_file2 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_drive_file, "Video.mp4"));
-        TreeNode physics_file3 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_drive_file, "Video2.mp4"));
-
-
-        TreeNode chemistry = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, "Chemistry"));
-        TreeNode lesson_one_chemistry = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, "Lesson one"));
-
-
-        TreeNode chemistry_file1 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_drive_file, "Content.Html"));
-        TreeNode chemistry_file2 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_drive_file, "Video.mp4"));
-        TreeNode chemistry_file3 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_drive_file, "Video2.mp4"));
-
-
-        TreeNode maths = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, "Maths"));
-        TreeNode lesson_one_maths = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, "Lesson one"));
-
-
-        TreeNode maths_file1 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_drive_file, "Content.Html"));
-        TreeNode maths_file2 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_drive_file, "Video.mp4"));
-        TreeNode maths_file3 = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_drive_file, "Video2.mp4"));
-
-
-        lesson_one_physics.addChildren(physics_file1, physics_file2, physics_file3);
-        lesson_one_chemistry.addChildren(chemistry_file1, chemistry_file2, chemistry_file3);
-        lesson_one_maths.addChildren(maths_file1, maths_file2, maths_file3);
-        physics.addChild(lesson_one_physics);
-        chemistry.addChild(lesson_one_chemistry);
-        maths.addChild(lesson_one_maths);
-        contentRoot.addChildren(physics, chemistry, maths);
-        root.addChildren(contentRoot);
+        for (ContentIndex contentResponse: contentIndexList) {
+            TreeNode contentResponseRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_laptop, contentResponse.courseName));
+            root.addChild(contentResponseRoot);
+            for (SubjectModel subject : contentResponse.subjectModelList) {
+                TreeNode subjectRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, subject.subjectName));
+                contentResponseRoot.addChild(subjectRoot);
+                for (ChapterModel chapter : subject.chapters) {
+                    TreeNode chapterRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, chapter.chapterName));
+                    subjectRoot.addChild(chapterRoot);
+                    for (TopicModel topic : chapter.topicMap) {
+                        TreeNode topicRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_folder, topic.topicName));
+                        chapterRoot.addChild(topicRoot);
+                        for (ContentModel content : topic.contentMap) {
+                            TreeNode contentRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.ic_drive_file,content.contentName +"."+ content.type));
+                            topicRoot.addChild(contentRoot);
+                        }
+                    }
+                }
+            }
+        }
 
         tView = new AndroidTreeView(this, root);
         tView.setDefaultAnimation(true);
