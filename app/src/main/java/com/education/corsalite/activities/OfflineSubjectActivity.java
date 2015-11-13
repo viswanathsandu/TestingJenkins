@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
@@ -16,8 +17,10 @@ import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.holders.IconTreeItemHolder;
 import com.education.corsalite.holders.CheckedItemViewHolder;
 import com.education.corsalite.models.ChapterModel;
+import com.education.corsalite.models.ContentModel;
 import com.education.corsalite.models.SubjectModel;
 import com.education.corsalite.models.db.ContentIndexResponse;
+import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.unnamed.b.atv.model.TreeNode;
@@ -71,23 +74,37 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
         initNodes();
     }
 
-    private void loopCheckedViews(){
-        TreeNode rootnode  = root.getChildren().get(0);
-        if(((CheckBox)root.getViewHolder().getNodeItemsView().getChildAt(0).findViewById(R.id.node_selector)).isChecked()){
-
-        }else {
+    private void loopCheckedViews() {
+        if (((CheckBox) root.getViewHolder().getNodeItemsView().getChildAt(0).findViewById(R.id.node_selector)).isChecked()) {
+            getContent(getContentIds(chapterModelList));
+        } else {
             for (TreeNode n : root.getChildren()) {
                 for (TreeNode innerNode : n.getChildren()) {
-                    if(((CheckBox)innerNode.getViewHolder().getNodeItemsView().getChildAt(0).findViewById(R.id.node_selector)).isChecked()){
+                    if (((CheckBox) innerNode.getViewHolder().getNodeItemsView().getChildAt(0).findViewById(R.id.node_selector)).isChecked()) {
 
-                    }else{
-                        for(TreeNode innerMostNode: innerNode.getChildren()){
+                    } else {
+                        for (TreeNode innerMostNode : innerNode.getChildren()) {
 
                         }
                     }
                 }
             }
         }
+    }
+
+    private void getContent(String contentId) {
+        ApiManager.getInstance(this).getContent(contentId, "", new ApiCallback<List<Content>>(this) {
+            @Override
+            public void failure(CorsaliteError error) {
+                super.failure(error);
+
+            }
+
+            @Override
+            public void success(List<Content> contents, Response response) {
+                super.success(contents, response);
+            }
+        });
     }
 
     private void getBundleData() {
@@ -137,6 +154,25 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
                         }
                     }
                 });
+    }
+
+    private String getContentIds(List<ChapterModel> chapterModelList) {
+        String contentId = "";
+        String contentIds = "";
+
+        for (ChapterModel chapterModel : chapterModelList) {
+            int i = 0;
+            for (ContentModel contentModel : chapterModel.topicMap.get(i).contentMap) {
+                if (contentId.trim().length() > 0) {
+                    contentId = contentId + ",";
+                    contentIds = contentIds + ",";
+                }
+                contentId = contentId + contentModel.idContent + "." + contentModel.type;
+                contentIds = contentIds + contentModel.idContent;
+            }
+            i++;
+        }
+        return contentIds;
     }
 
     private void prefillSubjects() {
