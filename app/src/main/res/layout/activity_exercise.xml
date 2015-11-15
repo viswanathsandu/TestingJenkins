@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical"
+    tools:context="com.education.corsalite.activities.ExerciseActivity">
+
+    <ViewSwitcher
+        android:id="@+id/vs_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ProgressBar
+            android:id="@+id/headerProgress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <RelativeLayout
+            android:padding="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_centerHorizontal="true"
+                android:text="Exercise: "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_header"/>
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/tv_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_comment"/>
+
+            <WebView
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/tv_comment"
+                android:id="@+id/webview_question"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </WebView>
+
+
+            <include
+                android:id="@+id/footer_layout"
+                layout="@layout/webview_footer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true" />
+
+            <ScrollView
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/webview_question"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+
+            </ScrollView>
+        </RelativeLayout>
+
+    </ViewSwitcher>
+
+</LinearLayout>

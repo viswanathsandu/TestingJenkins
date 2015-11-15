@@ -27,6 +27,7 @@ import com.education.corsalite.models.requestmodels.LogoutModel;
 import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
+import com.education.corsalite.models.responsemodels.ExerciseModel;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.CookieUtils;
@@ -121,6 +122,12 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     protected void setToolbarForOfflineContentReading() {
         toolbar.findViewById(R.id.download).setVisibility(View.VISIBLE);
         setToolbarTitle(getResources().getString(R.string.offline_content));
+    }
+
+    protected void setToolbarForExercise(List<ExerciseModel> exerciseModelList, int position) {
+        findViewById(R.id.toolbar_title).setVisibility(View.GONE);
+        toolbar.findViewById(R.id.video_layout).setVisibility(View.VISIBLE);
+        showExerciseToolbar(exerciseModelList, position, false);
     }
 
     protected void setToolbarForWebActivity(String title) {
@@ -273,6 +280,29 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void showExerciseToolbar(final List<ExerciseModel> exerciseModelList, int selectedPosition, boolean isNextPrevious) {
+        Spinner exerciseSpinner = (Spinner) toolbar.findViewById(R.id.spinner_video);
+        if(isNextPrevious) {
+            exerciseSpinner.setSelection(selectedPosition);
+        } else {
+            if (exerciseSpinner == null) return;
+            ArrayAdapter<ExerciseModel> dataAdapter = new ArrayAdapter<>(this, R.layout.spinner_title_textview, exerciseModelList);
+            dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+            exerciseSpinner.setAdapter(dataAdapter);
+            exerciseSpinner.setSelection(selectedPosition);
+            exerciseSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    getEventbus().post(position);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                }
+            });
+        }
     }
 
     public void showVideoInToolbar(final List<ContentModel> videos, int selectedPosition) {

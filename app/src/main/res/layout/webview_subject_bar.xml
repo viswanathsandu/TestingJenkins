@@ -108,6 +108,27 @@
                 android:src="@drawable/ico_dropdown_black" />
 
         </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_exercise"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content">
+
+            <Spinner
+                android:background="@null"
+                android:id="@+id/sp_exercise"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:padding="10dp"
+                android:src="@drawable/ico_dropdown_black" />
+
+        </RelativeLayout>
     </LinearLayout>
 
 </RelativeLayout>

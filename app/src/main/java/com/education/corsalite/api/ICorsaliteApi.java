@@ -8,6 +8,7 @@ import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.CourseAnalysis;
+import com.education.corsalite.models.responsemodels.ExerciseModel;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
 import com.education.corsalite.models.responsemodels.Message;
@@ -89,6 +90,9 @@ public interface ICorsaliteApi {
 
     @GET("/Content")
     void getContentData(@Query("idContents") String idContents, @Query("UpdateTime") String UpdateTime, ApiCallback<List<Content>> callback);
+
+    @GET("/Exercise")
+    void getExerciseData(@Query("idTopic") String idTopics, @Query("idCourse") String idCourse ,@Query("UpdateTime") String UpdateTime, ApiCallback<List<ExerciseModel>> callback);
 
     @POST("/UserProfile")
     void updateUserProfile(@Query("Update") String userProfile, ApiCallback<EditProfileModel> callback);
