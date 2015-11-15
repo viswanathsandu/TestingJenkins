@@ -79,14 +79,25 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
             getContent(getContentIds(chapterModelList));
         } else {
             for (TreeNode n : root.getChildren()) {
+                int i = 0;
                 for (TreeNode innerNode : n.getChildren()) {
-                    if (((CheckBox) innerNode.getViewHolder().getNodeItemsView().getChildAt(0).findViewById(R.id.node_selector)).isChecked()) {
-
+                    if (((CheckBox) innerNode.getViewHolder().getNodeView().findViewById(R.id.node_selector)).isChecked()) {
+                        chapterModelList.get(i).checked = true;
                     } else {
+                        int j = 0;
                         for (TreeNode innerMostNode : innerNode.getChildren()) {
-
+                            if (((CheckBox) innerMostNode.getViewHolder().getNodeView().findViewById(R.id.node_selector)).isChecked()) {
+                                if (j == 0) {
+                                    chapterModelList.get(i).htmlChecked = true;
+                                } else {
+                                    chapterModelList.get(i).videoChecked = true;
+                                }
+                            }
+                            j++;
                         }
                     }
+                    i++;
+                    getContent(getContentIdsForOtherChapters(chapterModelList));
                 }
             }
         }
@@ -169,6 +180,36 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
                 }
                 contentId = contentId + contentModel.idContent + "." + contentModel.type;
                 contentIds = contentIds + contentModel.idContent;
+            }
+            i++;
+        }
+        return contentIds;
+    }
+
+    private String getContentIdsForOtherChapters(List<ChapterModel> chapterModelList) {
+        String contentId = "";
+        String contentIds = "";
+
+        for (ChapterModel chapterModel : chapterModelList) {
+            int i = 0;
+            for (ContentModel contentModel : chapterModel.topicMap.get(i).contentMap) {
+                if (!chapterModel.checked) {
+                    if (chapterModel.htmlChecked || chapterModel.videoChecked) {
+                        if (contentId.trim().length() > 0) {
+                            contentId = contentId + ",";
+                            contentIds = contentIds + ",";
+                        }
+                        contentId = contentId + contentModel.idContent + "." + contentModel.type;
+                        contentIds = contentIds + contentModel.idContent;
+                    }
+                } else {
+                    if (contentId.trim().length() > 0) {
+                        contentId = contentId + ",";
+                        contentIds = contentIds + ",";
+                    }
+                    contentId = contentId + contentModel.idContent + "." + contentModel.type;
+                    contentIds = contentIds + contentModel.idContent;
+                }
             }
             i++;
         }
