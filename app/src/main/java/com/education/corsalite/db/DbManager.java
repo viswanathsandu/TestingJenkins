@@ -8,7 +8,6 @@ import com.orm.query.Condition;
 import com.orm.query.Select;
 
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * Created by vissu on 9/16/15.
@@ -69,13 +68,6 @@ public class DbManager {
         return contentIndexResponses;
     }
 
-    public List<ContentIndexResponse> getContentIndexLists( String studentId){
-        Select specificAuthorQuery = Select.from(ContentIndexResponse.class)
-                .where(Condition.prop("student_id").eq(studentId));
-       List<ContentIndexResponse> contentIndexResponses = specificAuthorQuery.list();
-        return contentIndexResponses;
-    }
-
     /**
      * Saved List of Content Index to db as a string with courseID and student ID
      * @param contentIndexJson
@@ -89,9 +81,12 @@ public class DbManager {
                 .limit("1");
         ContentIndexResponse contentIndexResponses = (ContentIndexResponse) specificAuthorQuery.first();
         if (contentIndexResponses != null) {
-            return;
+            contentIndexResponses.courseId = courseId;
+            contentIndexResponses.studentId = studentId;
+            contentIndexResponses.contentIndexesJson = contentIndexJson;
+        }else {
+            contentIndexResponses = new ContentIndexResponse(contentIndexJson, courseId, studentId);
         }
-        contentIndexResponses = new ContentIndexResponse(contentIndexJson, courseId, studentId);
         contentIndexResponses.save();
     }
 

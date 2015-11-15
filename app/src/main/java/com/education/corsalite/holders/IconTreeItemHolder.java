@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
+import com.education.corsalite.activities.OfflineContentActivity;
 import com.unnamed.b.atv.model.TreeNode;
 
 public class IconTreeItemHolder extends TreeNode.BaseNodeViewHolder<IconTreeItemHolder.IconTreeItem> {
@@ -18,7 +19,7 @@ public class IconTreeItemHolder extends TreeNode.BaseNodeViewHolder<IconTreeItem
     }
 
     @Override
-    public View createNodeView(final TreeNode node, IconTreeItem value) {
+    public View createNodeView(final TreeNode node, final IconTreeItem value) {
         final LayoutInflater inflater = LayoutInflater.from(context);
         final View view = inflater.inflate(R.layout.icon_node, null, false);
         tvValue = (TextView) view.findViewById(R.id.node_value);
@@ -29,11 +30,10 @@ public class IconTreeItemHolder extends TreeNode.BaseNodeViewHolder<IconTreeItem
 
         arrowView = (ImageView) view.findViewById(R.id.arrow_icon);
 
-        view.findViewById(R.id.btn_addFolder).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.btn_update).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TreeNode newFolder = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.string.completed_topics, "New Folder"));
-                //getTreeView().addNode(node, newFolder);
+               //TODO UPdate
             }
         });
 
@@ -41,14 +41,13 @@ public class IconTreeItemHolder extends TreeNode.BaseNodeViewHolder<IconTreeItem
             @Override
             public void onClick(View v) {
                 getTreeView().removeNode(node);
-                //TODO Update Database
+                ((OfflineContentActivity)context).onDelete(value.id);
             }
         });
 
         //Subject
         if (node.getLevel() == 1) {
             view.findViewById(R.id.btn_delete).setVisibility(View.GONE);
-            view.setBackgroundColor(context.getResources().getColor(R.color.yellow));
         }
 
         return view;
@@ -63,10 +62,12 @@ public class IconTreeItemHolder extends TreeNode.BaseNodeViewHolder<IconTreeItem
     public static class IconTreeItem {
         public int icon;
         public String text;
+        public String id;
 
-        public IconTreeItem(int icon, String text) {
+        public IconTreeItem(int icon, String text,String id) {
             this.icon = icon;
             this.text = text;
+            this.id = id;
         }
     }
 }

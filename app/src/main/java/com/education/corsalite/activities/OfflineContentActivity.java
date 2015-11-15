@@ -16,13 +16,14 @@ import com.education.corsalite.models.SubjectModel;
 import com.education.corsalite.models.TopicModel;
 import com.education.corsalite.models.db.ContentIndexResponse;
 import com.education.corsalite.models.responsemodels.ContentIndex;
+import com.education.corsalite.models.responsemodels.Course;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.unnamed.b.atv.model.TreeNode;
 import com.unnamed.b.atv.view.AndroidTreeView;
 
-import java.util.ArrayList;
+import java.lang.reflect.Type;
 import java.util.List;
 
 /**
@@ -30,7 +31,6 @@ import java.util.List;
  */
 public class OfflineContentActivity extends AbstractBaseActivity {
 
-    private int counter = 0;
     private LinearLayout mainNodeLayout;
     private AndroidTreeView tView;
     List<ContentIndex> contentIndexList;
@@ -42,48 +42,58 @@ public class OfflineContentActivity extends AbstractBaseActivity {
         LinearLayout myView = (LinearLayout) inflater.inflate(R.layout.activity_offline_content, null);
         frameLayout.addView(myView);
         mainNodeLayout = (LinearLayout) findViewById(R.id.main_node);
-        setToolbarTitle("Offline Content");
-
-        if(getContentIndexResponse()) {
-            initNodes();
-        }else{
-            Toast.makeText(OfflineContentActivity.this, "No offline content available" , Toast.LENGTH_SHORT).show();
-        }
+        setToolbarForOfflineContent();
     }
 
-    private boolean getContentIndexResponse() {
-        List<ContentIndexResponse> contentIndexResponseList = DbManager.getInstance(OfflineContentActivity.this).getContentIndexLists(LoginUserCache.getInstance().loginResponse.studentId);
-        if(contentIndexResponseList == null) {
+    private boolean getContentIndexResponse(String courseId) {
+        ContentIndexResponse contentIndexResponse = DbManager.getInstance(OfflineContentActivity.this).getContentIndexList(courseId,
+                LoginUserCache.getInstance().loginResponse.studentId);
+        if(contentIndexResponse == null) {
             return false;
         }
-        contentIndexList = new ArrayList<>();
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        for(int i=0;i<contentIndexResponseList.size();i++) {
-            List<ContentIndex> mLocalList = gson.fromJson(contentIndexResponseList.get(i).contentIndexesJson, new TypeToken<List<ContentIndex>>() {
-            }.getType());
-            for (ContentIndex contentIndex:mLocalList) {
-                contentIndexList.add(contentIndex);
-            }
+        if(contentIndexList != null) {
+            contentIndexList.clear();
         }
+        contentIndexList = gson.fromJson(contentIndexResponse.contentIndexesJson, new TypeToken<List<ContentIndex>>(){}.getType());
         return true;
     }
+
+    private void updateContentIndexResponses() {
+        Type contentIndexType = new TypeToken<List<ContentIndex>>() {
+        }.getType();
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String jsonObject = gson.toJson(contentIndexList, contentIndexType);
+        DbManager.getInstance(OfflineContentActivity.this).saveContentIndexList(jsonObject, selectedCourse.courseId.toString(), LoginUserCache.getInstance().loginResponse.studentId);
+    }
+
+    @Override
+    public void onEvent(Course course) {
+        super.onEvent(course);
+        if(getContentIndexResponse(course.courseId.toString())){
+            initNodes();
+        }else{
+            Toast.makeText(OfflineContentActivity.this, "No offline content available for "+course.name , Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
     private void initNodes() {
         TreeNode root = TreeNode.root();
         for (ContentIndex contentResponse: contentIndexList) {
-            TreeNode contentResponseRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_subject, contentResponse.courseName));
-            root.addChild(contentResponseRoot);
+            //TreeNode contentResponseRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_subject, contentResponse.courseName,contentResponse.idCourse));
+            //root.addChild(contentResponseRoot);
             for (SubjectModel subject : contentResponse.subjectModelList) {
-                TreeNode subjectRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_subject, subject.subjectName));
-                contentResponseRoot.addChild(subjectRoot);
+                TreeNode subjectRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_subject, subject.subjectName,subject.idSubject));
+                root.addChild(subjectRoot);
                 for (ChapterModel chapter : subject.chapters) {
-                    TreeNode chapterRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_chapter, chapter.chapterName));
+                    TreeNode chapterRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_chapter, chapter.chapterName,chapter.idChapter));
                     subjectRoot.addChild(chapterRoot);
                     for (TopicModel topic : chapter.topicMap) {
-                        TreeNode topicRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_chapter, topic.topicName));
+                        TreeNode topicRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_chapter, topic.topicName,topic.idTopic));
                         chapterRoot.addChild(topicRoot);
                         for (ContentModel content : topic.contentMap) {
-                            TreeNode contentRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_topics,content.contentName +"."+ content.type));
+                            TreeNode contentRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_topics,content.contentName +"."+ content.type,content.idContent));
                             topicRoot.addChild(contentRoot);
                         }
                     }
@@ -97,6 +107,7 @@ public class OfflineContentActivity extends AbstractBaseActivity {
         tView.setDefaultNodeClickListener(nodeClickListener);
         tView.setDefaultNodeLongClickListener(nodeLongClickListener);
         tView.setDefaultContainerStyle(R.style.TreeNodeStyleCustom);
+        mainNodeLayout.removeAllViews();
         mainNodeLayout.addView(tView.getView());
     }
 
@@ -119,6 +130,45 @@ public class OfflineContentActivity extends AbstractBaseActivity {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-//        outState.putString("tState", tView.getSaveState());
+    }
+
+    public void onDelete(String id){
+        for(ContentIndex contentIndex:contentIndexList){
+            if(contentIndex.idCourse.equalsIgnoreCase(id)){
+                contentIndexList.remove(contentIndex);
+                return;
+            }
+            for(SubjectModel subject : contentIndex.subjectModelList){
+                if(subject.idSubject.equalsIgnoreCase(id)){
+                    contentIndex.subjectModelList.remove(subject);
+                    return;
+                }
+                for (ChapterModel chapter : subject.chapters) {
+                    if(chapter.idChapter.equalsIgnoreCase(id)){
+                        subject.chapters.remove(chapter);
+                        return;
+                    }
+                    for(TopicModel topic : chapter.topicMap){
+                        if(topic.idTopic.equalsIgnoreCase(id)){
+                            chapter.topicMap.remove(topic);
+                            return;
+                        }
+                        for(ContentModel content : topic.contentMap){
+                            if(content.idContent.equalsIgnoreCase(id)){
+                                topic.contentMap.remove(content);
+                                return;
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        updateContentIndexResponses();
+        super.onBackPressed();
     }
 }
