@@ -76,7 +76,7 @@
         <activity
             android:name=".activities.OfflineContentActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
-            android:label="Analytics"
+            android:label="Offline Content"
             android:theme="@style/UserProfileTheme" />
 
         <activity

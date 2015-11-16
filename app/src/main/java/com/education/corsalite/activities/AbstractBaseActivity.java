@@ -112,6 +112,11 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         setToolbarTitle(getResources().getString(R.string.notes));
         loadCoursesList();
     }
+    protected void setToolbarForOfflineContent() {
+        toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
+        setToolbarTitle(getResources().getString(R.string.offline_content));
+        loadCoursesList();
+    }
 
     protected void setToolbarForVideo(List<ContentModel> videos, int position) {
         findViewById(R.id.toolbar_title).setVisibility(View.GONE);

@@ -3,12 +3,10 @@ package com.education.corsalite.activities;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
@@ -159,7 +157,7 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
                         if (mContentIndexs != null) {
                             contentIndexList = mContentIndexs;
                             ContentIndexResponse mContentIndexResponse = new ContentIndexResponse();
-                            mContentIndexResponse.contentIndexes = contentIndexList;
+//                            mContentIndexResponse.contentIndexes = contentIndexList;
                             initNodes();
                             prefillSubjects();
                         }
