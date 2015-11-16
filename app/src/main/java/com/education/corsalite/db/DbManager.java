@@ -4,13 +4,10 @@ import android.content.Context;
 
 import com.education.corsalite.models.db.ContentIndexResponse;
 import com.education.corsalite.models.db.CourseList;
-import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 
 import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
 
 /**
  * Created by vissu on 9/16/15.
@@ -84,9 +81,12 @@ public class DbManager {
                 .limit("1");
         ContentIndexResponse contentIndexResponses = (ContentIndexResponse) specificAuthorQuery.first();
         if (contentIndexResponses != null) {
-            return;
+            contentIndexResponses.courseId = courseId;
+            contentIndexResponses.studentId = studentId;
+            contentIndexResponses.contentIndexesJson = contentIndexJson;
+        }else {
+            contentIndexResponses = new ContentIndexResponse(contentIndexJson, courseId, studentId);
         }
-        contentIndexResponses = new ContentIndexResponse(contentIndexJson, courseId, studentId);
         contentIndexResponses.save();
     }
 
