@@ -34,7 +34,6 @@ import retrofit.client.Response;
  */
 public class OfflineSubjectActivity extends AbstractBaseActivity {
 
-    private int counter = 0;
     private LinearLayout mainNodeLayout;
     private AndroidTreeView tView;
     private TreeNode root;
@@ -239,7 +238,7 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
     }
 
     private void addRootAndItsView() {
-        root.addChild(contentRoot);
+//        root.addChild(contentRoot);
         tView = new AndroidTreeView(this, root);
         tView.setDefaultAnimation(true);
         tView.setDefaultViewHolder(IconTreeItemHolder.class);
@@ -255,16 +254,17 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
     }
 
     private void setChapterNameAndChildren(ChapterModel chapters, int pos) {
-        TreeNode subjectName = new TreeNode(chapters.chapterName).setViewHolder(new CheckedItemViewHolder(this));
-        TreeNode file1 = new TreeNode(chapters.chapterName.toString() + ".html").setViewHolder(new CheckedItemViewHolder(this));
-        TreeNode file2 = new TreeNode(chapters.chapterName.toString() + "_video.mpg").setViewHolder(new CheckedItemViewHolder(this));
+        TreeNode subjectName = new TreeNode(chapters.chapterName).setViewHolder(new CheckedItemViewHolder(this,false));
+        TreeNode file1 = new TreeNode(chapters.chapterName.toString() + ".html").setViewHolder(new CheckedItemViewHolder(this,true));
+        TreeNode file2 = new TreeNode(chapters.chapterName.toString() + "_video.mpg").setViewHolder(new CheckedItemViewHolder(this,true));
         subjectName.addChildren(file1, file2);
-        contentRoot.addChild(subjectName);
+        root.addChild(subjectName);
     }
 
     private void initNodes() {
         root = TreeNode.root();
-        contentRoot = new TreeNode(mSubjectName).setViewHolder(new CheckedItemViewHolder(this));
+//        contentRoot = new TreeNode("");
+//        contentRoot = new TreeNode(mSubjectName).setViewHolder(new CheckedItemViewHolder(this,true));
     }
 
     @Override
