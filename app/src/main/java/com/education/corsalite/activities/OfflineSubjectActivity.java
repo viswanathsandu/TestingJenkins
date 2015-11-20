@@ -238,7 +238,7 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
     }
 
     private void addRootAndItsView() {
-//        root.addChild(contentRoot);
+        root.addChild(contentRoot);
         tView = new AndroidTreeView(this, root);
         tView.setDefaultAnimation(true);
         tView.setDefaultViewHolder(IconTreeItemHolder.class);
@@ -258,13 +258,13 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
         TreeNode file1 = new TreeNode(chapters.chapterName.toString() + ".html").setViewHolder(new CheckedItemViewHolder(this,true));
         TreeNode file2 = new TreeNode(chapters.chapterName.toString() + "_video.mpg").setViewHolder(new CheckedItemViewHolder(this,true));
         subjectName.addChildren(file1, file2);
-        root.addChild(subjectName);
+        contentRoot.addChild(subjectName);
     }
 
     private void initNodes() {
         root = TreeNode.root();
-//        contentRoot = new TreeNode("");
-//        contentRoot = new TreeNode(mSubjectName).setViewHolder(new CheckedItemViewHolder(this,true));
+        contentRoot = new TreeNode("");
+        contentRoot = new TreeNode(mSubjectName).setViewHolder(new CheckedItemViewHolder(this,false));
     }
 
     @Override
