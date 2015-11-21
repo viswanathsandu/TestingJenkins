@@ -72,30 +72,26 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
     }
 
     private void loopCheckedViews() {
-        if (((CheckBox) root.getViewHolder().getNodeItemsView().getChildAt(0).findViewById(R.id.node_selector)).isChecked()) {
-            getContent(getContentIds(chapterModelList));
-        } else {
-            for (TreeNode n : root.getChildren()) {
-                int i = 0;
-                for (TreeNode innerNode : n.getChildren()) {
-                    if (((CheckBox) innerNode.getViewHolder().getNodeView().findViewById(R.id.node_selector)).isChecked()) {
-                        chapterModelList.get(i).checked = true;
-                    } else {
-                        int j = 0;
-                        for (TreeNode innerMostNode : innerNode.getChildren()) {
-                            if (((CheckBox) innerMostNode.getViewHolder().getNodeView().findViewById(R.id.node_selector)).isChecked()) {
-                                if (j == 0) {
-                                    chapterModelList.get(i).htmlChecked = true;
-                                } else {
-                                    chapterModelList.get(i).videoChecked = true;
-                                }
+        for (TreeNode n : root.getChildren()) {
+            int i = 0;
+            for (TreeNode innerNode : n.getChildren()) {
+                if (((CheckBox) innerNode.getViewHolder().getNodeView().findViewById(R.id.node_selector)).isChecked()) {
+                    chapterModelList.get(i).checked = true;
+                } else {
+                    int j = 0;
+                    for (TreeNode innerMostNode : innerNode.getChildren()) {
+                        if (((CheckBox) innerMostNode.getViewHolder().getNodeView().findViewById(R.id.node_selector)).isChecked()) {
+                            if (j == 0) {
+                                chapterModelList.get(i).htmlChecked = true;
+                            } else {
+                                chapterModelList.get(i).videoChecked = true;
                             }
-                            j++;
                         }
+                        j++;
                     }
-                    i++;
-                    getContent(getContentIdsForOtherChapters(chapterModelList));
                 }
+                i++;
+                getContent(getContentIdsForOtherChapters(chapterModelList));
             }
         }
     }
@@ -238,7 +234,6 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
     }
 
     private void addRootAndItsView() {
-        root.addChild(contentRoot);
         tView = new AndroidTreeView(this, root);
         tView.setDefaultAnimation(true);
         tView.setDefaultViewHolder(IconTreeItemHolder.class);
@@ -254,17 +249,15 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
     }
 
     private void setChapterNameAndChildren(ChapterModel chapters, int pos) {
-        TreeNode subjectName = new TreeNode(chapters.chapterName).setViewHolder(new CheckedItemViewHolder(this,false));
-        TreeNode file1 = new TreeNode(chapters.chapterName.toString() + ".html").setViewHolder(new CheckedItemViewHolder(this,true));
-        TreeNode file2 = new TreeNode(chapters.chapterName.toString() + "_video.mpg").setViewHolder(new CheckedItemViewHolder(this,true));
+        TreeNode subjectName = new TreeNode(chapters.chapterName).setViewHolder(new CheckedItemViewHolder(this, false));
+        TreeNode file1 = new TreeNode(chapters.chapterName.toString() + ".html").setViewHolder(new CheckedItemViewHolder(this, true));
+        TreeNode file2 = new TreeNode(chapters.chapterName.toString() + "_video.mpg").setViewHolder(new CheckedItemViewHolder(this, true));
         subjectName.addChildren(file1, file2);
-        contentRoot.addChild(subjectName);
+        root.addChild(subjectName);
     }
 
     private void initNodes() {
         root = TreeNode.root();
-        contentRoot = new TreeNode("");
-        contentRoot = new TreeNode(mSubjectName).setViewHolder(new CheckedItemViewHolder(this,false));
     }
 
     @Override
