@@ -14,6 +14,7 @@ import com.education.corsalite.models.responsemodels.LogoutResponse;
 import com.education.corsalite.models.responsemodels.Message;
 import com.education.corsalite.models.responsemodels.Note;
 import com.education.corsalite.models.responsemodels.Notes;
+import com.education.corsalite.models.responsemodels.PostExercise;
 import com.education.corsalite.models.responsemodels.StudyCenter;
 import com.education.corsalite.models.responsemodels.TestCoverage;
 import com.education.corsalite.models.responsemodels.UpdateExamDetailsResponse;
@@ -37,6 +38,9 @@ public interface ICorsaliteApi {
 
     @POST("/AuthToken")
     void logout(@Query("Update") String update, ApiCallback<LogoutResponse> callback);
+
+    @POST("/ExerciseAnswer")
+    void postExerciseAnswer(@Query("Insert") String insert, ApiCallback<PostExercise> callback);
 
     @GET("/StudentCourseList")
     void getCourses(@Query("idStudent") String studentId, ApiCallback<List<Course>> callback);

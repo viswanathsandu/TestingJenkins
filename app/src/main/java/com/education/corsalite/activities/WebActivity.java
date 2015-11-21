@@ -84,7 +84,6 @@ public class WebActivity extends AbstractBaseActivity {
     @Bind(R.id.btn_previous) Button btnPrevious;
     @Bind(R.id.tv_video) TextView tvVideo;
 
-
     private List<ContentIndex> contentIndexList;
     private List<SubjectModel> subjectModelList;
     private List<ChapterModel> chapterModelList;
@@ -463,6 +462,7 @@ public class WebActivity extends AbstractBaseActivity {
     }
 
     private void getExercise(int topicPosition) {
+        layoutExercise.setVisibility(View.GONE);
         ApiManager.getInstance(this).getExercise(topicModelList.get(topicPosition).idTopic, selectedCourse.courseId.toString(),
                 "", new ApiCallback<List<ExerciseModel>>(this) {
                     @Override
@@ -698,7 +698,6 @@ public class WebActivity extends AbstractBaseActivity {
     }
 
     private void showExcercise() {
-        layoutExercise.setVisibility(View.GONE);
         if(exerciseModelList != null && exerciseModelList.size() > 0) {
             layoutExercise.setVisibility(View.VISIBLE);
             ExerciseAdapter exerciseAdapter = new ExerciseAdapter(exerciseModelList, this);
@@ -710,7 +709,7 @@ public class WebActivity extends AbstractBaseActivity {
 
                     if(position != 0) {
                         Intent intent = new Intent(WebActivity.this, ExerciseActivity.class);
-                        intent.putExtra(Constants.SELECTED_POSITION, position);
+                        intent.putExtra(Constants.SELECTED_POSITION, position - 1);
                         startActivity(intent);
                     }
                 }
