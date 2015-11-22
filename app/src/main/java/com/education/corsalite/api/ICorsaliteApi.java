@@ -1,22 +1,22 @@
 package com.education.corsalite.api;
 
-import com.education.corsalite.models.responsemodels.CourseAnalysisPercentile;
-import com.education.corsalite.models.responsemodels.DefaultCourseResponse;
-import com.education.corsalite.models.responsemodels.DefaultNoteResponse;
-import com.education.corsalite.models.responsemodels.EditProfileModel;
 import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.CourseAnalysis;
+import com.education.corsalite.models.responsemodels.CourseAnalysisPercentile;
+import com.education.corsalite.models.responsemodels.DefaultCourseResponse;
+import com.education.corsalite.models.responsemodels.DefaultNoteResponse;
+import com.education.corsalite.models.responsemodels.EditProfileModel;
 import com.education.corsalite.models.responsemodels.ExerciseModel;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
 import com.education.corsalite.models.responsemodels.Message;
 import com.education.corsalite.models.responsemodels.Note;
-import com.education.corsalite.models.responsemodels.Notes;
 import com.education.corsalite.models.responsemodels.StudyCenter;
 import com.education.corsalite.models.responsemodels.TestCoverage;
 import com.education.corsalite.models.responsemodels.UpdateExamDetailsResponse;
+import com.education.corsalite.models.responsemodels.UsageAnalysis;
 import com.education.corsalite.models.responsemodels.UserProfileResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencyBalanceResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencySummaryResponse;
@@ -111,4 +111,7 @@ public interface ICorsaliteApi {
 
     @POST("/Note")
     void updateNote(@Query("Update") String insert, ApiCallback<DefaultNoteResponse> callback);
+
+    @GET("/UsageAnalysis")
+    void getUsageAnalysis(@Query("idUser") String userId, ApiCallback<UsageAnalysis> callback);
 }

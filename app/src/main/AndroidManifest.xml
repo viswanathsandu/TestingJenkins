@@ -91,6 +91,12 @@
             android:label=""
             android:theme="@style/UserProfileTheme" />
         <activity
+            android:name=".activities.UsageAnalysisActivity"
+            android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
+            android:hardwareAccelerated="true"
+            android:label="Usage Analysis"
+            android:theme="@style/UserProfileTheme" />
+        <activity
             android:name=".activities.OfflineSubjectActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="Notes"
