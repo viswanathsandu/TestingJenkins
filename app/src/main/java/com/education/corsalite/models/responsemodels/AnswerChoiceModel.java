@@ -10,13 +10,13 @@ import java.io.Serializable;
 public class AnswerChoiceModel extends BaseModel implements Serializable {
 
 
-    private String idAnswerKey;
+    public String idAnswerKey;
     @SerializedName("IsCorrectAnswer")
-    private String isCorrectAnswer;
+    public String isCorrectAnswer;
     @SerializedName("AnswerChoiceTextHtml")
-    private String answerChoiceTextHtml;
+    public String answerChoiceTextHtml;
     @SerializedName("AnswerChoiceExplanationHtml")
-    private String answerChoiceExplanationHtml;
+    public String answerChoiceExplanationHtml;
     @SerializedName("AnswerKeyText")
-    private String answerKeyText;
+    public String answerKeyText;
 }
