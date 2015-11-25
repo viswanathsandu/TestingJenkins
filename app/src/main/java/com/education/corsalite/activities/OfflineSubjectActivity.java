@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
@@ -34,8 +36,7 @@ import retrofit.client.Response;
  */
 public class OfflineSubjectActivity extends AbstractBaseActivity {
 
-    private int counter = 0;
-    private LinearLayout mainNodeLayout;
+    private RelativeLayout mainNodeLayout;
     private AndroidTreeView tView;
     private TreeNode root;
     private TreeNode contentRoot;
@@ -45,21 +46,25 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
     private String mContentId = "";
     private String mSubjectName = "";
     private String mCourseId = "";
+    private String mChapterName = "";
     private List<ContentIndex> contentIndexList;
     private ArrayList<SubjectModel> subjectModelList;
     private ArrayList<ChapterModel> chapterModelList;
     private LinearLayout downloadImage;
+    private ProgressBar headerProgress;
     Bundle savedInstanceState;
+    private int chapterIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.savedInstanceState = savedInstanceState;
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        LinearLayout myView = (LinearLayout) inflater.inflate(R.layout.activity_offline_content, null);
+        RelativeLayout myView = (RelativeLayout) inflater.inflate(R.layout.activity_offline_content, null);
         frameLayout.addView(myView);
-        mainNodeLayout = (LinearLayout) findViewById(R.id.main_node);
+        mainNodeLayout = (RelativeLayout) findViewById(R.id.main_node);
         downloadImage = (LinearLayout) findViewById(R.id.download);
+        headerProgress = (ProgressBar) findViewById(R.id.headerProgress);
         downloadImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,32 +78,18 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
     }
 
     private void loopCheckedViews() {
-        if (((CheckBox) root.getViewHolder().getNodeItemsView().getChildAt(0).findViewById(R.id.node_selector)).isChecked()) {
-            getContent(getContentIds(chapterModelList));
-        } else {
-            for (TreeNode n : root.getChildren()) {
-                int i = 0;
-                for (TreeNode innerNode : n.getChildren()) {
-                    if (((CheckBox) innerNode.getViewHolder().getNodeView().findViewById(R.id.node_selector)).isChecked()) {
-                        chapterModelList.get(i).checked = true;
-                    } else {
-                        int j = 0;
-                        for (TreeNode innerMostNode : innerNode.getChildren()) {
-                            if (((CheckBox) innerMostNode.getViewHolder().getNodeView().findViewById(R.id.node_selector)).isChecked()) {
-                                if (j == 0) {
-                                    chapterModelList.get(i).htmlChecked = true;
-                                } else {
-                                    chapterModelList.get(i).videoChecked = true;
-                                }
-                            }
-                            j++;
-                        }
-                    }
-                    i++;
-                    getContent(getContentIdsForOtherChapters(chapterModelList));
+        int i = 0;
+        for (TreeNode n : root.getChildren().get(0).getChildren()) {
+            if (((CheckBox) n.getViewHolder().getNodeView().findViewById(R.id.node_selector)).isChecked()) {
+                if (i == 0) {
+                    chapterModelList.get(chapterIndex).htmlChecked = true;
+                } else {
+                    chapterModelList.get(chapterIndex).videoChecked = true;
                 }
             }
+            i++;
         }
+        getContent(getContentIdsForOtherChapters(chapterModelList));
     }
 
     private void getContent(String contentId) {
@@ -136,6 +127,9 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
             }
             if (bundle.containsKey("courseId") && bundle.getString("courseId") != null) {
                 mCourseId = bundle.getString("courseId");
+            }
+            if (bundle.containsKey("chapterName") && bundle.getString("chapterName") != null) {
+                mChapterName = bundle.getString("chapterName");
             }
         }
     }
@@ -191,16 +185,15 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
         for (ChapterModel chapterModel : chapterModelList) {
             int i = 0;
             for (ContentModel contentModel : chapterModel.topicMap.get(i).contentMap) {
-                if (!chapterModel.checked) {
-                    if (chapterModel.htmlChecked || chapterModel.videoChecked) {
-                        if (contentId.trim().length() > 0) {
-                            contentId = contentId + ",";
-                            contentIds = contentIds + ",";
-                        }
-                        contentId = contentId + contentModel.idContent + "." + contentModel.type;
-                        contentIds = contentIds + contentModel.idContent;
+                if (chapterModel.htmlChecked) {
+                    if (contentId.trim().length() > 0) {
+                        contentId = contentId + ",";
+                        contentIds = contentIds + ",";
                     }
-                } else {
+                    contentId = contentId + contentModel.idContent + "." + contentModel.type;
+                    contentIds = contentIds + contentModel.idContent;
+                }
+                if (chapterModel.videoChecked) {
                     if (contentId.trim().length() > 0) {
                         contentId = contentId + ",";
                         contentIds = contentIds + ",";
@@ -233,13 +226,16 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
         if (!mChapterId.isEmpty()) {
             int listSize = chapterModelList.size();
             for (int i = 0; i < listSize; i++) {
-                setChapterNameAndChildren(chapterModelList.get(i), i);
+                if (chapterModelList.get(i).chapterName.equals(mChapterName)) {
+                    chapterIndex = i;
+                    setChapterNameAndChildren(chapterModelList.get(i), i);
+                    break;
+                }
             }
         }
     }
 
     private void addRootAndItsView() {
-        root.addChild(contentRoot);
         tView = new AndroidTreeView(this, root);
         tView.setDefaultAnimation(true);
         tView.setDefaultViewHolder(IconTreeItemHolder.class);
@@ -255,16 +251,16 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
     }
 
     private void setChapterNameAndChildren(ChapterModel chapters, int pos) {
-        TreeNode subjectName = new TreeNode(chapters.chapterName).setViewHolder(new CheckedItemViewHolder(this));
-        TreeNode file1 = new TreeNode(chapters.chapterName.toString() + ".html").setViewHolder(new CheckedItemViewHolder(this));
-        TreeNode file2 = new TreeNode(chapters.chapterName.toString() + "_video.mpg").setViewHolder(new CheckedItemViewHolder(this));
+        headerProgress.setVisibility(View.GONE);
+        TreeNode subjectName = new TreeNode(chapters.chapterName).setViewHolder(new CheckedItemViewHolder(this, false));
+        TreeNode file1 = new TreeNode(chapters.chapterName.toString() + ".html").setViewHolder(new CheckedItemViewHolder(this, true));
+        TreeNode file2 = new TreeNode(chapters.chapterName.toString() + "_video.mpg").setViewHolder(new CheckedItemViewHolder(this, true));
         subjectName.addChildren(file1, file2);
-        contentRoot.addChild(subjectName);
+        root.addChild(subjectName);
     }
 
     private void initNodes() {
         root = TreeNode.root();
-        contentRoot = new TreeNode(mSubjectName).setViewHolder(new CheckedItemViewHolder(this));
     }
 
     @Override
