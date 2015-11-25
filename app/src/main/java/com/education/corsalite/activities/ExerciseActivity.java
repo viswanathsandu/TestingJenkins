@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.text.style.UnderlineSpan;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
@@ -59,6 +62,9 @@ public class ExerciseActivity extends AbstractBaseActivity {
 
     @Bind(R.id.txtAnswerCount) TextView txtAnswerCount;
     @Bind(R.id.txtAnswerExp) WebView txtAnswerExp;
+
+    @Bind(R.id.explanation_layout) LinearLayout explanationLayout;
+    @Bind(R.id.layout_choice) LinearLayout layoutChoice;
 
     String webQuestion = "";
     private int selectedPosition = 0;
@@ -184,7 +190,7 @@ public class ExerciseActivity extends AbstractBaseActivity {
                     showExerciseToolbar(null, selectedPosition - 1, true);
                     break;
                 case R.id.btn_verify:
-                    postAnswer(WebActivity.exerciseModelList.get(selectedPosition).answerChoice.get(selectedAnswerPosition),
+                     postAnswer(WebActivity.exerciseModelList.get(selectedPosition).answerChoice.get(selectedAnswerPosition),
                             WebActivity.exerciseModelList.get(selectedPosition).idQuestion);
                     break;
             }
@@ -217,7 +223,23 @@ public class ExerciseActivity extends AbstractBaseActivity {
         if (mViewSwitcher.indexOfChild(mViewSwitcher.getCurrentView()) == 0) {
             mViewSwitcher.showNext();
         }
-        loadAnswers(position);
+
+        if(WebActivity.exerciseModelList.get(position).idQuestionType.equalsIgnoreCase("1")) {
+            loadAnswers(position);
+        } else if (WebActivity.exerciseModelList.get(position).idQuestionType.equalsIgnoreCase("2")) {
+            loadChexkbox(position);
+        } else {
+            if(WebActivity.exerciseModelList.size() - 1 == 0) {
+                return;
+            }
+            if(WebActivity.exerciseModelList.size() - 1 > selectedAnswerPosition) {
+                WebActivity.exerciseModelList.remove(selectedAnswerPosition);
+                showExerciseToolbar(null, selectedPosition, true);
+            } else {
+                WebActivity.exerciseModelList.remove(selectedAnswerPosition);
+                showExerciseToolbar(null, selectedPosition - 1, true);
+            }
+        }
     }
 
     private class MyWebViewClient extends WebViewClient {
@@ -232,6 +254,81 @@ public class ExerciseActivity extends AbstractBaseActivity {
             return true;
         }
     }
+
+    private void loadChexkbox(int position) {
+        resetExplanation();
+        answerLayout.removeAllViews();
+
+        List<AnswerChoiceModel> answerChoiceModels = WebActivity.exerciseModelList.get(position).answerChoice;
+        final int size = answerChoiceModels.size();
+        final CheckBox[] checkBoxes = new CheckBox[size];
+        final LinearLayout[] rowLayout = new LinearLayout[size];
+
+        for(int i = 0; i < size; i++) {
+
+            final AnswerChoiceModel answerChoiceModel = answerChoiceModels.get(i);
+            checkBoxes[i] = new CheckBox(this);
+            checkBoxes[i].setId(Integer.valueOf(answerChoiceModel.idAnswerKey));
+            checkBoxes[i].setTag(answerChoiceModel);
+
+            rowLayout[i] = new LinearLayout(this);
+            rowLayout[i].setOrientation(LinearLayout.HORIZONTAL);
+            rowLayout[i].setGravity(Gravity.CENTER_VERTICAL);
+            LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+            checkBoxes[i].setLayoutParams(p);
+
+            rowLayout[i].addView(checkBoxes[i]);
+
+            WebView optionWebView = new WebView(getApplicationContext());
+            optionWebView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
+            optionWebView.setScrollbarFadingEnabled(true);
+            optionWebView.getSettings().setLoadsImagesAutomatically(true);
+            optionWebView.getSettings().setJavaScriptEnabled(true);
+            optionWebView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+            optionWebView.setWebChromeClient(new WebChromeClient());
+            optionWebView.setWebViewClient(new MyWebViewClient());
+
+            optionWebView.loadData(answerChoiceModel.answerChoiceTextHtml, "text/html; charset=UTF-8", null);
+            p = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 1.0f);
+            optionWebView.setLayoutParams(p);
+            rowLayout[i].addView(optionWebView);
+            answerLayout.addView(rowLayout[i]);
+
+            try {
+                checkBoxes[i].setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        boolean isCheckedAtLeastOnce = false;
+                        CheckBox chkBox = (CheckBox) v;
+                        if(chkBox.isChecked()) {
+                            isCheckedAtLeastOnce = true;
+                            for (int x = 0; x < size; x++) {
+                                if(checkBoxes[x].getId() == Integer.valueOf(answerChoiceModel.idAnswerKey)) {
+                                    selectedAnswerPosition = x + 1;
+                                }
+                            }
+                        } else {
+                            for (int x = 0; x < size; x++) {
+                                if(checkBoxes[x].isChecked()) {
+                                    selectedAnswerPosition = x + 1;
+                                    isCheckedAtLeastOnce = true;
+                                     break;
+                                }
+                            }
+                        }
+                        if(!isCheckedAtLeastOnce) {
+                            selectedAnswerPosition = -1;
+                        }
+                        btnVerify.setEnabled(isCheckedAtLeastOnce);
+                    }
+                });
+            } catch (Exception ignored) {
+                ignored.printStackTrace();
+            }
+        }
+        setExplanationLayout();
+    }
+
 
     private void loadAnswers(int position) {
         resetExplanation();
@@ -283,7 +380,6 @@ public class ExerciseActivity extends AbstractBaseActivity {
                             }
                         }
                         ((RadioButton) v).setChecked(true);
-
                         btnVerify.setEnabled(true);
                     }
                 });
@@ -316,6 +412,8 @@ public class ExerciseActivity extends AbstractBaseActivity {
     private void resetExplanation() {
         selectedAnswerPosition = -1;
         btnVerify.setEnabled(false);
+        explanationLayout.setVisibility(View.GONE);
+        layoutChoice.setVisibility(View.GONE);
     }
 
     private void postAnswer(AnswerChoiceModel answerChoiceModel, String questionId) {
@@ -331,6 +429,13 @@ public class ExerciseActivity extends AbstractBaseActivity {
             @Override
             public void failure(CorsaliteError error) {
                 btnVerify.setEnabled(true);
+                String message = "Unknown error occured.Please try again.";
+                if (error != null && !TextUtils.isEmpty(error.message)) {
+                    message = error.message;
+                }
+                explanationLayout.setVisibility(View.VISIBLE);
+                layoutChoice.setVisibility(View.VISIBLE);
+                showToast(message);
             }
 
             @Override
@@ -338,8 +443,16 @@ public class ExerciseActivity extends AbstractBaseActivity {
                 super.success(postExercise, response);
                 if (postExercise.isSuccessful()) {
                     btnVerify.setEnabled(false);
-
+                    explanationLayout.setVisibility(View.VISIBLE);
+                    layoutChoice.setVisibility(View.VISIBLE);
+                } else {
+                    String message = "Unknown error occured.Please try again.";
+                    if (postExercise != null && !TextUtils.isEmpty(postExercise.message)) {
+                        message = postExercise.message;
+                    }
+                    showToast(message);
                 }
+
             }
         });
     }

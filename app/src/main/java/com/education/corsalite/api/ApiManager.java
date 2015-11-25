@@ -72,6 +72,7 @@ public class ApiManager {
     public void login(String loginId, String passwordHash, ApiCallback<LoginResponse> callback) {
         if (isApiOnline()) {
             ApiClientService.get().login(loginId, passwordHash, callback);
+
         } else {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/login.json");
             L.info("Response for 'api/login.json' is " + jsonResponse);
@@ -241,9 +242,9 @@ public class ApiManager {
         }
     }
 
-    public void getExercise(String topicId, String courseId, String UpdateTime, ApiCallback<List<ExerciseModel>> callback) {
+    public void getExercise(String topicId, String courseId, String idStudent, String UpdateTime, ApiCallback<List<ExerciseModel>> callback) {
         if (isApiOnline()) {
-            ApiClientService.get().getExerciseData(topicId, courseId, UpdateTime, callback);
+            ApiClientService.get().getExerciseData(topicId, courseId, idStudent, UpdateTime, callback);
         } else {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/exercise.json");
             System.out.print("Response for 'api/exercise.json' is " + jsonResponse);

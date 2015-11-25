@@ -96,7 +96,7 @@ public interface ICorsaliteApi {
     void getContentData(@Query("idContents") String idContents, @Query("UpdateTime") String UpdateTime, ApiCallback<List<Content>> callback);
 
     @GET("/Exercise")
-    void getExerciseData(@Query("idTopic") String idTopics, @Query("idCourse") String idCourse ,@Query("UpdateTime") String UpdateTime, ApiCallback<List<ExerciseModel>> callback);
+    void getExerciseData(@Query("idTopic") String idTopics, @Query("idCourse") String idCourse , @Query("idStudent") String idStudent, @Query("UpdateTime") String UpdateTime, ApiCallback<List<ExerciseModel>> callback);
 
     @POST("/UserProfile")
     void updateUserProfile(@Query("Update") String userProfile, ApiCallback<EditProfileModel> callback);
