@@ -24,6 +24,7 @@ import com.education.corsalite.models.responsemodels.PostExercise;
 import com.education.corsalite.models.responsemodels.StudyCenter;
 import com.education.corsalite.models.responsemodels.TestCoverage;
 import com.education.corsalite.models.responsemodels.UpdateExamDetailsResponse;
+import com.education.corsalite.models.responsemodels.UsageAnalysis;
 import com.education.corsalite.models.responsemodels.UserProfileResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencyBalanceResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencySummaryResponse;
@@ -99,6 +100,16 @@ public class ApiManager {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/courses.json");
             L.info("Response for 'api/courses.json' is " + jsonResponse);
             callback.success(new Gson().fromJson(jsonResponse, List.class), MockUtils.getRetrofitResponse());
+        }
+    }
+
+    public void getUsageAnalysis(String userId,ApiCallback<UsageAnalysis> callback){
+        if(isApiOnline()){
+            ApiClientService.get().getUsageAnalysis(userId,callback);
+        }else {
+            String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/usage_analysis.json");
+            L.info("Response for 'api/usage_analysis.json' is " + jsonResponse);
+            callback.success(new Gson().fromJson(jsonResponse, UsageAnalysis.class), getRetrofitResponse());
         }
     }
 

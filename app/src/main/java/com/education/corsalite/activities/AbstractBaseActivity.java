@@ -123,6 +123,12 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         loadCoursesList();
     }
 
+    protected void setToolbarForUsageAnalysis() {
+        toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
+        setToolbarTitle(getResources().getString(R.string.usage_analysis));
+    }
+
+
     protected void setToolbarForVideo(List<ContentModel> videos, int position) {
         findViewById(R.id.toolbar_title).setVisibility(View.GONE);
         toolbar.findViewById(R.id.video_layout).setVisibility(View.VISIBLE);
@@ -214,6 +220,14 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(AbstractBaseActivity.this, AnalyticsActivity.class));
+            }
+        });
+
+        navigationView.findViewById(R.id.navigation_usage_analysis).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AbstractBaseActivity.this, UsageAnalysisActivity.class);
+                startActivity(intent);
             }
         });
 
