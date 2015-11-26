@@ -41,5 +41,4 @@ dependencies {
     compile 'com.github.johnkil.print:print:1.2.2'
     compile 'de.greenrobot:eventbus:2.4.0'
     compile 'org.solovyev.android.views:linear-layout-manager:0.5@aar'
-
 }

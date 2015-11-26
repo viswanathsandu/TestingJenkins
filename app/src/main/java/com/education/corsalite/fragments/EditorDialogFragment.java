@@ -17,11 +17,14 @@ import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.models.requestmodels.AddNoteRequest;
 import com.education.corsalite.models.requestmodels.Note;
+import com.education.corsalite.models.requestmodels.UpdateNoteRequest;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.DefaultNoteResponse;
 import com.education.corsalite.utils.L;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import retrofit.client.Response;
@@ -41,6 +44,7 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
     private String studentId;
     private String topicId;
     private String contentId;
+    private String notesId;
     private String originalContent;
     private String updateContent;
 
@@ -55,6 +59,7 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
         studentId = getArguments().getString("student_id", "");
         topicId = getArguments().getString("topic_id", "");
         contentId = getArguments().getString("content_id", "");
+        notesId = getArguments().getString("notes_id", "");
         originalContent = getArguments().getString("content", "");
 
         getDialog().setTitle("Corsalite Html Editor");
@@ -151,13 +156,29 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
             @Override
             public void success(DefaultNoteResponse defaultNoteResponse, Response response) {
                 super.success(defaultNoteResponse, response);
-                Toast.makeText(getActivity(), "Added Notes successfull", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Added Notes successfully", Toast.LENGTH_SHORT).show();
                 dismiss();
             }
         });
     }
 
     private void editNotes() {
+        UpdateNoteRequest request = new UpdateNoteRequest(studentId, notesId, updateContent);
+        List<UpdateNoteRequest> requests = new ArrayList<>();
+        requests.add(request);
+        ApiManager.getInstance(getActivity()).updateNote(new Gson().toJson(requests), new ApiCallback<DefaultNoteResponse>(getActivity()) {
+            @Override
+            public void failure(CorsaliteError error) {
+                super.failure(error);
+                Toast.makeText(getActivity(), "Failed to update notes", Toast.LENGTH_SHORT).show();
+            }
 
+            @Override
+            public void success(DefaultNoteResponse defaultNoteResponse, Response response) {
+                super.success(defaultNoteResponse, response);
+                Toast.makeText(getActivity(), "Updated Notes successfully", Toast.LENGTH_SHORT).show();
+                dismiss();
+            }
+        });
     }
 }

@@ -18,5 +18,8 @@ public class Constants {
 
     public static final String HTML_FILE = "html";
     public static final String VIDEO_FILE = "mpg";
+
+    public static final String EXERCISE_MODEL = "exercise_model";
+    public static final String SELECTED_POSITION =  "selectedPosition";
 }
 

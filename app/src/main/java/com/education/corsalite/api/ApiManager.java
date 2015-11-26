@@ -14,10 +14,12 @@ import com.education.corsalite.models.responsemodels.DefaultCourseResponse;
 import com.education.corsalite.models.responsemodels.DefaultNoteResponse;
 import com.education.corsalite.models.responsemodels.EditProfileModel;
 import com.education.corsalite.models.responsemodels.ExamHistory;
+import com.education.corsalite.models.responsemodels.ExerciseModel;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
 import com.education.corsalite.models.responsemodels.Message;
 import com.education.corsalite.models.responsemodels.Note;
+import com.education.corsalite.models.responsemodels.PostExercise;
 import com.education.corsalite.models.responsemodels.StudyCenter;
 import com.education.corsalite.models.responsemodels.TestCoverage;
 import com.education.corsalite.models.responsemodels.UpdateExamDetailsResponse;
@@ -70,6 +72,7 @@ public class ApiManager {
     public void login(String loginId, String passwordHash, ApiCallback<LoginResponse> callback) {
         if (isApiOnline()) {
             ApiClientService.get().login(loginId, passwordHash, callback);
+
         } else {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/login.json");
             L.info("Response for 'api/login.json' is " + jsonResponse);
@@ -230,7 +233,10 @@ public class ApiManager {
             ApiClientService.get().getContentIndexData(courseID, studentId, callback);
         } else {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/content_index.json");
-            //callback.success(new Gson().fromJson(jsonResponse, ContentIndexResponse.class), getRetrofitResponse());
+            Type listType = new TypeToken<ArrayList<ContentIndex>>() {
+            }.getType();
+            List<ContentIndex> contentIndexes = new Gson().fromJson(jsonResponse, listType);
+            callback.success(contentIndexes, getRetrofitResponse());
         }
     }
 
@@ -239,8 +245,24 @@ public class ApiManager {
             ApiClientService.get().getContentData(idContents, UpdateTime, callback);
         } else {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/content_data.json");
-            System.out.print("Response for 'api/studycentre.json' is " + jsonResponse);
-            //callback.success(new Gson().fromJson(jsonResponse, ContentResponse.class), getRetrofitResponse());
+            System.out.print("Response for 'api/content_data.json' is " + jsonResponse);
+            Type listType = new TypeToken<ArrayList<Content>>() {
+            }.getType();
+            List<Content> contents = new Gson().fromJson(jsonResponse, listType);
+            callback.success(contents, getRetrofitResponse());
+        }
+    }
+
+    public void getExercise(String topicId, String courseId, String idStudent, String UpdateTime, ApiCallback<List<ExerciseModel>> callback) {
+        if (isApiOnline()) {
+            ApiClientService.get().getExerciseData(topicId, courseId, idStudent, UpdateTime, callback);
+        } else {
+            String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/exercise.json");
+            System.out.print("Response for 'api/exercise.json' is " + jsonResponse);
+            Type listType = new TypeToken<ArrayList<ExerciseModel>>() {
+            }.getType();
+            List<ExerciseModel> exerciseModels = new Gson().fromJson(jsonResponse, listType);
+            callback.success(exerciseModels, getRetrofitResponse());
         }
     }
 
@@ -285,6 +307,12 @@ public class ApiManager {
     public void updateExamDetails(String examDetails, ApiCallback<UpdateExamDetailsResponse> callback) {
         if (isApiOnline()) {
             ApiClientService.get().updateExamDetails(examDetails, callback);
+        }
+    }
+
+    public void postExerciseAnswer(String insert, ApiCallback<PostExercise> callback) {
+        if (isApiOnline()) {
+            ApiClientService.get().postExerciseAnswer(insert, callback);
         }
     }
 }

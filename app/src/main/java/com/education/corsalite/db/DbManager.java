@@ -4,10 +4,10 @@ import android.content.Context;
 
 import com.education.corsalite.models.db.ContentIndexResponse;
 import com.education.corsalite.models.db.CourseList;
+import com.orm.query.Condition;
+import com.orm.query.Select;
 
 import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
 
 /**
  * Created by vissu on 9/16/15.
@@ -53,12 +53,41 @@ public class DbManager {
         return (iterator!= null && iterator.hasNext()) ? iterator.next() : null;
     }
 
-    public void saveContentIndexList(ContentIndexResponse contentIndexResponse) {
-        ContentIndexResponse contentIndexResponses = ContentIndexResponse.findById(ContentIndexResponse.class, 1l);
-        if(contentIndexResponses != null) {
-            return;
+    /**
+     *
+     * @param courseId
+     * @param studentId
+     * @return ContentIndexResponse
+     */
+    public ContentIndexResponse getContentIndexList(String courseId, String studentId) {
+        Select specificAuthorQuery = Select.from(ContentIndexResponse.class)
+                .where(Condition.prop("course_id").eq(courseId),
+                        Condition.prop("student_id").eq(studentId))
+                .limit("1");
+        ContentIndexResponse contentIndexResponses = (ContentIndexResponse) specificAuthorQuery.first();
+        return contentIndexResponses;
+    }
+
+    /**
+     * Saved List of Content Index to db as a string with courseID and student ID
+     * @param contentIndexJson
+     * @param courseId
+     * @param studentId
+     */
+    public void saveContentIndexList(String contentIndexJson, String courseId, String studentId) {
+        Select specificAuthorQuery = Select.from(ContentIndexResponse.class)
+                .where(Condition.prop("course_id").eq(courseId),
+                        Condition.prop("student_id").eq(studentId))
+                .limit("1");
+        ContentIndexResponse contentIndexResponses = (ContentIndexResponse) specificAuthorQuery.first();
+        if (contentIndexResponses != null) {
+            contentIndexResponses.courseId = courseId;
+            contentIndexResponses.studentId = studentId;
+            contentIndexResponses.contentIndexesJson = contentIndexJson;
+        }else {
+            contentIndexResponses = new ContentIndexResponse(contentIndexJson, courseId, studentId);
         }
-        contentIndexResponse.save();
+        contentIndexResponses.save();
     }
 
 }
