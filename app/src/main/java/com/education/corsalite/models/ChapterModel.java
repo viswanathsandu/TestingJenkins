@@ -26,9 +26,6 @@ public class ChapterModel extends BaseModel implements Comparable<ChapterModel>,
     @SerializedName("topics")
     public List<TopicModel> topicMap;
 
-    public boolean checked;
-    public boolean htmlChecked;
-    public boolean videoChecked;
     @Override
     public int compareTo(ChapterModel another) {
         return Integer.valueOf(this.chapterSortOrder) - Integer.valueOf(another.chapterSortOrder);
