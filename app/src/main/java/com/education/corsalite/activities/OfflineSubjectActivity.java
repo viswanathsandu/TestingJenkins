@@ -19,7 +19,7 @@ import com.education.corsalite.holders.CheckedItemViewHolder;
 import com.education.corsalite.models.ChapterModel;
 import com.education.corsalite.models.ContentModel;
 import com.education.corsalite.models.SubjectModel;
-import com.education.corsalite.models.db.ContentIndexResponse;
+import com.education.corsalite.models.TopicModel;
 import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
@@ -50,6 +50,7 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
     private List<ContentIndex> contentIndexList;
     private ArrayList<SubjectModel> subjectModelList;
     private ArrayList<ChapterModel> chapterModelList;
+    private ArrayList<TopicModel> topicModelList;
     private LinearLayout downloadImage;
     private ProgressBar headerProgress;
     Bundle savedInstanceState;
@@ -78,18 +79,28 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
     }
 
     private void loopCheckedViews() {
-        int i = 0;
-        for (TreeNode n : root.getChildren().get(0).getChildren()) {
-            if (((CheckBox) n.getViewHolder().getNodeView().findViewById(R.id.node_selector)).isChecked()) {
-                if (i == 0) {
-                    chapterModelList.get(chapterIndex).htmlChecked = true;
-                } else {
-                    chapterModelList.get(chapterIndex).videoChecked = true;
+        if (!((CheckBox) root.getChildren().get(0).getViewHolder().getNodeView().findViewById(R.id.node_selector)).isChecked()) {
+            for (TreeNode n : root.getChildren()) {
+                int j = 0;
+                for (TreeNode innerNode : n.getChildren()) {
+                    int i = 0;
+                    if (((CheckBox) innerNode.getViewHolder().getNodeView().findViewById(R.id.node_selector)).isChecked()) {
+                        if (i == 0) {
+                            topicModelList.get(j).htmlChecked = true;
+                        } else {
+                            topicModelList.get(j).videoChecked = true;
+                        }
+                    }
+                    j++;
                 }
             }
-            i++;
+        } else {
+            for (TopicModel topicModel : topicModelList) {
+                topicModel.htmlChecked = true;
+                topicModel.videoChecked = true;
+            }
         }
-        getContent(getContentIdsForOtherChapters(chapterModelList));
+        getContent(getContentIdsForOtherTopics());
     }
 
     private void getContent(String contentId) {
@@ -150,8 +161,6 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
                         super.success(mContentIndexs, response);
                         if (mContentIndexs != null) {
                             contentIndexList = mContentIndexs;
-                            ContentIndexResponse mContentIndexResponse = new ContentIndexResponse();
-//                            mContentIndexResponse.contentIndexes = contentIndexList;
                             initNodes();
                             prefillSubjects();
                         }
@@ -178,31 +187,27 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
         return contentIds;
     }
 
-    private String getContentIdsForOtherChapters(List<ChapterModel> chapterModelList) {
+    private String getContentIdsForOtherTopics() {
         String contentId = "";
         String contentIds = "";
 
-        for (ChapterModel chapterModel : chapterModelList) {
-            int i = 0;
-            for (ContentModel contentModel : chapterModel.topicMap.get(i).contentMap) {
-                if (chapterModel.htmlChecked) {
-                    if (contentId.trim().length() > 0) {
-                        contentId = contentId + ",";
-                        contentIds = contentIds + ",";
-                    }
-                    contentId = contentId + contentModel.idContent + "." + contentModel.type;
-                    contentIds = contentIds + contentModel.idContent;
+        for (TopicModel topicModel : topicModelList) {
+            if (topicModel.htmlChecked) {
+                if (contentId.trim().length() > 0) {
+                    contentId = contentId + ",";
+                    contentIds = contentIds + ",";
                 }
-                if (chapterModel.videoChecked) {
-                    if (contentId.trim().length() > 0) {
-                        contentId = contentId + ",";
-                        contentIds = contentIds + ",";
-                    }
-                    contentId = contentId + contentModel.idContent + "." + contentModel.type;
-                    contentIds = contentIds + contentModel.idContent;
-                }
+                contentId = contentId + topicModel.idTopic + ".html";
+                contentIds = contentIds + topicModel.idTopic;
             }
-            i++;
+            if (topicModel.videoChecked) {
+                if (contentId.trim().length() > 0) {
+                    contentId = contentId + ",";
+                    contentIds = contentIds + ",";
+                }
+                contentId = contentId + topicModel.idTopic + ".mpg";
+                contentIds = contentIds + topicModel.idTopic;
+            }
         }
         return contentIds;
     }
@@ -253,10 +258,19 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
     private void setChapterNameAndChildren(ChapterModel chapters, int pos) {
         headerProgress.setVisibility(View.GONE);
         TreeNode subjectName = new TreeNode(chapters.chapterName).setViewHolder(new CheckedItemViewHolder(this, false));
-        TreeNode file1 = new TreeNode(chapters.chapterName.toString() + ".html").setViewHolder(new CheckedItemViewHolder(this, true));
-        TreeNode file2 = new TreeNode(chapters.chapterName.toString() + "_video.mpg").setViewHolder(new CheckedItemViewHolder(this, true));
-        subjectName.addChildren(file1, file2);
+        topicModelList = (ArrayList<TopicModel>) chapters.topicMap;
+        for (int i = 0; i < chapters.topicMap.size(); i++) {
+            addTopic(chapters.topicMap.get(i), subjectName);
+        }
         root.addChild(subjectName);
+    }
+
+    private void addTopic(TopicModel topicModel, TreeNode subjectName) {
+        TreeNode topicName = new TreeNode(topicModel.topicName).setViewHolder(new CheckedItemViewHolder(this, false));
+        TreeNode file1 = new TreeNode(topicModel.topicName + ".html").setViewHolder(new CheckedItemViewHolder(this, true));
+        TreeNode file2 = new TreeNode(topicModel.topicName + "_video.mpg").setViewHolder(new CheckedItemViewHolder(this, true));
+        topicName.addChildren(file1, file2);
+        subjectName.addChild(topicName);
     }
 
     private void initNodes() {

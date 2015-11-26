@@ -24,7 +24,9 @@ public class TopicModel extends BaseModel implements Comparable<TopicModel>, Ser
     public String topicSortOrder;
     @SerializedName("contents")
     public List<ContentModel> contentMap;
-
+    public boolean checked;
+    public boolean htmlChecked;
+    public boolean videoChecked;
 
     @Override
     public int compareTo(TopicModel another) {
