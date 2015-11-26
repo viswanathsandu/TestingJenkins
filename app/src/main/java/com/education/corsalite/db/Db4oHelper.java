@@ -9,12 +9,11 @@ import com.db4o.Db4oEmbedded;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
 import com.db4o.config.EmbeddedConfiguration;
-import com.education.corsalite.models.responsemodels.BaseModel;
 
 import java.io.File;
 
 /**
- * Created by WAB on 22/07/2014.
+ * Created by Vissu on 22/07/2014.
  */
 public class Db4oHelper {
     public static final String DATABASE_NAME = "corsalite.db4o";
@@ -41,10 +40,10 @@ public class Db4oHelper {
                 ///Toast.makeText(this.context, "Loading DB", Toast.LENGTH_SHORT).show();
                 EmbeddedConfiguration configuration = Db4oEmbedded.newConfiguration();
                 configuration.common().activationDepth(40);
-
-                configuration.common().objectClass(BaseModel.class).updateDepth(20);
-                configuration.common().objectClass(BaseModel.class).cascadeOnActivate(true);
-                configuration.common().objectClass(BaseModel.class).cascadeOnUpdate(true);
+//
+//                configuration.common().objectClass(BaseModel.class).updateDepth(20);
+//                configuration.common().objectClass(BaseModel.class).cascadeOnActivate(true);
+//                configuration.common().objectClass(BaseModel.class).cascadeOnUpdate(true);
 
                 CheckSDCard();
                 writeDBtoStorage(configuration);

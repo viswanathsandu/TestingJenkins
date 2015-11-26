@@ -1,5 +1,6 @@
 package com.education.corsalite.models;
 
+import com.education.corsalite.models.responsemodels.BaseModel;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;

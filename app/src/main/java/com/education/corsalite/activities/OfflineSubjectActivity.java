@@ -61,7 +61,7 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
         super.onCreate(savedInstanceState);
         this.savedInstanceState = savedInstanceState;
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        RelativeLayout myView = (RelativeLayout) inflater.inflate(R.layout.activity_offline_content, null);
+        RelativeLayout myView = (RelativeLayout) inflater.inflate(R.layout.activity_offline_subject, null);
         frameLayout.addView(myView);
         mainNodeLayout = (RelativeLayout) findViewById(R.id.main_node);
         downloadImage = (LinearLayout) findViewById(R.id.download);

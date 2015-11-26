@@ -2,14 +2,15 @@ package com.education.corsalite.db;
 
 import android.content.Context;
 
-import com.db4o.ObjectContainer;
+import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.models.db.ContentIndexResponse;
 import com.education.corsalite.models.db.CourseList;
+import com.education.corsalite.models.db.reqres.LoginReqRes;
 import com.education.corsalite.models.responsemodels.LoginResponse;
+import com.education.corsalite.utils.MockUtils;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -18,6 +19,7 @@ import java.util.List;
 public class DbManager extends  Db4oHelper{
 
     private static DbManager instance;
+    private DbService dbService = null;
     private Context context;
 
     private DbManager(Context context) {
@@ -28,44 +30,73 @@ public class DbManager extends  Db4oHelper{
     public static DbManager getInstance(Context context) {
         if(instance == null) {
             instance = new DbManager(context);
+            instance.dbService = new DbService();
         }
         return instance;
     }
 
-    public void saveCourseList(CourseList courseList) {
-        CourseList list = CourseList.findById(CourseList.class, 1l);
-        if(list != null) {
-            courseList.defaultCourseIndex = list.defaultCourseIndex;
+    public void saveLoginResponse(LoginReqRes login) {
+        dbService.Save(login);
+    }
+
+    public void delete(LoginResponse loginResponse) {
+        db().delete(loginResponse);
+    }
+
+    public void getLoginResponse(String loginId, String passwordHash, ApiCallback<LoginResponse> callback) {
+        List<LoginReqRes> loginReqResList = getLoginRequestResponseList();
+        if(loginReqResList != null && !loginReqResList.isEmpty()) {
+            for(LoginReqRes reqRes : loginReqResList) {
+                if(reqRes.loginId.equalsIgnoreCase(loginId) && reqRes.passwordHash.equals(passwordHash)) {
+                    callback.success(reqRes.response, MockUtils.getRetrofitResponse());
+                    return;
+                }
+            }
+        } else {
+            callback.failure(MockUtils.getCorsaliteError("Failure", "Notwork not available..."));
         }
-        // clear sourselist before adding new
-        CourseList.deleteAll(CourseList.class);
-        courseList.save();
+        callback.failure(MockUtils.getCorsaliteError("Failure", "Invalid Authentication details..."));
+    }
+
+    public List<LoginReqRes> getLoginRequestResponseList() {
+        List<LoginReqRes> responses = dbService.Get(LoginReqRes.class);
+        if(responses != null && !responses.isEmpty()) {
+             return responses;
+        }
+        return null;
+    }
+
+    public void saveCourseList(CourseList courseList) {
+        List<CourseList> list = dbService.Get(CourseList.class);
+        if(list != null && !list.isEmpty()) {
+            courseList.defaultCourseIndex = list.get(0).defaultCourseIndex;
+        }
+        dbService.Delete(CourseList.class);
+        dbService.Save(courseList);
     }
 
     public void saveDefaultCourse(int defaultCourseIndex) {
-        Iterator<CourseList> iterator = CourseList.findAll(CourseList.class);
-        if(iterator != null && iterator.hasNext()) {
-            CourseList list = iterator.next();
-            list.defaultCourseIndex = defaultCourseIndex;
-            list.save();
+        List<CourseList> list = dbService.Get(CourseList.class);
+        if(list != null && !list.isEmpty()) {
+            CourseList courseList = list.get(0);
+            courseList.defaultCourseIndex = defaultCourseIndex;
+            dbService.Save(courseList);
         }
+
     }
 
     public void deleteCourseList() {
-        CourseList.deleteAll(CourseList.class);
+        dbService.Delete(CourseList.class);
     }
 
     public CourseList getCourseList() {
-        Iterator<CourseList> iterator = CourseList.findAll(CourseList.class);
-        return (iterator!= null && iterator.hasNext()) ? iterator.next() : null;
+        List<CourseList> list = dbService.Get(CourseList.class);
+        if(list != null && !list.isEmpty()) {
+            return list.get(0);
+        }
+        return null;
     }
 
-    /**
-     *
-     * @param courseId
-     * @param studentId
-     * @return ContentIndexResponse
-     */
     public ContentIndexResponse getContentIndexList(String courseId, String studentId) {
         Select specificAuthorQuery = Select.from(ContentIndexResponse.class)
                 .where(Condition.prop("course_id").eq(courseId),
@@ -75,12 +106,6 @@ public class DbManager extends  Db4oHelper{
         return contentIndexResponses;
     }
 
-    /**
-     * Saved List of Content Index to db as a string with courseID and student ID
-     * @param contentIndexJson
-     * @param courseId
-     * @param studentId
-     */
     public void saveContentIndexList(String contentIndexJson, String courseId, String studentId) {
         Select specificAuthorQuery = Select.from(ContentIndexResponse.class)
                 .where(Condition.prop("course_id").eq(courseId),
@@ -96,35 +121,4 @@ public class DbManager extends  Db4oHelper{
         }
         contentIndexResponses.save();
     }
-
-
-    /**
-     * Db4o implemnetation for db management
-     */
-
-    //This method is used to store the object into the database.
-    public void saveLoginResponse(LoginResponse loginResponse) {
-        ObjectContainer db = db();
-        db.store(loginResponse);
-    }
-
-    //This method is used to delete the object into the database.
-    public void delete(LoginResponse loginResponse) {
-        db().delete(loginResponse);
-    }
-
-    //This method is used to retrive all object from database.
-    public LoginResponse getLoginResponse() {
-        LoginResponse response = null;
-        while(db().query(LoginResponse.class).hasNext()) {
-            response = db().query(LoginResponse.class).next();
-        }
-        return response;
-    }
-
-    //This method is used to retrive matched object from database.
-    public List<LoginResponse> getRecord(LoginResponse loginResponse) {
-        return db().queryByExample(loginResponse);
-    }
-
 }

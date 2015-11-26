@@ -1,7 +1,6 @@
 package com.education.corsalite.activities;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -12,8 +11,8 @@ import android.widget.TextView;
 import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
+import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.db.DbManager;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.utils.Constants;
@@ -75,10 +74,9 @@ public class LoginActivity extends AbstractBaseActivity {
             public void success(LoginResponse loginResponse, Response response) {
                 super.success(loginResponse, response);
                 if (loginResponse.isSuccessful()) {
-                    showToast(getResources().getString(R.string.login_successful));
-                    storeUserCredentials(loginResponse);
-                    startActivity(new Intent(LoginActivity.this, StudyCentreActivity.class));
-                    finish();
+                    ApiCacheHolder.setLoginResponse(loginResponse);
+                    dbManager.saveLoginResponse(ApiCacheHolder.login);
+                    onLoginsuccess(loginResponse);
                 } else {
                     showToast(getResources().getString(R.string.login_failed));
                 }
@@ -86,18 +84,14 @@ public class LoginActivity extends AbstractBaseActivity {
         });
     }
 
-    // cache the response
-    private void storeUserCredentials(final LoginResponse response) {
-        LoginUserCache.getInstance().setLoginResponse(response);
-
-        new AsyncTask<String, Void, String>() {
-            @Override
-            protected String doInBackground(String... params) {
-                DbManager.getInstance(LoginActivity.this).saveLoginResponse(response);
-                LoginResponse res = DbManager.getInstance(LoginActivity.this).getLoginResponse();
-                return "";
-            }
-        }.execute();
-
+    private void onLoginsuccess(LoginResponse response) {
+        if(response != null) {
+            LoginUserCache.getInstance().setLoginResponse(response);
+            showToast(getResources().getString(R.string.login_successful));
+            startActivity(new Intent(LoginActivity.this, StudyCentreActivity.class));
+            finish();
+        } else {
+            showToast(getResources().getString(R.string.login_failed));
+        }
     }
 }
