@@ -4,7 +4,11 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
@@ -14,6 +18,7 @@ import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.UsageAnalysis;
 import com.education.corsalite.utils.L;
 import com.github.mikephil.charting.charts.CombinedChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -34,15 +39,22 @@ import retrofit.client.Response;
  */
 public class UsageAnalysisActivity extends AbstractBaseActivity {
 
-    CombinedChart mChart ;
+    CombinedChart mChart1;
+    CombinedChart mChart2;
+    ProgressBar mProgressBar;
+    TextView mFailText;
+    LinearLayout mLinearLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        LinearLayout myView = (LinearLayout) inflater.inflate(R.layout.activity_usage_analysis, null);
+        RelativeLayout myView = (RelativeLayout) inflater.inflate(R.layout.activity_usage_analysis, null);
         frameLayout.addView(myView);
-        mChart = (CombinedChart)findViewById(R.id.usage_analysis_chart);
-
+        mChart1 = (CombinedChart)findViewById(R.id.usage_analysis_chart1);
+        mChart2 = (CombinedChart)findViewById(R.id.usage_analysis_chart2);
+        mProgressBar = (ProgressBar)findViewById(R.id.progress_bar_tab);
+        mFailText = (TextView)findViewById(R.id.tv_failure_text);
+        mLinearLayout = (LinearLayout)findViewById(R.id.ll_usage_analysis);
         setToolbarForUsageAnalysis();
         init();
     }
@@ -54,25 +66,36 @@ public class UsageAnalysisActivity extends AbstractBaseActivity {
                     public void failure(CorsaliteError error) {
                         super.failure(error);
                         L.error(error.message);
-
+                        mProgressBar.setVisibility(View.GONE);
+                        mFailText.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     public void success(UsageAnalysis usageAnalysis, Response response) {
                         super.success(usageAnalysis, response);
-                        initializeGraph();
-                        CombinedData data = new CombinedData(usageAnalysis.pagesName);
-                        data.setData(generateLineData(usageAnalysis.pageUsagePercentageList));
-                        data.setData(generateBarData(usageAnalysis));
-                        mChart.setData(data);
-                        mChart.invalidate();
+                        mProgressBar.setVisibility(View.GONE);
+                        mLinearLayout.setVisibility(View.VISIBLE);
+
+                        initializeGraph(mChart1);
+                        initializeGraph(mChart2);
+                        CombinedData data1 = new CombinedData(usageAnalysis.pagesName);
+                        data1.setData(generateLineData(usageAnalysis.pageUsagePercentageList));
+                        data1.setData(generateBarData(usageAnalysis.userAuditList, "Student Audit",getResources().getColor(R.color.green)));
+                        mChart1.setData(data1);
+                        mChart1.invalidate();
+
+                        CombinedData data2 = new CombinedData(usageAnalysis.pagesName);
+                        data2.setData(generateLineData(usageAnalysis.pageUsagePercentageList));
+                        data2.setData(generateBarData(usageAnalysis.allUserAuditList, " All Students Audit",getResources().getColor(R.color.cyan)));
+                        mChart2.setData(data2);
+                        mChart2.invalidate();
+
                     }
                 });
     }
 
-
-    private void initializeGraph(){
-        mChart.setDescription("Usage Analysis");
+    private void initializeGraph(CombinedChart mChart){
+        mChart.setDescription("");
         mChart.setBackgroundColor(Color.WHITE);
         mChart.setDrawGridBackground(false);
         mChart.setDrawBarShadow(false);
@@ -92,6 +115,9 @@ public class UsageAnalysisActivity extends AbstractBaseActivity {
         XAxis xAxis = mChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
+
+        mChart.getLegend().setTextSize(15f);
+        mChart.getLegend().setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
 
     }
 
@@ -122,35 +148,27 @@ public class UsageAnalysisActivity extends AbstractBaseActivity {
         return d;
     }
 
-    private BarData generateBarData(UsageAnalysis usageAnalysisData){
-        BarData d = new BarData(usageAnalysisData.pagesName);
+    private BarData generateBarData(List<Float> data,String setName,int color){
+        BarData d = new BarData();
 
-        ArrayList<BarEntry> entries1 = new ArrayList<>();
-        ArrayList<BarEntry> entries2 = new ArrayList<>();
+        ArrayList<BarEntry> entries = new ArrayList<>();
 
-        for (int i=0;i<usageAnalysisData.pagesName.size();i++){
-            entries1.add(new BarEntry(usageAnalysisData.userAuditList.get(i),i));
-            entries2.add(new BarEntry(usageAnalysisData.allUserAuditList.get(i),i));
+        for (int i=0;i<data.size();i++){
+            entries.add(new BarEntry(data.get(i),i));
         }
 
-        BarDataSet set1 = new BarDataSet(entries1, "Student Audit");
-        set1.setColor(Color.rgb(0, 130, 58));
-        set1.setValueTextColor(Color.rgb(60, 220, 78));
-        set1.setValueTextSize(10f);
-        set1.setBarSpacePercent(0f);
+        BarDataSet set = new BarDataSet(entries, setName);
+        set.setColor(color);
+        set.setValueTextColor(Color.rgb(60, 220, 78));
+        set.setValueTextSize(10f);
+        set.setBarSpacePercent(20f);
 
-        BarDataSet set2 = new BarDataSet(entries2, "All Students Audit");
-        set2.setColor(getResources().getColor(R.color.material_blue_grey_800));
-        set2.setValueTextColor(Color.rgb(60, 220, 78));
-        set2.setValueTextSize(10f);
-        set2.setBarSpacePercent(0f);
+        d.addDataSet(set);
 
-        d.addDataSet(set1);
-        d.addDataSet(set2);
-
-        set1.setAxisDependency(YAxis.AxisDependency.LEFT);
-        set2.setAxisDependency(YAxis.AxisDependency.LEFT);
+        set.setAxisDependency(YAxis.AxisDependency.LEFT);
 
         return d;
     }
+
+
 }
