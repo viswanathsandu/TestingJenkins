@@ -2,27 +2,34 @@ package com.education.corsalite.db;
 
 import android.content.Context;
 
+import com.db4o.ObjectContainer;
 import com.education.corsalite.models.db.ContentIndexResponse;
 import com.education.corsalite.models.db.CourseList;
+import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by vissu on 9/16/15.
  */
-public class DbManager {
+public class DbManager extends  Db4oHelper{
 
-    private DbManager instance;
+    private static DbManager instance;
     private Context context;
 
     private DbManager(Context context) {
+        super(context);
         this.context = context;
     }
 
     public static DbManager getInstance(Context context) {
-        return new DbManager(context);
+        if(instance == null) {
+            instance = new DbManager(context);
+        }
+        return instance;
     }
 
     public void saveCourseList(CourseList courseList) {
@@ -88,6 +95,36 @@ public class DbManager {
             contentIndexResponses = new ContentIndexResponse(contentIndexJson, courseId, studentId);
         }
         contentIndexResponses.save();
+    }
+
+
+    /**
+     * Db4o implemnetation for db management
+     */
+
+    //This method is used to store the object into the database.
+    public void saveLoginResponse(LoginResponse loginResponse) {
+        ObjectContainer db = db();
+        db.store(loginResponse);
+    }
+
+    //This method is used to delete the object into the database.
+    public void delete(LoginResponse loginResponse) {
+        db().delete(loginResponse);
+    }
+
+    //This method is used to retrive all object from database.
+    public LoginResponse getLoginResponse() {
+        LoginResponse response = null;
+        while(db().query(LoginResponse.class).hasNext()) {
+            response = db().query(LoginResponse.class).next();
+        }
+        return response;
+    }
+
+    //This method is used to retrive matched object from database.
+    public List<LoginResponse> getRecord(LoginResponse loginResponse) {
+        return db().queryByExample(loginResponse);
     }
 
 }

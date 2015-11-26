@@ -1,10 +1,9 @@
 package com.education.corsalite.activities;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +13,7 @@ import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.db.DbManager;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.utils.Constants;
@@ -87,7 +87,17 @@ public class LoginActivity extends AbstractBaseActivity {
     }
 
     // cache the response
-    private void storeUserCredentials(LoginResponse response) {
+    private void storeUserCredentials(final LoginResponse response) {
         LoginUserCache.getInstance().setLoginResponse(response);
+
+        new AsyncTask<String, Void, String>() {
+            @Override
+            protected String doInBackground(String... params) {
+                DbManager.getInstance(LoginActivity.this).saveLoginResponse(response);
+                LoginResponse res = DbManager.getInstance(LoginActivity.this).getLoginResponse();
+                return "";
+            }
+        }.execute();
+
     }
 }
