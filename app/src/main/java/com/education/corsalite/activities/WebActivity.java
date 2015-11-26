@@ -46,7 +46,6 @@ import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.ExerciseModel;
-import com.education.corsalite.models.responsemodels.Note;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.FileUtilities;
 import com.education.corsalite.utils.FileUtils;
@@ -84,7 +83,6 @@ public class WebActivity extends AbstractBaseActivity {
     @Bind(R.id.btn_previous) Button btnPrevious;
     @Bind(R.id.tv_video) TextView tvVideo;
 
-
     private List<ContentIndex> contentIndexList;
     private List<SubjectModel> subjectModelList;
     private List<ChapterModel> chapterModelList;
@@ -100,11 +98,13 @@ public class WebActivity extends AbstractBaseActivity {
     private int mContentIdPosition;
 
     private String selectedText = "";
+    private String studentId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        studentId = LoginUserCache.getInstance().loginResponse.studentId;
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         LinearLayout myView = (LinearLayout) inflater.inflate(R.layout.activity_web, null);
         frameLayout.addView(myView);
@@ -138,7 +138,7 @@ public class WebActivity extends AbstractBaseActivity {
     @Override
     public void onEvent(Course course) {
         super.onEvent(course);
-        getContentIndex(course.courseId.toString(), LoginUserCache.getInstance().loginResponse.studentId);
+        getContentIndex(course.courseId.toString(), studentId);
     }
 
     private void initWebView() {
@@ -463,8 +463,9 @@ public class WebActivity extends AbstractBaseActivity {
     }
 
     private void getExercise(int topicPosition) {
+        layoutExercise.setVisibility(View.GONE);
         ApiManager.getInstance(this).getExercise(topicModelList.get(topicPosition).idTopic, selectedCourse.courseId.toString(),
-                "", new ApiCallback<List<ExerciseModel>>(this) {
+                studentId, "", new ApiCallback<List<ExerciseModel>>(this) {
                     @Override
                     public void failure(CorsaliteError error) {
                         super.failure(error);
@@ -698,7 +699,6 @@ public class WebActivity extends AbstractBaseActivity {
     }
 
     private void showExcercise() {
-        layoutExercise.setVisibility(View.GONE);
         if(exerciseModelList != null && exerciseModelList.size() > 0) {
             layoutExercise.setVisibility(View.VISIBLE);
             ExerciseAdapter exerciseAdapter = new ExerciseAdapter(exerciseModelList, this);
@@ -710,7 +710,7 @@ public class WebActivity extends AbstractBaseActivity {
 
                     if(position != 0) {
                         Intent intent = new Intent(WebActivity.this, ExerciseActivity.class);
-                        intent.putExtra(Constants.SELECTED_POSITION, position);
+                        intent.putExtra(Constants.SELECTED_POSITION, position - 1);
                         startActivity(intent);
                     }
                 }
@@ -759,12 +759,12 @@ public class WebActivity extends AbstractBaseActivity {
         }.getType();
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String jsonObject = gson.toJson(contentIndexList, contentIndexType);
-        DbManager.getInstance(WebActivity.this).saveContentIndexList(jsonObject, selectedCourse.courseId.toString(), LoginUserCache.getInstance().loginResponse.studentId);
+        DbManager.getInstance(WebActivity.this).saveContentIndexList(jsonObject, selectedCourse.courseId.toString(), studentId);
     }
 
     private boolean getContentIndexResponse() {
         ContentIndexResponse contentIndexResponse = DbManager.getInstance(WebActivity.this).getContentIndexList(selectedCourse.courseId.toString(),
-                LoginUserCache.getInstance().loginResponse.studentId);
+                studentId);
         if(contentIndexResponse == null) {
             return false;
         }
