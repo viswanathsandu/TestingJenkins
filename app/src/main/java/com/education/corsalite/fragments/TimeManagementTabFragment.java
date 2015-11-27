@@ -274,13 +274,13 @@ public class TimeManagementTabFragment extends Fragment {
         }
 
         @Override
-        public int getXOffset() {
+        public int getXOffset(float xPos) {
             // this will center the marker-view horizontally
             return -(getWidth() / 2);
         }
 
         @Override
-        public int getYOffset() {
+        public int getYOffset(float yPos) {
             // this will cause the marker-view to be above the selected value
             return -getHeight();
         }
