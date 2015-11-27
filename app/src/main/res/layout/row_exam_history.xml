@@ -15,16 +15,6 @@
         android:text="Date" />
 
     <TextView
-        android:id="@+id/tv_time"
-        android:gravity="center"
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:padding="15dp"
-        style="@style/virtual_currency_data_text"
-        android:text="Time" />
-
-    <TextView
         android:id="@+id/tv_exam"
         android:gravity="center"
         android:layout_weight="1"
@@ -63,5 +53,13 @@
         android:padding="15dp"
         style="@style/virtual_currency_data_text"
         android:text="Status" />
-
+    <TextView
+        android:id="@+id/tv_action"
+        android:gravity="center"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        style="@style/virtual_currency_data_text"
+        android:text="Exam Details" />
 </LinearLayout>
