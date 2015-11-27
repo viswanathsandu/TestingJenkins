@@ -16,6 +16,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
@@ -59,6 +60,7 @@ public class ExerciseActivity extends AbstractBaseActivity {
     @Bind(R.id.tv_pagetitle) TextView tvPageTitle;
 
     @Bind(R.id.btn_verify) Button btnVerify;
+    @Bind(R.id.tv_clearanswer) TextView tvClearAnswer;
 
     @Bind(R.id.txtAnswerCount) TextView txtAnswerCount;
     @Bind(R.id.txtAnswerExp) WebView txtAnswerExp;
@@ -80,15 +82,24 @@ public class ExerciseActivity extends AbstractBaseActivity {
         initWebView();
         initSuggestionWebView();
         setListener();
+        getIntentData();
+    }
+
+    private void getIntentData() {
+        //set Title
+        if(getIntent().hasExtra(Constants.SELECTED_TOPIC)) {
+            tvPageTitle.setText(getIntent().getExtras().getString(Constants.SELECTED_TOPIC));
+        }
+
+        // set selected position
         if(getIntent().hasExtra(Constants.SELECTED_POSITION)) {
             selectedPosition = getIntent().getExtras().getInt(Constants.SELECTED_POSITION);
         }
 
-        tvPageTitle.setText("Exercise");
-
         if(selectedPosition >= 0) {
             setToolbarForExercise(WebActivity.exerciseModelList, selectedPosition);
         }
+
         if(WebActivity.exerciseModelList.size() > 1) {
             webFooter.setVisibility(View.VISIBLE);
         } else {
@@ -100,6 +111,7 @@ public class ExerciseActivity extends AbstractBaseActivity {
         btnNext.setOnClickListener(mClickListener);
         btnPrevious.setOnClickListener(mClickListener);
         btnVerify.setOnClickListener(mClickListener);
+        tvClearAnswer.setOnClickListener(mClickListener);
     }
 
     private void initSuggestionWebView() {
@@ -195,6 +207,10 @@ public class ExerciseActivity extends AbstractBaseActivity {
                      postAnswer(WebActivity.exerciseModelList.get(selectedPosition).answerChoice.get(selectedAnswerPosition),
                             WebActivity.exerciseModelList.get(selectedPosition).idQuestion);
                     break;
+
+                case R.id.tv_clearanswer:
+                    clearAnswers();
+                    break;
             }
         }
     };
@@ -272,6 +288,7 @@ public class ExerciseActivity extends AbstractBaseActivity {
             checkBoxes[i] = new CheckBox(this);
             checkBoxes[i].setId(Integer.valueOf(answerChoiceModel.idAnswerKey));
             checkBoxes[i].setTag(answerChoiceModel);
+            checkBoxes[i].setBackgroundResource(R.drawable.selector_checkbox);
 
             rowLayout[i] = new LinearLayout(this);
             rowLayout[i].setOrientation(LinearLayout.HORIZONTAL);
@@ -347,6 +364,7 @@ public class ExerciseActivity extends AbstractBaseActivity {
             radioButton[i] = new RadioButton(this);
             radioButton[i].setId(Integer.valueOf(answerChoiceModel.idAnswerKey));
             radioButton[i].setTag(answerChoiceModel);
+            radioButton[i].setBackgroundResource(R.drawable.selector_radio);
 
             rowLayout[i] = new LinearLayout(this);
             rowLayout[i].setOrientation(LinearLayout.HORIZONTAL);
@@ -390,6 +408,23 @@ public class ExerciseActivity extends AbstractBaseActivity {
             }
         }
         setExplanationLayout();
+    }
+
+    private void clearAnswers() {
+        List<AnswerChoiceModel> answerChoiceModels = WebActivity.exerciseModelList.get(selectedPosition).answerChoice;
+        int size = answerChoiceModels.size();
+        boolean isCompound;
+        if(WebActivity.exerciseModelList.get(selectedPosition).idQuestionType.equalsIgnoreCase("1")) {
+            isCompound = true;
+        } else {
+            isCompound = false;
+        }
+        if(!isCompound) {
+            return;
+        }
+        for(int i = 0; i < size; i++) {
+            ((CompoundButton)findViewById(Integer.valueOf(answerChoiceModels.get(i).idAnswerKey))).setChecked(false);
+        }
     }
 
     private void setExplanationLayout() {

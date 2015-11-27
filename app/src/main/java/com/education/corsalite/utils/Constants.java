@@ -21,5 +21,7 @@ public class Constants {
 
     public static final String EXERCISE_MODEL = "exercise_model";
     public static final String SELECTED_POSITION =  "selectedPosition";
+    public static final String SELECTED_TOPIC =  "selectedTopic";
+    public static final String TEST_TITLE =  "testTitle";
 }
 
