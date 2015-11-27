@@ -68,6 +68,9 @@ public class ExerciseActivity extends AbstractBaseActivity {
     @Bind(R.id.explanation_layout) LinearLayout explanationLayout;
     @Bind(R.id.layout_choice) LinearLayout layoutChoice;
 
+    @Bind(R.id.btn_slider_test)Button slider;
+    @Bind(R.id.ll_test_navigator)LinearLayout testNavLayout;
+
     String webQuestion = "";
     private int selectedPosition = 0;
     private int selectedAnswerPosition = -1;
@@ -81,6 +84,7 @@ public class ExerciseActivity extends AbstractBaseActivity {
         ButterKnife.bind(this);
         initWebView();
         initSuggestionWebView();
+        initSlider();
         setListener();
         getIntentData();
     }
@@ -128,6 +132,20 @@ public class ExerciseActivity extends AbstractBaseActivity {
         txtAnswerExp.setWebViewClient(new MyWebViewClient());
     }
 
+    private void initSlider(){
+        slider.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(testNavLayout.getVisibility() == View.GONE) {
+                    testNavLayout.setVisibility(View.VISIBLE);
+                    slider.setBackground(getResources().getDrawable(R.drawable.btn_right_slider_white));
+                }else{
+                    testNavLayout.setVisibility(View.GONE);
+                    slider.setBackground(getResources().getDrawable(R.drawable.btn_right_slider));
+                }
+            }
+        });
+    }
     private void initWebView() {
         webviewQuestion.getSettings().setSupportZoom(true);
         webviewQuestion.getSettings().setBuiltInZoomControls(false);

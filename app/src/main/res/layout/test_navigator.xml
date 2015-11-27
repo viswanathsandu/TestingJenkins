@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent">
+
+    <Button
+        android:layout_width="30dp"
+        android:layout_height="50dp"
+        android:layout_centerVertical="true"
+        android:id="@+id/btn_slider_test"
+        android:elevation="2dp"
+        android:background="@drawable/btn_right_slider" />
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:visibility="visible"
+        android:elevation="5dp"
+        android:id="@+id/ll_test_navigator"
+        android:layout_toRightOf="@id/btn_slider_test">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp">
+
+            <TextView
+                style="@style/tests_title_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chapter Practice Test" />
+
+            <ImageButton
+                android:id="@+id/info_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/ico_info" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/dark_gray" />
+
+        <GridLayout
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="150dp">
+
+        </GridLayout>
+
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
+    <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:background="@color/blue"
+            android:text="View Full Question Paper"
+            android:textAllCaps="true" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:layout_marginBottom="15dp"
+            android:paddingLeft="80dp">
+
+
+            <LinearLayout
+                android:id="@+id/ll_answered"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="5dp">
+
+                <ImageView
+                    android:layout_width="8dp"
+                    android:layout_height="8dp"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="15dp"
+                    android:background="@color/green" />
+
+                <TextView
+                    style="@style/tests_text_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Answered" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_skipped"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ll_answered"
+                android:orientation="horizontal"
+                android:padding="5dp">
+
+                <ImageView
+                    android:layout_width="8dp"
+                    android:layout_height="8dp"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="15dp"
+                    android:background="@color/green" />
+
+                <TextView
+                    android:id="@+id/tv_skipped"
+                    style="@style/tests_text_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Skipped" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_review"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ll_skipped"
+                android:orientation="horizontal"
+                android:padding="5dp">
+
+                <ImageView
+                    android:layout_width="8dp"
+                    android:layout_height="8dp"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="15dp"
+                    android:background="@color/green" />
+
+                <TextView
+                    android:id="@+id/tv_review"
+                    style="@style/tests_text_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Flagged for review" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_unattempted"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ll_review"
+                android:orientation="horizontal"
+                android:padding="5dp">
+
+                <ImageView
+                    android:layout_width="8dp"
+                    android:layout_height="8dp"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="15dp"
+                    android:background="@color/green" />
+
+                <TextView
+                    android:id="@+id/tv_unattempted"
+                    style="@style/tests_text_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_review"
+                    android:text="Unattempted" />
+
+            </LinearLayout>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/dark_gray" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <Button
+                android:id="@+id/btn_suspend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:padding="5dp"
+                android:text="Suspend" />
+
+            <Button
+                android:id="@+id/btn_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:padding="5dp"
+                android:text="Save" />
+
+            <Button
+                android:id="@+id/btn_submit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@color/green"
+                android:padding="5dp"
+                android:text="Submit"
+                android:textAllCaps="true" />
+
+        </LinearLayout>
+</LinearLayout>
+
+    </LinearLayout>
+</RelativeLayout>
