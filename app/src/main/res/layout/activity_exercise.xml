@@ -133,7 +133,7 @@
                         android:id="@+id/webview_question"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"></WebView>
+                        android:layout_marginTop="10dp"/>
 
 
                     <LinearLayout
@@ -204,35 +204,15 @@
 
                     </LinearLayout>
 
-                    <!--<com.wunderlist.slidinglayer.SlidingLayer
-                        xmlns:slidingLayer="http://schemas.android.com/apk/res-auto"
-                        android:id="@+id/slidingLayer1"
-                        android:layout_width="300dp"
-                        android:layout_height="match_parent"
-                        slidingLayer:shadowDrawable="@drawable/sidebar_shadow"
-                        slidingLayer:shadowSize="@dimen/shadow_size"
-                        slidingLayer:offsetDistance="@dimen/offset_distance"
-                        slidingLayer:previewOffsetDistance="@dimen/preview_offset_distance"
-                        slidingLayer:stickTo="top|bottom|right|left"
-                        slidingLayer:changeStateOnTap="true">
-
-
-                    </com.wunderlist.slidinglayer.SlidingLayer>
-                    <SlidingDrawer
-                        android:layout_width="wrap_content"
-                        android:id="@+id/SlidingDrawer"
-                        android:handle="@+id/slideButton"
-                        android:content="@+id/contentLayout"
-                        android:padding="10dip"
-                        android:layout_height="250dip"
-                        android:visibility="gone"
-                        android:orientation="vertical" >
-                    </SlidingDrawer>-->
-
-
                 </RelativeLayout>
 
             </ScrollView>
+
+            <include layout="@layout/test_navigator"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"/>
 
         </RelativeLayout>
 

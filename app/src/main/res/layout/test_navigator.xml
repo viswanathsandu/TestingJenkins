@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    android:orientation="horizontal">
+    android:layout_height="match_parent">
 
     <Button
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center"
-        android:background="@drawable/btn_right_slider_white" />
+        android:layout_width="30dp"
+        android:layout_height="50dp"
+        android:layout_centerVertical="true"
+        android:id="@+id/btn_slider_test"
+        android:elevation="2dp"
+        android:background="@drawable/btn_right_slider" />
 
     <LinearLayout
-        android:layout_width="325dp"
+        android:layout_width="300dp"
         android:layout_height="match_parent"
         android:background="@color/white"
-        android:orientation="vertical">
-
+        android:orientation="vertical"
+        android:visibility="visible"
+        android:elevation="5dp"
+        android:id="@+id/ll_test_navigator"
+        android:layout_toRightOf="@id/btn_slider_test">
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -42,8 +46,9 @@
             android:background="@color/dark_gray" />
 
         <GridLayout
-            android:layout_width="wrap_content"
-            android:layout_height="200dp">
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="150dp">
 
         </GridLayout>
 
@@ -62,7 +67,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="3"
             android:layout_marginBottom="15dp"
             android:paddingLeft="80dp">
 
@@ -169,7 +175,8 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            >
 
             <Button
                 android:id="@+id/btn_suspend"
@@ -201,4 +208,4 @@
 </LinearLayout>
 
     </LinearLayout>
-</LinearLayout>
+</RelativeLayout>
