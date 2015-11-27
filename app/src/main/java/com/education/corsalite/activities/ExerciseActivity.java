@@ -4,10 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.SpannableString;
 import android.text.TextUtils;
-import android.text.style.UnderlineSpan;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +37,7 @@ import com.google.gson.Gson;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -57,7 +55,9 @@ public class ExerciseActivity extends AbstractBaseActivity {
     @Bind(R.id.btn_previous) Button btnPrevious;
     @Bind(R.id.webview_question) WebView webviewQuestion;
     @Bind(R.id.tv_comment) TextView tvComment;
-    @Bind(R.id.tv_header) TextView tvHeader;
+    @Bind(R.id.tv_level) TextView tvLevel;
+    @Bind(R.id.tv_pagetitle) TextView tvPageTitle;
+
     @Bind(R.id.btn_verify) Button btnVerify;
 
     @Bind(R.id.txtAnswerCount) TextView txtAnswerCount;
@@ -83,6 +83,8 @@ public class ExerciseActivity extends AbstractBaseActivity {
         if(getIntent().hasExtra(Constants.SELECTED_POSITION)) {
             selectedPosition = getIntent().getExtras().getInt(Constants.SELECTED_POSITION);
         }
+
+        tvPageTitle.setText("Exercise");
 
         if(selectedPosition >= 0) {
             setToolbarForExercise(WebActivity.exerciseModelList, selectedPosition);
@@ -199,10 +201,10 @@ public class ExerciseActivity extends AbstractBaseActivity {
 
     private void loadQuestion(int position) {
 
-        String header = "Exercise: " + WebActivity.exerciseModelList.get(position).displayName.split("\\s+")[0];
+        /*String header = "Exercise: " + WebActivity.exerciseModelList.get(position).displayName.split("\\s+")[0];
         SpannableString headerText = new SpannableString(header);
-        headerText.setSpan(new UnderlineSpan(), 0, header.length(), 0);
-        tvHeader.setText(headerText);
+        headerText.setSpan(new UnderlineSpan(), 0, header.length(), 0);*/
+        tvLevel.setText(WebActivity.exerciseModelList.get(position).displayName.split("\\s+")[0].toUpperCase(Locale.ENGLISH));
 
 
         if(WebActivity.exerciseModelList.get(position).paragraphHtml != null) {
