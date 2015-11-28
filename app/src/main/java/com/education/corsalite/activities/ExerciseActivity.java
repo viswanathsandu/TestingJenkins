@@ -8,15 +8,18 @@ import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.webkit.JavascriptInterface;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
@@ -57,6 +60,8 @@ public class ExerciseActivity extends AbstractBaseActivity {
     @Bind(R.id.webview_question) WebView webviewQuestion;
     @Bind(R.id.tv_comment) TextView tvComment;
     @Bind(R.id.tv_level) TextView tvLevel;
+    @Bind(R.id.tv_nav_title) TextView tvNavTitle;
+
     @Bind(R.id.tv_pagetitle) TextView tvPageTitle;
 
     @Bind(R.id.btn_verify) Button btnVerify;
@@ -70,10 +75,15 @@ public class ExerciseActivity extends AbstractBaseActivity {
 
     @Bind(R.id.btn_slider_test)Button slider;
     @Bind(R.id.ll_test_navigator)LinearLayout testNavLayout;
+    @Bind(R.id.shadow_view) View shadowView;
+
+    @Bind(R.id.gv_test) GridView gvTest;
 
     String webQuestion = "";
     private int selectedPosition = 0;
     private int selectedAnswerPosition = -1;
+    String title = "";
+    GridAdapter gridAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,15 +92,19 @@ public class ExerciseActivity extends AbstractBaseActivity {
         LinearLayout myView = (LinearLayout) inflater.inflate(R.layout.activity_exercise, null);
         frameLayout.addView(myView);
         ButterKnife.bind(this);
+        toggleSlider();
         initWebView();
         initSuggestionWebView();
-        initSlider();
         setListener();
         getIntentData();
     }
 
     private void getIntentData() {
-        //set Title
+        if(getIntent().hasExtra(Constants.TEST_TITLE)) {
+            title = getIntent().getExtras().getString(Constants.TEST_TITLE);
+        }
+        tvNavTitle.setText(title);
+
         if(getIntent().hasExtra(Constants.SELECTED_TOPIC)) {
             tvPageTitle.setText(getIntent().getExtras().getString(Constants.SELECTED_TOPIC));
         }
@@ -101,7 +115,7 @@ public class ExerciseActivity extends AbstractBaseActivity {
         }
 
         if(selectedPosition >= 0) {
-            setToolbarForExercise(WebActivity.exerciseModelList, selectedPosition);
+            setToolbarForExercise(WebActivity.exerciseModelList, selectedPosition, title);
         }
 
         if(WebActivity.exerciseModelList.size() > 1) {
@@ -109,6 +123,9 @@ public class ExerciseActivity extends AbstractBaseActivity {
         } else {
             webFooter.setVisibility(View.GONE);
         }
+
+        gridAdapter = new GridAdapter(WebActivity.exerciseModelList.size(), selectedPosition);
+        gvTest.setAdapter(gridAdapter);
     }
 
     private void setListener() {
@@ -116,6 +133,9 @@ public class ExerciseActivity extends AbstractBaseActivity {
         btnPrevious.setOnClickListener(mClickListener);
         btnVerify.setOnClickListener(mClickListener);
         tvClearAnswer.setOnClickListener(mClickListener);
+        shadowView.setOnClickListener(mClickListener);
+        slider.setOnClickListener(mClickListener);
+        testNavLayout.setOnClickListener(mClickListener);
     }
 
     private void initSuggestionWebView() {
@@ -132,20 +152,6 @@ public class ExerciseActivity extends AbstractBaseActivity {
         txtAnswerExp.setWebViewClient(new MyWebViewClient());
     }
 
-    private void initSlider(){
-        slider.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(testNavLayout.getVisibility() == View.GONE) {
-                    testNavLayout.setVisibility(View.VISIBLE);
-                    slider.setBackground(getResources().getDrawable(R.drawable.btn_right_slider_white));
-                }else{
-                    testNavLayout.setVisibility(View.GONE);
-                    slider.setBackground(getResources().getDrawable(R.drawable.btn_right_slider));
-                }
-            }
-        });
-    }
     private void initWebView() {
         webviewQuestion.getSettings().setSupportZoom(true);
         webviewQuestion.getSettings().setBuiltInZoomControls(false);
@@ -229,11 +235,24 @@ public class ExerciseActivity extends AbstractBaseActivity {
                 case R.id.tv_clearanswer:
                     clearAnswers();
                     break;
+
+                case R.id.btn_slider_test:
+                case R.id.shadow_view:
+                    toggleSlider();
+                    break;
+
+                case R.id.ll_test_navigator:
+                    break;
             }
         }
     };
 
     private void loadQuestion(int position) {
+
+        if(gridAdapter != null) {
+            gridAdapter.notifyDataSetChanged();
+        }
+
 
         /*String header = "Exercise: " + WebActivity.exerciseModelList.get(position).displayName.split("\\s+")[0];
         SpannableString headerText = new SpannableString(header);
@@ -481,34 +500,105 @@ public class ExerciseActivity extends AbstractBaseActivity {
 
         ApiManager.getInstance(this).postExerciseAnswer(new Gson().toJson(postExerciseRequestModel),
                 new ApiCallback<PostExercise>(this) {
-            @Override
-            public void failure(CorsaliteError error) {
-                btnVerify.setEnabled(true);
-                String message = "Unknown error occured.Please try again.";
-                if (error != null && !TextUtils.isEmpty(error.message)) {
-                    message = error.message;
-                }
-                explanationLayout.setVisibility(View.VISIBLE);
-                layoutChoice.setVisibility(View.VISIBLE);
-                showToast(message);
-            }
-
-            @Override
-            public void success(PostExercise postExercise, Response response) {
-                super.success(postExercise, response);
-                if (postExercise.isSuccessful()) {
-                    btnVerify.setEnabled(false);
-                    explanationLayout.setVisibility(View.VISIBLE);
-                    layoutChoice.setVisibility(View.VISIBLE);
-                } else {
-                    String message = "Unknown error occured.Please try again.";
-                    if (postExercise != null && !TextUtils.isEmpty(postExercise.message)) {
-                        message = postExercise.message;
+                    @Override
+                    public void failure(CorsaliteError error) {
+                        btnVerify.setEnabled(true);
+                        String message = "Unknown error occured.Please try again.";
+                        if (error != null && !TextUtils.isEmpty(error.message)) {
+                            message = error.message;
+                        }
+                        explanationLayout.setVisibility(View.VISIBLE);
+                        layoutChoice.setVisibility(View.VISIBLE);
+                        showToast(message);
                     }
-                    showToast(message);
-                }
 
+                    @Override
+                    public void success(PostExercise postExercise, Response response) {
+                        super.success(postExercise, response);
+                        if (postExercise.isSuccessful()) {
+                            btnVerify.setEnabled(false);
+                            explanationLayout.setVisibility(View.VISIBLE);
+                            layoutChoice.setVisibility(View.VISIBLE);
+                        } else {
+                            String message = "Unknown error occured.Please try again.";
+                            if (postExercise != null && !TextUtils.isEmpty(postExercise.message)) {
+                                message = postExercise.message;
+                            }
+                            showToast(message);
+                        }
+
+                    }
+                });
+    }
+
+    private void toggleSlider() {
+        if (testNavLayout.getVisibility() == View.GONE) {
+            testNavLayout.setVisibility(View.VISIBLE);
+            shadowView.setVisibility(View.VISIBLE);
+            slider.setBackground(getResources().getDrawable(R.drawable.btn_right_slider_white));
+        } else {
+            testNavLayout.setVisibility(View.GONE);
+            shadowView.setVisibility(View.GONE);
+            slider.setBackground(getResources().getDrawable(R.drawable.btn_right_slider));
+        }
+    }
+
+    public class GridAdapter extends BaseAdapter {
+
+        int adapterSize;
+        int currentQuestionPosition;
+        View grid;
+        LayoutInflater inflater;
+
+        public GridAdapter(int adapterSize, int currentQuestionPosition) {
+            this.adapterSize = adapterSize;
+            this.currentQuestionPosition = currentQuestionPosition;
+            inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        }
+
+        @Override
+        public int getCount() {
+            return adapterSize;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            View v;
+            TextView btnCounter;
+            if (convertView == null) {
+                v = inflater.inflate(R.layout.grid_text, null, false);
+            } else {
+                v = convertView;
             }
-        });
+            btnCounter = (TextView)v.findViewById(R.id.btnNumber);
+            if(position < 9) {
+                btnCounter.setText("0"+(position + 1));
+            } else {
+                btnCounter.setText(String.valueOf(position + 1));
+            }
+            if(position == selectedPosition) {
+                btnCounter.setBackgroundResource(R.drawable.rounded_corners_green);
+            } else {
+                btnCounter.setBackgroundResource(R.drawable.rounded_corners_gray);
+            }
+
+            v.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showExerciseToolbar(null, position, true);
+                }
+            });
+            return v;
+        }
     }
 }

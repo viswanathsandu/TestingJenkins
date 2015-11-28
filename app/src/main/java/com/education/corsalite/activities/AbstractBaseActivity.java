@@ -135,9 +135,9 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         setToolbarTitle(getResources().getString(R.string.offline_content));
     }
 
-    protected void setToolbarForExercise(List<ExerciseModel> exerciseModelList, int position) {
-        findViewById(R.id.toolbar_title).setVisibility(View.GONE);
-        toolbar.findViewById(R.id.video_layout).setVisibility(View.VISIBLE);
+    protected void setToolbarForExercise(List<ExerciseModel> exerciseModelList, int position, String title) {
+        setToolbarTitle(title);
+        toolbar.findViewById(R.id.video_layout).setVisibility(View.INVISIBLE);
         showExerciseToolbar(exerciseModelList, position, false);
     }
 
