@@ -3,8 +3,6 @@ package com.education.corsalite.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,6 +11,7 @@ import android.widget.TextView;
 import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
+import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.LoginResponse;
@@ -75,10 +74,9 @@ public class LoginActivity extends AbstractBaseActivity {
             public void success(LoginResponse loginResponse, Response response) {
                 super.success(loginResponse, response);
                 if (loginResponse.isSuccessful()) {
-                    showToast(getResources().getString(R.string.login_successful));
-                    storeUserCredentials(loginResponse);
-                    startActivity(new Intent(LoginActivity.this, StudyCentreActivity.class));
-                    finish();
+                    ApiCacheHolder.getInstance().setLoginResponse(loginResponse);
+                    dbManager.saveLoginResponse(ApiCacheHolder.getInstance().login);
+                    onLoginsuccess(loginResponse);
                 } else {
                     showToast(getResources().getString(R.string.login_failed));
                 }
@@ -86,8 +84,14 @@ public class LoginActivity extends AbstractBaseActivity {
         });
     }
 
-    // cache the response
-    private void storeUserCredentials(LoginResponse response) {
-        LoginUserCache.getInstance().setLoginResponse(response);
+    private void onLoginsuccess(LoginResponse response) {
+        if(response != null) {
+            LoginUserCache.getInstance().setLoginResponse(response);
+            showToast(getResources().getString(R.string.login_successful));
+            startActivity(new Intent(LoginActivity.this, StudyCentreActivity.class));
+            finish();
+        } else {
+            showToast(getResources().getString(R.string.login_failed));
+        }
     }
 }
