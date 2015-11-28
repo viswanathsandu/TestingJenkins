@@ -77,18 +77,23 @@ public class DbManager extends  Db4oHelper{
         return null;
     }
 
-    public void saveCoursesResponse(CoursesReqRes coursesReqRes) {
-        List<CoursesReqRes> courseReqResList = getCourseRequestResponseList();
-        if(courseReqResList != null && !courseReqResList.isEmpty()) {
-            for(CoursesReqRes reqRes : courseReqResList) {
-                if(reqRes.studentId.equalsIgnoreCase(coursesReqRes.studentId)) {
-                    reqRes.response = coursesReqRes.response;
-                    dbService.Save(reqRes);
-                    return;
+    public void saveCoursesResponse(final CoursesReqRes coursesReqRes) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<CoursesReqRes> courseReqResList = getCourseRequestResponseList();
+                if(courseReqResList != null && !courseReqResList.isEmpty()) {
+                    for(CoursesReqRes reqRes : courseReqResList) {
+                        if(reqRes.studentId.equalsIgnoreCase(coursesReqRes.studentId)) {
+                            reqRes.response = coursesReqRes.response;
+                            dbService.Save(reqRes);
+                            return;
+                        }
+                    }
                 }
+                dbService.Save(coursesReqRes);
             }
-        }
-        dbService.Save(coursesReqRes);
+        }).start();
     }
 
     public void getCoursesResponse(String studentId, ApiCallback<List<Course>> callback) {
