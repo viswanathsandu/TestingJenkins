@@ -2,9 +2,11 @@ package com.education.corsalite.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,6 +60,8 @@ public class ExerciseActivity extends AbstractBaseActivity {
     @Bind(R.id.btn_next) Button btnNext;
     @Bind(R.id.btn_previous) Button btnPrevious;
     @Bind(R.id.webview_question) WebView webviewQuestion;
+    @Bind(R.id.webview_paragraph) WebView webviewParagraph;
+
     @Bind(R.id.tv_comment) TextView tvComment;
     @Bind(R.id.tv_level) TextView tvLevel;
     @Bind(R.id.tv_nav_title) TextView tvNavTitle;
@@ -69,6 +73,8 @@ public class ExerciseActivity extends AbstractBaseActivity {
 
     @Bind(R.id.txtAnswerCount) TextView txtAnswerCount;
     @Bind(R.id.txtAnswerExp) WebView txtAnswerExp;
+    @Bind(R.id.tv_serial_no) TextView tvSerialNo;
+
 
     @Bind(R.id.explanation_layout) LinearLayout explanationLayout;
     @Bind(R.id.layout_choice) LinearLayout layoutChoice;
@@ -94,6 +100,7 @@ public class ExerciseActivity extends AbstractBaseActivity {
         ButterKnife.bind(this);
         toggleSlider();
         initWebView();
+        initWebView1();
         initSuggestionWebView();
         setListener();
         getIntentData();
@@ -149,8 +156,49 @@ public class ExerciseActivity extends AbstractBaseActivity {
         txtAnswerExp.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
         webviewQuestion.setWebChromeClient(new WebChromeClient());
+        webviewParagraph.setWebChromeClient(new WebChromeClient());
         // Load the URLs inside the WebView, not in the external web browser
         txtAnswerExp.setWebViewClient(new MyWebViewClient());
+    }
+
+    private void initWebView1() {
+        webviewParagraph.getSettings().setSupportZoom(true);
+        webviewParagraph.getSettings().setBuiltInZoomControls(false);
+        webviewParagraph.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
+        webviewParagraph.setScrollbarFadingEnabled(true);
+        webviewParagraph.getSettings().setLoadsImagesAutomatically(true);
+        webviewParagraph.getSettings().setJavaScriptEnabled(true);
+        webviewParagraph.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+
+        if(getExternalCacheDir() != null) {
+            webviewParagraph.getSettings().setAppCachePath(getExternalCacheDir().getAbsolutePath());
+        } else {
+            webviewParagraph.getSettings().setAppCachePath(getCacheDir().getAbsolutePath());
+        }
+        webviewParagraph.getSettings().setAppCacheMaxSize(1024 * 1024 * 8);
+
+        webviewParagraph.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
+                L.info("JS return value " + message);
+                showToast("Adding '" + message + "' to the notes");
+                result.confirm();
+                return true;
+            }
+        });
+        webviewParagraph.addJavascriptInterface(new Object() {
+            @JavascriptInterface
+            public void test() {
+                L.debug("JS", "test");
+            }
+
+            @JavascriptInterface
+            public void onData(String value) {
+                L.info("JS data" + value);
+            }
+        }, "android");
+        // Load the URLs inside the WebView, not in the external web browser
+        webviewParagraph.setWebViewClient(new MyWebViewClient());
     }
 
     private void initWebView() {
@@ -252,8 +300,9 @@ public class ExerciseActivity extends AbstractBaseActivity {
             gridAdapter.notifyDataSetChanged();
         }
 
+        tvSerialNo.setText("Q" + (position + 1) + ")");
 
-        /*String header = "Exercise: " + WebActivity.exerciseModelList.get(position).displayName.split("\\s+")[0];
+        /*String header = "Exercise: " + WebActivity.exe)rciseModelList.get(position).displayName.split("\\s+")[0];
         SpannableString headerText = new SpannableString(header);
         headerText.setSpan(new UnderlineSpan(), 0, header.length(), 0);*/
         tvLevel.setText(WebActivity.exerciseModelList.get(position).displayName.split("\\s+")[0].toUpperCase(Locale.ENGLISH));
@@ -261,9 +310,10 @@ public class ExerciseActivity extends AbstractBaseActivity {
 
         if(WebActivity.exerciseModelList.get(position).paragraphHtml != null) {
             webQuestion = WebActivity.exerciseModelList.get(position).paragraphHtml;
+            webviewParagraph.loadData(webQuestion, "text/html; charset=UTF-8", null);
         }
         if(WebActivity.exerciseModelList.get(position).questionHtml != null) {
-            webQuestion = webQuestion + WebActivity.exerciseModelList.get(position).questionHtml;
+            webQuestion =  WebActivity.exerciseModelList.get(position).questionHtml;
             webviewQuestion.loadData(webQuestion, "text/html; charset=UTF-8", null);
         }
         if(WebActivity.exerciseModelList.get(position).comment != null) {
@@ -392,22 +442,34 @@ public class ExerciseActivity extends AbstractBaseActivity {
         List<AnswerChoiceModel> answerChoiceModels = WebActivity.exerciseModelList.get(position).answerChoice;
         final int size = answerChoiceModels.size();
         final RadioButton[] radioButton = new RadioButton[size];
+        final TextView[] tvSerial = new TextView[size];
         final LinearLayout[] rowLayout = new LinearLayout[size];
 
         for(int i = 0; i < size; i++) {
 
             final AnswerChoiceModel answerChoiceModel = answerChoiceModels.get(i);
-            radioButton[i] = new RadioButton(this);
-            radioButton[i].setId(Integer.valueOf(answerChoiceModel.idAnswerKey));
-            radioButton[i].setTag(answerChoiceModel);
-            radioButton[i].setBackgroundResource(R.drawable.selector_radio);
 
             rowLayout[i] = new LinearLayout(this);
             rowLayout[i].setOrientation(LinearLayout.HORIZONTAL);
             rowLayout[i].setGravity(Gravity.CENTER_VERTICAL);
             LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+
+            tvSerial[i] = new TextView(this);
+            tvSerial[i].setText((i + 1) + ")");
+            tvSerial[i].setTextColor(Color.BLACK);
+            tvSerial[i].setGravity(Gravity.TOP);
+            tvSerial[i].setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+            p.setMargins(0,0,10,0);
+            tvSerial[i].setLayoutParams(p);
+
+            radioButton[i] = new RadioButton(this);
+            radioButton[i].setId(Integer.valueOf(answerChoiceModel.idAnswerKey));
+            radioButton[i].setTag(answerChoiceModel);
+            radioButton[i].setBackgroundResource(R.drawable.selector_radio);
+
             radioButton[i].setLayoutParams(p);
 
+            rowLayout[i].addView(tvSerial[i]);
             rowLayout[i].addView(radioButton[i]);
 
             WebView optionWebView = new WebView(getApplicationContext());

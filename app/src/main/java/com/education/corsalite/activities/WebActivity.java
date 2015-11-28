@@ -75,7 +75,7 @@ public class WebActivity extends AbstractBaseActivity {
     @Bind(R.id.sp_subject) Spinner spSubject;
     @Bind(R.id.sp_chapter) Spinner spChapter;
     @Bind(R.id.sp_topic) Spinner spTopic;
-    @Bind(R.id.sp_exercise) Spinner spExercise;
+    @Bind(R.id.tv_exercise) TextView tvExercise;
     @Bind(R.id.layout_exercise) RelativeLayout layoutExercise;
     @Bind(R.id.vs_container) ViewSwitcher mViewSwitcher;
     @Bind(R.id.footer_layout) RelativeLayout webFooter;
@@ -255,6 +255,7 @@ public class WebActivity extends AbstractBaseActivity {
             case R.id.action_rate_it:
                 showToast("Rate It");
                 return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -279,6 +280,7 @@ public class WebActivity extends AbstractBaseActivity {
         btnNext.setOnClickListener(mClickListener);
         btnPrevious.setOnClickListener(mClickListener);
         tvVideo.setOnClickListener(mClickListener);
+        tvExercise.setOnClickListener(mClickListener);
     }
 
     View.OnClickListener mClickListener = new View.OnClickListener() {
@@ -306,6 +308,14 @@ public class WebActivity extends AbstractBaseActivity {
 
                 case R.id.tv_video:
                     showVideoDialog();
+                    break;
+
+                case R.id.tv_exercise:
+                    Intent intent = new Intent(WebActivity.this, ExerciseActivity.class);
+                    intent.putExtra(Constants.SELECTED_TOPIC, topicModelList.get(spTopic.getSelectedItemPosition()).topicName);
+                    intent.putExtra(Constants.TEST_TITLE, "Exercise Test");
+                    intent.putExtra(Constants.SELECTED_POSITION, 0);
+                    startActivity(intent);
                     break;
             }
         }
@@ -463,7 +473,7 @@ public class WebActivity extends AbstractBaseActivity {
     }
 
     private void getExercise(int topicPosition) {
-        layoutExercise.setVisibility(View.GONE);
+        layoutExercise.setVisibility(View.INVISIBLE);
         ApiManager.getInstance(this).getExercise(topicModelList.get(topicPosition).idTopic, selectedCourse.courseId.toString(),
                 studentId, "", new ApiCallback<List<ExerciseModel>>(this) {
                     @Override
@@ -476,7 +486,7 @@ public class WebActivity extends AbstractBaseActivity {
                     public void success(List<ExerciseModel> exerciseModels, Response response) {
                         super.success(exerciseModels, response);
                         exerciseModelList = exerciseModels;
-                        showExcercise();
+                        showExercise();
 
                     }
                 });
@@ -698,30 +708,11 @@ public class WebActivity extends AbstractBaseActivity {
         });
     }
 
-    private void showExcercise() {
+    private void showExercise() {
         if(exerciseModelList != null && exerciseModelList.size() > 0) {
             layoutExercise.setVisibility(View.VISIBLE);
-            ExerciseAdapter exerciseAdapter = new ExerciseAdapter(exerciseModelList, this);
-            spExercise.setAdapter(exerciseAdapter);
-
-            spExercise.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                    if(position != 0) {
-                        Intent intent = new Intent(WebActivity.this, ExerciseActivity.class);
-                        intent.putExtra(Constants.SELECTED_TOPIC, topicModelList.get(spTopic.getSelectedItemPosition()).topicName);
-                        intent.putExtra(Constants.TEST_TITLE, "Exercise Test");
-                        intent.putExtra(Constants.SELECTED_POSITION, position - 1);
-                        startActivity(intent);
-                    }
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
-                }
-            });
+        } else {
+            layoutExercise.setVisibility(View.INVISIBLE);
         }
     }
 
