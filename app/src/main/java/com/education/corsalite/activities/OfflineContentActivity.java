@@ -3,7 +3,7 @@ package com.education.corsalite.activities;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.education.corsalite.R;
@@ -31,7 +31,7 @@ import java.util.List;
  */
 public class OfflineContentActivity extends AbstractBaseActivity {
 
-    private LinearLayout mainNodeLayout;
+    private RelativeLayout mainNodeLayout;
     private AndroidTreeView tView;
     List<ContentIndex> contentIndexList;
 
@@ -39,9 +39,9 @@ public class OfflineContentActivity extends AbstractBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        LinearLayout myView = (LinearLayout) inflater.inflate(R.layout.activity_offline_content, null);
+        RelativeLayout myView = (RelativeLayout) inflater.inflate(R.layout.activity_offline_content, null);
         frameLayout.addView(myView);
-        mainNodeLayout = (LinearLayout) findViewById(R.id.main_node);
+        mainNodeLayout = (RelativeLayout) findViewById(R.id.main_node);
         setToolbarForOfflineContent();
     }
 
