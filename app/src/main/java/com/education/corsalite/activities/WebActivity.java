@@ -476,7 +476,7 @@ public class WebActivity extends AbstractBaseActivity {
                     public void success(List<ExerciseModel> exerciseModels, Response response) {
                         super.success(exerciseModels, response);
                         exerciseModelList = exerciseModels;
-                        showExcercise();
+                        showExercise();
 
                     }
                 });
@@ -698,7 +698,7 @@ public class WebActivity extends AbstractBaseActivity {
         });
     }
 
-    private void showExcercise() {
+    private void showExercise() {
         if(exerciseModelList != null && exerciseModelList.size() > 0) {
             layoutExercise.setVisibility(View.VISIBLE);
             ExerciseAdapter exerciseAdapter = new ExerciseAdapter(exerciseModelList, this);
