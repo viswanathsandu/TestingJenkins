@@ -79,12 +79,15 @@
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="Offline Content"
             android:theme="@style/UserProfileTheme" />
-
         <activity
             android:name=".activities.NotesActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="Notes"
             android:theme="@style/UserProfileTheme" />
+        <activity
+            android:name=".activities.ExamHistoryActivity"
+            android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
+            android:label="ExamHistory"/>
         <activity
             android:name=".activities.ExerciseActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"

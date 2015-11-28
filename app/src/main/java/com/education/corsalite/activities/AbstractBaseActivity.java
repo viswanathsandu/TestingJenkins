@@ -107,6 +107,11 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         loadCoursesList();
     }
 
+    protected void setToolbarForExamHistory(){
+        toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
+        setToolbarTitle(getResources().getString(R.string.exam_history));
+    }
+
     protected void setToolbarForNotes() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
         setToolbarTitle(getResources().getString(R.string.notes));
@@ -233,7 +238,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     protected void setToolbarTitle(String title) {
-        TextView textView = (TextView) findViewById(R.id.toolbar_title);
+        TextView textView = (TextView) toolbar.findViewById(R.id.toolbar_title);
         textView.setText(title);
     }
 
