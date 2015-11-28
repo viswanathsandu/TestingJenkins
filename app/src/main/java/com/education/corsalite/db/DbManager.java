@@ -5,8 +5,12 @@ import android.content.Context;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.models.db.ContentIndexResponse;
 import com.education.corsalite.models.db.CourseList;
+import com.education.corsalite.models.db.reqres.CoursesReqRes;
 import com.education.corsalite.models.db.reqres.LoginReqRes;
+import com.education.corsalite.models.db.reqres.StudyCenterReqRes;
+import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.LoginResponse;
+import com.education.corsalite.models.responsemodels.StudyCenter;
 import com.education.corsalite.utils.MockUtils;
 import com.orm.query.Condition;
 import com.orm.query.Select;
@@ -35,12 +39,8 @@ public class DbManager extends  Db4oHelper{
         return instance;
     }
 
-    public void saveLoginResponse(LoginReqRes login) {
-        dbService.Save(login);
-    }
-
-    public void delete(LoginResponse loginResponse) {
-        db().delete(loginResponse);
+    public void saveLoginResponse(LoginReqRes loginReqRes) {
+        dbService.Save(loginReqRes);
     }
 
     public void getLoginResponse(String loginId, String passwordHash, ApiCallback<LoginResponse> callback) {
@@ -65,6 +65,63 @@ public class DbManager extends  Db4oHelper{
         }
         return null;
     }
+
+    public void saveCoursesResponse(CoursesReqRes coursesReqRes) {
+        dbService.Save(coursesReqRes);
+    }
+
+    public void getCoursesResponse(String studentId, ApiCallback<List<Course>> callback) {
+        List<CoursesReqRes> courseReqResList = getCourseRequestResponseList();
+        if(courseReqResList != null && !courseReqResList.isEmpty()) {
+            for(CoursesReqRes reqRes : courseReqResList) {
+                if(reqRes.studentId.equalsIgnoreCase(studentId)) {
+                    callback.success(reqRes.response, MockUtils.getRetrofitResponse());
+                    return;
+                }
+            }
+        } else {
+            callback.failure(MockUtils.getCorsaliteError("Failure", "Notwork not available..."));
+        }
+        callback.failure(MockUtils.getCorsaliteError("Failure", "No data found..."));
+    }
+
+    public List<CoursesReqRes> getCourseRequestResponseList() {
+        List<CoursesReqRes> responses = dbService.Get(CoursesReqRes.class);
+        if(responses != null && !responses.isEmpty()) {
+            return responses;
+        }
+        return null;
+    }
+
+
+    public void saveStudyCenterResponse(StudyCenterReqRes studyCenterReqRes) {
+        dbService.Save(studyCenterReqRes);
+    }
+
+    public void getStudyCenterResponse(String studentId, String courseId, ApiCallback<List<StudyCenter>> callback) {
+        List<StudyCenterReqRes> studyCenterReqResList = getStudyCenterRequestResponseList();
+        if(studyCenterReqResList != null && !studyCenterReqResList.isEmpty()) {
+            for(StudyCenterReqRes reqRes : studyCenterReqResList) {
+                if(reqRes.studentId.equalsIgnoreCase(studentId) && reqRes.courseId.equalsIgnoreCase(courseId)) {
+                    callback.success(reqRes.response, MockUtils.getRetrofitResponse());
+                    return;
+                }
+            }
+        } else {
+            callback.failure(MockUtils.getCorsaliteError("Failure", "Notwork not available..."));
+        }
+        callback.failure(MockUtils.getCorsaliteError("Failure", "No data found..."));
+    }
+
+    public List<StudyCenterReqRes> getStudyCenterRequestResponseList() {
+        List<StudyCenterReqRes> responses = dbService.Get(StudyCenterReqRes.class);
+        if(responses != null && !responses.isEmpty()) {
+            return responses;
+        }
+        return null;
+    }
+
+
 
     public void saveCourseList(CourseList courseList) {
         List<CourseList> list = dbService.Get(CourseList.class);

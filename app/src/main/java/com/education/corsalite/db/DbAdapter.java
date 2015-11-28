@@ -16,11 +16,10 @@ public class DbAdapter {
 		String fqFilename = null;
 		try {
 			File localDirectoryPath = getLocalDirectoryPath();
-//			createDbDirectory(getFullQualifiedDirectoryName(localDirectoryPath));
+			createDbDirectory(getFullQualifiedDirectoryName(localDirectoryPath));
 			fqFilename = getFullyQualifiedDbFilename(localDirectoryPath);
-//			if (new File(fqFilename).exists()) return fqFilename;
-			context.getDir(fqFilename, Context.MODE_PRIVATE);
-//			createTheDbFile(fqFilename);
+			if (new File(fqFilename).exists()) return fqFilename;
+			createTheDbFile(fqFilename);
 		}
 		catch (Exception e) {
 			L.error(e.getMessage(), e);
@@ -55,8 +54,11 @@ public class DbAdapter {
 		boolean result = false;
 		if (!dbDirectory.exists()) {
 			result = dbDirectory.mkdirs();
+			L.info(String.format("Directory named *%s* created: %s", fqDirectoryName, String.valueOf(result)));
+		} else {
+			L.info(String.format("Directory named *%s* already exists", fqDirectoryName));
 		}
-		L.info(String.format("Directory named *%s* created: %s", fqDirectoryName, String.valueOf(result)));
+
 		return;
 	}
 

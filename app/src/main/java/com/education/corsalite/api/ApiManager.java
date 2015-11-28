@@ -71,7 +71,7 @@ public class ApiManager {
     }
 
     public void login(String loginId, String passwordHash, ApiCallback<LoginResponse> callback) {
-        ApiCacheHolder.setLoginRequest(loginId, passwordHash);
+        ApiCacheHolder.getInstance().setLoginRequest(loginId, passwordHash);
         if (isApiOnline() && isNetworkConnected()) {
             ApiClientService.get().login(loginId, passwordHash, callback);
         } else if(!isNetworkConnected()) {
@@ -94,8 +94,11 @@ public class ApiManager {
     }
 
     public void getCourses(String studentId, ApiCallback<List<Course>> callback) {
-        if (isApiOnline()) {
+        ApiCacheHolder.getInstance().setCoursesRequest(studentId);
+        if (isApiOnline() && isNetworkConnected()) {
             ApiClientService.get().getCourses(studentId, callback);
+        } else if(!isNetworkConnected()) {
+            DbManager.getInstance(context).getCoursesResponse(studentId, callback);
         } else {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/courses.json");
             L.info("Response for 'api/courses.json' is " + jsonResponse);
@@ -109,7 +112,7 @@ public class ApiManager {
         }else {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/usage_analysis.json");
             L.info("Response for 'api/usage_analysis.json' is " + jsonResponse);
-            callback.success(new Gson().fromJson(jsonResponse, UsageAnalysis.class), getRetrofitResponse());
+            callback.success(new Gson().fromJson(jsonResponse, UsageAnalysis.class), MockUtils.getRetrofitResponse());
         }
     }
 
@@ -221,8 +224,11 @@ public class ApiManager {
     }
 
     public void getStudyCentreData(String studentId, String courseID, ApiCallback<List<StudyCenter>> callback) {
-        if (isApiOnline()) {
+        ApiCacheHolder.getInstance().setStudyCenterRequest(studentId, courseID);
+        if (isApiOnline() && isNetworkConnected()) {
             ApiClientService.get().getCourseStudyCenterData(studentId, courseID, callback);
+        } else if(!isNetworkConnected()) {
+            DbManager.getInstance(context).getStudyCenterResponse(studentId, courseID, callback);
         } else {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/studycentre.json");
             System.out.print("Response for 'api/studycentre.json' is " + jsonResponse);

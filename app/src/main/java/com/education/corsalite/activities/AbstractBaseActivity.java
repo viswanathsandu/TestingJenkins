@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
+import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.db.DbManager;
 import com.education.corsalite.db.DbAdapter;
@@ -300,6 +301,8 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 super.success(courses, response);
                 if (courses != null) {
                     AbstractBaseActivity.this.courses = courses;
+                    ApiCacheHolder.getInstance().setCoursesResponse(courses);
+                    dbManager.saveCoursesResponse(ApiCacheHolder.getInstance().courses);
                     showCoursesInToolbar(courses);
                 }
             }
@@ -400,29 +403,28 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     protected void getContentData(String courseId, String updateTime) {
-        // TODO : passing static data
         ApiManager.getInstance(this).getContent(courseId, updateTime,
-                new ApiCallback<List<Content>>(this) {
-                    @Override
-                    public void failure(CorsaliteError error) {
-                        super.failure(error);
-                        if (error != null && !TextUtils.isEmpty(error.message)) {
-                            showToast(error.message);
-                        }
+            new ApiCallback<List<Content>>(this) {
+                @Override
+                public void failure(CorsaliteError error) {
+                    super.failure(error);
+                    if (error != null && !TextUtils.isEmpty(error.message)) {
+                        showToast(error.message);
                     }
+                }
 
-                    @Override
-                    public void success(List<Content> mContentResponse, Response response) {
-                        super.success(mContentResponse, response);
-                        if (mContentResponse != null) {
-                            Intent intent = new Intent(AbstractBaseActivity.this, WebActivity.class);
-                            Bundle bundle = new Bundle();
-                            bundle.putSerializable("contentData", (Serializable) mContentResponse);
-                            intent.putExtras(bundle);
-                            startActivity(intent);
-                        }
+                @Override
+                public void success(List<Content> mContentResponse, Response response) {
+                    super.success(mContentResponse, response);
+                    if (mContentResponse != null) {
+                        Intent intent = new Intent(AbstractBaseActivity.this, WebActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("contentData", (Serializable) mContentResponse);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
                     }
-                });
+                }
+            });
     }
 
 

@@ -1,7 +1,6 @@
 package com.education.corsalite.activities;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -20,6 +19,7 @@ import com.education.corsalite.R;
 import com.education.corsalite.adapters.GridRecyclerAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
+import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.responsemodels.Chapters;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
@@ -54,6 +54,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     private String key;
     private TextView selectedSubjectTxt;
     private View selectedColorFilter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -214,6 +215,8 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                         if (studyCenters != null) {
                             mCourseData = new CourseData();
                             mCourseData.StudyCenter = studyCenters;
+                            ApiCacheHolder.getInstance().setStudyCenterResponse(studyCenters);
+                            dbManager.saveStudyCenterResponse(ApiCacheHolder.getInstance().studyCenter);
                         }
                         if (mCourseData != null && mCourseData.StudyCenter != null && !mCourseData.StudyCenter.isEmpty()) {
                             setupSubjects(mCourseData);

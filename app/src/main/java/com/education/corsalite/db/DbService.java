@@ -62,6 +62,7 @@ public class DbService {
 					ObjectContainer db = GetDb();
 					db.store(entity);
 					db.commit();
+					L.info("entity '%s' saved successfully", entity.getClass().getSimpleName());
 				}
 				catch (Exception e) {
 					L.error(e.getMessage(), e);
@@ -86,6 +87,7 @@ public class DbService {
 						db.store(iDomainEntity);
 					}
 					db.commit();
+					L.info("List entity '%s' saved successfully", entity.get(0).getClass().getSimpleName());
 				} catch (Exception e) {
 					L.error(e.getMessage(), e);
 				}
@@ -110,6 +112,7 @@ public class DbService {
 						db.delete(iDomainEntity);
 					}
 					db.commit();
+					L.info("entity '%s' deleted successfully", entity.getClass().getSimpleName());
 				} catch (Exception e) {
 					L.error(e.getMessage(), e);
 				}
@@ -132,6 +135,7 @@ public class DbService {
 						db.delete(item);
 					}
 					db.commit();
+					L.info("entity '%s' deleted successfully", entity.getClass().getSimpleName());
 				} catch (Exception e) {
 					L.error(e.getMessage(), e);
 				}
