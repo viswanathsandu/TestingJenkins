@@ -21,7 +21,6 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
@@ -38,6 +37,7 @@ import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.PostExercise;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.L;
+import com.education.corsalite.views.GridViewInScrollView;
 import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
@@ -83,7 +83,8 @@ public class ExerciseActivity extends AbstractBaseActivity {
     @Bind(R.id.ll_test_navigator)LinearLayout testNavLayout;
     @Bind(R.id.shadow_view) View shadowView;
 
-    @Bind(R.id.gv_test) GridView gvTest;
+    @Bind(R.id.gv_test) GridViewInScrollView gvTest;
+    @Bind(R.id.test_nav_footer) LinearLayout testNavFooter;
 
     String webQuestion = "";
     private int selectedPosition = 0;
@@ -134,6 +135,13 @@ public class ExerciseActivity extends AbstractBaseActivity {
 
         gridAdapter = new GridAdapter(WebActivity.exerciseModelList.size(), selectedPosition);
         gvTest.setAdapter(gridAdapter);
+        gvTest.setExpanded(true);
+
+        if(title.equalsIgnoreCase("Exercise Test")) {
+            testNavFooter.setVisibility(View.GONE);
+        } else {
+            testNavFooter.setVisibility(View.VISIBLE);
+        }
     }
 
     private void setListener() {
@@ -459,7 +467,7 @@ public class ExerciseActivity extends AbstractBaseActivity {
             tvSerial[i].setTextColor(Color.BLACK);
             tvSerial[i].setGravity(Gravity.TOP);
             tvSerial[i].setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-            p.setMargins(0,0,10,0);
+            p.setMargins(0, 0, 10, 0);
             tvSerial[i].setLayoutParams(p);
 
             radioButton[i] = new RadioButton(this);
