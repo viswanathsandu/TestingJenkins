@@ -3,8 +3,6 @@ package com.education.corsalite.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -62,10 +60,12 @@ public class LoginActivity extends AbstractBaseActivity {
     }
 
     private void login(String username, String password) {
+        showProgress();
         ApiManager.getInstance(this).login(username, password, new ApiCallback<LoginResponse>(this) {
             @Override
             public void failure(CorsaliteError error) {
                 super.failure(error);
+                closeProgress();
                 if (error != null && !TextUtils.isEmpty(error.message)) {
                     showToast(error.message);
                 }
@@ -74,6 +74,7 @@ public class LoginActivity extends AbstractBaseActivity {
             @Override
             public void success(LoginResponse loginResponse, Response response) {
                 super.success(loginResponse, response);
+                closeProgress();
                 if (loginResponse.isSuccessful()) {
                     showToast(getResources().getString(R.string.login_successful));
                     storeUserCredentials(loginResponse);
