@@ -84,16 +84,16 @@ public class OfflineContentActivity extends AbstractBaseActivity {
             //TreeNode contentResponseRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_subject, contentResponse.courseName,contentResponse.idCourse));
             //root.addChild(contentResponseRoot);
             for (SubjectModel subject : contentResponse.subjectModelList) {
-                TreeNode subjectRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_subject, subject.subjectName));
+                TreeNode subjectRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_subject, subject.subjectName,subject.idSubject));
                 root.addChild(subjectRoot);
                 for (ChapterModel chapter : subject.chapters) {
-                    TreeNode chapterRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_chapter, chapter.chapterName));
+                    TreeNode chapterRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_chapter, chapter.chapterName,chapter.idChapter));
                     subjectRoot.addChild(chapterRoot);
                     for (TopicModel topic : chapter.topicMap) {
-                        TreeNode topicRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_chapter, topic.topicName));
+                        TreeNode topicRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_chapter, topic.topicName,topic.idTopic));
                         chapterRoot.addChild(topicRoot);
                         for (ContentModel content : topic.contentMap) {
-                            TreeNode contentRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_topics,content.contentName +"."+ content.type));
+                            TreeNode contentRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_topics,content.contentName +"."+ content.type,content.idContent));
                             topicRoot.addChild(contentRoot);
                         }
                     }
