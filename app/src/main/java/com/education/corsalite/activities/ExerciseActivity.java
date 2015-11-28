@@ -2,23 +2,25 @@ package com.education.corsalite.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.SpannableString;
 import android.text.TextUtils;
-import android.text.style.UnderlineSpan;
-import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.webkit.JavascriptInterface;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
@@ -35,11 +37,13 @@ import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.PostExercise;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.L;
+import com.education.corsalite.views.GridViewInScrollView;
 import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -56,19 +60,37 @@ public class ExerciseActivity extends AbstractBaseActivity {
     @Bind(R.id.btn_next) Button btnNext;
     @Bind(R.id.btn_previous) Button btnPrevious;
     @Bind(R.id.webview_question) WebView webviewQuestion;
+    @Bind(R.id.webview_paragraph) WebView webviewParagraph;
+
     @Bind(R.id.tv_comment) TextView tvComment;
-    @Bind(R.id.tv_header) TextView tvHeader;
+    @Bind(R.id.tv_level) TextView tvLevel;
+    @Bind(R.id.tv_nav_title) TextView tvNavTitle;
+
+    @Bind(R.id.tv_pagetitle) TextView tvPageTitle;
+
     @Bind(R.id.btn_verify) Button btnVerify;
+    @Bind(R.id.tv_clearanswer) TextView tvClearAnswer;
 
     @Bind(R.id.txtAnswerCount) TextView txtAnswerCount;
     @Bind(R.id.txtAnswerExp) WebView txtAnswerExp;
+    @Bind(R.id.tv_serial_no) TextView tvSerialNo;
+
 
     @Bind(R.id.explanation_layout) LinearLayout explanationLayout;
     @Bind(R.id.layout_choice) LinearLayout layoutChoice;
 
+    @Bind(R.id.btn_slider_test)Button slider;
+    @Bind(R.id.ll_test_navigator)LinearLayout testNavLayout;
+    @Bind(R.id.shadow_view) View shadowView;
+
+    @Bind(R.id.gv_test) GridViewInScrollView gvTest;
+    @Bind(R.id.test_nav_footer) LinearLayout testNavFooter;
+
     String webQuestion = "";
     private int selectedPosition = 0;
     private int selectedAnswerPosition = -1;
+    String title = "";
+    GridAdapter gridAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,20 +99,48 @@ public class ExerciseActivity extends AbstractBaseActivity {
         LinearLayout myView = (LinearLayout) inflater.inflate(R.layout.activity_exercise, null);
         frameLayout.addView(myView);
         ButterKnife.bind(this);
+        toggleSlider();
         initWebView();
+        initWebView1();
         initSuggestionWebView();
         setListener();
+        getIntentData();
+    }
+
+    private void getIntentData() {
+        if(getIntent().hasExtra(Constants.TEST_TITLE)) {
+            title = getIntent().getExtras().getString(Constants.TEST_TITLE);
+        }
+        tvNavTitle.setText(title);
+        setToolbarForExercise(title);
+
+        if(getIntent().hasExtra(Constants.SELECTED_TOPIC)) {
+            tvPageTitle.setText(getIntent().getExtras().getString(Constants.SELECTED_TOPIC));
+        }
+
+        // set selected position
         if(getIntent().hasExtra(Constants.SELECTED_POSITION)) {
             selectedPosition = getIntent().getExtras().getInt(Constants.SELECTED_POSITION);
         }
 
         if(selectedPosition >= 0) {
-            setToolbarForExercise(WebActivity.exerciseModelList, selectedPosition);
+            inflateUI(selectedPosition);
         }
+
         if(WebActivity.exerciseModelList.size() > 1) {
             webFooter.setVisibility(View.VISIBLE);
         } else {
             webFooter.setVisibility(View.GONE);
+        }
+
+        gridAdapter = new GridAdapter(WebActivity.exerciseModelList.size(), selectedPosition);
+        gvTest.setAdapter(gridAdapter);
+        gvTest.setExpanded(true);
+
+        if(title.equalsIgnoreCase("Exercise Test")) {
+            testNavFooter.setVisibility(View.GONE);
+        } else {
+            testNavFooter.setVisibility(View.VISIBLE);
         }
     }
 
@@ -98,6 +148,10 @@ public class ExerciseActivity extends AbstractBaseActivity {
         btnNext.setOnClickListener(mClickListener);
         btnPrevious.setOnClickListener(mClickListener);
         btnVerify.setOnClickListener(mClickListener);
+        tvClearAnswer.setOnClickListener(mClickListener);
+        shadowView.setOnClickListener(mClickListener);
+        slider.setOnClickListener(mClickListener);
+        testNavLayout.setOnClickListener(mClickListener);
     }
 
     private void initSuggestionWebView() {
@@ -110,8 +164,49 @@ public class ExerciseActivity extends AbstractBaseActivity {
         txtAnswerExp.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
         webviewQuestion.setWebChromeClient(new WebChromeClient());
+        webviewParagraph.setWebChromeClient(new WebChromeClient());
         // Load the URLs inside the WebView, not in the external web browser
         txtAnswerExp.setWebViewClient(new MyWebViewClient());
+    }
+
+    private void initWebView1() {
+        webviewParagraph.getSettings().setSupportZoom(true);
+        webviewParagraph.getSettings().setBuiltInZoomControls(false);
+        webviewParagraph.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
+        webviewParagraph.setScrollbarFadingEnabled(true);
+        webviewParagraph.getSettings().setLoadsImagesAutomatically(true);
+        webviewParagraph.getSettings().setJavaScriptEnabled(true);
+        webviewParagraph.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+
+        if(getExternalCacheDir() != null) {
+            webviewParagraph.getSettings().setAppCachePath(getExternalCacheDir().getAbsolutePath());
+        } else {
+            webviewParagraph.getSettings().setAppCachePath(getCacheDir().getAbsolutePath());
+        }
+        webviewParagraph.getSettings().setAppCacheMaxSize(1024 * 1024 * 8);
+
+        webviewParagraph.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
+                L.info("JS return value " + message);
+                showToast("Adding '" + message + "' to the notes");
+                result.confirm();
+                return true;
+            }
+        });
+        webviewParagraph.addJavascriptInterface(new Object() {
+            @JavascriptInterface
+            public void test() {
+                L.debug("JS", "test");
+            }
+
+            @JavascriptInterface
+            public void onData(String value) {
+                L.info("JS data" + value);
+            }
+        }, "android");
+        // Load the URLs inside the WebView, not in the external web browser
+        webviewParagraph.setWebViewClient(new MyWebViewClient());
     }
 
     private void initWebView() {
@@ -134,7 +229,7 @@ public class ExerciseActivity extends AbstractBaseActivity {
             @Override
             public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
                 L.info("JS return value " + message);
-                showToast("Adding '"+message+"' to the notes");
+                showToast("Adding '" + message + "' to the notes");
                 result.confirm();
                 return true;
             }
@@ -154,9 +249,7 @@ public class ExerciseActivity extends AbstractBaseActivity {
         webviewQuestion.setWebViewClient(new MyWebViewClient());
     }
 
-    @Override
-    public void onEvent(Integer position) {
-        super.onEvent(position);
+    private void inflateUI(int position) {
         selectedPosition = position;
         resetExplanation();
         if(WebActivity.exerciseModelList  != null && WebActivity.exerciseModelList.size() > 0) {
@@ -184,14 +277,26 @@ public class ExerciseActivity extends AbstractBaseActivity {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.btn_next:
-                    showExerciseToolbar(null, selectedPosition + 1, true);
+                    inflateUI(selectedPosition + 1);
                     break;
                 case R.id.btn_previous:
-                    showExerciseToolbar(null, selectedPosition - 1, true);
+                    inflateUI(selectedPosition - 1);
                     break;
                 case R.id.btn_verify:
                      postAnswer(WebActivity.exerciseModelList.get(selectedPosition).answerChoice.get(selectedAnswerPosition),
                             WebActivity.exerciseModelList.get(selectedPosition).idQuestion);
+                    break;
+
+                case R.id.tv_clearanswer:
+                    clearAnswers();
+                    break;
+
+                case R.id.btn_slider_test:
+                case R.id.shadow_view:
+                    toggleSlider();
+                    break;
+
+                case R.id.ll_test_navigator:
                     break;
             }
         }
@@ -199,17 +304,24 @@ public class ExerciseActivity extends AbstractBaseActivity {
 
     private void loadQuestion(int position) {
 
-        String header = "Exercise: " + WebActivity.exerciseModelList.get(position).displayName.split("\\s+")[0];
+        if(gridAdapter != null) {
+            gridAdapter.notifyDataSetChanged();
+        }
+
+        tvSerialNo.setText("Q" + (position + 1) + ")");
+
+        /*String header = "Exercise: " + WebActivity.exe)rciseModelList.get(position).displayName.split("\\s+")[0];
         SpannableString headerText = new SpannableString(header);
-        headerText.setSpan(new UnderlineSpan(), 0, header.length(), 0);
-        tvHeader.setText(headerText);
+        headerText.setSpan(new UnderlineSpan(), 0, header.length(), 0);*/
+        tvLevel.setText(WebActivity.exerciseModelList.get(position).displayName.split("\\s+")[0].toUpperCase(Locale.ENGLISH));
 
 
         if(WebActivity.exerciseModelList.get(position).paragraphHtml != null) {
             webQuestion = WebActivity.exerciseModelList.get(position).paragraphHtml;
+            webviewParagraph.loadData(webQuestion, "text/html; charset=UTF-8", null);
         }
         if(WebActivity.exerciseModelList.get(position).questionHtml != null) {
-            webQuestion = webQuestion + WebActivity.exerciseModelList.get(position).questionHtml;
+            webQuestion =  WebActivity.exerciseModelList.get(position).questionHtml;
             webviewQuestion.loadData(webQuestion, "text/html; charset=UTF-8", null);
         }
         if(WebActivity.exerciseModelList.get(position).comment != null) {
@@ -232,12 +344,12 @@ public class ExerciseActivity extends AbstractBaseActivity {
             if(WebActivity.exerciseModelList.size() - 1 == 0) {
                 return;
             }
-            if(WebActivity.exerciseModelList.size() - 1 > selectedAnswerPosition) {
-                WebActivity.exerciseModelList.remove(selectedAnswerPosition);
-                showExerciseToolbar(null, selectedPosition, true);
+            if(WebActivity.exerciseModelList.size() - 1 > selectedPosition) {
+                WebActivity.exerciseModelList.remove(selectedPosition);
+                inflateUI(selectedPosition);
             } else {
-                WebActivity.exerciseModelList.remove(selectedAnswerPosition);
-                showExerciseToolbar(null, selectedPosition - 1, true);
+                WebActivity.exerciseModelList.remove(selectedPosition);
+                inflateUI(selectedPosition - 1);
             }
         }
     }
@@ -270,6 +382,7 @@ public class ExerciseActivity extends AbstractBaseActivity {
             checkBoxes[i] = new CheckBox(this);
             checkBoxes[i].setId(Integer.valueOf(answerChoiceModel.idAnswerKey));
             checkBoxes[i].setTag(answerChoiceModel);
+            checkBoxes[i].setBackgroundResource(R.drawable.selector_checkbox);
 
             rowLayout[i] = new LinearLayout(this);
             rowLayout[i].setOrientation(LinearLayout.HORIZONTAL);
@@ -337,21 +450,34 @@ public class ExerciseActivity extends AbstractBaseActivity {
         List<AnswerChoiceModel> answerChoiceModels = WebActivity.exerciseModelList.get(position).answerChoice;
         final int size = answerChoiceModels.size();
         final RadioButton[] radioButton = new RadioButton[size];
+        final TextView[] tvSerial = new TextView[size];
         final LinearLayout[] rowLayout = new LinearLayout[size];
 
         for(int i = 0; i < size; i++) {
 
             final AnswerChoiceModel answerChoiceModel = answerChoiceModels.get(i);
-            radioButton[i] = new RadioButton(this);
-            radioButton[i].setId(Integer.valueOf(answerChoiceModel.idAnswerKey));
-            radioButton[i].setTag(answerChoiceModel);
 
             rowLayout[i] = new LinearLayout(this);
             rowLayout[i].setOrientation(LinearLayout.HORIZONTAL);
             rowLayout[i].setGravity(Gravity.CENTER_VERTICAL);
             LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+
+            tvSerial[i] = new TextView(this);
+            tvSerial[i].setText((i + 1) + ")");
+            tvSerial[i].setTextColor(Color.BLACK);
+            tvSerial[i].setGravity(Gravity.TOP);
+            tvSerial[i].setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+            p.setMargins(0, 0, 10, 0);
+            tvSerial[i].setLayoutParams(p);
+
+            radioButton[i] = new RadioButton(this);
+            radioButton[i].setId(Integer.valueOf(answerChoiceModel.idAnswerKey));
+            radioButton[i].setTag(answerChoiceModel);
+            radioButton[i].setBackgroundResource(R.drawable.selector_radio);
+
             radioButton[i].setLayoutParams(p);
 
+            rowLayout[i].addView(tvSerial[i]);
             rowLayout[i].addView(radioButton[i]);
 
             WebView optionWebView = new WebView(getApplicationContext());
@@ -390,6 +516,23 @@ public class ExerciseActivity extends AbstractBaseActivity {
         setExplanationLayout();
     }
 
+    private void clearAnswers() {
+        List<AnswerChoiceModel> answerChoiceModels = WebActivity.exerciseModelList.get(selectedPosition).answerChoice;
+        int size = answerChoiceModels.size();
+        boolean isCompound;
+        if(WebActivity.exerciseModelList.get(selectedPosition).idQuestionType.equalsIgnoreCase("1")) {
+            isCompound = true;
+        } else {
+            isCompound = false;
+        }
+        if(!isCompound) {
+            return;
+        }
+        for(int i = 0; i < size; i++) {
+            ((CompoundButton)findViewById(Integer.valueOf(answerChoiceModels.get(i).idAnswerKey))).setChecked(false);
+        }
+    }
+
     private void setExplanationLayout() {
         String webText = "";
         String correctAnswer = "";
@@ -426,34 +569,105 @@ public class ExerciseActivity extends AbstractBaseActivity {
 
         ApiManager.getInstance(this).postExerciseAnswer(new Gson().toJson(postExerciseRequestModel),
                 new ApiCallback<PostExercise>(this) {
-            @Override
-            public void failure(CorsaliteError error) {
-                btnVerify.setEnabled(true);
-                String message = "Unknown error occured.Please try again.";
-                if (error != null && !TextUtils.isEmpty(error.message)) {
-                    message = error.message;
-                }
-                explanationLayout.setVisibility(View.VISIBLE);
-                layoutChoice.setVisibility(View.VISIBLE);
-                showToast(message);
-            }
-
-            @Override
-            public void success(PostExercise postExercise, Response response) {
-                super.success(postExercise, response);
-                if (postExercise.isSuccessful()) {
-                    btnVerify.setEnabled(false);
-                    explanationLayout.setVisibility(View.VISIBLE);
-                    layoutChoice.setVisibility(View.VISIBLE);
-                } else {
-                    String message = "Unknown error occured.Please try again.";
-                    if (postExercise != null && !TextUtils.isEmpty(postExercise.message)) {
-                        message = postExercise.message;
+                    @Override
+                    public void failure(CorsaliteError error) {
+                        btnVerify.setEnabled(true);
+                        String message = "Unknown error occured.Please try again.";
+                        if (error != null && !TextUtils.isEmpty(error.message)) {
+                            message = error.message;
+                        }
+                        explanationLayout.setVisibility(View.VISIBLE);
+                        layoutChoice.setVisibility(View.VISIBLE);
+                        showToast(message);
                     }
-                    showToast(message);
-                }
 
+                    @Override
+                    public void success(PostExercise postExercise, Response response) {
+                        super.success(postExercise, response);
+                        if (postExercise.isSuccessful()) {
+                            btnVerify.setEnabled(false);
+                            explanationLayout.setVisibility(View.VISIBLE);
+                            layoutChoice.setVisibility(View.VISIBLE);
+                        } else {
+                            String message = "Unknown error occured.Please try again.";
+                            if (postExercise != null && !TextUtils.isEmpty(postExercise.message)) {
+                                message = postExercise.message;
+                            }
+                            showToast(message);
+                        }
+
+                    }
+                });
+    }
+
+    private void toggleSlider() {
+        if (testNavLayout.getVisibility() == View.GONE) {
+            testNavLayout.setVisibility(View.VISIBLE);
+            shadowView.setVisibility(View.VISIBLE);
+            slider.setBackground(getResources().getDrawable(R.drawable.btn_right_slider_white));
+        } else {
+            testNavLayout.setVisibility(View.GONE);
+            shadowView.setVisibility(View.GONE);
+            slider.setBackground(getResources().getDrawable(R.drawable.btn_right_slider));
+        }
+    }
+
+    public class GridAdapter extends BaseAdapter {
+
+        int adapterSize;
+        int currentQuestionPosition;
+        View grid;
+        LayoutInflater inflater;
+
+        public GridAdapter(int adapterSize, int currentQuestionPosition) {
+            this.adapterSize = adapterSize;
+            this.currentQuestionPosition = currentQuestionPosition;
+            inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        }
+
+        @Override
+        public int getCount() {
+            return adapterSize;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            View v;
+            TextView btnCounter;
+            if (convertView == null) {
+                v = inflater.inflate(R.layout.grid_text, null, false);
+            } else {
+                v = convertView;
             }
-        });
+            btnCounter = (TextView)v.findViewById(R.id.btnNumber);
+            if(position < 9) {
+                btnCounter.setText("0"+(position + 1));
+            } else {
+                btnCounter.setText(String.valueOf(position + 1));
+            }
+            if(position == selectedPosition) {
+                btnCounter.setBackgroundResource(R.drawable.rounded_corners_green);
+            } else {
+                btnCounter.setBackgroundResource(R.drawable.rounded_corners_gray);
+            }
+
+            v.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    inflateUI(position);
+                }
+            });
+            return v;
+        }
     }
 }

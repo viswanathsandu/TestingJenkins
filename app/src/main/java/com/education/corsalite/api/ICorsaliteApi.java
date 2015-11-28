@@ -8,6 +8,7 @@ import com.education.corsalite.models.responsemodels.CourseAnalysisPercentile;
 import com.education.corsalite.models.responsemodels.DefaultCourseResponse;
 import com.education.corsalite.models.responsemodels.DefaultNoteResponse;
 import com.education.corsalite.models.responsemodels.EditProfileModel;
+import com.education.corsalite.models.responsemodels.ExamHistory;
 import com.education.corsalite.models.responsemodels.ExerciseModel;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
@@ -109,6 +110,9 @@ public interface ICorsaliteApi {
 
     @GET("/Note")
     void getNotes(@Query("idStudent") String studentId, @Query("idSubject") String subjectId , @Query("idChapter") String chapterId, @Query("idTopic") String topicId, ApiCallback<List<Note>> callback);
+
+    @GET("/ExamHistory")
+    void getExamHistory(@Query("idStudent") String studentId, @Query("BeginRowNumber") String beginRowNum , @Query("RowCount") String rowCount,ApiCallback<List<ExamHistory>> callback);
 
     @POST("/Note")
     void addNote(@Query("Insert") String insert, ApiCallback<DefaultNoteResponse> callback);

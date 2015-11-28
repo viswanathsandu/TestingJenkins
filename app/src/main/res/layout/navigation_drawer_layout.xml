@@ -36,4 +36,5 @@
         <include layout="@layout/navigation_view_body" />
 
     </android.support.design.widget.NavigationView>
+
 </android.support.v4.widget.DrawerLayout>

@@ -26,7 +26,10 @@ import android.widget.Toast;
 import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
+import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.db.DbManager;
+import com.education.corsalite.db.DbAdapter;
 import com.education.corsalite.models.ContentModel;
 import com.education.corsalite.models.requestmodels.LogoutModel;
 import com.education.corsalite.models.responsemodels.Content;
@@ -59,6 +62,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     protected FrameLayout frameLayout;
     public Dialog dialog;
+    protected DbManager dbManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +74,8 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 .setDefaultFontPath(getString(R.string.roboto_medium))
                 .setFontAttrId(R.attr.fontPath)
                 .build());
+        DbAdapter.context = this;
+        dbManager = DbManager.getInstance(this);
     }
 
     @Override
@@ -113,6 +119,11 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         loadCoursesList();
     }
 
+    protected void setToolbarForExamHistory(){
+        toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
+        setToolbarTitle(getResources().getString(R.string.exam_history));
+    }
+
     protected void setToolbarForNotes() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
         setToolbarTitle(getResources().getString(R.string.notes));
@@ -141,10 +152,8 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         setToolbarTitle(getResources().getString(R.string.offline_content));
     }
 
-    protected void setToolbarForExercise(List<ExerciseModel> exerciseModelList, int position) {
-        findViewById(R.id.toolbar_title).setVisibility(View.GONE);
-        toolbar.findViewById(R.id.video_layout).setVisibility(View.VISIBLE);
-        showExerciseToolbar(exerciseModelList, position, false);
+    protected void setToolbarForExercise(String title) {
+        setToolbarTitle(title);
     }
 
     protected void setToolbarForWebActivity(String title) {
@@ -241,7 +250,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     protected void setToolbarTitle(String title) {
-        TextView textView = (TextView) findViewById(R.id.toolbar_title);
+        TextView textView = (TextView) toolbar.findViewById(R.id.toolbar_title);
         textView.setText(title);
     }
 
@@ -301,33 +310,12 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 super.success(courses, response);
                 if (courses != null) {
                     AbstractBaseActivity.this.courses = courses;
+                    ApiCacheHolder.getInstance().setCoursesResponse(courses);
+                    dbManager.saveCoursesResponse(ApiCacheHolder.getInstance().courses);
                     showCoursesInToolbar(courses);
                 }
             }
         });
-    }
-
-    public void showExerciseToolbar(final List<ExerciseModel> exerciseModelList, int selectedPosition, boolean isNextPrevious) {
-        Spinner exerciseSpinner = (Spinner) toolbar.findViewById(R.id.spinner_video);
-        if(isNextPrevious) {
-            exerciseSpinner.setSelection(selectedPosition);
-        } else {
-            if (exerciseSpinner == null) return;
-            ArrayAdapter<ExerciseModel> dataAdapter = new ArrayAdapter<>(this, R.layout.spinner_title_textview, exerciseModelList);
-            dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-            exerciseSpinner.setAdapter(dataAdapter);
-            exerciseSpinner.setSelection(selectedPosition);
-            exerciseSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    getEventbus().post(position);
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-                }
-            });
-        }
     }
 
     public void showVideoInToolbar(final List<ContentModel> videos, int selectedPosition) {
@@ -401,29 +389,28 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     protected void getContentData(String courseId, String updateTime) {
-        // TODO : passing static data
         ApiManager.getInstance(this).getContent(courseId, updateTime,
-                new ApiCallback<List<Content>>(this) {
-                    @Override
-                    public void failure(CorsaliteError error) {
-                        super.failure(error);
-                        if (error != null && !TextUtils.isEmpty(error.message)) {
-                            showToast(error.message);
-                        }
+            new ApiCallback<List<Content>>(this) {
+                @Override
+                public void failure(CorsaliteError error) {
+                    super.failure(error);
+                    if (error != null && !TextUtils.isEmpty(error.message)) {
+                        showToast(error.message);
                     }
+                }
 
-                    @Override
-                    public void success(List<Content> mContentResponse, Response response) {
-                        super.success(mContentResponse, response);
-                        if (mContentResponse != null) {
-                            Intent intent = new Intent(AbstractBaseActivity.this, WebActivity.class);
-                            Bundle bundle = new Bundle();
-                            bundle.putSerializable("contentData", (Serializable) mContentResponse);
-                            intent.putExtras(bundle);
-                            startActivity(intent);
-                        }
+                @Override
+                public void success(List<Content> mContentResponse, Response response) {
+                    super.success(mContentResponse, response);
+                    if (mContentResponse != null) {
+                        Intent intent = new Intent(AbstractBaseActivity.this, WebActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("contentData", (Serializable) mContentResponse);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
                     }
-                });
+                }
+            });
     }
 
 
