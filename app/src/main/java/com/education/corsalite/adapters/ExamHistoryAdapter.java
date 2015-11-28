@@ -29,11 +29,6 @@ public class ExamHistoryAdapter  extends AbstractRecycleViewAdapter{
         addAll(examHistoryList);
     }
 
-    public void updateAdapter(List<ExamHistory> examHistoryList) {
-        this.addAll(examHistoryList);
-        notifyDataSetChanged();
-    }
-
     @Override
     public ExamHistoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new ExamHistoryViewHolder(inflater.inflate(R.layout.row_exam_history, parent, false));
@@ -69,7 +64,9 @@ public class ExamHistoryAdapter  extends AbstractRecycleViewAdapter{
                 parent.setBackgroundColor(inflater.getContext().getResources().getColor(R.color.white));
             }
 
-            this.examHistoryDate.setText(examHistory.dateTime);
+            if(!examHistory.dateTime.isEmpty()) {
+                this.examHistoryDate.setText(examHistory.dateTime.split(" ")[0]);
+            }
             this.exam.setText(examHistory.examName);
             this.type.setText(examHistory.testType);
             this.rank.setText(examHistory.rank);

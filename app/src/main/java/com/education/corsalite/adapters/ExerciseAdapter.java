@@ -8,7 +8,6 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
-import com.education.corsalite.models.TopicModel;
 import com.education.corsalite.models.responsemodels.ExerciseModel;
 
 import java.util.List;
@@ -50,7 +49,7 @@ public class ExerciseAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = inflater.inflate(R.layout.row_spinner_text, parent, false);
         TextView tv = (TextView)convertView.findViewById(R.id.tv_spn);
-        tv.setText(position == 0 ? "Excercise" : exerciseModelList.get(position - 1).displayName);
+        tv.setText(position == 0 ? "Exercise" : exerciseModelList.get(position - 1).displayName);
         return convertView;
     }
 }
