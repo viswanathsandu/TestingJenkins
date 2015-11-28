@@ -1,7 +1,10 @@
 package com.education.corsalite.activities;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -11,9 +14,11 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,6 +61,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
     protected FrameLayout frameLayout;
+    public Dialog dialog;
     protected DbManager dbManager;
 
     @Override
@@ -417,5 +423,23 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     public void deleteSessionCookie() {
         ApiClientService.setSetCookie(null);
+    }
+
+    public void showProgress(){
+
+        ProgressBar pbar = new ProgressBar(this);
+        pbar.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+        dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(pbar);
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+    }
+
+    public void closeProgress(){
+        if(dialog != null && dialog.isShowing()){
+            dialog.dismiss();
+        }
     }
 }
