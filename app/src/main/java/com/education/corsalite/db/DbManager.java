@@ -7,6 +7,7 @@ import com.education.corsalite.models.db.ContentIndexResponse;
 import com.education.corsalite.models.db.CourseList;
 import com.education.corsalite.models.db.reqres.CoursesReqRes;
 import com.education.corsalite.models.db.reqres.LoginReqRes;
+import com.education.corsalite.models.db.reqres.ReqRes;
 import com.education.corsalite.models.db.reqres.StudyCenterReqRes;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.LoginResponse;
@@ -207,5 +208,36 @@ public class DbManager extends  Db4oHelper{
             contentIndexResponses = new ContentIndexResponse(contentIndexJson, courseId, studentId);
         }
         contentIndexResponses.save();
+    }
+
+
+    /**
+     * User Profile Db stuff
+     */
+    public <T> void saveReqRes(ReqRes<T> reqres) {
+        List<? extends ReqRes> reqResList = dbService.Get(reqres.getClass());
+        if(reqResList != null && !reqResList.isEmpty()) {
+            for (ReqRes reqresItem: reqResList) {
+                if(reqresItem.isRequestSame(reqres)) {
+                    reqresItem.response = reqres.response;
+                    dbService.Save(reqresItem);
+                }
+            }
+        }
+        dbService.Save(reqres);
+    }
+
+    public <T> void getResponse(ReqRes<T> reqres, ApiCallback<T> callback) {
+        List<? extends ReqRes> reqResList = dbService.Get(reqres.getClass());
+        if(reqResList != null && !reqResList.isEmpty()) {
+            for (ReqRes reqresItem: reqResList) {
+                if(reqresItem.isRequestSame(reqres)) {
+                    callback.success((T)reqresItem.response, MockUtils.getRetrofitResponse());
+                }
+            }
+        } else {
+            callback.failure(MockUtils.getCorsaliteError("Failure", "Notwork not available..."));
+        }
+        callback.failure(MockUtils.getCorsaliteError("Failure", "No data found..."));
     }
 }

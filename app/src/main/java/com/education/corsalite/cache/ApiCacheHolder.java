@@ -3,9 +3,12 @@ package com.education.corsalite.cache;
 import com.education.corsalite.models.db.reqres.CoursesReqRes;
 import com.education.corsalite.models.db.reqres.LoginReqRes;
 import com.education.corsalite.models.db.reqres.StudyCenterReqRes;
+import com.education.corsalite.models.db.reqres.UserProfileReqRes;
+import com.education.corsalite.models.db.reqres.requests.UserProfileRequest;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.models.responsemodels.StudyCenter;
+import com.education.corsalite.models.responsemodels.UserProfileResponse;
 
 import java.util.List;
 
@@ -17,6 +20,7 @@ public class ApiCacheHolder {
     private static ApiCacheHolder instance;
 
     public LoginReqRes login;
+    public UserProfileReqRes userProfile;
     public CoursesReqRes courses;
     public StudyCenterReqRes studyCenter;
 
@@ -36,6 +40,17 @@ public class ApiCacheHolder {
     public void setLoginResponse(LoginResponse response) {
         if(login != null) {
             login.response = response;
+        }
+    }
+
+    public void setUserProfileRequest(String studentId) {
+        userProfile = new UserProfileReqRes();
+        userProfile.request = new UserProfileRequest(studentId);
+    }
+
+    public void setUserProfileRespose(UserProfileResponse response) {
+        if(userProfile != null) {
+            userProfile.response = response;
         }
     }
 

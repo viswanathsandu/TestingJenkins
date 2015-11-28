@@ -52,10 +52,12 @@ public class ApiManager {
     private static ApiManager instance;
     private Context context;
     private AssetManager assets;
+    private ApiCacheHolder apiCacheHolder;
 
     public static ApiManager getInstance(Context context) {
         if (instance == null) {
             instance = new ApiManager();
+            instance.apiCacheHolder = ApiCacheHolder.getInstance();
         }
         instance.context = context;
         instance.assets = context.getAssets();
@@ -72,7 +74,7 @@ public class ApiManager {
     }
 
     public void login(String loginId, String passwordHash, ApiCallback<LoginResponse> callback) {
-        ApiCacheHolder.getInstance().setLoginRequest(loginId, passwordHash);
+        apiCacheHolder.setLoginRequest(loginId, passwordHash);
         if (isApiOnline() && isNetworkConnected()) {
             ApiClientService.get().login(loginId, passwordHash, callback);
         } else if(!isNetworkConnected()) {
@@ -95,7 +97,7 @@ public class ApiManager {
     }
 
     public void getCourses(String studentId, ApiCallback<List<Course>> callback) {
-        ApiCacheHolder.getInstance().setCoursesRequest(studentId);
+        apiCacheHolder.setCoursesRequest(studentId);
         if (isApiOnline() && isNetworkConnected()) {
             ApiClientService.get().getCourses(studentId, callback);
         } else if(!isNetworkConnected()) {
@@ -185,8 +187,11 @@ public class ApiManager {
     }
 
     public void getUserProfile(String studentId, ApiCallback<UserProfileResponse> callback) {
-        if (isApiOnline()) {
+        apiCacheHolder.setUserProfileRequest(studentId);
+        if (isApiOnline() && isNetworkConnected()) {
             ApiClientService.get().getUserProfile(studentId, callback);
+        } else if(!isNetworkConnected()) {
+            DbManager.getInstance(context).getResponse(apiCacheHolder.userProfile, callback);
         } else {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/user_profile.json");
             L.info("Response for 'api/user_profile.json' is " + jsonResponse);
@@ -236,7 +241,7 @@ public class ApiManager {
 
 
     public void getStudyCentreData(String studentId, String courseID, ApiCallback<List<StudyCenter>> callback) {
-        ApiCacheHolder.getInstance().setStudyCenterRequest(studentId, courseID);
+        apiCacheHolder.setStudyCenterRequest(studentId, courseID);
         if (isApiOnline() && isNetworkConnected()) {
             ApiClientService.get().getCourseStudyCenterData(studentId, courseID, callback);
         } else if(!isNetworkConnected()) {
