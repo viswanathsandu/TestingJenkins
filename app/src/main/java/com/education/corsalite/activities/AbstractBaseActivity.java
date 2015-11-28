@@ -23,14 +23,13 @@ import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.db.DbManager;
 import com.education.corsalite.db.DbAdapter;
+import com.education.corsalite.db.DbManager;
 import com.education.corsalite.models.ContentModel;
 import com.education.corsalite.models.requestmodels.LogoutModel;
 import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
-import com.education.corsalite.models.responsemodels.ExerciseModel;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.CookieUtils;
@@ -305,7 +304,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 if (courses != null) {
                     AbstractBaseActivity.this.courses = courses;
                     ApiCacheHolder.getInstance().setCoursesResponse(courses);
-                    dbManager.saveCoursesResponse(ApiCacheHolder.getInstance().courses);
+                    dbManager.saveReqRes(ApiCacheHolder.getInstance().courses);
                     showCoursesInToolbar(courses);
                 }
             }

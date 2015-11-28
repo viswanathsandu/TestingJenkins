@@ -18,8 +18,8 @@ public class ReqRes<T> extends BaseModel{
 
     public boolean isRequestSame(ReqRes reqres) {
         return reqres != null
-                && reqres.request != null
                 && request != null
-                && reqres.request.isRequestSame(request);
+                && reqres.request != null
+                && reqres.request.equals(request);
     }
 }

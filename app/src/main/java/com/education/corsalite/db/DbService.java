@@ -57,7 +57,7 @@ public class DbService {
 					ObjectContainer db = GetDb();
 					db.store(entity);
 					db.commit();
-					L.info("entity '%s' saved successfully", entity.getClass().getSimpleName());
+					L.info(String.format("entity '%s' saved successfully", entity.getClass().getSimpleName()));
 				}
 				catch (Exception e) {
 					L.error(e.getMessage(), e);

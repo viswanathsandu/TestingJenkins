@@ -7,5 +7,10 @@ import com.education.corsalite.models.responsemodels.BaseModel;
  */
 public abstract class AbstractBaseRequest extends BaseModel {
 
-    public abstract boolean isRequestSame(AbstractBaseRequest request);
+    public abstract boolean equals(AbstractBaseRequest request);
+
+    public boolean isSame(Object obj1, Object obj2) {
+        return obj1 != null && obj2 != null
+                && obj1.equals(obj2);
+    }
 }

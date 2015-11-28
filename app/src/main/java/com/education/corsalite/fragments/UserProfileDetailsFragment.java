@@ -26,7 +26,6 @@ import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.db.DbManager;
 import com.education.corsalite.models.db.CourseList;
 import com.education.corsalite.models.requestmodels.Defaultcourserequest;
 import com.education.corsalite.models.responsemodels.BasicProfile;
@@ -242,7 +241,7 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
             String [] coursesArr = profile.enrolledCourses.split(",");
             CourseList courseList = new CourseList(Arrays.asList(coursesArr)) ;
             courseList.defaultCourseIndex = defaultcourseIndex;
-            DbManager.getInstance(getActivity()).saveCourseList(courseList);
+//            DbManager.getInstance(getActivity()).saveCourseList(courseList);
         }
     }
 

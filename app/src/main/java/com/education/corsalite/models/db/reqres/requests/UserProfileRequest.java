@@ -17,7 +17,7 @@ public class UserProfileRequest extends AbstractBaseRequest {
     }
 
     @Override
-    public boolean isRequestSame(AbstractBaseRequest request) {
+    public boolean equals(AbstractBaseRequest request) {
         return request instanceof UserProfileRequest
                 && studentId != null && ((UserProfileRequest) request).studentId != null
                 && studentId.equals(((UserProfileRequest) request).studentId);

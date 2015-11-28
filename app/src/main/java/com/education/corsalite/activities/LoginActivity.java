@@ -75,7 +75,7 @@ public class LoginActivity extends AbstractBaseActivity {
                 super.success(loginResponse, response);
                 if (loginResponse.isSuccessful()) {
                     ApiCacheHolder.getInstance().setLoginResponse(loginResponse);
-                    dbManager.saveLoginResponse(ApiCacheHolder.getInstance().login);
+                    dbManager.saveReqRes(ApiCacheHolder.getInstance().login);
                     onLoginsuccess(loginResponse);
                 } else {
                     showToast(getResources().getString(R.string.login_failed));

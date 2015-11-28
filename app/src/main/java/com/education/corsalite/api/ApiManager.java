@@ -78,7 +78,7 @@ public class ApiManager {
         if (isApiOnline() && isNetworkConnected()) {
             ApiClientService.get().login(loginId, passwordHash, callback);
         } else if(!isNetworkConnected()) {
-            DbManager.getInstance(context).getLoginResponse(loginId, passwordHash, callback);
+            DbManager.getInstance(context).getResponse(apiCacheHolder.login, callback);
         } else {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/login.json");
             L.info("Response for 'api/login.json' is " + jsonResponse);
@@ -101,7 +101,7 @@ public class ApiManager {
         if (isApiOnline() && isNetworkConnected()) {
             ApiClientService.get().getCourses(studentId, callback);
         } else if(!isNetworkConnected()) {
-            DbManager.getInstance(context).getCoursesResponse(studentId, callback);
+            DbManager.getInstance(context).getResponse(apiCacheHolder.courses, callback);
         } else {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/courses.json");
             L.info("Response for 'api/courses.json' is " + jsonResponse);
@@ -245,7 +245,7 @@ public class ApiManager {
         if (isApiOnline() && isNetworkConnected()) {
             ApiClientService.get().getCourseStudyCenterData(studentId, courseID, callback);
         } else if(!isNetworkConnected()) {
-            DbManager.getInstance(context).getStudyCenterResponse(studentId, courseID, callback);
+            DbManager.getInstance(context).getResponse(apiCacheHolder.studyCenter, callback);
         } else {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/studycentre.json");
             System.out.print("Response for 'api/studycentre.json' is " + jsonResponse);
