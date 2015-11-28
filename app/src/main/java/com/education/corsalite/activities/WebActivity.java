@@ -710,6 +710,8 @@ public class WebActivity extends AbstractBaseActivity {
 
                     if(position != 0) {
                         Intent intent = new Intent(WebActivity.this, ExerciseActivity.class);
+                        intent.putExtra(Constants.SELECTED_TOPIC, topicModelList.get(spTopic.getSelectedItemPosition()).topicName);
+                        intent.putExtra(Constants.TEST_TITLE, "Exercise Test");
                         intent.putExtra(Constants.SELECTED_POSITION, position - 1);
                         startActivity(intent);
                     }

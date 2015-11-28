@@ -157,6 +157,10 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         switch (item.getItemId()) {
             case R.id.action_take_test:
                 return true;
+            case R.id.action_exam_history:
+                Intent intent = new Intent(this,ExamHistoryActivity.class);
+                startActivity(intent);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }

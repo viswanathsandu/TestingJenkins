@@ -113,6 +113,11 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         loadCoursesList();
     }
 
+    protected void setToolbarForExamHistory(){
+        toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
+        setToolbarTitle(getResources().getString(R.string.exam_history));
+    }
+
     protected void setToolbarForNotes() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
         setToolbarTitle(getResources().getString(R.string.notes));
@@ -141,10 +146,8 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         setToolbarTitle(getResources().getString(R.string.offline_content));
     }
 
-    protected void setToolbarForExercise(List<ExerciseModel> exerciseModelList, int position) {
-        findViewById(R.id.toolbar_title).setVisibility(View.GONE);
-        toolbar.findViewById(R.id.video_layout).setVisibility(View.VISIBLE);
-        showExerciseToolbar(exerciseModelList, position, false);
+    protected void setToolbarForExercise(String title) {
+        setToolbarTitle(title);
     }
 
     protected void setToolbarForWebActivity(String title) {
@@ -241,7 +244,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     protected void setToolbarTitle(String title) {
-        TextView textView = (TextView) findViewById(R.id.toolbar_title);
+        TextView textView = (TextView) toolbar.findViewById(R.id.toolbar_title);
         textView.setText(title);
     }
 
@@ -307,29 +310,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    public void showExerciseToolbar(final List<ExerciseModel> exerciseModelList, int selectedPosition, boolean isNextPrevious) {
-        Spinner exerciseSpinner = (Spinner) toolbar.findViewById(R.id.spinner_video);
-        if(isNextPrevious) {
-            exerciseSpinner.setSelection(selectedPosition);
-        } else {
-            if (exerciseSpinner == null) return;
-            ArrayAdapter<ExerciseModel> dataAdapter = new ArrayAdapter<>(this, R.layout.spinner_title_textview, exerciseModelList);
-            dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-            exerciseSpinner.setAdapter(dataAdapter);
-            exerciseSpinner.setSelection(selectedPosition);
-            exerciseSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    getEventbus().post(position);
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-                }
-            });
-        }
     }
 
     public void showVideoInToolbar(final List<ContentModel> videos, int selectedPosition) {
