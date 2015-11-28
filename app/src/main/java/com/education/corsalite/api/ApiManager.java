@@ -230,7 +230,7 @@ public class ApiManager {
         } else {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/exam_history.json");
             L.info("Response for 'api/exam_history.json' is " + jsonResponse);
-            callback.success(new Gson().fromJson(jsonResponse, List.class), getRetrofitResponse());
+            callback.success(new Gson().fromJson(jsonResponse, List.class), MockUtils.getRetrofitResponse());
         }
     }
 

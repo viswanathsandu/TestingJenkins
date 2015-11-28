@@ -1,6 +1,7 @@
 package com.education.corsalite.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -217,10 +218,10 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                     public void success(List<StudyCenter> studyCenters, Response response) {
                         super.success(studyCenters, response);
                         if (studyCenters != null) {
-                            mCourseData = new CourseData();
-                            mCourseData.StudyCenter = studyCenters;
                             ApiCacheHolder.getInstance().setStudyCenterResponse(studyCenters);
                             dbManager.saveStudyCenterResponse(ApiCacheHolder.getInstance().studyCenter);
+                            mCourseData = new CourseData();
+                            mCourseData.StudyCenter = studyCenters;
                         }
                         if (mCourseData != null && mCourseData.StudyCenter != null && !mCourseData.StudyCenter.isEmpty()) {
                             setupSubjects(mCourseData);

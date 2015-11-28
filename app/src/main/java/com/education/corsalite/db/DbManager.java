@@ -40,6 +40,16 @@ public class DbManager extends  Db4oHelper{
     }
 
     public void saveLoginResponse(LoginReqRes loginReqRes) {
+        List<LoginReqRes> loginReqResList = getLoginRequestResponseList();
+        if(loginReqResList != null && !loginReqResList.isEmpty()) {
+            for(LoginReqRes reqRes : loginReqResList) {
+                if(reqRes.loginId.equalsIgnoreCase(loginReqRes.loginId) && reqRes.passwordHash.equals(loginReqRes.passwordHash)) {
+                    reqRes.response = loginReqRes.response;
+                    dbService.Save(reqRes);
+                    return;
+                }
+            }
+        }
         dbService.Save(loginReqRes);
     }
 
@@ -67,6 +77,16 @@ public class DbManager extends  Db4oHelper{
     }
 
     public void saveCoursesResponse(CoursesReqRes coursesReqRes) {
+        List<CoursesReqRes> courseReqResList = getCourseRequestResponseList();
+        if(courseReqResList != null && !courseReqResList.isEmpty()) {
+            for(CoursesReqRes reqRes : courseReqResList) {
+                if(reqRes.studentId.equalsIgnoreCase(coursesReqRes.studentId)) {
+                    reqRes.response = coursesReqRes.response;
+                    dbService.Save(reqRes);
+                    return;
+                }
+            }
+        }
         dbService.Save(coursesReqRes);
     }
 
@@ -95,6 +115,16 @@ public class DbManager extends  Db4oHelper{
 
 
     public void saveStudyCenterResponse(StudyCenterReqRes studyCenterReqRes) {
+        List<StudyCenterReqRes> studyCenterReqResList = getStudyCenterRequestResponseList();
+        if(studyCenterReqResList != null && !studyCenterReqResList.isEmpty()) {
+            for(StudyCenterReqRes reqRes : studyCenterReqResList) {
+                if(reqRes.studentId.equalsIgnoreCase(studyCenterReqRes.studentId) && reqRes.courseId.equalsIgnoreCase(studyCenterReqRes.courseId)) {
+                    reqRes.response = studyCenterReqRes.response;
+                    dbService.Save(reqRes);
+                    return;
+                }
+            }
+        }
         dbService.Save(studyCenterReqRes);
     }
 
