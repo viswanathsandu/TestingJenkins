@@ -104,6 +104,7 @@ public class ExerciseActivity extends AbstractBaseActivity {
             title = getIntent().getExtras().getString(Constants.TEST_TITLE);
         }
         tvNavTitle.setText(title);
+        setToolbarForExercise(title);
 
         if(getIntent().hasExtra(Constants.SELECTED_TOPIC)) {
             tvPageTitle.setText(getIntent().getExtras().getString(Constants.SELECTED_TOPIC));
@@ -115,7 +116,7 @@ public class ExerciseActivity extends AbstractBaseActivity {
         }
 
         if(selectedPosition >= 0) {
-            setToolbarForExercise(WebActivity.exerciseModelList, selectedPosition, title);
+            inflateUI(selectedPosition);
         }
 
         if(WebActivity.exerciseModelList.size() > 1) {
@@ -172,7 +173,7 @@ public class ExerciseActivity extends AbstractBaseActivity {
             @Override
             public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
                 L.info("JS return value " + message);
-                showToast("Adding '"+message+"' to the notes");
+                showToast("Adding '" + message + "' to the notes");
                 result.confirm();
                 return true;
             }
@@ -192,9 +193,7 @@ public class ExerciseActivity extends AbstractBaseActivity {
         webviewQuestion.setWebViewClient(new MyWebViewClient());
     }
 
-    @Override
-    public void onEvent(Integer position) {
-        super.onEvent(position);
+    private void inflateUI(int position) {
         selectedPosition = position;
         resetExplanation();
         if(WebActivity.exerciseModelList  != null && WebActivity.exerciseModelList.size() > 0) {
@@ -222,10 +221,10 @@ public class ExerciseActivity extends AbstractBaseActivity {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.btn_next:
-                    showExerciseToolbar(null, selectedPosition + 1, true);
+                    inflateUI(selectedPosition + 1);
                     break;
                 case R.id.btn_previous:
-                    showExerciseToolbar(null, selectedPosition - 1, true);
+                    inflateUI(selectedPosition - 1);
                     break;
                 case R.id.btn_verify:
                      postAnswer(WebActivity.exerciseModelList.get(selectedPosition).answerChoice.get(selectedAnswerPosition),
@@ -287,12 +286,12 @@ public class ExerciseActivity extends AbstractBaseActivity {
             if(WebActivity.exerciseModelList.size() - 1 == 0) {
                 return;
             }
-            if(WebActivity.exerciseModelList.size() - 1 > selectedAnswerPosition) {
-                WebActivity.exerciseModelList.remove(selectedAnswerPosition);
-                showExerciseToolbar(null, selectedPosition, true);
+            if(WebActivity.exerciseModelList.size() - 1 > selectedPosition) {
+                WebActivity.exerciseModelList.remove(selectedPosition);
+                inflateUI(selectedPosition);
             } else {
-                WebActivity.exerciseModelList.remove(selectedAnswerPosition);
-                showExerciseToolbar(null, selectedPosition - 1, true);
+                WebActivity.exerciseModelList.remove(selectedPosition);
+                inflateUI(selectedPosition - 1);
             }
         }
     }
@@ -595,7 +594,7 @@ public class ExerciseActivity extends AbstractBaseActivity {
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    showExerciseToolbar(null, position, true);
+                    inflateUI(position);
                 }
             });
             return v;
