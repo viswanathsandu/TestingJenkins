@@ -4,10 +4,7 @@ import com.education.corsalite.models.responsemodels.BaseModel;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.SortedSet;
 
 /**
  * Created by Girish on 02/10/15.
