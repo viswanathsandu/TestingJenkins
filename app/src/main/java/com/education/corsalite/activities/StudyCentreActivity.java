@@ -338,4 +338,10 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         return inflater.inflate(R.layout.study_center_text_view, null);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setToolbarForStudyCenter();
+    }
 }
