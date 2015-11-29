@@ -33,12 +33,14 @@ import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.db.DbManager;
 import com.education.corsalite.fragments.EditorDialogFragment;
 import com.education.corsalite.fragments.VideoListDialog;
 import com.education.corsalite.models.ChapterModel;
 import com.education.corsalite.models.ContentModel;
 import com.education.corsalite.models.SubjectModel;
 import com.education.corsalite.models.TopicModel;
+import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
@@ -520,7 +522,7 @@ public class WebActivity extends AbstractBaseActivity {
         getContent(contentIds);
     }
 
-    private void getContent(String contentId) {
+    private void getContent(final String contentId) {
         ApiManager.getInstance(this).getContent(contentId, "", new ApiCallback<List<Content>>(this) {
             @Override
             public void failure(CorsaliteError error) {
@@ -534,6 +536,31 @@ public class WebActivity extends AbstractBaseActivity {
             public void success(List<Content> contents, Response response) {
                 super.success(contents, response);
                 saveAndLoadWeb(contents);
+
+                String courseId = String.valueOf(selectedCourse.courseId);
+                String courseName = selectedCourse.name;
+                String subjectId = subjectModelList.get(spSubject.getSelectedItemPosition()).idSubject;
+                String subjectName = subjectModelList.get(spSubject.getSelectedItemPosition()).subjectName;
+                String chapterId = chapterModelList.get(spChapter.getSelectedItemPosition()).idChapter;
+                String chapterName = chapterModelList.get(spChapter.getSelectedItemPosition()).chapterName;
+                String topicId = topicModelList.get(spTopic.getSelectedItemPosition()).idTopic;
+                String topicName = topicModelList.get(spTopic.getSelectedItemPosition()).topicName;
+                String fileName;
+
+                List<OfflineContent> offlineContents = new ArrayList<>(contents.size());
+                OfflineContent offlineContent;
+                for(Content content : contents) {
+                    if(TextUtils.isEmpty(content.type)) {
+                        fileName = content.idContent + ".html";
+                    } else {
+                        fileName = content.idContent + "." + content.type;
+                    }
+                    offlineContent = new OfflineContent(courseId, courseName,
+                            subjectId, subjectName, chapterId, chapterName, topicId, topicName,
+                            content.idContent, content.name, fileName);
+                    offlineContents.add(offlineContent);
+                }
+                DbManager.getInstance(WebActivity.this).saveOfflineContent(offlineContents);
                 if (mViewSwitcher.getNextView() instanceof RelativeLayout) {
                     mViewSwitcher.showNext();
                 }

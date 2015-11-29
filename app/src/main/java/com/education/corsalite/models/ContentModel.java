@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 /**
- * Created by mt0060 on 03/10/15.
+ * Created by Girish on 03/10/15.
  */
 public class ContentModel extends BaseModel implements Comparable<ContentModel>, Serializable {
 

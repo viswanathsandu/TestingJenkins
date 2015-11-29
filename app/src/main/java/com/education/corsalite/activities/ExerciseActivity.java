@@ -50,7 +50,7 @@ import butterknife.ButterKnife;
 import retrofit.client.Response;
 
 /**
- * Created by mt0060 on 04/11/15.
+ * Created by Girish on 04/11/15.
  */
 public class ExerciseActivity extends AbstractBaseActivity {
 
@@ -133,7 +133,7 @@ public class ExerciseActivity extends AbstractBaseActivity {
             webFooter.setVisibility(View.GONE);
         }
 
-        gridAdapter = new GridAdapter(WebActivity.exerciseModelList.size(), selectedPosition);
+        gridAdapter = new GridAdapter(selectedPosition);
         gvTest.setAdapter(gridAdapter);
         gvTest.setExpanded(true);
 
@@ -316,14 +316,21 @@ public class ExerciseActivity extends AbstractBaseActivity {
         tvLevel.setText(WebActivity.exerciseModelList.get(position).displayName.split("\\s+")[0].toUpperCase(Locale.ENGLISH));
 
 
-        if(WebActivity.exerciseModelList.get(position).paragraphHtml != null) {
+        if(TextUtils.isEmpty(WebActivity.exerciseModelList.get(position).paragraphHtml)) {
+            webviewParagraph.setVisibility(View.GONE);
+        } else {
+            webviewParagraph.setVisibility(View.VISIBLE);
             webQuestion = WebActivity.exerciseModelList.get(position).paragraphHtml;
             webviewParagraph.loadData(webQuestion, "text/html; charset=UTF-8", null);
         }
+
+        webviewQuestion.setVisibility(View.GONE);
         if(WebActivity.exerciseModelList.get(position).questionHtml != null) {
             webQuestion =  WebActivity.exerciseModelList.get(position).questionHtml;
             webviewQuestion.loadData(webQuestion, "text/html; charset=UTF-8", null);
+            webviewQuestion.setVisibility(View.VISIBLE);
         }
+
         if(WebActivity.exerciseModelList.get(position).comment != null) {
             tvComment.setText(WebActivity.exerciseModelList.get(position).comment);
             tvComment.setVisibility(View.VISIBLE);
@@ -614,20 +621,18 @@ public class ExerciseActivity extends AbstractBaseActivity {
 
     public class GridAdapter extends BaseAdapter {
 
-        int adapterSize;
         int currentQuestionPosition;
         View grid;
         LayoutInflater inflater;
 
-        public GridAdapter(int adapterSize, int currentQuestionPosition) {
-            this.adapterSize = adapterSize;
+        public GridAdapter(int currentQuestionPosition) {
             this.currentQuestionPosition = currentQuestionPosition;
             inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
 
         @Override
         public int getCount() {
-            return adapterSize;
+            return WebActivity.exerciseModelList.size();
         }
 
         @Override
