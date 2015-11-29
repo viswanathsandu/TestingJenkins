@@ -202,9 +202,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (!(AbstractBaseActivity.this instanceof UserProfileActivity)) {
                     Intent intent = new Intent(AbstractBaseActivity.this, UserProfileActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
-                    finish();
                 }
             }
         });
@@ -221,7 +219,9 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(AbstractBaseActivity.this, StudyCentreActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+                finish();
             }
         });
 
