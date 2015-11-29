@@ -33,14 +33,12 @@ import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.db.DbManager;
 import com.education.corsalite.fragments.EditorDialogFragment;
 import com.education.corsalite.fragments.VideoListDialog;
 import com.education.corsalite.models.ChapterModel;
 import com.education.corsalite.models.ContentModel;
 import com.education.corsalite.models.SubjectModel;
 import com.education.corsalite.models.TopicModel;
-import com.education.corsalite.models.db.ContentIndexResponse;
 import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
@@ -50,9 +48,6 @@ import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.FileUtilities;
 import com.education.corsalite.utils.FileUtils;
 import com.education.corsalite.utils.L;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
 import java.io.Serializable;
@@ -117,7 +112,6 @@ public class WebActivity extends AbstractBaseActivity {
             if (bundle.containsKey("clear_cookies")) {
                 webviewContentReading.clearCache(true);
             }
-
             if(bundle.containsKey("subjectId") && bundle.getString("subjectId") != null) {
                 mSubjectId = bundle.getString("subjectId");
             }
@@ -137,7 +131,7 @@ public class WebActivity extends AbstractBaseActivity {
     @Override
     public void onEvent(Course course) {
         super.onEvent(course);
-        getContentIndex(course.courseId.toString(), studentId);
+        (course.courseId.toString(), studentId);
     }
 
     private void initWebView() {
@@ -441,11 +435,6 @@ public class WebActivity extends AbstractBaseActivity {
             mViewSwitcher.showPrevious();
         }
 
-        if(getContentIndexResponse()) {
-            showSubject();
-            return;
-        }
-
         ApiManager.getInstance(this).getContentIndex(courseId, studentId,
                 new ApiCallback<List<ContentIndex>>(this) {
                     @Override
@@ -486,7 +475,7 @@ public class WebActivity extends AbstractBaseActivity {
                     public void success(List<ExerciseModel> exerciseModels, Response response) {
                         super.success(exerciseModels, response);
                         exerciseModelList = exerciseModels;
-                        showExercise();
+//                        showExercise();
 
                     }
                 });
@@ -745,17 +734,6 @@ public class WebActivity extends AbstractBaseActivity {
                 }
             });
         }
-    }
-
-    private boolean getContentIndexResponse() {
-        ContentIndexResponse contentIndexResponse = DbManager.getInstance(WebActivity.this).getContentIndexList(selectedCourse.courseId.toString(),
-                studentId);
-        if(contentIndexResponse == null) {
-            return false;
-        }
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        contentIndexList = gson.fromJson(contentIndexResponse.contentIndexesJson, new TypeToken<List<ContentIndex>>(){}.getType());
-        return true;
     }
 
     private void showVideoDialog() {

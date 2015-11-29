@@ -53,14 +53,15 @@ public class DbService {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				try {
-					ObjectContainer db = GetDb();
-					db.store(entity);
-					db.commit();
-					L.info(String.format("entity '%s' saved successfully", entity.getClass().getSimpleName()));
-				}
-				catch (Exception e) {
-					L.error(e.getMessage(), e);
+				synchronized (this) {
+					try {
+						ObjectContainer db = GetDb();
+						db.store(entity);
+						db.commit();
+						L.info(String.format("entity '%s' saved successfully", entity.getClass().getSimpleName()));
+					} catch (Exception e) {
+						L.error(e.getMessage(), e);
+					}
 				}
 			}
 		}).start();
