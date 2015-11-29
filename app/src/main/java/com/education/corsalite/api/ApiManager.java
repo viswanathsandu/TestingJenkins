@@ -254,8 +254,11 @@ public class ApiManager {
     }
 
     public void getContentIndex(String courseID, String studentId, ApiCallback<List<ContentIndex>> callback) {
-        if (isApiOnline()) {
+        apiCacheHolder.setContentIndexRequest(studentId, courseID);
+        if (isApiOnline() && isNetworkConnected()) {
             ApiClientService.get().getContentIndexData(courseID, studentId, callback);
+        } else if(!isNetworkConnected()) {
+            DbManager.getInstance(context).getResponse(apiCacheHolder.contentIndex, callback);
         } else {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/content_index.json");
             Type listType = new TypeToken<ArrayList<ContentIndex>>() {

@@ -27,11 +27,11 @@ import android.widget.ViewSwitcher;
 
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.ChapterAdapter;
-import com.education.corsalite.adapters.ExerciseAdapter;
 import com.education.corsalite.adapters.SubjectAdapter;
 import com.education.corsalite.adapters.TopicAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
+import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.db.DbManager;
 import com.education.corsalite.fragments.EditorDialogFragment;
@@ -56,7 +56,6 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
 import java.io.Serializable;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -465,7 +464,8 @@ public class WebActivity extends AbstractBaseActivity {
                         super.success(mContentIndexs, response);
                         if (mContentIndexs != null) {
                             contentIndexList = mContentIndexs;
-                            saveContentIndexResponse();
+                            ApiCacheHolder.getInstance().setcontentIndexResponse(mContentIndexs);
+                            dbManager.saveReqRes(ApiCacheHolder.getInstance().contentIndex);
                             showSubject();
                         }
                     }
@@ -745,14 +745,6 @@ public class WebActivity extends AbstractBaseActivity {
                 }
             });
         }
-    }
-
-    private void saveContentIndexResponse() {
-        Type contentIndexType = new TypeToken<List<ContentIndex>>() {
-        }.getType();
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String jsonObject = gson.toJson(contentIndexList, contentIndexType);
-        DbManager.getInstance(WebActivity.this).saveContentIndexList(jsonObject, selectedCourse.courseId.toString(), studentId);
     }
 
     private boolean getContentIndexResponse() {
