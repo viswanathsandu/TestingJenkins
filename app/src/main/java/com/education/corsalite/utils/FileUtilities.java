@@ -24,11 +24,11 @@ public class FileUtilities {
         this.context = context;
     }
 
-    public String write(String fileName, String data) {
+    public String write(String fileName, String data, String folderStructure) {
         File root = Environment.getExternalStorageDirectory();
-        File outDir = new File(root.getAbsolutePath() + File.separator + Constants.PARENT_FOLDER);
+        File outDir = new File(root.getAbsolutePath() + File.separator + Constants.PARENT_FOLDER + File.separator +folderStructure);
         if (!outDir.isDirectory()) {
-            outDir.mkdir();
+            outDir.mkdirs();
         }
 
         File savingDirectory ;
@@ -38,7 +38,7 @@ public class FileUtilities {
             savingDirectory = new File(outDir.getAbsolutePath() + File.separator + Constants.HTML_FOLDER);
         }
         if (!savingDirectory.isDirectory()) {
-            savingDirectory.mkdir();
+            savingDirectory.mkdirs();
         }
         try {
             if (!savingDirectory.isDirectory()) {

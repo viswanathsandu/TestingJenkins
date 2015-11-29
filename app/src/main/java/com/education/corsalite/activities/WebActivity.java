@@ -381,6 +381,10 @@ public class WebActivity extends AbstractBaseActivity {
             int count = 0;
             FileUtilities fileUtilities = new FileUtilities(this);
             int listSize = mContentResponse.size();
+            String folderStructure =  selectedCourse.name + File.separator +
+                    subjectModelList.get(spSubject.getSelectedItemPosition()).subjectName + File.separator +
+                    chapterModelList.get(spChapter.getSelectedItemPosition()).chapterName + File.separator +
+                    topicModelList.get(spTopic.getSelectedItemPosition()).topicName;
             for(int i = 0; i < listSize; i++) {
                 String contentId = mContentResponse.get(i).idContent;
                 String htmlUrl;
@@ -395,9 +399,9 @@ public class WebActivity extends AbstractBaseActivity {
                                 "</script>" + mContentResponse.get(i).contentHtml;
                 L.info("Content : "+text);
                 if(!contentType.isEmpty()) {
-                    htmlUrl = fileUtilities.write(contentId + "." + contentType.trim(), text);
+                    htmlUrl = fileUtilities.write(contentId + "." + contentType.trim(), text, folderStructure);
                 } else {
-                    htmlUrl = fileUtilities.write(contentId + "." + Constants.HTML_FILE, text);
+                    htmlUrl = fileUtilities.write(contentId + "." + Constants.HTML_FILE, text, folderStructure);
                 }
                 if(mContentId.isEmpty()) {
                     if (!htmlUrl.isEmpty() && count == 0) {
@@ -570,13 +574,17 @@ public class WebActivity extends AbstractBaseActivity {
     private File getgetFile(String fileName) {
         root = Environment.getExternalStorageDirectory();
         File file;
+        String folderStructure =  selectedCourse.name + File.separator +
+                subjectModelList.get(spSubject.getSelectedItemPosition()).subjectName + File.separator +
+                chapterModelList.get(spChapter.getSelectedItemPosition()).chapterName + File.separator +
+                topicModelList.get(spTopic.getSelectedItemPosition()).topicName;
         if(fileName.endsWith(Constants.VIDEO_FILE)) {
             file = new File(root.getAbsolutePath() + File.separator + Constants.PARENT_FOLDER +
-                    File.separator + Constants.VIDEO_FOLDER +
+                    File.separator + folderStructure + File.separator + Constants.VIDEO_FOLDER +
                     File.separator + fileName);
         } else {
             file = new File(root.getAbsolutePath() + File.separator + Constants.PARENT_FOLDER +
-                    File.separator + Constants.HTML_FOLDER +
+                    File.separator + folderStructure + File.separator + Constants.HTML_FOLDER +
                     File.separator + fileName);
         }
         return file;
