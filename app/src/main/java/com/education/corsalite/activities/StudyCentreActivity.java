@@ -338,4 +338,16 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         return inflater.inflate(R.layout.study_center_text_view, null);
     }
+
+    private boolean closeApp = false;
+
+    @Override
+    public void onBackPressed() {
+        if(!closeApp) {
+            closeApp = true;
+            showToast(getString(R.string.app_close_alert));
+        } else {
+            finish();
+        }
+    }
 }

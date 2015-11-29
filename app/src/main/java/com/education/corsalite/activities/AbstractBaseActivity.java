@@ -37,6 +37,7 @@ import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
 import com.education.corsalite.services.ApiClientService;
+import com.education.corsalite.utils.AppPref;
 import com.education.corsalite.utils.CookieUtils;
 import com.google.gson.Gson;
 
@@ -62,6 +63,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     protected FrameLayout frameLayout;
     public Dialog dialog;
     protected DbManager dbManager;
+    protected AppPref appPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,8 +75,13 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 .setDefaultFontPath(getString(R.string.roboto_medium))
                 .setFontAttrId(R.attr.fontPath)
                 .build());
+        initActivity();
+    }
+
+    private void initActivity() {
         DbAdapter.context = this;
         dbManager = DbManager.getInstance(this);
+        appPref = AppPref.getInstance(this);
     }
 
     @Override
@@ -202,9 +209,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (!(AbstractBaseActivity.this instanceof UserProfileActivity)) {
                     Intent intent = new Intent(AbstractBaseActivity.this, UserProfileActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
-                    finish();
                 }
             }
         });
@@ -221,7 +226,9 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(AbstractBaseActivity.this, StudyCentreActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+                finish();
             }
         });
 

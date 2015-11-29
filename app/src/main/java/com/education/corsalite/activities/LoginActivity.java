@@ -39,13 +39,22 @@ public class LoginActivity extends AbstractBaseActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         setListeners();
+        checkAutoLogin();
+    }
+
+    private void checkAutoLogin() {
+        String username = appPref.getValue("loginId");
+        String passwordHash =  appPref.getValue("passwordHash");
+        if(!TextUtils.isEmpty(username) && !TextUtils.isEmpty(passwordHash)) {
+            login(username, passwordHash, true);
+        }
     }
 
     private void setListeners() {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                login(usernameTxt.getText().toString(), Encryption.md5(passwordTxt.getText().toString()));
+                login(usernameTxt.getText().toString(), Encryption.md5(passwordTxt.getText().toString()), false);
             }
         });
         forgotPasswordTxt.setOnClickListener(new View.OnClickListener() {
@@ -60,7 +69,7 @@ public class LoginActivity extends AbstractBaseActivity {
         });
     }
 
-    private void login(String username, String password) {
+    private void login(final String username, final String password, boolean fetchLocal) {
         showProgress();
         ApiManager.getInstance(this).login(username, password, new ApiCallback<LoginResponse>(this) {
             @Override
@@ -79,12 +88,14 @@ public class LoginActivity extends AbstractBaseActivity {
                 if (loginResponse.isSuccessful()) {
                     ApiCacheHolder.getInstance().setLoginResponse(loginResponse);
                     dbManager.saveReqRes(ApiCacheHolder.getInstance().login);
+                    appPref.save("loginId", username);
+                    appPref.save("passwordHash", password);
                     onLoginsuccess(loginResponse);
                 } else {
                     showToast(getResources().getString(R.string.login_failed));
                 }
             }
-        });
+        }, fetchLocal);
     }
 
     private void onLoginsuccess(LoginResponse response) {
