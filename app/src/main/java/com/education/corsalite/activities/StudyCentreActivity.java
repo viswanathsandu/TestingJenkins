@@ -339,9 +339,4 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         return inflater.inflate(R.layout.study_center_text_view, null);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        setToolbarForStudyCenter();
-    }
 }
