@@ -14,7 +14,7 @@ public class DbConfigurationBuilder {
 		EmbeddedConfiguration newConfiguration = Db4oEmbedded.newConfiguration();
 		newConfiguration.common().objectClass(BaseModel.class).updateDepth(2);
 		// Activation depth helps in saving list objects
-		newConfiguration.common().activationDepth(10);//DbService.GLOBAL_QUERY_DEPTH);
+		newConfiguration.common().activationDepth(15);//DbService.GLOBAL_QUERY_DEPTH);
 
 		return newConfiguration;
 	}

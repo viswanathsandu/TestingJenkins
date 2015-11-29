@@ -470,12 +470,6 @@ public class WebActivity extends AbstractBaseActivity {
         ApiManager.getInstance(this).getExercise(topicModelList.get(topicPosition).idTopic, selectedCourse.courseId.toString(),
                 studentId, "", new ApiCallback<List<ExerciseModel>>(this) {
                     @Override
-                    public void failure(CorsaliteError error) {
-                        super.failure(error);
-
-                    }
-
-                    @Override
                     public void success(List<ExerciseModel> exerciseModels, Response response) {
                         super.success(exerciseModels, response);
                         exerciseModelList = exerciseModels;
