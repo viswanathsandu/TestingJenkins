@@ -316,7 +316,10 @@ public class ExerciseActivity extends AbstractBaseActivity {
         tvLevel.setText(WebActivity.exerciseModelList.get(position).displayName.split("\\s+")[0].toUpperCase(Locale.ENGLISH));
 
 
-        if(WebActivity.exerciseModelList.get(position).paragraphHtml != null) {
+        if(TextUtils.isEmpty(WebActivity.exerciseModelList.get(position).paragraphHtml)) {
+            webviewParagraph.setVisibility(View.GONE);
+        } else {
+            webviewParagraph.setVisibility(View.VISIBLE);
             webQuestion = WebActivity.exerciseModelList.get(position).paragraphHtml;
             webviewParagraph.loadData(webQuestion, "text/html; charset=UTF-8", null);
         }
