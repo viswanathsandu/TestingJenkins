@@ -479,8 +479,7 @@ public class WebActivity extends AbstractBaseActivity {
                     public void success(List<ExerciseModel> exerciseModels, Response response) {
                         super.success(exerciseModels, response);
                         exerciseModelList = exerciseModels;
-//                        showExercise();
-
+                        showExercise();
                     }
                 });
     }
