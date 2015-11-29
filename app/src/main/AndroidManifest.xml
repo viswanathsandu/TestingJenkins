@@ -106,6 +106,9 @@
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="Notes"
             android:theme="@style/UserProfileTheme" />
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="94f6d0edefb49d0f21836a7acf733f25afe4cc72" />
     </application>
 
 </manifest>
