@@ -55,6 +55,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     private String key;
     private TextView selectedSubjectTxt;
     private View selectedColorFilter;
+    private boolean closeApp = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -339,4 +340,13 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         return inflater.inflate(R.layout.study_center_text_view, null);
     }
 
+    @Override
+    public void onBackPressed() {
+        if(!closeApp) {
+            closeApp = true;
+            showToast(getString(R.string.app_close_alert));
+        } else {
+            finish();
+        }
+    }
 }

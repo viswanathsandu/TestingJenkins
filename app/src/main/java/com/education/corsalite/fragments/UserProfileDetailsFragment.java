@@ -249,7 +249,6 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
             String [] coursesArr = profile.enrolledCourses.split(",");
             CourseList courseList = new CourseList(Arrays.asList(coursesArr)) ;
             courseList.defaultCourseIndex = defaultcourseIndex;
-//            DbManager.getInstance(getActivity()).saveCourseList(courseList);
         }
     }
 
@@ -290,6 +289,8 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
                     public void success(VirtualCurrencyBalanceResponse virtualCurrencyBalanceResponse, Response response) {
                         super.success(virtualCurrencyBalanceResponse, response);
                         if (virtualCurrencyBalanceResponse.isSuccessful()) {
+                            ApiCacheHolder.getInstance().setVirtualCurrencyBalanceResponse(virtualCurrencyBalanceResponse);
+                            dbManager.saveReqRes(ApiCacheHolder.getInstance().virtualCurrencyBalance);
                             UserProfileActivity.BALANCE_CURRENCY = String.valueOf(virtualCurrencyBalanceResponse.balance.intValue());
                             virtualCurrencyBalanceTxt.setText(virtualCurrencyBalanceResponse.balance.intValue() + "");
                         }
