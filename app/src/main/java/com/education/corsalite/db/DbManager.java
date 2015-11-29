@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.models.db.ContentIndexResponse;
+import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.models.db.reqres.ReqRes;
 import com.orm.query.Condition;
 import com.orm.query.Select;
@@ -78,6 +79,10 @@ public class DbManager {
                 }
             }
         }).start();
+    }
+
+    public <T> void saveOfflineContent(final List<OfflineContent> offlineContents) {
+
     }
 
     public <T> void getResponse(ReqRes<T> reqres, ApiCallback<T> callback) {

@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Created by mt0060 on 03/10/15.
+ * Created by Girish on 03/10/15.
  */
 public class ChapterModel extends BaseModel implements Comparable<ChapterModel>, Serializable{
 

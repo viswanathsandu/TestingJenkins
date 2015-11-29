@@ -50,7 +50,7 @@ import butterknife.ButterKnife;
 import retrofit.client.Response;
 
 /**
- * Created by mt0060 on 04/11/15.
+ * Created by Girish on 04/11/15.
  */
 public class ExerciseActivity extends AbstractBaseActivity {
 
