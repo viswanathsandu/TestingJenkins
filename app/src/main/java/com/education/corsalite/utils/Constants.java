@@ -13,6 +13,7 @@ public class Constants {
     public final static String HTML_FOLDER = "Html";
     public final static String VIDEO_FOLDER = "Video";
 
+
     public static final String VIDEO_PREFIX_URL = "http://app.corsalite.com/v1/";
     public static final String HTML_PREFIX_URL = "file:///";
 

@@ -61,10 +61,12 @@ public class LoginActivity extends AbstractBaseActivity {
     }
 
     private void login(String username, String password) {
+        showProgress();
         ApiManager.getInstance(this).login(username, password, new ApiCallback<LoginResponse>(this) {
             @Override
             public void failure(CorsaliteError error) {
                 super.failure(error);
+                closeProgress();
                 if (error != null && !TextUtils.isEmpty(error.message)) {
                     showToast(error.message);
                 }
@@ -73,9 +75,10 @@ public class LoginActivity extends AbstractBaseActivity {
             @Override
             public void success(LoginResponse loginResponse, Response response) {
                 super.success(loginResponse, response);
+                closeProgress();
                 if (loginResponse.isSuccessful()) {
                     ApiCacheHolder.getInstance().setLoginResponse(loginResponse);
-                    dbManager.saveLoginResponse(ApiCacheHolder.getInstance().login);
+                    dbManager.saveReqRes(ApiCacheHolder.getInstance().login);
                     onLoginsuccess(loginResponse);
                 } else {
                     showToast(getResources().getString(R.string.login_failed));

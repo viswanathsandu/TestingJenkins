@@ -1,7 +1,10 @@
 package com.education.corsalite.activities;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -11,9 +14,11 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,14 +28,13 @@ import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.db.DbManager;
 import com.education.corsalite.db.DbAdapter;
+import com.education.corsalite.db.DbManager;
 import com.education.corsalite.models.ContentModel;
 import com.education.corsalite.models.requestmodels.LogoutModel;
 import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
-import com.education.corsalite.models.responsemodels.ExerciseModel;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.CookieUtils;
@@ -56,6 +60,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
     protected FrameLayout frameLayout;
+    public Dialog dialog;
     protected DbManager dbManager;
 
     @Override
@@ -305,7 +310,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 if (courses != null) {
                     AbstractBaseActivity.this.courses = courses;
                     ApiCacheHolder.getInstance().setCoursesResponse(courses);
-                    dbManager.saveCoursesResponse(ApiCacheHolder.getInstance().courses);
+                    dbManager.saveReqRes(ApiCacheHolder.getInstance().courses);
                     showCoursesInToolbar(courses);
                 }
             }
@@ -417,5 +422,23 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     public void deleteSessionCookie() {
         ApiClientService.setSetCookie(null);
+    }
+
+    public void showProgress(){
+
+        ProgressBar pbar = new ProgressBar(this);
+        pbar.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+        dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(pbar);
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+    }
+
+    public void closeProgress(){
+        if(dialog != null && dialog.isShowing()){
+            dialog.dismiss();
+        }
     }
 }
