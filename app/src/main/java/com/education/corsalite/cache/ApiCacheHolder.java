@@ -3,9 +3,15 @@ package com.education.corsalite.cache;
 import com.education.corsalite.models.db.reqres.CoursesReqRes;
 import com.education.corsalite.models.db.reqres.LoginReqRes;
 import com.education.corsalite.models.db.reqres.StudyCenterReqRes;
+import com.education.corsalite.models.db.reqres.UserProfileReqRes;
+import com.education.corsalite.models.db.reqres.requests.CourseRequest;
+import com.education.corsalite.models.db.reqres.requests.LoginRequest;
+import com.education.corsalite.models.db.reqres.requests.StudyCenterRequest;
+import com.education.corsalite.models.db.reqres.requests.UserProfileRequest;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.models.responsemodels.StudyCenter;
+import com.education.corsalite.models.responsemodels.UserProfileResponse;
 
 import java.util.List;
 
@@ -17,6 +23,7 @@ public class ApiCacheHolder {
     private static ApiCacheHolder instance;
 
     public LoginReqRes login;
+    public UserProfileReqRes userProfile;
     public CoursesReqRes courses;
     public StudyCenterReqRes studyCenter;
 
@@ -29,8 +36,7 @@ public class ApiCacheHolder {
 
     public void setLoginRequest(String loginId, String passwordHash) {
         login = new LoginReqRes();
-        login.loginId = loginId;
-        login.passwordHash = passwordHash;
+        login.request = new LoginRequest(loginId, passwordHash);
     }
 
     public void setLoginResponse(LoginResponse response) {
@@ -39,9 +45,20 @@ public class ApiCacheHolder {
         }
     }
 
+    public void setUserProfileRequest(String studentId) {
+        userProfile = new UserProfileReqRes();
+        userProfile.request = new UserProfileRequest(studentId);
+    }
+
+    public void setUserProfileRespose(UserProfileResponse response) {
+        if(userProfile != null) {
+            userProfile.response = response;
+        }
+    }
+
     public void setCoursesRequest(String studentId) {
         courses = new CoursesReqRes();
-        courses.studentId = studentId;
+        courses.request = new CourseRequest(studentId);
     }
 
     public void setCoursesResponse(List<Course> response) {
@@ -52,11 +69,12 @@ public class ApiCacheHolder {
 
     public void setStudyCenterRequest(String studentId, String courseId) {
         studyCenter = new StudyCenterReqRes();
-        studyCenter.studentId = studentId;
-        studyCenter.courseId = courseId;
+        studyCenter.request = new StudyCenterRequest(studentId, courseId);
     }
 
     public void setStudyCenterResponse(List<StudyCenter> response) {
-        studyCenter.response = response;
+        if(studyCenter != null) {
+            studyCenter.response = response;
+        }
     }
 }
