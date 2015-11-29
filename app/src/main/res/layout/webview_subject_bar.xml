@@ -44,8 +44,7 @@
         android:paddingLeft="15dp">
 
         <RelativeLayout
-            android:layout_weight="1"
-            android:layout_width="0dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content">
 
             <ImageView
@@ -67,8 +66,7 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:layout_weight="1"
-            android:layout_width="0dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content">
 
             <ImageView
@@ -92,8 +90,7 @@
 
 
         <RelativeLayout
-            android:layout_weight="1"
-            android:layout_width="0dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content">
 
             <ImageView
@@ -118,29 +115,19 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:layout_weight="1"
             android:id="@+id/layout_exercise"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/exercise_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:padding="10dp"
-                android:src="@drawable/ico_dropdown_black" />
-
-            <TextView
-                android:layout_toLeftOf="@id/exercise_icon"
-                android:textColor="@color/black"
-                android:background="@null"
+            <Button
+                android:textColor="@color/white"
+                android:background="@drawable/shape_rounded_corners_black"
                 android:text="@string/exercise"
                 android:gravity="left|center_vertical"
                 android:id="@+id/tv_exercise"
                 android:textSize="18sp"
                 android:singleLine="true"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="?android:attr/spinnerDropDownItemStyle"
                 fontPath="@string/roboto_light"
