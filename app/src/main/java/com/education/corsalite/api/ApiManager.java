@@ -200,8 +200,11 @@ public class ApiManager {
     }
 
     public void getVirtualCurrencyBalance(String studentId, ApiCallback<VirtualCurrencyBalanceResponse> callback) {
-        if (isApiOnline()) {
+        apiCacheHolder.setVirtualCurrencyBalanceRequest(studentId);
+        if (isApiOnline() && isNetworkConnected()) {
             ApiClientService.get().getVirtualCurrencyBalance(studentId, callback);
+        } else if(!isNetworkConnected()) {
+            DbManager.getInstance(context).getResponse(apiCacheHolder.virtualCurrencyBalance, callback);
         } else {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/virtual_currency_balance.json");
             L.info("Response for 'api/virtual_currency_balance.json' is " + jsonResponse);
