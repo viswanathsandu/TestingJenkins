@@ -311,7 +311,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 if (courses != null) {
                     AbstractBaseActivity.this.courses = courses;
                     ApiCacheHolder.getInstance().setCoursesResponse(courses);
-                    dbManager.saveCoursesResponse(ApiCacheHolder.getInstance().courses);
                     TextView textView = (TextView) toolbar.findViewById(R.id.toolbar_title);
                     if(textView.getText().toString().equalsIgnoreCase(getResources().getString(R.string.title_activity_user_profile))){
                         showProfileToolbar(courses);
@@ -346,40 +345,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     public void showCoursesInToolbar(final List<Course> courses) {
-        final Spinner coursesSpinner = (Spinner) toolbar.findViewById(R.id.spinner_courses);
-        if (coursesSpinner == null) return;
-        ArrayAdapter<Course> dataAdapter = new ArrayAdapter<Course>(this, R.layout.spinner_title_textview_notes, courses);
-        dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-        coursesSpinner.setAdapter(dataAdapter);
-        if (selectedCourse != null) {
-            for (Course course : courses) {
-                if (course.courseId == selectedCourse.courseId) {
-                    coursesSpinner.setSelection(courses.indexOf(course));
-                }
-            }
-        } else {
-            for (Course course : courses) {
-                if (course.isDefault()) {
-                    coursesSpinner.setSelection(courses.indexOf(course));
-                }
-            }
-        }
-        // courseSpinner.setSelection(courseList.defaultCourseIndex);
-        coursesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                ((TextView) coursesSpinner.getSelectedView()).setTextColor(getResources().getColor(R.color.white));
-                getEventbus().post(courses.get(position));
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-    }
-
-    public void showProfileToolbar(final List<Course> courses){
-
         final Spinner coursesSpinner = (Spinner) toolbar.findViewById(R.id.spinner_courses);
         if (coursesSpinner == null) return;
         final SpinnerAdapter dataAdapter = new SpinnerAdapter(this, R.layout.spinner_title_textview_notes, courses);
