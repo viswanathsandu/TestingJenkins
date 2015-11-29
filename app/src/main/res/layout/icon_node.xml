@@ -1,59 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="?android:attr/selectableItemBackground"
-    android:layout_marginLeft="20dp"
-    android:minHeight="48dp">
+    android:minHeight="48dp"
+    android:background="@color/white"
+    android:layout_height="match_parent">
 
-    <com.github.johnkil.print.PrintView
-        android:id="@+id/icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+
+    <ImageView
         android:layout_alignWithParentIfMissing="true"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/icon"
+        android:padding="5dp"
+        android:layout_marginLeft="20dp"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="40dp"
-        app:iconColor="#12558C"
-        app:iconFont="fonts/material-icon-font.ttf"
-        app:iconSize="24dp"
-        app:iconText="@string/ic_email" />
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <TextView
-        android:id="@+id/node_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_centerVertical="true"
+        android:textSize="16sp"
         android:layout_marginLeft="10dp"
         android:layout_toRightOf="@+id/icon"
-        android:textSize="16sp" />
+        android:layout_toLeftOf="@+id/buttonsContainer"
+        android:id="@+id/node_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
-    <com.github.johnkil.print.PrintView
-        android:id="@+id/arrow_icon"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
+
+    <LinearLayout
+        android:id="@+id/buttonsContainer"
         android:layout_centerVertical="true"
-        app:iconColor="#12558C"
-        app:iconFont="fonts/material-icon-font.ttf"
-        app:iconSize="20dp"
-        app:iconText="@string/ic_keyboard_arrow_right" />
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp">
 
+        <ImageView
+            android:id="@+id/btn_update"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/ico_offline_update"/>
 
-    <!--<LinearLayout-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:paddingTop="2dp"-->
-        <!--android:gravity="center_vertical"-->
-        <!--android:layout_marginRight="20dp">-->
+        <ImageView
+            android:id="@+id/btn_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/ico_offline_delete"/>
+        <ImageView
 
-        <!--<CheckBox-->
-            <!--android:id="@+id/tree_checkbox"-->
-            <!--android:layout_gravity="center_vertical"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:padding="10dp" />-->
-    <!--</LinearLayout>-->
+            android:id="@+id/arrow_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/ico_offline_arrow_black" />
+    </LinearLayout>
 
 </RelativeLayout>
