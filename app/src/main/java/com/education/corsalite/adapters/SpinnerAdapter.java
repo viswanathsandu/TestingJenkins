@@ -21,6 +21,7 @@ public class SpinnerAdapter extends ArrayAdapter<Course> {
     private Context context;
     private List<Course> data;
     private int selectedPosition;
+
     public SpinnerAdapter(Context context, int resource,List<Course> data) {
         super(context, resource,data);
         this.context = context;
@@ -30,23 +31,15 @@ public class SpinnerAdapter extends ArrayAdapter<Course> {
     @Override
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
         View itemView =  ((Activity)context).getLayoutInflater().inflate(R.layout.spinner_drop_down,null);
-
-        TextView textView = (TextView)itemView.findViewById(android.R.id.text1);
+        TextView textView = (TextView)itemView.findViewById(R.id.text);
         ImageView imageView = (ImageView)itemView.findViewById(R.id.selected_item);
         Course course = data.get(position);
         textView.setText(course.name);
-
-        if (position == selectedPosition) {
-            imageView.setVisibility(View.VISIBLE);
-        } else {
-            imageView.setVisibility(View.INVISIBLE);
-        }
-
+        imageView.setVisibility(position == selectedPosition ? View.VISIBLE : View.INVISIBLE);
         return itemView;
     }
 
    public void setSelectedPosition(int position){
-
        selectedPosition = position;
        notifyDataSetChanged();
    }

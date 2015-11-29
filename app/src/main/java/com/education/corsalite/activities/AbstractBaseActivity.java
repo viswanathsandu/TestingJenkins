@@ -312,11 +312,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     AbstractBaseActivity.this.courses = courses;
                     ApiCacheHolder.getInstance().setCoursesResponse(courses);
                     TextView textView = (TextView) toolbar.findViewById(R.id.toolbar_title);
-                    if(textView.getText().toString().equalsIgnoreCase(getResources().getString(R.string.title_activity_user_profile))){
-                        showProfileToolbar(courses);
-                    }else {
-                        showCoursesInToolbar(courses);
-                    }
+                    showCoursesInToolbar(courses);
                     dbManager.saveReqRes(ApiCacheHolder.getInstance().courses);
                     showCoursesInToolbar(courses);
                 }
