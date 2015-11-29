@@ -4,12 +4,11 @@ import com.education.corsalite.models.responsemodels.BaseModel;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * Created by mt0060 on 03/10/15.
  */
-public class ContentModel extends BaseModel implements Comparable<ContentModel>, Serializable{
+public class ContentModel extends BaseModel implements Comparable<ContentModel>, Serializable {
 
     public String idContent;
     @SerializedName("Type")
