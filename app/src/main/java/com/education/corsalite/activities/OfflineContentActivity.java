@@ -2,38 +2,27 @@ package com.education.corsalite.activities;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.education.corsalite.R;
-import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.db.DbManager;
-import com.education.corsalite.holders.IconTreeItemHolder;
-import com.education.corsalite.models.ChapterModel;
-import com.education.corsalite.models.ContentModel;
-import com.education.corsalite.models.SubjectModel;
-import com.education.corsalite.models.TopicModel;
-import com.education.corsalite.models.db.ContentIndexResponse;
-import com.education.corsalite.models.responsemodels.ContentIndex;
+import com.education.corsalite.fragments.OfflineContentFragment;
+import com.education.corsalite.fragments.OfflineTestsFragment;
 import com.education.corsalite.models.responsemodels.Course;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-import com.unnamed.b.atv.model.TreeNode;
-import com.unnamed.b.atv.view.AndroidTreeView;
-
-import java.lang.reflect.Type;
-import java.util.List;
 
 /**
- * Created by ayush on 05/10/15.
+ * Created by Aastha on 05/10/15.
  */
 public class OfflineContentActivity extends AbstractBaseActivity {
 
-    private RelativeLayout mainNodeLayout;
-    private AndroidTreeView tView;
-    List<ContentIndex> contentIndexList;
+    TabLayout tabLayout;
+    ViewPager mViewPager;
+    IOfflineEventListener offlineEventListener;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,134 +30,94 @@ public class OfflineContentActivity extends AbstractBaseActivity {
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         RelativeLayout myView = (RelativeLayout) inflater.inflate(R.layout.activity_offline_content, null);
         frameLayout.addView(myView);
-        mainNodeLayout = (RelativeLayout) findViewById(R.id.main_node);
+        tabLayout = (TabLayout)findViewById(R.id.tl_offline);
+        mViewPager = (ViewPager)findViewById(R.id.pager);
         setToolbarForOfflineContent();
+        setTabView();
     }
 
-    private boolean getContentIndexResponse(String courseId) {
-        ContentIndexResponse contentIndexResponse = DbManager.getInstance(OfflineContentActivity.this).getContentIndexList(courseId,
-                LoginUserCache.getInstance().loginResponse.studentId);
-        if(contentIndexResponse == null) {
-            return false;
-        }
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        if(contentIndexList != null) {
-            contentIndexList.clear();
-        }
-        contentIndexList = gson.fromJson(contentIndexResponse.contentIndexesJson, new TypeToken<List<ContentIndex>>(){}.getType());
-        return true;
+    private void setTabView() {
+        mViewPager.setOffscreenPageLimit(2);
+        mViewPager.setAdapter(new OfflineBaseTabAdapter(getSupportFragmentManager()));
+        tabLayout.setupWithViewPager(mViewPager);
     }
 
-    private void updateContentIndexResponses() {
-        Type contentIndexType = new TypeToken<List<ContentIndex>>() {
-        }.getType();
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String jsonObject = gson.toJson(contentIndexList, contentIndexType);
-        DbManager.getInstance(OfflineContentActivity.this).saveContentIndexList(jsonObject, selectedCourse.courseId.toString(), LoginUserCache.getInstance().loginResponse.studentId);
+    public void setOfflineListener(IOfflineEventListener offlineEventListener){
+        this.offlineEventListener = offlineEventListener;
     }
 
     @Override
     public void onEvent(Course course) {
+        if(offlineEventListener!=null) {
+            offlineEventListener.onCourseIdSelected(course);
+        }
         super.onEvent(course);
-        if(getContentIndexResponse(course.courseId.toString())){
-            initNodes();
-        }else{
-            Toast.makeText(OfflineContentActivity.this, "No offline content available for "+course.name , Toast.LENGTH_SHORT).show();
-        }
     }
 
+    private class OfflineBaseTabAdapter extends FragmentPagerAdapter{
 
-    private void initNodes() {
-        TreeNode root = TreeNode.root();
-        for (ContentIndex contentResponse: contentIndexList) {
-            //TreeNode contentResponseRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_subject, contentResponse.courseName,contentResponse.idCourse));
-            //root.addChild(contentResponseRoot);
-            for (SubjectModel subject : contentResponse.subjectModelList) {
-                TreeNode subjectRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_subject, subject.subjectName,subject.idSubject));
-                root.addChild(subjectRoot);
-                for (ChapterModel chapter : subject.chapters) {
-                    TreeNode chapterRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_chapter, chapter.chapterName,chapter.idChapter));
-                    subjectRoot.addChild(chapterRoot);
-                    for (TopicModel topic : chapter.topicMap) {
-                        TreeNode topicRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_chapter, topic.topicName,topic.idTopic));
-                        chapterRoot.addChild(topicRoot);
-                        for (ContentModel content : topic.contentMap) {
-                            TreeNode contentRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_topics,content.contentName +"."+ content.type,content.idContent));
-                            topicRoot.addChild(contentRoot);
-                        }
-                    }
-                }
-            }
+        public OfflineBaseTabAdapter(android.support.v4.app.FragmentManager fm) {
+            super(fm);
         }
-
-        tView = new AndroidTreeView(this, root);
-        tView.setDefaultAnimation(true);
-        tView.setDefaultViewHolder(IconTreeItemHolder.class);
-        tView.setDefaultNodeClickListener(nodeClickListener);
-        tView.setDefaultNodeLongClickListener(nodeLongClickListener);
-        tView.setDefaultContainerStyle(R.style.TreeNodeStyleCustom);
-        mainNodeLayout.removeAllViews();
-        mainNodeLayout.addView(tView.getView());
-    }
-
-    private TreeNode.TreeNodeClickListener nodeClickListener = new TreeNode.TreeNodeClickListener() {
         @Override
-        public void onClick(TreeNode node, Object value) {
-            IconTreeItemHolder.IconTreeItem item = (IconTreeItemHolder.IconTreeItem) value;
-        }
-    };
+        public Fragment getItem(int i) {
+            Fragment fragment = null;
+            Bundle args = new Bundle();
+            switch (i) {
+                case 0:
+                    fragment = new OfflineContentFragment();
+                    fragment.setArguments(args);
+                    break;
+                case 1:
+                    fragment = new OfflineTestsFragment();
+                    fragment.setArguments(args);
+                    break;
 
-    private TreeNode.TreeNodeLongClickListener nodeLongClickListener = new TreeNode.TreeNodeLongClickListener() {
+            }
+            return fragment;
+        }
+
+
         @Override
-        public boolean onLongClick(TreeNode node, Object value) {
-            IconTreeItemHolder.IconTreeItem item = (IconTreeItemHolder.IconTreeItem) value;
-            Toast.makeText(OfflineContentActivity.this, "Long click: " + item.text, Toast.LENGTH_SHORT).show();
-            return true;
+        public int getCount() {
+            return 2;
         }
-    };
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
-    public void onDelete(String id){
-        for(ContentIndex contentIndex:contentIndexList){
-            if(contentIndex.idCourse.equalsIgnoreCase(id)){
-                contentIndexList.remove(contentIndex);
-                return;
+        @Override
+        public CharSequence getPageTitle(int position) {
+            String title = null;
+            switch (position) {
+                case 0:
+                    title = "Content";
+                    break;
+                case 1:
+                    title = "Tests";
+                    break;
             }
-            for(SubjectModel subject : contentIndex.subjectModelList){
-                if(subject.idSubject.equalsIgnoreCase(id)){
-                    contentIndex.subjectModelList.remove(subject);
-                    return;
-                }
-                for (ChapterModel chapter : subject.chapters) {
-                    if(chapter.idChapter.equalsIgnoreCase(id)){
-                        subject.chapters.remove(chapter);
-                        return;
-                    }
-                    for(TopicModel topic : chapter.topicMap){
-                        if(topic.idTopic.equalsIgnoreCase(id)){
-                            chapter.topicMap.remove(topic);
-                            return;
-                        }
-                        for(ContentModel content : topic.contentMap){
-                            if(content.idContent.equalsIgnoreCase(id)){
-                                topic.contentMap.remove(content);
-                                return;
-                            }
-                        }
-                    }
-                }
-
-            }
+            return title;
         }
     }
 
     @Override
     public void onBackPressed() {
-        updateContentIndexResponses();
+        if(offlineEventListener!=null) {
+            offlineEventListener.onUpdateOfflineData(selectedCourse.courseId.toString());
+        }
         super.onBackPressed();
     }
+
+    public void onDelete(String selectedId){
+        if(offlineEventListener !=null){
+            offlineEventListener.onDeleteOfflineData(selectedId);
+        }
+    }
+
+    public interface IOfflineEventListener{
+        void onUpdateOfflineData(String selectedCourse);
+        void onDeleteOfflineData(String selectedId);
+        void onCourseIdSelected(Course selectedCourse);
+
+    }
+
+
 }
