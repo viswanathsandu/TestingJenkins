@@ -25,7 +25,7 @@ public class DbManager {
     }
 
     public static DbManager getInstance(Context context) {
-        if(instance == null) {
+        if (instance == null) {
             instance = new DbManager(context);
             instance.dbService = new DbService();
         }
@@ -51,7 +51,7 @@ public class DbManager {
             contentIndexResponses.courseId = courseId;
             contentIndexResponses.studentId = studentId;
             contentIndexResponses.contentIndexesJson = contentIndexJson;
-        }else {
+        } else {
             contentIndexResponses = new ContentIndexResponse(contentIndexJson, courseId, studentId);
         }
         contentIndexResponses.save();
@@ -60,11 +60,11 @@ public class DbManager {
     /**
      * User Profile Db stuff
      */
-    public <T>  void saveReqRes(final ReqRes<T> reqres) {
+    public <T> void saveReqRes(final ReqRes<T> reqres) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                synchronized(this) {
+                synchronized (this) {
                     List<? extends ReqRes> reqResList = dbService.Get(reqres.getClass());
                     if (reqResList != null && !reqResList.isEmpty()) {
                         for (ReqRes reqresItem : reqResList) {
@@ -81,13 +81,33 @@ public class DbManager {
         }).start();
     }
 
-    public <T> void saveOfflineContent(final List<OfflineContent> offlineContents) {
-
-    }
-
     public <T> void getResponse(ReqRes<T> reqres, ApiCallback<T> callback) {
         new GetFromDbAsync<T>(dbService, reqres, callback).execute();
     }
 
+    public void saveOfflineContent(final List<OfflineContent> offlineContents) {
+        for (final OfflineContent offlineContent : offlineContents) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    synchronized (this) {
+                        List<OfflineContent> offlinecontentList = dbService.Get(OfflineContent.class);
+                        for (OfflineContent savedOfflineContent : offlinecontentList) {
+                            if (offlineContent.equals(savedOfflineContent)) {
+                                savedOfflineContent.timeStamp = offlineContent.timeStamp;
+                                dbService.Save(savedOfflineContent);
+                                return;
+                            }
+                        }
+                        dbService.Save(offlineContent);
+                    }
+                }
+            }).start();
+        }
+    }
+
+    public <T> void getOfflineContentList(ApiCallback<List<OfflineContent>> callback) {
+        new GetDataFromDbAsync(dbService, callback).execute();
+    }
 
 }
