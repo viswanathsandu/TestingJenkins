@@ -24,18 +24,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.education.corsalite.R;
+import com.education.corsalite.adapters.SpinnerAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.db.DbManager;
 import com.education.corsalite.db.DbAdapter;
+import com.education.corsalite.db.DbManager;
 import com.education.corsalite.models.ContentModel;
 import com.education.corsalite.models.requestmodels.LogoutModel;
 import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
-import com.education.corsalite.models.responsemodels.ExerciseModel;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.CookieUtils;
@@ -312,7 +312,12 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     AbstractBaseActivity.this.courses = courses;
                     ApiCacheHolder.getInstance().setCoursesResponse(courses);
                     dbManager.saveCoursesResponse(ApiCacheHolder.getInstance().courses);
-                    showCoursesInToolbar(courses);
+                    TextView textView = (TextView) toolbar.findViewById(R.id.toolbar_title);
+                    if(textView.getText().toString().equalsIgnoreCase(getResources().getString(R.string.title_activity_user_profile))){
+                        showProfileToolbar(courses);
+                    }else {
+                        showCoursesInToolbar(courses);
+                    }
                 }
             }
         });
@@ -363,6 +368,42 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 ((TextView) coursesSpinner.getSelectedView()).setTextColor(getResources().getColor(R.color.white));
                 getEventbus().post(courses.get(position));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+    }
+
+    public void showProfileToolbar(final List<Course> courses){
+
+        final Spinner coursesSpinner = (Spinner) toolbar.findViewById(R.id.spinner_courses);
+        if (coursesSpinner == null) return;
+        final SpinnerAdapter dataAdapter = new SpinnerAdapter(this, R.layout.spinner_title_textview_notes, courses);
+        coursesSpinner.setAdapter(dataAdapter);
+        if (selectedCourse != null) {
+            for (Course course : courses) {
+                if (course.courseId == selectedCourse.courseId) {
+                    dataAdapter.setSelectedPosition(courses.indexOf(course));
+                    coursesSpinner.setSelection(courses.indexOf(course));
+                    break;
+                }
+            }
+        } else {
+            for (Course course : courses) {
+                if (course.isDefault()) {
+                    dataAdapter.setSelectedPosition(courses.indexOf(course));
+                    coursesSpinner.setSelection(courses.indexOf(course));
+                }
+            }
+        }
+        // courseSpinner.setSelection(courseList.defaultCourseIndex);
+        coursesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                getEventbus().post(courses.get(position));
+                dataAdapter.setSelectedPosition(position);
             }
 
             @Override
@@ -442,4 +483,5 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             dialog.dismiss();
         }
     }
+
 }
