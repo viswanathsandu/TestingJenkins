@@ -131,7 +131,7 @@ public class WebActivity extends AbstractBaseActivity {
     @Override
     public void onEvent(Course course) {
         super.onEvent(course);
-        (course.courseId.toString(), studentId);
+        getContentIndex(course.courseId.toString(), studentId);
     }
 
     private void initWebView() {
