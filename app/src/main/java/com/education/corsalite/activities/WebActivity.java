@@ -27,20 +27,18 @@ import android.widget.ViewSwitcher;
 
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.ChapterAdapter;
-import com.education.corsalite.adapters.ExerciseAdapter;
 import com.education.corsalite.adapters.SubjectAdapter;
 import com.education.corsalite.adapters.TopicAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
+import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.db.DbManager;
 import com.education.corsalite.fragments.EditorDialogFragment;
 import com.education.corsalite.fragments.VideoListDialog;
 import com.education.corsalite.models.ChapterModel;
 import com.education.corsalite.models.ContentModel;
 import com.education.corsalite.models.SubjectModel;
 import com.education.corsalite.models.TopicModel;
-import com.education.corsalite.models.db.ContentIndexResponse;
 import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
@@ -50,13 +48,9 @@ import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.FileUtilities;
 import com.education.corsalite.utils.FileUtils;
 import com.education.corsalite.utils.L;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
 import java.io.Serializable;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -118,7 +112,6 @@ public class WebActivity extends AbstractBaseActivity {
             if (bundle.containsKey("clear_cookies")) {
                 webviewContentReading.clearCache(true);
             }
-
             if(bundle.containsKey("subjectId") && bundle.getString("subjectId") != null) {
                 mSubjectId = bundle.getString("subjectId");
             }
@@ -388,6 +381,10 @@ public class WebActivity extends AbstractBaseActivity {
             int count = 0;
             FileUtilities fileUtilities = new FileUtilities(this);
             int listSize = mContentResponse.size();
+            String folderStructure =  selectedCourse.name + File.separator +
+                    subjectModelList.get(spSubject.getSelectedItemPosition()).subjectName + File.separator +
+                    chapterModelList.get(spChapter.getSelectedItemPosition()).chapterName + File.separator +
+                    topicModelList.get(spTopic.getSelectedItemPosition()).topicName;
             for(int i = 0; i < listSize; i++) {
                 String contentId = mContentResponse.get(i).idContent;
                 String htmlUrl;
@@ -402,9 +399,9 @@ public class WebActivity extends AbstractBaseActivity {
                                 "</script>" + mContentResponse.get(i).contentHtml;
                 L.info("Content : "+text);
                 if(!contentType.isEmpty()) {
-                    htmlUrl = fileUtilities.write(contentId + "." + contentType.trim(), text);
+                    htmlUrl = fileUtilities.write(contentId + "." + contentType.trim(), text, folderStructure);
                 } else {
-                    htmlUrl = fileUtilities.write(contentId + "." + Constants.HTML_FILE, text);
+                    htmlUrl = fileUtilities.write(contentId + "." + Constants.HTML_FILE, text, folderStructure);
                 }
                 if(mContentId.isEmpty()) {
                     if (!htmlUrl.isEmpty() && count == 0) {
@@ -442,11 +439,6 @@ public class WebActivity extends AbstractBaseActivity {
             mViewSwitcher.showPrevious();
         }
 
-        if(getContentIndexResponse()) {
-            showSubject();
-            return;
-        }
-
         ApiManager.getInstance(this).getContentIndex(courseId, studentId,
                 new ApiCallback<List<ContentIndex>>(this) {
                     @Override
@@ -465,7 +457,8 @@ public class WebActivity extends AbstractBaseActivity {
                         super.success(mContentIndexs, response);
                         if (mContentIndexs != null) {
                             contentIndexList = mContentIndexs;
-                            saveContentIndexResponse();
+                            ApiCacheHolder.getInstance().setcontentIndexResponse(mContentIndexs);
+                            dbManager.saveReqRes(ApiCacheHolder.getInstance().contentIndex);
                             showSubject();
                         }
                     }
@@ -477,17 +470,10 @@ public class WebActivity extends AbstractBaseActivity {
         ApiManager.getInstance(this).getExercise(topicModelList.get(topicPosition).idTopic, selectedCourse.courseId.toString(),
                 studentId, "", new ApiCallback<List<ExerciseModel>>(this) {
                     @Override
-                    public void failure(CorsaliteError error) {
-                        super.failure(error);
-
-                    }
-
-                    @Override
                     public void success(List<ExerciseModel> exerciseModels, Response response) {
                         super.success(exerciseModels, response);
                         exerciseModelList = exerciseModels;
                         showExercise();
-
                     }
                 });
     }
@@ -581,13 +567,17 @@ public class WebActivity extends AbstractBaseActivity {
     private File getgetFile(String fileName) {
         root = Environment.getExternalStorageDirectory();
         File file;
+        String folderStructure =  selectedCourse.name + File.separator +
+                subjectModelList.get(spSubject.getSelectedItemPosition()).subjectName + File.separator +
+                chapterModelList.get(spChapter.getSelectedItemPosition()).chapterName + File.separator +
+                topicModelList.get(spTopic.getSelectedItemPosition()).topicName;
         if(fileName.endsWith(Constants.VIDEO_FILE)) {
             file = new File(root.getAbsolutePath() + File.separator + Constants.PARENT_FOLDER +
-                    File.separator + Constants.VIDEO_FOLDER +
+                    File.separator + folderStructure + File.separator + Constants.VIDEO_FOLDER +
                     File.separator + fileName);
         } else {
             file = new File(root.getAbsolutePath() + File.separator + Constants.PARENT_FOLDER +
-                    File.separator + Constants.HTML_FOLDER +
+                    File.separator + folderStructure + File.separator + Constants.HTML_FOLDER +
                     File.separator + fileName);
         }
         return file;
@@ -745,25 +735,6 @@ public class WebActivity extends AbstractBaseActivity {
                 }
             });
         }
-    }
-
-    private void saveContentIndexResponse() {
-        Type contentIndexType = new TypeToken<List<ContentIndex>>() {
-        }.getType();
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String jsonObject = gson.toJson(contentIndexList, contentIndexType);
-        DbManager.getInstance(WebActivity.this).saveContentIndexList(jsonObject, selectedCourse.courseId.toString(), studentId);
-    }
-
-    private boolean getContentIndexResponse() {
-        ContentIndexResponse contentIndexResponse = DbManager.getInstance(WebActivity.this).getContentIndexList(selectedCourse.courseId.toString(),
-                studentId);
-        if(contentIndexResponse == null) {
-            return false;
-        }
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        contentIndexList = gson.fromJson(contentIndexResponse.contentIndexesJson, new TypeToken<List<ContentIndex>>(){}.getType());
-        return true;
     }
 
     private void showVideoDialog() {

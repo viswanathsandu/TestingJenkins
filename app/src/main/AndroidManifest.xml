@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.education.corsalite">
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
@@ -105,6 +106,9 @@
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="Notes"
             android:theme="@style/UserProfileTheme" />
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="94f6d0edefb49d0f21836a7acf733f25afe4cc72" />
     </application>
 
 </manifest>

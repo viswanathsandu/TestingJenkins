@@ -15,11 +15,7 @@ public class DbAdapter {
 	public static String createDbFile() {
 		String fqFilename = null;
 		try {
-			File localDirectoryPath = getLocalDirectoryPath();
-			createDbDirectory(getFullQualifiedDirectoryName(localDirectoryPath));
-			fqFilename = getFullyQualifiedDbFilename(localDirectoryPath);
-			if (new File(fqFilename).exists()) return fqFilename;
-			createTheDbFile(fqFilename);
+			return context.getDir("data", 0) + "/" + dbFileName;
 		}
 		catch (Exception e) {
 			L.error(e.getMessage(), e);

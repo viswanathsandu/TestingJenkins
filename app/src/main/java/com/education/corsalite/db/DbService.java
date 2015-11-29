@@ -14,13 +14,8 @@ public class DbService {
 
 	private static ObjectContainer objectContainer = null;
 	private static EmbeddedConfiguration configuration = null;
-	public static final int GLOBAL_QUERY_DEPTH = 1; // cshine: please, don't ever change this; use setActivationDepth()
+	public static final int GLOBAL_QUERY_DEPTH = 1; // please, don't ever change this; use setActivationDepth()
 
-	/*
-	 * deepak, abdul, cshine: static and synchronized to ensure that file locked
-	 * exceptions will not occur when multiple threads from the same process
-	 * attempt to access this class at near the same time.
-	 */
 	private static synchronized ObjectContainer GetDb() {
 		objectContainer = objectContainer == null ? Db4oEmbedded.openFile(DbService.GetConfig(), DbAdapter.createDbFile()) : objectContainer;
 		return objectContainer;
@@ -58,14 +53,15 @@ public class DbService {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				try {
-					ObjectContainer db = GetDb();
-					db.store(entity);
-					db.commit();
-					L.info("entity '%s' saved successfully", entity.getClass().getSimpleName());
-				}
-				catch (Exception e) {
-					L.error(e.getMessage(), e);
+				synchronized (this) {
+					try {
+						ObjectContainer db = GetDb();
+						db.store(entity);
+						db.commit();
+						L.info(String.format("entity '%s' saved successfully", entity.getClass().getSimpleName()));
+					} catch (Exception e) {
+						L.error(e.getMessage(), e);
+					}
 				}
 			}
 		}).start();

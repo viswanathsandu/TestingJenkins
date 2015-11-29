@@ -1,5 +1,7 @@
 package com.education.corsalite.fragments;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -8,11 +10,21 @@ import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.education.corsalite.db.DbManager;
+
 /**
  * Created by vissu on 9/12/15.
  */
 public abstract class BaseFragment extends Fragment {
     private Dialog dialog;
+
+    protected DbManager dbManager;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        dbManager = DbManager.getInstance(getActivity());
+    }
 
     public void showToast(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();

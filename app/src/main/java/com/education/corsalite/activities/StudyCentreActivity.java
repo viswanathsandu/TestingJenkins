@@ -219,7 +219,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                         super.success(studyCenters, response);
                         if (studyCenters != null) {
                             ApiCacheHolder.getInstance().setStudyCenterResponse(studyCenters);
-                            dbManager.saveStudyCenterResponse(ApiCacheHolder.getInstance().studyCenter);
+                            dbManager.saveReqRes(ApiCacheHolder.getInstance().studyCenter);
                             mCourseData = new CourseData();
                             mCourseData.StudyCenter = studyCenters;
                         }

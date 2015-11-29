@@ -318,6 +318,8 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     }else {
                         showCoursesInToolbar(courses);
                     }
+                    dbManager.saveReqRes(ApiCacheHolder.getInstance().courses);
+                    showCoursesInToolbar(courses);
                 }
             }
         });
