@@ -1,0 +1,50 @@
+{
+  "userAuditArr": [
+    10.07,
+    3.91,
+    3.57,
+    3.92,
+    0.37,
+    16.77,
+    36.3,
+    6.43,
+    7.19,
+    11.46
+  ],
+  "allUsersAuditArr": [
+    24.45,
+    16.48,
+    11.35,
+    1.09,
+    5.49,
+    9,
+    17.6,
+    4.89,
+    4.7,
+    4.94
+  ],
+  "pageNamesArr": [
+    "Reading Pane",
+    "Exercise",
+    "Practice Test",
+    "Part Test",
+    "Challenge Test",
+    "Mock Test",
+    "Exam Result Summary",
+    "View Answers",
+    "Forums",
+    "Course Analysis"
+  ],
+  "pageUsagePercentage": [
+    15,
+    10,
+    20,
+    25,
+    5,
+    10,
+    5,
+    5,
+    3,
+    2
+  ]
+}

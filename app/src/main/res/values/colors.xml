@@ -5,6 +5,8 @@
     <color name="colorPrimaryDark">#1E589A</color>
     <color name="dark_blue_selector">#0B4A8E</color>
     <color name="blue">#125291</color>
+    <color name="skyblue">#1799F3</color>
+
     <color name="gray">#E6E6E6</color>
     <color name="green">#22b552</color>
     <color name="red">#C6352E</color>
@@ -14,6 +16,7 @@
     <color name="golden_yellow">#ffd700</color>
     <color name="black">#000000</color>
     <color name="dark_gray">#a9a9a9</color>
+    <color name="cyan">#008B8B</color>
     <color name="light_40">#96F5F5F6</color>
     <color name="transparent">#00000000</color>
     <color name="gray_dark_border">#4D4E4F</color>

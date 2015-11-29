@@ -1,7 +1,10 @@
 package com.education.corsalite.activities;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -11,9 +14,11 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,7 +26,10 @@ import android.widget.Toast;
 import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
+import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.db.DbAdapter;
+import com.education.corsalite.db.DbManager;
 import com.education.corsalite.models.ContentModel;
 import com.education.corsalite.models.requestmodels.LogoutModel;
 import com.education.corsalite.models.responsemodels.Content;
@@ -52,6 +60,8 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
     protected FrameLayout frameLayout;
+    public Dialog dialog;
+    protected DbManager dbManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +73,8 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 .setDefaultFontPath(getString(R.string.roboto_medium))
                 .setFontAttrId(R.attr.fontPath)
                 .build());
+        DbAdapter.context = this;
+        dbManager = DbManager.getInstance(this);
     }
 
     @Override
@@ -106,16 +118,41 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         loadCoursesList();
     }
 
+    protected void setToolbarForExamHistory(){
+        toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
+        setToolbarTitle(getResources().getString(R.string.exam_history));
+    }
+
     protected void setToolbarForNotes() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
         setToolbarTitle(getResources().getString(R.string.notes));
         loadCoursesList();
     }
+    protected void setToolbarForOfflineContent() {
+        toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
+        setToolbarTitle(getResources().getString(R.string.offline_content));
+        loadCoursesList();
+    }
+
+    protected void setToolbarForUsageAnalysis() {
+        toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
+        setToolbarTitle(getResources().getString(R.string.usage_analysis));
+    }
+
 
     protected void setToolbarForVideo(List<ContentModel> videos, int position) {
         findViewById(R.id.toolbar_title).setVisibility(View.GONE);
         toolbar.findViewById(R.id.video_layout).setVisibility(View.VISIBLE);
         showVideoInToolbar(videos, position);
+    }
+
+    protected void setToolbarForOfflineContentReading() {
+        toolbar.findViewById(R.id.download).setVisibility(View.VISIBLE);
+        setToolbarTitle(getResources().getString(R.string.offline_content));
+    }
+
+    protected void setToolbarForExercise(String title) {
+        setToolbarTitle(title);
     }
 
     protected void setToolbarForWebActivity(String title) {
@@ -195,6 +232,14 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             }
         });
 
+        navigationView.findViewById(R.id.navigation_usage_analysis).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AbstractBaseActivity.this, UsageAnalysisActivity.class);
+                startActivity(intent);
+            }
+        });
+
         navigationView.findViewById(R.id.navigation_offline).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -204,7 +249,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     protected void setToolbarTitle(String title) {
-        TextView textView = (TextView) findViewById(R.id.toolbar_title);
+        TextView textView = (TextView) toolbar.findViewById(R.id.toolbar_title);
         textView.setText(title);
     }
 
@@ -264,6 +309,8 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 super.success(courses, response);
                 if (courses != null) {
                     AbstractBaseActivity.this.courses = courses;
+                    ApiCacheHolder.getInstance().setCoursesResponse(courses);
+                    dbManager.saveReqRes(ApiCacheHolder.getInstance().courses);
                     showCoursesInToolbar(courses);
                 }
             }
@@ -341,29 +388,28 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     protected void getContentData(String courseId, String updateTime) {
-        // TODO : passing static data
         ApiManager.getInstance(this).getContent(courseId, updateTime,
-                new ApiCallback<List<Content>>(this) {
-                    @Override
-                    public void failure(CorsaliteError error) {
-                        super.failure(error);
-                        if (error != null && !TextUtils.isEmpty(error.message)) {
-                            showToast(error.message);
-                        }
+            new ApiCallback<List<Content>>(this) {
+                @Override
+                public void failure(CorsaliteError error) {
+                    super.failure(error);
+                    if (error != null && !TextUtils.isEmpty(error.message)) {
+                        showToast(error.message);
                     }
+                }
 
-                    @Override
-                    public void success(List<Content> mContentResponse, Response response) {
-                        super.success(mContentResponse, response);
-                        if (mContentResponse != null) {
-                            Intent intent = new Intent(AbstractBaseActivity.this, WebActivity.class);
-                            Bundle bundle = new Bundle();
-                            bundle.putSerializable("contentData", (Serializable) mContentResponse);
-                            intent.putExtras(bundle);
-                            startActivity(intent);
-                        }
+                @Override
+                public void success(List<Content> mContentResponse, Response response) {
+                    super.success(mContentResponse, response);
+                    if (mContentResponse != null) {
+                        Intent intent = new Intent(AbstractBaseActivity.this, WebActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("contentData", (Serializable) mContentResponse);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
                     }
-                });
+                }
+            });
     }
 
 
@@ -376,5 +422,23 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     public void deleteSessionCookie() {
         ApiClientService.setSetCookie(null);
+    }
+
+    public void showProgress(){
+
+        ProgressBar pbar = new ProgressBar(this);
+        pbar.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+        dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(pbar);
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+    }
+
+    public void closeProgress(){
+        if(dialog != null && dialog.isShowing()){
+            dialog.dismiss();
+        }
     }
 }

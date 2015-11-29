@@ -1,21 +1,24 @@
 package com.education.corsalite.api;
 
-import com.education.corsalite.models.responsemodels.CourseAnalysisPercentile;
-import com.education.corsalite.models.responsemodels.DefaultCourseResponse;
-import com.education.corsalite.models.responsemodels.DefaultNoteResponse;
-import com.education.corsalite.models.responsemodels.EditProfileModel;
 import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.CourseAnalysis;
+import com.education.corsalite.models.responsemodels.CourseAnalysisPercentile;
+import com.education.corsalite.models.responsemodels.DefaultCourseResponse;
+import com.education.corsalite.models.responsemodels.DefaultNoteResponse;
+import com.education.corsalite.models.responsemodels.EditProfileModel;
+import com.education.corsalite.models.responsemodels.ExamHistory;
+import com.education.corsalite.models.responsemodels.ExerciseModel;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
 import com.education.corsalite.models.responsemodels.Message;
 import com.education.corsalite.models.responsemodels.Note;
-import com.education.corsalite.models.responsemodels.Notes;
+import com.education.corsalite.models.responsemodels.PostExercise;
 import com.education.corsalite.models.responsemodels.StudyCenter;
 import com.education.corsalite.models.responsemodels.TestCoverage;
 import com.education.corsalite.models.responsemodels.UpdateExamDetailsResponse;
+import com.education.corsalite.models.responsemodels.UsageAnalysis;
 import com.education.corsalite.models.responsemodels.UserProfileResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencyBalanceResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencySummaryResponse;
@@ -36,6 +39,9 @@ public interface ICorsaliteApi {
 
     @POST("/AuthToken")
     void logout(@Query("Update") String update, ApiCallback<LogoutResponse> callback);
+
+    @POST("/ExerciseAnswer")
+    void postExerciseAnswer(@Query("Insert") String insert, ApiCallback<PostExercise> callback);
 
     @GET("/StudentCourseList")
     void getCourses(@Query("idStudent") String studentId, ApiCallback<List<Course>> callback);
@@ -90,6 +96,9 @@ public interface ICorsaliteApi {
     @GET("/Content")
     void getContentData(@Query("idContents") String idContents, @Query("UpdateTime") String UpdateTime, ApiCallback<List<Content>> callback);
 
+    @GET("/Exercise")
+    void getExerciseData(@Query("idTopic") String idTopics, @Query("idCourse") String idCourse , @Query("idStudent") String idStudent, @Query("UpdateTime") String UpdateTime, ApiCallback<List<ExerciseModel>> callback);
+
     @POST("/UserProfile")
     void updateUserProfile(@Query("Update") String userProfile, ApiCallback<EditProfileModel> callback);
 
@@ -102,9 +111,15 @@ public interface ICorsaliteApi {
     @GET("/Note")
     void getNotes(@Query("idStudent") String studentId, @Query("idSubject") String subjectId , @Query("idChapter") String chapterId, @Query("idTopic") String topicId, ApiCallback<List<Note>> callback);
 
+    @GET("/ExamHistory")
+    void getExamHistory(@Query("idStudent") String studentId, @Query("BeginRowNumber") String beginRowNum , @Query("RowCount") String rowCount,ApiCallback<List<ExamHistory>> callback);
+
     @POST("/Note")
     void addNote(@Query("Insert") String insert, ApiCallback<DefaultNoteResponse> callback);
 
     @POST("/Note")
     void updateNote(@Query("Update") String insert, ApiCallback<DefaultNoteResponse> callback);
+
+    @GET("/UsageAnalysis")
+    void getUsageAnalysis(@Query("idUser") String userId, ApiCallback<UsageAnalysis> callback);
 }

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:attr/selectableItemBackground"
+    android:minHeight="48dp"
+    android:id="@+id/node_selectorLayout"
+    android:paddingLeft="10dp">
+
+    <CheckBox
+        android:id="@+id/node_selector"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:buttonTint="@color/black"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/node_selectors"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/node_selector"
+        android:src="@drawable/ico_offline_topics" />
+
+    <LinearLayout
+        android:id="@+id/buttonsContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
+
+        <com.github.johnkil.print.PrintView
+            android:id="@+id/arrow_icon"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignWithParentIfMissing="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/node_selectors"
+            android:layout_toRightOf="@+id/node_selectors"
+            app:iconColor="@color/black"
+            app:iconFont="fonts/material-icon-font.ttf"
+            app:iconSize="20dp"
+            app:iconText="@string/ic_keyboard_arrow_right" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/picture_wrapper"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignWithParentIfMissing="true"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="28dp"
+        android:layout_toRightOf="@id/node_selector"
+        android:orientation="vertical">
+
+        <View
+            android:id="@+id/top_line"
+            android:layout_width="1dp"
+            android:layout_height="16dp"
+            android:layout_gravity="center_horizontal"
+            android:background="#12558C"
+            android:visibility="gone" />
+
+        <com.github.johnkil.print.PrintView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:iconColor="#12558C"
+            app:iconFont="fonts/material-icon-font.ttf"
+            app:iconSize="16dp"
+            app:iconText="@string/app_name" />
+
+        <View
+            android:id="@+id/bot_line"
+            android:layout_width="1dp"
+            android:layout_height="16dp"
+            android:layout_gravity="center_horizontal"
+            android:background="#12558C"
+            android:visibility="gone" />
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/node_value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/picture_wrapper"
+        android:textSize="16sp" />
+</RelativeLayout>

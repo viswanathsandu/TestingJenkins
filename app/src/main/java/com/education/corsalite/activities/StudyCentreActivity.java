@@ -20,6 +20,7 @@ import com.education.corsalite.R;
 import com.education.corsalite.adapters.GridRecyclerAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
+import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.responsemodels.Chapters;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
@@ -54,6 +55,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     private String key;
     private TextView selectedSubjectTxt;
     private View selectedColorFilter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -156,6 +158,10 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         switch (item.getItemId()) {
             case R.id.action_take_test:
                 return true;
+            case R.id.action_exam_history:
+                Intent intent = new Intent(this,ExamHistoryActivity.class);
+                startActivity(intent);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -212,6 +218,8 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                     public void success(List<StudyCenter> studyCenters, Response response) {
                         super.success(studyCenters, response);
                         if (studyCenters != null) {
+                            ApiCacheHolder.getInstance().setStudyCenterResponse(studyCenters);
+                            dbManager.saveReqRes(ApiCacheHolder.getInstance().studyCenter);
                             mCourseData = new CourseData();
                             mCourseData.StudyCenter = studyCenters;
                         }

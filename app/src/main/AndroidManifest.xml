@@ -3,11 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.education.corsalite">
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
+        android:largeHeap="true"
         android:name="com.orm.SugarApp"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -76,14 +78,37 @@
         <activity
             android:name=".activities.OfflineContentActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
-            android:label="Analytics"
+            android:label="Offline Content"
             android:theme="@style/UserProfileTheme" />
-
         <activity
             android:name=".activities.NotesActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="Notes"
             android:theme="@style/UserProfileTheme" />
+        <activity
+            android:name=".activities.ExamHistoryActivity"
+            android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
+            android:label="ExamHistory"/>
+        <activity
+            android:name=".activities.ExerciseActivity"
+            android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
+            android:hardwareAccelerated="true"
+            android:label=""
+            android:theme="@style/UserProfileTheme" />
+        <activity
+            android:name=".activities.UsageAnalysisActivity"
+            android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
+            android:hardwareAccelerated="true"
+            android:label="Usage Analysis"
+            android:theme="@style/UserProfileTheme" />
+        <activity
+            android:name=".activities.OfflineSubjectActivity"
+            android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
+            android:label="Notes"
+            android:theme="@style/UserProfileTheme" />
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="94f6d0edefb49d0f21836a7acf733f25afe4cc72" />
     </application>
 
 </manifest>

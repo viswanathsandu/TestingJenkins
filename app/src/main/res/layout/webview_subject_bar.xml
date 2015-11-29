@@ -7,21 +7,20 @@
     android:padding="10dp">
 
     <LinearLayout
+        android:paddingLeft="50dp"
         android:id="@+id/color_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:weightSum="1">
+        android:gravity="center_vertical|right"
+        android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/iv_editnotes"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_gravity="center_vertical"
-            android:layout_weight="0.25"
             android:background="@drawable/ico_add_note" />
 
         <ImageView
@@ -30,12 +29,12 @@
             android:layout_height="35dp"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="15dp"
-            android:layout_weight="0.25"
             android:background="@drawable/ico_add_forum" />
 
     </LinearLayout>
 
     <LinearLayout
+        android:layout_toLeftOf="@id/color_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -45,67 +44,107 @@
         android:paddingLeft="15dp">
 
         <RelativeLayout
-            android:layout_width="130dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
             android:layout_height="wrap_content">
 
-            <Spinner
-                android:background="@null"
-                android:id="@+id/sp_subject"
-                android:layout_width="130dp"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp" />
-
             <ImageView
+                android:id="@+id/subject_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:padding="10dp"
                 android:src="@drawable/ico_dropdown_black" />
 
+            <Spinner
+                android:layout_toLeftOf="@id/subject_icon"
+                android:background="@null"
+                android:id="@+id/sp_subject"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp" />
+
         </RelativeLayout>
 
         <RelativeLayout
-            android:layout_width="130dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
             android:layout_height="wrap_content">
 
+            <ImageView
+                android:id="@+id/chapter_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:padding="10dp"
+                android:src="@drawable/ico_dropdown_black" />
+
             <Spinner
+                android:layout_toLeftOf="@id/chapter_icon"
                 android:background="@null"
                 android:id="@+id/sp_chapter"
-                android:layout_width="130dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:paddingLeft="5dp" />
 
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
             <ImageView
+                android:id="@+id/topic_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:padding="10dp"
                 android:src="@drawable/ico_dropdown_black" />
 
-        </RelativeLayout>
-
-
-        <RelativeLayout
-            android:layout_width="130dp"
-            android:layout_height="wrap_content">
-
             <Spinner
                 android:background="@null"
+                android:layout_toLeftOf="@id/topic_icon"
                 android:id="@+id/sp_topic"
-                android:layout_width="130dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:dropDownSelector="@drawable/ico_dropdown_black"
                 android:paddingLeft="5dp"
                 android:spinnerMode="dropdown" />
 
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_weight="1"
+            android:id="@+id/layout_exercise"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
             <ImageView
+                android:id="@+id/exercise_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:padding="10dp"
                 android:src="@drawable/ico_dropdown_black" />
+
+            <TextView
+                android:layout_toLeftOf="@id/exercise_icon"
+                android:textColor="@color/black"
+                android:background="@null"
+                android:text="@string/exercise"
+                android:gravity="left|center_vertical"
+                android:id="@+id/tv_exercise"
+                android:textSize="18sp"
+                android:singleLine="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="?android:attr/spinnerDropDownItemStyle"
+                fontPath="@string/roboto_light"
+                android:paddingLeft="10dp" />
 
         </RelativeLayout>
     </LinearLayout>

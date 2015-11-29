@@ -31,6 +31,7 @@ import com.education.corsalite.adapters.SubjectAdapter;
 import com.education.corsalite.adapters.TopicAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
+import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.fragments.EditorDialogFragment;
 import com.education.corsalite.fragments.VideoListDialog;
@@ -38,12 +39,11 @@ import com.education.corsalite.models.ChapterModel;
 import com.education.corsalite.models.ContentModel;
 import com.education.corsalite.models.SubjectModel;
 import com.education.corsalite.models.TopicModel;
-import com.education.corsalite.models.db.ContentIndexResponse;
 import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
-import com.education.corsalite.models.responsemodels.Note;
+import com.education.corsalite.models.responsemodels.ExerciseModel;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.FileUtilities;
 import com.education.corsalite.utils.FileUtils;
@@ -69,12 +69,13 @@ public class WebActivity extends AbstractBaseActivity {
     @Bind(R.id.sp_subject) Spinner spSubject;
     @Bind(R.id.sp_chapter) Spinner spChapter;
     @Bind(R.id.sp_topic) Spinner spTopic;
+    @Bind(R.id.tv_exercise) TextView tvExercise;
+    @Bind(R.id.layout_exercise) RelativeLayout layoutExercise;
     @Bind(R.id.vs_container) ViewSwitcher mViewSwitcher;
     @Bind(R.id.footer_layout) RelativeLayout webFooter;
     @Bind(R.id.btn_next) Button btnNext;
     @Bind(R.id.btn_previous) Button btnPrevious;
     @Bind(R.id.tv_video) TextView tvVideo;
-
 
     private List<ContentIndex> contentIndexList;
     private List<SubjectModel> subjectModelList;
@@ -82,6 +83,7 @@ public class WebActivity extends AbstractBaseActivity {
     private List<TopicModel> topicModelList;
     private List<ContentModel> contentModelList;
     private List<ContentModel> videoModelList;
+    public static List<ExerciseModel> exerciseModelList;
 
     private String mSubjectId = "";
     private String mChapterId = "";
@@ -90,11 +92,13 @@ public class WebActivity extends AbstractBaseActivity {
     private int mContentIdPosition;
 
     private String selectedText = "";
+    private String studentId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        studentId = LoginUserCache.getInstance().loginResponse.studentId;
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         LinearLayout myView = (LinearLayout) inflater.inflate(R.layout.activity_web, null);
         frameLayout.addView(myView);
@@ -108,7 +112,6 @@ public class WebActivity extends AbstractBaseActivity {
             if (bundle.containsKey("clear_cookies")) {
                 webviewContentReading.clearCache(true);
             }
-
             if(bundle.containsKey("subjectId") && bundle.getString("subjectId") != null) {
                 mSubjectId = bundle.getString("subjectId");
             }
@@ -128,12 +131,12 @@ public class WebActivity extends AbstractBaseActivity {
     @Override
     public void onEvent(Course course) {
         super.onEvent(course);
-        getContentIndex(course.courseId.toString(), LoginUserCache.getInstance().loginResponse.studentId);
+        getContentIndex(course.courseId.toString(), studentId);
     }
 
     private void initWebView() {
         webviewContentReading.getSettings().setSupportZoom(true);
-        webviewContentReading.getSettings().setBuiltInZoomControls(true);
+        webviewContentReading.getSettings().setBuiltInZoomControls(false);
         webviewContentReading.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
         webviewContentReading.setScrollbarFadingEnabled(true);
         webviewContentReading.getSettings().setLoadsImagesAutomatically(true);
@@ -245,6 +248,7 @@ public class WebActivity extends AbstractBaseActivity {
             case R.id.action_rate_it:
                 showToast("Rate It");
                 return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -269,6 +273,7 @@ public class WebActivity extends AbstractBaseActivity {
         btnNext.setOnClickListener(mClickListener);
         btnPrevious.setOnClickListener(mClickListener);
         tvVideo.setOnClickListener(mClickListener);
+        tvExercise.setOnClickListener(mClickListener);
     }
 
     View.OnClickListener mClickListener = new View.OnClickListener() {
@@ -296,6 +301,14 @@ public class WebActivity extends AbstractBaseActivity {
 
                 case R.id.tv_video:
                     showVideoDialog();
+                    break;
+
+                case R.id.tv_exercise:
+                    Intent intent = new Intent(WebActivity.this, ExerciseActivity.class);
+                    intent.putExtra(Constants.SELECTED_TOPIC, topicModelList.get(spTopic.getSelectedItemPosition()).topicName);
+                    intent.putExtra(Constants.TEST_TITLE, "Exercise Test");
+                    intent.putExtra(Constants.SELECTED_POSITION, 0);
+                    startActivity(intent);
                     break;
             }
         }
@@ -368,6 +381,10 @@ public class WebActivity extends AbstractBaseActivity {
             int count = 0;
             FileUtilities fileUtilities = new FileUtilities(this);
             int listSize = mContentResponse.size();
+            String folderStructure =  selectedCourse.name + File.separator +
+                    subjectModelList.get(spSubject.getSelectedItemPosition()).subjectName + File.separator +
+                    chapterModelList.get(spChapter.getSelectedItemPosition()).chapterName + File.separator +
+                    topicModelList.get(spTopic.getSelectedItemPosition()).topicName;
             for(int i = 0; i < listSize; i++) {
                 String contentId = mContentResponse.get(i).idContent;
                 String htmlUrl;
@@ -382,9 +399,9 @@ public class WebActivity extends AbstractBaseActivity {
                                 "</script>" + mContentResponse.get(i).contentHtml;
                 L.info("Content : "+text);
                 if(!contentType.isEmpty()) {
-                    htmlUrl = fileUtilities.write(contentId + "." + contentType.trim(), text);
+                    htmlUrl = fileUtilities.write(contentId + "." + contentType.trim(), text, folderStructure);
                 } else {
-                    htmlUrl = fileUtilities.write(contentId + "." + Constants.HTML_FILE, text);
+                    htmlUrl = fileUtilities.write(contentId + "." + Constants.HTML_FILE, text, folderStructure);
                 }
                 if(mContentId.isEmpty()) {
                     if (!htmlUrl.isEmpty() && count == 0) {
@@ -421,6 +438,7 @@ public class WebActivity extends AbstractBaseActivity {
         if (mViewSwitcher.indexOfChild(mViewSwitcher.getCurrentView()) == 1) {
             mViewSwitcher.showPrevious();
         }
+
         ApiManager.getInstance(this).getContentIndex(courseId, studentId,
                 new ApiCallback<List<ContentIndex>>(this) {
                     @Override
@@ -439,11 +457,23 @@ public class WebActivity extends AbstractBaseActivity {
                         super.success(mContentIndexs, response);
                         if (mContentIndexs != null) {
                             contentIndexList = mContentIndexs;
-                            ContentIndexResponse mContentIndexResponse = new ContentIndexResponse();
-                            mContentIndexResponse.contentIndexes = contentIndexList;
-              //              DbManager.getInstance(WebActivity.this).saveContentIndexList(mContentIndexResponse);
+                            ApiCacheHolder.getInstance().setcontentIndexResponse(mContentIndexs);
+                            dbManager.saveReqRes(ApiCacheHolder.getInstance().contentIndex);
                             showSubject();
                         }
+                    }
+                });
+    }
+
+    private void getExercise(int topicPosition) {
+        layoutExercise.setVisibility(View.INVISIBLE);
+        ApiManager.getInstance(this).getExercise(topicModelList.get(topicPosition).idTopic, selectedCourse.courseId.toString(),
+                studentId, "", new ApiCallback<List<ExerciseModel>>(this) {
+                    @Override
+                    public void success(List<ExerciseModel> exerciseModels, Response response) {
+                        super.success(exerciseModels, response);
+                        exerciseModelList = exerciseModels;
+                        showExercise();
                     }
                 });
     }
@@ -537,13 +567,17 @@ public class WebActivity extends AbstractBaseActivity {
     private File getgetFile(String fileName) {
         root = Environment.getExternalStorageDirectory();
         File file;
+        String folderStructure =  selectedCourse.name + File.separator +
+                subjectModelList.get(spSubject.getSelectedItemPosition()).subjectName + File.separator +
+                chapterModelList.get(spChapter.getSelectedItemPosition()).chapterName + File.separator +
+                topicModelList.get(spTopic.getSelectedItemPosition()).topicName;
         if(fileName.endsWith(Constants.VIDEO_FILE)) {
             file = new File(root.getAbsolutePath() + File.separator + Constants.PARENT_FOLDER +
-                    File.separator + Constants.VIDEO_FOLDER +
+                    File.separator + folderStructure + File.separator + Constants.VIDEO_FOLDER +
                     File.separator + fileName);
         } else {
             file = new File(root.getAbsolutePath() + File.separator + Constants.PARENT_FOLDER +
-                    File.separator + Constants.HTML_FOLDER +
+                    File.separator + folderStructure + File.separator + Constants.HTML_FOLDER +
                     File.separator + fileName);
         }
         return file;
@@ -664,9 +698,15 @@ public class WebActivity extends AbstractBaseActivity {
         });
     }
 
+    private void showExercise() {
+        if(exerciseModelList != null && exerciseModelList.size() > 0) {
+            layoutExercise.setVisibility(View.VISIBLE);
+        } else {
+            layoutExercise.setVisibility(View.INVISIBLE);
+        }
+    }
+
     private void showTopic(final int chapterPosition) {
-
-
         topicModelList = new ArrayList<>(chapterModelList.get(chapterPosition).topicMap);
         if(topicModelList != null) {
             TopicAdapter topicAdapter = new TopicAdapter(topicModelList, this);
@@ -685,6 +725,7 @@ public class WebActivity extends AbstractBaseActivity {
             spTopic.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    getExercise(position);
                     getContentData(position);
                 }
 

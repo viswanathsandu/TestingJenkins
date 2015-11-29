@@ -30,17 +30,18 @@
     <string name="logout_failed">Logout failed</string>
     <string name="logout_successful">Logged out Successfully</string>
     <string name="login_failed">Login failed</string>
-    <string name="login_successful">Login Successfully</string>
+    <string name="login_successful">Logged in Successfully</string>
     <string name="profile_fetched">User Profile fetched successfully...</string>
     <string name="failed_fetch">Failed to fetch user profile information</string>
     <string name="virtual_currency_fetched">Virtual currency fetched successfully...</string>
     <string name="virtual_currency_fetch_failed">Failed to fetch virtual currency information</string>
     <string name="study_centre">Study Center</string>
+    <string name="offline_content">Offline Content</string>
+    <string name="usage_analysis">Usage Analysis</string>
     <string name="analytics">Analytics</string>
     <string name="content">Content</string>
     <string name="notes">Notes</string>
-    <string name="no_notes">No notes available</string>
-    <string name="no_posts">No posts available</string>
+    <string name="exam_history">Exam History</string>
 
 
     <!--Fonts-->
@@ -86,9 +87,5 @@
     <string name="add_course">Add Course</string>
     <string name="add_guardian">Add Guardian</string>
     <string name="redeem">Redeem</string>
-    <string name="bookmark">Bookmark</string>
-    <string name="like">Like</string>
-    <string name="comment">Comment</string>
-
 
 </resources>

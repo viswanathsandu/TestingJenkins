@@ -43,7 +43,6 @@ public class ExamAdapter extends AbstractRecycleViewAdapter {
         ((ExamDataHolder) holder).bindData(position, (ExamDetail) getItem(position));
     }
 
-
     public void setAddExamOnClickListener(IAddExamOnClickListener addExamOnClickListener){
         this.addExamOnClickListener = addExamOnClickListener;
     }

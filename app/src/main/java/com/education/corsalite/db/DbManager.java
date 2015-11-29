@@ -2,19 +2,21 @@ package com.education.corsalite.db;
 
 import android.content.Context;
 
+import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.models.db.ContentIndexResponse;
-import com.education.corsalite.models.db.CourseList;
+import com.education.corsalite.models.db.reqres.ReqRes;
+import com.orm.query.Condition;
+import com.orm.query.Select;
 
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 /**
  * Created by vissu on 9/16/15.
  */
 public class DbManager {
 
-    private DbManager instance;
+    private static DbManager instance;
+    private DbService dbService = null;
     private Context context;
 
     private DbManager(Context context) {
@@ -22,43 +24,65 @@ public class DbManager {
     }
 
     public static DbManager getInstance(Context context) {
-        return new DbManager(context);
-    }
-
-    public void saveCourseList(CourseList courseList) {
-        CourseList list = CourseList.findById(CourseList.class, 1l);
-        if(list != null) {
-            courseList.defaultCourseIndex = list.defaultCourseIndex;
+        if(instance == null) {
+            instance = new DbManager(context);
+            instance.dbService = new DbService();
         }
-        // clear sourselist before adding new
-        CourseList.deleteAll(CourseList.class);
-        courseList.save();
+        return instance;
     }
 
-    public void saveDefaultCourse(int defaultCourseIndex) {
-        Iterator<CourseList> iterator = CourseList.findAll(CourseList.class);
-        if(iterator != null && iterator.hasNext()) {
-            CourseList list = iterator.next();
-            list.defaultCourseIndex = defaultCourseIndex;
-            list.save();
+    public ContentIndexResponse getContentIndexList(String courseId, String studentId) {
+        Select specificAuthorQuery = Select.from(ContentIndexResponse.class)
+                .where(Condition.prop("course_id").eq(courseId),
+                        Condition.prop("student_id").eq(studentId))
+                .limit("1");
+        ContentIndexResponse contentIndexResponses = (ContentIndexResponse) specificAuthorQuery.first();
+        return contentIndexResponses;
+    }
+
+    public void saveContentIndexList(String contentIndexJson, String courseId, String studentId) {
+        Select specificAuthorQuery = Select.from(ContentIndexResponse.class)
+                .where(Condition.prop("course_id").eq(courseId),
+                        Condition.prop("student_id").eq(studentId))
+                .limit("1");
+        ContentIndexResponse contentIndexResponses = (ContentIndexResponse) specificAuthorQuery.first();
+        if (contentIndexResponses != null) {
+            contentIndexResponses.courseId = courseId;
+            contentIndexResponses.studentId = studentId;
+            contentIndexResponses.contentIndexesJson = contentIndexJson;
+        }else {
+            contentIndexResponses = new ContentIndexResponse(contentIndexJson, courseId, studentId);
         }
+        contentIndexResponses.save();
     }
 
-    public void deleteCourseList() {
-        CourseList.deleteAll(CourseList.class);
+    /**
+     * User Profile Db stuff
+     */
+    public <T>  void saveReqRes(final ReqRes<T> reqres) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                synchronized(this) {
+                    List<? extends ReqRes> reqResList = dbService.Get(reqres.getClass());
+                    if (reqResList != null && !reqResList.isEmpty()) {
+                        for (ReqRes reqresItem : reqResList) {
+                            if (reqresItem.isRequestSame(reqres)) {
+                                reqresItem.response = reqres.response;
+                                dbService.Save(reqresItem);
+                                return;
+                            }
+                        }
+                    }
+                    dbService.Save(reqres);
+                }
+            }
+        }).start();
     }
 
-    public CourseList getCourseList() {
-        Iterator<CourseList> iterator = CourseList.findAll(CourseList.class);
-        return (iterator!= null && iterator.hasNext()) ? iterator.next() : null;
+    public <T> void getResponse(ReqRes<T> reqres, ApiCallback<T> callback) {
+        new GetFromDbAsync<T>(dbService, reqres, callback).execute();
     }
 
-    public void saveContentIndexList(ContentIndexResponse contentIndexResponse) {
-        ContentIndexResponse contentIndexResponses = ContentIndexResponse.findById(ContentIndexResponse.class, 1l);
-        if(contentIndexResponses != null) {
-            return;
-        }
-        contentIndexResponse.save();
-    }
 
 }

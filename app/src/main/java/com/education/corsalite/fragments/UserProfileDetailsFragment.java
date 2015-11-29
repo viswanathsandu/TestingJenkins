@@ -24,8 +24,8 @@ import com.education.corsalite.activities.UserProfileActivity;
 import com.education.corsalite.activities.WebviewActivity;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
+import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.db.DbManager;
 import com.education.corsalite.models.db.CourseList;
 import com.education.corsalite.models.requestmodels.Defaultcourserequest;
 import com.education.corsalite.models.responsemodels.BasicProfile;
@@ -183,18 +183,20 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
     private void saveDefaultCourse(Course course) {
         if(course != null) {
             String update = new Gson().toJson(new Defaultcourserequest(
-                                LoginUserCache.getInstance().loginResponse.studentId, course.courseId+""));
-
+                    LoginUserCache.getInstance().loginResponse.studentId, course.courseId+""));
+            showProgress();
             ApiManager.getInstance(getActivity()).updateDefaultCourse(update, new ApiCallback<DefaultCourseResponse>(getActivity()) {
                 @Override
                 public void failure(CorsaliteError error) {
                     super.failure(error);
+                    closeProgress();
                     showToast("Failed to update Default course...");
                 }
 
                 @Override
                 public void success(DefaultCourseResponse defaultCourseResponse, Response response) {
                     super.success(defaultCourseResponse, response);
+                    closeProgress();
                     showToast("Default course updated successfully...");
                 }
             });
@@ -209,6 +211,7 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
     }
 
     private void fetchUserProfileData() {
+        showProgress();
         ApiManager.getInstance(getActivity()).getUserProfile(LoginUserCache.getInstance().loginResponse.studentId,
                 new ApiCallback<UserProfileResponse>(getActivity()) {
                     @Override
@@ -223,6 +226,8 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
                     public void success(UserProfileResponse userProfileResponse, Response response) {
                         super.success(userProfileResponse, response);
                         if (userProfileResponse.isSuccessful()) {
+                            ApiCacheHolder.getInstance().setUserProfileRespose(userProfileResponse);
+                            dbManager.saveReqRes(ApiCacheHolder.getInstance().userProfile);
                             user = userProfileResponse;
                             showProfileData(userProfileResponse.basicProfile);
                             loadCoursesData(userProfileResponse.basicProfile);
@@ -239,7 +244,7 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
             String [] coursesArr = profile.enrolledCourses.split(",");
             CourseList courseList = new CourseList(Arrays.asList(coursesArr)) ;
             courseList.defaultCourseIndex = defaultcourseIndex;
-            DbManager.getInstance(getActivity()).saveCourseList(courseList);
+//            DbManager.getInstance(getActivity()).saveCourseList(courseList);
         }
     }
 
@@ -271,6 +276,7 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
                     @Override
                     public void failure(CorsaliteError error) {
                         super.failure(error);
+                        closeProgress();
                         if (error != null && !TextUtils.isEmpty(error.message)) {
                             showToast(error.message);
                         }
@@ -279,6 +285,7 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
                     @Override
                     public void success(VirtualCurrencyBalanceResponse virtualCurrencyBalanceResponse, Response response) {
                         super.success(virtualCurrencyBalanceResponse, response);
+                        closeProgress();
                         if (virtualCurrencyBalanceResponse.isSuccessful()) {
                             UserProfileActivity.BALANCE_CURRENCY = String.valueOf(virtualCurrencyBalanceResponse.balance.intValue());
                             virtualCurrencyBalanceTxt.setText(virtualCurrencyBalanceResponse.balance.intValue() + "");

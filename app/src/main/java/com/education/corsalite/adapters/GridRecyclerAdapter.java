@@ -18,6 +18,8 @@ import android.widget.TextView;
 import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.activities.NotesActivity;
+import com.education.corsalite.activities.OfflineContentActivity;
+import com.education.corsalite.activities.OfflineSubjectActivity;
 import com.education.corsalite.activities.StudyCentreActivity;
 import com.education.corsalite.activities.WebActivity;
 import com.education.corsalite.models.responsemodels.Chapters;
@@ -32,6 +34,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
     public static final String COURSE_ID = "courseId";
     public static final String SUBJECT_ID = "subjectId";
     public static final String CHAPTER_ID = "chapterId";
+    public static final String SUBJECT = "subject";
     private List<Chapters> chapters;
     private String key;
     private StudyCentreActivity studyCentreActivity;
@@ -113,11 +116,26 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
                 startNotesActivity(chapter);
             }
         });
+        dialogView.findViewById(R.id.offline_content).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+                startOfflineActivity(chapter);
+            }
+        });
     }
 
     private void startNotesActivity(Chapters chapter) {
         Intent intent = new Intent(studyCentreActivity, NotesActivity.class);
         putIntentExtras(chapter, intent, COURSE_ID, SUBJECT_ID, CHAPTER_ID);
+        studyCentreActivity.startActivity(intent);
+    }
+
+    private void startOfflineActivity(Chapters chapter) {
+        Intent intent = new Intent(studyCentreActivity, OfflineSubjectActivity.class);
+        putIntentExtras(chapter, intent, COURSE_ID, SUBJECT_ID, CHAPTER_ID);
+        intent.putExtra("chapterName", chapter.chapterName);
+        intent.putExtra(SUBJECT, key);
         studyCentreActivity.startActivity(intent);
     }
 

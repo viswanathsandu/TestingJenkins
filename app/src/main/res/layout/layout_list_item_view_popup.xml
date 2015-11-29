@@ -91,4 +91,11 @@
         android:layout_height="wrap_content"
         android:text="@string/part_test"
         style="@style/tiles_menu_title_txt"/>
+
+    <TextView
+        android:id="@+id/offline_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Save for Offline"
+        style="@style/tiles_menu_title_txt"/>
 </LinearLayout>
