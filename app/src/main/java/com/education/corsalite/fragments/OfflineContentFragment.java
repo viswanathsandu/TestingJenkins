@@ -204,7 +204,12 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
                         break;
                     case "content":
                         if (id.equalsIgnoreCase(offlineContent.contentId)) {
-                            path = offlineContent.courseName+"/"+offlineContent.subjectName+"/"+offlineContent.chapterName+"/"+offlineContent.topicName+"/"+offlineContent.contentName;
+                            String pathPrefix = path = offlineContent.courseName + "/" + offlineContent.subjectName + "/" + offlineContent.chapterName + "/" + offlineContent.topicName + "/" ;
+                            if(offlineContent.fileName.split(".")[1].equalsIgnoreCase("video")) {
+                                path = pathPrefix + "/"+ "Video"+"/"+offlineContent.fileName;
+                            }else{
+                                path = pathPrefix + "/" + "Html" + offlineContent.fileName;
+                            }
                             offlineContentList.remove(offlineContent);
 
                         }
