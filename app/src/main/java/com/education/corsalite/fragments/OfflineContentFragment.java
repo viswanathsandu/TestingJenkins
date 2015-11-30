@@ -23,6 +23,7 @@ import com.unnamed.b.atv.view.AndroidTreeView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -59,7 +60,7 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
 
             @Override
             public void success(List<OfflineContent> offlineContents, Response response) {
-                offlineContentList = new ArrayList<OfflineContent>();
+                offlineContentList = new ArrayList<>();
                 for(OfflineContent offlineContent: offlineContents) {
                     if(offlineContent.courseId.equalsIgnoreCase(course.courseId.toString())) {
                         offlineContentList.add(offlineContent);
@@ -181,37 +182,38 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
     @Override
     public void onDeleteOfflineData(String id,String tag){
         String path = null;
+        ArrayList<OfflineContent> removeList = new ArrayList<>();
         for(OfflineContent offlineContent : offlineContentList){
             if(offlineContent.courseId.equalsIgnoreCase(selectedCourse)) {
                 switch (tag) {
                     case "subject":
                         if (id.equalsIgnoreCase(offlineContent.subjectId)) {
-                            offlineContentList.remove(offlineContent);
-                              path = offlineContent.courseName+"/"+offlineContent.subjectName;
+                            path = offlineContent.courseName+"/"+offlineContent.subjectName;
+                            removeList.add(offlineContent);
                         }
                         break;
                     case "chapter":
                         if (id.equalsIgnoreCase(offlineContent.chapterId)) {
-                            offlineContentList.remove(offlineContent);
                             path = offlineContent.courseName+"/"+offlineContent.subjectName+"/"+offlineContent.chapterName;
+                            removeList.add(offlineContent);
                         }
                         break;
                     case "topic":
                         if (id.equalsIgnoreCase(offlineContent.topicId)) {
-                            offlineContentList.remove(offlineContent);
                             path = offlineContent.courseName+"/"+offlineContent.subjectName+"/"+offlineContent.chapterName+"/"+offlineContent.topicName;
+                            removeList.add(offlineContent);
+
                         }
                         break;
                     case "content":
                         if (id.equalsIgnoreCase(offlineContent.contentId)) {
-                            String pathPrefix = path = offlineContent.courseName + "/" + offlineContent.subjectName + "/" + offlineContent.chapterName + "/" + offlineContent.topicName + "/" ;
-                            if(offlineContent.fileName.split(".")[1].equalsIgnoreCase("video")) {
-                                path = pathPrefix + "/"+ "Video"+"/"+offlineContent.fileName;
+                            String pathPrefix = offlineContent.courseName + "/" + offlineContent.subjectName + "/" + offlineContent.chapterName + "/" + offlineContent.topicName ;
+                            if(offlineContent.fileName.split(Pattern.quote("."))[1].equalsIgnoreCase("video")) {
+                                path = pathPrefix + "/"+ "Video" + "/"+ offlineContent.fileName;
                             }else{
-                                path = pathPrefix + "/" + "Html" + offlineContent.fileName;
+                                path = pathPrefix + "/" + "Html" + "/"+ offlineContent.fileName;
                             }
-                            offlineContentList.remove(offlineContent);
-
+                            removeList.add(offlineContent);
                         }
                         break;
                 }
@@ -220,6 +222,9 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
         //Delete file
         new FileUtilities(getActivity()).delete(path);
 
+        for(OfflineContent offlineContent : removeList){
+            offlineContentList.remove(offlineContent);
+        }
         //Save to database
         DbManager.getInstance(getActivity()).saveOfflineContent(offlineContentList);
 

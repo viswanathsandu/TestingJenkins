@@ -74,11 +74,16 @@ public class FileUtilities {
     }
 
     private void deleteParent(File path){
-        File[] files = path.getParentFile().listFiles();
-        if(files.length <= 0){
-            deleteParent(path.getParentFile());
-            path.delete();
+        if(path.exists()) {
+            File[] files = path.listFiles();
+            if (files.length <= 0) {
+                File parent = path.getParentFile();
+                path.delete();
+                deleteParent(parent);
+
+            }
         }
+
     }
     public void delete(String selectedPath){
         File root = Environment.getExternalStorageDirectory();
@@ -87,7 +92,9 @@ public class FileUtilities {
         if(fileorDir.isDirectory()){
             deleteChildren(fileorDir);
         }else if(fileorDir.isFile()){
-            deleteParent(fileorDir);
+            File parentFile = fileorDir.getParentFile();
+            fileorDir.delete();
+            deleteParent(parentFile);
         }
     }
 

@@ -38,11 +38,29 @@ public class OfflineContent extends BaseModel {
 
     @Override
     public boolean equals(Object o) {
-        OfflineContent obj = (OfflineContent)o;
-        return courseId.equals(obj.chapterId)
-                && subjectId.equals(obj.subjectId)
-                && chapterId.equals(obj.chapterId)
-                && topicId.equals(obj.topicId)
-                && contentId.equals(obj.contentId);
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        OfflineContent that = (OfflineContent) o;
+
+        if (courseId != null ? !courseId.equals(that.courseId) : that.courseId != null)
+            return false;
+        if (subjectId != null ? !subjectId.equals(that.subjectId) : that.subjectId != null)
+            return false;
+        if (chapterId != null ? !chapterId.equals(that.chapterId) : that.chapterId != null)
+            return false;
+        if (topicId != null ? !topicId.equals(that.topicId) : that.topicId != null) return false;
+        return !(contentId != null ? !contentId.equals(that.contentId) : that.contentId != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = courseId != null ? courseId.hashCode() : 0;
+        result = 31 * result + (subjectId != null ? subjectId.hashCode() : 0);
+        result = 31 * result + (chapterId != null ? chapterId.hashCode() : 0);
+        result = 31 * result + (topicId != null ? topicId.hashCode() : 0);
+        result = 31 * result + (contentId != null ? contentId.hashCode() : 0);
+        return result;
     }
 }
