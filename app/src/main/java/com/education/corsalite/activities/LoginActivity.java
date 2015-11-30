@@ -3,7 +3,9 @@ package com.education.corsalite.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -45,7 +47,8 @@ public class LoginActivity extends AbstractBaseActivity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                login(usernameTxt.getText().toString(), Encryption.md5(passwordTxt.getText().toString()));
+
+                login();
             }
         });
         forgotPasswordTxt.setOnClickListener(new View.OnClickListener() {
@@ -56,6 +59,16 @@ public class LoginActivity extends AbstractBaseActivity {
                 intent.putExtra(TITLE, getString(R.string.forgot_password));
                 intent.putExtra("clear_cookies", true);
                 startActivity(intent);
+            }
+        });
+
+        passwordTxt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if(actionId == EditorInfo.IME_ACTION_DONE){
+                   login();
+                }
+                return false;
             }
         });
     }
@@ -95,6 +108,34 @@ public class LoginActivity extends AbstractBaseActivity {
             finish();
         } else {
             showToast(getResources().getString(R.string.login_failed));
+        }
+    }
+
+    private boolean checkForValidEmail(){
+        if(usernameTxt.getText() != null && !usernameTxt.getText().toString().isEmpty()){
+
+            return android.util.Patterns.EMAIL_ADDRESS.matcher(usernameTxt.getText().toString()).matches();
+        }
+        return false;
+    }
+
+    private boolean checkPasswordField(){
+        if(passwordTxt.getText() != null && !passwordTxt.getText().toString().isEmpty()){
+            return true;
+        }
+        return false;
+    }
+
+    private void login(){
+
+        if(checkForValidEmail()) {
+            if(checkPasswordField()) {
+                login(usernameTxt.getText().toString(), Encryption.md5(passwordTxt.getText().toString()));
+            }else {
+                showToast("Please enter password");
+            }
+        }else {
+            showToast("Please enter a valid email id");
         }
     }
 }
