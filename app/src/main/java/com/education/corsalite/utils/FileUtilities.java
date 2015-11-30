@@ -1,15 +1,15 @@
 package com.education.corsalite.utils;
 
+import android.content.Context;
+import android.os.Environment;
+import android.util.Log;
+import android.widget.Toast;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
-
-import android.content.Context;
-import android.os.Environment;
-import android.util.Log;
-import android.widget.Toast;
 
 /**
  * Created by Girish on 30/09/15.
@@ -56,6 +56,46 @@ public class FileUtilities {
                     Toast.LENGTH_LONG).show();
         }
         return null;
+    }
+
+    private boolean deleteChildren(File path) {
+        if( path.exists() ) {
+            File[] files = path.listFiles();
+            for(int i=0; i<files.length; i++) {
+                if(files[i].isDirectory()) {
+                    deleteChildren(files[i]);
+                }
+                else {
+                    files[i].delete();
+                }
+            }
+        }
+        return(path.delete());
+    }
+
+    private void deleteParent(File path){
+        if(path.exists()) {
+            File[] files = path.listFiles();
+            if (files.length <= 0) {
+                File parent = path.getParentFile();
+                path.delete();
+                deleteParent(parent);
+
+            }
+        }
+
+    }
+    public void delete(String selectedPath){
+        File root = Environment.getExternalStorageDirectory();
+        File fileorDir = new File(root.getAbsolutePath() + File.separator + Constants.PARENT_FOLDER + File.separator +selectedPath);
+
+        if(fileorDir.isDirectory()){
+            deleteChildren(fileorDir);
+        }else if(fileorDir.isFile()){
+            File parentFile = fileorDir.getParentFile();
+            fileorDir.delete();
+            deleteParent(parentFile);
+        }
     }
 
     public Writer getWritergetWriter() {

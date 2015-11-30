@@ -106,15 +106,15 @@ public class OfflineContentActivity extends AbstractBaseActivity {
         super.onBackPressed();
     }
 
-    public void onDelete(String selectedId){
+    public void onDelete(String selectedId,String tag){
         if(offlineEventListener !=null){
-            offlineEventListener.onDeleteOfflineData(selectedId);
+            offlineEventListener.onDeleteOfflineData(selectedId,tag);
         }
     }
 
     public interface IOfflineEventListener{
         void onUpdateOfflineData(String selectedCourse);
-        void onDeleteOfflineData(String selectedId);
+        void onDeleteOfflineData(String selectedId,String tag);
         void onCourseIdSelected(Course selectedCourse);
 
     }
