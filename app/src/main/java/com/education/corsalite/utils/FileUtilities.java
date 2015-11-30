@@ -1,15 +1,15 @@
 package com.education.corsalite.utils;
 
+import android.content.Context;
+import android.os.Environment;
+import android.util.Log;
+import android.widget.Toast;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
-
-import android.content.Context;
-import android.os.Environment;
-import android.util.Log;
-import android.widget.Toast;
 
 /**
  * Created by Girish on 30/09/15.
@@ -56,6 +56,31 @@ public class FileUtilities {
                     Toast.LENGTH_LONG).show();
         }
         return null;
+    }
+
+    private boolean deleteDirectory(File path) {
+        if( path.exists() ) {
+            File[] files = path.listFiles();
+            for(int i=0; i<files.length; i++) {
+                if(files[i].isDirectory()) {
+                    deleteDirectory(files[i]);
+                }
+                else {
+                    files[i].delete();
+                }
+            }
+        }
+        return(path.delete());
+    }
+    public void delete(String selectedPath){
+        File root = Environment.getExternalStorageDirectory();
+        File fileorDir = new File(root.getAbsolutePath() + File.separator + Constants.PARENT_FOLDER + File.separator +selectedPath);
+
+        if(fileorDir.isDirectory()){
+            deleteDirectory(fileorDir);
+        }else if(fileorDir.isFile()){
+            fileorDir.delete();
+        }
     }
 
     public Writer getWritergetWriter() {

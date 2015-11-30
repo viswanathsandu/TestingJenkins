@@ -5,32 +5,28 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.activities.OfflineContentActivity;
-import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.db.DbManager;
 import com.education.corsalite.holders.IconTreeItemHolder;
-import com.education.corsalite.models.ChapterModel;
-import com.education.corsalite.models.ContentModel;
-import com.education.corsalite.models.SubjectModel;
-import com.education.corsalite.models.TopicModel;
-import com.education.corsalite.models.db.ContentIndexResponse;
-import com.education.corsalite.models.responsemodels.ContentIndex;
+import com.education.corsalite.models.db.OfflineContent;
+import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
+import com.education.corsalite.utils.FileUtilities;
 import com.unnamed.b.atv.model.TreeNode;
 import com.unnamed.b.atv.view.AndroidTreeView;
 
-import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import retrofit.client.Response;
 
 /**
  * Created by Aastha on 28/11/15.
@@ -38,13 +34,15 @@ import butterknife.ButterKnife;
 public class OfflineContentFragment extends BaseFragment  implements OfflineContentActivity.IOfflineEventListener{
 
     @Bind(R.id.main_node_content) RelativeLayout mainNodeLayout;
+    @Bind(R.id.headerProgress)ProgressBar mProgressBar;
     private AndroidTreeView tView;
-    List<ContentIndex> contentIndexList;
+    List<OfflineContent> offlineContentList ;
+    String selectedCourse;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_offline_content,container,false);
+        View view = inflater.inflate(R.layout.fragment_offline_content, container, false);
         ButterKnife.bind(this, view);
         if(getActivity() instanceof OfflineContentActivity) {
             ((OfflineContentActivity) getActivity()).setOfflineListener(this);
@@ -52,62 +50,101 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
         return view;
     }
 
-    private boolean getContentIndexResponse(String courseId) {
-        ContentIndexResponse contentIndexResponse = DbManager.getInstance(getActivity()).getContentIndexList(courseId,
-                LoginUserCache.getInstance().loginResponse.studentId);
-        if(contentIndexResponse == null) {
-            return false;
-        }
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        if(contentIndexList != null) {
-            contentIndexList.clear();
-        }
-        contentIndexList = gson.fromJson(contentIndexResponse.contentIndexesJson, new TypeToken<List<ContentIndex>>(){}.getType());
-        return true;
+    private void getContentIndexResponse(final Course course) {
+        DbManager.getInstance(getActivity()).getOfflineContentList(new ApiCallback<List<OfflineContent>>(getActivity()) {
+            @Override
+            public void failure(CorsaliteError error) {
+                super.failure(error);
+            }
+
+            @Override
+            public void success(List<OfflineContent> offlineContents, Response response) {
+                offlineContentList = new ArrayList<OfflineContent>();
+                for(OfflineContent offlineContent: offlineContents) {
+                    if(offlineContent.courseId.equalsIgnoreCase(course.courseId.toString())) {
+                        offlineContentList.add(offlineContent);
+                    }
+                }
+                if(offlineContentList != null && offlineContentList.size() >0){
+                    initNodes();
+                }else{
+                    mProgressBar.setVisibility(View.GONE);
+                    mainNodeLayout.removeAllViews();
+                    Toast.makeText(getActivity(), "No offline content available " + course.name, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
-    private void updateContentIndexResponses(String courseId) {
+    /*private void updateContentIndexResponses(String courseId) {
         Type contentIndexType = new TypeToken<List<ContentIndex>>() {
         }.getType();
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String jsonObject = gson.toJson(contentIndexList, contentIndexType);
         DbManager.getInstance(getActivity()).saveContentIndexList(jsonObject, courseId, LoginUserCache.getInstance().loginResponse.studentId);
-    }
+    }*/
 
     @Override
     public void onCourseIdSelected(Course course) {
-        if(getContentIndexResponse(course.courseId.toString())){
-            initNodes();
-        }else{
-            Toast.makeText(getActivity(), "No offline content available "+course.name, Toast.LENGTH_SHORT).show();
-        }
+        getContentIndexResponse(course);
+        this.selectedCourse = course.courseId.toString();
     }
 
     @Override
     public void onUpdateOfflineData(String courseId) {
-        updateContentIndexResponses(courseId);
+        //updateContentIndexResponses(courseId);
     }
 
     private void initNodes() {
         TreeNode root = TreeNode.root();
-        for (ContentIndex contentResponse: contentIndexList) {
-            //TreeNode contentResponseRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_subject, contentResponse.courseName,contentResponse.idCourse));
-            //root.addChild(contentResponseRoot);
-            for (SubjectModel subject : contentResponse.subjectModelList) {
-                TreeNode subjectRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_subject, subject.subjectName,subject.idSubject));
-                root.addChild(subjectRoot);
-                for (ChapterModel chapter : subject.chapters) {
-                    TreeNode chapterRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_chapter, chapter.chapterName,chapter.idChapter));
-                    subjectRoot.addChild(chapterRoot);
-                    for (TopicModel topic : chapter.topicMap) {
-                        TreeNode topicRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_chapter, topic.topicName,topic.idTopic));
-                        chapterRoot.addChild(topicRoot);
-                        for (ContentModel content : topic.contentMap) {
-                            TreeNode contentRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_topics,content.contentName +"."+ content.type,content.idContent));
-                            topicRoot.addChild(contentRoot);
-                        }
-                    }
+        for (OfflineContent offlineContent: offlineContentList) {
+            TreeNode subjectRoot =null;
+            for(TreeNode subjectNode:root.getChildren()) {
+                if (((IconTreeItemHolder.IconTreeItem) subjectNode.getValue()).id.equalsIgnoreCase(offlineContent.subjectId)) {
+                    subjectRoot = subjectNode ;
+                    break;
                 }
+
+            }
+            if(subjectRoot == null){
+                subjectRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_subject_white, offlineContent.subjectName,offlineContent.subjectId,"subject"));
+                root.addChild(subjectRoot);
+            }
+
+            TreeNode chapterRoot =null;
+            for(TreeNode chapterNode:subjectRoot.getChildren()) {
+                if (((IconTreeItemHolder.IconTreeItem)chapterNode.getValue()).id.equalsIgnoreCase(offlineContent.chapterId)) {
+                    chapterRoot = chapterNode ;
+                    break;
+                }
+            }
+            if(chapterRoot == null){
+                chapterRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_chapter,  offlineContent.chapterName,offlineContent.chapterId,"chapter"));
+                subjectRoot.addChild(chapterRoot);
+            }
+
+            TreeNode topicRoot =null;
+            for(TreeNode topicNode:chapterRoot.getChildren()) {
+                if (((IconTreeItemHolder.IconTreeItem)topicNode.getValue()).id.equalsIgnoreCase(offlineContent.topicId)) {
+                    topicRoot = topicNode ;
+                    break;
+                }
+            }
+            if(topicRoot == null){
+                topicRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_chapter, offlineContent.topicName,offlineContent.topicId,"topic"));
+                chapterRoot.addChild(topicRoot);
+            }
+
+            TreeNode contentRoot =null;
+            for(TreeNode contentNode:topicRoot.getChildren()) {
+                if(((IconTreeItemHolder.IconTreeItem)contentNode.getValue()).id.equalsIgnoreCase(offlineContent.contentId)) {
+                    contentRoot = contentNode ;
+                    break;
+                }
+            }
+            if(contentRoot == null){
+                contentRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_topics,offlineContent.fileName, offlineContent.contentId,"content"));
+                topicRoot.addChild(contentRoot);
             }
         }
 
@@ -142,39 +179,50 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
     }
 
     @Override
-    public void onDeleteOfflineData(String id){
-        for(ContentIndex contentIndex:contentIndexList){
-            if(contentIndex.idCourse.equalsIgnoreCase(id)){
-                contentIndexList.remove(contentIndex);
-                return;
-            }
-            for(SubjectModel subject : contentIndex.subjectModelList){
-                if(subject.idSubject.equalsIgnoreCase(id)){
-                    contentIndex.subjectModelList.remove(subject);
-                    return;
-                }
-                for (ChapterModel chapter : subject.chapters) {
-                    if(chapter.idChapter.equalsIgnoreCase(id)){
-                        subject.chapters.remove(chapter);
-                        return;
-                    }
-                    for(TopicModel topic : chapter.topicMap){
-                        if(topic.idTopic.equalsIgnoreCase(id)){
-                            chapter.topicMap.remove(topic);
-                            return;
+    public void onDeleteOfflineData(String id,String tag){
+        String path = null;
+        for(OfflineContent offlineContent : offlineContentList){
+            if(offlineContent.courseId.equalsIgnoreCase(selectedCourse)) {
+                switch (tag) {
+                    case "subject":
+                        if (id.equalsIgnoreCase(offlineContent.subjectId)) {
+                            offlineContentList.remove(offlineContent);
+                              path = offlineContent.courseName+"/"+offlineContent.subjectName;
                         }
-                        for(ContentModel content : topic.contentMap){
-                            if(content.idContent.equalsIgnoreCase(id)){
-                                topic.contentMap.remove(content);
-                                return;
-                            }
+                        break;
+                    case "chapter":
+                        if (id.equalsIgnoreCase(offlineContent.chapterId)) {
+                            offlineContentList.remove(offlineContent);
+                            path = offlineContent.courseName+"/"+offlineContent.subjectName+"/"+offlineContent.chapterName;
                         }
-                    }
-                }
+                        break;
+                    case "topic":
+                        if (id.equalsIgnoreCase(offlineContent.topicId)) {
+                            offlineContentList.remove(offlineContent);
+                            path = offlineContent.courseName+"/"+offlineContent.subjectName+"/"+offlineContent.chapterName+"/"+offlineContent.topicName;
+                        }
+                        break;
+                    case "content":
+                        if (id.equalsIgnoreCase(offlineContent.contentId)) {
+                            path = offlineContent.courseName+"/"+offlineContent.subjectName+"/"+offlineContent.chapterName+"/"+offlineContent.topicName+"/"+offlineContent.contentName;
+                            offlineContentList.remove(offlineContent);
 
+                        }
+                        break;
+                }
             }
         }
+        //Delete file
+        new FileUtilities(getActivity()).delete(path);
+
+        //Save to database
+        DbManager.getInstance(getActivity()).saveOfflineContent(offlineContentList);
+
     }
+
+
+
+
 
 
 
