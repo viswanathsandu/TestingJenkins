@@ -6,7 +6,7 @@
         android:id="@+id/selected_item"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
-        android:src="@drawable/abc_btn_check_to_on_mtrl_015"
+        android:src="@drawable/ico_tick_selected"
         android:layout_marginLeft="10dp"/>
     <CheckedTextView
         android:id="@+id/text"
