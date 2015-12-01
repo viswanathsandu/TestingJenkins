@@ -106,7 +106,7 @@ public class DbManager {
         }
     }
 
-    public void OfflineContent(final List<OfflineContent> offlineContents) {
+    public void deleteOfflineContent(final List<OfflineContent> offlineContents) {
         for (final OfflineContent offlineContent : offlineContents) {
             new Thread(new Runnable() {
                 @Override
