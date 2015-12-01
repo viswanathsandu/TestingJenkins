@@ -107,32 +107,32 @@ public class DbManager {
     }
 
     public void deleteOfflineContent(final List<OfflineContent> offlineContents) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    synchronized (this) {
-                        for (OfflineContent offlineContent : offlineContents) {
-                            dbService.Delete(OfflineContent.class, offlineContent);
-                        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                synchronized (this) {
+                    for (OfflineContent offlineContent : offlineContents) {
+                        dbService.Delete(OfflineContent.class, offlineContent);
                     }
                 }
-            }).start();
+            }
+        }).start();
     }
 
     public void deleteAllOfflineContent() {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    synchronized (this) {
-                        List<OfflineContent> offlinecontentList = dbService.Get(OfflineContent.class);
-                        for (OfflineContent savedOfflineContent : offlinecontentList) {
-                            dbService.Delete(OfflineContent.class, savedOfflineContent);
-                        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                synchronized (this) {
+                    List<OfflineContent> offlinecontentList = dbService.Get(OfflineContent.class);
+                    for (OfflineContent savedOfflineContent : offlinecontentList) {
+                        dbService.Delete(OfflineContent.class, savedOfflineContent);
                     }
                 }
-            }).start();
-        }
+            }
+        }).start();
     }
+
 
     public <T> void getOfflineContentList(ApiCallback<List<OfflineContent>> callback) {
         new GetDataFromDbAsync(dbService, callback).execute();

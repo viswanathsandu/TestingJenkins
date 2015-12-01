@@ -30,4 +30,6 @@ public class Chapters {
     @SerializedName("notesCount")
     public String notesCount;
 
+    public boolean isChapterOffline = true;
+
 }

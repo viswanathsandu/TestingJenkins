@@ -55,6 +55,9 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
     public void onBindViewHolder(final StudyCenterSubjectViewHolder holder, final int position) {
 
         final Chapters chapter = chapters.get(position);
+        if(chapter.isChapterOffline){
+            holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.grayshape));
+        }
         String label = chapter.chapterName;
         holder.textView.setText(label);
         holder.timeSpent.setText(getDateFromMillis(chapter.timeSpent));
