@@ -116,6 +116,27 @@ public class DbService {
 		}).start();
 	}
 
+	public <T> void Delete(final Class<T> entityClass, final T entity) {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					ObjectContainer db = GetDb();
+					List<T> results = db.query(entityClass);
+					for (T iDomainEntity : results) {
+						if(entity.equals(iDomainEntity)) {
+							db.delete(iDomainEntity);
+						}
+					}
+					db.commit();
+					L.info("entity '%s' deleted successfully", entity.getClass().getSimpleName());
+				} catch (Exception e) {
+					L.error(e.getMessage(), e);
+				}
+			}
+		}).start();
+	}
+
 	public <T> void DeleteById(final Class<T> entity, final String fieldName, final String id) {
 		new Thread(new Runnable() {
 			@Override

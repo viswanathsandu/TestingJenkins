@@ -131,6 +131,7 @@ public class DbManager {
                     }
                 }
             }).start();
+        }
     }
 
     public <T> void getOfflineContentList(ApiCallback<List<OfflineContent>> callback) {
