@@ -27,6 +27,8 @@ import com.education.corsalite.utils.L;
 import com.github.mikephil.charting.charts.ScatterChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.MarkerView;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.ScatterData;
 import com.github.mikephil.charting.data.ScatterDataSet;
@@ -73,7 +75,8 @@ public class AccuracySpeedTabFragment extends Fragment   {
         mLayoutManagerChapter = new LinearLayoutManager(getActivity());
         rvChapterLegend.setLayoutManager(mLayoutManagerChapter);
         rvDatesLegend.setLayoutManager(mLayoutManagerDates);
-        initializeGraph();
+        initializeGraph(accuracyChapterChart);
+        initializeGraph(accuracyDateChart);
         return view;
     }
 
@@ -112,13 +115,14 @@ public class AccuracySpeedTabFragment extends Fragment   {
                         if(getActivity() == null) {
                             return;
                         }
-                        mProgressBar.setVisibility(View.GONE);
-                        mParentLayout.setVisibility(View.VISIBLE);
                         buildChapterGraphData(courseAnalysisList, CHAPTER);
                         //create custom legend
                         Legend chapterLegend = accuracyChapterChart.getLegend();
                         customLegendAdapter = new CustomLegendAdapter(chapterLegend.getColors(),chapterLegend.getLabels(),getActivity().getLayoutInflater());
                         rvChapterLegend.setAdapter(customLegendAdapter);
+
+                        mProgressBar.setVisibility(View.GONE);
+                        mParentLayout.setVisibility(View.VISIBLE);
                     }
                 });
 
@@ -138,8 +142,6 @@ public class AccuracySpeedTabFragment extends Fragment   {
                         if(getActivity() == null) {
                             return;
                         }
-                        mProgressBar.setVisibility(View.GONE);
-                        mParentLayout.setVisibility(View.VISIBLE);
                         buildChapterGraphData(courseAnalysisList, DATES);
                         Legend datesLegend = accuracyDateChart.getLegend();
                         ArrayList<String> dates = new ArrayList<String>(Arrays.asList(datesLegend.getLabels()));
@@ -148,6 +150,10 @@ public class AccuracySpeedTabFragment extends Fragment   {
                                 ,Arrays.asList(objectArray).toArray(new String[objectArray.length])
                                 ,getActivity().getLayoutInflater());
                         rvDatesLegend.setAdapter(customLegendAdapter);
+
+                        mProgressBar.setVisibility(View.GONE);
+                        mParentLayout.setVisibility(View.VISIBLE);
+
                     }
                 });
 
@@ -160,14 +166,22 @@ public class AccuracySpeedTabFragment extends Fragment   {
             mProgressBar.setVisibility(View.GONE);
         }
     }
-    private void initializeGraph(){
+    private void initializeGraph(ScatterChart mChart){
 
-        accuracyChapterChart.setDescription("");
-        accuracyDateChart.setDescription("");
+        mChart.setDescription("");
 
-        accuracyDateChart.getLegend().setEnabled(false);
-        accuracyChapterChart.getLegend().setEnabled(false);
+        mChart.getLegend().setEnabled(false);
+        YAxis rightAxis = mChart.getAxisRight();
+        rightAxis.setDrawGridLines(true);
+        rightAxis.setEnabled(false);
 
+        YAxis leftAxis = mChart.getAxisLeft();
+        leftAxis.setDrawGridLines(true);
+
+        XAxis xAxis = mChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+        mChart.setGridBackgroundColor(getActivity().getResources().getColor(R.color.bg_chart));
         setMarkerView();
 
     }
@@ -181,8 +195,8 @@ public class AccuracySpeedTabFragment extends Fragment   {
     ArrayList<String> chapterList = new ArrayList<>();
     ArrayList<String> dateList = new ArrayList<>();
     ArrayList<String> subjectName = new ArrayList<>();
-    private void buildChapterGraphData(List<CourseAnalysis> courseAnalysisList,String graphType){
 
+    private void buildChapterGraphData(List<CourseAnalysis> courseAnalysisList,String graphType){
 
         HashMap<String,ArrayList<Entry>> numYValEntries = new HashMap<>();
         for (CourseAnalysis analysisDetail: courseAnalysisList) {
@@ -204,11 +218,11 @@ public class AccuracySpeedTabFragment extends Fragment   {
             }
             if (numYValEntries.get(key) == null) {
                     ArrayList<Entry> list = new ArrayList<>();
-                    list.add(new Entry(Float.valueOf(analysisDetail.accuracy), xVals.indexOf(analysisDetail.speed)));
+                    list.add(new Entry(Math.round(Float.valueOf(analysisDetail.accuracy) * 100.0F) / 100.0F, xVals.indexOf(analysisDetail.speed)));
                     numYValEntries.put(key, list);
             } else {
                     ArrayList<Entry> list = numYValEntries.get(key);
-                    list.add(new Entry(Float.valueOf(analysisDetail.accuracy), xVals.indexOf(analysisDetail.speed)));
+                    list.add(new Entry(Math.round(Float.valueOf(analysisDetail.accuracy) * 100.0F) / 100.0F, xVals.indexOf(analysisDetail.speed)));
                     numYValEntries.put(key, list);
             }
         }
@@ -225,7 +239,15 @@ public class AccuracySpeedTabFragment extends Fragment   {
             i++;
         }
 
+        //truncate xvals
+        ArrayList<String> truncXVals = new ArrayList<>();
+        for(String val:xVals){
+            truncXVals.add(AnalyticsHelper.truncateString(val));
+        }
+        xVals = truncXVals;
+
         ScatterData data = new ScatterData(xVals, scatterDataSetList);
+        data.setDrawValues(false);
         if(graphType.equalsIgnoreCase(CHAPTER)) {
             accuracyChapterChart.setData(data);
             accuracyChapterChart.invalidate();
