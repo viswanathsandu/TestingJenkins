@@ -48,7 +48,7 @@ public class ForumActivity extends AbstractBaseActivity {
     private CourseData mCourseData;
     private ArrayList<String> subjects;
     private RelativeLayout relativeLayout;
-    Spinner courseSpinner;
+    private Spinner courseSpinner;
     private TextView selectedSubjectTxt;
     private String key;
     private LinearLayout notesLayout;

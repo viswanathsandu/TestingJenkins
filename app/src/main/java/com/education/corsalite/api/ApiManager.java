@@ -13,6 +13,7 @@ import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.CourseAnalysis;
 import com.education.corsalite.models.responsemodels.CourseAnalysisPercentile;
 import com.education.corsalite.models.responsemodels.DefaultCourseResponse;
+import com.education.corsalite.models.responsemodels.DefaultForumResponse;
 import com.education.corsalite.models.responsemodels.DefaultNoteResponse;
 import com.education.corsalite.models.responsemodels.EditProfileModel;
 import com.education.corsalite.models.responsemodels.ExamHistory;
@@ -111,7 +112,7 @@ public class ApiManager {
 
     public void getUsageAnalysis(String userId,ApiCallback<UsageAnalysis> callback){
         if(isApiOnline()){
-            ApiClientService.get().getUsageAnalysis(userId,callback);
+            ApiClientService.get().getUsageAnalysis(userId, callback);
         }else {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/usage_analysis.json");
             L.info("Response for 'api/usage_analysis.json' is " + jsonResponse);
@@ -341,6 +342,12 @@ public class ApiManager {
     public void postExerciseAnswer(String insert, ApiCallback<PostExercise> callback) {
         if (isApiOnline()) {
             ApiClientService.get().postExerciseAnswer(insert, callback);
+        }
+    }
+
+    public void addForum(String htmlText, ApiCallback<DefaultForumResponse> callback) {
+        if(isApiOnline()) {
+            ApiClientService.get().addForum(htmlText, callback);
         }
     }
 }

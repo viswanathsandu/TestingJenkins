@@ -6,6 +6,7 @@ import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.CourseAnalysis;
 import com.education.corsalite.models.responsemodels.CourseAnalysisPercentile;
 import com.education.corsalite.models.responsemodels.DefaultCourseResponse;
+import com.education.corsalite.models.responsemodels.DefaultForumResponse;
 import com.education.corsalite.models.responsemodels.DefaultNoteResponse;
 import com.education.corsalite.models.responsemodels.EditProfileModel;
 import com.education.corsalite.models.responsemodels.ExamHistory;
@@ -77,13 +78,13 @@ public interface ICorsaliteApi {
 
     @GET("/GetCourseAnalysisAsPercentile")
     void getCourseAnalysisPercentile(@Query("idStudent") String studentId,
-                           @Query("idCourse") String courseId,
-                           @Query("idSubject")String subjectID,
-                           @Query("GroupLevel")String groupLevel,
-                           @Query("BreakupByDate")String breakUpByDate,
-                           @Query("DurationInDays")String durationInDays,
-                           @Query("ReturnAllRowsWithoutPerfDataAlso")String returnAllRowsWithourPerfData,
-                           ApiCallback<List<CourseAnalysisPercentile>> callback);
+                                     @Query("idCourse") String courseId,
+                                     @Query("idSubject") String subjectID,
+                                     @Query("GroupLevel") String groupLevel,
+                                     @Query("BreakupByDate") String breakUpByDate,
+                                     @Query("DurationInDays") String durationInDays,
+                                     @Query("ReturnAllRowsWithoutPerfDataAlso") String returnAllRowsWithourPerfData,
+                                     ApiCallback<List<CourseAnalysisPercentile>> callback);
 
     @GET("/GetTestCoverage")
     void getTestCoverage(@Query("idStudent") String studentId,
@@ -97,7 +98,7 @@ public interface ICorsaliteApi {
     void getContentData(@Query("idContents") String idContents, @Query("UpdateTime") String UpdateTime, ApiCallback<List<Content>> callback);
 
     @GET("/Exercise")
-    void getExerciseData(@Query("idTopic") String idTopics, @Query("idCourse") String idCourse , @Query("idStudent") String idStudent, @Query("UpdateTime") String UpdateTime, ApiCallback<List<ExerciseModel>> callback);
+    void getExerciseData(@Query("idTopic") String idTopics, @Query("idCourse") String idCourse, @Query("idStudent") String idStudent, @Query("UpdateTime") String UpdateTime, ApiCallback<List<ExerciseModel>> callback);
 
     @POST("/UserProfile")
     void updateUserProfile(@Query("Update") String userProfile, ApiCallback<EditProfileModel> callback);
@@ -109,13 +110,18 @@ public interface ICorsaliteApi {
     void updateExamDetails(@Query("Update") String update, ApiCallback<UpdateExamDetailsResponse> callback);
 
     @GET("/Note")
-    void getNotes(@Query("idStudent") String studentId, @Query("idSubject") String subjectId , @Query("idChapter") String chapterId, @Query("idTopic") String topicId, ApiCallback<List<Note>> callback);
+    void getNotes(@Query("idStudent") String studentId, @Query("idSubject") String subjectId, @Query("idChapter") String chapterId, @Query("idTopic") String topicId, ApiCallback<List<Note>> callback);
 
     @GET("/ExamHistory")
-    void getExamHistory(@Query("idStudent") String studentId, @Query("BeginRowNumber") String beginRowNum , @Query("RowCount") String rowCount,ApiCallback<List<ExamHistory>> callback);
+    void getExamHistory(@Query("idStudent") String studentId, @Query("BeginRowNumber") String beginRowNum, @Query("RowCount") String rowCount, ApiCallback<List<ExamHistory>> callback);
 
     @POST("/Note")
     void addNote(@Query("Insert") String insert, ApiCallback<DefaultNoteResponse> callback);
+
+
+    @POST("/Forums")
+    void addForum(@Query("Update") String insert, ApiCallback<DefaultForumResponse> callback);
+
 
     @POST("/Note")
     void updateNote(@Query("Update") String insert, ApiCallback<DefaultNoteResponse> callback);

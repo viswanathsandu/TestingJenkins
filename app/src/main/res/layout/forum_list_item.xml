@@ -78,7 +78,7 @@
                 android:layout_height="35dp"
                 android:drawableLeft="@drawable/abc_btn_check_to_on_mtrl_015"
                 android:gravity="center_vertical"
-                android:text="@string/bookmark"
+                android:text="bookmark"
                 android:textColor="@color/black" />
 
             <TextView
@@ -87,7 +87,7 @@
                 android:layout_height="35dp"
                 android:drawableLeft="@drawable/abc_btn_check_to_on_mtrl_015"
                 android:gravity="center_vertical"
-                android:text="@string/like"
+                android:text="like"
                 android:textColor="@color/black" />
 
             <TextView
@@ -97,7 +97,7 @@
                 android:layout_marginLeft="10dp"
                 android:drawableLeft="@drawable/abc_btn_check_to_on_mtrl_015"
                 android:gravity="center_vertical"
-                android:text="@string/comment"
+                android:text="comment"
                 android:textColor="@color/black" />
         </LinearLayout>
 
@@ -115,7 +115,7 @@
                 android:layout_height="35dp"
                 android:background="@drawable/yellowshape_selector"
                 android:drawableLeft="@drawable/abc_btn_check_to_on_mtrl_015"
-                android:text="@string/bookmark"
+                android:text="bookmark"
                 android:textColor="@color/text_white" />
 
             <Button
@@ -125,7 +125,7 @@
                 android:layout_marginLeft="20dp"
                 android:background="@drawable/greenshape_selector"
                 android:drawableLeft="@drawable/abc_btn_check_to_on_mtrl_015"
-                android:text="@string/like"
+                android:text="like"
                 android:textColor="@color/text_white" />
 
             <Button
@@ -135,7 +135,7 @@
                 android:layout_marginLeft="20dp"
                 android:background="@drawable/blueshape_selector"
                 android:drawableLeft="@drawable/abc_btn_check_to_on_mtrl_015"
-                android:text="@string/comment"
+                android:text="comment"
                 android:textColor="@color/text_white" />
         </LinearLayout>
     </LinearLayout>
