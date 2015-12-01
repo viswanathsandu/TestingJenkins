@@ -392,7 +392,7 @@ public class ExerciseActivity extends AbstractBaseActivity {
         final LinearLayout[] rowLayout = new LinearLayout[size];
 
         String[] preselectedAnswers = null;
-        if(!title.equalsIgnoreCase("Exercise Test") &&
+        if(/*!title.equalsIgnoreCase("Exercise Test") &&*/
                 !TextUtils.isEmpty(localExerciseModelList.get(selectedPosition).selectedAnswers)) {
             preselectedAnswers = localExerciseModelList.get(selectedPosition).selectedAnswers.split(",");
         }
@@ -494,7 +494,7 @@ public class ExerciseActivity extends AbstractBaseActivity {
         final LinearLayout[] rowLayout = new LinearLayout[size];
 
         String preselectedAnswers = null;
-        if(!title.equalsIgnoreCase("Exercise Test") &&
+        if(/*!title.equalsIgnoreCase("Exercise Test") &&*/
                 !TextUtils.isEmpty(localExerciseModelList.get(selectedPosition).selectedAnswers)) {
             preselectedAnswers = localExerciseModelList.get(selectedPosition).selectedAnswers;
         }
