@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
+import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.holders.IconTreeItemHolder;
 import com.education.corsalite.holders.CheckedItemViewHolder;
@@ -114,6 +115,8 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
             @Override
             public void success(List<Content> contents, Response response) {
                 super.success(contents, response);
+                ApiCacheHolder.getInstance().setContentResponse(contents);
+                dbManager.saveReqRes(ApiCacheHolder.getInstance().contentReqIndex);
             }
         });
     }
