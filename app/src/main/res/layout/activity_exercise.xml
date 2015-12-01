@@ -43,7 +43,70 @@
                     android:layout_weight="1"
                     android:gravity="center_vertical" />
 
+                <LinearLayout
+                    android:gravity="center"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:id="@+id/layout_timer"
+                    android:background="@drawable/rounded_corners_green"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:enabled="false"
+                        android:textSize="16sp"
+                        fontPath="@string/roboto_regular"
+                        android:textColor="#80FFFFFF"
+                        android:text="TIME LEFT" />
+
+                    <TextView
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:enabled="false"
+                        android:textSize="18sp"
+                        fontPath="@string/roboto_regular"
+                        android:textColor="#40FFFFFF"
+                        android:text=" | " />
+
+                    <TextView
+                        android:id="@+id/tv_timer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:enabled="false"
+                        android:textSize="18sp"
+                        fontPath="@string/roboto_regular"
+                        android:textColor="#FFFFFF"
+                        android:text=" | " />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:padding="2dp"
+                    android:layout_marginLeft="10dp"
+                    android:visibility="gone"
+                    android:id="@+id/imv_refresh"
+                    android:background="@drawable/rounded_corners_blue"
+                    android:src="@drawable/ico_restart_test"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:enabled="false"
+                    fontPath="@string/roboto_regular"
+                    android:text=" | " />
+
+
                 <Button
+                    android:visibility="gone"
                     android:id="@+id/btn_verify"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
