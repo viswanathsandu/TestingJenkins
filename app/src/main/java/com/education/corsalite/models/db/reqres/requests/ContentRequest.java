@@ -12,10 +12,10 @@ public class ContentRequest extends AbstractBaseRequest {
         super();
     }
 
-    public ContentRequest(String studentId, String courseId) {
+    public ContentRequest(String idContents, String updateTime) {
         super();
-        this.idContents = studentId;
-        this.updateTime = courseId;
+        this.idContents = idContents;
+        this.updateTime = updateTime;
     }
 
     @Override
