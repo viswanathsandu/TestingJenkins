@@ -1,5 +1,6 @@
 package com.education.corsalite.models.responsemodels;
 
+import com.education.corsalite.utils.Constants;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -33,6 +34,9 @@ public class ExerciseModel extends BaseModel implements Serializable {
     public String displayName;
     @SerializedName("AnswerChoice")
     public List<AnswerChoiceModel> answerChoice;
+
+    public Constants.AnswerState answerColorSelection = Constants.AnswerState.UNATTEMPTED;
+    public String selectedAnswers;
 
     @Override
     public String toString() {

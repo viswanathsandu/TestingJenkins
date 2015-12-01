@@ -3,9 +3,11 @@ package com.education.corsalite.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -34,6 +36,7 @@ import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.requestmodels.PostExerciseRequestModel;
 import com.education.corsalite.models.responsemodels.AnswerChoiceModel;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
+import com.education.corsalite.models.responsemodels.ExerciseModel;
 import com.education.corsalite.models.responsemodels.PostExercise;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.L;
@@ -91,6 +94,8 @@ public class ExerciseActivity extends AbstractBaseActivity {
     private int selectedAnswerPosition = -1;
     String title = "";
     GridAdapter gridAdapter;
+    private List<ExerciseModel> localExerciseModelList;
+    private int previousQuestionPosition = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +104,7 @@ public class ExerciseActivity extends AbstractBaseActivity {
         LinearLayout myView = (LinearLayout) inflater.inflate(R.layout.activity_exercise, null);
         frameLayout.addView(myView);
         ButterKnife.bind(this);
+        localExerciseModelList = WebActivity.exerciseModelList;
         toggleSlider();
         initWebView();
         initWebView1();
@@ -127,13 +133,13 @@ public class ExerciseActivity extends AbstractBaseActivity {
             inflateUI(selectedPosition);
         }
 
-        if(WebActivity.exerciseModelList.size() > 1) {
+        if(localExerciseModelList.size() > 1) {
             webFooter.setVisibility(View.VISIBLE);
         } else {
             webFooter.setVisibility(View.GONE);
         }
 
-        gridAdapter = new GridAdapter(selectedPosition);
+        gridAdapter = new GridAdapter();
         gvTest.setAdapter(gridAdapter);
         gvTest.setExpanded(true);
 
@@ -141,6 +147,7 @@ public class ExerciseActivity extends AbstractBaseActivity {
             testNavFooter.setVisibility(View.GONE);
         } else {
             testNavFooter.setVisibility(View.VISIBLE);
+            btnVerify.setVisibility(View.GONE);
         }
     }
 
@@ -250,9 +257,12 @@ public class ExerciseActivity extends AbstractBaseActivity {
     }
 
     private void inflateUI(int position) {
+        if(previousQuestionPosition >= 0) {
+            setAnswerState();
+        }
         selectedPosition = position;
         resetExplanation();
-        if(WebActivity.exerciseModelList  != null && WebActivity.exerciseModelList.size() > 0) {
+        if(localExerciseModelList  != null && localExerciseModelList.size() > 0) {
             loadQuestion(position);
         }
     }
@@ -263,7 +273,7 @@ public class ExerciseActivity extends AbstractBaseActivity {
             btnNext.setVisibility(View.VISIBLE);
             return;
         }
-        if(selectedPosition == WebActivity.exerciseModelList.size() - 1) {
+        if(selectedPosition == localExerciseModelList.size() - 1) {
             btnPrevious.setVisibility(View.VISIBLE);
             btnNext.setVisibility(View.GONE);
             return;
@@ -277,14 +287,16 @@ public class ExerciseActivity extends AbstractBaseActivity {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.btn_next:
+                    previousQuestionPosition = selectedPosition;
                     inflateUI(selectedPosition + 1);
                     break;
                 case R.id.btn_previous:
+                    previousQuestionPosition = selectedPosition;
                     inflateUI(selectedPosition - 1);
                     break;
                 case R.id.btn_verify:
-                     postAnswer(WebActivity.exerciseModelList.get(selectedPosition).answerChoice.get(selectedAnswerPosition),
-                            WebActivity.exerciseModelList.get(selectedPosition).idQuestion);
+                     postAnswer(localExerciseModelList.get(selectedPosition).answerChoice.get(selectedAnswerPosition),
+                            localExerciseModelList.get(selectedPosition).idQuestion);
                     break;
 
                 case R.id.tv_clearanswer:
@@ -304,35 +316,31 @@ public class ExerciseActivity extends AbstractBaseActivity {
 
     private void loadQuestion(int position) {
 
-        if(gridAdapter != null) {
-            gridAdapter.notifyDataSetChanged();
-        }
-
         tvSerialNo.setText("Q" + (position + 1) + ")");
 
         /*String header = "Exercise: " + WebActivity.exe)rciseModelList.get(position).displayName.split("\\s+")[0];
         SpannableString headerText = new SpannableString(header);
         headerText.setSpan(new UnderlineSpan(), 0, header.length(), 0);*/
-        tvLevel.setText(WebActivity.exerciseModelList.get(position).displayName.split("\\s+")[0].toUpperCase(Locale.ENGLISH));
+        tvLevel.setText(localExerciseModelList.get(position).displayName.split("\\s+")[0].toUpperCase(Locale.ENGLISH));
 
 
-        if(TextUtils.isEmpty(WebActivity.exerciseModelList.get(position).paragraphHtml)) {
+        if(TextUtils.isEmpty(localExerciseModelList.get(position).paragraphHtml)) {
             webviewParagraph.setVisibility(View.GONE);
         } else {
             webviewParagraph.setVisibility(View.VISIBLE);
-            webQuestion = WebActivity.exerciseModelList.get(position).paragraphHtml;
+            webQuestion = localExerciseModelList.get(position).paragraphHtml;
             webviewParagraph.loadData(webQuestion, "text/html; charset=UTF-8", null);
         }
 
         webviewQuestion.setVisibility(View.GONE);
-        if(WebActivity.exerciseModelList.get(position).questionHtml != null) {
-            webQuestion =  WebActivity.exerciseModelList.get(position).questionHtml;
+        if(localExerciseModelList.get(position).questionHtml != null) {
+            webQuestion =  localExerciseModelList.get(position).questionHtml;
             webviewQuestion.loadData(webQuestion, "text/html; charset=UTF-8", null);
             webviewQuestion.setVisibility(View.VISIBLE);
         }
 
-        if(WebActivity.exerciseModelList.get(position).comment != null) {
-            tvComment.setText(WebActivity.exerciseModelList.get(position).comment);
+        if(localExerciseModelList.get(position).comment != null) {
+            tvComment.setText(localExerciseModelList.get(position).comment);
             tvComment.setVisibility(View.VISIBLE);
         } else {
             tvComment.setVisibility(View.GONE);
@@ -343,19 +351,19 @@ public class ExerciseActivity extends AbstractBaseActivity {
             mViewSwitcher.showNext();
         }
 
-        if(WebActivity.exerciseModelList.get(position).idQuestionType.equalsIgnoreCase("1")) {
+        if(localExerciseModelList.get(position).idQuestionType.equalsIgnoreCase("1")) {
             loadAnswers(position);
-        } else if (WebActivity.exerciseModelList.get(position).idQuestionType.equalsIgnoreCase("2")) {
+        } else if (localExerciseModelList.get(position).idQuestionType.equalsIgnoreCase("2")) {
             loadChexkbox(position);
         } else {
-            if(WebActivity.exerciseModelList.size() - 1 == 0) {
+            if(localExerciseModelList.size() - 1 == 0) {
                 return;
             }
-            if(WebActivity.exerciseModelList.size() - 1 > selectedPosition) {
-                WebActivity.exerciseModelList.remove(selectedPosition);
+            if(localExerciseModelList.size() - 1 > selectedPosition) {
+                localExerciseModelList.remove(selectedPosition);
                 inflateUI(selectedPosition);
             } else {
-                WebActivity.exerciseModelList.remove(selectedPosition);
+                localExerciseModelList.remove(selectedPosition);
                 inflateUI(selectedPosition - 1);
             }
         }
@@ -378,10 +386,16 @@ public class ExerciseActivity extends AbstractBaseActivity {
         resetExplanation();
         answerLayout.removeAllViews();
 
-        List<AnswerChoiceModel> answerChoiceModels = WebActivity.exerciseModelList.get(position).answerChoice;
+        List<AnswerChoiceModel> answerChoiceModels = localExerciseModelList.get(position).answerChoice;
         final int size = answerChoiceModels.size();
         final CheckBox[] checkBoxes = new CheckBox[size];
         final LinearLayout[] rowLayout = new LinearLayout[size];
+
+        String[] preselectedAnswers = null;
+        if(!title.equalsIgnoreCase("Exercise Test") &&
+                !TextUtils.isEmpty(localExerciseModelList.get(selectedPosition).selectedAnswers)) {
+            preselectedAnswers = localExerciseModelList.get(selectedPosition).selectedAnswers.split(",");
+        }
 
         for(int i = 0; i < size; i++) {
 
@@ -425,12 +439,22 @@ public class ExerciseActivity extends AbstractBaseActivity {
                             for (int x = 0; x < size; x++) {
                                 if(checkBoxes[x].getId() == Integer.valueOf(answerChoiceModel.idAnswerKey)) {
                                     selectedAnswerPosition = x + 1;
+                                    if(TextUtils.isEmpty(localExerciseModelList.get(selectedPosition).selectedAnswers)) {
+                                        localExerciseModelList.get(selectedPosition).selectedAnswers = String.valueOf(x);
+                                    } else {
+                                        localExerciseModelList.get(selectedPosition).selectedAnswers = localExerciseModelList.get(selectedPosition).selectedAnswers + ","+x;
+                                    }
                                 }
                             }
                         } else {
                             for (int x = 0; x < size; x++) {
                                 if(checkBoxes[x].isChecked()) {
                                     selectedAnswerPosition = x + 1;
+                                    if(TextUtils.isEmpty(localExerciseModelList.get(selectedPosition).selectedAnswers)) {
+                                        localExerciseModelList.get(selectedPosition).selectedAnswers = String.valueOf(x);
+                                    } else {
+                                        localExerciseModelList.get(selectedPosition).selectedAnswers = localExerciseModelList.get(selectedPosition).selectedAnswers + ","+x;
+                                    }
                                     isCheckedAtLeastOnce = true;
                                      break;
                                 }
@@ -438,12 +462,21 @@ public class ExerciseActivity extends AbstractBaseActivity {
                         }
                         if(!isCheckedAtLeastOnce) {
                             selectedAnswerPosition = -1;
+                            localExerciseModelList.get(selectedPosition).selectedAnswers = null;
                         }
                         btnVerify.setEnabled(isCheckedAtLeastOnce);
                     }
                 });
             } catch (Exception ignored) {
                 ignored.printStackTrace();
+            }
+        }
+
+        //set checkBox check
+        if(preselectedAnswers != null && preselectedAnswers.length > 0) {
+            for(String selectedChoice : preselectedAnswers) {
+                checkBoxes[Integer.valueOf(selectedChoice)].setChecked(true);
+                selectedAnswerPosition = Integer.valueOf(selectedChoice) + 1;
             }
         }
         setExplanationLayout();
@@ -454,11 +487,17 @@ public class ExerciseActivity extends AbstractBaseActivity {
         resetExplanation();
         answerLayout.removeAllViews();
 
-        List<AnswerChoiceModel> answerChoiceModels = WebActivity.exerciseModelList.get(position).answerChoice;
+        List<AnswerChoiceModel> answerChoiceModels = localExerciseModelList.get(position).answerChoice;
         final int size = answerChoiceModels.size();
         final RadioButton[] radioButton = new RadioButton[size];
         final TextView[] tvSerial = new TextView[size];
         final LinearLayout[] rowLayout = new LinearLayout[size];
+
+        String preselectedAnswers = null;
+        if(!title.equalsIgnoreCase("Exercise Test") &&
+                !TextUtils.isEmpty(localExerciseModelList.get(selectedPosition).selectedAnswers)) {
+            preselectedAnswers = localExerciseModelList.get(selectedPosition).selectedAnswers;
+        }
 
         for(int i = 0; i < size; i++) {
 
@@ -510,6 +549,7 @@ public class ExerciseActivity extends AbstractBaseActivity {
                             radioButton[x].setChecked(false);
                             if(radioButton[x].getId() == Integer.valueOf(answerChoiceModel.idAnswerKey)) {
                                 selectedAnswerPosition = x + 1;
+                                localExerciseModelList.get(selectedPosition).selectedAnswers = String.valueOf(x);
                             }
                         }
                         ((RadioButton) v).setChecked(true);
@@ -520,14 +560,20 @@ public class ExerciseActivity extends AbstractBaseActivity {
                 ignored.printStackTrace();
             }
         }
+
+        //set radiobutton check
+        if(!TextUtils.isEmpty(preselectedAnswers)) {
+            radioButton[Integer.valueOf(preselectedAnswers)].setChecked(true);
+            selectedAnswerPosition = Integer.valueOf(preselectedAnswers) + 1;
+        }
         setExplanationLayout();
     }
 
     private void clearAnswers() {
-        List<AnswerChoiceModel> answerChoiceModels = WebActivity.exerciseModelList.get(selectedPosition).answerChoice;
+        List<AnswerChoiceModel> answerChoiceModels = localExerciseModelList.get(selectedPosition).answerChoice;
         int size = answerChoiceModels.size();
         boolean isCompound;
-        if(WebActivity.exerciseModelList.get(selectedPosition).idQuestionType.equalsIgnoreCase("1")) {
+        if(localExerciseModelList.get(selectedPosition).idQuestionType.equalsIgnoreCase("1")) {
             isCompound = true;
         } else {
             isCompound = false;
@@ -538,12 +584,14 @@ public class ExerciseActivity extends AbstractBaseActivity {
         for(int i = 0; i < size; i++) {
             ((CompoundButton)findViewById(Integer.valueOf(answerChoiceModels.get(i).idAnswerKey))).setChecked(false);
         }
+        localExerciseModelList.get(selectedPosition).selectedAnswers = null;
+        resetExplanation();
     }
 
     private void setExplanationLayout() {
         String webText = "";
         String correctAnswer = "";
-        List<AnswerChoiceModel> answerChoiceModels = WebActivity.exerciseModelList.get(selectedPosition).answerChoice;
+        List<AnswerChoiceModel> answerChoiceModels = localExerciseModelList.get(selectedPosition).answerChoice;
         int counter = 0;
         for(AnswerChoiceModel answerChoiceModel : answerChoiceModels) {
             counter = counter + 1 ;
@@ -556,7 +604,9 @@ public class ExerciseActivity extends AbstractBaseActivity {
         txtAnswerCount.setText(correctAnswer);
         txtAnswerExp.loadData(webText, "text/html; charset=UTF-8", null);
 
-
+        if(gridAdapter != null) {
+            gridAdapter.notifyDataSetChanged();
+        }
     }
 
     private void resetExplanation() {
@@ -621,18 +671,16 @@ public class ExerciseActivity extends AbstractBaseActivity {
 
     public class GridAdapter extends BaseAdapter {
 
-        int currentQuestionPosition;
         View grid;
         LayoutInflater inflater;
 
-        public GridAdapter(int currentQuestionPosition) {
-            this.currentQuestionPosition = currentQuestionPosition;
+        public GridAdapter() {
             inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
 
         @Override
         public int getCount() {
-            return WebActivity.exerciseModelList.size();
+            return localExerciseModelList.size();
         }
 
         @Override
@@ -656,23 +704,55 @@ public class ExerciseActivity extends AbstractBaseActivity {
             }
             btnCounter = (TextView)v.findViewById(R.id.btnNumber);
             if(position < 9) {
-                btnCounter.setText("0"+(position + 1));
+                btnCounter.setText("0" + (position + 1));
             } else {
                 btnCounter.setText(String.valueOf(position + 1));
             }
-            if(position == selectedPosition) {
-                btnCounter.setBackgroundResource(R.drawable.rounded_corners_green);
-            } else {
-                btnCounter.setBackgroundResource(R.drawable.rounded_corners_gray);
+
+            Log.e("tteesstt", localExerciseModelList.get(position).answerColorSelection+"::"+position);
+
+            switch (localExerciseModelList.get(position).answerColorSelection) {
+                case ANSWERED:
+                    btnCounter.setBackgroundResource(R.drawable.rounded_corners_green);
+                    break;
+
+                case SKIPPED:
+                    btnCounter.setBackgroundResource(R.drawable.rounded_corners_red);
+                    break;
+
+                case FLAGGED:
+                    btnCounter.setBackgroundResource(R.drawable.rounded_corners_yellow);
+                    break;
+
+                case UNATTEMPTED:
+                    btnCounter.setBackgroundResource(R.drawable.rounded_corners_gray);
+                    break;
             }
 
-            v.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            if(position == selectedPosition) {
+                btnCounter.setPaintFlags(btnCounter.getPaintFlags() |   Paint.UNDERLINE_TEXT_FLAG);
+                previousQuestionPosition = position;
+            } else {
+                if ((btnCounter.getPaintFlags() & Paint.UNDERLINE_TEXT_FLAG) > 0) {
+                    btnCounter.setPaintFlags( btnCounter.getPaintFlags() & (~ Paint.UNDERLINE_TEXT_FLAG));
+                }
+            }
+
+                v.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
                     inflateUI(position);
                 }
             });
             return v;
+        }
+    }
+
+    private void setAnswerState() {
+        if(selectedAnswerPosition != -1) {
+            localExerciseModelList.get(previousQuestionPosition).answerColorSelection = Constants.AnswerState.ANSWERED;
+        } else {
+            localExerciseModelList.get(previousQuestionPosition).answerColorSelection = Constants.AnswerState.SKIPPED;
         }
     }
 }
