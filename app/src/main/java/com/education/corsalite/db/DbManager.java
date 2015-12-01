@@ -106,6 +106,22 @@ public class DbManager {
         }
     }
 
+    public void OfflineContent(final List<OfflineContent> offlineContents) {
+        for (final OfflineContent offlineContent : offlineContents) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    synchronized (this) {
+                        List<OfflineContent> offlinecontentList = dbService.Get(OfflineContent.class);
+                        for (OfflineContent savedOfflineContent : offlinecontentList) {
+                            dbService.Delete(OfflineContent.class, savedOfflineContent);
+                        }
+                    }
+                }
+            }).start();
+        }
+    }
+
     public <T> void getOfflineContentList(ApiCallback<List<OfflineContent>> callback) {
         new GetDataFromDbAsync(dbService, callback).execute();
     }
