@@ -60,7 +60,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     private View selectedColorFilter;
     private boolean closeApp = false;
     private ArrayList<Object> offlineContentList;
-    private boolean isOffline;
+    private boolean isOnline;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -217,6 +217,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
             @Override
             public void success(List<OfflineContent> offlineContents, Response response) {
                 offlineContentList = new ArrayList<>();
+                mCourseData = new CourseData();
                 if (offlineContentList != null && offlineContentList.size() > 0) {
                     studyCenter = ApiCacheHolder.getInstance().studyCenter.response.get(0);
                     setUpStudyCentreData(studyCenter);
@@ -234,7 +235,9 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                 } else {
                     Toast.makeText(StudyCentreActivity.this, "No offline content available for study center", Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.GONE);
-                    showGrayBg(ApiCacheHolder.getInstance().studyCenter.response);
+                    if (ApiCacheHolder.getInstance().studyCenter != null) {
+                        showGrayBg(ApiCacheHolder.getInstance().studyCenter.response);
+                    }
                 }
                 updateSelected(allColorLayout);
             }
@@ -262,8 +265,8 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     }
 
     private void getStudyCentreData(String courseId) {
-        isOffline = true;
-        if (!isOffline) {
+        isOnline = ApiManager.getInstance(this).isApiOnline();
+        if (isOnline) {
             hideRecyclerView();
 
             ApiManager.getInstance(this).getStudyCentreData(LoginUserCache.getInstance().loginResponse.studentId,
