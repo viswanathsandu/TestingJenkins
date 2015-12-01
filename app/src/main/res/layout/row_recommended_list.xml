@@ -12,7 +12,7 @@
         android:layout_width="0dp"
         android:padding="15dp"
         android:text="Subject"
-        style="@style/analytics_subtext_style"
+        style="@style/analytics_text_style"
         android:singleLine="true"
         android:ellipsize="end"/>
 
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:padding="15dp"
         android:text="Chapter"
-        style="@style/analytics_subtext_style"
+        style="@style/analytics_text_style"
         android:singleLine="true"
         android:ellipsize="end"/>
 
@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:padding="15dp"
         android:text="Topic"
-        style="@style/analytics_subtext_style"
+        style="@style/analytics_text_style"
         android:singleLine="true"
         android:ellipsize="end"/>
 
@@ -48,7 +48,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="15dp"
-        style="@style/analytics_subtext_style"
+        style="@style/analytics_text_style"
         android:text="Date"
         android:singleLine="true"
         android:ellipsize="end"/>
@@ -61,7 +61,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="15dp"
-        style="@style/analytics_subtext_style"
+        style="@style/analytics_text_style"
         android:text="Marks"
         android:singleLine="true"
         android:ellipsize="end"/>
@@ -74,7 +74,7 @@
         android:layout_height="wrap_content"
         android:padding="15dp"
         android:text="Accuracy"
-        style="@style/analytics_subtext_style"
+        style="@style/analytics_text_style"
         android:singleLine="true"
         android:ellipsize="end"/>
 
@@ -86,7 +86,7 @@
         android:layout_height="wrap_content"
         android:padding="15dp"
         android:text="Speed"
-        style="@style/analytics_subtext_style"
+        style="@style/analytics_text_style"
         android:singleLine="true"
         android:ellipsize="end"/>
 </LinearLayout>

@@ -1,6 +1,7 @@
 package com.education.corsalite.cache;
 
 import com.education.corsalite.models.db.reqres.ContentIndexReqRes;
+import com.education.corsalite.models.db.reqres.ContentReqRes;
 import com.education.corsalite.models.db.reqres.CoursesReqRes;
 import com.education.corsalite.models.db.reqres.LoginReqRes;
 import com.education.corsalite.models.db.reqres.StudyCenterReqRes;
@@ -12,6 +13,7 @@ import com.education.corsalite.models.db.reqres.requests.LoginRequest;
 import com.education.corsalite.models.db.reqres.requests.StudyCenterRequest;
 import com.education.corsalite.models.db.reqres.requests.UserProfileRequest;
 import com.education.corsalite.models.db.reqres.requests.VirtualCurrencyBalanceRequest;
+import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.LoginResponse;
@@ -33,6 +35,7 @@ public class ApiCacheHolder {
     public CoursesReqRes courses;
     public StudyCenterReqRes studyCenter;
     public ContentIndexReqRes contentIndex;
+    public ContentReqRes contentReqIndex;
     public VirtualCurrencyBalanceReqRes virtualCurrencyBalance;
 
     public static ApiCacheHolder getInstance() {
@@ -95,6 +98,17 @@ public class ApiCacheHolder {
     public void setcontentIndexResponse(List<ContentIndex> response) {
         if(contentIndex != null) {
             contentIndex.response = response;
+        }
+    }
+
+    public void setContentRequest(String idContents, String updateTime) {
+        contentReqIndex = new ContentReqRes();
+        contentReqIndex.request = new ContentIndexRequest(idContents, updateTime);
+    }
+
+    public void setContentResponse(List<Content> response) {
+        if(contentReqIndex != null) {
+            contentReqIndex.response = response;
         }
     }
 

@@ -107,7 +107,19 @@ public class DbManager {
     }
 
     public void deleteOfflineContent(final List<OfflineContent> offlineContents) {
-        for (final OfflineContent offlineContent : offlineContents) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    synchronized (this) {
+                        for (OfflineContent offlineContent : offlineContents) {
+                            dbService.Delete(OfflineContent.class, offlineContent);
+                        }
+                    }
+                }
+            }).start();
+    }
+
+    public void deleteAllOfflineContent() {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
