@@ -17,12 +17,13 @@ import android.widget.TextView;
 
 import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
+import com.education.corsalite.activities.ExerciseActivity;
 import com.education.corsalite.activities.NotesActivity;
-import com.education.corsalite.activities.OfflineContentActivity;
 import com.education.corsalite.activities.OfflineSubjectActivity;
 import com.education.corsalite.activities.StudyCentreActivity;
 import com.education.corsalite.activities.WebActivity;
 import com.education.corsalite.models.responsemodels.Chapters;
+import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.Data;
 
 import java.text.SimpleDateFormat;
@@ -102,6 +103,13 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         notes.setText(TextUtils.isEmpty(chapter.notesCount) ? "0" : chapter.notesCount);
         TextView completedTopics = (TextView)dialogView.findViewById(R.id.completed_topics);
         completedTopics.setText(getCompletedTopicsPercentage(chapter) + "%");
+        dialogView.findViewById(R.id.take_test).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+                startExerciseActivity(chapter);
+            }
+        });
         dialogView.findViewById(R.id.start_reading).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -136,6 +144,15 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         putIntentExtras(chapter, intent, COURSE_ID, SUBJECT_ID, CHAPTER_ID);
         intent.putExtra("chapterName", chapter.chapterName);
         intent.putExtra(SUBJECT, key);
+        studyCentreActivity.startActivity(intent);
+    }
+
+    private void startExerciseActivity(Chapters chapters) {
+        Intent intent = new Intent(studyCentreActivity, ExerciseActivity.class);
+        intent.putExtra(Constants.SELECTED_COURSE, "13" /*AbstractBaseActivity.selectedCourse.courseId.toString()*/);
+        intent.putExtra(Constants.SELECTED_TOPICID, "1310");
+        intent.putExtra(Constants.TEST_TITLE, "Take Test");
+        intent.putExtra(Constants.SELECTED_TOPIC, "Take Data");
         studyCentreActivity.startActivity(intent);
     }
 
