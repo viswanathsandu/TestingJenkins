@@ -153,7 +153,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         intent.putExtra(Constants.SELECTED_COURSE, "13" /*AbstractBaseActivity.selectedCourse.courseId.toString()*/);
         intent.putExtra(Constants.SELECTED_TOPICID, "1310");
         intent.putExtra(Constants.TEST_TITLE, "Take Test");
-        intent.putExtra(Constants.SELECTED_TOPIC, "Take Data");
+        intent.putExtra(Constants.SELECTED_TOPIC, "Take Test");
         studyCentreActivity.startActivity(intent);
     }
 
