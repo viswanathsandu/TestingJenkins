@@ -19,7 +19,6 @@ import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.activities.ExerciseActivity;
 import com.education.corsalite.activities.NotesActivity;
-import com.education.corsalite.activities.OfflineContentActivity;
 import com.education.corsalite.activities.OfflineSubjectActivity;
 import com.education.corsalite.activities.StudyCentreActivity;
 import com.education.corsalite.activities.WebActivity;
@@ -104,7 +103,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         notes.setText(TextUtils.isEmpty(chapter.notesCount) ? "0" : chapter.notesCount);
         TextView completedTopics = (TextView)dialogView.findViewById(R.id.completed_topics);
         completedTopics.setText(getCompletedTopicsPercentage(chapter) + "%");
-        dialogView.findViewById(R.id.part_test).setOnClickListener(new View.OnClickListener() {
+        dialogView.findViewById(R.id.take_test).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.cancel();
@@ -152,8 +151,8 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         Intent intent = new Intent(studyCentreActivity, ExerciseActivity.class);
         intent.putExtra(Constants.SELECTED_COURSE, "13" /*AbstractBaseActivity.selectedCourse.courseId.toString()*/);
         intent.putExtra(Constants.SELECTED_TOPICID, "1310");
-        intent.putExtra(Constants.TEST_TITLE, "Part Test");
-        intent.putExtra(Constants.SELECTED_TOPIC, "Part Data");
+        intent.putExtra(Constants.TEST_TITLE, "Take Test");
+        intent.putExtra(Constants.SELECTED_TOPIC, "Take Data");
         studyCentreActivity.startActivity(intent);
     }
 
