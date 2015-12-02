@@ -222,11 +222,8 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
         //Delete file
         new FileUtilities(getActivity()).delete(path);
 
-        for(OfflineContent offlineContent : removeList){
-            offlineContentList.remove(offlineContent);
-        }
-        //Save to database
-        DbManager.getInstance(getActivity()).saveOfflineContent(offlineContentList);
+        //Update database
+        DbManager.getInstance(getActivity()).deleteOfflineContent(removeList);
 
     }
 
