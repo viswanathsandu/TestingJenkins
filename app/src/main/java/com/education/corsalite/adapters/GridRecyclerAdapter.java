@@ -18,7 +18,6 @@ import android.widget.TextView;
 import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.activities.NotesActivity;
-import com.education.corsalite.activities.OfflineContentActivity;
 import com.education.corsalite.activities.OfflineSubjectActivity;
 import com.education.corsalite.activities.StudyCentreActivity;
 import com.education.corsalite.activities.WebActivity;
@@ -91,6 +90,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         wmlp.x = (int) v.getX() + 15;
         wmlp.y = (int) v.getY() + 140;
         dialog.show();
+        dialog.getWindow().setAttributes(wmlp);
         dialog.getWindow().setLayout(300, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 
