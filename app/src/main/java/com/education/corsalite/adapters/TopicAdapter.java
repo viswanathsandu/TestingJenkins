@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
@@ -20,6 +21,7 @@ public class TopicAdapter extends BaseAdapter {
     List<TopicModel> topicModelList;
     Context mContext;
     LayoutInflater inflater;
+    private int selectedPosition;
 
     public TopicAdapter(List<TopicModel> topicModelList, Context mContext) {
         this.topicModelList = topicModelList;
@@ -51,5 +53,20 @@ public class TopicAdapter extends BaseAdapter {
         TextView tv = (TextView)convertView.findViewById(R.id.tv_spn);
         tv.setText(topicModelList.get(position).topicName);
         return convertView;
+    }
+
+    @Override
+    public View getDropDownView(int position, View convertView, ViewGroup parent) {
+        View itemView =  inflater.inflate(R.layout.spinner_drop_down, null);
+        TextView textView = (TextView)itemView.findViewById(R.id.text);
+        ImageView imageView = (ImageView)itemView.findViewById(R.id.selected_item);
+        textView.setText(topicModelList.get(position).topicName);
+        imageView.setVisibility(position == selectedPosition ? View.VISIBLE : View.INVISIBLE);
+        return itemView;
+    }
+
+    public void setSelectedPosition(int position){
+        selectedPosition = position;
+        notifyDataSetChanged();
     }
 }
