@@ -92,6 +92,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         wmlp.x = (int) v.getX() + 15;
         wmlp.y = (int) v.getY() + 140;
         dialog.show();
+        dialog.getWindow().setAttributes(wmlp);
         dialog.getWindow().setLayout(300, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 
