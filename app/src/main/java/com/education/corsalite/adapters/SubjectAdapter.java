@@ -1,11 +1,11 @@
 package com.education.corsalite.adapters;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
@@ -21,6 +21,7 @@ public class SubjectAdapter extends BaseAdapter {
     List<SubjectModel> subjectModelList;
     Context mContext;
     LayoutInflater inflater;
+    private int selectedPosition;
 
     public SubjectAdapter(List<SubjectModel> subjectModelList, Context mContext) {
         this.subjectModelList = subjectModelList;
@@ -52,5 +53,20 @@ public class SubjectAdapter extends BaseAdapter {
         TextView tv = (TextView)convertView.findViewById(R.id.tv_spn);
         tv.setText(subjectModelList.get(position).subjectName);
         return convertView;
+    }
+
+    @Override
+    public View getDropDownView(int position, View convertView, ViewGroup parent) {
+        View itemView =  inflater.inflate(R.layout.spinner_drop_down, null);
+        TextView textView = (TextView)itemView.findViewById(R.id.text);
+        ImageView imageView = (ImageView)itemView.findViewById(R.id.selected_item);
+        textView.setText(subjectModelList.get(position).subjectName);
+        imageView.setVisibility(position == selectedPosition ? View.VISIBLE : View.INVISIBLE);
+        return itemView;
+    }
+
+    public void setSelectedPosition(int position){
+        selectedPosition = position;
+        notifyDataSetChanged();
     }
 }
