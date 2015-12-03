@@ -19,6 +19,6 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/analytics_text_style"
+        style="@style/analytics_legend_text_style"
         android:id="@+id/tv_label"/>
 </LinearLayout>

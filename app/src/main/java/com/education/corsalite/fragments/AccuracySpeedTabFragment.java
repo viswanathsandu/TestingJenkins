@@ -58,7 +58,8 @@ public class AccuracySpeedTabFragment extends Fragment   {
     @Bind(R.id.rv_dates_legend)RecyclerView rvDatesLegend;
     @Bind(R.id.progress_bar_tab)ProgressBar mProgressBar;
     @Bind(R.id.tv_failure_text)TextView mTextViewFail ;
-    @Bind(R.id.ll_accuracy)LinearLayout mParentLayout;
+    @Bind(R.id.ll_chapter)LinearLayout mParentLayoutChapter;
+    @Bind(R.id.ll_dates)LinearLayout mParentLayoutDates;
     LinearLayoutManager mLayoutManagerDates;
     LinearLayoutManager mLayoutManagerChapter;
     RecyclerView.Adapter customLegendAdapter;
@@ -95,6 +96,10 @@ public class AccuracySpeedTabFragment extends Fragment   {
     }
 
     public void onEvent(Course course) {
+        mProgressBar.setVisibility(View.VISIBLE);
+        mParentLayoutChapter.setVisibility(View.GONE);
+        mParentLayoutDates.setVisibility(View.GONE);
+        mTextViewFail.setVisibility(View.GONE);
         drawGraphs(course.courseId+"");
     }
 
@@ -122,7 +127,7 @@ public class AccuracySpeedTabFragment extends Fragment   {
                         rvChapterLegend.setAdapter(customLegendAdapter);
 
                         mProgressBar.setVisibility(View.GONE);
-                        mParentLayout.setVisibility(View.VISIBLE);
+                        mParentLayoutChapter.setVisibility(View.VISIBLE);
                     }
                 });
 
@@ -152,7 +157,7 @@ public class AccuracySpeedTabFragment extends Fragment   {
                         rvDatesLegend.setAdapter(customLegendAdapter);
 
                         mProgressBar.setVisibility(View.GONE);
-                        mParentLayout.setVisibility(View.VISIBLE);
+                        mParentLayoutDates.setVisibility(View.VISIBLE);
 
                     }
                 });
