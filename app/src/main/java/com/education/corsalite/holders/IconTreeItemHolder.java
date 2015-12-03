@@ -52,7 +52,7 @@ public class IconTreeItemHolder extends TreeNode.BaseNodeViewHolder<IconTreeItem
         });
 
         if(value.tag.equalsIgnoreCase("content")){
-            arrowView.setVisibility(View.GONE);
+            arrowView.setVisibility(View.INVISIBLE);
         }else if(value.tag.equalsIgnoreCase("subject")){
             mainLayout.setBackgroundColor(context.getResources().getColor(R.color.red));
             arrowView.setImageDrawable(context.getResources().getDrawable(R.drawable.ico_offline_arrow_white));
