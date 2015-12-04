@@ -60,7 +60,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     private View selectedColorFilter;
     private boolean closeApp = false;
     private ArrayList<Object> offlineContentList;
-    private boolean isOnline;
+    private boolean isNetworkConnected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -207,6 +207,68 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         getStudyCentreData(course.courseId.toString());
     }
 
+    private void showGrayBg(List<StudyCenter> studyCenters) {
+        if (studyCenters != null) {
+            mCourseData = new CourseData();
+            mCourseData.StudyCenter = studyCenters;
+        }
+        if (mCourseData != null && mCourseData.StudyCenter != null && !mCourseData.StudyCenter.isEmpty()) {
+            setupSubjects(mCourseData);
+            key = mCourseData.StudyCenter.get(0).SubjectName;
+            studyCenter = mCourseData.StudyCenter.get(0);
+            for (Chapters chapter : studyCenter.Chapters) {
+                chapter.isChapterOffline = true;
+            }
+            setUpStudyCentreData(studyCenter);
+            initDataAdapter(subjects.get(0));
+            updateSelected(allColorLayout);
+        } else {
+            hideRecyclerView();
+        }
+    }
+
+    private void getStudyCentreData(String courseId) {
+        isNetworkConnected = ApiManager.getInstance(this).isNetworkConnected();
+        hideRecyclerView();
+
+        ApiManager.getInstance(this).getStudyCentreData(LoginUserCache.getInstance().loginResponse.studentId,
+                courseId, new ApiCallback<List<StudyCenter>>(this) {
+                    @Override
+                    public void failure(CorsaliteError error) {
+                        super.failure(error);
+                        if (error != null && !TextUtils.isEmpty(error.message)) {
+                            showToast(error.message);
+                        }
+                        hideRecyclerView();
+                    }
+
+                    @Override
+                    public void success(List<StudyCenter> studyCenters, Response response) {
+                        super.success(studyCenters, response);
+                        if (isNetworkConnected) {
+                            if (studyCenters != null) {
+                                ApiCacheHolder.getInstance().setStudyCenterResponse(studyCenters);
+                                dbManager.saveReqRes(ApiCacheHolder.getInstance().studyCenter);
+                                mCourseData = new CourseData();
+                                mCourseData.StudyCenter = studyCenters;
+                            }
+                            if (mCourseData != null && mCourseData.StudyCenter != null && !mCourseData.StudyCenter.isEmpty()) {
+                                setupSubjects(mCourseData);
+                                key = mCourseData.StudyCenter.get(0).SubjectName;
+                                studyCenter = mCourseData.StudyCenter.get(0);
+                                setUpStudyCentreData(studyCenter);
+                                initDataAdapter(subjects.get(0));
+                                updateSelected(allColorLayout);
+                            } else {
+                                hideRecyclerView();
+                            }
+                        } else {
+                            getOfflineStudyCenterData();
+                        }
+                    }
+                });
+    }
+
     private void getOfflineStudyCenterData() {
         DbManager.getInstance(this).getOfflineContentList(new ApiCallback<List<OfflineContent>>(this) {
             @Override
@@ -216,9 +278,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
 
             @Override
             public void success(List<OfflineContent> offlineContents, Response response) {
-                offlineContentList = new ArrayList<>();
-                mCourseData = new CourseData();
-                if (offlineContentList != null && offlineContentList.size() > 0) {
+                if (offlineContents != null && offlineContents.size() > 0) {
                     studyCenter = ApiCacheHolder.getInstance().studyCenter.response.get(0);
                     setUpStudyCentreData(studyCenter);
                     mCourseData = new CourseData();
@@ -242,68 +302,6 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                 updateSelected(allColorLayout);
             }
         });
-    }
-
-    private void showGrayBg(List<StudyCenter> studyCenters) {
-        if (studyCenters != null) {
-            mCourseData = new CourseData();
-            mCourseData.StudyCenter = studyCenters;
-        }
-        if (mCourseData != null && mCourseData.StudyCenter != null && !mCourseData.StudyCenter.isEmpty()) {
-            setupSubjects(mCourseData);
-            key = mCourseData.StudyCenter.get(0).SubjectName;
-            studyCenter = mCourseData.StudyCenter.get(0);
-            for (Chapters chapter : studyCenter.Chapters) {
-                chapter.isChapterOffline = true;
-            }
-            setUpStudyCentreData(studyCenter);
-            initDataAdapter(subjects.get(0));
-            updateSelected(allColorLayout);
-        } else {
-            hideRecyclerView();
-        }
-    }
-
-    private void getStudyCentreData(String courseId) {
-        isOnline = ApiManager.getInstance(this).isApiOnline();
-        if (isOnline) {
-            hideRecyclerView();
-
-            ApiManager.getInstance(this).getStudyCentreData(LoginUserCache.getInstance().loginResponse.studentId,
-                    courseId, new ApiCallback<List<StudyCenter>>(this) {
-                        @Override
-                        public void failure(CorsaliteError error) {
-                            super.failure(error);
-                            if (error != null && !TextUtils.isEmpty(error.message)) {
-                                showToast(error.message);
-                            }
-                            hideRecyclerView();
-                        }
-
-                        @Override
-                        public void success(List<StudyCenter> studyCenters, Response response) {
-                            super.success(studyCenters, response);
-                            if (studyCenters != null) {
-                                ApiCacheHolder.getInstance().setStudyCenterResponse(studyCenters);
-                                dbManager.saveReqRes(ApiCacheHolder.getInstance().studyCenter);
-                                mCourseData = new CourseData();
-                                mCourseData.StudyCenter = studyCenters;
-                            }
-                            if (mCourseData != null && mCourseData.StudyCenter != null && !mCourseData.StudyCenter.isEmpty()) {
-                                setupSubjects(mCourseData);
-                                key = mCourseData.StudyCenter.get(0).SubjectName;
-                                studyCenter = mCourseData.StudyCenter.get(0);
-                                setUpStudyCentreData(studyCenter);
-                                initDataAdapter(subjects.get(0));
-                                updateSelected(allColorLayout);
-                            } else {
-                                hideRecyclerView();
-                            }
-                        }
-                    });
-        } else {
-            getOfflineStudyCenterData();
-        }
     }
 
     private void hideRecyclerView() {
