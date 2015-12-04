@@ -87,6 +87,8 @@ public class ProgressReportTabFragment extends Fragment {
     }
 
     public void onEvent(Course course) {
+        mLinearLayout.setVisibility(View.GONE);
+        mProgressBar.setVisibility(View.VISIBLE);
         drawGraph(course.courseId + "");
     }
 
@@ -108,12 +110,14 @@ public class ProgressReportTabFragment extends Fragment {
                             return;
                         }
                         totalCount = 0;
-                        mLinearLayout.setVisibility(View.VISIBLE);
-                        mProgressBar.setVisibility(View.GONE);
                         buildData(courseAnalysisList);
                         for (Map.Entry<String,List<CourseAnalysis>> entry : courseDataMap.entrySet()) {
                             buildGraphData(entry.getValue(),entry.getKey(),totalCount++);
                         }
+
+                        mLinearLayout.setVisibility(View.VISIBLE);
+                        mProgressBar.setVisibility(View.GONE);
+
 
                     }
                 });

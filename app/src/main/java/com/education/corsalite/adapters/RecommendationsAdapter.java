@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.education.corsalite.R;
 import com.education.corsalite.models.responsemodels.CourseAnalysis;
+import com.education.corsalite.utils.AnalyticsHelper;
 
 import java.util.List;
 
@@ -58,6 +59,8 @@ public class RecommendationsAdapter extends  AbstractRecycleViewAdapter {
         public void bindData(final int position, final CourseAnalysis course) {
             if((position+1)% 2 == 0) {
                 parent.setBackgroundColor(inflater.getContext().getResources().getColor(R.color.tab_recycler_alternate_row));
+            }else{
+                parent.setBackgroundColor(inflater.getContext().getResources().getColor(R.color.white));
             }
             subject.setText(course.subjectName);
             subject.setAllCaps(false);
@@ -65,13 +68,13 @@ public class RecommendationsAdapter extends  AbstractRecycleViewAdapter {
             chapter.setAllCaps(false);
             topic.setText(course.topic);
             topic.setAllCaps(false);
-            dateTime.setText(course.date);
+            dateTime.setText(course.recentTestDate);
             dateTime.setAllCaps(false);
-            marks.setText(course.earnedMarks);
+            marks.setText(AnalyticsHelper.truncateString(course.earnedMarks));
             marks.setAllCaps(false);
 
 
-            accuracy.setText(course.accuracy);
+            accuracy.setText(AnalyticsHelper.truncateString(course.accuracy));
             if(accuracy.getText() != null && !accuracy.getText().toString().isEmpty()){
                 float accuracyF = Float.parseFloat(accuracy.getText().toString());
                 float scoreRed = Float.parseFloat(course.scoreRed);
@@ -85,7 +88,7 @@ public class RecommendationsAdapter extends  AbstractRecycleViewAdapter {
                 }
             }
 
-            speed.setText(course.speed);
+            speed.setText(AnalyticsHelper.truncateString(course.speed));
 
         }
     }
