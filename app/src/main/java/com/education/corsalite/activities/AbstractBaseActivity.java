@@ -11,7 +11,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -33,7 +32,6 @@ import com.education.corsalite.db.DbAdapter;
 import com.education.corsalite.db.DbManager;
 import com.education.corsalite.models.ContentModel;
 import com.education.corsalite.models.requestmodels.LogoutModel;
-import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
@@ -41,7 +39,6 @@ import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.CookieUtils;
 import com.google.gson.Gson;
 
-import java.io.Serializable;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
@@ -389,32 +386,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         selectedCourse = course;
         // this method will be overridden by the classes that subscribes from event bus
     }
-
-    protected void getContentData(String courseId, String updateTime) {
-        ApiManager.getInstance(this).getContent(courseId, updateTime,
-            new ApiCallback<List<Content>>(this) {
-                @Override
-                public void failure(CorsaliteError error) {
-                    super.failure(error);
-                    if (error != null && !TextUtils.isEmpty(error.message)) {
-                        showToast(error.message);
-                    }
-                }
-
-                @Override
-                public void success(List<Content> mContentResponse, Response response) {
-                    super.success(mContentResponse, response);
-                    if (mContentResponse != null) {
-                        Intent intent = new Intent(AbstractBaseActivity.this, WebActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("contentData", (Serializable) mContentResponse);
-                        intent.putExtras(bundle);
-                        startActivity(intent);
-                    }
-                }
-            });
-    }
-
 
     public static void saveSessionCookie(Response response) {
         String cookie = CookieUtils.getCookieString(response);
