@@ -3,7 +3,9 @@ package com.education.corsalite.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -54,7 +56,7 @@ public class LoginActivity extends AbstractBaseActivity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                login(usernameTxt.getText().toString(), Encryption.md5(passwordTxt.getText().toString()), false);
+                login();
             }
         });
         forgotPasswordTxt.setOnClickListener(new View.OnClickListener() {
@@ -67,9 +69,19 @@ public class LoginActivity extends AbstractBaseActivity {
                 startActivity(intent);
             }
         });
+
+        passwordTxt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if(actionId == EditorInfo.IME_ACTION_DONE){
+                   login();
+                }
+                return false;
+            }
+        });
     }
 
-    private void login(final String username, final String password, boolean fetchLocal) {
+    private void login(final String username, final String password, final boolean fetchLocal) {
         showProgress();
         ApiManager.getInstance(this).login(username, password, new ApiCallback<LoginResponse>(this) {
             @Override
@@ -90,7 +102,7 @@ public class LoginActivity extends AbstractBaseActivity {
                     dbManager.saveReqRes(ApiCacheHolder.getInstance().login);
                     appPref.save("loginId", username);
                     appPref.save("passwordHash", password);
-                    onLoginsuccess(loginResponse);
+                    onLoginsuccess(loginResponse, fetchLocal);
                 } else {
                     showToast(getResources().getString(R.string.login_failed));
                 }
@@ -98,14 +110,44 @@ public class LoginActivity extends AbstractBaseActivity {
         }, fetchLocal);
     }
 
-    private void onLoginsuccess(LoginResponse response) {
+    private void onLoginsuccess(LoginResponse response, boolean fetchLocal) {
         if(response != null) {
             LoginUserCache.getInstance().setLoginResponse(response);
-            showToast(getResources().getString(R.string.login_successful));
+            if(!fetchLocal) {
+                showToast(getResources().getString(R.string.login_successful));
+            }
             startActivity(new Intent(LoginActivity.this, StudyCentreActivity.class));
             finish();
         } else {
             showToast(getResources().getString(R.string.login_failed));
+        }
+    }
+
+    private boolean checkForValidEmail(){
+        if(usernameTxt.getText() != null && !usernameTxt.getText().toString().isEmpty()){
+
+            return android.util.Patterns.EMAIL_ADDRESS.matcher(usernameTxt.getText().toString()).matches();
+        }
+        return false;
+    }
+
+    private boolean checkPasswordField(){
+        if(passwordTxt.getText() != null && !passwordTxt.getText().toString().isEmpty()){
+            return true;
+        }
+        return false;
+    }
+
+    private void login(){
+
+        if(checkForValidEmail()) {
+            if(checkPasswordField()) {
+                login(usernameTxt.getText().toString(), Encryption.md5(passwordTxt.getText().toString()), false);
+            }else {
+                showToast("Please enter password");
+            }
+        }else {
+            showToast("Please enter a valid email id");
         }
     }
 }

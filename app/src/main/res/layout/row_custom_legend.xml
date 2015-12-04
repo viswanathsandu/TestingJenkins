@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:gravity="center">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_yellow"
+    android:gravity="left"
+    android:scrollbars="vertical">
 
     <ImageView
         android:layout_width="5dp"
         android:layout_height="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
         android:paddingTop="2dp"
+        android:layout_gravity="center"
         android:id="@+id/iv_color"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="2dp"
-        style="@style/analytics_subtext_style"
+        style="@style/analytics_legend_text_style"
         android:id="@+id/tv_label"/>
 </LinearLayout>

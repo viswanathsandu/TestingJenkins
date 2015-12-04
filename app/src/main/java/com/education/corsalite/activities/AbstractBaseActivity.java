@@ -11,7 +11,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -24,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.education.corsalite.R;
+import com.education.corsalite.adapters.SpinnerAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.ApiCacheHolder;
@@ -32,7 +32,6 @@ import com.education.corsalite.db.DbAdapter;
 import com.education.corsalite.db.DbManager;
 import com.education.corsalite.models.ContentModel;
 import com.education.corsalite.models.requestmodels.LogoutModel;
-import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
@@ -41,7 +40,6 @@ import com.education.corsalite.utils.AppPref;
 import com.education.corsalite.utils.CookieUtils;
 import com.google.gson.Gson;
 
-import java.io.Serializable;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
@@ -288,6 +286,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         ApiManager.getInstance(this).logout(new Gson().toJson(logout), new ApiCallback<LogoutResponse>(this) {
             @Override
             public void failure(CorsaliteError error) {
+                super.failure(error);
                 showToast(getResources().getString(R.string.logout_failed));
             }
 
@@ -347,18 +346,20 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     public void showCoursesInToolbar(final List<Course> courses) {
         final Spinner coursesSpinner = (Spinner) toolbar.findViewById(R.id.spinner_courses);
         if (coursesSpinner == null) return;
-        ArrayAdapter<Course> dataAdapter = new ArrayAdapter<Course>(this, R.layout.spinner_title_textview_notes, courses);
-        dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        final SpinnerAdapter dataAdapter = new SpinnerAdapter(this, R.layout.spinner_title_textview_notes, courses);
         coursesSpinner.setAdapter(dataAdapter);
         if (selectedCourse != null) {
             for (Course course : courses) {
                 if (course.courseId == selectedCourse.courseId) {
+                    dataAdapter.setSelectedPosition(courses.indexOf(course));
                     coursesSpinner.setSelection(courses.indexOf(course));
+                    break;
                 }
             }
         } else {
             for (Course course : courses) {
                 if (course.isDefault()) {
+                    dataAdapter.setSelectedPosition(courses.indexOf(course));
                     coursesSpinner.setSelection(courses.indexOf(course));
                 }
             }
@@ -367,8 +368,8 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         coursesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                ((TextView) coursesSpinner.getSelectedView()).setTextColor(getResources().getColor(R.color.white));
                 getEventbus().post(courses.get(position));
+                dataAdapter.setSelectedPosition(position);
             }
 
             @Override
@@ -393,32 +394,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         selectedCourse = course;
         // this method will be overridden by the classes that subscribes from event bus
     }
-
-    protected void getContentData(String courseId, String updateTime) {
-        ApiManager.getInstance(this).getContent(courseId, updateTime,
-            new ApiCallback<List<Content>>(this) {
-                @Override
-                public void failure(CorsaliteError error) {
-                    super.failure(error);
-                    if (error != null && !TextUtils.isEmpty(error.message)) {
-                        showToast(error.message);
-                    }
-                }
-
-                @Override
-                public void success(List<Content> mContentResponse, Response response) {
-                    super.success(mContentResponse, response);
-                    if (mContentResponse != null) {
-                        Intent intent = new Intent(AbstractBaseActivity.this, WebActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("contentData", (Serializable) mContentResponse);
-                        intent.putExtras(bundle);
-                        startActivity(intent);
-                    }
-                }
-            });
-    }
-
 
     public static void saveSessionCookie(Response response) {
         String cookie = CookieUtils.getCookieString(response);
@@ -448,4 +423,5 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             dialog.dismiss();
         }
     }
+
 }

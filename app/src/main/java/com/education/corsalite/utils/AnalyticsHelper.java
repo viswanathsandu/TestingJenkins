@@ -66,7 +66,6 @@ public class AnalyticsHelper {
 
     }
 
-
     public static ArrayList<Integer> getColors(){
         if(graphColors == null || graphColors.size() < 0) {
             graphColors = new ArrayList<>();
@@ -83,4 +82,10 @@ public class AnalyticsHelper {
         return graphColors;
     }
 
+    public static String truncateString(String decimal){
+        if(decimal !=null) {
+            return String.format("%.2f", Float.parseFloat(decimal));
+        }
+            return null;
+    }
 }

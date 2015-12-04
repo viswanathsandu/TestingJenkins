@@ -2,13 +2,11 @@ package com.education.corsalite.api;
 
 import android.content.Context;
 import android.content.Intent;
-import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.activities.LoginActivity;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
-import com.education.corsalite.services.ApiClientService;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;

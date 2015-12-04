@@ -63,17 +63,21 @@
                     android:spinnerMode="dropdown"
                     android:layout_alignParentRight="true"/>
 
-                <Button
+                <TextView
                     android:id="@+id/btn_default_course"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
                     android:background="@drawable/shape_rounded_corners_black"
                     android:text="Default Course"
                     android:textColor="@color/white"
+                    android:padding="3dp"
+                    android:drawablePadding="5dp"
                     android:layout_alignLeft="@+id/sp_default_course"
                     android:layout_alignTop="@+id/sp_default_course"
                     android:layout_alignRight="@+id/sp_default_course"
                     android:layout_alignBottom="@+id/sp_default_course"
+                    android:drawableRight="@drawable/ico_dropdown_white"
                     fontPath="@string/roboto_medium"/>
 
             </RelativeLayout>

@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -22,6 +21,7 @@ import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.activities.LoginActivity;
 import com.education.corsalite.activities.UserProfileActivity;
 import com.education.corsalite.activities.WebviewActivity;
+import com.education.corsalite.adapters.SpinnerAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.ApiCacheHolder;
@@ -61,7 +61,7 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
     @Bind(R.id.tv_enrolled_course) TextView enrolledCoursesTxt;
     @Bind(R.id.tv_virtual_currency_balance) TextView virtualCurrencyBalanceTxt;
     @Bind(R.id.sp_default_course) Spinner coursesSpinner;
-    @Bind(R.id.btn_default_course) Button coursesBtn;
+    @Bind(R.id.btn_default_course) TextView coursesBtn;
     @Bind(R.id.redeem_btn)Button redeemBtn;
     @Bind(R.id.btn_edit_pic)ImageView editProfilePic;
 
@@ -70,6 +70,7 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
     private int defaultcourseIndex;
     private List<Course> mCourses;
     private boolean coursesSpinnerCLicked;
+    private SpinnerAdapter dataAdapter;
 
     public static UserProfileDetailsFragment newInstance(String param1, String param2) {
         UserProfileDetailsFragment fragment = new UserProfileDetailsFragment();
@@ -138,6 +139,8 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 defaultcourseIndex = position;
+
+                dataAdapter.setSelectedPosition(position);
                 if (coursesSpinnerCLicked) {
                     saveDefaultCourse(mCourses.get(position));
                 }
@@ -217,6 +220,7 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
                     @Override
                     public void failure(CorsaliteError error) {
                         super.failure(error);
+                        closeProgress();
                         if (error != null && !TextUtils.isEmpty(error.message)) {
                             showToast(error.message);
                         }
@@ -225,6 +229,7 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
                     @Override
                     public void success(UserProfileResponse userProfileResponse, Response response) {
                         super.success(userProfileResponse, response);
+                        closeProgress();
                         if (userProfileResponse.isSuccessful()) {
                             ApiCacheHolder.getInstance().setUserProfileRespose(userProfileResponse);
                             dbManager.saveReqRes(ApiCacheHolder.getInstance().userProfile);
@@ -244,15 +249,14 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
             String [] coursesArr = profile.enrolledCourses.split(",");
             CourseList courseList = new CourseList(Arrays.asList(coursesArr)) ;
             courseList.defaultCourseIndex = defaultcourseIndex;
-//            DbManager.getInstance(getActivity()).saveCourseList(courseList);
         }
     }
 
     private void showCourses(List<Course> courses) {
-        ArrayAdapter<Course> dataAdapter = new ArrayAdapter<Course>(getActivity(),
+        dataAdapter = new SpinnerAdapter(getActivity(),
                 R.layout.spinner_title_textview, courses);
-        dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         coursesSpinner.setAdapter(dataAdapter);
+        dataAdapter.setSelectedPosition(defaultcourseIndex);
         coursesSpinner.setSelection(defaultcourseIndex);
     }
 
@@ -276,7 +280,6 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
                     @Override
                     public void failure(CorsaliteError error) {
                         super.failure(error);
-                        closeProgress();
                         if (error != null && !TextUtils.isEmpty(error.message)) {
                             showToast(error.message);
                         }
@@ -285,8 +288,9 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
                     @Override
                     public void success(VirtualCurrencyBalanceResponse virtualCurrencyBalanceResponse, Response response) {
                         super.success(virtualCurrencyBalanceResponse, response);
-                        closeProgress();
                         if (virtualCurrencyBalanceResponse.isSuccessful()) {
+                            ApiCacheHolder.getInstance().setVirtualCurrencyBalanceResponse(virtualCurrencyBalanceResponse);
+                            dbManager.saveReqRes(ApiCacheHolder.getInstance().virtualCurrencyBalance);
                             UserProfileActivity.BALANCE_CURRENCY = String.valueOf(virtualCurrencyBalanceResponse.balance.intValue());
                             virtualCurrencyBalanceTxt.setText(virtualCurrencyBalanceResponse.balance.intValue() + "");
                         }
