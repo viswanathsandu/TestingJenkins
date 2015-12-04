@@ -25,6 +25,7 @@ import com.education.corsalite.activities.WebActivity;
 import com.education.corsalite.models.responsemodels.Chapters;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.Data;
+import com.education.corsalite.utils.L;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -56,9 +57,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
     public void onBindViewHolder(final StudyCenterSubjectViewHolder holder, final int position) {
 
         final Chapters chapter = chapters.get(position);
-        if(chapter.isChapterOffline){
-            holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.grayshape));
-        }
+        L.info("Chapter offline data: "+chapter.isChapterOffline);
         String label = chapter.chapterName;
         holder.textView.setText(label);
         holder.timeSpent.setText(getDateFromMillis(chapter.timeSpent));
@@ -75,6 +74,9 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
                 getAlertDialog(v, holder, chapter);
             }
         });
+        if(!chapter.isChapterOffline){
+            holder.gridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.grayshape));
+        }
     }
 
     public void updateData(List<Chapters> chapters, String key) {

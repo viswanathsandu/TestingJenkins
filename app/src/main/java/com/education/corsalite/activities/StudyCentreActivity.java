@@ -32,6 +32,7 @@ import com.education.corsalite.models.responsemodels.CourseData;
 import com.education.corsalite.models.responsemodels.StudyCenter;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.Data;
+import com.education.corsalite.utils.L;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -270,13 +271,13 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                                 hideRecyclerView();
                             }
                         } else {
-                            getOfflineStudyCenterData();
+                            getOfflineStudyCenterData(studyCenters);
                         }
                     }
                 });
     }
 
-    private void getOfflineStudyCenterData() {
+    private void getOfflineStudyCenterData(final List<StudyCenter> studyCenters) {
         DbManager.getInstance(this).getOfflineContentList(new ApiCallback<List<OfflineContent>>(this) {
             @Override
             public void failure(CorsaliteError error) {
@@ -286,24 +287,35 @@ public class StudyCentreActivity extends AbstractBaseActivity {
             @Override
             public void success(List<OfflineContent> offlineContents, Response response) {
                 if (offlineContents != null && offlineContents.size() > 0) {
-                    studyCenter = ApiCacheHolder.getInstance().studyCenter.response.get(0);
-                    setUpStudyCentreData(studyCenter);
+                    L.info("ApiCacheHolder.getInstance().studyCenter.response" + ApiCacheHolder.getInstance().studyCenter.response);
                     mCourseData = new CourseData();
-                    mCourseData.StudyCenter = ApiCacheHolder.getInstance().studyCenter.response;
+                    mCourseData.StudyCenter = studyCenters;
+                    key = mCourseData.StudyCenter.get(0).SubjectName;
+                    studyCenter = mCourseData.StudyCenter.get(0);
+                    setUpStudyCentreData(studyCenter);
                     setupSubjects(mCourseData);
                     for (Chapters chapter : studyCenter.Chapters) {
+                        L.info("chapter info :" + chapter.chapterName + "chapter id:" + chapter.idCourseSubjectchapter);
+                        boolean idMatchFound = false;
                         for (OfflineContent offlineContent : offlineContents) {
-                            if (!chapter.idCourseSubjectchapter.equals(offlineContent.chapterId)) {
-                                chapter.isChapterOffline = false;
+                            if (chapter.idCourseSubjectchapter.equals(offlineContent.chapterId)) {
+                                L.info("offlineContent.chapterId " + offlineContent.chapterId + "::" + chapter.idCourseSubjectchapter);
+                                idMatchFound = true;
                             }
                         }
+                        if(idMatchFound) {
+                            chapter.isChapterOffline = true;
+                        }else{
+                            chapter.isChapterOffline = false;
+                        }
+                        idMatchFound = false;
                     }
                     initDataAdapter(subjects.get(0));
                 } else {
                     Toast.makeText(StudyCentreActivity.this, "No offline content available for study center", Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.GONE);
                     if (ApiCacheHolder.getInstance().studyCenter != null) {
-                        showGrayBg(ApiCacheHolder.getInstance().studyCenter.response);
+                        showGrayBg(studyCenters);
                     }
                 }
                 updateSelected(allColorLayout);
