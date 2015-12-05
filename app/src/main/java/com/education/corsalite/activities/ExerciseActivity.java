@@ -751,18 +751,22 @@ public class ExerciseActivity extends AbstractBaseActivity {
             switch (localExerciseModelList.get(position).answerColorSelection) {
                 case ANSWERED:
                     btnCounter.setBackgroundResource(R.drawable.rounded_corners_green);
+                    btnCounter.setTextColor(getResources().getColor(R.color.white));
                     break;
 
                 case SKIPPED:
                     btnCounter.setBackgroundResource(R.drawable.rounded_corners_red);
+                    btnCounter.setTextColor(getResources().getColor(R.color.white));
                     break;
 
                 case FLAGGED:
                     btnCounter.setBackgroundResource(R.drawable.rounded_corners_yellow);
+                    btnCounter.setTextColor(getResources().getColor(R.color.black));
                     break;
 
                 case UNATTEMPTED:
                     btnCounter.setBackgroundResource(R.drawable.rounded_corners_gray);
+                    btnCounter.setTextColor(getResources().getColor(R.color.black));
                     break;
             }
 
