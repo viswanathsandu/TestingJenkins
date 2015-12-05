@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -72,7 +73,7 @@ public class WebActivity extends AbstractBaseActivity {
     @Bind(R.id.sp_chapter) Spinner spChapter;
     @Bind(R.id.sp_topic) Spinner spTopic;
     @Bind(R.id.tv_exercise) TextView tvExercise;
-    @Bind(R.id.layout_exercise) RelativeLayout layoutExercise;
+    @Bind(R.id.pb_exercise) ProgressBar pbExercise;
     @Bind(R.id.vs_container) ViewSwitcher mViewSwitcher;
     @Bind(R.id.footer_layout) RelativeLayout webFooter;
     @Bind(R.id.btn_next) Button btnNext;
@@ -468,13 +469,20 @@ public class WebActivity extends AbstractBaseActivity {
     }
 
     private void getExercise(int topicPosition) {
-        layoutExercise.setVisibility(View.INVISIBLE);
+        tvExercise.setEnabled(false);
+        pbExercise.setVisibility(View.VISIBLE);
         ApiManager.getInstance(this).getExercise(topicModelList.get(topicPosition).idTopic, selectedCourse.courseId.toString(),
                 studentId, "", new ApiCallback<List<ExerciseModel>>(this) {
                     @Override
                     public void success(List<ExerciseModel> exerciseModels, Response response) {
                         super.success(exerciseModels, response);
                         exerciseModelList = exerciseModels;
+                        showExercise();
+                    }
+
+                    @Override
+                    public void failure(CorsaliteError error) {
+                        super.failure(error);
                         showExercise();
                     }
                 });
@@ -729,9 +737,11 @@ public class WebActivity extends AbstractBaseActivity {
 
     private void showExercise() {
         if(exerciseModelList != null && exerciseModelList.size() > 0) {
-            layoutExercise.setVisibility(View.VISIBLE);
+            tvExercise.setEnabled(true);
+            pbExercise.setVisibility(View.GONE);
         } else {
-            layoutExercise.setVisibility(View.INVISIBLE);
+            tvExercise.setEnabled(false);
+            pbExercise.setVisibility(View.VISIBLE);
         }
     }
 
