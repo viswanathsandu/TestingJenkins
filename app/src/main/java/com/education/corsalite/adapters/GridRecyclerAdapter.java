@@ -2,6 +2,9 @@ package com.education.corsalite.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -14,12 +17,12 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.activities.ExerciseActivity;
 import com.education.corsalite.activities.NotesActivity;
-import com.education.corsalite.activities.OfflineContentActivity;
 import com.education.corsalite.activities.OfflineSubjectActivity;
 import com.education.corsalite.activities.StudyCentreActivity;
 import com.education.corsalite.activities.WebActivity;
@@ -56,23 +59,66 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
     @Override
     public void onBindViewHolder(final StudyCenterSubjectViewHolder holder, final int position) {
 
+        Resources r = studyCentreActivity.getResources();
         final Chapters chapter = chapters.get(position);
         String label = chapter.chapterName;
-        holder.textView.setText(label);
-        holder.timeSpent.setText(getDateFromMillis(chapter.timeSpent));
-        holder.level.setText(studyCentreActivity.getResources().getString(R.string.level_text) + Data.getInt(chapter.completedTopics));
-        holder.gridLayout.setBackground(getColorDrawable(holder, chapter));
-        int max = Data.getInt(chapter.totalTopics);
-        holder.progressBar.setMax(max==0 ? 1 : max);
-        holder.progressBar.setProgress(Data.getInt(chapter.completedTopics));
-        getLevelDrawable(holder, chapter.completedTopics);
-        holder.star.setText((int)Data.getDoubleInInt(chapter.earnedMarks)+"/"+(int)Data.getDoubleInInt(chapter.totalTestedMarks));
-        holder.gridLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getAlertDialog(v, holder, chapter);
-            }
-        });
+
+
+        if (chapter.isChapterOffline) {
+            holder.rootGridLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getAlertDialog(v, holder, chapter);
+                }
+            });
+            holder.gridLayout.setVisibility(View.VISIBLE);
+            holder.gridLayoutGray.setVisibility(View.GONE);
+            holder.textView.setText(label);
+            holder.timeSpent.setText(getDateFromMillis(chapter.timeSpent));
+            holder.level.setText(studyCentreActivity.getResources().getString(R.string.level_text) + Data.getInt(chapter.completedTopics));
+            holder.gridLayout.setBackground(getColorDrawable(holder, chapter));
+
+            int max = Data.getInt(chapter.totalTopics);
+            holder.progressBar.setMax(max == 0 ? 1 : max);
+            holder.progressBar.setProgress(Data.getInt(chapter.completedTopics));
+
+            getLevelDrawable(holder, chapter.completedTopics);
+
+            holder.star.setText((int) Data.getDoubleInInt(chapter.earnedMarks) + "/" + (int) Data.getDoubleInInt(chapter.totalTestedMarks));
+
+            holder.timeSpent.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_time, 0, 0, 0);
+        } else {
+            holder.gridLayoutGray.setVisibility(View.VISIBLE);
+            holder.gridLayout.setVisibility(View.GONE);
+
+            holder.textViewGray.setText(label);
+            holder.timeSpentGray.setText(getDateFromMillis(chapter.timeSpent));
+            holder.levelGray.setText(studyCentreActivity.getResources().getString(R.string.level_text) + Data.getInt(chapter.completedTopics));
+
+            int max = Data.getInt(chapter.totalTopics);
+            holder.progressBarGray.setMax(max == 0 ? 1 : max);
+            holder.progressBarGray.setProgress(Data.getInt(chapter.completedTopics));
+
+            getLevelDrawable(holder, chapter.completedTopics);
+
+            holder.starGray.setText((int) Data.getDoubleInInt(chapter.earnedMarks) + "/" + (int) Data.getDoubleInInt(chapter.totalTestedMarks));
+            holder.gridLayoutGray.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(studyCentreActivity, studyCentreActivity.getResources().getString(R.string.study_center_offline_click_text), Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            Drawable drawable = holder.timeSpentGray.getCompoundDrawables()[0];
+            drawable.setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
+
+            drawable = holder.levelGray.getCompoundDrawables()[0];
+            drawable.setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
+
+            drawable = holder.starGray.getCompoundDrawables()[0];
+            drawable.setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
+
+        }
     }
 
     public void updateData(List<Chapters> chapters, String key) {
@@ -93,18 +139,19 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         wmlp.x = (int) v.getX() + 15;
         wmlp.y = (int) v.getY() + 140;
         dialog.show();
+        dialog.getWindow().setAttributes(wmlp);
         dialog.getWindow().setLayout(300, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 
     private void setDataForAlert(final AlertDialog dialog, View dialogView, StudyCenterSubjectViewHolder holder, final Chapters chapter) {
-        TextView score = (TextView)dialogView.findViewById(R.id.score);
+        TextView score = (TextView) dialogView.findViewById(R.id.score);
         score.setText(holder.star.getText().toString());
         score.setBackground(holder.gridLayout.getBackground());
-        TextView notes = (TextView)dialogView.findViewById(R.id.notes);
+        TextView notes = (TextView) dialogView.findViewById(R.id.notes);
         notes.setText(TextUtils.isEmpty(chapter.notesCount) ? "0" : chapter.notesCount);
-        TextView completedTopics = (TextView)dialogView.findViewById(R.id.completed_topics);
+        TextView completedTopics = (TextView) dialogView.findViewById(R.id.completed_topics);
         completedTopics.setText(getCompletedTopicsPercentage(chapter) + "%");
-        dialogView.findViewById(R.id.part_test).setOnClickListener(new View.OnClickListener() {
+        dialogView.findViewById(R.id.take_test).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.cancel();
@@ -152,8 +199,8 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         Intent intent = new Intent(studyCentreActivity, ExerciseActivity.class);
         intent.putExtra(Constants.SELECTED_COURSE, "13" /*AbstractBaseActivity.selectedCourse.courseId.toString()*/);
         intent.putExtra(Constants.SELECTED_TOPICID, "1310");
-        intent.putExtra(Constants.TEST_TITLE, "Part Test");
-        intent.putExtra(Constants.SELECTED_TOPIC, "Part Data");
+        intent.putExtra(Constants.TEST_TITLE, "Take Test");
+        intent.putExtra(Constants.SELECTED_TOPIC, "Take Test");
         studyCentreActivity.startActivity(intent);
     }
 
@@ -172,7 +219,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
     private double getCompletedTopicsPercentage(Chapters chapter) {
         int totalTopics = Integer.parseInt(TextUtils.isEmpty(chapter.totalTopics) ? "0" : chapter.totalTopics);
         int completedTopics = Integer.parseInt(TextUtils.isEmpty(chapter.completedTopics) ? "0" : chapter.completedTopics);
-        double completedPercentage = (double)completedTopics/(double)totalTopics * 100;
+        double completedPercentage = (double) completedTopics / (double) totalTopics * 100;
         return Math.round(completedPercentage * 100.0) / 100.0;
     }
 
@@ -183,7 +230,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         double scoreAmberPercentage = Data.getInt(chapter.scoreAmber) * totalMarks / 100;
         if (earnedMarks == 0 && totalMarks == 0) {
             return studyCentreActivity.getResources().getDrawable(R.drawable.blueshape);
-        } else if(earnedMarks < scoreRedPercentage) {
+        } else if (earnedMarks < scoreRedPercentage) {
             return studyCentreActivity.getResources().getDrawable(R.drawable.redshape);
         } else if (earnedMarks < scoreAmberPercentage) {
             return studyCentreActivity.getResources().getDrawable(R.drawable.ambershape);
@@ -193,7 +240,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
     }
 
     private void getLevelDrawable(StudyCenterSubjectViewHolder holder, String levelstr) {
-        if(!TextUtils.isEmpty(levelstr)) {
+        if (!TextUtils.isEmpty(levelstr)) {
             int level = Data.getInt(levelstr);
             switch (level) {
                 case 0:
@@ -224,31 +271,50 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         return chapters.size();
     }
 
+    public String getDateFromMillis(String millisStr) {
+        if (!TextUtils.isEmpty(millisStr)) {
+            SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+            return formatter.format(new Date(Data.getLong(millisStr)));
+        } else {
+            return "00:00:00";
+        }
+    }
+
     public class StudyCenterSubjectViewHolder extends RecyclerView.ViewHolder {
         public TextView textView;
         public TextView timeSpent;
         public TextView level;
         public TextView star;
+        public TextView gridChildText;
         public LinearLayout gridLayout;
+        public LinearLayout rootGridLayout;
+        public TextView textViewGray;
+        public TextView timeSpentGray;
+        public TextView levelGray;
+        public TextView starGray;
+        public TextView gridChildTextGray;
+        public LinearLayout gridLayoutGray;
         public ProgressBar progressBar;
+        public ProgressBar progressBarGray;
 
         public StudyCenterSubjectViewHolder(View itemView) {
             super(itemView);
+            gridLayout = (LinearLayout) itemView.findViewById(R.id.grid_layout_color);
+            rootGridLayout = (LinearLayout) itemView.findViewById(R.id.grid_layout);
             textView = (TextView) itemView.findViewById(R.id.subject_name);
             timeSpent = (TextView) itemView.findViewById(R.id.clock);
             level = (TextView) itemView.findViewById(R.id.level);
             star = (TextView) itemView.findViewById(R.id.star);
-            gridLayout = (LinearLayout) itemView.findViewById(R.id.grid_layout);
             progressBar = (ProgressBar) itemView.findViewById(R.id.progress_id);
-        }
-    }
+            gridChildText = (TextView) itemView.findViewById(R.id.grid_child_text_view);
+            gridLayoutGray = (LinearLayout) itemView.findViewById(R.id.grid_layout_gray);
+            textViewGray = (TextView) itemView.findViewById(R.id.subject_name_gray);
+            timeSpentGray = (TextView) itemView.findViewById(R.id.clock_gray);
+            levelGray = (TextView) itemView.findViewById(R.id.level_gray);
+            starGray = (TextView) itemView.findViewById(R.id.star_gray);
+            progressBarGray = (ProgressBar) itemView.findViewById(R.id.progress_id_gray);
+            gridChildTextGray = (TextView) itemView.findViewById(R.id.grid_child_text_view_gray);
 
-    private String getDateFromMillis(String millisStr) {
-        if(!TextUtils.isEmpty(millisStr)) {
-            SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
-            return formatter.format(new Date(Data.getLong(millisStr)));
-        } else {
-            return "00:00:00";
         }
     }
 }

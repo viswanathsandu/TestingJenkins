@@ -675,7 +675,7 @@ public class WebActivity extends AbstractBaseActivity {
         }
         ContentIndex mContentIndex = contentIndexList.get(0);
         subjectModelList = new ArrayList<>(mContentIndex.subjectModelList);
-        SubjectAdapter subjectAdapter = new SubjectAdapter(subjectModelList, this);
+        final SubjectAdapter subjectAdapter = new SubjectAdapter(subjectModelList, this);
         spSubject.setAdapter(subjectAdapter);
 
         int listSize = subjectModelList.size();
@@ -694,6 +694,7 @@ public class WebActivity extends AbstractBaseActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 showChapter(position);
                 mChapterId = "";
+                subjectAdapter.setSelectedPosition(position);
             }
 
             @Override
@@ -706,7 +707,7 @@ public class WebActivity extends AbstractBaseActivity {
     private void showChapter(int subjectPosition) {
 
         chapterModelList = new ArrayList<>(subjectModelList.get(subjectPosition).chapters);
-        ChapterAdapter chapterAdapter = new ChapterAdapter(chapterModelList, this);
+        final ChapterAdapter chapterAdapter = new ChapterAdapter(chapterModelList, this);
         spChapter.setAdapter(chapterAdapter);
 
         if(!mChapterId.isEmpty()) {
@@ -724,6 +725,7 @@ public class WebActivity extends AbstractBaseActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 showTopic(position);
                 mTopicId = "";
+                chapterAdapter.setSelectedPosition(position);
             }
 
             @Override
@@ -746,7 +748,7 @@ public class WebActivity extends AbstractBaseActivity {
     private void showTopic(final int chapterPosition) {
         topicModelList = new ArrayList<>(chapterModelList.get(chapterPosition).topicMap);
         if(topicModelList != null) {
-            TopicAdapter topicAdapter = new TopicAdapter(topicModelList, this);
+            final TopicAdapter topicAdapter = new TopicAdapter(topicModelList, this);
             spTopic.setAdapter(topicAdapter);
 
             if(!mTopicId.isEmpty()) {
@@ -764,6 +766,7 @@ public class WebActivity extends AbstractBaseActivity {
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     getExercise(position);
                     getContentData(position);
+                    topicAdapter.setSelectedPosition(position);
                 }
 
                 @Override

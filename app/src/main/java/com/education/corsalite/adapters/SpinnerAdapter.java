@@ -41,6 +41,5 @@ public class SpinnerAdapter extends ArrayAdapter<Course> {
 
    public void setSelectedPosition(int position){
        selectedPosition = position;
-       notifyDataSetChanged();
    }
 }

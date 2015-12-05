@@ -3,7 +3,9 @@ package com.education.corsalite.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -17,6 +19,7 @@ import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.Encryption;
+import com.education.corsalite.utils.SystemUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -45,7 +48,8 @@ public class LoginActivity extends AbstractBaseActivity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                login(usernameTxt.getText().toString(), Encryption.md5(passwordTxt.getText().toString()));
+
+                login();
             }
         });
         forgotPasswordTxt.setOnClickListener(new View.OnClickListener() {
@@ -58,33 +62,47 @@ public class LoginActivity extends AbstractBaseActivity {
                 startActivity(intent);
             }
         });
+
+        passwordTxt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if(actionId == EditorInfo.IME_ACTION_DONE){
+                   login();
+                }
+                return false;
+            }
+        });
     }
 
     private void login(String username, String password) {
-        showProgress();
-        ApiManager.getInstance(this).login(username, password, new ApiCallback<LoginResponse>(this) {
-            @Override
-            public void failure(CorsaliteError error) {
-                super.failure(error);
-                closeProgress();
-                if (error != null && !TextUtils.isEmpty(error.message)) {
-                    showToast(error.message);
+        if(SystemUtils.isNetworkConnected(this)) {
+            showProgress();
+            ApiManager.getInstance(this).login(username, password, new ApiCallback<LoginResponse>(this) {
+                @Override
+                public void failure(CorsaliteError error) {
+                    super.failure(error);
+                    closeProgress();
+                    if (error != null && !TextUtils.isEmpty(error.message)) {
+                        showToast(error.message);
+                    }
                 }
-            }
 
-            @Override
-            public void success(LoginResponse loginResponse, Response response) {
-                super.success(loginResponse, response);
-                closeProgress();
-                if (loginResponse.isSuccessful()) {
-                    ApiCacheHolder.getInstance().setLoginResponse(loginResponse);
-                    dbManager.saveReqRes(ApiCacheHolder.getInstance().login);
-                    onLoginsuccess(loginResponse);
-                } else {
-                    showToast(getResources().getString(R.string.login_failed));
+                @Override
+                public void success(LoginResponse loginResponse, Response response) {
+                    super.success(loginResponse, response);
+                    closeProgress();
+                    if (loginResponse.isSuccessful()) {
+                        ApiCacheHolder.getInstance().setLoginResponse(loginResponse);
+                        dbManager.saveReqRes(ApiCacheHolder.getInstance().login);
+                        onLoginsuccess(loginResponse);
+                    } else {
+                        showToast(getResources().getString(R.string.login_failed));
+                    }
                 }
-            }
-        });
+            });
+        }else {
+            showToast("Please check your network connection");
+        }
     }
 
     private void onLoginsuccess(LoginResponse response) {
@@ -95,6 +113,34 @@ public class LoginActivity extends AbstractBaseActivity {
             finish();
         } else {
             showToast(getResources().getString(R.string.login_failed));
+        }
+    }
+
+    private boolean checkForValidEmail(){
+        if(usernameTxt.getText() != null && !usernameTxt.getText().toString().isEmpty()){
+
+            return android.util.Patterns.EMAIL_ADDRESS.matcher(usernameTxt.getText().toString()).matches();
+        }
+        return false;
+    }
+
+    private boolean checkPasswordField(){
+        if(passwordTxt.getText() != null && !passwordTxt.getText().toString().isEmpty()){
+            return true;
+        }
+        return false;
+    }
+
+    private void login(){
+
+        if(checkForValidEmail()) {
+            if(checkPasswordField()) {
+                login(usernameTxt.getText().toString(), Encryption.md5(passwordTxt.getText().toString()));
+            }else {
+                showToast("Please enter password");
+            }
+        }else {
+            showToast("Please enter a valid email id");
         }
     }
 }
