@@ -19,6 +19,7 @@ import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.Encryption;
+import com.education.corsalite.utils.SystemUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -74,30 +75,34 @@ public class LoginActivity extends AbstractBaseActivity {
     }
 
     private void login(String username, String password) {
-        showProgress();
-        ApiManager.getInstance(this).login(username, password, new ApiCallback<LoginResponse>(this) {
-            @Override
-            public void failure(CorsaliteError error) {
-                super.failure(error);
-                closeProgress();
-                if (error != null && !TextUtils.isEmpty(error.message)) {
-                    showToast(error.message);
+        if(SystemUtils.isNetworkConnected(this)) {
+            showProgress();
+            ApiManager.getInstance(this).login(username, password, new ApiCallback<LoginResponse>(this) {
+                @Override
+                public void failure(CorsaliteError error) {
+                    super.failure(error);
+                    closeProgress();
+                    if (error != null && !TextUtils.isEmpty(error.message)) {
+                        showToast(error.message);
+                    }
                 }
-            }
 
-            @Override
-            public void success(LoginResponse loginResponse, Response response) {
-                super.success(loginResponse, response);
-                closeProgress();
-                if (loginResponse.isSuccessful()) {
-                    ApiCacheHolder.getInstance().setLoginResponse(loginResponse);
-                    dbManager.saveReqRes(ApiCacheHolder.getInstance().login);
-                    onLoginsuccess(loginResponse);
-                } else {
-                    showToast(getResources().getString(R.string.login_failed));
+                @Override
+                public void success(LoginResponse loginResponse, Response response) {
+                    super.success(loginResponse, response);
+                    closeProgress();
+                    if (loginResponse.isSuccessful()) {
+                        ApiCacheHolder.getInstance().setLoginResponse(loginResponse);
+                        dbManager.saveReqRes(ApiCacheHolder.getInstance().login);
+                        onLoginsuccess(loginResponse);
+                    } else {
+                        showToast(getResources().getString(R.string.login_failed));
+                    }
                 }
-            }
-        });
+            });
+        }else {
+            showToast("Please check your network connection");
+        }
     }
 
     private void onLoginsuccess(LoginResponse response) {
