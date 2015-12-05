@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.GridRecyclerAdapter;
@@ -22,6 +23,8 @@ import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.db.DbManager;
+import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.models.responsemodels.Chapters;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
@@ -29,6 +32,7 @@ import com.education.corsalite.models.responsemodels.CourseData;
 import com.education.corsalite.models.responsemodels.StudyCenter;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.Data;
+import com.education.corsalite.utils.L;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +61,8 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     private TextView selectedSubjectTxt;
     private View selectedColorFilter;
     private boolean closeApp = false;
+    private ArrayList<Object> offlineContentList;
+    private boolean isNetworkConnected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,7 +130,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     }
 
     private void updateSelected(View colorView) {
-        if(selectedColorFilter != null) {
+        if (selectedColorFilter != null) {
             selectedColorFilter.setSelected(false);
         }
         selectedColorFilter = colorView;
@@ -167,7 +173,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                 startActivity(exerciseIntent);
                 return true;
             case R.id.action_exam_history:
-                Intent intent = new Intent(this,ExamHistoryActivity.class);
+                Intent intent = new Intent(this, ExamHistoryActivity.class);
                 startActivity(intent);
                 return true;
         }
@@ -210,7 +216,9 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     }
 
     private void getStudyCentreData(String courseId) {
+        isNetworkConnected = ApiManager.getInstance(this).isNetworkConnected();
         hideRecyclerView();
+
         ApiManager.getInstance(this).getStudyCentreData(LoginUserCache.getInstance().loginResponse.studentId,
                 courseId, new ApiCallback<List<StudyCenter>>(this) {
                     @Override
@@ -225,24 +233,77 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                     @Override
                     public void success(List<StudyCenter> studyCenters, Response response) {
                         super.success(studyCenters, response);
-                        if (studyCenters != null) {
-                            ApiCacheHolder.getInstance().setStudyCenterResponse(studyCenters);
-                            dbManager.saveReqRes(ApiCacheHolder.getInstance().studyCenter);
-                            mCourseData = new CourseData();
-                            mCourseData.StudyCenter = studyCenters;
-                        }
-                        if (mCourseData != null && mCourseData.StudyCenter != null && !mCourseData.StudyCenter.isEmpty()) {
-                            setupSubjects(mCourseData);
-                            key = mCourseData.StudyCenter.get(0).SubjectName;
-                            studyCenter = mCourseData.StudyCenter.get(0);
-                            setUpStudyCentreData(studyCenter);
-                            initDataAdapter(subjects.get(0));
-                            updateSelected(allColorLayout);
+                        if (isNetworkConnected) {
+                            if (studyCenters != null) {
+                                ApiCacheHolder.getInstance().setStudyCenterResponse(studyCenters);
+                                dbManager.saveReqRes(ApiCacheHolder.getInstance().studyCenter);
+                                mCourseData = new CourseData();
+                                mCourseData.StudyCenter = studyCenters;
+                            }
+                            if (mCourseData != null && mCourseData.StudyCenter != null && !mCourseData.StudyCenter.isEmpty()) {
+                                setupSubjects(mCourseData);
+                                key = mCourseData.StudyCenter.get(0).SubjectName;
+                                studyCenter = mCourseData.StudyCenter.get(0);
+                                setUpStudyCentreData(studyCenter);
+                                initDataAdapter(subjects.get(0));
+                                updateSelected(allColorLayout);
+                            } else {
+                                hideRecyclerView();
+                            }
                         } else {
-                            hideRecyclerView();
+                            getOfflineStudyCenterData(studyCenters);
                         }
                     }
                 });
+    }
+
+    private void getOfflineStudyCenterData(final List<StudyCenter> studyCenters) {
+        DbManager.getInstance(this).getOfflineContentList(new ApiCallback<List<OfflineContent>>(this) {
+            @Override
+            public void failure(CorsaliteError error) {
+                super.failure(error);
+            }
+
+            @Override
+            public void success(List<OfflineContent> offlineContents, Response response) {
+                if (offlineContents != null && offlineContents.size() > 0) {
+                    mCourseData = new CourseData();
+                    mCourseData.StudyCenter = studyCenters;
+                    key = mCourseData.StudyCenter.get(getIndex(studyCenters)).SubjectName;
+                    studyCenter = mCourseData.StudyCenter.get(getIndex(studyCenters));
+                    setupSubjects(mCourseData);
+                    for (Chapters chapter : studyCenter.Chapters) {
+                        boolean idMatchFound = false;
+                        for (OfflineContent offlineContent : offlineContents) {
+                            if (chapter.idCourseSubjectchapter.equals(offlineContent.chapterId)) {
+                                idMatchFound = true;
+                            }
+                        }
+                        if (idMatchFound) {
+                            chapter.isChapterOffline = true;
+                        } else {
+                            chapter.isChapterOffline = false;
+                        }
+                        idMatchFound = false;
+                    }
+                    initDataAdapter(subjects.get(getIndex(studyCenters)));
+                }
+            }
+        });
+    }
+
+    private int getIndex(List<StudyCenter> studyCenters) {
+        int i = 0;
+        if (key == null) {
+            return 0;
+        }
+        for (StudyCenter studyCenter : studyCenters) {
+            if (key.equals(studyCenter.SubjectName)) {
+                break;
+            }
+            i++;
+        }
+        return i;
     }
 
     private void hideRecyclerView() {
@@ -267,7 +328,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     private void setUpStudyCentreData(StudyCenter studyCenter) {
         resetColorsVisibility();
         studyCenter.resetColoredLists();
-        if(key.equalsIgnoreCase(studyCenter.SubjectName)) {
+        if (key.equalsIgnoreCase(studyCenter.SubjectName)) {
             for (Chapters chapter : studyCenter.Chapters) {
                 double totalMarks = Data.getDoubleWithTwoDecimals(chapter.totalTestedMarks);
                 double earnedMarks = Data.getDoubleWithTwoDecimals(chapter.earnedMarks);
@@ -276,7 +337,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                 if (earnedMarks == 0 && totalMarks == 0) {
                     studyCenter.blueListChapters.add(chapter);
                     blueView.setVisibility(View.VISIBLE);
-                } else if(earnedMarks < scoreRedPercentage){
+                } else if (earnedMarks < scoreRedPercentage) {
                     studyCenter.redListChapters.add(chapter);
                     redView.setVisibility(View.VISIBLE);
                 } else if (earnedMarks < scoreAmberPercentage) {
@@ -293,11 +354,11 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     private void addSubjectsAndCreateViews(StudyCenter studyCenter) {
         String subject = studyCenter.SubjectName;
         subjects.add(subject);
-        linearLayout.addView(getSubjectView(subject, studyCenter.idCourseSubject+"", subjects.size() == 1));
+        linearLayout.addView(getSubjectView(subject, studyCenter.idCourseSubject + "", subjects.size() == 1));
     }
 
     public String getSelectedSubjectId() {
-        if(selectedSubjectTxt != null) {
+        if (selectedSubjectTxt != null) {
             return selectedSubjectTxt.getTag().toString();
         }
         return null;
@@ -308,7 +369,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         TextView tv = (TextView) v.findViewById(R.id.subject);
         tv.setText(subjectName);
         tv.setTag(subjectId);
-        if(isSelected) {
+        if (isSelected) {
             tv.setSelected(true);
             selectedSubjectTxt = tv;
         }
@@ -321,22 +382,69 @@ public class StudyCentreActivity extends AbstractBaseActivity {
             @Override
             public void onClick(View v) {
                 showList();
-                if(selectedSubjectTxt != null) {
-                    selectedSubjectTxt.setSelected(false);
-                }
-                selectedSubjectTxt = textView;
-                selectedSubjectTxt.setSelected(true);
-                if (mCourseData != null && mCourseData.StudyCenter != null) {
+                if (isNetworkConnected) {
+                    if (selectedSubjectTxt != null) {
+                        selectedSubjectTxt.setSelected(false);
+                    }
+                    selectedSubjectTxt = textView;
+                    selectedSubjectTxt.setSelected(true);
                     key = text;
-                    for(StudyCenter studyCenter : mCourseData.StudyCenter){
-                        if(key.equalsIgnoreCase(studyCenter.SubjectName)) {
-                            StudyCentreActivity.this.studyCenter = studyCenter;
-                            setUpStudyCentreData(studyCenter);
-                            mAdapter.updateData(getChaptersForSubject(), text);
-                            mAdapter.notifyDataSetChanged();
-                            break;
+                    if (mCourseData != null && mCourseData.StudyCenter != null) {
+                        key = text;
+                        for (StudyCenter studyCenter : mCourseData.StudyCenter) {
+                            if (key.equalsIgnoreCase(studyCenter.SubjectName)) {
+                                StudyCentreActivity.this.studyCenter = studyCenter;
+                                setUpStudyCentreData(studyCenter);
+                                mAdapter.updateData(getChaptersForSubject(), text);
+                                mAdapter.notifyDataSetChanged();
+                                break;
+                            }
                         }
                     }
+                } else {
+                    if (selectedSubjectTxt != null) {
+                        selectedSubjectTxt.setSelected(false);
+                    }
+                    selectedSubjectTxt = textView;
+                    selectedSubjectTxt.setSelected(true);
+                    key = text;
+                    if (mCourseData != null && mCourseData.StudyCenter != null) {
+                        key = text;
+                        for (StudyCenter studyCenter : mCourseData.StudyCenter) {
+                            if (key.equalsIgnoreCase(studyCenter.SubjectName)) {
+                                StudyCentreActivity.this.studyCenter = studyCenter;
+                                setUpStudyCentreData(studyCenter);
+                                DbManager.getInstance(StudyCentreActivity.this).getOfflineContentList(new ApiCallback<List<OfflineContent>>(StudyCentreActivity.this) {
+                                    @Override
+                                    public void failure(CorsaliteError error) {
+                                        super.failure(error);
+                                    }
+
+                                    @Override
+                                    public void success(List<OfflineContent> offlineContents, Response response) {
+                                        for (Chapters chapter : getChaptersForSubject()) {
+                                            boolean idMatchFound = false;
+                                            for (OfflineContent offlineContent : offlineContents) {
+                                                if (chapter.idCourseSubjectchapter.equals(offlineContent.chapterId)) {
+                                                    idMatchFound = true;
+                                                }
+                                            }
+                                            if (idMatchFound) {
+                                                chapter.isChapterOffline = true;
+                                            } else {
+                                                chapter.isChapterOffline = false;
+                                            }
+                                            idMatchFound = false;
+                                        }
+                                        mAdapter.updateData(getChaptersForSubject(), text);
+                                        mAdapter.notifyDataSetChanged();
+                                    }
+                                });
+                                break;
+                            }
+                        }
+                    }
+
                 }
             }
         });
@@ -349,7 +457,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
 
     @Override
     public void onBackPressed() {
-        if(!closeApp) {
+        if (!closeApp) {
             closeApp = true;
             showToast(getString(R.string.app_close_alert));
         } else {
