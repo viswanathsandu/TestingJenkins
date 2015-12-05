@@ -267,18 +267,15 @@ public class StudyCentreActivity extends AbstractBaseActivity {
             @Override
             public void success(List<OfflineContent> offlineContents, Response response) {
                 if (offlineContents != null && offlineContents.size() > 0) {
-                    L.info("ApiCacheHolder.getInstance().studyCenter.response" + ApiCacheHolder.getInstance().studyCenter.response);
                     mCourseData = new CourseData();
                     mCourseData.StudyCenter = studyCenters;
                     key = mCourseData.StudyCenter.get(getIndex(studyCenters)).SubjectName;
                     studyCenter = mCourseData.StudyCenter.get(getIndex(studyCenters));
-                    setUpStudyCentreData(studyCenter);
                     setupSubjects(mCourseData);
                     for (Chapters chapter : studyCenter.Chapters) {
                         boolean idMatchFound = false;
                         for (OfflineContent offlineContent : offlineContents) {
                             if (chapter.idCourseSubjectchapter.equals(offlineContent.chapterId)) {
-                                L.info("offlineContent.chapterId " + offlineContent.chapterId + "::" + chapter.idCourseSubjectchapter);
                                 idMatchFound = true;
                             }
                         }
@@ -291,23 +288,22 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                     }
                     initDataAdapter(subjects.get(getIndex(studyCenters)));
                 }
-                updateSelected(allColorLayout);
             }
         });
     }
 
     private int getIndex(List<StudyCenter> studyCenters) {
         int i = 0;
-        if(key == null){
+        if (key == null) {
             return 0;
         }
         for (StudyCenter studyCenter : studyCenters) {
-            if (key.equalsIgnoreCase(studyCenter.SubjectName)) {
-                return i;
+            if (key.equals(studyCenter.SubjectName)) {
+                break;
             }
             i++;
         }
-        return 0;
+        return i;
     }
 
     private void hideRecyclerView() {
@@ -386,13 +382,13 @@ public class StudyCentreActivity extends AbstractBaseActivity {
             @Override
             public void onClick(View v) {
                 showList();
-                if (selectedSubjectTxt != null) {
-                    selectedSubjectTxt.setSelected(false);
-                }
-                selectedSubjectTxt = textView;
-                selectedSubjectTxt.setSelected(true);
-                key = text;
                 if (isNetworkConnected) {
+                    if (selectedSubjectTxt != null) {
+                        selectedSubjectTxt.setSelected(false);
+                    }
+                    selectedSubjectTxt = textView;
+                    selectedSubjectTxt.setSelected(true);
+                    key = text;
                     if (mCourseData != null && mCourseData.StudyCenter != null) {
                         key = text;
                         for (StudyCenter studyCenter : mCourseData.StudyCenter) {
@@ -406,8 +402,84 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                         }
                     }
                 } else {
-                    getOfflineStudyCenterData(mCourseData.StudyCenter);
+                    if (selectedSubjectTxt != null) {
+                        selectedSubjectTxt.setSelected(false);
+                    }
+                    selectedSubjectTxt = textView;
                     selectedSubjectTxt.setSelected(true);
+                    key = text;
+                    if (mCourseData != null && mCourseData.StudyCenter != null) {
+                        key = text;
+                        for (StudyCenter studyCenter : mCourseData.StudyCenter) {
+                            if (key.equalsIgnoreCase(studyCenter.SubjectName)) {
+                                StudyCentreActivity.this.studyCenter = studyCenter;
+                                setUpStudyCentreData(studyCenter);
+                                DbManager.getInstance(StudyCentreActivity.this).getOfflineContentList(new ApiCallback<List<OfflineContent>>(StudyCentreActivity.this) {
+                                    @Override
+                                    public void failure(CorsaliteError error) {
+                                        super.failure(error);
+                                    }
+
+                                    @Override
+                                    public void success(List<OfflineContent> offlineContents, Response response) {
+                                        for (Chapters chapter : getChaptersForSubject()) {
+                                            boolean idMatchFound = false;
+                                            for (OfflineContent offlineContent : offlineContents) {
+                                                if (chapter.idCourseSubjectchapter.equals(offlineContent.chapterId)) {
+                                                    idMatchFound = true;
+                                                }
+                                            }
+                                            if (idMatchFound) {
+                                                chapter.isChapterOffline = true;
+                                            } else {
+                                                chapter.isChapterOffline = false;
+                                            }
+                                            idMatchFound = false;
+                                        }
+                                        mAdapter.updateData(getChaptersForSubject(), text);
+                                        mAdapter.notifyDataSetChanged();
+                                    }
+                                });
+                                break;
+                            }
+                        }
+                    }
+
+                }
+            }
+        });
+    }
+
+    private void getOfflineStudyCenterData1(final List<StudyCenter> studyCenters) {
+        DbManager.getInstance(this).getOfflineContentList(new ApiCallback<List<OfflineContent>>(this) {
+            @Override
+            public void failure(CorsaliteError error) {
+                super.failure(error);
+            }
+
+            @Override
+            public void success(List<OfflineContent> offlineContents, Response response) {
+                if (offlineContents != null && offlineContents.size() > 0) {
+                    mCourseData = new CourseData();
+                    mCourseData.StudyCenter = studyCenters;
+                    key = mCourseData.StudyCenter.get(getIndex(studyCenters)).SubjectName;
+                    studyCenter = mCourseData.StudyCenter.get(getIndex(studyCenters));
+                    setupSubjects(mCourseData);
+                    for (Chapters chapter : studyCenter.Chapters) {
+                        boolean idMatchFound = false;
+                        for (OfflineContent offlineContent : offlineContents) {
+                            if (chapter.idCourseSubjectchapter.equals(offlineContent.chapterId)) {
+                                idMatchFound = true;
+                            }
+                        }
+                        if (idMatchFound) {
+                            chapter.isChapterOffline = true;
+                        } else {
+                            chapter.isChapterOffline = false;
+                        }
+                        idMatchFound = false;
+                    }
+                    initDataAdapter(subjects.get(getIndex(studyCenters)));
                 }
             }
         });

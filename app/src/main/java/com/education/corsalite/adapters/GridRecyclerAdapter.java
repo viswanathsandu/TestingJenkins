@@ -64,7 +64,6 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
     @Override
     public void onBindViewHolder(final StudyCenterSubjectViewHolder holder, final int position) {
 
-        holder.setIsRecyclable(false);
         Resources r = studyCentreActivity.getResources();
         final Chapters chapter = chapters.get(position);
         String label = chapter.chapterName;
