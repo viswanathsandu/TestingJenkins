@@ -94,12 +94,6 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
                         }
                     }
                     j++;
-                    for (TopicModel topicModel : topicModelList) {
-                        for (ContentModel contentModel : topicModel.contentMap) {
-                            L.info("contentModel:" + contentModel.type);
-                        }
-                        L.info("********************************");
-                    }
                 }
             }
         } else {
@@ -278,7 +272,6 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
     private void addTopic(TopicModel topicModel, TreeNode subjectName) {
         TreeNode topicName = new TreeNode(topicModel.topicName).setViewHolder(new CheckedItemViewHolder(this, false));
         int size = topicModel.contentMap.size();
-        L.info("Size:" + size);
         TreeNode file1 = null;
         TreeNode file2 = null;
         if (size == 1) {
