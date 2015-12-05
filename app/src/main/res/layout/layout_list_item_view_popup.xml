@@ -8,8 +8,7 @@
     android:background="@drawable/white_shape">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        style="@style/tiles_menu_item_rl">
 
         <TextView
             android:layout_toLeftOf="@+id/completed_topics"
@@ -29,8 +28,7 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        style="@style/tiles_menu_item_rl">
 
 
         <TextView
@@ -52,8 +50,7 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/tiles_menu_item_rl"
         android:id="@+id/notes_layout">
 
         <TextView
@@ -73,32 +70,42 @@
 
     </RelativeLayout>
 
+    <RelativeLayout
+        style="@style/tiles_menu_item_rl">
+        <TextView
+            android:id="@+id/start_reading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/start_reading"
+            style="@style/tiles_menu_title_txt"/>
+    </RelativeLayout>
 
-    <TextView
-        android:id="@+id/start_reading"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/start_reading"
-        style="@style/tiles_menu_title_txt"/>
+    <RelativeLayout
+        style="@style/tiles_menu_item_rl">
+        <TextView
+            android:id="@+id/flagged_questions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/flagged_questions"
+            style="@style/tiles_menu_title_txt"/>
+    </RelativeLayout>
 
-    <TextView
-        android:id="@+id/flagged_questions"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/flagged_questions"
-        style="@style/tiles_menu_title_txt"/>
-
-    <TextView
-        android:id="@+id/take_test"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/take_test"
-        style="@style/tiles_menu_title_txt"/>
-
-    <TextView
-        android:id="@+id/offline_content"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Save for Offline"
-        style="@style/tiles_menu_title_txt"/>
+    <RelativeLayout
+        style="@style/tiles_menu_item_rl">
+        <TextView
+            android:id="@+id/take_test"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/take_test"
+            style="@style/tiles_menu_title_txt"/>
+    </RelativeLayout>
+    <RelativeLayout
+        style="@style/tiles_menu_item_rl">
+        <TextView
+            android:id="@+id/offline_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Save for Offline"
+            style="@style/tiles_menu_title_txt"/>
+    </RelativeLayout>
 </LinearLayout>
