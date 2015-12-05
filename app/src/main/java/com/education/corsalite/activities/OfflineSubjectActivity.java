@@ -24,6 +24,7 @@ import com.education.corsalite.models.TopicModel;
 import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
+import com.education.corsalite.utils.L;
 import com.unnamed.b.atv.model.TreeNode;
 import com.unnamed.b.atv.view.AndroidTreeView;
 
@@ -93,6 +94,12 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
                         }
                     }
                     j++;
+                    for (TopicModel topicModel : topicModelList) {
+                        for (ContentModel contentModel : topicModel.contentMap) {
+                            L.info("contentModel:" + contentModel.type);
+                        }
+                        L.info("********************************");
+                    }
                 }
             }
         } else {
@@ -270,9 +277,18 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
 
     private void addTopic(TopicModel topicModel, TreeNode subjectName) {
         TreeNode topicName = new TreeNode(topicModel.topicName).setViewHolder(new CheckedItemViewHolder(this, false));
-        TreeNode file1 = new TreeNode(topicModel.topicName + ".html").setViewHolder(new CheckedItemViewHolder(this, true));
-        TreeNode file2 = new TreeNode(topicModel.topicName + "_video.mpg").setViewHolder(new CheckedItemViewHolder(this, true));
-        topicName.addChildren(file1, file2);
+        int size = topicModel.contentMap.size();
+        L.info("Size:" + size);
+        TreeNode file1 = null;
+        TreeNode file2 = null;
+        if (size == 1) {
+            file1 = new TreeNode(topicModel.topicName + "." + topicModel.contentMap.get(0).type).setViewHolder(new CheckedItemViewHolder(this, true));
+            topicName.addChildren(file1);
+        } else {
+            file1 = new TreeNode(topicModel.topicName + "." + topicModel.contentMap.get(0).type).setViewHolder(new CheckedItemViewHolder(this, true));
+            file2 = new TreeNode(topicModel.topicName + "." + topicModel.contentMap.get(1).type).setViewHolder(new CheckedItemViewHolder(this, true));
+            topicName.addChildren(file1, file2);
+        }
         subjectName.addChild(topicName);
     }
 
