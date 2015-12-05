@@ -29,4 +29,9 @@ public class AppPref {
         SharedPreferences settings = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         return settings.getString(key, null);
     }
+
+    public void remove(String key) {
+        SharedPreferences settings = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        settings.edit().remove(key);
+    }
 }
