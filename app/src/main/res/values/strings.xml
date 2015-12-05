@@ -90,5 +90,6 @@
     <string name="add_guardian">Add Guardian</string>
     <string name="redeem">Redeem</string>
     <string name="app_close_alert">Press back button once again to exit the app</string>
+    <string name="study_center_offline_click_text">Data not available offline</string>
 
 </resources>

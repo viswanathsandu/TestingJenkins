@@ -215,26 +215,6 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         getStudyCentreData(course.courseId.toString());
     }
 
-    private void showGrayBg(List<StudyCenter> studyCenters) {
-        if (studyCenters != null) {
-            mCourseData = new CourseData();
-            mCourseData.StudyCenter = studyCenters;
-        }
-        if (mCourseData != null && mCourseData.StudyCenter != null && !mCourseData.StudyCenter.isEmpty()) {
-            setupSubjects(mCourseData);
-            key = mCourseData.StudyCenter.get(0).SubjectName;
-            studyCenter = mCourseData.StudyCenter.get(0);
-            for (Chapters chapter : studyCenter.Chapters) {
-                chapter.isChapterOffline = true;
-            }
-            setUpStudyCentreData(studyCenter);
-            initDataAdapter(subjects.get(0));
-            updateSelected(allColorLayout);
-        } else {
-            hideRecyclerView();
-        }
-    }
-
     private void getStudyCentreData(String courseId) {
         isNetworkConnected = ApiManager.getInstance(this).isNetworkConnected();
         hideRecyclerView();
@@ -290,12 +270,11 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                     L.info("ApiCacheHolder.getInstance().studyCenter.response" + ApiCacheHolder.getInstance().studyCenter.response);
                     mCourseData = new CourseData();
                     mCourseData.StudyCenter = studyCenters;
-                    key = mCourseData.StudyCenter.get(0).SubjectName;
-                    studyCenter = mCourseData.StudyCenter.get(0);
+                    key = mCourseData.StudyCenter.get(getIndex(studyCenters)).SubjectName;
+                    studyCenter = mCourseData.StudyCenter.get(getIndex(studyCenters));
                     setUpStudyCentreData(studyCenter);
                     setupSubjects(mCourseData);
                     for (Chapters chapter : studyCenter.Chapters) {
-                        L.info("chapter info :" + chapter.chapterName + "chapter id:" + chapter.idCourseSubjectchapter);
                         boolean idMatchFound = false;
                         for (OfflineContent offlineContent : offlineContents) {
                             if (chapter.idCourseSubjectchapter.equals(offlineContent.chapterId)) {
@@ -303,24 +282,32 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                                 idMatchFound = true;
                             }
                         }
-                        if(idMatchFound) {
+                        if (idMatchFound) {
                             chapter.isChapterOffline = true;
-                        }else{
+                        } else {
                             chapter.isChapterOffline = false;
                         }
                         idMatchFound = false;
                     }
-                    initDataAdapter(subjects.get(0));
-                } else {
-                    Toast.makeText(StudyCentreActivity.this, "No offline content available for study center", Toast.LENGTH_SHORT).show();
-                    progressBar.setVisibility(View.GONE);
-                    if (ApiCacheHolder.getInstance().studyCenter != null) {
-                        showGrayBg(studyCenters);
-                    }
+                    initDataAdapter(subjects.get(getIndex(studyCenters)));
                 }
                 updateSelected(allColorLayout);
             }
         });
+    }
+
+    private int getIndex(List<StudyCenter> studyCenters) {
+        int i = 0;
+        if(key == null){
+            return 0;
+        }
+        for (StudyCenter studyCenter : studyCenters) {
+            if (key.equalsIgnoreCase(studyCenter.SubjectName)) {
+                return i;
+            }
+            i++;
+        }
+        return 0;
     }
 
     private void hideRecyclerView() {
@@ -404,17 +391,23 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                 }
                 selectedSubjectTxt = textView;
                 selectedSubjectTxt.setSelected(true);
-                if (mCourseData != null && mCourseData.StudyCenter != null) {
-                    key = text;
-                    for (StudyCenter studyCenter : mCourseData.StudyCenter) {
-                        if (key.equalsIgnoreCase(studyCenter.SubjectName)) {
-                            StudyCentreActivity.this.studyCenter = studyCenter;
-                            setUpStudyCentreData(studyCenter);
-                            mAdapter.updateData(getChaptersForSubject(), text);
-                            mAdapter.notifyDataSetChanged();
-                            break;
+                key = text;
+                if (isNetworkConnected) {
+                    if (mCourseData != null && mCourseData.StudyCenter != null) {
+                        key = text;
+                        for (StudyCenter studyCenter : mCourseData.StudyCenter) {
+                            if (key.equalsIgnoreCase(studyCenter.SubjectName)) {
+                                StudyCentreActivity.this.studyCenter = studyCenter;
+                                setUpStudyCentreData(studyCenter);
+                                mAdapter.updateData(getChaptersForSubject(), text);
+                                mAdapter.notifyDataSetChanged();
+                                break;
+                            }
                         }
                     }
+                } else {
+                    getOfflineStudyCenterData(mCourseData.StudyCenter);
+                    selectedSubjectTxt.setSelected(true);
                 }
             }
         });
