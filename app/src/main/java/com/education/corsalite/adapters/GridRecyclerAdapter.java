@@ -3,11 +3,8 @@ package com.education.corsalite.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -17,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -33,7 +29,6 @@ import com.education.corsalite.activities.WebActivity;
 import com.education.corsalite.models.responsemodels.Chapters;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.Data;
-import com.education.corsalite.utils.L;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -70,7 +65,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
 
 
         if (chapter.isChapterOffline) {
-            holder.gridLayout.setOnClickListener(new View.OnClickListener() {
+            holder.rootGridLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     getAlertDialog(v, holder, chapter);
@@ -292,6 +287,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         public TextView star;
         public TextView gridChildText;
         public LinearLayout gridLayout;
+        public LinearLayout rootGridLayout;
         public TextView textViewGray;
         public TextView timeSpentGray;
         public TextView levelGray;
@@ -303,7 +299,8 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
 
         public StudyCenterSubjectViewHolder(View itemView) {
             super(itemView);
-            gridLayout = (LinearLayout) itemView.findViewById(R.id.grid_layout);
+            gridLayout = (LinearLayout) itemView.findViewById(R.id.grid_layout_color);
+            rootGridLayout = (LinearLayout) itemView.findViewById(R.id.grid_layout);
             textView = (TextView) itemView.findViewById(R.id.subject_name);
             timeSpent = (TextView) itemView.findViewById(R.id.clock);
             level = (TextView) itemView.findViewById(R.id.level);

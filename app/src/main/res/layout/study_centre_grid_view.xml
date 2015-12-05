@@ -3,18 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/grid_layout"
+    android:layout_marginBottom="16dp"
+    android:layout_marginRight="16dp">
 
     <LinearLayout
-        android:id="@+id/grid_layout"
+        android:id="@+id/grid_layout_color"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginRight="16dp"
         android:background="@drawable/redshape"
-        android:orientation="vertical"
-        android:paddingBottom="16dp"
-        android:paddingTop="16dp">
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/subject_name"
@@ -121,12 +120,8 @@
         android:id="@+id/grid_layout_gray"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginRight="16dp"
         android:background="@drawable/grayshape"
         android:orientation="vertical"
-        android:paddingBottom="16dp"
-        android:paddingTop="16dp"
         android:visibility="gone">
 
         <TextView
