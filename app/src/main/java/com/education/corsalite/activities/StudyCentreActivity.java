@@ -32,7 +32,6 @@ import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.CourseData;
 import com.education.corsalite.models.responsemodels.StudyCenter;
-import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.Data;
 
 import java.util.ArrayList;
@@ -163,14 +162,6 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_part_test:
-                Intent exerciseIntent = new Intent(StudyCentreActivity.this, ExerciseActivity.class);
-                exerciseIntent.putExtra(Constants.TEST_TITLE, "Take Test");
-                exerciseIntent.putExtra(Constants.SELECTED_COURSE, "13" /*AbstractBaseActivity.selectedCourse.courseId.toString()*/);
-                exerciseIntent.putExtra(Constants.SELECTED_TOPICID, "224");
-                exerciseIntent.putExtra(Constants.SELECTED_TOPIC, "Test Data");
-                startActivity(exerciseIntent);
-                return true;
             case R.id.action_exam_history:
                 Intent intent = new Intent(this,ExamHistoryActivity.class);
                 startActivity(intent);
@@ -330,12 +321,12 @@ public class StudyCentreActivity extends AbstractBaseActivity {
             @Override
             public void onClick(View view) {
 
-                showAlertDialogue(v);
+                showAlertDialog(v);
             }
         });
     }
 
-    private void showAlertDialogue(View v){
+    private void showAlertDialog(View v){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater li = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
