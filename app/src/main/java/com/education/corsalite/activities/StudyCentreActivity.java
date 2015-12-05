@@ -4,13 +4,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -293,7 +298,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     private void addSubjectsAndCreateViews(StudyCenter studyCenter) {
         String subject = studyCenter.SubjectName;
         subjects.add(subject);
-        linearLayout.addView(getSubjectView(subject, studyCenter.idCourseSubject+"", subjects.size() == 1));
+        linearLayout.addView(getSubjectView(subject, studyCenter.idCourseSubject + "", subjects.size() == 1));
     }
 
     public String getSelectedSubjectId() {
@@ -308,12 +313,44 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         TextView tv = (TextView) v.findViewById(R.id.subject);
         tv.setText(subjectName);
         tv.setTag(subjectId);
+
+        ImageView iv = (ImageView)v.findViewById(R.id.arrow_img);
+        setListener(v,iv);
         if(isSelected) {
             tv.setSelected(true);
             selectedSubjectTxt = tv;
         }
         setListener(tv, subjectName);
         return v;
+    }
+
+    private void setListener(final View v,ImageView imageView){
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                showAlertDialogue(v);
+            }
+        });
+    }
+
+    private void showAlertDialogue(View v){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater li = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View dialogView = li.inflate(R.layout.layout_list_item_view_popup, null);
+        builder.setView(dialogView);
+        AlertDialog dialog = builder.create();
+        WindowManager.LayoutParams wmlp = dialog.getWindow().getAttributes();
+        wmlp.gravity = Gravity.TOP | Gravity.LEFT;
+        // position the dialog
+        wmlp.x = (int) v.getX() + 15;
+        wmlp.y = (int) v.getY() + 140;
+        dialog.show();
+        dialog.getWindow().setAttributes(wmlp);
+        dialog.getWindow().setLayout(300, ViewGroup.LayoutParams.WRAP_CONTENT);
+
     }
 
     private void setListener(final TextView textView, final String text) {
