@@ -35,6 +35,7 @@ import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.fragments.FullQuestionDialog;
 import com.education.corsalite.models.requestmodels.PostExerciseRequestModel;
 import com.education.corsalite.models.responsemodels.AnswerChoiceModel;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
@@ -75,6 +76,7 @@ public class ExerciseActivity extends AbstractBaseActivity {
     @Bind(R.id.tv_pagetitle) TextView tvPageTitle;
     @Bind(R.id.tv_timer) TextView tv_timer;
 
+    @Bind(R.id.btn_view_full_question) Button btnViewFullQuestion;
     @Bind(R.id.btn_verify) Button btnVerify;
     @Bind(R.id.tv_clearanswer) TextView tvClearAnswer;
 
@@ -98,6 +100,7 @@ public class ExerciseActivity extends AbstractBaseActivity {
     private int selectedPosition = 0;
     private int selectedAnswerPosition = -1;
     String title = "";
+    String topic = "";
     GridAdapter gridAdapter;
     private List<ExerciseModel> localExerciseModelList;
     private int previousQuestionPosition = -1;
@@ -117,6 +120,10 @@ public class ExerciseActivity extends AbstractBaseActivity {
         getIntentData();
     }
 
+    public List<ExerciseModel> getLocalExerciseModelList() {
+        return this.localExerciseModelList;
+    }
+
     private void getIntentData() {
         if (getIntent().hasExtra(Constants.TEST_TITLE)) {
             title = getIntent().getExtras().getString(Constants.TEST_TITLE);
@@ -125,7 +132,8 @@ public class ExerciseActivity extends AbstractBaseActivity {
         setToolbarForExercise(title);
 
         if (getIntent().hasExtra(Constants.SELECTED_TOPIC)) {
-            tvPageTitle.setText(getIntent().getExtras().getString(Constants.SELECTED_TOPIC));
+            topic = getIntent().getExtras().getString(Constants.SELECTED_TOPIC);
+            tvPageTitle.setText(topic);
         }
 
         // set selected position
@@ -173,6 +181,7 @@ public class ExerciseActivity extends AbstractBaseActivity {
         shadowView.setOnClickListener(mClickListener);
         slider.setOnClickListener(mClickListener);
         testNavLayout.setOnClickListener(mClickListener);
+        btnViewFullQuestion.setOnClickListener(mClickListener);
     }
 
     private void initSuggestionWebView() {
@@ -324,6 +333,10 @@ public class ExerciseActivity extends AbstractBaseActivity {
 
                 case R.id.ll_test_navigator:
                     break;
+
+                case R.id.btn_view_full_question:
+                    showFullQuestionDialog();
+                    break;
             }
         }
     };
@@ -331,10 +344,6 @@ public class ExerciseActivity extends AbstractBaseActivity {
     private void loadQuestion(int position) {
 
         tvSerialNo.setText("Q" + (position + 1) + ")");
-
-        /*String header = "Exercise: " + WebActivity.exe)rciseModelList.get(position).displayName.split("\\s+")[0];
-        SpannableString headerText = new SpannableString(header);
-        headerText.setSpan(new UnderlineSpan(), 0, header.length(), 0);*/
         tvLevel.setText(localExerciseModelList.get(position).displayName.split("\\s+")[0].toUpperCase(Locale.ENGLISH));
 
 
@@ -361,10 +370,6 @@ public class ExerciseActivity extends AbstractBaseActivity {
         }
 
         navigateButtonEnabled();
-        if (mViewSwitcher.indexOfChild(mViewSwitcher.getCurrentView()) == 0) {
-            mViewSwitcher.showNext();
-        }
-
         if (localExerciseModelList.get(position).idQuestionType.equalsIgnoreCase("1")) {
             loadAnswers(position);
         } else if (localExerciseModelList.get(position).idQuestionType.equalsIgnoreCase("2")) {
@@ -380,6 +385,9 @@ public class ExerciseActivity extends AbstractBaseActivity {
                 localExerciseModelList.remove(selectedPosition);
                 inflateUI(selectedPosition - 1);
             }
+        }
+        if (mViewSwitcher.indexOfChild(mViewSwitcher.getCurrentView()) == 0) {
+            mViewSwitcher.showNext();
         }
     }
 
@@ -403,6 +411,7 @@ public class ExerciseActivity extends AbstractBaseActivity {
         List<AnswerChoiceModel> answerChoiceModels = localExerciseModelList.get(position).answerChoice;
         final int size = answerChoiceModels.size();
         final CheckBox[] checkBoxes = new CheckBox[size];
+        final TextView[] tvSerial = new TextView[size];
         final LinearLayout[] rowLayout = new LinearLayout[size];
 
         String[] preselectedAnswers = null;
@@ -414,6 +423,21 @@ public class ExerciseActivity extends AbstractBaseActivity {
         for (int i = 0; i < size; i++) {
 
             final AnswerChoiceModel answerChoiceModel = answerChoiceModels.get(i);
+
+            rowLayout[i] = new LinearLayout(this);
+            rowLayout[i].setOrientation(LinearLayout.HORIZONTAL);
+            rowLayout[i].setGravity(Gravity.CENTER_VERTICAL);
+            LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+
+            tvSerial[i] = new TextView(this);
+            tvSerial[i].setText((i + 1) + ")");
+            tvSerial[i].setTextColor(Color.BLACK);
+            tvSerial[i].setGravity(Gravity.TOP);
+            tvSerial[i].setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+            p.setMargins(0, 0, 10, 0);
+            tvSerial[i].setLayoutParams(p);
+
+
             checkBoxes[i] = new CheckBox(this);
             checkBoxes[i].setId(Integer.valueOf(answerChoiceModel.idAnswerKey));
             checkBoxes[i].setTag(answerChoiceModel);
@@ -422,7 +446,6 @@ public class ExerciseActivity extends AbstractBaseActivity {
             rowLayout[i] = new LinearLayout(this);
             rowLayout[i].setOrientation(LinearLayout.HORIZONTAL);
             rowLayout[i].setGravity(Gravity.CENTER_VERTICAL);
-            LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
             checkBoxes[i].setLayoutParams(p);
 
             rowLayout[i].addView(checkBoxes[i]);
@@ -816,6 +839,14 @@ public class ExerciseActivity extends AbstractBaseActivity {
                         timer.start();
                     }
         });
+    }
+
+    private void showFullQuestionDialog() {
+        FullQuestionDialog fullQuestionDialog = new FullQuestionDialog();
+        Bundle bundle = new Bundle();
+        bundle.putString(Constants.SELECTED_TOPIC, topic);
+        fullQuestionDialog.setArguments(bundle);
+        fullQuestionDialog.show(getFragmentManager(), "fullQuestionDialog");
     }
 
 }
