@@ -450,41 +450,6 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         });
     }
 
-    private void getOfflineStudyCenterData1(final List<StudyCenter> studyCenters) {
-        DbManager.getInstance(this).getOfflineContentList(new ApiCallback<List<OfflineContent>>(this) {
-            @Override
-            public void failure(CorsaliteError error) {
-                super.failure(error);
-            }
-
-            @Override
-            public void success(List<OfflineContent> offlineContents, Response response) {
-                if (offlineContents != null && offlineContents.size() > 0) {
-                    mCourseData = new CourseData();
-                    mCourseData.StudyCenter = studyCenters;
-                    key = mCourseData.StudyCenter.get(getIndex(studyCenters)).SubjectName;
-                    studyCenter = mCourseData.StudyCenter.get(getIndex(studyCenters));
-                    setupSubjects(mCourseData);
-                    for (Chapters chapter : studyCenter.Chapters) {
-                        boolean idMatchFound = false;
-                        for (OfflineContent offlineContent : offlineContents) {
-                            if (chapter.idCourseSubjectchapter.equals(offlineContent.chapterId)) {
-                                idMatchFound = true;
-                            }
-                        }
-                        if (idMatchFound) {
-                            chapter.isChapterOffline = true;
-                        } else {
-                            chapter.isChapterOffline = false;
-                        }
-                        idMatchFound = false;
-                    }
-                    initDataAdapter(subjects.get(getIndex(studyCenters)));
-                }
-            }
-        });
-    }
-
     private View getView() {
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         return inflater.inflate(R.layout.study_center_text_view, null);
