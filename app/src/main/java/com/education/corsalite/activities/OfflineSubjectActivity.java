@@ -278,9 +278,10 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
             file1 = new TreeNode(topicModel.topicName + "." + topicModel.contentMap.get(0).type).setViewHolder(new CheckedItemViewHolder(this, true));
             topicName.addChildren(file1);
         } else {
-            file1 = new TreeNode(topicModel.contentMap.get(0).contentName + "." + topicModel.contentMap.get(0).type).setViewHolder(new CheckedItemViewHolder(this, true));
-            file2 = new TreeNode(topicModel.contentMap.get(1).contentName + "." + topicModel.contentMap.get(1).type).setViewHolder(new CheckedItemViewHolder(this, true));
-            topicName.addChildren(file1, file2);
+            for(ContentModel contentModel: topicModel.contentMap){
+                file1 = new TreeNode(contentModel.contentName + "." + contentModel.type).setViewHolder(new CheckedItemViewHolder(this, true));
+                topicName.addChildren(file1);
+            }
         }
         subjectName.addChild(topicName);
     }
