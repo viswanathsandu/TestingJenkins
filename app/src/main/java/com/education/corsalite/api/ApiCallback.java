@@ -24,12 +24,14 @@ public abstract class ApiCallback<T> implements Callback<T> {
     }
 
     public void failure(CorsaliteError error) {
-        AppPref.getInstance(mContext).remove("loginId");
-        AppPref.getInstance(mContext).remove("passwordHash");
-        Toast.makeText(mContext, "Session expired... \nPlease login to continue...", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(mContext, LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        mContext.startActivity(intent);
+        if(error != null && error.message != null && error.message.equalsIgnoreCase("Unathorized session.")) {
+            AppPref.getInstance(mContext).remove("loginId");
+            AppPref.getInstance(mContext).remove("passwordHash");
+            Toast.makeText(mContext, "Session expired... \nPlease login to continue...", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(mContext, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            mContext.startActivity(intent);
+        }
     }
 
     @Override
@@ -41,6 +43,13 @@ public abstract class ApiCallback<T> implements Callback<T> {
 
     @Override
     public void failure(RetrofitError error) {
+        if(error.getKind().name().equals("CONVERSION")) {
+            CorsaliteError corsaloteError = new CorsaliteError();
+            corsaloteError.status = "ERROR";
+            corsaloteError.message = "Unathorized session.";
+            failure(corsaloteError);
+            return;
+        }
         CorsaliteError restError = (CorsaliteError) error.getBodyAs(CorsaliteError.class);
         if (restError != null) {
             failure(restError);

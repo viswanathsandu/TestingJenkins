@@ -32,6 +32,8 @@ public class AppPref {
 
     public void remove(String key) {
         SharedPreferences settings = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        settings.edit().remove(key);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.remove(key);
+        editor.apply();
     }
 }
