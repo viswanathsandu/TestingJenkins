@@ -19,7 +19,6 @@ import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.Encryption;
-import com.education.corsalite.utils.SystemUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -83,36 +82,32 @@ public class LoginActivity extends AbstractBaseActivity {
     }
 
     private void login(final String username, final String password, final boolean fetchLocal) {
-        if(SystemUtils.isNetworkConnected(this)) {
-            showProgress();
-            ApiManager.getInstance(this).login(username, password, new ApiCallback<LoginResponse>(this) {
-                @Override
-                public void failure(CorsaliteError error) {
-                    super.failure(error);
-                    closeProgress();
-                    if (error != null && !TextUtils.isEmpty(error.message)) {
-                        showToast(error.message);
-                    }
+        showProgress();
+        ApiManager.getInstance(this).login(username, password, new ApiCallback<LoginResponse>(this) {
+            @Override
+            public void failure(CorsaliteError error) {
+                super.failure(error);
+                closeProgress();
+                if (error != null && !TextUtils.isEmpty(error.message)) {
+                    showToast(error.message);
                 }
+            }
 
-                @Override
-                public void success(LoginResponse loginResponse, Response response) {
-                    super.success(loginResponse, response);
-                    closeProgress();
-                    if (loginResponse.isSuccessful()) {
-                        ApiCacheHolder.getInstance().setLoginResponse(loginResponse);
-                        dbManager.saveReqRes(ApiCacheHolder.getInstance().login);
-                        appPref.save("loginId", username);
-                        appPref.save("passwordHash", password);
-                        onLoginsuccess(loginResponse, fetchLocal);
-                    } else {
-                        showToast(getResources().getString(R.string.login_failed));
-                    }
+            @Override
+            public void success(LoginResponse loginResponse, Response response) {
+                super.success(loginResponse, response);
+                closeProgress();
+                if (loginResponse.isSuccessful()) {
+                    ApiCacheHolder.getInstance().setLoginResponse(loginResponse);
+                    dbManager.saveReqRes(ApiCacheHolder.getInstance().login);
+                    appPref.save("loginId", username);
+                    appPref.save("passwordHash", password);
+                    onLoginsuccess(loginResponse, fetchLocal);
+                } else {
+                    showToast(getResources().getString(R.string.login_failed));
                 }
-            }, fetchLocal);
-        } else {
-            showToast("Please check your network connection");
-        }
+            }
+        }, fetchLocal);
     }
 
     private void onLoginsuccess(LoginResponse response, boolean fetchLocal) {
