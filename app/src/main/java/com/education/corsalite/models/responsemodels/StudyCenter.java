@@ -1,5 +1,7 @@
 package com.education.corsalite.models.responsemodels;
 
+import android.text.TextUtils;
+
 import com.education.corsalite.utils.Data;
 
 import java.util.ArrayList;
@@ -26,8 +28,8 @@ public class StudyCenter {
         int completedTopics = 0;
         for (Chapters chapters:Chapters
              ) {
-            totalTopics =+ Integer.parseInt(chapters.totalTopics);
-            completedTopics =+Integer.parseInt(chapters.completedTopics);
+            totalTopics = totalTopics + Integer.parseInt(TextUtils.isEmpty(chapters.totalTopics) ? "0" : chapters.totalTopics);
+            completedTopics = completedTopics + Integer.parseInt(TextUtils.isEmpty(chapters.completedTopics) ? "0" : chapters.completedTopics);
         }
 
         if(totalTopics != 0){
@@ -44,21 +46,21 @@ public class StudyCenter {
         for (Chapters chapters:Chapters
                 ) {
 
-            earnedScore =+ Data.getDoubleInInt(chapters.earnedMarks);
-            totalTestScore =+ Data.getDoubleInInt(chapters.totalTestedMarks);
+            earnedScore = earnedScore + Data.getDoubleInInt(chapters.earnedMarks);
+            totalTestScore = totalTestScore + Data.getDoubleInInt(chapters.totalTestedMarks);
         }
 
         return earnedScore+"/"+totalTestScore;
     }
 
-    public int getNotes(){
+    public String getNotes(){
         int notesCount = 0;
         for (Chapters chapters:Chapters
                 ) {
 
-            notesCount =+ Integer.parseInt(chapters.notesCount);
+            notesCount = notesCount+ Integer.parseInt(TextUtils.isEmpty(chapters.notesCount) ? "0" : chapters.notesCount);
         }
-            return notesCount;
+            return notesCount+"";
     }
 
 }
