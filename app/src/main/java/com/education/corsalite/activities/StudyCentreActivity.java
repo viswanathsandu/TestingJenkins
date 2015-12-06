@@ -34,6 +34,7 @@ import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.CourseData;
 import com.education.corsalite.models.responsemodels.StudyCenter;
+import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.Data;
 
 import java.util.ArrayList;
@@ -380,7 +381,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
             @Override
             public void onClick(View view) {
 
-                showAlertDialog(v,studyCenter);
+                showAlertDialog(v, studyCenter);
             }
         });
     }
@@ -411,6 +412,24 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         notes.setText(studyCenter.getNotes());
         TextView completedTopics = (TextView) dialogView.findViewById(R.id.completed_topics);
         completedTopics.setText(studyCenter.getCompletion() + "%");
+        dialogView.findViewById(R.id.take_test).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+                startPartTest(studyCenter);
+            }
+        });
+
+    }
+
+    private void startPartTest(StudyCenter studyCenter){
+
+        Intent exerciseIntent = new Intent(this, ExerciseActivity.class);
+        exerciseIntent.putExtra(Constants.TEST_TITLE, "Part Test");
+        exerciseIntent.putExtra(Constants.SELECTED_COURSE, "13" /*AbstractBaseActivity.selectedCourse.courseId.toString()*/);
+        exerciseIntent.putExtra(Constants.SELECTED_TOPICID, "224");
+        exerciseIntent.putExtra(Constants.SELECTED_TOPIC, "Test Data");
+        startActivity(exerciseIntent);
 
     }
 
