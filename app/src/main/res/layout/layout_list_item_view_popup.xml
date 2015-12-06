@@ -93,7 +93,7 @@
             android:id="@+id/take_test"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/take_test"
+            android:text="Part Test"
             style="@style/tiles_menu_title_txt"/>
     </RelativeLayout>
     <RelativeLayout
