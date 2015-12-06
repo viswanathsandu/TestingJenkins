@@ -2,6 +2,7 @@ package com.education.corsalite.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -96,6 +97,7 @@ public class WebActivity extends AbstractBaseActivity {
     private String mChapterId = "";
     private String mTopicId = "";
     private String mContentId = "";
+    private String mContentName = "";
     private int mContentIdPosition;
 
     private String selectedText = "";
@@ -113,7 +115,7 @@ public class WebActivity extends AbstractBaseActivity {
         ButterKnife.bind(this);
         setToolbarForContentReading();
         initWebView();
-
+        pbExercise.getIndeterminateDrawable().setColorFilter(0xFFFFFF, PorterDuff.Mode.MULTIPLY);
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -131,7 +133,14 @@ public class WebActivity extends AbstractBaseActivity {
             }
             if(bundle.containsKey("contentId") && bundle.getString("contentId") != null) {
                 mContentId = bundle.getString("contentId");
+
+                if(bundle.containsKey("contentName") && bundle.getString("contentName") != null) {
+                    mContentName = bundle.getString("contentId");
+                } else {
+                    throw new NullPointerException("You must have to pass content name");
+                }
             }
+
         }
         setListeners();
     }
@@ -340,9 +349,10 @@ public class WebActivity extends AbstractBaseActivity {
             showToast("File already exists.");
 
         } else {
-            String htmlUrl = fileUtilities.write(contentModelList.get(mContentIdPosition).idContent + "." +
+            String htmlUrl = fileUtilities.write(contentModelList.get(mContentIdPosition).contentName + "." +
                     Constants.HTML_FILE, htmlFileText, folderStructure);
             if(htmlUrl != null) {
+                tvOffline.setVisibility(View.INVISIBLE);
                 showToast("File saved");
             } else {
                 showToast("Unable to save file.");
@@ -370,7 +380,7 @@ public class WebActivity extends AbstractBaseActivity {
             }
         } else {
             // check if local file exists
-            if(loadwebifFileExists(contentModelList.get(mContentIdPosition).idContent + "." +
+            if(loadwebifFileExists(contentModelList.get(mContentIdPosition).contentName + "." +
                     contentModelList.get(mContentIdPosition).type)) {
                 if(mViewSwitcher.getNextView() instanceof RelativeLayout) {
                     mViewSwitcher.showNext();
@@ -418,7 +428,7 @@ public class WebActivity extends AbstractBaseActivity {
                 spTopic.setSelection(previousTopicPosition);
             }
         } else {
-            if(loadwebifFileExists(contentModelList.get(mContentIdPosition).idContent + "." +
+            if(loadwebifFileExists(contentModelList.get(mContentIdPosition).contentName + "." +
                     contentModelList.get(mContentIdPosition).type)) {
                 if(mViewSwitcher.getNextView() instanceof RelativeLayout) {
                     mViewSwitcher.showNext();
@@ -577,18 +587,18 @@ public class WebActivity extends AbstractBaseActivity {
             tvVideo.setVisibility(View.GONE);
         }
 
-        String contentId = "";
         String contentIds = "" ;
+        String contentNames = "";
         for(ContentModel contentModel : contentModelList) {
-            if(contentId.trim().length() > 0) {
-                contentId = contentId + ",";
+            if(contentIds.trim().length() > 0) {
                 contentIds = contentIds + ",";
+                contentNames = contentNames + ",";
             }
-            contentId = contentId + contentModel.idContent + "." +contentModel.type;
+            contentNames = contentNames + contentModel.contentName + "." +contentModel.type;
             contentIds = contentIds + contentModel.idContent;
         }
 
-        if(loadwebifFileExists(contentId)) {
+        if(loadwebifFileExists(contentNames)) {
             if(mViewSwitcher.getNextView() instanceof RelativeLayout) {
                 mViewSwitcher.showNext();
             }
@@ -625,11 +635,11 @@ public class WebActivity extends AbstractBaseActivity {
 
                 List<OfflineContent> offlineContents = new ArrayList<>(contents.size());
                 OfflineContent offlineContent;
-                for (Content content : contents) {
-                    if (TextUtils.isEmpty(content.type)) {
-                        fileName = content.idContent + ".html";
+                for(Content content : contents) {
+                    if(TextUtils.isEmpty(content.type)) {
+                        fileName = content.name + ".html";
                     } else {
-                        fileName = content.idContent + "." + content.type;
+                        fileName = content.name + "." + content.type;
                     }
                     offlineContent = new OfflineContent(courseId, courseName,
                             subjectId, subjectName, chapterId, chapterName, topicId, topicName,
@@ -644,12 +654,12 @@ public class WebActivity extends AbstractBaseActivity {
         });
     }
 
-    public boolean loadwebifFileExists(String contentId) {
+    public boolean loadwebifFileExists(String contentNames) {
         String[] htmlFile;
-        if (contentId.contains(",")) {
-            htmlFile = contentId.split(",");
+        if (contentNames.contains(",")) {
+            htmlFile = contentNames.split(",");
         } else {
-            htmlFile = new String[]{contentId};
+            htmlFile = new String[]{contentNames};
         }
         if (subjectModelList.size() > 0 || chapterModelList.size() > 0 ||
                 topicModelList.size() > 0 || contentModelList.size() > 0)  {
@@ -711,14 +721,13 @@ public class WebActivity extends AbstractBaseActivity {
     }
 
     private boolean loadSpecificContent(String[] htmlFile) {
-
         File f;
         String fileName;
         for (int i = 0; i < htmlFile.length; i++) {
             fileName = htmlFile[i];
             f = getgetFile(fileName);
             if (f.exists()) {
-                if (!mContentId.isEmpty() && mContentId.equalsIgnoreCase(htmlFile[i].split(".")[0])) {
+                if (!TextUtils.isEmpty(mContentName) && mContentName.equalsIgnoreCase(htmlFile[i].split(".")[0])) {
                     if(htmlFile.length == contentModelList.size()) {
                         mContentIdPosition = i;
                     }

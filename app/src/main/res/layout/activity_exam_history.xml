@@ -15,14 +15,15 @@
 
     <TextView
         android:id="@+id/tv_failure_text"
+        android:text="Exam History Not Available"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
+        android:textColor="@color/text_black"
         android:drawableTop="@drawable/ico_info"
-        android:gravity="center_horizontal"
         android:visibility="gone"
-        android:text="Exam History Not Available"/>
+        />
     <LinearLayout
         android:id="@+id/headerLayout"
         android:layout_width="match_parent"
