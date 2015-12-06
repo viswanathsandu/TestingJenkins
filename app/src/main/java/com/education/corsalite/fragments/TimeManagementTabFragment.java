@@ -280,6 +280,7 @@ public class TimeManagementTabFragment extends Fragment {
             data.setValueTextSize(11f);
             data.setValueTextColor(Color.WHITE);
 
+            data.setDrawValues(false);
             mChart.setData(data);
             mChart.highlightValues(null);
             mChart.invalidate();
