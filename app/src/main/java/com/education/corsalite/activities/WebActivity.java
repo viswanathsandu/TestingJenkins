@@ -2,6 +2,7 @@ package com.education.corsalite.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -108,6 +109,7 @@ public class WebActivity extends AbstractBaseActivity {
         ButterKnife.bind(this);
         setToolbarForContentReading();
         initWebView();
+        pbExercise.getIndeterminateDrawable().setColorFilter(0xFFFFFF, PorterDuff.Mode.MULTIPLY);
 
 
         Bundle bundle = getIntent().getExtras();
