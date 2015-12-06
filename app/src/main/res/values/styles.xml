@@ -133,13 +133,19 @@
         <item name="android:paddingTop">20dp</item>
     </style>
 
+    <style name="tiles_menu_item_rl">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
     <style name="tiles_menu_title_txt">
         <item name="fontPath">@string/roboto_regular</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:layout_marginTop">12dp</item>
-        <item name="android:layout_marginBottom">12dp</item>
         <item name="android:layout_alignParentLeft">true</item>
+        <item name="android:padding">5dp</item>
         <item name="android:singleLine">true</item>
     </style>
 

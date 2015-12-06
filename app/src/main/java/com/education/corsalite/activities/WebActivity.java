@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -72,7 +73,7 @@ public class WebActivity extends AbstractBaseActivity {
     @Bind(R.id.sp_chapter) Spinner spChapter;
     @Bind(R.id.sp_topic) Spinner spTopic;
     @Bind(R.id.tv_exercise) TextView tvExercise;
-    @Bind(R.id.layout_exercise) RelativeLayout layoutExercise;
+    @Bind(R.id.pb_exercise) ProgressBar pbExercise;
     @Bind(R.id.vs_container) ViewSwitcher mViewSwitcher;
     @Bind(R.id.footer_layout) RelativeLayout webFooter;
     @Bind(R.id.btn_next) Button btnNext;
@@ -468,13 +469,20 @@ public class WebActivity extends AbstractBaseActivity {
     }
 
     private void getExercise(int topicPosition) {
-        layoutExercise.setVisibility(View.INVISIBLE);
+        tvExercise.setEnabled(false);
+        pbExercise.setVisibility(View.VISIBLE);
         ApiManager.getInstance(this).getExercise(topicModelList.get(topicPosition).idTopic, selectedCourse.courseId.toString(),
                 studentId, "", new ApiCallback<List<ExerciseModel>>(this) {
                     @Override
                     public void success(List<ExerciseModel> exerciseModels, Response response) {
                         super.success(exerciseModels, response);
                         exerciseModelList = exerciseModels;
+                        showExercise();
+                    }
+
+                    @Override
+                    public void failure(CorsaliteError error) {
+                        super.failure(error);
                         showExercise();
                     }
                 });
@@ -667,7 +675,7 @@ public class WebActivity extends AbstractBaseActivity {
         }
         ContentIndex mContentIndex = contentIndexList.get(0);
         subjectModelList = new ArrayList<>(mContentIndex.subjectModelList);
-        SubjectAdapter subjectAdapter = new SubjectAdapter(subjectModelList, this);
+        final SubjectAdapter subjectAdapter = new SubjectAdapter(subjectModelList, this);
         spSubject.setAdapter(subjectAdapter);
 
         int listSize = subjectModelList.size();
@@ -686,6 +694,7 @@ public class WebActivity extends AbstractBaseActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 showChapter(position);
                 mChapterId = "";
+                subjectAdapter.setSelectedPosition(position);
             }
 
             @Override
@@ -698,7 +707,7 @@ public class WebActivity extends AbstractBaseActivity {
     private void showChapter(int subjectPosition) {
 
         chapterModelList = new ArrayList<>(subjectModelList.get(subjectPosition).chapters);
-        ChapterAdapter chapterAdapter = new ChapterAdapter(chapterModelList, this);
+        final ChapterAdapter chapterAdapter = new ChapterAdapter(chapterModelList, this);
         spChapter.setAdapter(chapterAdapter);
 
         if(!mChapterId.isEmpty()) {
@@ -716,6 +725,7 @@ public class WebActivity extends AbstractBaseActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 showTopic(position);
                 mTopicId = "";
+                chapterAdapter.setSelectedPosition(position);
             }
 
             @Override
@@ -727,16 +737,18 @@ public class WebActivity extends AbstractBaseActivity {
 
     private void showExercise() {
         if(exerciseModelList != null && exerciseModelList.size() > 0) {
-            layoutExercise.setVisibility(View.VISIBLE);
+            tvExercise.setEnabled(true);
+            pbExercise.setVisibility(View.GONE);
         } else {
-            layoutExercise.setVisibility(View.INVISIBLE);
+            tvExercise.setEnabled(false);
+            pbExercise.setVisibility(View.VISIBLE);
         }
     }
 
     private void showTopic(final int chapterPosition) {
         topicModelList = new ArrayList<>(chapterModelList.get(chapterPosition).topicMap);
         if(topicModelList != null) {
-            TopicAdapter topicAdapter = new TopicAdapter(topicModelList, this);
+            final TopicAdapter topicAdapter = new TopicAdapter(topicModelList, this);
             spTopic.setAdapter(topicAdapter);
 
             if(!mTopicId.isEmpty()) {
@@ -754,6 +766,7 @@ public class WebActivity extends AbstractBaseActivity {
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     getExercise(position);
                     getContentData(position);
+                    topicAdapter.setSelectedPosition(position);
                 }
 
                 @Override
