@@ -273,7 +273,6 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
         TreeNode topicName = new TreeNode(topicModel.topicName).setViewHolder(new CheckedItemViewHolder(this, false));
         int size = topicModel.contentMap.size();
         TreeNode file1 = null;
-        TreeNode file2 = null;
         if (size == 1) {
             file1 = new TreeNode(topicModel.topicName + "." + topicModel.contentMap.get(0).type).setViewHolder(new CheckedItemViewHolder(this, true));
             topicName.addChildren(file1);
