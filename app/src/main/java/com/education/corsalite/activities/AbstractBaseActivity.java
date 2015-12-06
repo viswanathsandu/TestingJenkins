@@ -36,6 +36,7 @@ import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
 import com.education.corsalite.services.ApiClientService;
+import com.education.corsalite.utils.AppPref;
 import com.education.corsalite.utils.CookieUtils;
 import com.google.gson.Gson;
 
@@ -61,6 +62,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     private ActionBarDrawerToggle actionBarDrawerToggle;
     public Dialog dialog;
     protected DbManager dbManager;
+    protected AppPref appPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,8 +74,13 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 .setDefaultFontPath(getString(R.string.roboto_medium))
                 .setFontAttrId(R.attr.fontPath)
                 .build());
+        initActivity();
+    }
+
+    private void initActivity() {
         DbAdapter.context = this;
         dbManager = DbManager.getInstance(this);
+        appPref = AppPref.getInstance(this);
     }
 
     @Override
@@ -285,6 +292,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         ApiManager.getInstance(this).logout(new Gson().toJson(logout), new ApiCallback<LogoutResponse>(this) {
             @Override
             public void failure(CorsaliteError error) {
+                super.failure(error);
                 showToast(getResources().getString(R.string.logout_failed));
             }
 

@@ -41,13 +41,21 @@ public class LoginActivity extends AbstractBaseActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         setListeners();
+        checkAutoLogin();
+    }
+
+    private void checkAutoLogin() {
+        String username = appPref.getValue("loginId");
+        String passwordHash =  appPref.getValue("passwordHash");
+        if(!TextUtils.isEmpty(username) && !TextUtils.isEmpty(passwordHash)) {
+            login(username, passwordHash, true);
+        }
     }
 
     private void setListeners() {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 login();
             }
         });
@@ -73,7 +81,7 @@ public class LoginActivity extends AbstractBaseActivity {
         });
     }
 
-    private void login(String username, String password) {
+    private void login(final String username, final String password, final boolean fetchLocal) {
         showProgress();
         ApiManager.getInstance(this).login(username, password, new ApiCallback<LoginResponse>(this) {
             @Override
@@ -92,18 +100,22 @@ public class LoginActivity extends AbstractBaseActivity {
                 if (loginResponse.isSuccessful()) {
                     ApiCacheHolder.getInstance().setLoginResponse(loginResponse);
                     dbManager.saveReqRes(ApiCacheHolder.getInstance().login);
-                    onLoginsuccess(loginResponse);
+                    appPref.save("loginId", username);
+                    appPref.save("passwordHash", password);
+                    onLoginsuccess(loginResponse, fetchLocal);
                 } else {
                     showToast(getResources().getString(R.string.login_failed));
                 }
             }
-        });
+        }, fetchLocal);
     }
 
-    private void onLoginsuccess(LoginResponse response) {
+    private void onLoginsuccess(LoginResponse response, boolean fetchLocal) {
         if(response != null) {
             LoginUserCache.getInstance().setLoginResponse(response);
-            showToast(getResources().getString(R.string.login_successful));
+            if(!fetchLocal) {
+                showToast(getResources().getString(R.string.login_successful));
+            }
             startActivity(new Intent(LoginActivity.this, StudyCentreActivity.class));
             finish();
         } else {
@@ -130,7 +142,7 @@ public class LoginActivity extends AbstractBaseActivity {
 
         if(checkForValidEmail()) {
             if(checkPasswordField()) {
-                login(usernameTxt.getText().toString(), Encryption.md5(passwordTxt.getText().toString()));
+                login(usernameTxt.getText().toString(), Encryption.md5(passwordTxt.getText().toString()), false);
             }else {
                 showToast("Please enter password");
             }
