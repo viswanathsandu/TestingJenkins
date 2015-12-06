@@ -144,7 +144,7 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
                 }
             }
             if(contentRoot == null){
-                contentRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_topics,offlineContent.contentName, offlineContent.contentId,"content"));
+                contentRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_topics,offlineContent.fileName, offlineContent.contentId,"content"));
                 topicRoot.addChild(contentRoot);
             }
         }

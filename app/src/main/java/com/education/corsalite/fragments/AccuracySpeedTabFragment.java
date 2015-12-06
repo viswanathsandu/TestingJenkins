@@ -78,6 +78,7 @@ public class AccuracySpeedTabFragment extends Fragment   {
         rvDatesLegend.setLayoutManager(mLayoutManagerDates);
         initializeGraph(accuracyChapterChart);
         initializeGraph(accuracyDateChart);
+        setMarkerView();
         return view;
     }
 
@@ -96,6 +97,7 @@ public class AccuracySpeedTabFragment extends Fragment   {
     }
 
     public void onEvent(Course course) {
+        failCount = 0;
         mProgressBar.setVisibility(View.VISIBLE);
         mParentLayoutChapter.setVisibility(View.GONE);
         mParentLayoutDates.setVisibility(View.GONE);
@@ -120,7 +122,7 @@ public class AccuracySpeedTabFragment extends Fragment   {
                         if(getActivity() == null) {
                             return;
                         }
-                        buildChapterGraphData(courseAnalysisList, CHAPTER);
+                        buildGraphData(courseAnalysisList, CHAPTER);
                         //create custom legend
                         Legend chapterLegend = accuracyChapterChart.getLegend();
                         customLegendAdapter = new CustomLegendAdapter(chapterLegend.getColors(),chapterLegend.getLabels(),getActivity().getLayoutInflater());
@@ -147,7 +149,7 @@ public class AccuracySpeedTabFragment extends Fragment   {
                         if(getActivity() == null) {
                             return;
                         }
-                        buildChapterGraphData(courseAnalysisList, DATES);
+                        buildGraphData(courseAnalysisList, DATES);
                         Legend datesLegend = accuracyDateChart.getLegend();
                         ArrayList<String> dates = new ArrayList<String>(Arrays.asList(datesLegend.getLabels()));
                         Object[] objectArray =  AnalyticsHelper.parseDate(dates,false).toArray();
@@ -164,11 +166,12 @@ public class AccuracySpeedTabFragment extends Fragment   {
 
     }
 
-    private void showFailMessage(){
+    private synchronized void showFailMessage(){
         failCount++;
         if(failCount == 2){
             mTextViewFail.setVisibility(View.VISIBLE);
             mProgressBar.setVisibility(View.GONE);
+
         }
     }
     private void initializeGraph(ScatterChart mChart){
@@ -187,7 +190,6 @@ public class AccuracySpeedTabFragment extends Fragment   {
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
         mChart.setGridBackgroundColor(getActivity().getResources().getColor(R.color.bg_chart));
-        setMarkerView();
 
     }
 
@@ -196,12 +198,16 @@ public class AccuracySpeedTabFragment extends Fragment   {
         accuracyDateChart.setMarkerView(new CustomMarkerView(getActivity(),R.layout.marker_view_chart,DATES));
     }
 
-    ArrayList<String> xVals = new ArrayList<>();
-    ArrayList<String> chapterList = new ArrayList<>();
-    ArrayList<String> dateList = new ArrayList<>();
-    ArrayList<String> subjectName = new ArrayList<>();
+    ArrayList<String> xVals ;
+    ArrayList<String> chapterList ;
+    ArrayList<String> dateList ;
+    ArrayList<String> subjectName ;
 
-    private void buildChapterGraphData(List<CourseAnalysis> courseAnalysisList,String graphType){
+    private synchronized void buildGraphData(List<CourseAnalysis> courseAnalysisList,String graphType){
+        xVals = new ArrayList<>();
+        chapterList = new ArrayList<>();
+        dateList = new ArrayList<>();
+        subjectName = new ArrayList<>();
 
         HashMap<String,ArrayList<Entry>> numYValEntries = new HashMap<>();
         for (CourseAnalysis analysisDetail: courseAnalysisList) {
@@ -272,8 +278,8 @@ public class AccuracySpeedTabFragment extends Fragment   {
 
         public CustomMarkerView (Context context, int layoutResource,String chartType) {
             super(context, layoutResource);
-            markerViewLine1 = (TextView) findViewById(R.id.tv_chapterDate);
-            markerViewLine2 = (TextView) findViewById(R.id.tv_accuracy_speed);
+            markerViewLine1 = (TextView) findViewById(R.id.tv_line1);
+            markerViewLine2 = (TextView) findViewById(R.id.tv_line2);
             this.chartType = chartType;
         }
 

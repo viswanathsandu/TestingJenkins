@@ -70,6 +70,8 @@ public class TestCoverageTabFragment extends Fragment {
     public void onEvent(Course course) {
         courseTestDataMap.clear();
         mLinearLayout.removeAllViews();
+        progressBar.setVisibility(View.VISIBLE);
+        failureText.setVisibility(View.GONE);
         fetchDataFromServer(course.courseId + "");
     }
 
