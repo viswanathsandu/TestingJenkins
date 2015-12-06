@@ -2,6 +2,7 @@ package com.education.corsalite.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -36,6 +37,7 @@ public class WebviewActivity extends AbstractBaseActivity {
         if(title.equals(getString(R.string.forgot_password))){
 
             setDrawerIconInvisible();
+            lockScreenOrientation();
         }
         if (bundle.containsKey(URL)) {
             webview.getSettings().setJavaScriptEnabled(true);
@@ -78,5 +80,9 @@ public class WebviewActivity extends AbstractBaseActivity {
             startActivity(intent);
             return true;
         }
+    }
+
+    private void lockScreenOrientation(){
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 }
