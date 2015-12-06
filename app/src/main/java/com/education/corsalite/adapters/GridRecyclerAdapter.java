@@ -155,7 +155,8 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
             @Override
             public void onClick(View v) {
                 dialog.cancel();
-                startExerciseActivity(chapter);
+               // startExerciseActivity(chapter);
+                startPartTest(chapter);
             }
         });
         dialogView.findViewById(R.id.start_reading).setOnClickListener(new View.OnClickListener() {
@@ -181,6 +182,17 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         });
     }
 
+    private void startPartTest(Chapters chapter){
+
+        Intent exerciseIntent = new Intent(studyCentreActivity, ExerciseActivity.class);
+        exerciseIntent.putExtra(Constants.TEST_TITLE, "Take Test");
+        exerciseIntent.putExtra(Constants.SELECTED_COURSE, "13" /*AbstractBaseActivity.selectedCourse.courseId.toString()*/);
+        exerciseIntent.putExtra(Constants.SELECTED_TOPICID, "224");
+        exerciseIntent.putExtra(Constants.SELECTED_TOPIC, "Test Data");
+        studyCentreActivity.startActivity(exerciseIntent);
+
+    }
+
     private void startNotesActivity(Chapters chapter) {
         Intent intent = new Intent(studyCentreActivity, NotesActivity.class);
         putIntentExtras(chapter, intent, COURSE_ID, SUBJECT_ID, CHAPTER_ID);
@@ -195,14 +207,14 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         studyCentreActivity.startActivity(intent);
     }
 
-    private void startExerciseActivity(Chapters chapters) {
+   /* private void startExerciseActivity(Chapters chapters) {
         Intent intent = new Intent(studyCentreActivity, ExerciseActivity.class);
-        intent.putExtra(Constants.SELECTED_COURSE, "13" /*AbstractBaseActivity.selectedCourse.courseId.toString()*/);
+        intent.putExtra(Constants.SELECTED_COURSE, "13" *//*AbstractBaseActivity.selectedCourse.courseId.toString()*//*);
         intent.putExtra(Constants.SELECTED_TOPICID, "1310");
         intent.putExtra(Constants.TEST_TITLE, "Take Test");
         intent.putExtra(Constants.SELECTED_TOPIC, "Take Test");
         studyCentreActivity.startActivity(intent);
-    }
+    }*/
 
     private void startContentActivity(Chapters chapter) {
         Intent intent = new Intent(studyCentreActivity, WebActivity.class);
