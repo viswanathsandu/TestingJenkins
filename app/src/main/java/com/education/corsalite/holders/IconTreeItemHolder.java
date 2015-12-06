@@ -1,6 +1,12 @@
 package com.education.corsalite.holders;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,6 +20,7 @@ import com.unnamed.b.atv.model.TreeNode;
 public class IconTreeItemHolder extends TreeNode.BaseNodeViewHolder<IconTreeItemHolder.IconTreeItem> {
     private TextView tvValue;
     private ImageView arrowView;
+    private static IconTreeItem value;
 
     public IconTreeItemHolder(Context context) {
         super(context);
@@ -27,6 +34,7 @@ public class IconTreeItemHolder extends TreeNode.BaseNodeViewHolder<IconTreeItem
         RelativeLayout mainLayout = (RelativeLayout)view.findViewById(R.id.rl_container);
         tvValue.setText(value.text);
         tvValue.setTag(value.tag);
+        this.value = value;
 
         final ImageView iconView = (ImageView) view.findViewById(R.id.icon);
         iconView.setImageDrawable(context.getResources().getDrawable(value.icon));
@@ -46,8 +54,9 @@ public class IconTreeItemHolder extends TreeNode.BaseNodeViewHolder<IconTreeItem
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getTreeView().removeNode(node);
-                ((OfflineContentActivity) context).onDelete(value.id,value.tag);
+                FragmentManager fragmentManager = ((OfflineContentActivity) context).getFragmentManager();
+                AlertDialogFragment dialogFragment = new AlertDialogFragment ();
+                dialogFragment.show(fragmentManager, "AlertDialog");
             }
         });
 
@@ -55,6 +64,7 @@ public class IconTreeItemHolder extends TreeNode.BaseNodeViewHolder<IconTreeItem
             arrowView.setVisibility(View.INVISIBLE);
         }else if(value.tag.equalsIgnoreCase("subject")){
             mainLayout.setBackgroundColor(context.getResources().getColor(R.color.red));
+            tvValue.setTextColor(context.getResources().getColor(R.color.text_white));
             arrowView.setImageDrawable(context.getResources().getDrawable(R.drawable.ico_offline_arrow_white));
             update.setImageDrawable(context.getResources().getDrawable(R.drawable.ico_offline_update_white));
             delete.setImageDrawable(context.getResources().getDrawable(R.drawable.ico_offline_delete_white));
@@ -86,6 +96,31 @@ public class IconTreeItemHolder extends TreeNode.BaseNodeViewHolder<IconTreeItem
             this.text = text;
             this.id = id;
             this.tag = tag;
+        }
+    }
+
+    public static class AlertDialogFragment extends DialogFragment{
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+            return new AlertDialog.Builder(getActivity())
+                    .setTitle("Are you sure you want to delete content?")
+                    .setPositiveButton("Confirm",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    ((OfflineContentActivity)getActivity()).onDelete(value.id,value.tag);
+                                }
+                            }
+                    )
+                    .setNegativeButton("Cancel",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+
+                                }
+                            }
+                    )
+                    .create();
         }
     }
 }
