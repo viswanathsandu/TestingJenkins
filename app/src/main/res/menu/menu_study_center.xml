@@ -11,11 +11,6 @@
         />
 
     <item
-        android:id="@+id/action_part_test"
-        app:showAsAction="never"
-        android:title="@string/menu_part_test" />
-
-    <item
         android:id="@+id/action_scheduled_test"
         app:showAsAction="never"
         android:title="@string/menu_scheduled_test" />
