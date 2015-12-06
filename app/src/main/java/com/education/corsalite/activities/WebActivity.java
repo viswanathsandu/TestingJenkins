@@ -253,7 +253,7 @@ public class WebActivity extends AbstractBaseActivity {
 
         switch (id) {
             case R.id.action_read_offline:
-                showToast("Read Offline");
+                saveFileToDisk();
                 return true;
 
             case R.id.action_download_pdf:
