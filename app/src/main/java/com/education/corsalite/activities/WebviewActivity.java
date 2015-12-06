@@ -33,6 +33,10 @@ public class WebviewActivity extends AbstractBaseActivity {
         }
         String title = bundle.getString(LoginActivity.TITLE, "Corsalite");
         setToolbarForWebActivity(title);
+        if(title.equals(getString(R.string.forgot_password))){
+
+            setDrawerIconInvisible();
+        }
         if (bundle.containsKey(URL)) {
             webview.getSettings().setJavaScriptEnabled(true);
             webview.setWebViewClient(new MyWebViewClient());
