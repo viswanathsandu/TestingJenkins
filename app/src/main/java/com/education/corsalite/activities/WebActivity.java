@@ -67,7 +67,6 @@ import retrofit.client.Response;
  */
 public class WebActivity extends AbstractBaseActivity {
 
-    @Bind(R.id.layout_video_offline) LinearLayout layoutVideoOffline;
     @Bind(R.id.iv_editnotes) ImageView ivEditNotes;
     @Bind(R.id.iv_forum) ImageView ivForum;
     @Bind(R.id.webView_content_reading) WebView webviewContentReading;
@@ -81,7 +80,6 @@ public class WebActivity extends AbstractBaseActivity {
     @Bind(R.id.btn_next) Button btnNext;
     @Bind(R.id.btn_previous) Button btnPrevious;
     @Bind(R.id.tv_video) TextView tvVideo;
-    @Bind(R.id.tv_offline) TextView tvOffline;
 
 
     private List<ContentIndex> contentIndexList;
@@ -209,10 +207,8 @@ public class WebActivity extends AbstractBaseActivity {
         webviewContentReading.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         htmlFileText = htmlUrl;
         if(htmlUrl.endsWith(Constants.HTML_FILE)) {
-            tvOffline.setVisibility(View.INVISIBLE);
             webviewContentReading.loadUrl(htmlUrl);
         } else {
-            tvOffline.setVisibility(View.VISIBLE);
             webviewContentReading.loadData(htmlUrl, "text/html; charset=UTF-8", null);
         }
         navigateButtonEnabled();
@@ -292,7 +288,6 @@ public class WebActivity extends AbstractBaseActivity {
         btnNext.setOnClickListener(mClickListener);
         btnPrevious.setOnClickListener(mClickListener);
         tvVideo.setOnClickListener(mClickListener);
-        tvOffline.setOnClickListener(mClickListener);
         tvExercise.setOnClickListener(mClickListener);
     }
 
@@ -330,10 +325,6 @@ public class WebActivity extends AbstractBaseActivity {
                     intent.putExtra(Constants.SELECTED_POSITION, 0);
                     startActivity(intent);
                     break;
-
-                case R.id.tv_offline:
-                    saveFileToDisk();
-                    break;
             }
         }
     };
@@ -347,13 +338,12 @@ public class WebActivity extends AbstractBaseActivity {
 
         if(TextUtils.isEmpty(htmlFileText) || htmlFileText.endsWith(Constants.HTML_FILE)) {
             showToast("File already exists.");
-
         } else {
             String htmlUrl = fileUtilities.write(contentModelList.get(mContentIdPosition).contentName + "." +
                     Constants.HTML_FILE, htmlFileText, folderStructure);
             if(htmlUrl != null) {
-                tvOffline.setVisibility(View.INVISIBLE);
                 showToast("File saved");
+                htmlFileText = "";
             } else {
                 showToast("Unable to save file.");
             }
