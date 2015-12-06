@@ -59,6 +59,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
     protected FrameLayout frameLayout;
+    private ActionBarDrawerToggle actionBarDrawerToggle;
     public Dialog dialog;
     protected DbManager dbManager;
     protected AppPref appPref;
@@ -164,6 +165,11 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         setToolbarTitle(title);
     }
 
+    protected void setDrawerIconInvisible(){
+
+        actionBarDrawerToggle.setDrawerIndicatorEnabled(false);
+    }
+
     private void initNavigationDrawer() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -183,7 +189,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         setNavigationClickListeners();
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
-        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_drawer, R.string.close_drawer) {
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_drawer, R.string.close_drawer) {
 
             @Override
             public void onDrawerClosed(View drawerView) {
