@@ -160,7 +160,6 @@ public class TimeManagementTabFragment extends Fragment {
 
                         for (Map.Entry<String,List<CourseAnalysis>> entry : courseDataMap.entrySet()) {
 
-
                             PieChart chart = new PieChart(getActivity());
                             RecyclerView recyclerView = new RecyclerView(getActivity());
                             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

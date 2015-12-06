@@ -78,6 +78,7 @@ public class AccuracySpeedTabFragment extends Fragment   {
         rvDatesLegend.setLayoutManager(mLayoutManagerDates);
         initializeGraph(accuracyChapterChart);
         initializeGraph(accuracyDateChart);
+        setMarkerView();
         return view;
     }
 
@@ -189,7 +190,6 @@ public class AccuracySpeedTabFragment extends Fragment   {
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
         mChart.setGridBackgroundColor(getActivity().getResources().getColor(R.color.bg_chart));
-        setMarkerView();
 
     }
 
@@ -278,8 +278,8 @@ public class AccuracySpeedTabFragment extends Fragment   {
 
         public CustomMarkerView (Context context, int layoutResource,String chartType) {
             super(context, layoutResource);
-            markerViewLine1 = (TextView) findViewById(R.id.tv_chapterDate);
-            markerViewLine2 = (TextView) findViewById(R.id.tv_accuracy_speed);
+            markerViewLine1 = (TextView) findViewById(R.id.tv_line1);
+            markerViewLine2 = (TextView) findViewById(R.id.tv_line2);
             this.chartType = chartType;
         }
 

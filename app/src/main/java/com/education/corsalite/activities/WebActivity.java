@@ -402,9 +402,9 @@ public class WebActivity extends AbstractBaseActivity {
                                 "</script>" + mContentResponse.get(i).contentHtml;
                 L.info("Content : "+text);
                 if(!contentType.isEmpty()) {
-                    htmlUrl = fileUtilities.write(contentId + "." + contentType.trim(), text, folderStructure);
+                    htmlUrl = fileUtilities.write(mContentResponse.get(i).name + "." + contentType.trim(), text, folderStructure);
                 } else {
-                    htmlUrl = fileUtilities.write(contentId + "." + Constants.HTML_FILE, text, folderStructure);
+                    htmlUrl = fileUtilities.write(mContentResponse.get(i).name + "." + Constants.HTML_FILE, text, folderStructure);
                 }
                 if(mContentId.isEmpty()) {
                     if (!htmlUrl.isEmpty() && count == 0) {
@@ -559,9 +559,9 @@ public class WebActivity extends AbstractBaseActivity {
                 OfflineContent offlineContent;
                 for(Content content : contents) {
                     if(TextUtils.isEmpty(content.type)) {
-                        fileName = content.idContent + ".html";
+                        fileName = content.name + ".html";
                     } else {
-                        fileName = content.idContent + "." + content.type;
+                        fileName = content.name + "." + content.type;
                     }
                     offlineContent = new OfflineContent(courseId, courseName,
                             subjectId, subjectName, chapterId, chapterName, topicId, topicName,
