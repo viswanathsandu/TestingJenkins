@@ -2,6 +2,7 @@ package com.education.corsalite.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -20,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -72,7 +74,7 @@ public class WebActivity extends AbstractBaseActivity {
     @Bind(R.id.sp_chapter) Spinner spChapter;
     @Bind(R.id.sp_topic) Spinner spTopic;
     @Bind(R.id.tv_exercise) TextView tvExercise;
-    @Bind(R.id.layout_exercise) RelativeLayout layoutExercise;
+    @Bind(R.id.pb_exercise) ProgressBar pbExercise;
     @Bind(R.id.vs_container) ViewSwitcher mViewSwitcher;
     @Bind(R.id.footer_layout) RelativeLayout webFooter;
     @Bind(R.id.btn_next) Button btnNext;
@@ -107,6 +109,7 @@ public class WebActivity extends AbstractBaseActivity {
         ButterKnife.bind(this);
         setToolbarForContentReading();
         initWebView();
+        pbExercise.getIndeterminateDrawable().setColorFilter(0xFFFFFF, PorterDuff.Mode.MULTIPLY);
 
 
         Bundle bundle = getIntent().getExtras();
@@ -401,9 +404,9 @@ public class WebActivity extends AbstractBaseActivity {
                                 "</script>" + mContentResponse.get(i).contentHtml;
                 L.info("Content : "+text);
                 if(!contentType.isEmpty()) {
-                    htmlUrl = fileUtilities.write(contentId + "." + contentType.trim(), text, folderStructure);
+                    htmlUrl = fileUtilities.write(mContentResponse.get(i).name + "." + contentType.trim(), text, folderStructure);
                 } else {
-                    htmlUrl = fileUtilities.write(contentId + "." + Constants.HTML_FILE, text, folderStructure);
+                    htmlUrl = fileUtilities.write(mContentResponse.get(i).name + "." + Constants.HTML_FILE, text, folderStructure);
                 }
                 if(mContentId.isEmpty()) {
                     if (!htmlUrl.isEmpty() && count == 0) {
@@ -468,13 +471,20 @@ public class WebActivity extends AbstractBaseActivity {
     }
 
     private void getExercise(int topicPosition) {
-        layoutExercise.setVisibility(View.INVISIBLE);
+        tvExercise.setEnabled(false);
+        pbExercise.setVisibility(View.VISIBLE);
         ApiManager.getInstance(this).getExercise(topicModelList.get(topicPosition).idTopic, selectedCourse.courseId.toString(),
                 studentId, "", new ApiCallback<List<ExerciseModel>>(this) {
                     @Override
                     public void success(List<ExerciseModel> exerciseModels, Response response) {
                         super.success(exerciseModels, response);
                         exerciseModelList = exerciseModels;
+                        showExercise();
+                    }
+
+                    @Override
+                    public void failure(CorsaliteError error) {
+                        super.failure(error);
                         showExercise();
                     }
                 });
@@ -551,9 +561,9 @@ public class WebActivity extends AbstractBaseActivity {
                 OfflineContent offlineContent;
                 for(Content content : contents) {
                     if(TextUtils.isEmpty(content.type)) {
-                        fileName = content.idContent + ".html";
+                        fileName = content.name + ".html";
                     } else {
-                        fileName = content.idContent + "." + content.type;
+                        fileName = content.name + "." + content.type;
                     }
                     offlineContent = new OfflineContent(courseId, courseName,
                             subjectId, subjectName, chapterId, chapterName, topicId, topicName,
@@ -729,9 +739,11 @@ public class WebActivity extends AbstractBaseActivity {
 
     private void showExercise() {
         if(exerciseModelList != null && exerciseModelList.size() > 0) {
-            layoutExercise.setVisibility(View.VISIBLE);
+            tvExercise.setEnabled(true);
+            pbExercise.setVisibility(View.GONE);
         } else {
-            layoutExercise.setVisibility(View.INVISIBLE);
+            tvExercise.setEnabled(false);
+            pbExercise.setVisibility(View.VISIBLE);
         }
     }
 

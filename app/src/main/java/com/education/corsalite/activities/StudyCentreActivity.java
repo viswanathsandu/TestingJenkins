@@ -20,7 +20,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.GridRecyclerAdapter;
@@ -37,7 +36,6 @@ import com.education.corsalite.models.responsemodels.CourseData;
 import com.education.corsalite.models.responsemodels.StudyCenter;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.Data;
-import com.education.corsalite.utils.L;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -169,14 +167,6 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_part_test:
-                Intent exerciseIntent = new Intent(StudyCentreActivity.this, ExerciseActivity.class);
-                exerciseIntent.putExtra(Constants.TEST_TITLE, "Take Test");
-                exerciseIntent.putExtra(Constants.SELECTED_COURSE, "13" /*AbstractBaseActivity.selectedCourse.courseId.toString()*/);
-                exerciseIntent.putExtra(Constants.SELECTED_TOPICID, "224");
-                exerciseIntent.putExtra(Constants.SELECTED_TOPIC, "Test Data");
-                startActivity(exerciseIntent);
-                return true;
             case R.id.action_exam_history:
                 Intent intent = new Intent(this, ExamHistoryActivity.class);
                 startActivity(intent);
@@ -359,7 +349,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     private void addSubjectsAndCreateViews(StudyCenter studyCenter) {
         String subject = studyCenter.SubjectName;
         subjects.add(subject);
-        linearLayout.addView(getSubjectView(subject, studyCenter.idCourseSubject + "", subjects.size() == 1));
+        linearLayout.addView(getSubjectView(studyCenter, studyCenter.idCourseSubject + "", subjects.size() == 1));
     }
 
     public String getSelectedSubjectId() {
@@ -369,39 +359,40 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         return null;
     }
 
-    private View getSubjectView(String subjectName, String subjectId, boolean isSelected) {
+    private View getSubjectView(StudyCenter studyCenter, String subjectId, boolean isSelected) {
         View v = getView();
         TextView tv = (TextView) v.findViewById(R.id.subject);
-        tv.setText(subjectName);
+        tv.setText(studyCenter.SubjectName);
         tv.setTag(subjectId);
 
         ImageView iv = (ImageView)v.findViewById(R.id.arrow_img);
-        setListener(v,iv);
+        setListener(v,iv,studyCenter);
         if (isSelected) {
             tv.setSelected(true);
             selectedSubjectTxt = tv;
         }
-        setListener(tv, subjectName);
+        setListener(tv,studyCenter.SubjectName);
         return v;
     }
 
-    private void setListener(final View v,ImageView imageView){
+    private void setListener(final View v,ImageView imageView,final StudyCenter studyCenter){
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                showAlertDialogue(v);
+                showAlertDialog(v, studyCenter);
             }
         });
     }
 
-    private void showAlertDialogue(View v){
+    private void showAlertDialog(View v,StudyCenter studyCenter){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater li = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View dialogView = li.inflate(R.layout.layout_list_item_view_popup, null);
         builder.setView(dialogView);
+        setDataForAlert(dialogView,studyCenter);
         AlertDialog dialog = builder.create();
         WindowManager.LayoutParams wmlp = dialog.getWindow().getAttributes();
         wmlp.gravity = Gravity.TOP | Gravity.LEFT;
@@ -411,6 +402,34 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         dialog.show();
         dialog.getWindow().setAttributes(wmlp);
         dialog.getWindow().setLayout(300, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+    }
+
+    private void setDataForAlert( View dialogView,final StudyCenter studyCenter) {
+        TextView score = (TextView) dialogView.findViewById(R.id.score);
+        score.setText(studyCenter.getScore());
+        TextView notes = (TextView) dialogView.findViewById(R.id.notes);
+        notes.setText(studyCenter.getNotes());
+        TextView completedTopics = (TextView) dialogView.findViewById(R.id.completed_topics);
+        completedTopics.setText(studyCenter.getCompletion() + "%");
+        dialogView.findViewById(R.id.take_test).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+                startPartTest(studyCenter);
+            }
+        });
+
+    }
+
+    private void startPartTest(StudyCenter studyCenter){
+
+        Intent exerciseIntent = new Intent(this, ExerciseActivity.class);
+        exerciseIntent.putExtra(Constants.TEST_TITLE, "Part Test");
+        exerciseIntent.putExtra(Constants.SELECTED_COURSE, "13" /*AbstractBaseActivity.selectedCourse.courseId.toString()*/);
+        exerciseIntent.putExtra(Constants.SELECTED_TOPICID, "224");
+        exerciseIntent.putExtra(Constants.SELECTED_TOPIC, "Test Data");
+        startActivity(exerciseIntent);
 
     }
 

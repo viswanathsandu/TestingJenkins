@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="50dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/gray"
     android:orientation="horizontal"
     android:padding="10dp">
@@ -120,23 +121,31 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:background="@drawable/shape_rounded_corners_black"
                 android:id="@+id/layout_exercise"
                 android:layout_width="wrap_content"
+                android:paddingLeft="10dp"
                 android:layout_height="wrap_content">
 
                 <Button
                     android:id="@+id/tv_exercise"
-                    style="?android:attr/spinnerDropDownItemStyle"
                     fontPath="@string/roboto_light"
                     android:layout_width="wrap_content"
+                    android:background="@null"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/shape_rounded_corners_black"
                     android:gravity="left|center_vertical"
-                    android:paddingLeft="10dp"
                     android:singleLine="true"
                     android:text="@string/exercise"
                     android:textColor="@color/white"
                     android:textSize="18sp" />
+
+                <ProgressBar
+                    android:layout_toRightOf="@id/tv_exercise"
+                    android:id="@+id/pb_exercise"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"/>
 
             </RelativeLayout>
         </LinearLayout>

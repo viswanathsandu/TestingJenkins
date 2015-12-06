@@ -202,7 +202,6 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
                         if (id.equalsIgnoreCase(offlineContent.topicId)) {
                             path = offlineContent.courseName+"/"+offlineContent.subjectName+"/"+offlineContent.chapterName+"/"+offlineContent.topicName;
                             removeList.add(offlineContent);
-
                         }
                         break;
                     case "content":
@@ -225,6 +224,16 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
         //Update database
         DbManager.getInstance(getActivity()).deleteOfflineContent(removeList);
 
+        //Update treeview
+        for(OfflineContent offlineContent :removeList){
+            offlineContentList.remove(offlineContent);
+        }
+        mainNodeLayout.removeAllViews();
+        if(offlineContentList.isEmpty()) {
+            Toast.makeText(getActivity(), "No offline content available ", Toast.LENGTH_SHORT).show();
+        }else{
+            initNodes();
+        }
     }
 
 
