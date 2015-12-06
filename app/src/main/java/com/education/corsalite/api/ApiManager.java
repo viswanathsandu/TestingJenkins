@@ -73,12 +73,12 @@ public class ApiManager {
         return SystemUtils.isNetworkConnected(context);
     }
 
-    public void login(String loginId, String passwordHash, ApiCallback<LoginResponse> callback) {
+    public void login(String loginId, String passwordHash, ApiCallback<LoginResponse> callback, boolean fetchFromDb) {
         apiCacheHolder.setLoginRequest(loginId, passwordHash);
-        if (isApiOnline() && isNetworkConnected()) {
-            ApiClientService.get().login(loginId, passwordHash, callback);
-        } else if(!isNetworkConnected()) {
+        if(fetchFromDb || !isNetworkConnected()) {
             DbManager.getInstance(context).getResponse(apiCacheHolder.login, callback);
+        } else if (isApiOnline() && isNetworkConnected()) {
+            ApiClientService.get().login(loginId, passwordHash, callback);
         } else {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/login.json");
             L.info("Response for 'api/login.json' is " + jsonResponse);
