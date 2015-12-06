@@ -140,7 +140,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         wmlp.y = (int) v.getY() + 140;
         dialog.show();
         dialog.getWindow().setAttributes(wmlp);
-        dialog.getWindow().setLayout(300, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setLayout(400, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 
     private void setDataForAlert(final AlertDialog dialog, View dialogView, StudyCenterSubjectViewHolder holder, final Chapters chapter) {
