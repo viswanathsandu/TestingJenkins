@@ -2,6 +2,7 @@ package com.education.corsalite.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -80,22 +81,26 @@ public class WebActivity extends AbstractBaseActivity {
     @Bind(R.id.btn_previous) Button btnPrevious;
     @Bind(R.id.tv_video) TextView tvVideo;
 
+
     private List<ContentIndex> contentIndexList;
     private List<SubjectModel> subjectModelList;
     private List<ChapterModel> chapterModelList;
     private List<TopicModel> topicModelList;
     private List<ContentModel> contentModelList;
     private List<ContentModel> videoModelList;
+    private List<Content> contentList;
     public static List<ExerciseModel> exerciseModelList;
 
     private String mSubjectId = "";
     private String mChapterId = "";
     private String mTopicId = "";
     private String mContentId = "";
+    private String mContentName = "";
     private int mContentIdPosition;
 
     private String selectedText = "";
     private String studentId = "";
+    private String htmlFileText = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +113,7 @@ public class WebActivity extends AbstractBaseActivity {
         ButterKnife.bind(this);
         setToolbarForContentReading();
         initWebView();
-
+        pbExercise.getIndeterminateDrawable().setColorFilter(0xFFFFFF, PorterDuff.Mode.MULTIPLY);
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -126,7 +131,14 @@ public class WebActivity extends AbstractBaseActivity {
             }
             if(bundle.containsKey("contentId") && bundle.getString("contentId") != null) {
                 mContentId = bundle.getString("contentId");
+
+                if(bundle.containsKey("contentName") && bundle.getString("contentName") != null) {
+                    mContentName = bundle.getString("contentId");
+                } else {
+                    throw new NullPointerException("You must have to pass content name");
+                }
             }
+
         }
         setListeners();
     }
@@ -174,7 +186,6 @@ public class WebActivity extends AbstractBaseActivity {
         }, "android");
         // Load the URLs inside the WebView, not in the external web browser
         webviewContentReading.setWebViewClient(new MyWebViewClient());
-
     }
 
     private void addToNote(String htmlText) {
@@ -193,12 +204,13 @@ public class WebActivity extends AbstractBaseActivity {
     private void loadWeb(String htmlUrl) {
         // Initialize the WebView
         mContentId = "";
-        if(htmlUrl.endsWith("html")) {
-            webviewContentReading.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        webviewContentReading.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        htmlFileText = htmlUrl;
+        if(htmlUrl.endsWith(Constants.HTML_FILE)) {
+            webviewContentReading.loadUrl(htmlUrl);
         } else {
-            webviewContentReading.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+            webviewContentReading.loadData(htmlUrl, "text/html; charset=UTF-8", null);
         }
-        webviewContentReading.loadUrl(htmlUrl);
         navigateButtonEnabled();
 
 
@@ -237,7 +249,7 @@ public class WebActivity extends AbstractBaseActivity {
 
         switch (id) {
             case R.id.action_read_offline:
-                showToast("Read Offline");
+                saveFileToDisk();
                 return true;
 
             case R.id.action_download_pdf:
@@ -317,6 +329,27 @@ public class WebActivity extends AbstractBaseActivity {
         }
     };
 
+    private void saveFileToDisk() {
+        FileUtilities fileUtilities = new FileUtilities(this);
+        String folderStructure =  selectedCourse.name + File.separator +
+                subjectModelList.get(spSubject.getSelectedItemPosition()).subjectName + File.separator +
+                chapterModelList.get(spChapter.getSelectedItemPosition()).chapterName + File.separator +
+                topicModelList.get(spTopic.getSelectedItemPosition()).topicName;
+
+        if(TextUtils.isEmpty(htmlFileText) || htmlFileText.endsWith(Constants.HTML_FILE)) {
+            showToast("File already exists.");
+        } else {
+            String htmlUrl = fileUtilities.write(contentModelList.get(mContentIdPosition).contentName + "." +
+                    Constants.HTML_FILE, htmlFileText, folderStructure);
+            if(htmlUrl != null) {
+                showToast("File saved");
+                htmlFileText = "";
+            } else {
+                showToast("Unable to save file.");
+            }
+        }
+    }
+
     private void loadNext() {
         if(mContentIdPosition >= contentModelList.size()) {
             int nextTopicPosition = spTopic.getSelectedItemPosition() + 1;
@@ -336,8 +369,33 @@ public class WebActivity extends AbstractBaseActivity {
                 spTopic.setSelection(nextTopicPosition);
             }
         } else {
-            loadwebifFileExists(contentModelList.get(mContentIdPosition).idContent + "." +
-                    contentModelList.get(mContentIdPosition).type);
+            // check if local file exists
+            if(loadwebifFileExists(contentModelList.get(mContentIdPosition).contentName + "." +
+                    contentModelList.get(mContentIdPosition).type)) {
+                if(mViewSwitcher.getNextView() instanceof RelativeLayout) {
+                    mViewSwitcher.showNext();
+                }
+                return;
+            }
+            // check if exists in content list
+            if(contentList != null && contentList.size() > 0) {
+                for(Content content: contentList) {
+                    if(content.idContent.equalsIgnoreCase(contentModelList.get(mContentIdPosition).idContent )) {
+
+                        String text = content.type.equalsIgnoreCase(Constants.VIDEO_FILE) ?
+                                content.url :
+                                "<script type='text/javascript'>" +
+                                        "function copy() {" +
+                                        "    var t = (document.all) ? document.selection.createRange().text : document.getSelection();" +
+                                        "    return t;" +
+                                        "}" +
+                                        "</script>" + content.contentHtml;
+                        loadWeb(text);
+                        return ;
+                    }
+                }
+            }
+            getContent(contentModelList.get(mContentIdPosition).idContent, false);
         }
     }
 
@@ -360,8 +418,32 @@ public class WebActivity extends AbstractBaseActivity {
                 spTopic.setSelection(previousTopicPosition);
             }
         } else {
-            loadwebifFileExists(contentModelList.get(mContentIdPosition).idContent + "." +
-                    contentModelList.get(mContentIdPosition).type);
+            if(loadwebifFileExists(contentModelList.get(mContentIdPosition).contentName + "." +
+                    contentModelList.get(mContentIdPosition).type)) {
+                if(mViewSwitcher.getNextView() instanceof RelativeLayout) {
+                    mViewSwitcher.showNext();
+                }
+                return;
+            }
+            // check if exists in content list
+            if(contentList != null && contentList.size() > 0) {
+                for(Content content: contentList) {
+                    if(content.idContent.equalsIgnoreCase(contentModelList.get(mContentIdPosition).idContent )) {
+
+                        String text = content.type.equalsIgnoreCase(Constants.VIDEO_FILE) ?
+                                content.url :
+                                "<script type='text/javascript'>" +
+                                        "function copy() {" +
+                                        "    var t = (document.all) ? document.selection.createRange().text : document.getSelection();" +
+                                        "    return t;" +
+                                        "}" +
+                                        "</script>" + content.contentHtml;
+                        loadWeb(text);
+                        return ;
+                    }
+                }
+            }
+            getContent(contentModelList.get(mContentIdPosition).idContent, false);
         }
     }
 
@@ -378,19 +460,13 @@ public class WebActivity extends AbstractBaseActivity {
         }
     }
 
-    private void saveAndLoadWeb(List<Content> mContentResponse) {
+    private void getWebData(List<Content> mContentResponse, boolean updatePosition) {
 
         try {
             int count = 0;
-            FileUtilities fileUtilities = new FileUtilities(this);
             int listSize = mContentResponse.size();
-            String folderStructure =  selectedCourse.name + File.separator +
-                    subjectModelList.get(spSubject.getSelectedItemPosition()).subjectName + File.separator +
-                    chapterModelList.get(spChapter.getSelectedItemPosition()).chapterName + File.separator +
-                    topicModelList.get(spTopic.getSelectedItemPosition()).topicName;
             for(int i = 0; i < listSize; i++) {
                 String contentId = mContentResponse.get(i).idContent;
-                String htmlUrl;
                 String contentType = mContentResponse.get(i).type + "";
                 String text = contentType.equalsIgnoreCase(Constants.VIDEO_FILE) ?
                         mContentResponse.get(i).url :
@@ -400,32 +476,20 @@ public class WebActivity extends AbstractBaseActivity {
                                 "    return t;" +
                                 "}" +
                                 "</script>" + mContentResponse.get(i).contentHtml;
-                L.info("Content : "+text);
-                if(!contentType.isEmpty()) {
-                    htmlUrl = fileUtilities.write(contentId + "." + contentType.trim(), text, folderStructure);
-                } else {
-                    htmlUrl = fileUtilities.write(contentId + "." + Constants.HTML_FILE, text, folderStructure);
-                }
                 if(mContentId.isEmpty()) {
-                    if (!htmlUrl.isEmpty() && count == 0) {
+                    if (!TextUtils.isEmpty(text) && count == 0) {
                         count = count + 1;
-                        mContentIdPosition = i;
-                        if(mContentResponse.get(i).type.equalsIgnoreCase(Constants.VIDEO_FILE)) {
-                            htmlUrl = Constants.VIDEO_PREFIX_URL + mContentResponse.get(i).url.replace("./", "");
-                        } else {
-                            htmlUrl = Constants.HTML_PREFIX_URL + htmlUrl;
+                        if(updatePosition) {
+                            mContentIdPosition = i;
                         }
-                        loadWeb(htmlUrl);
+                        loadWeb(text);
                     }
                 } else {
-                    if(!htmlUrl.isEmpty() && contentId.equalsIgnoreCase(mContentId)) {
-                        mContentIdPosition = i;
-                        if(mContentResponse.get(i).type.equalsIgnoreCase(Constants.VIDEO_FILE)) {
-                            htmlUrl = Constants.VIDEO_PREFIX_URL + mContentResponse.get(i).url.replace("./", "");
-                        } else {
-                            htmlUrl = Constants.HTML_PREFIX_URL + htmlUrl;
+                    if(!TextUtils.isEmpty(text) && contentId.equalsIgnoreCase(mContentId)) {
+                        if(updatePosition) {
+                            mContentIdPosition = i;
                         }
-                        loadWeb(htmlUrl);
+                        loadWeb(text);
                     }
                 }
             }
@@ -488,6 +552,9 @@ public class WebActivity extends AbstractBaseActivity {
                 });
     }
 
+    /**
+     * called when sptopic is selected
+     */
     private void getContentData(int topicPosition) {
 
         if (mViewSwitcher.indexOfChild(mViewSwitcher.getCurrentView()) == 1) {
@@ -510,31 +577,32 @@ public class WebActivity extends AbstractBaseActivity {
             tvVideo.setVisibility(View.GONE);
         }
 
-        String contentId = "";
         String contentIds = "" ;
+        String contentNames = "";
         for(ContentModel contentModel : contentModelList) {
-            if(contentId.trim().length() > 0) {
-                contentId = contentId + ",";
+            if(contentIds.trim().length() > 0) {
                 contentIds = contentIds + ",";
+                contentNames = contentNames + ",";
             }
-            contentId = contentId + contentModel.idContent + "." +contentModel.type;
+            contentNames = contentNames + contentModel.contentName + "." +contentModel.type;
             contentIds = contentIds + contentModel.idContent;
         }
 
-        if(loadwebifFileExists(contentId)) {
+        if(loadwebifFileExists(contentNames)) {
             if(mViewSwitcher.getNextView() instanceof RelativeLayout) {
                 mViewSwitcher.showNext();
             }
             return;
         }
-        getContent(contentIds);
+        getContent(contentIds, true);
     }
 
-    private void getContent(final String contentId) {
+    private void getContent(final String contentId, final boolean updatePosition) {
         ApiManager.getInstance(this).getContent(contentId, "", new ApiCallback<List<Content>>(this) {
             @Override
             public void failure(CorsaliteError error) {
                 super.failure(error);
+                showToast(error.message);
                 if (mViewSwitcher.getNextView() instanceof RelativeLayout) {
                     mViewSwitcher.showNext();
                 }
@@ -543,8 +611,8 @@ public class WebActivity extends AbstractBaseActivity {
             @Override
             public void success(List<Content> contents, Response response) {
                 super.success(contents, response);
-                saveAndLoadWeb(contents);
-
+                contentList = contents;
+                getWebData(contents, updatePosition);
                 String courseId = String.valueOf(selectedCourse.courseId);
                 String courseName = selectedCourse.name;
                 String subjectId = subjectModelList.get(spSubject.getSelectedItemPosition()).idSubject;
@@ -559,9 +627,9 @@ public class WebActivity extends AbstractBaseActivity {
                 OfflineContent offlineContent;
                 for(Content content : contents) {
                     if(TextUtils.isEmpty(content.type)) {
-                        fileName = content.idContent + ".html";
+                        fileName = content.name + ".html";
                     } else {
-                        fileName = content.idContent + "." + content.type;
+                        fileName = content.name + "." + content.type;
                     }
                     offlineContent = new OfflineContent(courseId, courseName,
                             subjectId, subjectName, chapterId, chapterName, topicId, topicName,
@@ -576,12 +644,12 @@ public class WebActivity extends AbstractBaseActivity {
         });
     }
 
-    public boolean loadwebifFileExists(String contentId) {
+    public boolean loadwebifFileExists(String contentNames) {
         String[] htmlFile;
-        if (contentId.contains(",")) {
-            htmlFile = contentId.split(",");
+        if (contentNames.contains(",")) {
+            htmlFile = contentNames.split(",");
         } else {
-            htmlFile = new String[]{contentId};
+            htmlFile = new String[]{contentNames};
         }
         if (subjectModelList.size() > 0 || chapterModelList.size() > 0 ||
                 topicModelList.size() > 0 || contentModelList.size() > 0)  {
@@ -649,7 +717,7 @@ public class WebActivity extends AbstractBaseActivity {
             fileName = htmlFile[i];
             f = getgetFile(fileName);
             if (f.exists()) {
-                if (!mContentId.isEmpty() && mContentId.equalsIgnoreCase(htmlFile[i].split(".")[0])) {
+                if (!TextUtils.isEmpty(mContentName) && mContentName.equalsIgnoreCase(htmlFile[i].split(".")[0])) {
                     if(htmlFile.length == contentModelList.size()) {
                         mContentIdPosition = i;
                     }
