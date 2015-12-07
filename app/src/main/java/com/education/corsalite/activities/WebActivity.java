@@ -56,6 +56,7 @@ import com.education.corsalite.utils.L;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.Bind;
@@ -775,6 +776,7 @@ public class WebActivity extends AbstractBaseActivity {
     private void showChapter(int subjectPosition) {
 
         chapterModelList = new ArrayList<>(subjectModelList.get(subjectPosition).chapters);
+        Collections.sort(chapterModelList); // sort the chapters based on the chapterSortOrder
         final ChapterAdapter chapterAdapter = new ChapterAdapter(chapterModelList, this);
         spChapter.setAdapter(chapterAdapter);
 
@@ -815,6 +817,7 @@ public class WebActivity extends AbstractBaseActivity {
 
     private void showTopic(final int chapterPosition) {
         topicModelList = new ArrayList<>(chapterModelList.get(chapterPosition).topicMap);
+        Collections.sort(topicModelList);
         if(topicModelList != null) {
             final TopicAdapter topicAdapter = new TopicAdapter(topicModelList, this);
             spTopic.setAdapter(topicAdapter);
