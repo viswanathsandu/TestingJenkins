@@ -25,6 +25,12 @@ public class ChapterModel extends BaseModel implements Comparable<ChapterModel>,
 
     @Override
     public int compareTo(ChapterModel another) {
-        return Integer.valueOf(this.chapterSortOrder) - Integer.valueOf(another.chapterSortOrder);
+        try {
+            return Integer.valueOf(this.chapterSortOrder) - Integer.valueOf(another.chapterSortOrder);
+        } catch (NullPointerException e) {
+            return 0;
+        } catch (NumberFormatException e) {
+            return 0;
+        }
     }
 }
