@@ -2,7 +2,6 @@ package com.education.corsalite.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -75,6 +74,7 @@ public class WebActivity extends AbstractBaseActivity {
     @Bind(R.id.sp_chapter) Spinner spChapter;
     @Bind(R.id.sp_topic) Spinner spTopic;
     @Bind(R.id.tv_exercise) TextView tvExercise;
+    @Bind(R.id.layout_exercise) RelativeLayout exerciseButtoncontainer;
     @Bind(R.id.pb_exercise) ProgressBar pbExercise;
     @Bind(R.id.vs_container) ViewSwitcher mViewSwitcher;
     @Bind(R.id.footer_layout) RelativeLayout webFooter;
@@ -114,7 +114,6 @@ public class WebActivity extends AbstractBaseActivity {
         ButterKnife.bind(this);
         setToolbarForContentReading();
         initWebView();
-        pbExercise.getIndeterminateDrawable().setColorFilter(0xFFFFFF, PorterDuff.Mode.MULTIPLY);
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -534,6 +533,7 @@ public class WebActivity extends AbstractBaseActivity {
     }
 
     private void getExercise(int topicPosition) {
+        exerciseButtoncontainer.setVisibility(View.VISIBLE);
         tvExercise.setEnabled(false);
         pbExercise.setVisibility(View.VISIBLE);
         ApiManager.getInstance(this).getExercise(topicModelList.get(topicPosition).idTopic, selectedCourse.courseId.toString(),
@@ -810,8 +810,7 @@ public class WebActivity extends AbstractBaseActivity {
             tvExercise.setEnabled(true);
             pbExercise.setVisibility(View.GONE);
         } else {
-            tvExercise.setEnabled(false);
-            pbExercise.setVisibility(View.VISIBLE);
+            exerciseButtoncontainer.setVisibility(View.GONE);
         }
     }
 
