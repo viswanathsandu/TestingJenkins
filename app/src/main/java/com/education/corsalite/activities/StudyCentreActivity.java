@@ -79,6 +79,14 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         initUI();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(mAdapter != null) {
+            recyclerView.invalidate();
+        }
+    }
+
     private void setUpViews(RelativeLayout myView) {
         redView = myView.findViewById(R.id.redView);
         blueView = myView.findViewById(R.id.blueView);

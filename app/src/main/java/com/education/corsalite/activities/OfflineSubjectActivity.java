@@ -2,7 +2,6 @@ package com.education.corsalite.activities;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -10,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -22,8 +20,8 @@ import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.holders.IconTreeItemHolder;
 import com.education.corsalite.holders.CheckedItemViewHolder;
+import com.education.corsalite.holders.IconTreeItemHolder;
 import com.education.corsalite.models.ChapterModel;
 import com.education.corsalite.models.ContentModel;
 import com.education.corsalite.models.SubjectModel;
@@ -31,7 +29,6 @@ import com.education.corsalite.models.TopicModel;
 import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
-import com.education.corsalite.utils.L;
 import com.unnamed.b.atv.model.TreeNode;
 import com.unnamed.b.atv.view.AndroidTreeView;
 
@@ -156,7 +153,7 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
                     finalContentIds += finalVideoContentId;
                 }
                 if (finalContentIds.isEmpty()) {
-                    Toast.makeText(OfflineSubjectActivity.this, "Please select content to downloading", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(OfflineSubjectActivity.this, "Please select content type to download", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(OfflineSubjectActivity.this, "Your content is being downloaded in background", Toast.LENGTH_SHORT).show();
                     getContent(finalContentIds);
