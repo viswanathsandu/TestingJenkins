@@ -19,7 +19,7 @@
             android:id="@+id/tv_accuracy"
             style="@style/analytics_title"
             android:drawableTop="@drawable/ico_accuracy_unselected"
-            android:text="Accuracy vs Speed" />
+            android:text="Accuracy Vs Speed" />
 
         <TextView
             android:id="@+id/tv_progress_report"
