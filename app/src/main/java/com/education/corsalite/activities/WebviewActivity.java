@@ -6,9 +6,11 @@ import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import com.education.corsalite.R;
 
@@ -20,12 +22,13 @@ public class WebviewActivity extends AbstractBaseActivity {
     private final String URL = "URL";
     @Bind(R.id.webview)
     WebView webview;
+    @Bind(R.id.progress_bar_tab)ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        LinearLayout myView = (LinearLayout) inflater.inflate(R.layout.activity_webview, null);
+        RelativeLayout myView = (RelativeLayout) inflater.inflate(R.layout.activity_webview, null);
         frameLayout.addView(myView);
         ButterKnife.bind(this);
         Bundle bundle = getIntent().getExtras();
@@ -78,6 +81,13 @@ public class WebviewActivity extends AbstractBaseActivity {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
             startActivity(intent);
             return true;
+        }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+            mProgressBar.setVisibility(View.GONE);
+            webview.setVisibility(View.VISIBLE);
         }
     }
 
