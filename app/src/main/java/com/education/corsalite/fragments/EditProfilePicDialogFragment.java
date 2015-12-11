@@ -2,7 +2,6 @@ package com.education.corsalite.fragments;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -11,6 +10,7 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +29,7 @@ import com.education.corsalite.utils.L;
 import com.google.gson.Gson;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -42,6 +43,7 @@ import retrofit.client.Response;
 public class EditProfilePicDialogFragment extends DialogFragment {
 
     IUpdateProfilePicListener updateProfilePicListener;
+    String TAG = EditProfilePicDialogFragment.class.getCanonicalName();
 
     private UserProfileResponse user;
     @Bind(R.id.take_pic_camera)
@@ -107,38 +109,31 @@ public class EditProfilePicDialogFragment extends DialogFragment {
                 Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
                 updateUserProfile(thumbnail);
             } else if (requestCode == REQUEST_CODE_PICK_GALLERY) {
-
-                Uri selectedImage = data.getData();
-                String[] filePathColumn = { MediaStore.Images.Media.DATA };
-
-                // Get the cursor
-                Cursor cursor = getActivity().getContentResolver().query(selectedImage,
-                        filePathColumn, null, null, null);
-                // Move to first row
-                cursor.moveToFirst();
-
-                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                String imgDecodableString = cursor.getString(columnIndex);
-                cursor.close();
-                updateUserProfile(BitmapFactory.decodeFile(imgDecodableString));
+                try {
+                    Uri selectedImage = data.getData();
+                    updateUserProfile(BitmapFactory.decodeStream(getActivity().getContentResolver().openInputStream(selectedImage)));
+                }catch (FileNotFoundException e){
+                    Log.e(TAG,"File not found");
+                }
             }
-            getDialog().cancel();
         }else{
             //Do nothing
             //User cancelled operation
         }
     }
 
-    private void updateUserProfile(Bitmap image) {
+    private void updateUserProfile(final Bitmap image) {
+        if(image == null){
+            return;
+        }
         String userProfileJson = new Gson().toJson(getUserData(image));
         ApiManager.getInstance(getActivity()).updateUserProfile(userProfileJson, new ApiCallback<EditProfileModel>(getActivity()) {
             @Override
             public void failure(CorsaliteError error) {
                 super.failure(error);
                 L.error(error.message);
-                // TODO : its returning failed. but data is being updated. Need to fix it
                 if(getActivity() != null) {
-                    ((AbstractBaseActivity) getActivity()).showToast("Updated User Profile Pic Successfully");
+                    ((AbstractBaseActivity) getActivity()).showToast("Failed to update profile pic");
                     getDialog().cancel();
                 }
             }
@@ -146,9 +141,10 @@ public class EditProfilePicDialogFragment extends DialogFragment {
             @Override
             public void success(EditProfileModel editProfileResponse, Response response) {
                 super.success(editProfileResponse, response);
-                if (editProfileResponse.isSuccessful()) {
+                if (editProfileResponse.isSuccessful() && getActivity() != null) {
                     ((AbstractBaseActivity)getActivity()).showToast("Updated User Profile Pic Successfully");
                     getDialog().cancel();
+                    updateProfilePicListener.onUpdateProfilePic(image);
                 }
             }
         });
@@ -168,7 +164,6 @@ public class EditProfilePicDialogFragment extends DialogFragment {
         }else{
             model.photoBase64Data = null;
         }
-        //updateProfilePicListener.onUpdateProfilePic(image);
         return model;
     }
     public interface IUpdateProfilePicListener {

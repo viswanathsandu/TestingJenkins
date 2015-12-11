@@ -5,7 +5,9 @@
     android:layout_height="wrap_content"
     android:background="#f3f3f3"
     android:orientation="horizontal"
-    tools:ignore="MissingPrefix">
+    tools:ignore="MissingPrefix"
+    android:id="@+id/ll_user_details"
+    android:visibility="visible">
 
     <LinearLayout
         android:layout_width="0dp"
@@ -44,16 +46,6 @@
                 android:layout_margin="5dp"
                 android:layout_height="wrap_content">
 
-                    <TextView
-                        android:id="@+id/tv_userName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingRight="8dp"
-                        android:layout_alignParentLeft="true"
-                        android:drawableEnd="@drawable/ico_edit"
-                        style="@style/user_profile_heading_caps"/>
-
-
                 <Spinner
                     android:id="@+id/sp_default_course"
                     android:layout_width="140dp"
@@ -79,6 +71,16 @@
                     android:layout_alignBottom="@+id/sp_default_course"
                     android:drawableRight="@drawable/ico_dropdown_white"
                     fontPath="@string/roboto_medium"/>
+
+                <TextView
+                    android:id="@+id/tv_userName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="8dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_toLeftOf="@id/sp_default_course"
+                    android:drawableEnd="@drawable/ico_edit"
+                    style="@style/user_profile_heading_caps"/>
 
             </RelativeLayout>
 

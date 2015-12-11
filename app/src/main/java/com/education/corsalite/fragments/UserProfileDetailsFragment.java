@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -64,6 +65,7 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
     @Bind(R.id.btn_default_course) TextView coursesBtn;
     @Bind(R.id.redeem_btn)Button redeemBtn;
     @Bind(R.id.btn_edit_pic)ImageView editProfilePic;
+    @Bind(R.id.ll_user_details)LinearLayout mainLayout;
 
     private UserProfileResponse user;
     private UpdateExamData updateExamData;
@@ -230,6 +232,7 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
                     public void success(UserProfileResponse userProfileResponse, Response response) {
                         super.success(userProfileResponse, response);
                         closeProgress();
+                        mainLayout.setVisibility(View.VISIBLE);
                         if (userProfileResponse.isSuccessful()) {
                             ApiCacheHolder.getInstance().setUserProfileRespose(userProfileResponse);
                             dbManager.saveReqRes(ApiCacheHolder.getInstance().userProfile);

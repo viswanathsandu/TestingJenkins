@@ -77,9 +77,9 @@ public class ExamAdapter extends AbstractRecycleViewAdapter {
                     }
                 });
             }else{
-                boolean isWhitespace = examDetail.examDate.matches("^\\s*$");
+                boolean isWhitespace = examDetail.examDate.contains(" ");
                 if(isWhitespace) {
-                    examDateTxt.setText(examDetail.examDate.split("")[0]);
+                    examDateTxt.setText(examDetail.examDate.split(" ")[0]);
                 }else{
                     examDateTxt.setText(examDetail.examDate);
                 }
