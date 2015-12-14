@@ -12,7 +12,6 @@
         android:id="@+id/ll_add_exam_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
         android:orientation="vertical"
         android:visibility="gone">
 
@@ -28,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:calendarViewShown="false"
-            android:datePickerMode="calendar"
+            android:datePickerMode="spinner"
             android:spinnersShown="true" />
 
     </LinearLayout>

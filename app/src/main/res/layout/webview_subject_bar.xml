@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="50dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/gray"
     android:orientation="horizontal"
     android:padding="10dp">
@@ -135,6 +134,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="left|center_vertical"
                     android:singleLine="true"
+                    android:textAllCaps="false"
                     android:text="@string/exercise"
                     android:textColor="@color/white"
                     android:textSize="18sp" />
