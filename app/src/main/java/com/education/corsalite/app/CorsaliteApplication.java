@@ -18,7 +18,12 @@ public class CorsaliteApplication extends com.orm.SugarApp{
 
     public CorsaliteApplication(){
         super();
-        // Register LocalyticsActivityLifecycleCallbacks
+    }
+    @Override
+    public void onCreate()
+    {
+        super.onCreate();
+
         registerActivityLifecycleCallbacks(
                 new LocalyticsActivityLifecycleCallbacks(this));
     }
