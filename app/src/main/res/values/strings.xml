@@ -92,4 +92,17 @@
     <string name="app_close_alert">Press back button once again to exit the app</string>
     <string name="study_center_offline_click_text">Not available for offline reading...</string>
 
+    <!-- Screen names-->
+
+    <string name="screen_examhistory">Exam History Screen</string>
+    <string name="screen_exercise">Exercise Screen</string>
+    <string name="screen_login">Login Screen</string>
+    <string name="screen_notes">Notes Screen</string>
+    <string name="screen_offlineContent">Offline Content Screen</string>
+    <string name="screen_studycenter">Study Center Screen</string>
+    <string name="screen_profile">User Profile Screen</string>
+    <string name="screen_virtualcurrency">Virtual Currency Screen</string>
+    <string name="screen_webview">Webview Screen</string>
+
+
 </resources>

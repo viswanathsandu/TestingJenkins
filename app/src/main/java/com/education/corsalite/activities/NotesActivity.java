@@ -67,6 +67,7 @@ public class NotesActivity extends AbstractBaseActivity {
         initUI();
         setAdapter();
         getNotesData();
+        sendAnalytics(getString(R.string.screen_notes));
     }
 
     private void hideList() {

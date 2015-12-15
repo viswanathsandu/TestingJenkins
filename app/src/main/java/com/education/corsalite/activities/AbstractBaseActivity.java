@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.SpinnerAdapter;
+import com.education.corsalite.analytics.GoogleAnalyticsManager;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.ApiCacheHolder;
@@ -39,6 +40,7 @@ import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.AppPref;
 import com.education.corsalite.utils.CookieUtils;
 import com.google.gson.Gson;
+import com.localytics.android.Localytics;
 
 import java.util.List;
 
@@ -212,6 +214,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!(AbstractBaseActivity.this instanceof UserProfileActivity)) {
+                    Localytics.tagEvent("User Profile");
                     Intent intent = new Intent(AbstractBaseActivity.this, UserProfileActivity.class);
                     startActivity(intent);
                 }
@@ -221,6 +224,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_currency).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Localytics.tagEvent("Virtual Currency");
                 Intent intent = new Intent(AbstractBaseActivity.this, VirtualCurrencyActivity.class);
                 startActivity(intent);
             }
@@ -229,6 +233,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_study_center).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Localytics.tagEvent("Study Center");
                 Intent intent = new Intent(AbstractBaseActivity.this, StudyCentreActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
@@ -239,6 +244,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_analytics).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Localytics.tagEvent("Analytics");
                 startActivity(new Intent(AbstractBaseActivity.this, AnalyticsActivity.class));
             }
         });
@@ -246,6 +252,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_usage_analysis).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Localytics.tagEvent("Usage Analysis");
                 Intent intent = new Intent(AbstractBaseActivity.this, UsageAnalysisActivity.class);
                 startActivity(intent);
             }
@@ -254,6 +261,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_offline).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Localytics.tagEvent("Offline");
                 startActivity(new Intent(AbstractBaseActivity.this, OfflineContentActivity.class));
             }
         });
@@ -430,4 +438,14 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         }
     }
 
+    public void sendAnalytics(String screenName){
+        GoogleAnalyticsManager.sendOpenScreenEvent(this, this, screenName);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent)
+    {
+        super.onNewIntent(intent);
+        setIntent(intent);
+    }
 }

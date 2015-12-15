@@ -29,6 +29,7 @@ import com.education.corsalite.activities.WebActivity;
 import com.education.corsalite.models.responsemodels.Chapters;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.Data;
+import com.localytics.android.Localytics;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -68,6 +69,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
             holder.rootGridLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Localytics.tagEvent(chapter.chapterName);
                     getAlertDialog(v, holder, chapter);
                 }
             });
@@ -76,7 +78,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
             holder.textView.setText(label);
             holder.timeSpent.setText(getDateFromMillis(chapter.timeSpent));
             holder.level.setText(studyCentreActivity.getResources().getString(R.string.level_text) + Data.getInt(chapter.completedTopics));
-            holder.gridLayout.setBackground(getColorDrawable(holder, chapter));
+            holder.rootGridLayout.setBackground(getColorDrawable(holder, chapter));
 
             int max = Data.getInt(chapter.totalTopics);
             holder.progressBar.setMax(max == 0 ? 1 : max);
@@ -90,6 +92,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         } else {
             holder.gridLayoutGray.setVisibility(View.VISIBLE);
             holder.gridLayout.setVisibility(View.GONE);
+            holder.rootGridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.grayshape));
 
             holder.textViewGray.setText(label);
             holder.timeSpentGray.setText(getDateFromMillis(chapter.timeSpent));

@@ -4,14 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.UserTabBaseAdapter;
@@ -38,6 +36,7 @@ public class UserProfileActivity extends AbstractBaseActivity implements UserPro
         frameLayout.addView(myView);
         initUI();
         setToolbarForProfile();
+        sendAnalytics(getString(R.string.screen_profile));
     }
 
     private void initUI() {

@@ -42,6 +42,7 @@ public class LoginActivity extends AbstractBaseActivity {
         ButterKnife.bind(this);
         setListeners();
         checkAutoLogin();
+        sendAnalytics(getString(R.string.screen_login));
     }
 
     private void checkAutoLogin() {
