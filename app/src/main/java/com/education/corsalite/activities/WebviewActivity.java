@@ -47,6 +47,8 @@ public class WebviewActivity extends AbstractBaseActivity {
             String url = bundle.getString(URL);
             webview.loadUrl(getUrlWithNoHeadersAndFooters(url));
         }
+
+        sendAnalytics(getString(R.string.screen_webview));
     }
 
     @Override

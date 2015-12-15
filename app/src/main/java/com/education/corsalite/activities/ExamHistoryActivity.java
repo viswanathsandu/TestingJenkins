@@ -72,7 +72,9 @@ public class ExamHistoryActivity extends AbstractBaseActivity {
         });
 
         getExamHistory(1, MAX_ROW_COUNT);
+        sendAnalytics(getString(R.string.screen_examhistory));
     }
+
 
 
     private void getExamHistory(final int startIndex, final int endIndex){

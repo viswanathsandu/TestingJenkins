@@ -118,6 +118,7 @@ public class ExerciseActivity extends AbstractBaseActivity {
         initSuggestionWebView();
         setListener();
         getIntentData();
+        sendAnalytics(getString(R.string.screen_exercise));
     }
 
     public List<ExerciseModel> getLocalExerciseModelList() {

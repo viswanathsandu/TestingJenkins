@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.SpinnerAdapter;
+import com.education.corsalite.analytics.GoogleAnalyticsManager;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.ApiCacheHolder;
@@ -428,6 +429,10 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         if(dialog != null && dialog.isShowing()){
             dialog.dismiss();
         }
+    }
+
+    public void sendAnalytics(String screenName){
+        GoogleAnalyticsManager.sendOpenScreenEvent(this, this, screenName);
     }
 
 }

@@ -34,6 +34,7 @@ public class OfflineContentActivity extends AbstractBaseActivity {
         mViewPager = (ViewPager)findViewById(R.id.pager);
         setToolbarForOfflineContent();
         setTabView();
+        sendAnalytics(getString(R.string.screen_offlineContent));
     }
 
     private void setTabView() {
