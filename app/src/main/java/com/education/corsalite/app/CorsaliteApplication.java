@@ -5,6 +5,7 @@ import android.content.Context;
 import com.education.corsalite.R;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
+import com.localytics.android.LocalyticsActivityLifecycleCallbacks;
 
 import java.util.HashMap;
 
@@ -17,6 +18,9 @@ public class CorsaliteApplication extends com.orm.SugarApp{
 
     public CorsaliteApplication(){
         super();
+        // Register LocalyticsActivityLifecycleCallbacks
+        registerActivityLifecycleCallbacks(
+                new LocalyticsActivityLifecycleCallbacks(this));
     }
 
     @Override

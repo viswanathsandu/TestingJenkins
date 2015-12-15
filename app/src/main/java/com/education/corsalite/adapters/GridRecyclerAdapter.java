@@ -29,6 +29,7 @@ import com.education.corsalite.activities.WebActivity;
 import com.education.corsalite.models.responsemodels.Chapters;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.Data;
+import com.localytics.android.Localytics;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -68,6 +69,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
             holder.rootGridLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Localytics.tagEvent(chapter.chapterName);
                     getAlertDialog(v, holder, chapter);
                 }
             });
