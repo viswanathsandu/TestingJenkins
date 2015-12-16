@@ -3,6 +3,9 @@ package com.education.corsalite.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.education.corsalite.models.db.OfflineContent;
+import com.google.gson.Gson;
+
 /**
  * Created by vissu on 11/29/15.
  */
@@ -11,6 +14,7 @@ public class AppPref {
     private Context context;
     private static AppPref instance = null;
     private static String PREFS_NAME = "CORSALITE_PREFS";
+    private static String OFFLINE_PREFS_NAME = "CORSALITE_PREFS";
 
     public static AppPref getInstance(Context context) {
         if(instance == null) {
@@ -23,6 +27,13 @@ public class AppPref {
     public void save(String key, String value) {
         SharedPreferences settings = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         settings.edit().putString(key, value).commit();
+    }
+
+    public void saveObj(String id, OfflineContent content) {
+        Gson gson = new Gson();
+        String json = gson.toJson(content);
+        SharedPreferences settings = context.getSharedPreferences(OFFLINE_PREFS_NAME, Context.MODE_PRIVATE);
+        settings.edit().putString(id, json).commit();
     }
 
     public String getValue(String key) {
