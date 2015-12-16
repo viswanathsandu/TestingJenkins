@@ -21,6 +21,7 @@ import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.db.DbManager;
+import com.education.corsalite.event.OfflineEventClass;
 import com.education.corsalite.holders.CheckedItemViewHolder;
 import com.education.corsalite.holders.IconTreeItemHolder;
 import com.education.corsalite.models.ChapterModel;
@@ -51,6 +52,14 @@ import retrofit.client.Response;
 public class OfflineSubjectActivity extends AbstractBaseActivity {
 
     public static final String COMMA_STRING = ",";
+    public static final String SUBJECT_ID = "subjectId";
+    public static final String CHAPTER_ID = "chapterId";
+    public static final String TOPIC_ID = "topicId";
+    public static final String CONTENT_ID = "contentId";
+    public static final String SUBJECT = "subject";
+    public static final String COURSE_ID = "courseId";
+    public static final String CHAPTER_NAME = "chapterName";
+    public static final String COURSE_NAME = "courseName";
     private RelativeLayout mainNodeLayout;
     private AndroidTreeView tView;
     private TreeNode root;
@@ -212,14 +221,14 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
                 mChapterName + File.separator + topicModel.topicName;
 
         if(TextUtils.isEmpty(htmlText) || htmlText.endsWith(Constants.HTML_FILE)) {
-            showToast("File already exists.");
+            showToast(getString(R.string.file_exists));
         } else {
             String htmlUrl = fileUtilities.write(content.name + "." + Constants.HTML_FILE, htmlText, folderStructure);
             if(htmlUrl != null) {
-                getEventbus().post(content.idContent);
-                showToast("File saved");
+                getEventbus().post(new OfflineEventClass(content.idContent));
+                showToast(getString(R.string.file_saved));
             } else {
-                showToast("Unable to save file.");
+                showToast(getString(R.string.file_save_failed));
             }
         }
     }
@@ -258,29 +267,29 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
     private void getBundleData() {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            if (bundle.containsKey("subjectId") && bundle.getString("subjectId") != null) {
-                mSubjectId = bundle.getString("subjectId");
+            if (bundle.containsKey(SUBJECT_ID) && bundle.getString(SUBJECT_ID) != null) {
+                mSubjectId = bundle.getString(SUBJECT_ID);
             }
-            if (bundle.containsKey("chapterId") && bundle.getString("chapterId") != null) {
-                mChapterId = bundle.getString("chapterId");
+            if (bundle.containsKey(CHAPTER_ID) && bundle.getString(CHAPTER_ID) != null) {
+                mChapterId = bundle.getString(CHAPTER_ID);
             }
-            if (bundle.containsKey("topicId") && bundle.getString("topicId") != null) {
-                mTopicId = bundle.getString("topicId");
+            if (bundle.containsKey(TOPIC_ID) && bundle.getString(TOPIC_ID) != null) {
+                mTopicId = bundle.getString(TOPIC_ID);
             }
-            if (bundle.containsKey("contentId") && bundle.getString("contentId") != null) {
-                mContentId = bundle.getString("contentId");
+            if (bundle.containsKey(CONTENT_ID) && bundle.getString(CONTENT_ID) != null) {
+                mContentId = bundle.getString(CONTENT_ID);
             }
-            if (bundle.containsKey("subject") && bundle.getString("subject") != null) {
-                mSubjectName = bundle.getString("subject");
+            if (bundle.containsKey(SUBJECT) && bundle.getString(SUBJECT) != null) {
+                mSubjectName = bundle.getString(SUBJECT);
             }
-            if (bundle.containsKey("courseId") && bundle.getString("courseId") != null) {
-                mCourseId = bundle.getString("courseId");
+            if (bundle.containsKey(COURSE_ID) && bundle.getString(COURSE_ID) != null) {
+                mCourseId = bundle.getString(COURSE_ID);
             }
-            if (bundle.containsKey("chapterName") && bundle.getString("chapterName") != null) {
-                mChapterName = bundle.getString("chapterName");
+            if (bundle.containsKey(CHAPTER_NAME) && bundle.getString(CHAPTER_NAME) != null) {
+                mChapterName = bundle.getString(CHAPTER_NAME);
             }
-            if (bundle.containsKey("courseName") && bundle.getString("courseName") != null) {
-                mCourseName = bundle.getString("courseName");
+            if (bundle.containsKey(COURSE_NAME) && bundle.getString(COURSE_NAME) != null) {
+                mCourseName = bundle.getString(COURSE_NAME);
             }
         }
     }

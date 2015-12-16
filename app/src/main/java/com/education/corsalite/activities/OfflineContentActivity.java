@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.widget.RelativeLayout;
 
 import com.education.corsalite.R;
+import com.education.corsalite.event.OfflineEventClass;
 import com.education.corsalite.fragments.OfflineContentFragment;
 import com.education.corsalite.fragments.OfflineTestsFragment;
 import com.education.corsalite.models.responsemodels.Course;
@@ -56,9 +57,9 @@ public class OfflineContentActivity extends AbstractBaseActivity {
     }
 
     @Override
-    public void onEvent(String id) {
-        L.info("Saved data with this id: "+id);
-        super.onEvent(id);
+    public void onEvent(OfflineEventClass offlineEventClass) {
+        L.info("Saved data with this id: "+offlineEventClass.id);
+        super.onEvent(offlineEventClass);
     }
 
     private class OfflineBaseTabAdapter extends FragmentPagerAdapter{

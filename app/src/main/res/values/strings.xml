@@ -94,5 +94,8 @@
     <string name="select_content_toast">Please select content type to download</string>
     <string name="content_downloaded_toast">Your content is being downloaded in background</string>
     <string name="offline_dialog_title_text">List of items to be downloaded</string>
+    <string name="file_saved">File saved</string>
+    <string name="file_save_failed">Unable to save file.</string>
+    <string name="file_exists">File already exists.</string>
 
 </resources>
