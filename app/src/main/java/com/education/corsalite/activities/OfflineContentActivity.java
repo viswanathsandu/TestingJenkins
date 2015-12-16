@@ -13,6 +13,7 @@ import com.education.corsalite.R;
 import com.education.corsalite.fragments.OfflineContentFragment;
 import com.education.corsalite.fragments.OfflineTestsFragment;
 import com.education.corsalite.models.responsemodels.Course;
+import com.education.corsalite.utils.L;
 
 /**
  * Created by Aastha on 05/10/15.
@@ -52,6 +53,12 @@ public class OfflineContentActivity extends AbstractBaseActivity {
             offlineEventListener.onCourseIdSelected(course);
         }
         super.onEvent(course);
+    }
+
+    @Override
+    public void onEvent(String id) {
+        L.info("Saved data with this id: "+id);
+        super.onEvent(id);
     }
 
     private class OfflineBaseTabAdapter extends FragmentPagerAdapter{

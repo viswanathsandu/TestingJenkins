@@ -53,6 +53,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     public static int selectedVideoPosition;
+    public static String contentID;
     public static Course selectedCourse;
     private List<Course> courses;
     protected Toolbar toolbar;
@@ -399,6 +400,10 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     public void onEvent(Course course) {
         selectedCourse = course;
         // this method will be overridden by the classes that subscribes from event bus
+    }
+
+    public void onEvent(String id) {
+        contentID = id;
     }
 
     public static void saveSessionCookie(Response response) {

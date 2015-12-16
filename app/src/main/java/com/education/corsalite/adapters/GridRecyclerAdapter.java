@@ -203,6 +203,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         Intent intent = new Intent(studyCentreActivity, OfflineSubjectActivity.class);
         putIntentExtras(chapter, intent, COURSE_ID, SUBJECT_ID, CHAPTER_ID);
         intent.putExtra("chapterName", chapter.chapterName);
+        intent.putExtra("courseName", AbstractBaseActivity.selectedCourse.name.toString());
         intent.putExtra(SUBJECT, key);
         studyCentreActivity.startActivity(intent);
     }

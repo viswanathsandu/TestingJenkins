@@ -20,19 +20,27 @@ import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.db.DbManager;
 import com.education.corsalite.holders.CheckedItemViewHolder;
 import com.education.corsalite.holders.IconTreeItemHolder;
 import com.education.corsalite.models.ChapterModel;
 import com.education.corsalite.models.ContentModel;
 import com.education.corsalite.models.SubjectModel;
 import com.education.corsalite.models.TopicModel;
+import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
+import com.education.corsalite.utils.AppPref;
+import com.education.corsalite.utils.Constants;
+import com.education.corsalite.utils.FileUtilities;
+import com.education.corsalite.utils.L;
 import com.unnamed.b.atv.model.TreeNode;
 import com.unnamed.b.atv.view.AndroidTreeView;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import retrofit.client.Response;
@@ -42,6 +50,7 @@ import retrofit.client.Response;
  */
 public class OfflineSubjectActivity extends AbstractBaseActivity {
 
+    public static final String COMMA_STRING = ",";
     private RelativeLayout mainNodeLayout;
     private AndroidTreeView tView;
     private TreeNode root;
@@ -53,10 +62,12 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
     private String mSubjectName = "";
     private String mCourseId = "";
     private String mChapterName = "";
+    private String mCourseName = "";
     private List<ContentIndex> contentIndexList;
     private ArrayList<SubjectModel> subjectModelList;
     private ArrayList<ChapterModel> chapterModelList;
     private ArrayList<TopicModel> topicModelList;
+    private HashMap<String,TopicModel> topicModelHashMap = new HashMap<String, TopicModel>();
     private LinearLayout downloadImage;
     private ProgressBar headerProgress;
     Bundle savedInstanceState;
@@ -91,7 +102,7 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
     private void loopCheckedViews() {
         String videoContentId = "";
         String htmlContentId = "";
-        d.setTitle("List of items to be downloaded");
+        d.setTitle(getResources().getString(R.string.offline_dialog_title_text));
         LinearLayout subjectLayout = (LinearLayout) d.findViewById(R.id.subject_layout);
         subjectLayout.removeAllViews();
         subjectLayout.addView(getTextView(root.getChildren().get(0).getValue().toString() + "\n"));
@@ -150,12 +161,12 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
                     finalContentIds += finalHtmlContentId;
                 }
                 if (!finalVideoContentId.isEmpty() && videoContent.isChecked()) {
-                    finalContentIds += finalVideoContentId;
+                    finalContentIds += COMMA_STRING + finalVideoContentId;
                 }
                 if (finalContentIds.isEmpty()) {
-                    Toast.makeText(OfflineSubjectActivity.this, "Please select content type to download", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(OfflineSubjectActivity.this, getResources().getString(R.string.select_content_toast), Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(OfflineSubjectActivity.this, "Your content is being downloaded in background", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(OfflineSubjectActivity.this, getResources().getString(R.string.content_downloaded_toast), Toast.LENGTH_SHORT).show();
                     getContent(finalContentIds);
                     finish();
                 }
@@ -189,10 +200,60 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
             public void success(List<Content> contents, Response response) {
                 super.success(contents, response);
                 ApiCacheHolder.getInstance().setContentResponse(contents);
-                dbManager.saveReqRes(ApiCacheHolder.getInstance().contentReqIndex);
+                storeDataInDb(contents);
             }
         });
     }
+
+    private void saveFileToDisk(String htmlText, Content content) {
+        TopicModel topicModel = topicModelHashMap.get(content.idContent);
+        FileUtilities fileUtilities = new FileUtilities(this);
+        String folderStructure =  selectedCourse.name + File.separator +mSubjectName + File.separator +
+                mChapterName + File.separator + topicModel.topicName;
+
+        if(TextUtils.isEmpty(htmlText) || htmlText.endsWith(Constants.HTML_FILE)) {
+            showToast("File already exists.");
+        } else {
+            String htmlUrl = fileUtilities.write(content.name + "." + Constants.HTML_FILE, htmlText, folderStructure);
+            if(htmlUrl != null) {
+                getEventbus().post(content.idContent);
+                showToast("File saved");
+            } else {
+                showToast("Unable to save file.");
+            }
+        }
+    }
+
+    private void storeDataInDb(List<Content> contents){
+        String fileName;
+        List<OfflineContent> offlineContents = new ArrayList<OfflineContent>(contents.size());
+        OfflineContent offlineContent;
+        for(Content content : contents) {
+            if(TextUtils.isEmpty(content.type)) {
+                fileName = content.name + ".html";
+            } else {
+                fileName = content.name + "." + content.type;
+            }
+            TopicModel topicModel = topicModelHashMap.get(content.idContent);
+            offlineContent = new OfflineContent(mCourseId, mCourseName, mSubjectId, mSubjectName, mChapterId, mChapterName, topicModel.idTopic, topicModel.topicName, content.idContent, content.name, fileName);
+            offlineContents.add(offlineContent);
+            saveFileToDisk(getHtmlText(content),content);
+        }
+        DbManager.getInstance(this).saveOfflineContent(offlineContents);
+    }
+
+    private String getHtmlText(Content content){
+        String text = content.type.equalsIgnoreCase(Constants.VIDEO_FILE) ?
+                content.url :
+                "<script type='text/javascript'>" +
+                        "function copy() {" +
+                        "    var t = (document.all) ? document.selection.createRange().text : document.getSelection();" +
+                        "    return t;" +
+                        "}" +
+                        "</script>" + content.contentHtml;
+        return  text;
+    }
+
 
     private void getBundleData() {
         Bundle bundle = getIntent().getExtras();
@@ -217,6 +278,9 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
             }
             if (bundle.containsKey("chapterName") && bundle.getString("chapterName") != null) {
                 mChapterName = bundle.getString("chapterName");
+            }
+            if (bundle.containsKey("courseName") && bundle.getString("courseName") != null) {
+                mCourseName = bundle.getString("courseName");
             }
         }
     }
@@ -246,7 +310,7 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
 
     private void prefillSubjects() {
         ContentIndex mContentIndex = contentIndexList.get(0);
-        subjectModelList = new ArrayList<>(mContentIndex.subjectModelList);
+        subjectModelList = new ArrayList<SubjectModel>(mContentIndex.subjectModelList);
         int listSize = subjectModelList.size();
         if (!mSubjectId.isEmpty()) {
             for (int i = 0; i < listSize; i++) {
@@ -318,6 +382,7 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
         TreeNode file1 = null;
         for (ContentModel contentModel : topicModel.contentMap) {
             contentList.add(getTextView(contentModel.contentName + "." + contentModel.type));
+            topicModelHashMap.put(contentModel.idContent,topicModel);
             file1 = new TreeNode(contentModel.contentName + "." + contentModel.type).setViewHolder(new CheckedItemViewHolder(this, true));
             topicName.addChildren(file1);
         }

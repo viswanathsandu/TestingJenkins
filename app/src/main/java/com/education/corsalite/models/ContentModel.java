@@ -30,6 +30,9 @@ public class ContentModel extends BaseModel implements Comparable<ContentModel>,
     @SerializedName("Rating")
     public String rating;
 
+    public String topicId;
+    public String topicName;
+
 
     @Override
     public int compareTo(ContentModel another) {

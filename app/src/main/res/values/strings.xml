@@ -91,5 +91,8 @@
     <string name="redeem">Redeem</string>
     <string name="app_close_alert">Press back button once again to exit the app</string>
     <string name="study_center_offline_click_text">Not available for offline reading...</string>
+    <string name="select_content_toast">Please select content type to download</string>
+    <string name="content_downloaded_toast">Your content is being downloaded in background</string>
+    <string name="offline_dialog_title_text">List of items to be downloaded</string>
 
 </resources>
