@@ -5,13 +5,17 @@
     <color name="colorPrimaryDark">#1E589A</color>
     <color name="dark_blue_selector">#0B4A8E</color>
     <color name="blue">#125291</color>
+    <color name="royalblue">#4169E1</color>
     <color name="skyblue">#1799F3</color>
     <color name="light_yellow">#FAFAC8</color>
     <color name="bg_chart">#D9FAC8</color>
+    <color name="beige">#F5F5DC</color>
 
     <color name="gray">#E6E6E6</color>
+    <color name="light_green">#a4c639</color>
     <color name="green">#22b552</color>
     <color name="red">#C6352E</color>
+    <color name="crimson_red">#DC143C</color>
     <color name="white">#FFFFFF</color>
     <color name="yellow">#ffff00</color>
     <color name="amber">#FF7E00</color>

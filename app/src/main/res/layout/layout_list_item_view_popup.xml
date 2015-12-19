@@ -49,7 +49,8 @@
 
     <RelativeLayout
         style="@style/tiles_menu_item_rl"
-        android:id="@+id/notes_layout">
+        android:id="@+id/notes_layout"
+       >
 
         <TextView
             android:layout_toLeftOf="@+id/notes"
@@ -73,6 +74,7 @@
             android:id="@+id/start_reading"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/option_item_selector"
             android:text="@string/start_reading"
             style="@style/tiles_menu_title_txt"/>
     </RelativeLayout>
@@ -83,6 +85,7 @@
             android:id="@+id/flagged_questions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/option_item_selector"
             android:text="@string/flagged_questions"
             style="@style/tiles_menu_title_txt"/>
     </RelativeLayout>
@@ -93,6 +96,7 @@
             android:id="@+id/take_test"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/option_item_selector"
             android:text="Part Test"
             style="@style/tiles_menu_title_txt"/>
     </RelativeLayout>
@@ -102,6 +106,7 @@
             android:id="@+id/offline_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/option_item_selector"
             android:text="Save for Offline"
             style="@style/tiles_menu_title_txt"/>
     </RelativeLayout>

@@ -138,6 +138,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:padding">5dp</item>
         <item name="android:gravity">center_vertical</item>
+        <item name="android:background">@drawable/option_item_selector</item>
     </style>
 
     <style name="tiles_menu_title_txt">
