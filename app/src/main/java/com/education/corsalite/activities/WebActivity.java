@@ -151,7 +151,7 @@ public class WebActivity extends AbstractBaseActivity {
 
     private void initWebView() {
         webviewContentReading.getSettings().setSupportZoom(true);
-        webviewContentReading.getSettings().setBuiltInZoomControls(false);
+        webviewContentReading.getSettings().setBuiltInZoomControls(true);
         webviewContentReading.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
         webviewContentReading.setScrollbarFadingEnabled(true);
         webviewContentReading.getSettings().setLoadsImagesAutomatically(true);
