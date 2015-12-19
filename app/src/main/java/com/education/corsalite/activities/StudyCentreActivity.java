@@ -222,11 +222,12 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     private void getStudyCentreData(String courseId) {
         isNetworkConnected = ApiManager.getInstance(this).isNetworkConnected();
         hideRecyclerView();
-
+        progressBar.setVisibility(View.VISIBLE);
         ApiManager.getInstance(this).getStudyCentreData(LoginUserCache.getInstance().loginResponse.studentId,
                 courseId, new ApiCallback<List<StudyCenter>>(this) {
                     @Override
                     public void failure(CorsaliteError error) {
+                        progressBar.setVisibility(View.GONE);
                         super.failure(error);
                         if (error != null && !TextUtils.isEmpty(error.message)) {
                             showToast(error.message);
@@ -237,6 +238,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                     @Override
                     public void success(List<StudyCenter> studyCenters, Response response) {
                         super.success(studyCenters, response);
+                        progressBar.setVisibility(View.GONE);
                         if (isNetworkConnected) {
                             if (studyCenters != null) {
                                 ApiCacheHolder.getInstance().setStudyCenterResponse(studyCenters);
