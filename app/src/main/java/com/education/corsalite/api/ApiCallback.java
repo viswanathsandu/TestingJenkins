@@ -29,7 +29,7 @@ public abstract class ApiCallback<T> implements Callback<T> {
             AppPref.getInstance(mContext).remove("passwordHash");
             Toast.makeText(mContext, "Session expired... \nPlease login to continue...", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(mContext, LoginActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
             mContext.startActivity(intent);
         }
     }
