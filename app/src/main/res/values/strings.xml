@@ -7,7 +7,7 @@
     <string name="title_activity_user_profile">My Profile</string>
     <string name="title_activity_currency">Virtual Currency Summary</string>
 
-    
+
     <string name="menu_add">Add</string>
     <string name="menu_add_guardian">Add Guardian</string>
     <string name="menu_add_courses">Add Courses</string>
@@ -56,6 +56,7 @@
     <string name="virtual_currency">Virtual Currency</string>
     <string name="invite_friends">Invite Friends</string>
     <string name="exam_schedule">Exam Schedule</string>
+    <string name="challenge_your_friends">Challenge your friends</string>
     <string name="open_drawer">Open</string>
     <string name="close_drawer">Closed</string>
 
@@ -109,6 +110,7 @@
     <string name="screen_profile">User Profile Screen</string>
     <string name="screen_virtualcurrency">Virtual Currency Screen</string>
     <string name="screen_webview">Webview Screen</string>
+    <string name="title_activity_challenge">ChallengeActivity</string>
 
 
 </resources>

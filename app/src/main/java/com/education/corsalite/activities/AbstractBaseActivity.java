@@ -267,6 +267,14 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 startActivity(new Intent(AbstractBaseActivity.this, OfflineContentActivity.class));
             }
         });
+
+        navigationView.findViewById(R.id.navigation_challenge_your_friends).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Localytics.tagEvent(getString(R.string.challenge_your_friends));
+                startActivity(new Intent(AbstractBaseActivity.this, ChallengeActivity.class));
+            }
+        });
     }
 
     protected void setToolbarTitle(String title) {
