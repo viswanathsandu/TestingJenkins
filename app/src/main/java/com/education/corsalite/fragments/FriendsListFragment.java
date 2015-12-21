@@ -3,10 +3,10 @@ package com.education.corsalite.fragments;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.support.v7.widget.SearchView;
 
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.DividerItemDecoration;
@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class FriendsListFragment extends BaseFragment {
+public class FriendsListFragment extends BaseFragment  implements SearchView.OnQueryTextListener, SearchView.OnCloseListener {
 
     private SearchView mFriendSearchView;
     private RecyclerView mRecyclerView;
@@ -44,6 +44,11 @@ public class FriendsListFragment extends BaseFragment {
         mRecyclerView.setAdapter(mAdapter);
         //TODO: Sridhar, Need to fix horizontal devider
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), R.drawable.horizontal_line, true, true));
+
+        mFriendSearchView.setIconifiedByDefault(false);
+
+        mFriendSearchView.setOnQueryTextListener(this);
+        mFriendSearchView.setOnCloseListener(this);
         return view;
     }
 
@@ -62,6 +67,37 @@ public class FriendsListFragment extends BaseFragment {
         list.add(new FriendData("", "Jaswanth", "jaswanth.joy@gmail.com"));
         list.add(new FriendData("", "Naveen", "naveen.novel@gmail.com"));
         return list;
+    }
+
+    @Override
+    public boolean onClose() {
+        mAdapter.setFilter(generateData());
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        final List<FriendData> filteredModelList = filter(generateData(), newText);
+        mAdapter.setFilter(filteredModelList);
+        return true;
+    }
+
+    private List<FriendData> filter(List<FriendData> models, String query) {
+        query = query.toLowerCase();
+
+        final List<FriendData> filteredModelList = new ArrayList<>();
+        for (FriendData model : models) {
+            final String text = model.getName().toLowerCase();
+            if (text.contains(query)) {
+                filteredModelList.add(model);
+            }
+        }
+        return filteredModelList;
     }
 
     public class FriendData {

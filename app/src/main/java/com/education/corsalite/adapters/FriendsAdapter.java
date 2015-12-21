@@ -16,6 +16,7 @@ import java.util.List;
  * Created by sridharnalam on 12/21/15.
  */
 public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendViewHolder> {
+
     private final List<FriendsListFragment.FriendData> mFriendsList;
 
     public FriendsAdapter(List<FriendsListFragment.FriendData> friendsList) {
@@ -39,6 +40,12 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendVi
     @Override
     public int getItemCount() {
         return mFriendsList.size();
+    }
+
+    public void setFilter(List<FriendsListFragment.FriendData> filterList) {
+        mFriendsList.clear();
+        mFriendsList.addAll(filterList);
+        notifyDataSetChanged();
     }
 
     public static class FriendViewHolder extends RecyclerView.ViewHolder {
