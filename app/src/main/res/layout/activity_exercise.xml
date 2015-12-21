@@ -149,7 +149,7 @@
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_toLeftOf="@id/footer_layout"
-                android:background="@drawable/shape_rounded_corners_black_80"
+                android:background="@drawable/shape_rounded_corners_black"
                 android:drawablePadding="5dp"
                 android:paddingBottom="5dp"
                 android:paddingLeft="10dp"

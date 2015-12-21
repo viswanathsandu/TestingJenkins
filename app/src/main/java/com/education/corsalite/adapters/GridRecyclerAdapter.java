@@ -31,6 +31,7 @@ import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.Data;
 import com.localytics.android.Localytics;
 
+import java.security.Key;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -188,10 +189,12 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
     private void startPartTest(Chapters chapter){
 
         Intent exerciseIntent = new Intent(studyCentreActivity, ExerciseActivity.class);
-        exerciseIntent.putExtra(Constants.TEST_TITLE, "Take Test");
-        exerciseIntent.putExtra(Constants.SELECTED_COURSE, "13" /*AbstractBaseActivity.selectedCourse.courseId.toString()*/);
-        exerciseIntent.putExtra(Constants.SELECTED_TOPICID, "224");
-        exerciseIntent.putExtra(Constants.SELECTED_TOPIC, "Test Data");
+
+        exerciseIntent.putExtra(Constants.TEST_TITLE, key);
+        exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
+        exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, studyCentreActivity.getSelectedSubjectId());
+        exerciseIntent.putExtra(Constants.SELECTED_SUBJECT, key);
+        exerciseIntent.putExtra(Constants.SELECTED_CHAPTERID, chapter.idCourseSubjectchapter);
         studyCentreActivity.startActivity(exerciseIntent);
 
     }

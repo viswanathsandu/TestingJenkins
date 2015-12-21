@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -36,17 +35,25 @@ import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.fragments.FullQuestionDialog;
+import com.education.corsalite.models.requestmodels.ExamTemplateChapter;
+import com.education.corsalite.models.requestmodels.ExamTemplateConfig;
+import com.education.corsalite.models.requestmodels.PostCustomExamTemplate;
 import com.education.corsalite.models.requestmodels.PostExerciseRequestModel;
+import com.education.corsalite.models.requestmodels.PostQuestionPaperRequest;
 import com.education.corsalite.models.responsemodels.AnswerChoiceModel;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
+import com.education.corsalite.models.responsemodels.ExamModels;
 import com.education.corsalite.models.responsemodels.ExerciseModel;
+import com.education.corsalite.models.responsemodels.PostExamTemplate;
 import com.education.corsalite.models.responsemodels.PostExercise;
+import com.education.corsalite.models.responsemodels.PostQuestionPaper;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.views.GridViewInScrollView;
 import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -155,9 +162,14 @@ public class ExerciseActivity extends AbstractBaseActivity {
             testNavFooter.setVisibility(View.GONE);
             renderQuestionLayout();
         } else {
-            if (getIntent().hasExtra(Constants.SELECTED_TOPICID)) {
-                getExercise(getIntent().getExtras().getString(Constants.SELECTED_TOPICID));
+
+            if (getIntent().hasExtra(Constants.SELECTED_SUBJECT)) {
+                topic = getIntent().getExtras().getString(Constants.SELECTED_SUBJECT);
+                tvPageTitle.setText(topic);
             }
+            // get Exam Id
+            getStandardExamByCourse();
+
             imvRefresh.setVisibility(View.VISIBLE);
             timerLayout.setVisibility(View.VISIBLE);
             testNavFooter.setVisibility(View.VISIBLE);
@@ -345,7 +357,9 @@ public class ExerciseActivity extends AbstractBaseActivity {
     private void loadQuestion(int position) {
 
         tvSerialNo.setText("Q" + (position + 1) + ")");
-        tvLevel.setText(localExerciseModelList.get(position).displayName.split("\\s+")[0].toUpperCase(Locale.ENGLISH));
+        if(!TextUtils.isEmpty(localExerciseModelList.get(position).displayName)) {
+            tvLevel.setText(localExerciseModelList.get(position).displayName.split("\\s+")[0].toUpperCase(Locale.ENGLISH));
+        }
 
 
         if (TextUtils.isEmpty(localExerciseModelList.get(position).paragraphHtml)) {
@@ -611,7 +625,8 @@ public class ExerciseActivity extends AbstractBaseActivity {
         List<AnswerChoiceModel> answerChoiceModels = localExerciseModelList.get(selectedPosition).answerChoice;
         int size = answerChoiceModels.size();
         boolean isCompound;
-        if (localExerciseModelList.get(selectedPosition).idQuestionType.equalsIgnoreCase("1")) {
+        if (localExerciseModelList.get(selectedPosition).idQuestionType.equalsIgnoreCase("1") ||
+                localExerciseModelList.get(selectedPosition).idQuestionType.equalsIgnoreCase("2")) {
             isCompound = true;
         } else {
             isCompound = false;
@@ -746,9 +761,6 @@ public class ExerciseActivity extends AbstractBaseActivity {
             } else {
                 btnCounter.setText(String.valueOf(position + 1));
             }
-
-            Log.e("tteesstt", localExerciseModelList.get(position).answerColorSelection + "::" + position);
-
             switch (localExerciseModelList.get(position).answerColorSelection) {
                 case ANSWERED:
                     btnCounter.setBackgroundResource(R.drawable.rounded_corners_green);
@@ -840,10 +852,120 @@ public class ExerciseActivity extends AbstractBaseActivity {
                         renderQuestionLayout();
                         //dummy timer.. need to fetch time and interval from service
                         tv_timer.setText("00:30:00");
-                        final CounterClass timer = new CounterClass(1800000,1000);
+                        final CounterClass timer = new CounterClass(1800000, 1000);
                         timer.start();
                     }
-        });
+                });
+    }
+
+    private void getStandardExamByCourse() {
+        String entityId;
+        String selectedCourseId;
+        entityId = LoginUserCache.getInstance().loginResponse.entitiyId;
+
+        if(getIntent().hasExtra(Constants.SELECTED_COURSE)) {
+            selectedCourseId = getIntent().getExtras().getString(Constants.SELECTED_COURSE);
+        } else {
+            selectedCourseId = selectedCourse.courseId.toString();
+        }
+        ApiManager.getInstance(this).getStandardExamsByCourse(selectedCourseId, entityId,
+                new ApiCallback<List<ExamModels>>(this) {
+                    @Override
+                    public void success(List<ExamModels> examModelses, Response response) {
+                        super.success(examModelses, response);
+                        if (examModelses != null && examModelses.size() > 0) {
+                            postCustomExamTemplate(examModelses);
+                        } else {
+                            showToast("No data found.");
+                        }
+                    }
+                });
+    }
+
+    String subjectId = null;
+    private void postCustomExamTemplate(List<ExamModels> examModelsList){
+
+        String chapterId = null;
+        String topicIds = null;
+
+        if(getIntent().hasExtra(Constants.SELECTED_CHAPTERID)) {
+            chapterId = getIntent().getExtras().getString(Constants.SELECTED_CHAPTERID);
+        }
+        if(getIntent().hasExtra(Constants.SELECTED_SUBJECTID)) {
+            subjectId = getIntent().getExtras().getString(Constants.SELECTED_SUBJECTID);
+        }
+        if(getIntent().hasExtra(Constants.SELECTED_TOPICID)) {
+            topicIds = getIntent().getExtras().getString(Constants.SELECTED_TOPICID);
+        }
+
+        PostCustomExamTemplate postCustomExamTemplate = new PostCustomExamTemplate();
+        postCustomExamTemplate.examId = examModelsList.get(0).examId;
+        postCustomExamTemplate.examName = examModelsList.get(0).examName;
+        postCustomExamTemplate.examTemplateConfig = new ArrayList<>();
+
+        ExamTemplateConfig examTemplateConfig = new ExamTemplateConfig();
+        examTemplateConfig.subjectId = subjectId;
+        examTemplateConfig.examTemplateChapter = new ArrayList<>();
+
+        ExamTemplateChapter examTemplateChapter = new ExamTemplateChapter();
+        examTemplateChapter.chapterID = chapterId;
+        examTemplateChapter.topicIDs = topicIds;
+
+        examTemplateConfig.examTemplateChapter.add(examTemplateChapter);
+        postCustomExamTemplate.examTemplateConfig.add(examTemplateConfig);
+
+        ApiManager.getInstance(this).postCustomExamTemplate(new Gson().toJson(postCustomExamTemplate),
+                new ApiCallback<PostExamTemplate>(this) {
+                    @Override
+                    public void success(PostExamTemplate postExamTemplate, Response response) {
+                        super.success(postExamTemplate, response);
+                        if(postExamTemplate != null && !TextUtils.isEmpty(postExamTemplate.idExamTemplate)) {
+                            postQuestionPaper(LoginUserCache.getInstance().loginResponse.entitiyId, postExamTemplate.idExamTemplate,
+                                    subjectId, LoginUserCache.getInstance().loginResponse.studentId);
+                        }
+                    }
+                });
+    }
+
+    private void postQuestionPaper(String entityId, String examTemplateId, String subjectId, String studentId) {
+        PostQuestionPaperRequest postQuestionPaper = new PostQuestionPaperRequest();
+        postQuestionPaper.idCollegeBatch = "";
+        postQuestionPaper.idEntity = entityId;
+        postQuestionPaper.idExamTemplate = examTemplateId;
+        postQuestionPaper.idSubject = subjectId;
+        postQuestionPaper.idStudent = studentId;
+
+        ApiManager.getInstance(this).postQuestionPaper(new Gson().toJson(postQuestionPaper),
+                new ApiCallback<PostQuestionPaper>(this) {
+                    @Override
+                    public void success(PostQuestionPaper postQuestionPaper, Response response) {
+                        super.success(postQuestionPaper, response);
+                        if (postQuestionPaper != null && !TextUtils.isEmpty(postQuestionPaper.idTestQuestionPaper)) {
+                            getTestQuestionPaper(postQuestionPaper.idTestQuestionPaper, null);
+                        }
+                    }
+                });
+    }
+
+    private void getTestQuestionPaper(String testQuestionPaperId, String testAnswerPaperId) {
+        ApiManager.getInstance(this).getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId,
+                new ApiCallback<List<ExerciseModel>>(this) {
+                    @Override
+                    public void success(List<ExerciseModel> exerciseModels, Response response) {
+                        super.success(exerciseModels, response);
+                        localExerciseModelList = exerciseModels;
+                        if (localExerciseModelList.size() > 1) {
+                            webFooter.setVisibility(View.VISIBLE);
+                        } else {
+                            webFooter.setVisibility(View.GONE);
+                        }
+                        renderQuestionLayout();
+                        //dummy timer.. need to fetch time and interval from service
+                        tv_timer.setText("00:30:00");
+                        final CounterClass timer = new CounterClass(1800000, 1000);
+                        timer.start();
+                    }
+                });
     }
 
     private void showFullQuestionDialog() {

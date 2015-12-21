@@ -16,12 +16,15 @@ import com.education.corsalite.models.responsemodels.DefaultCourseResponse;
 import com.education.corsalite.models.responsemodels.DefaultNoteResponse;
 import com.education.corsalite.models.responsemodels.EditProfileModel;
 import com.education.corsalite.models.responsemodels.ExamHistory;
+import com.education.corsalite.models.responsemodels.ExamModels;
 import com.education.corsalite.models.responsemodels.ExerciseModel;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
 import com.education.corsalite.models.responsemodels.Message;
 import com.education.corsalite.models.responsemodels.Note;
+import com.education.corsalite.models.responsemodels.PostExamTemplate;
 import com.education.corsalite.models.responsemodels.PostExercise;
+import com.education.corsalite.models.responsemodels.PostQuestionPaper;
 import com.education.corsalite.models.responsemodels.StudyCenter;
 import com.education.corsalite.models.responsemodels.TestCoverage;
 import com.education.corsalite.models.responsemodels.UpdateExamDetailsResponse;
@@ -298,6 +301,18 @@ public class ApiManager {
         }
     }
 
+    public void getTestQuestionPaper(String testQuestionPaperId, String testAnswerPaperId, ApiCallback<List<ExerciseModel>> callback) {
+        if(isApiOnline()) {
+            ApiClientService.get().getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, callback);
+        }
+    }
+
+    public void getStandardExamsByCourse(String courseId, String entityId, ApiCallback<List<ExamModels>> callback) {
+        if(isApiOnline()) {
+            ApiClientService.get().getStandardExamsByCourse(courseId, entityId, callback);
+        }
+    }
+
     public void getNotes(String studentId, String mSubjectId, String mChapterId, String mTopicId, ApiCallback<List<Note>> callback) {
         if (isApiOnline()) {
             // TODO : uncomment it when API works fine
@@ -347,4 +362,18 @@ public class ApiManager {
             ApiClientService.get().postExerciseAnswer(insert, callback);
         }
     }
+
+    public void postCustomExamTemplate(String insert, ApiCallback<PostExamTemplate> callback) {
+        if (isApiOnline()) {
+            ApiClientService.get().postCustomExamTemplate(insert, callback);
+        }
+    }
+
+    public void postQuestionPaper(String insert, ApiCallback<PostQuestionPaper> callback) {
+        if (isApiOnline()) {
+            ApiClientService.get().postQuestionPaper(insert, callback);
+        }
+    }
+
+
 }

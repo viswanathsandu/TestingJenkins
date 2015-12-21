@@ -9,12 +9,15 @@ import com.education.corsalite.models.responsemodels.DefaultCourseResponse;
 import com.education.corsalite.models.responsemodels.DefaultNoteResponse;
 import com.education.corsalite.models.responsemodels.EditProfileModel;
 import com.education.corsalite.models.responsemodels.ExamHistory;
+import com.education.corsalite.models.responsemodels.ExamModels;
 import com.education.corsalite.models.responsemodels.ExerciseModel;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
 import com.education.corsalite.models.responsemodels.Message;
 import com.education.corsalite.models.responsemodels.Note;
+import com.education.corsalite.models.responsemodels.PostExamTemplate;
 import com.education.corsalite.models.responsemodels.PostExercise;
+import com.education.corsalite.models.responsemodels.PostQuestionPaper;
 import com.education.corsalite.models.responsemodels.StudyCenter;
 import com.education.corsalite.models.responsemodels.TestCoverage;
 import com.education.corsalite.models.responsemodels.UpdateExamDetailsResponse;
@@ -98,6 +101,18 @@ public interface ICorsaliteApi {
 
     @GET("/Exercise")
     void getExerciseData(@Query("idTopic") String idTopics, @Query("idCourse") String idCourse , @Query("idStudent") String idStudent, @Query("UpdateTime") String UpdateTime, ApiCallback<List<ExerciseModel>> callback);
+
+    @GET("/TestQuestionPaper")
+    void getTestQuestionPaper(@Query("idTestQuestionPaper") String idTestQuestionPaper, @Query("idTestAnswerPaper") String idTestAnswerPaper, ApiCallback<List<ExerciseModel>> callback);
+
+    @GET("/StandardExamsByCourse")
+    void getStandardExamsByCourse(@Query("idCourse") String idCourse, @Query("idEntity") String idEntity, ApiCallback<List<ExamModels>> callback);
+
+    @POST("/CustomExamTemplate")
+    void postCustomExamTemplate(@Query("Insert") String insert, ApiCallback<PostExamTemplate> callback);
+
+    @POST("/QuestionPaper")
+    void postQuestionPaper(@Query("Insert") String insert, ApiCallback<PostQuestionPaper> callback);
 
     @POST("/UserProfile")
     void updateUserProfile(@Query("Update") String userProfile, ApiCallback<EditProfileModel> callback);
