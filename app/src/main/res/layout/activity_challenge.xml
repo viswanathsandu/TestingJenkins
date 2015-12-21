@@ -7,7 +7,7 @@
     android:background="@android:color/darker_gray"
     tools:context="com.education.corsalite.activities.ChallengeActivity">
 
-    <include layout="@layout/content_challenge"
+    <FrameLayout android:id="@+id/fragment_container"
         android:layout_width="300dp"
         android:layout_height="420dp"
         android:layout_centerInParent="true"/>

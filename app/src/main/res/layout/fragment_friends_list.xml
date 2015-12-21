@@ -6,8 +6,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:padding="5dp"
-    tools:context=".fragments.FriendsListFragment"
-    tools:showIn="@layout/activity_challenge">
+    tools:context=".fragments.FriendsListFragment">
 
     <android.support.v7.widget.SearchView
         android:id="@+id/sv_friend_search"
@@ -33,6 +32,7 @@
         android:paddingRight="10dp">
 
         <TextView
+            android:id="@+id/tv_friendlist_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="15dp"
@@ -40,6 +40,7 @@
             android:textColor="@android:color/black" />
 
         <TextView
+            android:id="@+id/tv_friendlist_next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="15dp"

@@ -39,6 +39,9 @@ repositories {
 }
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile('com.crashlytics.sdk.android:crashlytics:2.5.3@aar') {
+        transitive = true;
+    }
     compile 'com.android.support:appcompat-v7:22.2.1'
     compile 'com.android.support:design:22.2.1'
     compile 'com.android.support:recyclerview-v7:22.2.1'
@@ -56,9 +59,7 @@ dependencies {
     compile 'com.github.johnkil.print:print:1.2.2'
     compile 'de.greenrobot:eventbus:2.4.0'
     compile 'org.solovyev.android.views:linear-layout-manager:0.5@aar'
-    compile('com.crashlytics.sdk.android:crashlytics:2.5.3@aar') {
-        transitive = true;
-    }
     compile 'com.google.android.gms:play-services-analytics:8.3.0'
     compile 'com.localytics.android:library:3.6.0'
+    compile 'com.android.support:support-v4:22.2.1'
 }
