@@ -219,6 +219,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     Localytics.tagEvent("User Profile");
                     Intent intent = new Intent(AbstractBaseActivity.this, UserProfileActivity.class);
                     startActivity(intent);
+                    drawerLayout.closeDrawers();
                 }
             }
         });
@@ -229,6 +230,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 Localytics.tagEvent("Virtual Currency");
                 Intent intent = new Intent(AbstractBaseActivity.this, VirtualCurrencyActivity.class);
                 startActivity(intent);
+                drawerLayout.closeDrawers();
             }
         });
 
@@ -248,6 +250,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Localytics.tagEvent("Analytics");
                 startActivity(new Intent(AbstractBaseActivity.this, AnalyticsActivity.class));
+                drawerLayout.closeDrawers();
             }
         });
 
@@ -257,6 +260,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 Localytics.tagEvent("Usage Analysis");
                 Intent intent = new Intent(AbstractBaseActivity.this, UsageAnalysisActivity.class);
                 startActivity(intent);
+                drawerLayout.closeDrawers();
             }
         });
 
@@ -265,6 +269,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Localytics.tagEvent("Offline");
                 startActivity(new Intent(AbstractBaseActivity.this, OfflineContentActivity.class));
+                drawerLayout.closeDrawers();
             }
         });
 
