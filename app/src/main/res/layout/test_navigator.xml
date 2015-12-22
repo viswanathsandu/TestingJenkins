@@ -71,7 +71,7 @@
                         android:id="@+id/gv_test"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:columnWidth="60dp"
+                        android:columnWidth="40dp"
                         android:numColumns="auto_fit" />
 
                     <include
