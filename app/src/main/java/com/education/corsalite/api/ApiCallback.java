@@ -43,13 +43,6 @@ public abstract class ApiCallback<T> implements Callback<T> {
 
     @Override
     public void failure(RetrofitError error) {
-        if(error.getKind().name().equals("CONVERSION")) {
-            CorsaliteError corsaloteError = new CorsaliteError();
-            corsaloteError.status = "ERROR";
-            corsaloteError.message = "Unathorized session.";
-            failure(corsaloteError);
-            return;
-        }
         CorsaliteError restError = (CorsaliteError) error.getBodyAs(CorsaliteError.class);
         if (restError != null) {
             failure(restError);

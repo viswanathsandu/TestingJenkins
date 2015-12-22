@@ -143,7 +143,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         wmlp.y = (int) v.getY() + 140;
         dialog.show();
         dialog.getWindow().setAttributes(wmlp);
-        dialog.getWindow().setLayout(400, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setLayout(300, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 
     private void setDataForAlert(final AlertDialog dialog, View dialogView, StudyCenterSubjectViewHolder holder, final Chapters chapter) {
@@ -188,10 +188,12 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
     private void startPartTest(Chapters chapter){
 
         Intent exerciseIntent = new Intent(studyCentreActivity, ExerciseActivity.class);
-        exerciseIntent.putExtra(Constants.TEST_TITLE, "Take Test");
-        exerciseIntent.putExtra(Constants.SELECTED_COURSE, "13" /*AbstractBaseActivity.selectedCourse.courseId.toString()*/);
-        exerciseIntent.putExtra(Constants.SELECTED_TOPICID, "224");
-        exerciseIntent.putExtra(Constants.SELECTED_TOPIC, "Test Data");
+
+        exerciseIntent.putExtra(Constants.TEST_TITLE, key);
+        exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
+        exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, studyCentreActivity.getSelectedSubjectId());
+        exerciseIntent.putExtra(Constants.SELECTED_SUBJECT, key);
+        exerciseIntent.putExtra(Constants.SELECTED_CHAPTERID, chapter.idCourseSubjectchapter);
         studyCentreActivity.startActivity(exerciseIntent);
 
     }

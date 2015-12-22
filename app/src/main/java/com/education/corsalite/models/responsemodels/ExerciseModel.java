@@ -11,12 +11,26 @@ import java.util.List;
  */
 public class ExerciseModel extends BaseModel implements Serializable, Comparable {
 
+    public String idTestQuestion;
+    @SerializedName("VideoUrl")
+    public String videoUrl;
+    @SerializedName("QueSortOrder")
+    public String queSortOrder;
+    @SerializedName("RecommendedTime")
+    public String recommendedTime;
+    @SerializedName("MultiChoiceQuestionOption")
+    public String multiChoiceQuestionOption;
+    @SerializedName("DisplayName")
+    public String displayName;
+    @SerializedName("LastModifiedDateTime")
+    public String lastModifiedDateTime;
+    @SerializedName("ExerciseNumber")
+    public String exerciseNumber;
+
     public String idQuestionParagraph;
     @SerializedName("ParagraphHtml")
     public String paragraphHtml;
     public String idQuestion;
-    @SerializedName("ExerciseNumber")
-    public String exerciseNumber;
     @SerializedName("QuestionHtml")
     public String questionHtml;
     @SerializedName("HintHtml")
@@ -28,10 +42,6 @@ public class ExerciseModel extends BaseModel implements Serializable, Comparable
     public String comment;
     @SerializedName("Complexity")
     public String complexity;
-    @SerializedName("LastModifiedDateTime")
-    public String lastModifiedDateTime;
-    @SerializedName("DisplayName")
-    public String displayName;
     @SerializedName("AnswerChoice")
     public List<AnswerChoiceModel> answerChoice;
 
