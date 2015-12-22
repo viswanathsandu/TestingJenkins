@@ -434,10 +434,10 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     private void startPartTest(StudyCenter studyCenter){
 
         Intent exerciseIntent = new Intent(this, ExerciseActivity.class);
-        exerciseIntent.putExtra(Constants.TEST_TITLE, "Part Test");
-        exerciseIntent.putExtra(Constants.SELECTED_COURSE, "13" /*AbstractBaseActivity.selectedCourse.courseId.toString()*/);
-        exerciseIntent.putExtra(Constants.SELECTED_TOPICID, "224");
-        exerciseIntent.putExtra(Constants.SELECTED_TOPIC, "Test Data");
+        exerciseIntent.putExtra(Constants.TEST_TITLE, studyCenter.SubjectName);
+        exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
+        exerciseIntent.putExtra(Constants.SELECTED_TOPICID, studyCenter.idCourseSubject);
+        exerciseIntent.putExtra(Constants.SELECTED_TOPIC, studyCenter.SubjectName);
         startActivity(exerciseIntent);
 
     }
