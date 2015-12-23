@@ -49,7 +49,7 @@ public class LoginActivity extends AbstractBaseActivity {
         String username = appPref.getValue("loginId");
         String passwordHash =  appPref.getValue("passwordHash");
         if(!TextUtils.isEmpty(username) && !TextUtils.isEmpty(passwordHash)) {
-            login(username, passwordHash, true);
+            login(username, passwordHash, false);
         }
     }
 
