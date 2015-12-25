@@ -58,6 +58,7 @@
     <string name="exam_schedule">Exam Schedule</string>
     <string name="open_drawer">Open</string>
     <string name="close_drawer">Closed</string>
+    <string name="log_out">Log Out</string>
 
     <string name="subject1">Physics</string>
     <string name="subject2">Chemistry</string>
