@@ -312,6 +312,8 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     private void logout() {
         LogoutModel logout = new LogoutModel();
         logout.AuthToken = LoginUserCache.getInstance().getLongResponse().authtoken;
+        appPref.remove("loginId");
+        appPref.remove("passwordHash");
         ApiManager.getInstance(this).logout(new Gson().toJson(logout), new ApiCallback<LogoutResponse>(this) {
             @Override
             public void failure(CorsaliteError error) {
