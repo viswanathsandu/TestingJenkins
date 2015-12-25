@@ -327,7 +327,9 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     showToast(getResources().getString(R.string.logout_successful));
                     LoginUserCache.getInstance().clearCache();
                     deleteSessionCookie();
-                    startActivity(new Intent(AbstractBaseActivity.this, LoginActivity.class));
+                    Intent intent = new Intent(AbstractBaseActivity.this, LoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
                     finish();
                 }
             }
