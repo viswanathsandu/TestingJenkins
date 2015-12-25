@@ -1,12 +1,14 @@
 package com.education.corsalite.activities;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -86,6 +88,7 @@ public class ExerciseActivity extends AbstractBaseActivity {
     @Bind(R.id.btn_view_full_question) Button btnViewFullQuestion;
     @Bind(R.id.btn_verify) Button btnVerify;
     @Bind(R.id.tv_clearanswer) TextView tvClearAnswer;
+    @Bind(R.id.btn_submit) Button btnSubmit;
 
     @Bind(R.id.txtAnswerCount) TextView txtAnswerCount;
     @Bind(R.id.txtAnswerExp) WebView txtAnswerExp;
@@ -162,7 +165,6 @@ public class ExerciseActivity extends AbstractBaseActivity {
             testNavFooter.setVisibility(View.GONE);
             renderQuestionLayout();
         } else {
-
             if (getIntent().hasExtra(Constants.SELECTED_SUBJECT)) {
                 topic = getIntent().getExtras().getString(Constants.SELECTED_SUBJECT);
                 tvPageTitle.setText(topic);
@@ -195,6 +197,7 @@ public class ExerciseActivity extends AbstractBaseActivity {
         slider.setOnClickListener(mClickListener);
         testNavLayout.setOnClickListener(mClickListener);
         btnViewFullQuestion.setOnClickListener(mClickListener);
+        btnSubmit.setOnClickListener(mClickListener);
     }
 
     private void initSuggestionWebView() {
@@ -334,25 +337,82 @@ public class ExerciseActivity extends AbstractBaseActivity {
                     postAnswer(localExerciseModelList.get(selectedPosition).answerChoice.get(selectedAnswerPosition),
                             localExerciseModelList.get(selectedPosition).idQuestion);
                     break;
-
                 case R.id.tv_clearanswer:
                     clearAnswers();
                     break;
-
                 case R.id.btn_slider_test:
                 case R.id.shadow_view:
                     toggleSlider();
                     break;
-
                 case R.id.ll_test_navigator:
                     break;
-
                 case R.id.btn_view_full_question:
                     showFullQuestionDialog();
+                    break;
+                case R.id.btn_submit:
+                    showSubmitTestAlert();
                     break;
             }
         }
     };
+
+    private void showSubmitTestAlert() {
+        final AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("Confirm");
+        alert.setMessage("Do you want to submit the exam?");
+        alert.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                submitTest();
+            }
+        });
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alert.show();
+    }
+
+    private void submitTest() {
+        if(localExerciseModelList != null && !localExerciseModelList.isEmpty()) {
+            int score = 0;
+            int success = 0;
+            int failure = 0;
+            for(ExerciseModel model : localExerciseModelList) {
+                if(!TextUtils.isEmpty(model.selectedAnswers)) {
+                    int selectedOption = -1;
+                    try {
+                        selectedOption = Integer.parseInt(model.selectedAnswers);
+                        if(model.answerChoice.get(selectedOption).isCorrectAnswer.equals("Y")) {
+                            success++;
+                        } else {
+                            failure++;
+                        }
+                    } catch (NumberFormatException e) {
+                        L.error(e.getMessage(), e);
+                        failure++;
+                    }
+                } else {
+                    failure++;
+                }
+            }
+            navigateToExamResultActivity(localExerciseModelList.size(), success, failure);
+        }
+    }
+
+    private void navigateToExamResultActivity(int totalQuestions, int correct, int wrong) {
+        Intent intent = new Intent(this, ExamResultActivity.class);
+        intent.putExtra("exam", "Chapter");
+        intent.putExtra("type", "Custom");
+        intent.putExtra("time_taken", "00:00:30");
+        intent.putExtra("total_questions", totalQuestions);
+        intent.putExtra("correct", correct);
+        intent.putExtra("wrong", wrong);
+        startActivity(intent);
+        finish();
+    }
 
     private void loadQuestion(int position) {
 
@@ -851,9 +911,11 @@ public class ExerciseActivity extends AbstractBaseActivity {
                         }
                         renderQuestionLayout();
                         //dummy timer.. need to fetch time and interval from service
-                        tv_timer.setText("00:30:00");
-                        final CounterClass timer = new CounterClass(1800000, 1000);
-                        timer.start();
+                        if(ExerciseActivity.this != null) {
+                            tv_timer.setText("00:30:00");
+                            final CounterClass timer = new CounterClass(1800000, 1000);
+                            timer.start();
+                        }
                     }
                 });
     }

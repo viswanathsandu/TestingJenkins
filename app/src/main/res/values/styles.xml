@@ -255,4 +255,31 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="exam_results_data_layout">
+        <item name="android:weightSum">2</item>
+    </style>
+
+    <style name="exam_results_label">
+        <item name="android:layout_weight">1</item>
+        <item name="android:textColor">@color/text_black</item>
+        <item name="android:gravity">right</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:paddingRight">10dp</item>
+    </style>
+
+    <style name="exam_results_value">
+        <item name="android:layout_weight">1</item>
+        <item name="android:textColor">@color/text_black</item>
+        <item name="android:gravity">left</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:paddingLeft">10dp</item>
+    </style>
+
+    <style name="exam_results_table_data">
+        <item name="android:textColor">@color/text_black</item>
+        <item name="android:gravity">left</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:paddingLeft">10dp</item>
+    </style>
+
 </resources>

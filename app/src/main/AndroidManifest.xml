@@ -130,6 +130,10 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
+        <activity
+            android:name=".activities.ExamResultActivity"
+            android:theme="@style/AppTheme"
+            android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"/>
     </application>
 
 </manifest>
