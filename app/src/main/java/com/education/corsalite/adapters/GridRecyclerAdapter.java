@@ -21,10 +21,10 @@ import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
-import com.education.corsalite.activities.ExerciseActivity;
 import com.education.corsalite.activities.NotesActivity;
 import com.education.corsalite.activities.OfflineSubjectActivity;
 import com.education.corsalite.activities.StudyCentreActivity;
+import com.education.corsalite.activities.TestStartActivity;
 import com.education.corsalite.activities.WebActivity;
 import com.education.corsalite.models.responsemodels.Chapters;
 import com.education.corsalite.utils.Constants;
@@ -187,7 +187,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
 
     private void startPartTest(Chapters chapter){
 
-        Intent exerciseIntent = new Intent(studyCentreActivity, ExerciseActivity.class);
+        Intent exerciseIntent = new Intent(studyCentreActivity, TestStartActivity.class);
 
         exerciseIntent.putExtra(Constants.TEST_TITLE, key);
         exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
