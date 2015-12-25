@@ -24,7 +24,7 @@ public class ExamResultActivity extends AbstractBaseActivity {
     TextView correctTxt;
     TextView wrongTxt;
 
-    @Overridee
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
