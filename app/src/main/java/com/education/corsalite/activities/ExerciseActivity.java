@@ -105,6 +105,7 @@ public class ExerciseActivity extends AbstractBaseActivity {
 
     @Bind(R.id.gv_test) GridViewInScrollView gvTest;
     @Bind(R.id.test_nav_footer) LinearLayout testNavFooter;
+    @Bind(R.id.navigator_layout) RelativeLayout navigatorLayout;
 
     String webQuestion = "";
     private int selectedPosition = 0;
@@ -114,6 +115,10 @@ public class ExerciseActivity extends AbstractBaseActivity {
     GridAdapter gridAdapter;
     private List<ExerciseModel> localExerciseModelList;
     private int previousQuestionPosition = -1;
+
+    String subjectId = null;
+    String chapterId = null;
+    String topicIds = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,8 +156,25 @@ public class ExerciseActivity extends AbstractBaseActivity {
         if (getIntent().hasExtra(Constants.SELECTED_POSITION)) {
             selectedPosition = getIntent().getExtras().getInt(Constants.SELECTED_POSITION);
         }
+        if(getIntent().hasExtra(Constants.SELECTED_SUBJECTID)) {
+            subjectId = getIntent().getExtras().getString(Constants.SELECTED_SUBJECTID);
+        }
+        if(getIntent().hasExtra(Constants.SELECTED_CHAPTERID)) {
+            chapterId = getIntent().getExtras().getString(Constants.SELECTED_CHAPTERID);
+        }
+        if(getIntent().hasExtra(Constants.SELECTED_TOPICID)) {
+            topicIds = getIntent().getExtras().getString(Constants.SELECTED_TOPICID);
+        }
 
-        if(title.equalsIgnoreCase("Exercise Test")) {
+        if(title.equalsIgnoreCase("Flagged Questions")) {
+            tvPageTitle.setText(title);
+            getFlaggedQuestion();
+            navigatorLayout.setVisibility(View.GONE);
+            tvClearAnswer.setVisibility(View.GONE);
+            btnVerify.setVisibility(View.GONE);
+            imvRefresh.setVisibility(View.GONE);
+            timerLayout.setVisibility(View.GONE);
+        } else if(title.equalsIgnoreCase("Exercise Test")) {
             localExerciseModelList = WebActivity.exerciseModelList;
             if (localExerciseModelList.size() > 1) {
                 webFooter.setVisibility(View.VISIBLE);
@@ -417,7 +439,7 @@ public class ExerciseActivity extends AbstractBaseActivity {
     private void loadQuestion(int position) {
 
         tvSerialNo.setText("Q" + (position + 1) + ")");
-        if(!TextUtils.isEmpty(localExerciseModelList.get(position).displayName)) {
+        if(!TextUtils.isEmpty(localExerciseModelList.get(position).displayName) && !title.equalsIgnoreCase("Flagged Questions")) {
             tvLevel.setText(localExerciseModelList.get(position).displayName.split("\\s+")[0].toUpperCase(Locale.ENGLISH));
         }
 
@@ -890,6 +912,25 @@ public class ExerciseActivity extends AbstractBaseActivity {
         }
     }
 
+    private void getFlaggedQuestion() {
+        ApiManager.getInstance(this).getFlaggedQuestions(LoginUserCache.getInstance().loginResponse.studentId,
+                subjectId,
+                chapterId, "", new ApiCallback<List<ExerciseModel>>(this) {
+                    @Override
+                    public void success(List<ExerciseModel> exerciseModels, Response response) {
+                        super.success(exerciseModels, response);
+                        localExerciseModelList = exerciseModels;
+                        if (localExerciseModelList.size() > 1) {
+                            webFooter.setVisibility(View.VISIBLE);
+                        } else {
+                            webFooter.setVisibility(View.GONE);
+                        }
+                        tvLevel.setText("TOTAL NUMBER OF QUESTIONS : "+exerciseModels.size());
+                        renderQuestionLayout();
+                    }
+                });
+    }
+
     private void getExercise(String topicId) {
         String selectedCourseId;
         if(getIntent().hasExtra(Constants.SELECTED_COURSE)) {
@@ -911,7 +952,7 @@ public class ExerciseActivity extends AbstractBaseActivity {
                         }
                         renderQuestionLayout();
                         //dummy timer.. need to fetch time and interval from service
-                        if(ExerciseActivity.this != null) {
+                        if (ExerciseActivity.this != null) {
                             tv_timer.setText("00:30:00");
                             final CounterClass timer = new CounterClass(1800000, 1000);
                             timer.start();
@@ -944,21 +985,7 @@ public class ExerciseActivity extends AbstractBaseActivity {
                 });
     }
 
-    String subjectId = null;
     private void postCustomExamTemplate(List<ExamModels> examModelsList){
-
-        String chapterId = null;
-        String topicIds = null;
-
-        if(getIntent().hasExtra(Constants.SELECTED_CHAPTERID)) {
-            chapterId = getIntent().getExtras().getString(Constants.SELECTED_CHAPTERID);
-        }
-        if(getIntent().hasExtra(Constants.SELECTED_SUBJECTID)) {
-            subjectId = getIntent().getExtras().getString(Constants.SELECTED_SUBJECTID);
-        }
-        if(getIntent().hasExtra(Constants.SELECTED_TOPICID)) {
-            topicIds = getIntent().getExtras().getString(Constants.SELECTED_TOPICID);
-        }
 
         PostCustomExamTemplate postCustomExamTemplate = new PostCustomExamTemplate();
         postCustomExamTemplate.examId = examModelsList.get(0).examId;
@@ -983,13 +1010,13 @@ public class ExerciseActivity extends AbstractBaseActivity {
                         super.success(postExamTemplate, response);
                         if(postExamTemplate != null && !TextUtils.isEmpty(postExamTemplate.idExamTemplate)) {
                             postQuestionPaper(LoginUserCache.getInstance().loginResponse.entitiyId, postExamTemplate.idExamTemplate,
-                                    subjectId, LoginUserCache.getInstance().loginResponse.studentId);
+                                    LoginUserCache.getInstance().loginResponse.studentId);
                         }
                     }
                 });
     }
 
-    private void postQuestionPaper(String entityId, String examTemplateId, String subjectId, String studentId) {
+    private void postQuestionPaper(String entityId, String examTemplateId, String studentId) {
         PostQuestionPaperRequest postQuestionPaper = new PostQuestionPaperRequest();
         postQuestionPaper.idCollegeBatch = "";
         postQuestionPaper.idEntity = entityId;

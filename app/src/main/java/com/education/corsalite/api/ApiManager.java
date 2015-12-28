@@ -301,6 +301,12 @@ public class ApiManager {
         }
     }
 
+    public void getFlaggedQuestions(String studentId, String subjectId, String chapterId, String UpdateTime, ApiCallback<List<ExerciseModel>> callback) {
+        if (isApiOnline()) {
+            ApiClientService.get().getFlaggedQuestions(studentId, subjectId, chapterId, UpdateTime, callback);
+        }
+    }
+
     public void getTestQuestionPaper(String testQuestionPaperId, String testAnswerPaperId, ApiCallback<List<ExerciseModel>> callback) {
         if(isApiOnline()) {
             ApiClientService.get().getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, callback);
