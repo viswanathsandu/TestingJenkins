@@ -1,6 +1,5 @@
 package com.education.corsalite.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -12,7 +11,7 @@ import com.education.corsalite.utils.AppConfig;
 /**
  * Created by Madhuri on 03-01-2016.
  */
-public class SplashActivity extends Activity {
+public class SplashActivity extends AbstractBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
