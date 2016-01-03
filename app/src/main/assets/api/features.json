@@ -8,5 +8,8 @@
   "feature7":true,
   "feature8":false,
   "feature9":true,
-  "feature10":true
+  "feature10":true,
+  "url"     : "https://staging.corsalite.com/v1/webservices/",
+  "value1" : "value1",
+  "value2" : "value2"
 }

@@ -19,7 +19,7 @@ public class ApiClientService {
 
     private static ICorsaliteApi client;
     private static final String PROD = "https://app.corsalite.com/v1/webservices/";
-    private static final String STAGING = "https://staging.corsalite.com/v1/webservices/";
+    private static  String STAGING = "https://staging.corsalite.com/v1/webservices/";
 
     private static String ROOT = STAGING;
 
@@ -43,6 +43,10 @@ public class ApiClientService {
 
     public static ICorsaliteApi get() {
         return client;
+    }
+    public static void setBaseUrl(String url){
+
+        STAGING = url;
     }
 
     private static void setupRestClient() {
