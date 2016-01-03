@@ -133,7 +133,7 @@ public class WebActivity extends AbstractBaseActivity {
                 mContentId = bundle.getString("contentId");
 
                 if(bundle.containsKey("contentName") && bundle.getString("contentName") != null) {
-                    mContentName = bundle.getString("contentId");
+                    mContentName = bundle.getString("contentName");
                 } else {
                     throw new NullPointerException("You must have to pass content name");
                 }

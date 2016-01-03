@@ -42,6 +42,8 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
     private AndroidTreeView tView;
     List<OfflineContent> offlineContentList ;
     String selectedCourse;
+    String subjectId = "";
+    String chapterId = "";
 
     @Nullable
     @Override
@@ -166,8 +168,14 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
         @Override
         public void onClick(TreeNode node, Object value) {
             IconTreeItemHolder.IconTreeItem item = (IconTreeItemHolder.IconTreeItem) value;
+            if(item.tag.equalsIgnoreCase("subject")){
+                subjectId = item.id;
+            }
+            if(item.tag.equalsIgnoreCase("chapter")){
+                chapterId = item.id;
+            }
             if(item.tag.equalsIgnoreCase("content")) {
-                startContentActivity(item.id);
+                startContentActivity(chapterId,subjectId,item.id,item.text);
             }
 
 
@@ -245,11 +253,13 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
     }
 
 
-    private void startContentActivity(String chapterId) {
+    private void startContentActivity(String chapterId,String subjectId,String contentId,String contentName) {
         Intent intent = new Intent(getActivity(), WebActivity.class);
         intent.putExtra("courseId", AbstractBaseActivity.selectedCourse.courseId.toString());
-        intent.putExtra("subjectId", selectedCourse);
+        intent.putExtra("subjectId", subjectId);
         intent.putExtra("chapterId", chapterId);
+        intent.putExtra("contentId",contentId);
+        intent.putExtra("contentName",contentName);
         getActivity().startActivity(intent);
     }
 
