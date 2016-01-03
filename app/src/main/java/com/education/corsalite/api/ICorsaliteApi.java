@@ -17,6 +17,7 @@ import com.education.corsalite.models.responsemodels.Message;
 import com.education.corsalite.models.responsemodels.Note;
 import com.education.corsalite.models.responsemodels.PostExamTemplate;
 import com.education.corsalite.models.responsemodels.PostExercise;
+import com.education.corsalite.models.responsemodels.PostFlaggedQuestions;
 import com.education.corsalite.models.responsemodels.PostQuestionPaper;
 import com.education.corsalite.models.responsemodels.StudyCenter;
 import com.education.corsalite.models.responsemodels.TestCoverage;
@@ -116,6 +117,9 @@ public interface ICorsaliteApi {
 
     @POST("/QuestionPaper")
     void postQuestionPaper(@Query("Insert") String insert, ApiCallback<PostQuestionPaper> callback);
+
+    @POST("/FlaggedQuestions")
+    void postFlaggedQuestions(@Query("Update") String update, ApiCallback<PostFlaggedQuestions> callback);
 
     @POST("/UserProfile")
     void updateUserProfile(@Query("Update") String userProfile, ApiCallback<EditProfileModel> callback);

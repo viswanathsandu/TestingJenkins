@@ -12,11 +12,27 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ProgressBar
-            android:id="@+id/headerProgress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+        <RelativeLayout
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ProgressBar
+                android:id="@+id/header_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true" />
+
+            <TextView
+                android:visibility="gone"
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No Data Found"
+                fontPath="@string/roboto_regular"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:id="@+id/tv_empty_layout"/>
+        </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -198,12 +214,22 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp" />
 
+                    <ImageView
+                        android:src="@drawable/ico_offline_info"
+                        android:layout_below="@id/webview_paragraph"
+                        android:id="@+id/imv_flag"
+                        android:layout_marginTop="10dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_gravity="center_vertical" />
+
                     <TextView
                         android:layout_below="@id/webview_paragraph"
                         android:id="@+id/tv_serial_no"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
+                        android:layout_toRightOf="@id/imv_flag"
                         android:layout_gravity="center_vertical"
                         android:padding="10dp"
                         android:textColor="@color/black" />
@@ -216,6 +242,7 @@
                         android:layout_toRightOf="@+id/tv_serial_no" />
 
                     <LinearLayout
+                        android:layout_marginLeft="40dp"
                         android:id="@+id/answer_layout"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -282,6 +309,12 @@
                             tools:ignore="WebViewLayout" />
 
                     </LinearLayout>
+
+                    <include layout="@layout/flagged_explanation_layout"
+                        android:layout_below="@id/layout_choice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"/>
 
                 </RelativeLayout>
 
