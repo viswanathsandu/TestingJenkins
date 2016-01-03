@@ -122,6 +122,12 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         loadCoursesList();
     }
 
+    protected void setToolbarForTestStartScreen() {
+        toolbar.findViewById(R.id.start_layout).setVisibility(View.VISIBLE);
+        setToolbarTitle("Chapter Test");
+        loadCoursesList();
+    }
+
     protected void setToolbarForContentReading() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
         setToolbarTitle(getResources().getString(R.string.content));
@@ -272,6 +278,14 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 drawerLayout.closeDrawers();
             }
         });
+
+        navigationView.findViewById(R.id.navigation_challenge_your_friends).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Localytics.tagEvent(getString(R.string.challenge_your_friends));
+                startActivity(new Intent(AbstractBaseActivity.this, ChallengeActivity.class));
+            }
+        });
     }
 
     protected void setToolbarTitle(String title) {
@@ -304,6 +318,8 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     private void logout() {
         LogoutModel logout = new LogoutModel();
         logout.AuthToken = LoginUserCache.getInstance().getLongResponse().authtoken;
+        appPref.remove("loginId");
+        appPref.remove("passwordHash");
         ApiManager.getInstance(this).logout(new Gson().toJson(logout), new ApiCallback<LogoutResponse>(this) {
             @Override
             public void failure(CorsaliteError error) {
@@ -317,7 +333,9 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     showToast(getResources().getString(R.string.logout_successful));
                     LoginUserCache.getInstance().clearCache();
                     deleteSessionCookie();
-                    startActivity(new Intent(AbstractBaseActivity.this, LoginActivity.class));
+                    Intent intent = new Intent(AbstractBaseActivity.this, LoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
                     finish();
                 }
             }

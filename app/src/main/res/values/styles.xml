@@ -38,6 +38,7 @@
         <item name="android:textSize">14sp</item>
         <item name="android:textAllCaps">false</item>
     </style>
+
     <style name="analytics_legend_style">
         <item name="android:textColor">@color/text_black</item>
         <item name="fontPath">@string/roboto_regular</item>
@@ -99,6 +100,7 @@
         <item name="tabTextAppearance">@style/MyCustomTabTextAppearance</item>
         <item name="tabSelectedTextColor">@color/dark_blue</item>
     </style>
+
     <style name="MyCustomTabTextAppearance" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/black</item>
@@ -124,6 +126,7 @@
         <item name="android:paddingLeft">20dp</item>
         <item name="android:background">@color/red</item>
     </style>
+
     <style name="analytics_title">
         <item name="android:layout_width">140dp</item>
         <item name="android:layout_height">wrap_content</item>
@@ -174,6 +177,7 @@
         <item name="android:singleLine">true</item>
         <item name="android:ellipsize">end</item>
     </style>
+
     <style name="user_profile_text">
         <item name="fontPath">@string/roboto_regular</item>
         <item name="android:textSize">14sp</item>
@@ -192,18 +196,20 @@
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/text_gray</item>
     </style>
+
     <style name="user_profile_text_gray">
         <item name="fontPath">@string/roboto_regular</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/text_gray</item>
     </style>
+
     <style name="user_profile_subheading">
         <item name="fontPath">@string/roboto_bold</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/black</item>
     </style>
 
-    <style name="navigation_drawer_element" >
+    <style name="navigation_drawer_element">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:drawablePadding">20dp</item>
@@ -228,6 +234,7 @@
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/text_black</item>
     </style>
+
     <style name="tests_title_style">
         <item name="android:textColor">@color/black</item>
         <item name="fontPath">@string/roboto_bold</item>
@@ -242,6 +249,37 @@
         <item name="fontPath">@string/roboto_regular</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="exam_results_data_layout">
+        <item name="android:weightSum">2</item>
+    </style>
+
+    <style name="exam_results_label">
+        <item name="android:layout_weight">1</item>
+        <item name="android:textColor">@color/text_black</item>
+        <item name="android:gravity">right</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:paddingRight">10dp</item>
+    </style>
+
+    <style name="exam_results_value">
+        <item name="android:layout_weight">1</item>
+        <item name="android:textColor">@color/text_black</item>
+        <item name="android:gravity">left</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:paddingLeft">10dp</item>
+    </style>
+
+    <style name="exam_results_table_data">
+        <item name="android:textColor">@color/text_black</item>
+        <item name="android:gravity">left</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:paddingLeft">10dp</item>
     </style>
 
 </resources>
