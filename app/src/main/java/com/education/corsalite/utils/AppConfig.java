@@ -1,9 +1,8 @@
-package com.education.corsalite.activities;
+package com.education.corsalite.utils;
 
 import android.content.Context;
 
 import com.education.corsalite.models.FeatureModel;
-import com.education.corsalite.utils.FileUtils;
 import com.google.gson.Gson;
 
 /**

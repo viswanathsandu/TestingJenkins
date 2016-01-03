@@ -7,6 +7,7 @@ import android.os.CountDownTimer;
 
 import com.education.corsalite.models.FeatureModel;
 import com.education.corsalite.services.ApiClientService;
+import com.education.corsalite.utils.AppConfig;
 
 /**
  * Created by Madhuri on 03-01-2016.
