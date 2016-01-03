@@ -1,0 +1,15 @@
+{
+  "feature1": true,
+  "feature2":true,
+  "feature3":false,
+  "feature4":true,
+  "feature5":false,
+  "feature6":true,
+  "feature7":true,
+  "feature8":false,
+  "feature9":true,
+  "feature10":true,
+  "url"     : "https://staging.corsalite.com/v1/webservices/",
+  "value1" : "value1",
+  "value2" : "value2"
+}
