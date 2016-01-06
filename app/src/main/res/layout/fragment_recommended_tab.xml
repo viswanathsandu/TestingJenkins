@@ -39,5 +39,6 @@
         android:drawableTop="@drawable/ico_info"
         android:gravity="center_horizontal"
         android:visibility="gone"
+        style="@style/analytics_text_style"
         android:text="No Analytics available for Recommended Reading"/>
 </RelativeLayout>

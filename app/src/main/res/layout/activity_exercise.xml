@@ -12,11 +12,27 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ProgressBar
-            android:id="@+id/headerProgress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+        <RelativeLayout
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ProgressBar
+                android:id="@+id/header_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true" />
+
+            <TextView
+                android:visibility="gone"
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No Data Found"
+                fontPath="@string/roboto_regular"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:id="@+id/tv_empty_layout"/>
+        </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -43,7 +59,70 @@
                     android:layout_weight="1"
                     android:gravity="center_vertical" />
 
+                <LinearLayout
+                    android:gravity="center"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:id="@+id/layout_timer"
+                    android:background="@drawable/rounded_corners_green"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:enabled="false"
+                        android:textSize="16sp"
+                        fontPath="@string/roboto_regular"
+                        android:textColor="#80FFFFFF"
+                        android:text="TIME LEFT" />
+
+                    <TextView
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:enabled="false"
+                        android:textSize="18sp"
+                        fontPath="@string/roboto_regular"
+                        android:textColor="#40FFFFFF"
+                        android:text=" | " />
+
+                    <TextView
+                        android:id="@+id/tv_timer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:enabled="false"
+                        android:textSize="18sp"
+                        fontPath="@string/roboto_regular"
+                        android:textColor="#FFFFFF"
+                        android:text=" | " />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:padding="2dp"
+                    android:layout_marginLeft="10dp"
+                    android:visibility="gone"
+                    android:id="@+id/imv_refresh"
+                    android:background="@drawable/rounded_corners_blue"
+                    android:src="@drawable/ico_restart_test"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:enabled="false"
+                    fontPath="@string/roboto_regular"
+                    android:text=" | " />
+
+
                 <Button
+                    android:visibility="gone"
                     android:id="@+id/btn_verify"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -86,7 +165,7 @@
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_toLeftOf="@id/footer_layout"
-                android:background="@drawable/shape_rounded_corners_black_80"
+                android:background="@drawable/shape_rounded_corners_black"
                 android:drawablePadding="5dp"
                 android:paddingBottom="5dp"
                 android:paddingLeft="10dp"
@@ -135,12 +214,22 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp" />
 
+                    <ImageView
+                        android:src="@drawable/ico_offline_info"
+                        android:layout_below="@id/webview_paragraph"
+                        android:id="@+id/imv_flag"
+                        android:layout_marginTop="10dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_gravity="center_vertical" />
+
                     <TextView
                         android:layout_below="@id/webview_paragraph"
                         android:id="@+id/tv_serial_no"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
+                        android:layout_toRightOf="@id/imv_flag"
                         android:layout_gravity="center_vertical"
                         android:padding="10dp"
                         android:textColor="@color/black" />
@@ -153,6 +242,7 @@
                         android:layout_toRightOf="@+id/tv_serial_no" />
 
                     <LinearLayout
+                        android:layout_marginLeft="40dp"
                         android:id="@+id/answer_layout"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -219,6 +309,12 @@
                             tools:ignore="WebViewLayout" />
 
                     </LinearLayout>
+
+                    <include layout="@layout/flagged_explanation_layout"
+                        android:layout_below="@id/layout_choice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"/>
 
                 </RelativeLayout>
 

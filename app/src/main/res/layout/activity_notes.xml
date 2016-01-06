@@ -5,6 +5,28 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
+    <!--<ScrollView-->
+        <!--android:id="@+id/horizontal_scroll"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:scrollbars="horizontal">-->
+
+        <!--<LinearLayout-->
+            <!--android:id="@+id/subjects_name_id"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="horizontal"-->
+            <!--android:paddingLeft="15dp" />-->
+    <!--</ScrollView>-->
+
+    <ProgressBar
+        android:id="@+id/headerProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center_horizontal"
+        android:visibility="visible" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,8 +45,7 @@
             />
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/notes_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -44,8 +65,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
-            fontPath="@string/roboto_regular"
-            android:text="No notes" />
+            android:text="No Notes Available" />
     </LinearLayout>
 
 

@@ -10,9 +10,11 @@ import android.view.LayoutInflater;
 import android.widget.RelativeLayout;
 
 import com.education.corsalite.R;
+import com.education.corsalite.event.OfflineEventClass;
 import com.education.corsalite.fragments.OfflineContentFragment;
 import com.education.corsalite.fragments.OfflineTestsFragment;
 import com.education.corsalite.models.responsemodels.Course;
+import com.education.corsalite.utils.L;
 
 /**
  * Created by Aastha on 05/10/15.
@@ -34,6 +36,7 @@ public class OfflineContentActivity extends AbstractBaseActivity {
         mViewPager = (ViewPager)findViewById(R.id.pager);
         setToolbarForOfflineContent();
         setTabView();
+        sendAnalytics(getString(R.string.screen_offlineContent));
     }
 
     private void setTabView() {
@@ -52,6 +55,12 @@ public class OfflineContentActivity extends AbstractBaseActivity {
             offlineEventListener.onCourseIdSelected(course);
         }
         super.onEvent(course);
+    }
+
+    @Override
+    public void onEvent(OfflineEventClass offlineEventClass) {
+        L.info("Saved data with this id: "+offlineEventClass.id);
+        super.onEvent(offlineEventClass);
     }
 
     private class OfflineBaseTabAdapter extends FragmentPagerAdapter{
@@ -106,15 +115,15 @@ public class OfflineContentActivity extends AbstractBaseActivity {
         super.onBackPressed();
     }
 
-    public void onDelete(String selectedId){
+    public void onDelete(String selectedId,String tag){
         if(offlineEventListener !=null){
-            offlineEventListener.onDeleteOfflineData(selectedId);
+            offlineEventListener.onDeleteOfflineData(selectedId,tag);
         }
     }
 
     public interface IOfflineEventListener{
         void onUpdateOfflineData(String selectedCourse);
-        void onDeleteOfflineData(String selectedId);
+        void onDeleteOfflineData(String selectedId,String tag);
         void onCourseIdSelected(Course selectedCourse);
 
     }

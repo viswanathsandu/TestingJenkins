@@ -24,7 +24,6 @@ import com.education.corsalite.models.responsemodels.CourseAnalysis;
 import com.education.corsalite.utils.L;
 
 import java.util.List;
-import java.util.zip.Inflater;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -73,11 +72,13 @@ public class RecommendedTabFragment extends Fragment {
     }
 
     public void onEvent(Course course) {
+        mProgressBar.setVisibility(View.VISIBLE);
+        mRecyclerView.setVisibility(View.GONE);
+        mFailureText.setVisibility(View.GONE);
         getCourseData(course.courseId.toString());
     }
 
     private void getCourseData(String courseId) {
-        //passing static data TODO
         ApiManager.getInstance(getActivity()).getCourseAnalysisData(LoginUserCache.getInstance().loginResponse.studentId,
                 courseId, null, "Topic", "None", "180", "true",
                 new ApiCallback<List<CourseAnalysis>>(getActivity()) {

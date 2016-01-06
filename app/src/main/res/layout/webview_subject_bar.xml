@@ -7,14 +7,14 @@
     android:padding="10dp">
 
     <LinearLayout
-        android:paddingLeft="50dp"
         android:id="@+id/color_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:gravity="center_vertical|right"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingLeft="10dp">
 
         <ImageView
             android:id="@+id/iv_editnotes"
@@ -33,120 +33,122 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_toLeftOf="@id/color_bar"
-        android:layout_width="match_parent"
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingLeft="15dp">
+        android:layout_toLeftOf="@id/color_bar"
+        android:scrollbars="none">
 
-        <RelativeLayout
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="15dp">
 
-            <ImageView
-                android:id="@+id/subject_icon"
+            <RelativeLayout
+                android:layout_width="150dp"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/subject_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:padding="10dp"
+                    android:src="@drawable/ico_dropdown_black" />
+
+                <Spinner
+                    android:id="@+id/sp_subject"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@id/subject_icon"
+                    android:background="@null"
+                    android:paddingLeft="10dp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="150dp"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/chapter_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:padding="10dp"
+                    android:src="@drawable/ico_dropdown_black" />
+
+                <Spinner
+                    android:id="@+id/sp_chapter"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toLeftOf="@id/chapter_icon"
+                    android:background="@null"
+                    android:paddingLeft="5dp" />
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="150dp"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/topic_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:padding="10dp"
+                    android:src="@drawable/ico_dropdown_black" />
+
+                <Spinner
+                    android:id="@+id/sp_topic"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toLeftOf="@id/topic_icon"
+                    android:background="@null"
+                    android:dropDownSelector="@drawable/ico_dropdown_black"
+                    android:paddingLeft="5dp"
+                    android:spinnerMode="dropdown" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:background="@drawable/shape_rounded_corners_black"
+                android:id="@+id/layout_exercise"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:padding="10dp"
-                android:src="@drawable/ico_dropdown_black" />
+                android:paddingLeft="10dp"
+                android:layout_height="wrap_content">
 
-            <Spinner
-                android:layout_toLeftOf="@id/subject_icon"
-                android:background="@null"
-                android:id="@+id/sp_subject"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp" />
+                <Button
+                    android:id="@+id/tv_exercise"
+                    fontPath="@string/roboto_light"
+                    android:layout_width="wrap_content"
+                    android:background="@null"
+                    android:layout_height="wrap_content"
+                    android:gravity="left|center_vertical"
+                    android:singleLine="true"
+                    android:textAllCaps="false"
+                    android:text="@string/exercise"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
 
-        </RelativeLayout>
+                <ProgressBar
+                    android:layout_toRightOf="@id/tv_exercise"
+                    android:id="@+id/pb_exercise"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"/>
 
-        <RelativeLayout
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/chapter_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:padding="10dp"
-                android:src="@drawable/ico_dropdown_black" />
-
-            <Spinner
-                android:layout_toLeftOf="@id/chapter_icon"
-                android:background="@null"
-                android:id="@+id/sp_chapter"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:paddingLeft="5dp" />
-
-        </RelativeLayout>
-
-
-        <RelativeLayout
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/topic_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:padding="10dp"
-                android:src="@drawable/ico_dropdown_black" />
-
-            <Spinner
-                android:background="@null"
-                android:layout_toLeftOf="@id/topic_icon"
-                android:id="@+id/sp_topic"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:dropDownSelector="@drawable/ico_dropdown_black"
-                android:paddingLeft="5dp"
-                android:spinnerMode="dropdown" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_weight="1"
-            android:id="@+id/layout_exercise"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/exercise_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:padding="10dp"
-                android:src="@drawable/ico_dropdown_black" />
-
-            <TextView
-                android:layout_toLeftOf="@id/exercise_icon"
-                android:textColor="@color/black"
-                android:background="@null"
-                android:text="@string/exercise"
-                android:gravity="left|center_vertical"
-                android:id="@+id/tv_exercise"
-                android:textSize="18sp"
-                android:singleLine="true"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="?android:attr/spinnerDropDownItemStyle"
-                fontPath="@string/roboto_light"
-                android:paddingLeft="10dp" />
-
-        </RelativeLayout>
-    </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
+    </HorizontalScrollView>
 
 </RelativeLayout>

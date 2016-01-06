@@ -70,6 +70,8 @@ public class TestCoverageTabFragment extends Fragment {
     public void onEvent(Course course) {
         courseTestDataMap.clear();
         mLinearLayout.removeAllViews();
+        progressBar.setVisibility(View.VISIBLE);
+        failureText.setVisibility(View.GONE);
         fetchDataFromServer(course.courseId + "");
     }
 
@@ -138,13 +140,13 @@ public class TestCoverageTabFragment extends Fragment {
         TextView[] levelRowData = new TextView[maxLevel + 1];
         levelRowData[0] = new TextView(getActivity());
         levelRowData[0].setText("");
-        levelRowData[0].setTextAppearance(getActivity(),R.style.analytics_subtext_style);
+        levelRowData[0].setTextAppearance(getActivity(),R.style.analytics_text_style);
         levelRow.addView(levelRowData[0]);
 
         for(int i=1;i<=maxLevel;i++){
             levelRowData[i]=new TextView(getActivity());
             levelRowData[i].setText("Level " + i);
-            levelRowData[i].setTextAppearance(getActivity(),R.style.analytics_subtext_style);
+            levelRowData[i].setTextAppearance(getActivity(),R.style.analytics_text_style);
             levelRowData[i].setPadding(10, 2, 10, 2);
             levelRowData[i].setGravity(Gravity.CENTER);
             levelRow.addView(levelRowData[i]);
@@ -158,7 +160,7 @@ public class TestCoverageTabFragment extends Fragment {
             TableRow tableRow = new TableRow(getActivity());
             tableRowData[index] = new TextView(getActivity());
             tableRowData[index].setText(entry.getKey());
-            tableRowData[index].setTextAppearance(getActivity(), R.style.analytics_subtext_style);
+            tableRowData[index].setTextAppearance(getActivity(), R.style.analytics_text_style);
             tableRowData[index].setPadding(5, 2, 5, 2);
             tableRowData[index].setGravity(Gravity.RIGHT);
             tableRow.addView(tableRowData[index]);
@@ -184,7 +186,7 @@ public class TestCoverageTabFragment extends Fragment {
     private void setTextViewLayouParams(TextView textViewLayoutParams){
         textViewLayoutParams.setPadding(10, 2, 10, 2);
         textViewLayoutParams.setGravity(Gravity.CENTER);
-        textViewLayoutParams.setTextAppearance(getActivity(), R.style.analytics_subtext_style);
+        textViewLayoutParams.setTextAppearance(getActivity(), R.style.analytics_text_style);
         if(textViewLayoutParams.getText() == null || textViewLayoutParams.getText().toString().isEmpty()){
             return;
         }

@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
@@ -38,6 +37,7 @@ import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,7 +53,8 @@ import retrofit.client.Response;
 public class TimeManagementTabFragment extends Fragment {
 
     @Bind(R.id.pc_subject)PieChart graphBySubject;
-    @Bind(R.id.ll_time_mgmnt)LinearLayout mLinearLayout;
+    @Bind(R.id.ll_subject)LinearLayout mLinearLayoutSubject;
+    @Bind(R.id.ll_chapter)LinearLayout mLinearLayoutChapter;
     @Bind(R.id.rv_legend)RecyclerView mRecyclerView;
     @Bind(R.id.tv_failure_text)TextView mFailText;
     @Bind(R.id.progress_bar_tab)ProgressBar progressBar;
@@ -88,8 +89,12 @@ public class TimeManagementTabFragment extends Fragment {
     }
 
     public void onEvent(Course course) {
+        failCount = 0;
         courseDataMap.clear();
-        mLinearLayout.removeAllViews();
+        progressBar.setVisibility(View.VISIBLE);
+        mFailText.setVisibility(View.GONE);
+        mLinearLayoutSubject.setVisibility(View.GONE);
+        mLinearLayoutChapter.removeAllViews();
         drawGraph(course.courseId + "");
     }
 
@@ -110,14 +115,20 @@ public class TimeManagementTabFragment extends Fragment {
                         if(getActivity() == null) {
                             return;
                         }
-                        progressBar.setVisibility(View.GONE);
-                        mLinearLayout.setVisibility(View.VISIBLE);
                         initializeGraph(graphBySubject);
-                        buildGraphData(courseAnalysisList, SUBJECT, graphBySubject);
-                        //Custom Legend
-                        Legend mLegend = graphBySubject.getLegend();
-                        CustomLegendAdapter customLegendAdapter = new CustomLegendAdapter(mLegend.getColors(),mLegend.getLabels(),getActivity().getLayoutInflater());
-                        mRecyclerView.setAdapter(customLegendAdapter);
+                        if(buildGraphData(courseAnalysisList, SUBJECT, graphBySubject)){
+                            //Custom Legend
+                            Legend mLegend = graphBySubject.getLegend();
+                            CustomLegendAdapter customLegendAdapter = new CustomLegendAdapter(Arrays.copyOf(mLegend.getColors(),mLegend.getColors().length-1),
+                                    Arrays.copyOf(mLegend.getLabels(),mLegend.getLabels().length -1),getActivity().getLayoutInflater());
+                            mRecyclerView.setAdapter(customLegendAdapter);
+                            progressBar.setVisibility(View.GONE);
+                            mLinearLayoutSubject.setVisibility(View.VISIBLE);
+
+                        }else{
+                            showFailMessage();
+                        }
+
                     }
                 });
 
@@ -138,37 +149,55 @@ public class TimeManagementTabFragment extends Fragment {
                         if(getActivity() == null) {
                             return;
                         }
-                        mLinearLayout.setVisibility(View.VISIBLE);
-                        progressBar.setVisibility(View.GONE);
+
                         buildChapterData(courseAnalysisList);
+
+                        TextView mTitleText = new TextView(getActivity());
+                        mTitleText.setText("Time Management by Chapter - based on recent 365 days of performance");
+                        mTitleText.setGravity(Gravity.LEFT);
+                        mTitleText.setTextAppearance(getActivity(), R.style.analytics_title_style);
+                        mLinearLayoutChapter.addView(mTitleText);
+
                         for (Map.Entry<String,List<CourseAnalysis>> entry : courseDataMap.entrySet()) {
-                            TextView mDescText = new TextView(getActivity());
-                            mDescText.setText(entry.getKey());
-                            mDescText.setGravity(Gravity.CENTER);
-                            mDescText.setTextAppearance(getActivity(),R.style.analytics_title_style);
-                            mDescText.setPadding(0, 10, 0, 10);
-                            mLinearLayout.addView(mDescText);
+
                             PieChart chart = new PieChart(getActivity());
-                            RelativeLayout chartLayout = new RelativeLayout(getActivity());
-
-                            RelativeLayout.LayoutParams chartPrams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, converDPToPX(400));
-                            initializeGraph(chart);
-                            buildGraphData(entry.getValue(), CHAPTER, chart);
-
                             RecyclerView recyclerView = new RecyclerView(getActivity());
                             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                            LinearLayout chartLayout = new LinearLayout(getActivity());
+                            LinearLayout.LayoutParams chartParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,converDPToPX(360) );
+                            chartParams.setMargins(15,15,15,15);
 
-                            //Custom Legend
-                            Legend mLegend = chart.getLegend();
-                            CustomLegendAdapter customLegendAdapter = new CustomLegendAdapter(mLegend.getColors(),mLegend.getLabels(),getActivity().getLayoutInflater());
-                            recyclerView.setAdapter(customLegendAdapter);
-                            recyclerView.setPadding(0,15,0,0);
-                            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(converDPToPX(200), converDPToPX(400));
-                            params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+                            initializeGraph(chart);
 
-                            chartLayout.addView(chart, chartPrams);
-                            chartLayout.addView(recyclerView, params);
-                            mLinearLayout.addView(chartLayout, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                            if(buildGraphData(entry.getValue(), CHAPTER, chart)){
+
+                                TextView mDescText = new TextView(getActivity());
+                                mDescText.setText(entry.getKey());
+                                mDescText.setGravity(Gravity.CENTER);
+                                mDescText.setTextAppearance(getActivity(), R.style.analytics_text_style);
+                                mDescText.setPadding(0, 15, 0, 15);
+                                mLinearLayoutChapter.addView(mDescText);
+
+                                //Custom Legend
+                                Legend mLegend = chart.getLegend();
+                                CustomLegendAdapter customLegendAdapter = new CustomLegendAdapter(Arrays.copyOf(mLegend.getColors(),mLegend.getColors().length-1),
+                                        Arrays.copyOf(mLegend.getLabels(), mLegend.getLabels().length - 1),getActivity().getLayoutInflater());
+                                recyclerView.setAdapter(customLegendAdapter);
+
+
+                                chartLayout.addView(chart, new LinearLayout.LayoutParams(0,
+                                        LinearLayout.LayoutParams.MATCH_PARENT, 4.0f));
+                                chartLayout.addView(recyclerView,new LinearLayout.LayoutParams(
+                                        0,
+                                        LinearLayout.LayoutParams.MATCH_PARENT, 2.0f));
+
+                                mLinearLayoutChapter.addView(chartLayout, chartParams);
+                                progressBar.setVisibility(View.GONE);
+                                mLinearLayoutChapter.setVisibility(View.VISIBLE);
+                            }else{
+                                showFailMessage();
+                            }
+
 
                         }
                     }
@@ -201,7 +230,7 @@ public class TimeManagementTabFragment extends Fragment {
         }
     }
 
-    private void showFailMessage(){
+    private synchronized void showFailMessage(){
         failCount++;
         if(failCount == 2){
             mFailText.setVisibility(View.VISIBLE);
@@ -209,47 +238,58 @@ public class TimeManagementTabFragment extends Fragment {
         }
     }
 
-    ArrayList<String> xData = new ArrayList<>();
-    ArrayList<Float> yData = new ArrayList<>();
+    ArrayList<String> xData ;
+    ArrayList<Float> yData ;
 
-    private void buildGraphData(List<CourseAnalysis> courseAnalysisList,String graphType,PieChart mChart){
+    private synchronized boolean buildGraphData(List<CourseAnalysis> courseAnalysisList,String graphType,PieChart mChart){
 
-
+        xData = new ArrayList<>();
+        yData = new ArrayList<>();
         for(CourseAnalysis courseAnalysis : courseAnalysisList){
-            if(graphType.equalsIgnoreCase(CHAPTER)) {
-                xData.add(courseAnalysis.chapterName);
-            }else if(graphType.equalsIgnoreCase(SUBJECT)){
-                xData.add(courseAnalysis.subjectName);
-            }
             if(courseAnalysis.timeTaken == null ){
                 continue;
             }else if(Float.parseFloat(courseAnalysis.timeTaken) == 0){
                 continue;
             }
             yData.add(Float.parseFloat(courseAnalysis.timeTaken));
+
+            if(graphType.equalsIgnoreCase(CHAPTER)) {
+                xData.add(courseAnalysis.chapterName);
+            }else if(graphType.equalsIgnoreCase(SUBJECT)){
+                xData.add(courseAnalysis.subjectName);
+            }
+
         }
 
         ArrayList<Entry> yVals1 = new ArrayList<>();
 
-        for (int i=0;i<yData.size();i++) {
+        for (int i=0;i < yData.size();i++) {
             yVals1.add(new Entry(yData.get(i),i));
         }
 
 
-        PieDataSet dataSet = new PieDataSet(yVals1, "");
-        dataSet.setSliceSpace(1f);
-        dataSet.setSelectionShift(5);
+        if(!yVals1.isEmpty()) {
+            PieDataSet dataSet = new PieDataSet(yVals1, "");
+            dataSet.setSliceSpace(1f);
+            dataSet.setSelectionShift(5);
 
-        dataSet.setColors(AnalyticsHelper.getColors());
+            dataSet.setColors(AnalyticsHelper.getColors());
 
-        PieData data = new PieData(xData, dataSet);
-        data.setValueFormatter(new PercentFormatter());
-        data.setValueTextSize(11f);
-        data.setValueTextColor(Color.WHITE);
+            PieData data = new PieData(xData, dataSet);
+            data.setValueFormatter(new PercentFormatter());
+            data.setValueTextSize(11f);
+            data.setValueTextColor(Color.WHITE);
 
-        mChart.setData(data);
-        mChart.highlightValues(null);
-        mChart.invalidate();
+            data.setDrawValues(false);
+            mChart.setData(data);
+            mChart.highlightValues(null);
+            mChart.invalidate();
+            mChart.setVisibility(View.VISIBLE);
+            return true;
+        }else{
+            mChart.setVisibility(View.GONE);
+            return false;
+        }
 
     }
 

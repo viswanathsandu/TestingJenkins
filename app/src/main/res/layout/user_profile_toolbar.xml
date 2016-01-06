@@ -77,5 +77,21 @@
             android:src="@drawable/download_icon"/>
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right|center_vertical"
+        android:id="@+id/start_layout"
+        android:padding="10dp"
+        android:visibility="gone">
+        <Button
+            android:id="@+id/start_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:text="Start"
+            fontPath="@string/roboto_medium"
+            android:textColor="@color/black"
+            android:background="@drawable/login_button_bg"/>
+    </LinearLayout>
 
 </android.support.v7.widget.Toolbar>

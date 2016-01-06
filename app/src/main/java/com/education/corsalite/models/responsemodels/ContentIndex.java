@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Created by mt0060 on 30/09/15.
+ * Created by Girish on 30/09/15.
  */
 public class ContentIndex extends BaseModel implements Serializable {
 

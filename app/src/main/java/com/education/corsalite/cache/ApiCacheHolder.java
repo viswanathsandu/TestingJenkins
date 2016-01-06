@@ -1,20 +1,25 @@
 package com.education.corsalite.cache;
 
 import com.education.corsalite.models.db.reqres.ContentIndexReqRes;
+import com.education.corsalite.models.db.reqres.ContentReqRes;
 import com.education.corsalite.models.db.reqres.CoursesReqRes;
 import com.education.corsalite.models.db.reqres.LoginReqRes;
 import com.education.corsalite.models.db.reqres.StudyCenterReqRes;
 import com.education.corsalite.models.db.reqres.UserProfileReqRes;
+import com.education.corsalite.models.db.reqres.VirtualCurrencyBalanceReqRes;
 import com.education.corsalite.models.db.reqres.requests.ContentIndexRequest;
 import com.education.corsalite.models.db.reqres.requests.CourseRequest;
 import com.education.corsalite.models.db.reqres.requests.LoginRequest;
 import com.education.corsalite.models.db.reqres.requests.StudyCenterRequest;
 import com.education.corsalite.models.db.reqres.requests.UserProfileRequest;
+import com.education.corsalite.models.db.reqres.requests.VirtualCurrencyBalanceRequest;
+import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.models.responsemodels.StudyCenter;
 import com.education.corsalite.models.responsemodels.UserProfileResponse;
+import com.education.corsalite.models.responsemodels.VirtualCurrencyBalanceResponse;
 
 import java.util.List;
 
@@ -30,6 +35,8 @@ public class ApiCacheHolder {
     public CoursesReqRes courses;
     public StudyCenterReqRes studyCenter;
     public ContentIndexReqRes contentIndex;
+    public ContentReqRes contentReqIndex;
+    public VirtualCurrencyBalanceReqRes virtualCurrencyBalance;
 
     public static ApiCacheHolder getInstance() {
         if(instance == null) {
@@ -91,6 +98,28 @@ public class ApiCacheHolder {
     public void setcontentIndexResponse(List<ContentIndex> response) {
         if(contentIndex != null) {
             contentIndex.response = response;
+        }
+    }
+
+    public void setContentRequest(String idContents, String updateTime) {
+        contentReqIndex = new ContentReqRes();
+        contentReqIndex.request = new ContentIndexRequest(idContents, updateTime);
+    }
+
+    public void setContentResponse(List<Content> response) {
+        if(contentReqIndex != null) {
+            contentReqIndex.response = response;
+        }
+    }
+
+    public void setVirtualCurrencyBalanceRequest(String studentId) {
+        virtualCurrencyBalance = new VirtualCurrencyBalanceReqRes();
+        virtualCurrencyBalance.request = new VirtualCurrencyBalanceRequest(studentId);
+    }
+
+    public void setVirtualCurrencyBalanceResponse(VirtualCurrencyBalanceResponse response) {
+        if(virtualCurrencyBalance != null) {
+            virtualCurrencyBalance.response = response;
         }
     }
 }

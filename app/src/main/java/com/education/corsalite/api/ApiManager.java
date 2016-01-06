@@ -13,16 +13,19 @@ import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.CourseAnalysis;
 import com.education.corsalite.models.responsemodels.CourseAnalysisPercentile;
 import com.education.corsalite.models.responsemodels.DefaultCourseResponse;
-import com.education.corsalite.models.responsemodels.DefaultForumResponse;
 import com.education.corsalite.models.responsemodels.DefaultNoteResponse;
 import com.education.corsalite.models.responsemodels.EditProfileModel;
 import com.education.corsalite.models.responsemodels.ExamHistory;
+import com.education.corsalite.models.responsemodels.ExamModels;
 import com.education.corsalite.models.responsemodels.ExerciseModel;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
 import com.education.corsalite.models.responsemodels.Message;
 import com.education.corsalite.models.responsemodels.Note;
+import com.education.corsalite.models.responsemodels.PostExamTemplate;
 import com.education.corsalite.models.responsemodels.PostExercise;
+import com.education.corsalite.models.responsemodels.PostFlaggedQuestions;
+import com.education.corsalite.models.responsemodels.PostQuestionPaper;
 import com.education.corsalite.models.responsemodels.StudyCenter;
 import com.education.corsalite.models.responsemodels.TestCoverage;
 import com.education.corsalite.models.responsemodels.UpdateExamDetailsResponse;
@@ -74,12 +77,12 @@ public class ApiManager {
         return SystemUtils.isNetworkConnected(context);
     }
 
-    public void login(String loginId, String passwordHash, ApiCallback<LoginResponse> callback) {
+    public void login(String loginId, String passwordHash, ApiCallback<LoginResponse> callback, boolean fetchFromDb) {
         apiCacheHolder.setLoginRequest(loginId, passwordHash);
-        if (isApiOnline() && isNetworkConnected()) {
-            ApiClientService.get().login(loginId, passwordHash, callback);
-        } else if(!isNetworkConnected()) {
+        if(fetchFromDb || !isNetworkConnected()) {
             DbManager.getInstance(context).getResponse(apiCacheHolder.login, callback);
+        } else if (isApiOnline() && isNetworkConnected()) {
+            ApiClientService.get().login(loginId, passwordHash, callback);
         } else {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/login.json");
             L.info("Response for 'api/login.json' is " + jsonResponse);
@@ -201,8 +204,11 @@ public class ApiManager {
     }
 
     public void getVirtualCurrencyBalance(String studentId, ApiCallback<VirtualCurrencyBalanceResponse> callback) {
-        if (isApiOnline()) {
+        apiCacheHolder.setVirtualCurrencyBalanceRequest(studentId);
+        if (isApiOnline() && isNetworkConnected()) {
             ApiClientService.get().getVirtualCurrencyBalance(studentId, callback);
+        } else if(!isNetworkConnected()) {
+            DbManager.getInstance(context).getResponse(apiCacheHolder.virtualCurrencyBalance, callback);
         } else {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/virtual_currency_balance.json");
             L.info("Response for 'api/virtual_currency_balance.json' is " + jsonResponse);
@@ -270,6 +276,7 @@ public class ApiManager {
     }
 
     public void getContent(String idContents, String UpdateTime, ApiCallback<List<Content>> callback) {
+        apiCacheHolder.setContentRequest(idContents, UpdateTime);
         if (isApiOnline()) {
             ApiClientService.get().getContentData(idContents, UpdateTime, callback);
         } else {
@@ -292,6 +299,24 @@ public class ApiManager {
             }.getType();
             List<ExerciseModel> exerciseModels = new Gson().fromJson(jsonResponse, listType);
             callback.success(exerciseModels, MockUtils.getRetrofitResponse());
+        }
+    }
+
+    public void getFlaggedQuestions(String studentId, String subjectId, String chapterId, String UpdateTime, ApiCallback<List<ExerciseModel>> callback) {
+        if (isApiOnline()) {
+            ApiClientService.get().getFlaggedQuestions(studentId, subjectId, chapterId, UpdateTime, callback);
+        }
+    }
+
+    public void getTestQuestionPaper(String testQuestionPaperId, String testAnswerPaperId, ApiCallback<List<ExerciseModel>> callback) {
+        if(isApiOnline()) {
+            ApiClientService.get().getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, callback);
+        }
+    }
+
+    public void getStandardExamsByCourse(String courseId, String entityId, ApiCallback<List<ExamModels>> callback) {
+        if(isApiOnline()) {
+            ApiClientService.get().getStandardExamsByCourse(courseId, entityId, callback);
         }
     }
 
@@ -345,9 +370,21 @@ public class ApiManager {
         }
     }
 
-    public void addForum(String htmlText, ApiCallback<DefaultForumResponse> callback) {
-        if(isApiOnline()) {
-            ApiClientService.get().addForum(htmlText, callback);
+    public void postCustomExamTemplate(String insert, ApiCallback<PostExamTemplate> callback) {
+        if (isApiOnline()) {
+            ApiClientService.get().postCustomExamTemplate(insert, callback);
+        }
+    }
+
+    public void postQuestionPaper(String insert, ApiCallback<PostQuestionPaper> callback) {
+        if (isApiOnline()) {
+            ApiClientService.get().postQuestionPaper(insert, callback);
+        }
+    }
+
+    public void postFlaggedQuestions(String update, ApiCallback<PostFlaggedQuestions> callback) {
+        if (isApiOnline()) {
+            ApiClientService.get().postFlaggedQuestions(update, callback);
         }
     }
 }

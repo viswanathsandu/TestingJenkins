@@ -2,12 +2,15 @@ package com.education.corsalite.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import com.education.corsalite.R;
 
@@ -19,12 +22,13 @@ public class WebviewActivity extends AbstractBaseActivity {
     private final String URL = "URL";
     @Bind(R.id.webview)
     WebView webview;
+    @Bind(R.id.progress_bar_tab)ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        LinearLayout myView = (LinearLayout) inflater.inflate(R.layout.activity_webview, null);
+        RelativeLayout myView = (RelativeLayout) inflater.inflate(R.layout.activity_webview, null);
         frameLayout.addView(myView);
         ButterKnife.bind(this);
         Bundle bundle = getIntent().getExtras();
@@ -33,12 +37,18 @@ public class WebviewActivity extends AbstractBaseActivity {
         }
         String title = bundle.getString(LoginActivity.TITLE, "Corsalite");
         setToolbarForWebActivity(title);
+        if(title.equals(getString(R.string.forgot_password))){
+            setDrawerIconInvisible();
+            lockScreenOrientation();
+        }
         if (bundle.containsKey(URL)) {
             webview.getSettings().setJavaScriptEnabled(true);
             webview.setWebViewClient(new MyWebViewClient());
             String url = bundle.getString(URL);
             webview.loadUrl(getUrlWithNoHeadersAndFooters(url));
         }
+
+        sendAnalytics(getString(R.string.screen_webview));
     }
 
     @Override
@@ -74,5 +84,16 @@ public class WebviewActivity extends AbstractBaseActivity {
             startActivity(intent);
             return true;
         }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+            mProgressBar.setVisibility(View.GONE);
+            webview.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void lockScreenOrientation(){
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
     }
 }

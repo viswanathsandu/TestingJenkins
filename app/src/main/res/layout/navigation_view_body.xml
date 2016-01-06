@@ -69,6 +69,17 @@
                 android:text="@string/exam_schedule"
                 android:drawableLeft="@drawable/ico_sidemenu_calendar"
                 style="@style/navigation_drawer_element" />
+            <TextView
+                android:id="@+id/navigation_logout"
+                android:text="@string/log_out"
+                android:drawableLeft="@drawable/ico_sidemenu_calendar"
+                style="@style/navigation_drawer_element" />
+
+            <TextView
+                android:id="@+id/navigation_challenge_your_friends"
+                android:text="@string/challenge_your_friends"
+                android:drawableLeft="@drawable/ico_sidemenu_invite_friend"
+                style="@style/navigation_drawer_element" />
 
         </LinearLayout>
     </ScrollView>

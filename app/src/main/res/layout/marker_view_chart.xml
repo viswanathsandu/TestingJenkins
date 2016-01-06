@@ -6,26 +6,26 @@
     android:background="@drawable/background_light_with_padding">
 
     <TextView
-        android:id="@+id/tv_chapterDate"
+        android:id="@+id/tv_line1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="7dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        style="@style/analytics_subtext_style"
+        style="@style/analytics_text_style"
         android:ellipsize="end"
         android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView
-        android:id="@+id/tv_accuracy_speed"
+        android:id="@+id/tv_line2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="7dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        style="@style/analytics_subtext_style"
-    android:ellipsize="end"
+        style="@style/analytics_text_style"
+        android:ellipsize="end"
         android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 </LinearLayout>

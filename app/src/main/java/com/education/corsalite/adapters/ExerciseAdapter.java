@@ -13,7 +13,7 @@ import com.education.corsalite.models.responsemodels.ExerciseModel;
 import java.util.List;
 
 /**
- * Created by mt0060 on 03/11/15.
+ * Created by Girish on 03/11/15.
  */
 public class ExerciseAdapter extends BaseAdapter {
 

@@ -5,53 +5,47 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:gravity="center"
+        android:gravity="left"
         android:id="@+id/tv_subject_name"
         android:layout_weight="1"
         android:layout_height="wrap_content"
         android:layout_width="0dp"
         android:padding="15dp"
         android:text="Subject"
-        style="@style/analytics_subtext_style"
+        style="@style/analytics_text_style"
         android:singleLine="true"
         android:ellipsize="end"/>
 
     <TextView
-        android:gravity="center"
-        android:layout_weight="1"
+        android:gravity="left"
+        android:layout_weight="1.5"
         android:id="@+id/tv_chapter"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="15dp"
         android:text="Chapter"
-        style="@style/analytics_subtext_style"
-        android:singleLine="true"
-        android:ellipsize="end"/>
+        style="@style/analytics_text_style" />
 
 
     <TextView
-        android:gravity="center"
-        android:layout_weight="1"
+        android:gravity="left"
+        android:layout_weight="2"
         android:id="@+id/tv_topic"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="15dp"
         android:text="Topic"
-        style="@style/analytics_subtext_style"
-        android:singleLine="true"
-        android:ellipsize="end"/>
+        style="@style/analytics_text_style" />
 
     <TextView
-        android:gravity="center"
+        android:gravity="left"
         android:layout_weight="1"
         android:id="@+id/tv_date"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="15dp"
-        style="@style/analytics_subtext_style"
-        android:text="Date"
-        android:singleLine="true"
-        android:ellipsize="end"/>
+        style="@style/analytics_text_style"
+        android:text="Recent Test Date" />
 
 
     <TextView
@@ -61,8 +55,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="15dp"
-        style="@style/analytics_subtext_style"
-        android:text="Marks"
+        style="@style/analytics_text_style"
+        android:text="Total Tested Marks"
         android:singleLine="true"
         android:ellipsize="end"/>
 
@@ -74,7 +68,7 @@
         android:layout_height="wrap_content"
         android:padding="15dp"
         android:text="Accuracy"
-        style="@style/analytics_subtext_style"
+        style="@style/analytics_text_style"
         android:singleLine="true"
         android:ellipsize="end"/>
 
@@ -86,7 +80,7 @@
         android:layout_height="wrap_content"
         android:padding="15dp"
         android:text="Speed"
-        style="@style/analytics_subtext_style"
+        style="@style/analytics_text_style"
         android:singleLine="true"
         android:ellipsize="end"/>
 </LinearLayout>

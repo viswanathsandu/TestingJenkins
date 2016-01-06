@@ -7,7 +7,7 @@
     <string name="title_activity_user_profile">My Profile</string>
     <string name="title_activity_currency">Virtual Currency Summary</string>
 
-    
+
     <string name="menu_add">Add</string>
     <string name="menu_add_guardian">Add Guardian</string>
     <string name="menu_add_courses">Add Courses</string>
@@ -16,6 +16,7 @@
     <string name="menu_view_notes">View Notes</string>
     <string name="menu_rate_it">Rate It</string>
     <string name="menu_take_test">Take Test</string>
+    <string name="menu_part_test">Part Test</string>
     <string name="menu_scheduled_test">Scheduled Test</string>
     <string name="menu_challenge_your_friends">Challenge your friends</string>
     <string name="menu_exam_history">Exam History</string>
@@ -55,8 +56,10 @@
     <string name="virtual_currency">Virtual Currency</string>
     <string name="invite_friends">Invite Friends</string>
     <string name="exam_schedule">Exam Schedule</string>
+    <string name="challenge_your_friends">Challenge your friends</string>
     <string name="open_drawer">Open</string>
     <string name="close_drawer">Closed</string>
+    <string name="log_out">Log Out</string>
 
     <string name="subject1">Physics</string>
     <string name="subject2">Chemistry</string>
@@ -67,6 +70,7 @@
     <string name="start_reading">Start Reading</string>
     <string name="flagged_questions">Flagged Questions</string>
     <string name="part_test">Part Test</string>
+    <string name="take_test">Take Test</string>
     <string name="score">Score</string>
     <string name="ic_keyboard_arrow_down">&#xe0c5;</string>
     <string name="ic_keyboard_arrow_left">&#xe0c6;</string>
@@ -87,5 +91,30 @@
     <string name="add_course">Add Course</string>
     <string name="add_guardian">Add Guardian</string>
     <string name="redeem">Redeem</string>
+    <string name="app_close_alert">Press back button once again to exit the app</string>
+    <string name="study_center_offline_click_text">Not available for offline reading...</string>
+    <string name="select_content_toast">Please select content type to download</string>
+    <string name="content_downloaded_toast">Your content is being downloaded in background</string>
+    <string name="offline_dialog_title_text">List of items to be downloaded</string>
+    <string name="file_saved">File saved</string>
+    <string name="file_save_failed">Unable to save file.</string>
+    <string name="file_exists">File already exists.</string>
+
+    <!-- Screen names-->
+
+    <string name="screen_examhistory">Exam History Screen</string>
+    <string name="screen_exercise">Exercise Screen</string>
+    <string name="screen_login">Login Screen</string>
+    <string name="screen_notes">Notes Screen</string>
+    <string name="screen_offlineContent">Offline Content Screen</string>
+    <string name="screen_studycenter">Study Center Screen</string>
+    <string name="screen_profile">User Profile Screen</string>
+    <string name="screen_virtualcurrency">Virtual Currency Screen</string>
+    <string name="screen_webview">Webview Screen</string>
+    <string name="title_activity_challenge">ChallengeActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 
 </resources>

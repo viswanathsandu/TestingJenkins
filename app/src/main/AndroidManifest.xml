@@ -3,20 +3,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.education.corsalite">
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
-        android:largeHeap="true"
-        android:name="com.orm.SugarApp"
+        android:name=".app.CorsaliteApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:theme="@style/AppTheme"
-        tools:replace="android:icon,android:theme">
-
+        tools:replace="android:icon">
         <meta-data
             android:name="DATABASE"
             android:value="corsalite_db.db" />
@@ -35,6 +35,7 @@
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -63,7 +64,6 @@
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="@string/title_activity_currency"
             android:theme="@style/UserProfileTheme" />
-
         <activity
             android:name=".activities.StudyCentreActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
@@ -88,7 +88,7 @@
         <activity
             android:name=".activities.ExamHistoryActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
-            android:label="ExamHistory"/>
+            android:label="ExamHistory" />
         <activity
             android:name=".activities.ExerciseActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
@@ -106,9 +106,38 @@
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="Notes"
             android:theme="@style/UserProfileTheme" />
+
+        <receiver
+            android:name="com.localytics.android.ReferralReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
+            </intent-filter>
+        </receiver>
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="94f6d0edefb49d0f21836a7acf733f25afe4cc72" />
+        <meta-data
+            android:name="LOCALYTICS_APP_KEY"
+            android:value="f34e80c23ff3d6eb90eedbb-e3eaf25c-a34c-11e5-a67e-003e57fecdee" />
+
+        <activity
+            android:name=".activities.ChallengeActivity"
+            android:label="@string/title_activity_challenge"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+        <activity
+            android:name=".activities.ExamResultActivity"
+            android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activities.TestStartActivity"
+            android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="50dp"
-    android:layout_height="50dp"
+    android:layout_width="40dp"
+    android:layout_height="40dp"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:padding="5dp">
 
     <TextView
         android:gravity="center"
         android:id="@+id/btnNumber"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:background="@drawable/rounded_corners_gray" />
 
 </LinearLayout>

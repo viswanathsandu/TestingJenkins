@@ -11,7 +11,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -24,23 +23,26 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.education.corsalite.R;
+import com.education.corsalite.adapters.SpinnerAdapter;
+import com.education.corsalite.analytics.GoogleAnalyticsManager;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.db.DbAdapter;
 import com.education.corsalite.db.DbManager;
+import com.education.corsalite.event.OfflineEventClass;
 import com.education.corsalite.models.ContentModel;
 import com.education.corsalite.models.requestmodels.LogoutModel;
-import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
 import com.education.corsalite.services.ApiClientService;
+import com.education.corsalite.utils.AppPref;
 import com.education.corsalite.utils.CookieUtils;
 import com.google.gson.Gson;
+import com.localytics.android.Localytics;
 
-import java.io.Serializable;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
@@ -54,14 +56,17 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     public static int selectedVideoPosition;
+    public static OfflineEventClass offlineEventClass;
     public static Course selectedCourse;
     private List<Course> courses;
     protected Toolbar toolbar;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
     protected FrameLayout frameLayout;
+    private ActionBarDrawerToggle actionBarDrawerToggle;
     public Dialog dialog;
     protected DbManager dbManager;
+    protected AppPref appPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,8 +78,13 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 .setDefaultFontPath(getString(R.string.roboto_medium))
                 .setFontAttrId(R.attr.fontPath)
                 .build());
+        initActivity();
+    }
+
+    private void initActivity() {
         DbAdapter.context = this;
         dbManager = DbManager.getInstance(this);
+        appPref = AppPref.getInstance(this);
     }
 
     @Override
@@ -109,6 +119,12 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     protected void setToolbarForAnalytics() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
         setToolbarTitle(getResources().getString(R.string.analytics));
+        loadCoursesList();
+    }
+
+    protected void setToolbarForTestStartScreen() {
+        toolbar.findViewById(R.id.start_layout).setVisibility(View.VISIBLE);
+        setToolbarTitle("Chapter Test");
         loadCoursesList();
     }
 
@@ -159,6 +175,11 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         setToolbarTitle(title);
     }
 
+    protected void setDrawerIconInvisible(){
+
+        actionBarDrawerToggle.setDrawerIndicatorEnabled(false);
+    }
+
     private void initNavigationDrawer() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -178,7 +199,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         setNavigationClickListeners();
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
-        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_drawer, R.string.close_drawer) {
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_drawer, R.string.close_drawer) {
 
             @Override
             public void onDrawerClosed(View drawerView) {
@@ -201,10 +222,10 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!(AbstractBaseActivity.this instanceof UserProfileActivity)) {
+                    Localytics.tagEvent("User Profile");
                     Intent intent = new Intent(AbstractBaseActivity.this, UserProfileActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
-                    finish();
+                    drawerLayout.closeDrawers();
                 }
             }
         });
@@ -212,38 +233,57 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_currency).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Localytics.tagEvent("Virtual Currency");
                 Intent intent = new Intent(AbstractBaseActivity.this, VirtualCurrencyActivity.class);
                 startActivity(intent);
+                drawerLayout.closeDrawers();
             }
         });
 
         navigationView.findViewById(R.id.navigation_study_center).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Localytics.tagEvent("Study Center");
                 Intent intent = new Intent(AbstractBaseActivity.this, StudyCentreActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+                finish();
             }
         });
 
         navigationView.findViewById(R.id.navigation_analytics).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Localytics.tagEvent("Analytics");
                 startActivity(new Intent(AbstractBaseActivity.this, AnalyticsActivity.class));
+                drawerLayout.closeDrawers();
             }
         });
 
         navigationView.findViewById(R.id.navigation_usage_analysis).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Localytics.tagEvent("Usage Analysis");
                 Intent intent = new Intent(AbstractBaseActivity.this, UsageAnalysisActivity.class);
                 startActivity(intent);
+                drawerLayout.closeDrawers();
             }
         });
 
         navigationView.findViewById(R.id.navigation_offline).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Localytics.tagEvent("Offline");
                 startActivity(new Intent(AbstractBaseActivity.this, OfflineContentActivity.class));
+                drawerLayout.closeDrawers();
+            }
+        });
+
+        navigationView.findViewById(R.id.navigation_challenge_your_friends).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Localytics.tagEvent(getString(R.string.challenge_your_friends));
+                startActivity(new Intent(AbstractBaseActivity.this, ChallengeActivity.class));
             }
         });
     }
@@ -278,9 +318,12 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     private void logout() {
         LogoutModel logout = new LogoutModel();
         logout.AuthToken = LoginUserCache.getInstance().getLongResponse().authtoken;
+        appPref.remove("loginId");
+        appPref.remove("passwordHash");
         ApiManager.getInstance(this).logout(new Gson().toJson(logout), new ApiCallback<LogoutResponse>(this) {
             @Override
             public void failure(CorsaliteError error) {
+                super.failure(error);
                 showToast(getResources().getString(R.string.logout_failed));
             }
 
@@ -290,7 +333,9 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     showToast(getResources().getString(R.string.logout_successful));
                     LoginUserCache.getInstance().clearCache();
                     deleteSessionCookie();
-                    startActivity(new Intent(AbstractBaseActivity.this, LoginActivity.class));
+                    Intent intent = new Intent(AbstractBaseActivity.this, LoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
                     finish();
                 }
             }
@@ -340,18 +385,20 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     public void showCoursesInToolbar(final List<Course> courses) {
         final Spinner coursesSpinner = (Spinner) toolbar.findViewById(R.id.spinner_courses);
         if (coursesSpinner == null) return;
-        ArrayAdapter<Course> dataAdapter = new ArrayAdapter<Course>(this, R.layout.spinner_title_textview_notes, courses);
-        dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        final SpinnerAdapter dataAdapter = new SpinnerAdapter(this, R.layout.spinner_title_textview_notes, courses);
         coursesSpinner.setAdapter(dataAdapter);
         if (selectedCourse != null) {
             for (Course course : courses) {
                 if (course.courseId == selectedCourse.courseId) {
+                    dataAdapter.setSelectedPosition(courses.indexOf(course));
                     coursesSpinner.setSelection(courses.indexOf(course));
+                    break;
                 }
             }
         } else {
             for (Course course : courses) {
                 if (course.isDefault()) {
+                    dataAdapter.setSelectedPosition(courses.indexOf(course));
                     coursesSpinner.setSelection(courses.indexOf(course));
                 }
             }
@@ -360,8 +407,8 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         coursesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                ((TextView) coursesSpinner.getSelectedView()).setTextColor(getResources().getColor(R.color.white));
                 getEventbus().post(courses.get(position));
+                dataAdapter.setSelectedPosition(position);
             }
 
             @Override
@@ -387,31 +434,9 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         // this method will be overridden by the classes that subscribes from event bus
     }
 
-    protected void getContentData(String courseId, String updateTime) {
-        ApiManager.getInstance(this).getContent(courseId, updateTime,
-            new ApiCallback<List<Content>>(this) {
-                @Override
-                public void failure(CorsaliteError error) {
-                    super.failure(error);
-                    if (error != null && !TextUtils.isEmpty(error.message)) {
-                        showToast(error.message);
-                    }
-                }
-
-                @Override
-                public void success(List<Content> mContentResponse, Response response) {
-                    super.success(mContentResponse, response);
-                    if (mContentResponse != null) {
-                        Intent intent = new Intent(AbstractBaseActivity.this, WebActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("contentData", (Serializable) mContentResponse);
-                        intent.putExtras(bundle);
-                        startActivity(intent);
-                    }
-                }
-            });
+    public void onEvent(OfflineEventClass offlineEventClass) {
+        offlineEventClass = offlineEventClass;
     }
-
 
     public static void saveSessionCookie(Response response) {
         String cookie = CookieUtils.getCookieString(response);
@@ -440,5 +465,16 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         if(dialog != null && dialog.isShowing()){
             dialog.dismiss();
         }
+    }
+
+    public void sendAnalytics(String screenName){
+        GoogleAnalyticsManager.sendOpenScreenEvent(this, this, screenName);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent)
+    {
+        super.onNewIntent(intent);
+        setIntent(intent);
     }
 }

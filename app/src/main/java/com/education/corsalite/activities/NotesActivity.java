@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -51,6 +52,7 @@ public class NotesActivity extends AbstractBaseActivity {
     private TextView selectedSubjectTxt;
     private String key;
     private LinearLayout notesLayout;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,12 +63,14 @@ public class NotesActivity extends AbstractBaseActivity {
         courseSpinner = (Spinner) myView.findViewById(R.id.spinner);
         notesLayout = (LinearLayout) myView.findViewById(R.id.no_notes);
         spinnerLayout = (LinearLayout) myView.findViewById(R.id.spinner_layout);
+        progressBar = (ProgressBar)myView.findViewById(R.id.headerProgress);
         frameLayout.addView(myView);
         setToolbarForNotes();
         getBundleData();
         initUI();
         setAdapter();
         getNotesData();
+        sendAnalytics(getString(R.string.screen_notes));
     }
 
     private void hideList() {
@@ -107,6 +111,7 @@ public class NotesActivity extends AbstractBaseActivity {
     @Override
     public void onEvent(Course course) {
         super.onEvent(course);
+        progressBar.setVisibility(View.VISIBLE);
         getStudyCentreData(course.courseId.toString());
     }
 
@@ -116,6 +121,7 @@ public class NotesActivity extends AbstractBaseActivity {
                     @Override
                     public void failure(CorsaliteError error) {
                         super.failure(error);
+                        progressBar.setVisibility(View.GONE);
                         if (error != null && !TextUtils.isEmpty(error.message)) {
                             showToast(error.message);
                         }
@@ -124,6 +130,7 @@ public class NotesActivity extends AbstractBaseActivity {
                     @Override
                     public void success(List<StudyCenter> studyCenters, Response response) {
                         super.success(studyCenters, response);
+                        progressBar.setVisibility(View.GONE);
                         if (studyCenters != null) {
                             mCourseData = new CourseData();
                             mCourseData.StudyCenter = studyCenters;

@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusableInTouchMode="true"
     android:background="@color/blue">
 
     <ImageView
@@ -35,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Email"
-            android:text="performance29@demo.com"
+            android:text="corpdemo1@demo.com"
             fontPath="@string/roboto_regular"
             android:id="@+id/username_txt"
             android:textColor="@android:color/black"
@@ -52,7 +53,7 @@
             app:met_primaryColor="@color/green"
             android:inputType="textPassword"
             android:layout_marginTop="20dp"
-            android:text="test@123"
+            android:text="core@tech"
             android:singleLine="true"/>
 
         <Button
@@ -60,7 +61,7 @@
             android:layout_height="40dp"
             android:text="LOGIN"
             android:id="@+id/login_btn"
-            android:background="@drawable/rounded_corners_green"
+            android:background="@drawable/login_button_bg"
             android:textColor="@android:color/white"
             android:layout_marginTop="30dp"
             android:paddingLeft="45dp"
