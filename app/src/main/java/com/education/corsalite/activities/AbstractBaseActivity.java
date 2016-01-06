@@ -38,6 +38,7 @@ import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
 import com.education.corsalite.services.ApiClientService;
+import com.education.corsalite.utils.AppConfig;
 import com.education.corsalite.utils.AppPref;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.CookieUtils;
@@ -197,6 +198,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 }
             }
         });
+        enableNavigationOptions();
         setNavigationClickListeners();
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
@@ -216,6 +218,39 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
+    }
+
+    private void enableNavigationOptions() {
+        AppConfig config = AppConfig.getInstance();
+        if(config == null) {
+            return;
+        }
+        if(config.enableMyProfile != null && config.enableMyProfile) {
+            navigationView.findViewById(R.id.navigation_profile).setVisibility(View.VISIBLE);
+        }
+        if(config.enableStudyCenter != null && config.enableStudyCenter) {
+            navigationView.findViewById(R.id.navigation_study_center).setVisibility(View.VISIBLE);
+        }
+        if(config.enableSmartClass != null && config.enableSmartClass) {
+            navigationView.findViewById(R.id.navigation_smart_class).setVisibility(View.VISIBLE);
+        }
+        if(config.enableAnalytics != null && config.enableAnalytics) {
+            navigationView.findViewById(R.id.navigation_analytics).setVisibility(View.VISIBLE);
+        }
+        if(config.enableOffline != null && config.enableOffline) {
+            navigationView.findViewById(R.id.navigation_offline).setVisibility(View.VISIBLE);
+        }
+        if(config.enableUsageanalysis!= null && config.enableUsageanalysis) {
+            navigationView.findViewById(R.id.navigation_usage_analysis).setVisibility(View.VISIBLE);
+        }
+        if(config.enableChallangeTest != null && config.enableChallangeTest) {
+            navigationView.findViewById(R.id.navigation_challenge_your_friends).setVisibility(View.VISIBLE);
+        }
+        if(config.enableLogout != null && config.enableLogout) {
+            navigationView.findViewById(R.id.navigation_logout).setVisibility(View.VISIBLE);
+        }
+
+
     }
 
     private void setNavigationClickListeners() {

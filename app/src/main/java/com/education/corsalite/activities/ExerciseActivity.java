@@ -27,6 +27,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -78,6 +79,7 @@ public class ExerciseActivity extends AbstractBaseActivity {
     @Bind(R.id.webview_question) WebView webviewQuestion;
     @Bind(R.id.webview_paragraph) WebView webviewParagraph;
 
+    @Bind(R.id.headerProgress) ProgressBar progressBar;
     @Bind(R.id.tv_comment) TextView tvComment;
     @Bind(R.id.tv_level) TextView tvLevel;
     @Bind(R.id.tv_nav_title) TextView tvNavTitle;
@@ -793,7 +795,7 @@ public class ExerciseActivity extends AbstractBaseActivity {
 
         @Override
         public int getCount() {
-            return localExerciseModelList.size();
+            return (localExerciseModelList == null) ? 0 : localExerciseModelList.size();
         }
 
         @Override
@@ -900,9 +902,17 @@ public class ExerciseActivity extends AbstractBaseActivity {
 
         ApiManager.getInstance(this).getExercise(topicId, selectedCourseId,
                 LoginUserCache.getInstance().loginResponse.studentId, "", new ApiCallback<List<ExerciseModel>>(this) {
+
+                    @Override
+                    public void failure(CorsaliteError error) {
+                        super.failure(error);
+                        progressBar.setVisibility(View.GONE);
+                    }
+
                     @Override
                     public void success(List<ExerciseModel> exerciseModels, Response response) {
                         super.success(exerciseModels, response);
+                        progressBar.setVisibility(View.GONE);
                         localExerciseModelList = exerciseModels;
                         if (localExerciseModelList.size() > 1) {
                             webFooter.setVisibility(View.VISIBLE);
@@ -1016,7 +1026,7 @@ public class ExerciseActivity extends AbstractBaseActivity {
                     public void success(List<ExerciseModel> exerciseModels, Response response) {
                         super.success(exerciseModels, response);
                         localExerciseModelList = exerciseModels;
-                        if (localExerciseModelList.size() > 1) {
+                        if (localExerciseModelList != null && localExerciseModelList.size() > 1) {
                             webFooter.setVisibility(View.VISIBLE);
                         } else {
                             webFooter.setVisibility(View.GONE);

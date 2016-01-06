@@ -44,8 +44,8 @@ public class ApiClientService {
     public static ICorsaliteApi get() {
         return client;
     }
-    public static void setBaseUrl(String url){
 
+    public static void setBaseUrl(String url){
         STAGING = url;
     }
 
@@ -54,7 +54,6 @@ public class ApiClientService {
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(ExerciseModel.class, new ExerciseModelResponseDeserializer()) // This is the important line ;)
                 .create();
-
 
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setLogLevel(RestAdapter.LogLevel.FULL)

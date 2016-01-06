@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 
-import com.education.corsalite.models.FeatureModel;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.AppConfig;
 
@@ -18,10 +17,8 @@ public class SplashActivity extends AbstractBaseActivity {
         new CountDownTimer(2000, 100) {
             @Override
             public void onFinish() {
-
-                FeatureModel model =  new AppConfig().readFeatures(SplashActivity.this);
-                String url = model.url;
-                ApiClientService.setBaseUrl(url);
+                AppConfig.loadAppconfig(SplashActivity.this);
+                ApiClientService.setBaseUrl(AppConfig.getInstance().baseUrl);
                 redirectToLogin();
             }
             @Override
