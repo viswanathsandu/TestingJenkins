@@ -40,6 +40,7 @@ import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.fragments.FullQuestionDialog;
 import com.education.corsalite.models.requestmodels.ExamTemplateChapter;
 import com.education.corsalite.models.requestmodels.ExamTemplateConfig;
+import com.education.corsalite.models.requestmodels.FlaggedQuestionModel;
 import com.education.corsalite.models.requestmodels.PostCustomExamTemplate;
 import com.education.corsalite.models.requestmodels.PostExerciseRequestModel;
 import com.education.corsalite.models.requestmodels.PostQuestionPaperRequest;
@@ -49,6 +50,7 @@ import com.education.corsalite.models.responsemodels.ExamModels;
 import com.education.corsalite.models.responsemodels.ExerciseModel;
 import com.education.corsalite.models.responsemodels.PostExamTemplate;
 import com.education.corsalite.models.responsemodels.PostExercise;
+import com.education.corsalite.models.responsemodels.PostFlaggedQuestions;
 import com.education.corsalite.models.responsemodels.PostQuestionPaper;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.L;
@@ -79,7 +81,6 @@ public class ExerciseActivity extends AbstractBaseActivity {
     @Bind(R.id.webview_question) WebView webviewQuestion;
     @Bind(R.id.webview_paragraph) WebView webviewParagraph;
 
-    @Bind(R.id.headerProgress) ProgressBar progressBar;
     @Bind(R.id.tv_comment) TextView tvComment;
     @Bind(R.id.tv_level) TextView tvLevel;
     @Bind(R.id.tv_nav_title) TextView tvNavTitle;
@@ -107,6 +108,25 @@ public class ExerciseActivity extends AbstractBaseActivity {
 
     @Bind(R.id.gv_test) GridViewInScrollView gvTest;
     @Bind(R.id.test_nav_footer) LinearLayout testNavFooter;
+    @Bind(R.id.navigator_layout) RelativeLayout navigatorLayout;
+
+    @Bind(R.id.header_progress)
+    ProgressBar headerProgress;
+    @Bind(R.id.tv_empty_layout) TextView tvEmptyLayout;
+
+    //Flagged Answer View ID
+    @Bind(R.id.flagged_explanation) LinearLayout flaggedLayout;
+    @Bind(R.id.flagged_answer) WebView webViewFlaggedAnswer;
+    @Bind(R.id.tv_question_status) TextView tvQuestionStatus;
+    @Bind(R.id.tv_recommended_time) TextView tvRecommendedTime;
+    @Bind(R.id.tv_max_marks) TextView tvMaxMarks;
+    @Bind(R.id.tv_time_taken) TextView tvTimeTaken;
+    @Bind(R.id.tv_positive_max_marks) TextView tvPositiveMaxMarks;
+    @Bind(R.id.tv_average_time) TextView tvAverageTime;
+    @Bind(R.id.tv_negative_max_marks) TextView tvNegativeMaxMarks;
+    @Bind(R.id.tv_peer_average) TextView tvPeerAverage;
+    @Bind(R.id.tv_percentile) TextView tvPercentile;
+    @Bind(R.id.imv_flag) ImageView imvFlag;
 
     String webQuestion = "";
     private int selectedPosition = 0;
@@ -116,6 +136,12 @@ public class ExerciseActivity extends AbstractBaseActivity {
     GridAdapter gridAdapter;
     private List<ExerciseModel> localExerciseModelList;
     private int previousQuestionPosition = -1;
+
+    String subjectId = null;
+    String chapterId = null;
+    String topicIds = null;
+
+    boolean isFlagged = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,6 +153,7 @@ public class ExerciseActivity extends AbstractBaseActivity {
         toggleSlider();
         initWebView();
         initWebView1();
+        initFlaggedWebView();
         initSuggestionWebView();
         setListener();
         getIntentData();
@@ -153,8 +180,27 @@ public class ExerciseActivity extends AbstractBaseActivity {
         if (getIntent().hasExtra(Constants.SELECTED_POSITION)) {
             selectedPosition = getIntent().getExtras().getInt(Constants.SELECTED_POSITION);
         }
+        if(getIntent().hasExtra(Constants.SELECTED_SUBJECTID)) {
+            subjectId = getIntent().getExtras().getString(Constants.SELECTED_SUBJECTID);
+        }
+        if(getIntent().hasExtra(Constants.SELECTED_CHAPTERID)) {
+            chapterId = getIntent().getExtras().getString(Constants.SELECTED_CHAPTERID);
+        }
+        if(getIntent().hasExtra(Constants.SELECTED_TOPICID)) {
+            topicIds = getIntent().getExtras().getString(Constants.SELECTED_TOPICID);
+        }
 
-        if(title.equalsIgnoreCase("Exercise Test")) {
+        if(title.equalsIgnoreCase("Flagged Questions")) {
+            imvFlag.setVisibility(View.VISIBLE);
+            tvPageTitle.setText(title);
+            getFlaggedQuestion();
+            navigatorLayout.setVisibility(View.GONE);
+            tvClearAnswer.setVisibility(View.GONE);
+            btnVerify.setVisibility(View.GONE);
+            imvRefresh.setVisibility(View.GONE);
+            timerLayout.setVisibility(View.GONE);
+        } else if(title.equalsIgnoreCase("Exercise Test")) {
+            imvFlag.setVisibility(View.INVISIBLE);
             localExerciseModelList = WebActivity.exerciseModelList;
             if (localExerciseModelList.size() > 1) {
                 webFooter.setVisibility(View.VISIBLE);
@@ -167,6 +213,7 @@ public class ExerciseActivity extends AbstractBaseActivity {
             testNavFooter.setVisibility(View.GONE);
             renderQuestionLayout();
         } else {
+            imvFlag.setVisibility(View.VISIBLE);
             if (getIntent().hasExtra(Constants.SELECTED_SUBJECT)) {
                 topic = getIntent().getExtras().getString(Constants.SELECTED_SUBJECT);
                 tvPageTitle.setText(topic);
@@ -200,6 +247,7 @@ public class ExerciseActivity extends AbstractBaseActivity {
         testNavLayout.setOnClickListener(mClickListener);
         btnViewFullQuestion.setOnClickListener(mClickListener);
         btnSubmit.setOnClickListener(mClickListener);
+        imvFlag.setOnClickListener(mClickListener);
     }
 
     private void initSuggestionWebView() {
@@ -297,6 +345,46 @@ public class ExerciseActivity extends AbstractBaseActivity {
         webviewQuestion.setWebViewClient(new MyWebViewClient());
     }
 
+    private void initFlaggedWebView() {
+        webViewFlaggedAnswer.getSettings().setSupportZoom(true);
+        webViewFlaggedAnswer.getSettings().setBuiltInZoomControls(false);
+        webViewFlaggedAnswer.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
+        webViewFlaggedAnswer.setScrollbarFadingEnabled(true);
+        webViewFlaggedAnswer.getSettings().setLoadsImagesAutomatically(true);
+        webViewFlaggedAnswer.getSettings().setJavaScriptEnabled(true);
+        webViewFlaggedAnswer.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+
+        if (getExternalCacheDir() != null) {
+            webViewFlaggedAnswer.getSettings().setAppCachePath(getExternalCacheDir().getAbsolutePath());
+        } else {
+            webViewFlaggedAnswer.getSettings().setAppCachePath(getCacheDir().getAbsolutePath());
+        }
+        webViewFlaggedAnswer.getSettings().setAppCacheMaxSize(1024 * 1024 * 8);
+
+        webViewFlaggedAnswer.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
+                L.info("JS return value " + message);
+                showToast("Adding '" + message + "' to the notes");
+                result.confirm();
+                return true;
+            }
+        });
+        webViewFlaggedAnswer.addJavascriptInterface(new Object() {
+            @JavascriptInterface
+            public void test() {
+                L.debug("JS", "test");
+            }
+
+            @JavascriptInterface
+            public void onData(String value) {
+                L.info("JS data" + value);
+            }
+        }, "android");
+        // Load the URLs inside the WebView, not in the external web browser
+        webViewFlaggedAnswer.setWebViewClient(new MyWebViewClient());
+    }
+
     private void inflateUI(int position) {
         if (previousQuestionPosition >= 0 && !title.equalsIgnoreCase("Exercise Test")) {
             setAnswerState();
@@ -353,6 +441,9 @@ public class ExerciseActivity extends AbstractBaseActivity {
                     break;
                 case R.id.btn_submit:
                     showSubmitTestAlert();
+                    break;
+                case R.id.imv_flag:
+                    postFlaggedQuestion();
                     break;
             }
         }
@@ -418,11 +509,11 @@ public class ExerciseActivity extends AbstractBaseActivity {
 
     private void loadQuestion(int position) {
 
+        isFlagged = false;
         tvSerialNo.setText("Q" + (position + 1) + ")");
-        if(!TextUtils.isEmpty(localExerciseModelList.get(position).displayName)) {
+        if(!TextUtils.isEmpty(localExerciseModelList.get(position).displayName) && !title.equalsIgnoreCase("Flagged Questions")) {
             tvLevel.setText(localExerciseModelList.get(position).displayName.split("\\s+")[0].toUpperCase(Locale.ENGLISH));
         }
-
 
         if (TextUtils.isEmpty(localExerciseModelList.get(position).paragraphHtml)) {
             webviewParagraph.setVisibility(View.GONE);
@@ -519,6 +610,11 @@ public class ExerciseActivity extends AbstractBaseActivity {
             checkBoxes[i].setId(Integer.valueOf(answerChoiceModel.idAnswerKey));
             checkBoxes[i].setTag(answerChoiceModel);
             checkBoxes[i].setBackgroundResource(R.drawable.selector_checkbox);
+
+            if(title.equalsIgnoreCase("Flagged Questions")) {
+                checkBoxes[i].setEnabled(false);
+                checkBoxes[i].setClickable(false);
+            }
 
             rowLayout[i] = new LinearLayout(this);
             rowLayout[i].setOrientation(LinearLayout.HORIZONTAL);
@@ -635,6 +731,11 @@ public class ExerciseActivity extends AbstractBaseActivity {
             radioButton[i].setTag(answerChoiceModel);
             radioButton[i].setBackgroundResource(R.drawable.selector_radio);
 
+            if(title.equalsIgnoreCase("Flagged Questions")) {
+                radioButton[i].setEnabled(false);
+                radioButton[i].setClickable(false);
+            }
+
             radioButton[i].setLayoutParams(p);
 
             rowLayout[i].addView(tvSerial[i]);
@@ -706,12 +807,14 @@ public class ExerciseActivity extends AbstractBaseActivity {
     private void setExplanationLayout() {
         String webText = "";
         String correctAnswer = "";
+        String correctAnswerText = "";
         List<AnswerChoiceModel> answerChoiceModels = localExerciseModelList.get(selectedPosition).answerChoice;
         int counter = 0;
         for (AnswerChoiceModel answerChoiceModel : answerChoiceModels) {
             counter = counter + 1;
             if (answerChoiceModel.isCorrectAnswer.equalsIgnoreCase("Y")) {
                 correctAnswer = String.valueOf(counter);
+                correctAnswerText = answerChoiceModel.answerChoiceTextHtml;
                 webText = answerChoiceModel.answerChoiceExplanationHtml;
                 break;
             }
@@ -722,12 +825,24 @@ public class ExerciseActivity extends AbstractBaseActivity {
         if (gridAdapter != null) {
             gridAdapter.notifyDataSetChanged();
         }
+        setFlaggedQuestionLayout(correctAnswerText);
+    }
+
+    private void setFlaggedQuestionLayout(String correctAnswers) {
+        if(title.equalsIgnoreCase("Flagged Questions")) {
+            flaggedLayout.setVisibility(View.VISIBLE);
+        } else {
+            flaggedLayout.setVisibility(View.GONE);
+        }
+        webViewFlaggedAnswer.loadData(correctAnswers, "text/html; charset=UTF-8", null);
+        webViewFlaggedAnswer.setBackgroundColor(0);
     }
 
     private void resetExplanation() {
         selectedAnswerPosition = -1;
         btnVerify.setEnabled(false);
         explanationLayout.setVisibility(View.GONE);
+        flaggedLayout.setVisibility(View.GONE);
         layoutChoice.setVisibility(View.GONE);
     }
 
@@ -892,39 +1007,25 @@ public class ExerciseActivity extends AbstractBaseActivity {
         }
     }
 
-    private void getExercise(String topicId) {
-        String selectedCourseId;
-        if(getIntent().hasExtra(Constants.SELECTED_COURSE)) {
-            selectedCourseId = getIntent().getExtras().getString(Constants.SELECTED_COURSE);
-        } else {
-            selectedCourseId = selectedCourse.courseId.toString();
-        }
-
-        ApiManager.getInstance(this).getExercise(topicId, selectedCourseId,
-                LoginUserCache.getInstance().loginResponse.studentId, "", new ApiCallback<List<ExerciseModel>>(this) {
-
-                    @Override
-                    public void failure(CorsaliteError error) {
-                        super.failure(error);
-                        progressBar.setVisibility(View.GONE);
-                    }
-
+    private void getFlaggedQuestion() {
+        ApiManager.getInstance(this).getFlaggedQuestions(LoginUserCache.getInstance().loginResponse.studentId,
+                subjectId,
+                chapterId, "", new ApiCallback<List<ExerciseModel>>(this) {
                     @Override
                     public void success(List<ExerciseModel> exerciseModels, Response response) {
                         super.success(exerciseModels, response);
-                        progressBar.setVisibility(View.GONE);
                         localExerciseModelList = exerciseModels;
-                        if (localExerciseModelList.size() > 1) {
-                            webFooter.setVisibility(View.VISIBLE);
+                        if (localExerciseModelList != null && localExerciseModelList.size() > 0) {
+                            if (localExerciseModelList.size() > 1) {
+                                webFooter.setVisibility(View.VISIBLE);
+                            } else {
+                                webFooter.setVisibility(View.GONE);
+                            }
+                            tvLevel.setText("TOTAL NUMBER OF QUESTIONS : " + exerciseModels.size());
+                            renderQuestionLayout();
                         } else {
-                            webFooter.setVisibility(View.GONE);
-                        }
-                        renderQuestionLayout();
-                        //dummy timer.. need to fetch time and interval from service
-                        if(ExerciseActivity.this != null) {
-                            tv_timer.setText("00:30:00");
-                            final CounterClass timer = new CounterClass(1800000, 1000);
-                            timer.start();
+                            headerProgress.setVisibility(View.GONE);
+                            tvEmptyLayout.setVisibility(View.VISIBLE);
                         }
                     }
                 });
@@ -949,26 +1050,14 @@ public class ExerciseActivity extends AbstractBaseActivity {
                             postCustomExamTemplate(examModelses);
                         } else {
                             showToast("No data found.");
+                            headerProgress.setVisibility(View.GONE);
+                            tvEmptyLayout.setVisibility(View.VISIBLE);
                         }
                     }
                 });
     }
 
-    String subjectId = null;
     private void postCustomExamTemplate(List<ExamModels> examModelsList){
-
-        String chapterId = null;
-        String topicIds = null;
-
-        if(getIntent().hasExtra(Constants.SELECTED_CHAPTERID)) {
-            chapterId = getIntent().getExtras().getString(Constants.SELECTED_CHAPTERID);
-        }
-        if(getIntent().hasExtra(Constants.SELECTED_SUBJECTID)) {
-            subjectId = getIntent().getExtras().getString(Constants.SELECTED_SUBJECTID);
-        }
-        if(getIntent().hasExtra(Constants.SELECTED_TOPICID)) {
-            topicIds = getIntent().getExtras().getString(Constants.SELECTED_TOPICID);
-        }
 
         PostCustomExamTemplate postCustomExamTemplate = new PostCustomExamTemplate();
         postCustomExamTemplate.examId = examModelsList.get(0).examId;
@@ -991,15 +1080,42 @@ public class ExerciseActivity extends AbstractBaseActivity {
                     @Override
                     public void success(PostExamTemplate postExamTemplate, Response response) {
                         super.success(postExamTemplate, response);
-                        if(postExamTemplate != null && !TextUtils.isEmpty(postExamTemplate.idExamTemplate)) {
+                        if (postExamTemplate != null && !TextUtils.isEmpty(postExamTemplate.idExamTemplate)) {
                             postQuestionPaper(LoginUserCache.getInstance().loginResponse.entitiyId, postExamTemplate.idExamTemplate,
-                                    subjectId, LoginUserCache.getInstance().loginResponse.studentId);
+                                    LoginUserCache.getInstance().loginResponse.studentId);
                         }
                     }
                 });
     }
 
-    private void postQuestionPaper(String entityId, String examTemplateId, String subjectId, String studentId) {
+    private void postFlaggedQuestion() {
+        FlaggedQuestionModel flaggedQuestionModel = new FlaggedQuestionModel();
+        if(isFlagged) {
+            flaggedQuestionModel.flaggedYN = "N";
+        } else {
+            flaggedQuestionModel.flaggedYN = "Y";
+        }
+        flaggedQuestionModel.idTestAnswerPaper = "";
+        flaggedQuestionModel.idTestQuestion = localExerciseModelList.get(selectedPosition).idTestQuestion+"";
+        flaggedQuestionModel.updateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+
+        ApiManager.getInstance(this).postFlaggedQuestions(new Gson().toJson(flaggedQuestionModel),
+                new ApiCallback<PostFlaggedQuestions>(this) {
+                    @Override
+                    public void success(PostFlaggedQuestions postFlaggedQuestions, Response response) {
+                        super.success(postFlaggedQuestions, response);
+                        isFlagged = !isFlagged;
+                        if(isFlagged) {
+                            imvFlag.setImageResource(R.drawable.ico_offline_info_white);
+                        } else {
+                            imvFlag.setImageResource(R.drawable.ico_offline_info);
+                        }
+
+                    }
+                });
+    }
+
+    private void postQuestionPaper(String entityId, String examTemplateId, String studentId) {
         PostQuestionPaperRequest postQuestionPaper = new PostQuestionPaperRequest();
         postQuestionPaper.idCollegeBatch = "";
         postQuestionPaper.idEntity = entityId;
@@ -1014,6 +1130,9 @@ public class ExerciseActivity extends AbstractBaseActivity {
                         super.success(postQuestionPaper, response);
                         if (postQuestionPaper != null && !TextUtils.isEmpty(postQuestionPaper.idTestQuestionPaper)) {
                             getTestQuestionPaper(postQuestionPaper.idTestQuestionPaper, null);
+                        } else {
+                            headerProgress.setVisibility(View.GONE);
+                            tvEmptyLayout.setVisibility(View.VISIBLE);
                         }
                     }
                 });
@@ -1026,16 +1145,21 @@ public class ExerciseActivity extends AbstractBaseActivity {
                     public void success(List<ExerciseModel> exerciseModels, Response response) {
                         super.success(exerciseModels, response);
                         localExerciseModelList = exerciseModels;
-                        if (localExerciseModelList != null && localExerciseModelList.size() > 1) {
-                            webFooter.setVisibility(View.VISIBLE);
+                        if(localExerciseModelList != null ) {
+                            if (localExerciseModelList.size() > 1) {
+                                webFooter.setVisibility(View.VISIBLE);
+                            } else {
+                                webFooter.setVisibility(View.GONE);
+                            }
+                            renderQuestionLayout();
+                            //dummy timer.. need to fetch time and interval from service
+                            tv_timer.setText("00:30:00");
+                            final CounterClass timer = new CounterClass(1800000, 1000);
+                            timer.start();
                         } else {
-                            webFooter.setVisibility(View.GONE);
+                            headerProgress.setVisibility(View.GONE);
+                            tvEmptyLayout.setVisibility(View.VISIBLE);
                         }
-                        renderQuestionLayout();
-                        //dummy timer.. need to fetch time and interval from service
-                        tv_timer.setText("00:30:00");
-                        final CounterClass timer = new CounterClass(1800000, 1000);
-                        timer.start();
                     }
                 });
     }

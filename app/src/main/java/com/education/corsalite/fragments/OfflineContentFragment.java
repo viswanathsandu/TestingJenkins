@@ -1,5 +1,6 @@
 package com.education.corsalite.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -10,7 +11,9 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.education.corsalite.R;
+import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.activities.OfflineContentActivity;
+import com.education.corsalite.activities.WebActivity;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.db.DbManager;
 import com.education.corsalite.holders.IconTreeItemHolder;
@@ -39,6 +42,8 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
     private AndroidTreeView tView;
     List<OfflineContent> offlineContentList ;
     String selectedCourse;
+    String subjectId = "";
+    String chapterId = "";
 
     @Nullable
     @Override
@@ -66,7 +71,7 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
                         offlineContentList.add(offlineContent);
                     }
                 }
-                if(offlineContentList != null && offlineContentList.size() >0){
+                if(offlineContentList != null && !offlineContentList.isEmpty()){
                     initNodes();
                 }else{
                     mProgressBar.setVisibility(View.GONE);
@@ -163,6 +168,17 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
         @Override
         public void onClick(TreeNode node, Object value) {
             IconTreeItemHolder.IconTreeItem item = (IconTreeItemHolder.IconTreeItem) value;
+            if(item.tag.equalsIgnoreCase("subject")){
+                subjectId = item.id;
+            }
+            if(item.tag.equalsIgnoreCase("chapter")){
+                chapterId = item.id;
+            }
+            if(item.tag.equalsIgnoreCase("content")) {
+                startContentActivity(chapterId,subjectId,item.id,item.text);
+            }
+
+
         }
     };
 
@@ -237,9 +253,15 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
     }
 
 
-
-
-
+    private void startContentActivity(String chapterId,String subjectId,String contentId,String contentName) {
+        Intent intent = new Intent(getActivity(), WebActivity.class);
+        intent.putExtra("courseId", AbstractBaseActivity.selectedCourse.courseId.toString());
+        intent.putExtra("subjectId", subjectId);
+        intent.putExtra("chapterId", chapterId);
+        intent.putExtra("contentId",contentId);
+        intent.putExtra("contentName",contentName);
+        getActivity().startActivity(intent);
+    }
 
 
 }
