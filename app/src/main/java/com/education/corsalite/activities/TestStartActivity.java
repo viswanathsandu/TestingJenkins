@@ -6,12 +6,16 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.education.corsalite.R;
+import com.education.corsalite.utils.Constants;
 
 import butterknife.ButterKnife;
 
 public class TestStartActivity extends AbstractBaseActivity {
+
+    private String chapterName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +31,18 @@ public class TestStartActivity extends AbstractBaseActivity {
                 startTest();
             }
         });
+        loadDataFromIntent();
+        setdata();
+    }
+
+    private void setdata() {
+        TextView chapterNameTxt = ((TextView)findViewById(R.id.chapter_name_txt));
+        chapterNameTxt.setText(chapterNameTxt.getText().toString()+chapterName);
+    }
+
+    private void loadDataFromIntent() {
+        Bundle bundle = getIntent().getExtras();
+        chapterName = bundle.getString(Constants.SELECTED_CHAPTER_NAME, "");
     }
 
     private void startTest() {

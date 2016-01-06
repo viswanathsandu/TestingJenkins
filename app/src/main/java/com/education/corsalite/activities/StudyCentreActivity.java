@@ -428,7 +428,9 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         dialogView.findViewById(R.id.take_test).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.cancel();
+                if(dialog != null ) {
+                    dialog.cancel();
+                }
                 startPartTest(studyCenter);
             }
         });
