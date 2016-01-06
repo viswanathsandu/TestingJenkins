@@ -8,6 +8,8 @@ public class Constants {
     public final static String ADD_GUARDIAN_URL = "http://staging.corsalite.com/v1/profile/guardianInfo";
     public final static String ADD_COURSES_URL = "http://staging.corsalite.com/v1/profile/courseInfo";
     public final static String REDEEM_URL = "http://staging.corsalite.com/v1/redeem";
+    public final static String SMART_CLASS_URL = "http://staging.corsalite.com/v1/smartclass/index";
+
 
     public final static String PARENT_FOLDER = "Corsalite";
     public final static String HTML_FOLDER = "Html";
