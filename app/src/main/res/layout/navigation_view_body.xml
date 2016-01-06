@@ -81,6 +81,12 @@
                 android:drawableLeft="@drawable/ico_sidemenu_invite_friend"
                 style="@style/navigation_drawer_element" />
 
+            <TextView
+                android:id="@+id/navigation_forum"
+                android:text="@string/forum"
+                android:drawableLeft="@drawable/ico_add_forum"
+                style="@style/navigation_drawer_element" />
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

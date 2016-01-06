@@ -286,6 +286,14 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 startActivity(new Intent(AbstractBaseActivity.this, ChallengeActivity.class));
             }
         });
+
+        navigationView.findViewById(R.id.navigation_forum).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Localytics.tagEvent(getString(R.string.forum));
+                startActivity(new Intent(AbstractBaseActivity.this, ForumActivity.class));
+            }
+        });
     }
 
     protected void setToolbarTitle(String title) {

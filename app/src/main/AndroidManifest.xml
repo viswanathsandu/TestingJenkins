@@ -138,6 +138,10 @@
             android:name=".activities.TestStartActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:theme="@style/AppTheme" />
+
+        <activity android:name=".activities.ForumActivity"
+            android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>

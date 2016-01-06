@@ -2,6 +2,8 @@ package com.education.corsalite.activities;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -18,6 +20,7 @@ import com.education.corsalite.R;
 import com.education.corsalite.adapters.ForumAdapter;
 import com.education.corsalite.adapters.GridRecyclerAdapter;
 import com.education.corsalite.adapters.NotesAdapter;
+import com.education.corsalite.adapters.PostPagerAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
@@ -30,6 +33,8 @@ import com.education.corsalite.models.responsemodels.StudyCenter;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import retrofit.client.Response;
 
 /**
@@ -37,72 +42,24 @@ import retrofit.client.Response;
  */
 public class ForumActivity extends AbstractBaseActivity {
 
-    private LinearLayout spinnerLayout;
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter mAdapter;
+    @Bind(R.id.tabLayout)
+    TabLayout mTabLayout;
+
+    @Bind(R.id.viewPager)
+    ViewPager mViewPager;
+
     private LayoutInflater inflater;
-    private String mSubjectId = null;
-    private String mChapterId = null;
-    private String mTopicId = null;
-    private List<SubjectNameSection> mListData;
-    private CourseData mCourseData;
-    private ArrayList<String> subjects;
-    private RelativeLayout relativeLayout;
-    private Spinner courseSpinner;
-    private TextView selectedSubjectTxt;
-    private String key;
-    private LinearLayout notesLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         RelativeLayout myView = (RelativeLayout) inflater.inflate(R.layout.activity_forum, null);
-        relativeLayout = (RelativeLayout) myView.findViewById(R.id.forum_layout);
-        courseSpinner = (Spinner) myView.findViewById(R.id.spinner);
-        notesLayout = (LinearLayout) myView.findViewById(R.id.no_notes);
-        spinnerLayout = (LinearLayout) myView.findViewById(R.id.spinner_layout);
-        frameLayout.addView(myView);
-        setToolbarForNotes();
-        getBundleData();
-        initUI();
-        setAdapter();
-        getNotesData();
-    }
+        ButterKnife.bind(this, myView);
 
-    private void hideList() {
-        recyclerView.setVisibility(View.GONE);
-    }
-
-    private void showData() {
-        recyclerView.setVisibility(View.VISIBLE);
-        notesLayout.setVisibility(View.GONE);
-    }
-
-    private void getBundleData() {
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
-            String subjectId = GridRecyclerAdapter.SUBJECT_ID;
-            String chapterId = GridRecyclerAdapter.CHAPTER_ID;
-            if (bundle.containsKey(subjectId) && bundle.getString(subjectId) != null) {
-                mSubjectId = bundle.getString(subjectId);
-            }
-            if (bundle.containsKey(chapterId) && bundle.getString(chapterId) != null) {
-                mChapterId = bundle.getString(chapterId);
-            }
-        }
-    }
-
-    private void initUI() {
-        recyclerView = (RecyclerView) findViewById(R.id.notes_list);
-    }
-
-    private void setAdapter() {
-        mAdapter = new ForumAdapter(this, new ArrayList<SubjectNameSection>(), inflater);
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(llm);
-        recyclerView.setAdapter(mAdapter);
+        //set adapter to your ViewPager
+        mViewPager.setAdapter(new PostPagerAdapter(getSupportFragmentManager()));
+        mTabLayout.setupWithViewPager(mViewPager);
     }
 
     @Override
