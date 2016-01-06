@@ -60,6 +60,11 @@ public class IconTreeItemHolder extends TreeNode.BaseNodeViewHolder<IconTreeItem
             }
         });
 
+        if(value.showProgress){
+            update.setVisibility(View.VISIBLE);
+        }else {
+            update.setVisibility(View.GONE);
+        }
         if(value.tag.equalsIgnoreCase("content")){
             arrowView.setVisibility(View.INVISIBLE);
         }else if(value.tag.equalsIgnoreCase("subject")){
@@ -90,12 +95,14 @@ public class IconTreeItemHolder extends TreeNode.BaseNodeViewHolder<IconTreeItem
         public String text;
         public String id;
         public String tag;
+        public boolean showProgress;
 
-        public IconTreeItem(int icon, String text,String id,String tag) {
+        public IconTreeItem(int icon, String text,String id,String tag,boolean showProgress) {
             this.icon = icon;
             this.text = text;
             this.id = id;
             this.tag = tag;
+            this.showProgress = showProgress;
         }
     }
 
