@@ -12,6 +12,7 @@ public class AppConfig {
     private static AppConfig instance;
 
     public String baseUrl;
+    public Integer splashDuration;
     public Boolean enableStudyCenter;
     public Boolean enableAnalytics;
     public Boolean enableSmartClass;

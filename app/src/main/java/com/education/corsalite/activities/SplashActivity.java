@@ -31,10 +31,10 @@ public class SplashActivity extends AbstractBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         checkAutoLogin();
-        new CountDownTimer(2000, 100) {
+        AppConfig.loadAppconfig(SplashActivity.this);
+        new CountDownTimer(AppConfig.getInstance().splashDuration, 100) {
             @Override
             public void onFinish() {
-                AppConfig.loadAppconfig(SplashActivity.this);
                 ApiClientService.setBaseUrl(AppConfig.getInstance().baseUrl);
                 isTimerFinished = true;
                 navigateToNextScreen();
