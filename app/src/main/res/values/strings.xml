@@ -118,4 +118,10 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
+    <string-array name="tab_names">
+        <item>All Posts</item>
+        <item>My Posts</item>
+        <item>My Comments</item>
+        <item>Library</item>
+    </string-array>
 </resources>
