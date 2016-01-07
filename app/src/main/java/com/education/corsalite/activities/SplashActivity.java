@@ -39,6 +39,7 @@ public class SplashActivity extends AbstractBaseActivity {
                 isTimerFinished = true;
                 navigateToNextScreen();
             }
+
             @Override
             public void onTick(long millisUntilFinished) {
             }
@@ -59,7 +60,6 @@ public class SplashActivity extends AbstractBaseActivity {
         }
     }
     private void login(final String username, final String password, final boolean fetchLocal) {
-        showProgress();
         ApiManager.getInstance(this).login(username, password, new ApiCallback<LoginResponse>(this) {
             @Override
             public void failure(CorsaliteError error) {
