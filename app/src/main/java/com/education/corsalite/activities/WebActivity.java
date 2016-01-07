@@ -138,7 +138,6 @@ public class WebActivity extends AbstractBaseActivity {
                     throw new NullPointerException("You must have to pass content name");
                 }
             }
-
         }
         setListeners();
     }
@@ -803,7 +802,6 @@ public class WebActivity extends AbstractBaseActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
     }
