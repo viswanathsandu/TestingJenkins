@@ -57,6 +57,8 @@ public class SplashActivity extends AbstractBaseActivity {
         String passwordHash =  appPref.getValue("passwordHash");
         if(!TextUtils.isEmpty(username) && !TextUtils.isEmpty(passwordHash)) {
             login(username, passwordHash, false);
+        } else {
+            isLoginApiFinished = true;
         }
     }
     private void login(final String username, final String password, final boolean fetchLocal) {

@@ -4,7 +4,7 @@
   "enableStudyCenter": true,
   "enableAnalytics":true,
   "enableSmartClass":true,
-  "enableMyClass":true,
+  "enableMyProfile":true,
   "enableOffline":true,
   "enableUsageanalysis":true,
   "enableChallangeTest":true,
