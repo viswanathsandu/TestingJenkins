@@ -253,9 +253,9 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
             offlineContents.add(offlineContent);
             saveFileToDisk(getHtmlText(content),content);
         }
-        AppPref.getInstance(OfflineSubjectActivity.this).save("DATA_IN_PROGRESS",null);
-        getEventbus().post(true);
+        AppPref.getInstance(OfflineSubjectActivity.this).save("DATA_IN_PROGRESS", null);
         DbManager.getInstance(this).saveOfflineContent(offlineContents);
+
     }
 
     private String getHtmlText(Content content){

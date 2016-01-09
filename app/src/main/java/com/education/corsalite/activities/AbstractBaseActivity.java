@@ -438,10 +438,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         offlineEventClass = offlineEventClass;
     }
 
-    public void onEvent(boolean refresh){
-
-    }
-
     public static void saveSessionCookie(Response response) {
         String cookie = CookieUtils.getCookieString(response);
         if (cookie != null) {

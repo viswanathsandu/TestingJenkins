@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -20,6 +21,7 @@ import com.unnamed.b.atv.model.TreeNode;
 public class IconTreeItemHolder extends TreeNode.BaseNodeViewHolder<IconTreeItemHolder.IconTreeItem> {
     private TextView tvValue;
     private ImageView arrowView;
+    private ProgressBar progressBar;
     private static IconTreeItem value;
 
     public IconTreeItemHolder(Context context) {
@@ -60,10 +62,11 @@ public class IconTreeItemHolder extends TreeNode.BaseNodeViewHolder<IconTreeItem
             }
         });
 
+        progressBar = (ProgressBar)view.findViewById(R.id.pb_content);
         if(value.showProgress){
-            update.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.VISIBLE);
         }else {
-            update.setVisibility(View.GONE);
+            progressBar.setVisibility(View.GONE);
         }
         if(value.tag.equalsIgnoreCase("content")){
             arrowView.setVisibility(View.INVISIBLE);

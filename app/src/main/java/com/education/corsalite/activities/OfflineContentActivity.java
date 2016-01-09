@@ -58,18 +58,11 @@ public class OfflineContentActivity extends AbstractBaseActivity {
     }
 
     @Override
-    public void onEvent(boolean refresh) {
-        if(refresh){
-            if(offlineEventListener!=null) {
-                offlineEventListener.onCourseIdSelected(selectedCourse);
-            }
-        }
-        super.onEvent(refresh);
-    }
-
-    @Override
     public void onEvent(OfflineEventClass offlineEventClass) {
         L.info("Saved data with this id: "+offlineEventClass.id);
+        if(offlineEventListener!=null) {
+            offlineEventListener.onUpdateOfflineData(offlineEventClass.id);
+        }
         super.onEvent(offlineEventClass);
     }
 
