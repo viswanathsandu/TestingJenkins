@@ -33,9 +33,20 @@ public class CurrencyAdapter extends AbstractRecycleViewAdapter {
 
     @Override
     public CurrencyDataHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new CurrencyDataHolder(inflater.inflate(R.layout.row_virtual_currency_list, parent, false));
-    }
+        View view  =inflater.inflate(R.layout.row_virtual_currency_list, parent, false) ;
+        if((viewType+1)% 2 == 0)
+        {
+            view.setBackgroundColor(inflater.getContext().getResources().getColor(R.color.tab_recycler_alternate_row));
 
+        }else {
+            view.setBackgroundColor(inflater.getContext().getResources().getColor(R.color.white));
+        }
+        return new CurrencyDataHolder(view);
+    }
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ((CurrencyDataHolder) holder).bindData(position, (VirtualCurrencyTransaction)getItem(position));
