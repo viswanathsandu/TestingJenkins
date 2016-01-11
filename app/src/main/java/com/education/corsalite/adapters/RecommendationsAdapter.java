@@ -48,6 +48,7 @@ public class RecommendationsAdapter extends  AbstractRecycleViewAdapter {
         @Bind(R.id.tv_marks)TextView marks;
         @Bind(R.id.tv_accuracy)TextView accuracy;
         @Bind(R.id.tv_speed)TextView speed;
+        @Bind(R.id.tv_time)TextView time;
         View parent;
 
         public RecommendationsDataHolder(View view) {
@@ -72,6 +73,7 @@ public class RecommendationsAdapter extends  AbstractRecycleViewAdapter {
             dateTime.setAllCaps(false);
             marks.setText(AnalyticsHelper.truncateString(course.earnedMarks));
             marks.setAllCaps(false);
+            time.setText(course.timeTaken);
 
 
             accuracy.setText(AnalyticsHelper.truncateString(course.accuracy));
