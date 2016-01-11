@@ -220,6 +220,7 @@
         <item name="android:paddingTop">15dp</item>
         <item name="android:paddingBottom">15dp</item>
         <item name="fontPath">@string/roboto_regular</item>
+        <item name="android:visibility">gone</item>
     </style>
 
     <style name="notes_heading">

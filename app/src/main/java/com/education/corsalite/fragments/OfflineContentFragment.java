@@ -44,6 +44,7 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
     String selectedCourse;
     String subjectId = "";
     String chapterId = "";
+    String topicId = "";
 
     @Nullable
     @Override
@@ -258,6 +259,7 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
         intent.putExtra("courseId", AbstractBaseActivity.selectedCourse.courseId.toString());
         intent.putExtra("subjectId", subjectId);
         intent.putExtra("chapterId", chapterId);
+        intent.putExtra("topicId",contentId);
         intent.putExtra("contentId",contentId);
         intent.putExtra("contentName",contentName);
         getActivity().startActivity(intent);

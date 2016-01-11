@@ -1,0 +1,12 @@
+{
+  "BaseUrl":"https://staging.corsalite.com/v1/webservices/",
+  "splashDuration":2000, // in milli seconds
+  "enableStudyCenter": true,
+  "enableAnalytics":true,
+  "enableSmartClass":true,
+  "enableMyProfile":true,
+  "enableOffline":true,
+  "enableUsageanalysis":true,
+  "enableChallangeTest":true,
+  "enableLogout":true
+}

@@ -38,7 +38,9 @@ import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
 import com.education.corsalite.services.ApiClientService;
+import com.education.corsalite.utils.AppConfig;
 import com.education.corsalite.utils.AppPref;
+import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.CookieUtils;
 import com.google.gson.Gson;
 import com.localytics.android.Localytics;
@@ -196,6 +198,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 }
             }
         });
+        enableNavigationOptions();
         setNavigationClickListeners();
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
@@ -217,6 +220,39 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         actionBarDrawerToggle.syncState();
     }
 
+    private void enableNavigationOptions() {
+        AppConfig config = AppConfig.getInstance();
+        if(config == null) {
+            return;
+        }
+        if(config.enableMyProfile != null && config.enableMyProfile) {
+            navigationView.findViewById(R.id.navigation_profile).setVisibility(View.VISIBLE);
+        }
+        if(config.enableStudyCenter != null && config.enableStudyCenter) {
+            navigationView.findViewById(R.id.navigation_study_center).setVisibility(View.VISIBLE);
+        }
+        if(config.enableSmartClass != null && config.enableSmartClass) {
+            navigationView.findViewById(R.id.navigation_smart_class).setVisibility(View.VISIBLE);
+        }
+        if(config.enableAnalytics != null && config.enableAnalytics) {
+            navigationView.findViewById(R.id.navigation_analytics).setVisibility(View.VISIBLE);
+        }
+        if(config.enableOffline != null && config.enableOffline) {
+            navigationView.findViewById(R.id.navigation_offline).setVisibility(View.VISIBLE);
+        }
+        if(config.enableUsageanalysis!= null && config.enableUsageanalysis) {
+            navigationView.findViewById(R.id.navigation_usage_analysis).setVisibility(View.VISIBLE);
+        }
+        if(config.enableChallangeTest != null && config.enableChallangeTest) {
+            navigationView.findViewById(R.id.navigation_challenge_your_friends).setVisibility(View.VISIBLE);
+        }
+        if(config.enableLogout != null && config.enableLogout) {
+            navigationView.findViewById(R.id.navigation_logout).setVisibility(View.VISIBLE);
+        }
+
+
+    }
+
     private void setNavigationClickListeners() {
         navigationView.findViewById(R.id.navigation_profile).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -230,12 +266,10 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             }
         });
 
-        navigationView.findViewById(R.id.navigation_currency).setOnClickListener(new View.OnClickListener() {
+        navigationView.findViewById(R.id.navigation_smart_class).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Localytics.tagEvent("Virtual Currency");
-                Intent intent = new Intent(AbstractBaseActivity.this, VirtualCurrencyActivity.class);
-                startActivity(intent);
+                loadSmartClass();
                 drawerLayout.closeDrawers();
             }
         });
@@ -294,6 +328,13 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 startActivity(new Intent(AbstractBaseActivity.this, ForumActivity.class));
             }
         });
+    }
+
+    private void loadSmartClass() {
+        Intent intent = new Intent(this, WebviewActivity.class);
+        intent.putExtra(LoginActivity.TITLE, "Smart Class");
+        intent.putExtra(LoginActivity.URL, Constants.SMART_CLASS_URL);
+        startActivity(intent);
     }
 
     protected void setToolbarTitle(String title) {

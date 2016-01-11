@@ -910,7 +910,7 @@ public class ExerciseActivity extends AbstractBaseActivity {
 
         @Override
         public int getCount() {
-            return localExerciseModelList.size();
+            return (localExerciseModelList == null) ? 0 : localExerciseModelList.size();
         }
 
         @Override

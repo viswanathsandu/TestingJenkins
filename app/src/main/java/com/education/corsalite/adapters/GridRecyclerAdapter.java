@@ -213,6 +213,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, studyCentreActivity.getSelectedSubjectId());
         exerciseIntent.putExtra(Constants.SELECTED_SUBJECT, key);
         exerciseIntent.putExtra(Constants.SELECTED_CHAPTERID, chapter.idCourseSubjectchapter);
+        exerciseIntent.putExtra(Constants.SELECTED_CHAPTER_NAME, chapter.chapterName);
         studyCentreActivity.startActivity(exerciseIntent);
 
     }

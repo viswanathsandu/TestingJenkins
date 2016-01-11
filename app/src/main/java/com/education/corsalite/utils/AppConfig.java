@@ -2,7 +2,6 @@ package com.education.corsalite.utils;
 
 import android.content.Context;
 
-import com.education.corsalite.models.FeatureModel;
 import com.google.gson.Gson;
 
 /**
@@ -10,10 +9,25 @@ import com.google.gson.Gson;
  */
 public class AppConfig {
 
-    public FeatureModel readFeatures(Context context){
+    private static AppConfig instance;
 
-        String jsonResponse = FileUtils.loadJSONFromAsset(context.getAssets(), "api/features.json");
-        return new Gson().fromJson(jsonResponse,FeatureModel.class);
+    public String baseUrl;
+    public Integer splashDuration;
+    public Boolean enableStudyCenter;
+    public Boolean enableAnalytics;
+    public Boolean enableSmartClass;
+    public Boolean enableMyProfile;
+    public Boolean enableOffline;
+    public Boolean enableLogout;
+    public Boolean enableUsageanalysis;
+    public Boolean enableChallangeTest;
 
+    public static void loadAppconfig(Context context) {
+        String jsonResponse = FileUtils.loadJSONFromAsset(context.getAssets(), "config.json");
+        instance = new Gson().fromJson(jsonResponse, AppConfig.class);
+    }
+
+    public static AppConfig getInstance() {
+        return instance;
     }
 }

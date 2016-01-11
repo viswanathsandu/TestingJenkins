@@ -8,6 +8,8 @@ public class Constants {
     public final static String ADD_GUARDIAN_URL = "http://staging.corsalite.com/v1/profile/guardianInfo";
     public final static String ADD_COURSES_URL = "http://staging.corsalite.com/v1/profile/courseInfo";
     public final static String REDEEM_URL = "http://staging.corsalite.com/v1/redeem";
+    public final static String SMART_CLASS_URL = "http://staging.corsalite.com/v1/smartclass/index";
+
 
     public final static String PARENT_FOLDER = "Corsalite";
     public final static String HTML_FOLDER = "Html";
@@ -26,6 +28,7 @@ public class Constants {
     public static final String SELECTED_SUBJECTID =  "selectedSubjectId";
     public static final String SELECTED_CHAPTER =  "selectedChapter";
     public static final String SELECTED_CHAPTERID =  "selectedChapterId";
+    public static final String SELECTED_CHAPTER_NAME =  "selectedChapterName";
     public static final String SELECTED_TOPIC =  "selectedTopic";
     public static final String SELECTED_TOPICID =  "selectedTopicId";
     public static final String TEST_TITLE =  "testTitle";
