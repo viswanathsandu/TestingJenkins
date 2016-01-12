@@ -141,8 +141,6 @@ public class TestStartActivity extends AbstractBaseActivity {
 
         BarDataSet barDataSet = new BarDataSet(entries, "");
         barDataSet.setColors(new int[]{getResources().getColor(R.color.green), getResources().getColor(R.color.red), getResources().getColor(R.color.blue)});
-        barDataSet.setValueTextColor(Color.rgb(60, 220, 78));
-        barDataSet.setValueTextSize(10f);
         barDataSet.setBarSpacePercent(20f);
 
         BarData barData = new BarData(columnNames);
