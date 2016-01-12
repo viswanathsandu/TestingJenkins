@@ -1,6 +1,7 @@
 package com.education.corsalite.activities;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -17,8 +18,17 @@ import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.TestCoverage;
 import com.education.corsalite.utils.Constants;
+import com.education.corsalite.utils.Data;
 import com.education.corsalite.utils.L;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -27,6 +37,8 @@ import retrofit.client.Response;
 
 public class TestStartActivity extends AbstractBaseActivity {
 
+    @Bind(R.id.bar_chart_test_start)
+    BarChart mTestBarChart;
     @Bind(R.id.ll_container)
     LinearLayout mContainerLayout;
     @Bind(R.id.progress_bar)
@@ -53,9 +65,31 @@ public class TestStartActivity extends AbstractBaseActivity {
             }
         });
 
+        initializeGraph();
         loadDataFromIntent();
-        setData();
         fetchDataFromServer();
+    }
+
+    private void initializeGraph() {
+        mTestBarChart.setDescription("");
+        mTestBarChart.setBackgroundColor(Color.WHITE);
+        mTestBarChart.setDrawGridBackground(false);
+
+        YAxis rightAxis = mTestBarChart.getAxisRight();
+        rightAxis.setDrawGridLines(true);
+        rightAxis.setEnabled(false);
+
+        YAxis leftAxis = mTestBarChart.getAxisLeft();
+        leftAxis.setDrawGridLines(true);
+
+        XAxis xAxis = mTestBarChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+
+        mTestBarChart.getLegend().setTextSize(15f);
+        mTestBarChart.getLegend().setCustom(new int[]{getResources().getColor(R.color.green), getResources().getColor(R.color.red), getResources().getColor(R.color.blue)},
+                getResources().getStringArray(R.array.label_questions));
+        mTestBarChart.getLegend().setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
     }
 
     private void fetchDataFromServer() {
@@ -73,6 +107,7 @@ public class TestStartActivity extends AbstractBaseActivity {
                         super.success(testCoverages, response);
                         mProgressBar.setVisibility(View.GONE);
                         mContainerLayout.setVisibility(View.VISIBLE);
+                        setData(testCoverages);
                     }
                 });
     }
@@ -88,9 +123,37 @@ public class TestStartActivity extends AbstractBaseActivity {
         }
     }
 
-    private void setData() {
+    private BarData generateBarData(List<TestCoverage> testCoverages) {
+        int index = 0;
+        BarData barData = new BarData();
+        ArrayList<BarEntry> entries = new ArrayList<>();
+
+        for (TestCoverage testCoverage : testCoverages) {
+            float answersCorrect = Data.getInt(testCoverage.attendedCorrectQCount);
+            float answersRemaining = Data.getInt(testCoverage.questionCount) - Data.getInt(testCoverage.attendedQCount);
+            float answersWrong = Data.getInt(testCoverage.attendedQCount) - Data.getInt(testCoverage.attendedCorrectQCount);
+
+            //BarEntry barEntry = new BarEntry(new float[]{answersCorrect, answersRemaining, answersWrong}, index++);
+            BarEntry barEntry1 = new BarEntry(answersCorrect, index++);
+            entries.add(barEntry1);
+        }
+
+        BarDataSet barDataSet = new BarDataSet(entries, "");
+        barDataSet.setValueTextColor(Color.rgb(60, 220, 78));
+        barDataSet.setValueTextSize(10f);
+        barDataSet.setBarSpacePercent(20f);
+
+        barData.addDataSet(barDataSet);
+        barDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
+
+        return barData;
+    }
+
+    private void setData(List<TestCoverage> testCoverages) {
         mChapterNameTxtView.setText(getString(R.string.value_test_chapter_name, chapterName));
         mNoteTxtView.setText(getString(R.string.value_test_note));
+        mTestBarChart.setData(generateBarData(testCoverages));
+        mTestBarChart.invalidate();
     }
 
     private void startTest() {
