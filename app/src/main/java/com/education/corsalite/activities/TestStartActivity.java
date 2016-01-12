@@ -125,7 +125,7 @@ public class TestStartActivity extends AbstractBaseActivity {
 
     private BarData generateBarData(List<TestCoverage> testCoverages) {
         int index = 0;
-        BarData barData = new BarData();
+        List<String> columnNames = new ArrayList<>();
         ArrayList<BarEntry> entries = new ArrayList<>();
 
         for (TestCoverage testCoverage : testCoverages) {
@@ -133,16 +133,19 @@ public class TestStartActivity extends AbstractBaseActivity {
             float answersRemaining = Data.getInt(testCoverage.questionCount) - Data.getInt(testCoverage.attendedQCount);
             float answersWrong = Data.getInt(testCoverage.attendedQCount) - Data.getInt(testCoverage.attendedCorrectQCount);
 
-            //BarEntry barEntry = new BarEntry(new float[]{answersCorrect, answersRemaining, answersWrong}, index++);
-            BarEntry barEntry1 = new BarEntry(answersCorrect, index++);
-            entries.add(barEntry1);
+            columnNames.add(testCoverage.level);
+
+            BarEntry barEntry = new BarEntry(new float[]{answersCorrect, answersRemaining, answersWrong}, index++);
+            entries.add(barEntry);
         }
 
         BarDataSet barDataSet = new BarDataSet(entries, "");
+        barDataSet.setColors(new int[]{getResources().getColor(R.color.green), getResources().getColor(R.color.red), getResources().getColor(R.color.blue)});
         barDataSet.setValueTextColor(Color.rgb(60, 220, 78));
         barDataSet.setValueTextSize(10f);
         barDataSet.setBarSpacePercent(20f);
 
+        BarData barData = new BarData(columnNames);
         barData.addDataSet(barDataSet);
         barDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
 
