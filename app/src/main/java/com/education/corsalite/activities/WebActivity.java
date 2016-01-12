@@ -138,7 +138,6 @@ public class WebActivity extends AbstractBaseActivity {
                     throw new NullPointerException("You must have to pass content name");
                 }
             }
-
         }
         setListeners();
     }
@@ -718,19 +717,22 @@ public class WebActivity extends AbstractBaseActivity {
             fileName = htmlFile[i];
             f = getgetFile(fileName);
             if (f.exists()) {
-                if (!TextUtils.isEmpty(mContentName) && mContentName.equalsIgnoreCase(htmlFile[i].split(".")[0])) {
-                    if(htmlFile.length == contentModelList.size()) {
-                        mContentIdPosition = i;
-                    }
-                    if(f.getName().endsWith(Constants.VIDEO_FILE)) {
-                        String videoUrl = FileUtils.getUrlFromFile(f);
-                        if(videoUrl.length() > 0) {
-                            loadWeb(Constants.VIDEO_PREFIX_URL + videoUrl.replace("./", ""));
+                if (!TextUtils.isEmpty(mContentName)) {
+                    String[] data = htmlFile[i].split(".");
+                    if(data.length > 0 && mContentName.equalsIgnoreCase(data[0])){
+                        if (htmlFile.length == contentModelList.size()) {
+                            mContentIdPosition = i;
                         }
-                    } else {
-                        loadWeb(Constants.HTML_PREFIX_URL + f.getAbsolutePath());
+                        if (f.getName().endsWith(Constants.VIDEO_FILE)) {
+                            String videoUrl = FileUtils.getUrlFromFile(f);
+                            if (videoUrl.length() > 0) {
+                                loadWeb(Constants.VIDEO_PREFIX_URL + videoUrl.replace("./", ""));
+                            }
+                        } else {
+                            loadWeb(Constants.HTML_PREFIX_URL + f.getAbsolutePath());
+                        }
+                        return true;
                     }
-                    return true;
                 }
             }
         }
@@ -800,7 +802,6 @@ public class WebActivity extends AbstractBaseActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
     }

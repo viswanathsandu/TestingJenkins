@@ -417,6 +417,8 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     }
 
     private void setDataForAlert( View dialogView,final StudyCenter studyCenter) {
+        TextView takeTestLabel = (TextView) dialogView.findViewById(R.id.take_test);
+        takeTestLabel.setText(getString(R.string.menu_part_test));
         TextView score = (TextView) dialogView.findViewById(R.id.score);
         score.setText(studyCenter.getScore());
         TextView notes = (TextView) dialogView.findViewById(R.id.notes);
@@ -426,7 +428,9 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         dialogView.findViewById(R.id.take_test).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.cancel();
+                if(dialog != null ) {
+                    dialog.cancel();
+                }
                 startPartTest(studyCenter);
             }
         });

@@ -41,16 +41,7 @@ public class LoginActivity extends AbstractBaseActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         setListeners();
-        checkAutoLogin();
         sendAnalytics(getString(R.string.screen_login));
-    }
-
-    private void checkAutoLogin() {
-        String username = appPref.getValue("loginId");
-        String passwordHash =  appPref.getValue("passwordHash");
-        if(!TextUtils.isEmpty(username) && !TextUtils.isEmpty(passwordHash)) {
-            login(username, passwordHash, false);
-        }
     }
 
     private void setListeners() {

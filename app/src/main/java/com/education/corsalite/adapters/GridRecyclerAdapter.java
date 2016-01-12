@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
+import com.education.corsalite.activities.ExerciseActivity;
 import com.education.corsalite.activities.NotesActivity;
 import com.education.corsalite.activities.OfflineSubjectActivity;
 import com.education.corsalite.activities.StudyCentreActivity;
@@ -158,7 +159,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
             @Override
             public void onClick(View v) {
                 dialog.cancel();
-               // startExerciseActivity(chapter);
+                // startExerciseActivity(chapter);
                 startPartTest(chapter);
             }
         });
@@ -183,6 +184,24 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
                 startOfflineActivity(chapter);
             }
         });
+        dialogView.findViewById(R.id.flagged_questions).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+                startFlaggedQuestionView(chapter);
+            }
+        });
+    }
+
+    private void startFlaggedQuestionView(Chapters chapter) {
+        Intent exerciseIntent = new Intent(studyCentreActivity, ExerciseActivity.class);
+
+        exerciseIntent.putExtra(Constants.TEST_TITLE, "Flagged Questions");
+        exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
+        exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, studyCentreActivity.getSelectedSubjectId());
+        exerciseIntent.putExtra(Constants.SELECTED_SUBJECT, key);
+        exerciseIntent.putExtra(Constants.SELECTED_CHAPTERID, chapter.idCourseSubjectchapter);
+        studyCentreActivity.startActivity(exerciseIntent);
     }
 
     private void startPartTest(Chapters chapter){
@@ -194,6 +213,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, studyCentreActivity.getSelectedSubjectId());
         exerciseIntent.putExtra(Constants.SELECTED_SUBJECT, key);
         exerciseIntent.putExtra(Constants.SELECTED_CHAPTERID, chapter.idCourseSubjectchapter);
+        exerciseIntent.putExtra(Constants.SELECTED_CHAPTER_NAME, chapter.chapterName);
         studyCentreActivity.startActivity(exerciseIntent);
 
     }
