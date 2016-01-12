@@ -190,6 +190,12 @@ public class ApiManager {
 
     }
 
+    public void getTestCoverage(String studentId, String courseId, String subjectId, String chapterId, ApiCallback<List<TestCoverage>> callback) {
+        if (isApiOnline()) {
+            ApiClientService.get().getTestCoverage(studentId, courseId, subjectId, chapterId, callback);
+        }
+    }
+
     public void getUserProfile(String studentId, ApiCallback<UserProfileResponse> callback) {
         apiCacheHolder.setUserProfileRequest(studentId);
         if (isApiOnline() && isNetworkConnected()) {
