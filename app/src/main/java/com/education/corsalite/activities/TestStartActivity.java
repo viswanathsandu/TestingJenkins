@@ -133,7 +133,7 @@ public class TestStartActivity extends AbstractBaseActivity {
             float answersRemaining = Data.getInt(testCoverage.questionCount) - Data.getInt(testCoverage.attendedQCount);
             float answersWrong = Data.getInt(testCoverage.attendedQCount) - Data.getInt(testCoverage.attendedCorrectQCount);
 
-            columnNames.add(testCoverage.level);
+            columnNames.add("Level " + testCoverage.level);
 
             BarEntry barEntry = new BarEntry(new float[]{answersCorrect, answersRemaining, answersWrong}, index++);
             entries.add(barEntry);
@@ -141,6 +141,7 @@ public class TestStartActivity extends AbstractBaseActivity {
 
         BarDataSet barDataSet = new BarDataSet(entries, "");
         barDataSet.setColors(new int[]{getResources().getColor(R.color.green), getResources().getColor(R.color.red), getResources().getColor(R.color.blue)});
+        barDataSet.setDrawValues(false);
         barDataSet.setBarSpacePercent(20f);
 
         BarData barData = new BarData(columnNames);
