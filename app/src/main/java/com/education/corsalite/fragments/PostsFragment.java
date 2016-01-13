@@ -11,6 +11,9 @@ import android.widget.TextView;
 
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.PostAdapter;
+import com.education.corsalite.models.responsemodels.ForumPost;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -60,5 +63,9 @@ public class PostsFragment extends BaseFragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mPostAdapter = new PostAdapter(this);
         mRecyclerView.setAdapter(mPostAdapter);
+    }
+
+    private void setForumPosts(List<ForumPost> forumPosts){
+        mPostAdapter.setForumPostList(forumPosts);
     }
 }

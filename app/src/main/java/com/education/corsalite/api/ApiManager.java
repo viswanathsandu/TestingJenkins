@@ -18,6 +18,7 @@ import com.education.corsalite.models.responsemodels.EditProfileModel;
 import com.education.corsalite.models.responsemodels.ExamHistory;
 import com.education.corsalite.models.responsemodels.ExamModels;
 import com.education.corsalite.models.responsemodels.ExerciseModel;
+import com.education.corsalite.models.responsemodels.ForumPost;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
 import com.education.corsalite.models.responsemodels.Message;
@@ -385,6 +386,13 @@ public class ApiManager {
     public void postFlaggedQuestions(String update, ApiCallback<PostFlaggedQuestions> callback) {
         if (isApiOnline()) {
             ApiClientService.get().postFlaggedQuestions(update, callback);
+        }
+    }
+
+    public void getPosts(String courseID, String userID, String type, String BeginRowNumber, String mRowcount, ApiCallback<ForumPost> callback) {
+        if (isApiOnline()) {
+            // http://staging.corsalite.com/v1/webservices/Forums?idCourse=13&idUser=11391&type=AllPosts&BeginRowNumber=10&RowCount=3
+            ApiClientService.get().getForumPosts(courseID, userID, type, BeginRowNumber, mRowcount, callback);
         }
     }
 }
