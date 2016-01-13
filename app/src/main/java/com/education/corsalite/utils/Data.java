@@ -1,6 +1,10 @@
 package com.education.corsalite.utils;
 
+import android.graphics.Typeface;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.text.style.StyleSpan;
 
 /**
  * Created by vissu on 10/10/15.
@@ -55,5 +59,9 @@ public class Data {
         return 0l;
     }
 
-
+    public static SpannableString getBoldString(String text) {
+        SpannableString spannableString = new SpannableString(text);
+        spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, text.length() -1, 0);
+        return spannableString;
+    }
 }

@@ -33,6 +33,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit.client.Response;
 
 public class TestStartActivity extends AbstractBaseActivity {
@@ -45,6 +46,8 @@ public class TestStartActivity extends AbstractBaseActivity {
     ProgressBar mProgressBar;
     @Bind(R.id.txt_view_test_start_chapter_name)
     TextView mChapterNameTxtView;
+    @Bind(R.id.tv_failure_text)
+    TextView mFailureTextView;
     @Bind(R.id.txt_view_test_start_note)
     TextView mNoteTxtView;
 
@@ -58,21 +61,33 @@ public class TestStartActivity extends AbstractBaseActivity {
         frameLayout.addView(myView);
         ButterKnife.bind(this);
         setToolbarForTestStartScreen();
-        toolbar.findViewById(R.id.start_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startTest();
-            }
-        });
+        //Hide the toolabar button.
+        toolbar.findViewById(R.id.start_btn).setVisibility(View.GONE);
 
         initializeGraph();
         loadDataFromIntent();
         fetchDataFromServer();
     }
 
+    @OnClick({R.id.btn_header_test_cancel, R.id.btn_header_test_next})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btn_header_test_cancel : {
+                onBackPressed();
+                break;
+            }
+            case R.id.btn_header_test_next : {
+                startActivity(ExerciseActivity.getMyIntent(this, getIntent().getExtras()));
+                finish();
+                break;
+            }
+        }
+    }
+
     private void initializeGraph() {
-        mTestBarChart.setDescription("");
         mTestBarChart.setBackgroundColor(Color.WHITE);
+        mTestBarChart.setDescription("");
+        mTestBarChart.setDrawBarShadow(false);
         mTestBarChart.setDrawGridBackground(false);
 
         YAxis rightAxis = mTestBarChart.getAxisRight();
@@ -81,13 +96,16 @@ public class TestStartActivity extends AbstractBaseActivity {
 
         YAxis leftAxis = mTestBarChart.getAxisLeft();
         leftAxis.setDrawGridLines(true);
+        leftAxis.setSpaceTop(10f);
+        leftAxis.setTextSize(15f);
 
         XAxis xAxis = mTestBarChart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
+        xAxis.setTextSize(15f);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
 
         mTestBarChart.getLegend().setTextSize(15f);
-        mTestBarChart.getLegend().setCustom(new int[]{getResources().getColor(R.color.green), getResources().getColor(R.color.red), getResources().getColor(R.color.blue)},
+        mTestBarChart.getLegend().setCustom(new int[]{getResources().getColor(R.color.green), getResources().getColor(R.color.red), getResources().getColor(R.color.skyblue)},
                 getResources().getStringArray(R.array.label_questions));
         mTestBarChart.getLegend().setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
     }
@@ -100,14 +118,18 @@ public class TestStartActivity extends AbstractBaseActivity {
                         super.failure(error);
                         L.error(error.message);
                         mProgressBar.setVisibility(View.GONE);
+                        mFailureTextView.setText("Sorry, couldn't fetch data");
                     }
 
                     @Override
                     public void success(List<TestCoverage> testCoverages, Response response) {
                         super.success(testCoverages, response);
+                        if (isFinishing() || isDestroyed()) {
+                            return;
+                        }
+                        setData(testCoverages);
                         mProgressBar.setVisibility(View.GONE);
                         mContainerLayout.setVisibility(View.VISIBLE);
-                        setData(testCoverages);
                     }
                 });
     }
@@ -140,7 +162,7 @@ public class TestStartActivity extends AbstractBaseActivity {
         }
 
         BarDataSet barDataSet = new BarDataSet(entries, "");
-        barDataSet.setColors(new int[]{getResources().getColor(R.color.green), getResources().getColor(R.color.red), getResources().getColor(R.color.blue)});
+        barDataSet.setColors(new int[]{getResources().getColor(R.color.green), getResources().getColor(R.color.red), getResources().getColor(R.color.skyblue)});
         barDataSet.setDrawValues(false);
         barDataSet.setBarSpacePercent(20f);
 
@@ -153,13 +175,13 @@ public class TestStartActivity extends AbstractBaseActivity {
 
     private void setData(List<TestCoverage> testCoverages) {
         mChapterNameTxtView.setText(getString(R.string.value_test_chapter_name, chapterName));
-        mNoteTxtView.setText(getString(R.string.value_test_note));
+        mNoteTxtView.setText(getNote());
         mTestBarChart.setData(generateBarData(testCoverages));
         mTestBarChart.invalidate();
     }
 
-    private void startTest() {
-        startActivity(ExerciseActivity.getMyIntent(this, getIntent().getExtras()));
-        finish();
+    private CharSequence getNote() {
+        String noteValue = getString(R.string.value_test_note);
+        return TextUtils.concat(Data.getBoldString(getString(R.string.label_note)), noteValue);
     }
 }
