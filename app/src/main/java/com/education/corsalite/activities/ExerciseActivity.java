@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.TypedValue;
@@ -142,6 +143,14 @@ public class ExerciseActivity extends AbstractBaseActivity {
     String topicIds = null;
 
     boolean isFlagged = false;
+
+    public static Intent getMyIntent(Context context, @Nullable Bundle extras) {
+        Intent intent = new Intent(context, ExerciseActivity.class);
+        if (extras != null) {
+            intent.putExtras(extras);
+        }
+        return intent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
