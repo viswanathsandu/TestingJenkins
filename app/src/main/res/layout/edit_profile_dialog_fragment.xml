@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="wrap_content"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="25dp">
+    android:padding="18dp">
 
     <EditText
         android:id="@+id/username_txt"
@@ -59,7 +60,7 @@
             android:layout_margin="8dp"
             android:background="@color/transparent"
             android:padding="5dp"
-            android:text="Cancel"
+            android:text="CANCEL"
             fontPath="@string/roboto_regular"
             android:textColor="@color/black" />
 
@@ -70,7 +71,7 @@
             android:layout_margin="8dp"
             android:background="@color/transparent"
             android:padding="5dp"
-            android:text="Submit"
+            android:text="UPDATE"
             fontPath="@string/roboto_regular"
             android:textColor="@color/blue"/>
 
