@@ -79,7 +79,7 @@ public class EditProfileDialogFragment extends DialogFragment {
                 super.failure(error);
                 L.error(error.message);
                 // TODO : its returning failed. but data is being updated. Need to fix it
-                ((AbstractBaseActivity)getActivity()).showToast("Updated User Profile Successfully");
+                ((AbstractBaseActivity)getActivity()).showToast("Failed to Update User Profile");
                 getDialog().cancel();
             }
 
