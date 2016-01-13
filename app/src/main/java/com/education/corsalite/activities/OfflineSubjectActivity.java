@@ -35,7 +35,7 @@ import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.utils.AppPref;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.FileUtilities;
-import com.education.corsalite.utils.L;
+import com.google.gson.Gson;
 import com.unnamed.b.atv.model.TreeNode;
 import com.unnamed.b.atv.view.AndroidTreeView;
 
@@ -115,9 +115,9 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
         LinearLayout subjectLayout = (LinearLayout) d.findViewById(R.id.subject_layout);
         subjectLayout.removeAllViews();
         subjectLayout.addView(getTextView(root.getChildren().get(0).getValue().toString() + "\n"));
-
         LinearLayout topicLayout = (LinearLayout) d.findViewById(R.id.topic_layout);
         topicLayout.removeAllViews();
+        List<OfflineContent> offlineContents = new ArrayList<>();
         for (TreeNode n : root.getChildren()) {
             int topicCount = 0;
             for (TreeNode innerNode : n.getChildren()) {
@@ -134,6 +134,10 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
                             } else {
                                 htmlContentId += contentModel.idContent + ",";
                             }
+                            OfflineContent offlineContent = new OfflineContent(mCourseId,mCourseName,mSubjectId,mSubjectName,
+                                    mChapterId,mChapterName,topicModel.idTopic,topicModel.topicName,
+                                    contentModel.idContent,contentModel.contentName,contentModel.contentName + "." + contentModel.type);
+                            offlineContents.add(offlineContent);
                         }
                         contentCount++;
                     }
@@ -143,6 +147,7 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
                 topicCount++;
             }
         }
+        AppPref.getInstance(this).save("DATA_IN_PROGRESS", new Gson().toJson(offlineContents));
         setUpDialogLogic(method(videoContentId), method(htmlContentId));
     }
 
@@ -248,7 +253,9 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
             offlineContents.add(offlineContent);
             saveFileToDisk(getHtmlText(content),content);
         }
+        AppPref.getInstance(OfflineSubjectActivity.this).save("DATA_IN_PROGRESS", null);
         DbManager.getInstance(this).saveOfflineContent(offlineContents);
+
     }
 
     private String getHtmlText(Content content){

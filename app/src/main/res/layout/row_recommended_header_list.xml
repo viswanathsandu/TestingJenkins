@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_width="0dp"
         android:padding="15dp"
-        android:text="Subject"
+        android:text="SUBJECT"
         style="@style/analytics_text_style"
         android:singleLine="true"
         android:ellipsize="end"/>
@@ -23,7 +23,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="15dp"
-        android:text="Chapter"
+        android:text="CHAPTER"
         style="@style/analytics_text_style"
         android:singleLine="true"
         android:ellipsize="end"/>
@@ -36,7 +36,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="15dp"
-        android:text="Topic"
+        android:text="TOPIC"
         style="@style/analytics_text_style"
         android:singleLine="true"
         android:ellipsize="end"/>
@@ -49,7 +49,7 @@
         android:layout_height="wrap_content"
         android:padding="15dp"
         style="@style/analytics_text_style"
-        android:text="Recent Test Date" />
+        android:text="RECENT TEST DATE" />
 
 
     <TextView
@@ -60,7 +60,7 @@
         android:layout_height="wrap_content"
         android:padding="15dp"
         style="@style/analytics_text_style"
-        android:text="Marks"
+        android:text="MARKS"
         android:singleLine="true"
         android:ellipsize="end"/>
 
@@ -71,19 +71,31 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="15dp"
-        android:text="Accuracy"
+        android:text="ACCURACY"
         style="@style/analytics_text_style"
         android:singleLine="true"
         android:ellipsize="end"/>
 
     <TextView
+    android:gravity="center"
+    android:layout_weight="1"
+    android:id="@+id/tv_speed"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:padding="15dp"
+    android:text="SPEED"
+    style="@style/analytics_text_style"
+    android:singleLine="true"
+    android:ellipsize="end"/>
+
+    <TextView
         android:gravity="center"
         android:layout_weight="1"
-        android:id="@+id/tv_speed"
+        android:id="@+id/tv_time"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="15dp"
-        android:text="Speed"
+        android:text="TIME"
         style="@style/analytics_text_style"
         android:singleLine="true"
         android:ellipsize="end"/>

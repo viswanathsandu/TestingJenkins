@@ -83,4 +83,16 @@
         style="@style/analytics_text_style"
         android:singleLine="true"
         android:ellipsize="end"/>
+
+    <TextView
+        android:gravity="center"
+        android:layout_weight="1"
+        android:id="@+id/tv_time"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:text="Time"
+        style="@style/analytics_text_style"
+        android:singleLine="true"
+        android:ellipsize="end"/>
 </LinearLayout>
