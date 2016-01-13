@@ -14,7 +14,15 @@
         android:text="Effective Date"
         style="@style/virtual_currency_header_text"/>
 
-
+    <TextView
+        android:gravity="center"
+        android:layout_weight="1"
+        android:id="@+id/tv_time"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:text="TIME"
+        style="@style/virtual_currency_header_text"/>
     <TextView
         android:gravity="center"
         android:layout_weight="1"
