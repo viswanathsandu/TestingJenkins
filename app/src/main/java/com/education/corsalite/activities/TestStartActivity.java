@@ -96,7 +96,6 @@ public class TestStartActivity extends AbstractBaseActivity {
 
         YAxis leftAxis = mTestBarChart.getAxisLeft();
         leftAxis.setDrawGridLines(true);
-        leftAxis.setSpaceTop(10f);
         leftAxis.setTextSize(15f);
 
         XAxis xAxis = mTestBarChart.getXAxis();
@@ -105,8 +104,7 @@ public class TestStartActivity extends AbstractBaseActivity {
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
 
         mTestBarChart.getLegend().setTextSize(15f);
-        mTestBarChart.getLegend().setCustom(new int[]{getResources().getColor(R.color.green), getResources().getColor(R.color.red), getResources().getColor(R.color.skyblue)},
-                getResources().getStringArray(R.array.label_questions));
+        mTestBarChart.getLegend().setEnabled(false);
         mTestBarChart.getLegend().setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
     }
 

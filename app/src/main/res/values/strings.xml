@@ -46,14 +46,14 @@
     <string name="label_cancel">Cancel</string>
     <string name="label_next">Next</string>
     <string name="label_note">Note:</string>
+    <string name="label_test_level">Level</string>
     <string name="label_test_coverage_chapter">Test Coverage by Chapter</string>
-    <string-array name="label_questions">
-        <item>Answered Correct Questions</item>
-        <item>Answered Wrong Questions</item>
-        <item>Remaining Questions</item>
-    </string-array>
+    <string name="label_test_question_count">Question Count</string>
+    <string name="label_test_questions_correct">Answered Correct Questions</string>
+    <string name="label_test_questions_remaining">Remaining Questions</string>
+    <string name="label_test_questions_wrong">Answered Wrong Questions</string>
     <string name="value_test_chapter_name">Practice Test Coverage (%%) by Chapter - %1$s</string>
-    <string name="value_test_note">Your current level in this chapter is %1$s. Your accuracy at this level so far is %2$s%%, with a score of %3$s out of %4$s. You need to earn an overall accuracy of 70%% and a minimum coverage of 10 Marks (number of questions could be different) to break this level. At this point, you have to take more tests and answer questions correctly to improve your overall accuracy to 70%% and break this level. Meanwhile, you can try adaptive test to attempt questions from increasingly higher levels based on your performance</string>
+    <string name="value_test_note">&#032;Your current level in this chapter is %1$s. Your accuracy at this level so far is %2$s%%, with a score of %3$s out of %4$s. You need to earn an overall accuracy of 70%% and a minimum coverage of 10 Marks (number of questions could be different) to break this level. At this point, you have to take more tests and answer questions correctly to improve your overall accuracy to 70%% and break this level. Meanwhile, you can try adaptive test to attempt questions from increasingly higher levels based on your performance</string>
 
 
     <!--Fonts-->
