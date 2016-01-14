@@ -43,7 +43,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
     public void onBindViewHolder(PostHolder holder, int position) {
         ForumPost forumPost = mForumPostList.get(position);
         holder.tvQuestion.setText(forumPost.getSearchPost());
-        holder.tvDate.setText(forumPost.getDatetime()+" by ");
+        holder.tvDate.setText(forumPost.getDatetime()+" by");
         holder.tvUserName.setText(forumPost.getDisplayName());
         holder.tvQuestionDesc.setText(Html.fromHtml(forumPost.getHtmlText()));
         if(forumPost.getCourseName()==null || forumPost.getCourseName().isEmpty()){

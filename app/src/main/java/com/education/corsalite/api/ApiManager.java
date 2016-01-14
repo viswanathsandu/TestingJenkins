@@ -389,9 +389,8 @@ public class ApiManager {
         }
     }
 
-    public void getPosts(String courseID, String userID, String type, String BeginRowNumber, String mRowcount, ApiCallback<ForumPost> callback) {
+    public void getAllPosts(String courseID, String userID, String type, String BeginRowNumber, String mRowcount, ApiCallback<ArrayList<ForumPost>> callback) {
         if (isApiOnline()) {
-            // http://staging.corsalite.com/v1/webservices/Forums?idCourse=13&idUser=11391&type=AllPosts&BeginRowNumber=10&RowCount=3
             ApiClientService.get().getForumPosts(courseID, userID, type, BeginRowNumber, mRowcount, callback);
         }
     }

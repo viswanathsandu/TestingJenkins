@@ -246,6 +246,10 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         if(config.enableChallangeTest != null && config.enableChallangeTest) {
             navigationView.findViewById(R.id.navigation_challenge_your_friends).setVisibility(View.VISIBLE);
         }
+
+        if(config.enableForumTest != null && config.enableForumTest) {
+            navigationView.findViewById(R.id.navigation_forum).setVisibility(View.VISIBLE);
+        }
         if(config.enableLogout != null && config.enableLogout) {
             navigationView.findViewById(R.id.navigation_logout).setVisibility(View.VISIBLE);
         }

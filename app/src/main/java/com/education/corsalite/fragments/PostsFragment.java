@@ -9,14 +9,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.db4o.collections.ArrayList4;
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.PostAdapter;
+import com.education.corsalite.api.ApiCallback;
+import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.models.responsemodels.ForumPost;
+import com.education.corsalite.models.responsemodels.PostFlaggedQuestions;
+import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import retrofit.client.Response;
 
 /**
  * Created by sridharnalam on 1/8/16.
@@ -63,6 +70,20 @@ public class PostsFragment extends BaseFragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mPostAdapter = new PostAdapter(this);
         mRecyclerView.setAdapter(mPostAdapter);
+        loadForumPosts();
+    }
+
+    private void loadForumPosts() {
+        // // http://staging.corsalite.com/v1/webservices/Forums?idCourse=13&idUser=11391&type=AllPosts&BeginRowNumber=10&RowCount=3
+
+        ApiManager.getInstance(getActivity()).getAllPosts("13", "1139", "AllPosts", "10", "3",
+                new ApiCallback<ArrayList<ForumPost>>(getActivity()) {
+                    @Override
+                    public void success(ArrayList<ForumPost> forumPosts, Response response) {
+                        super.success(forumPosts, response);
+                        setForumPosts(forumPosts);
+                    }
+                });
     }
 
     private void setForumPosts(List<ForumPost> forumPosts){

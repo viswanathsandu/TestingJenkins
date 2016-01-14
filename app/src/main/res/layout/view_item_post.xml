@@ -64,7 +64,7 @@
             android:id="@+id/tv_post_question_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="5dp"
             android:textColor="@android:color/black"
             android:textSize="12sp"
             android:textStyle="normal"
@@ -78,9 +78,10 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
                 android:layout_marginRight="5dp"
+                android:gravity="center_vertical"
                 android:src="@drawable/ic_tags" />
 
             <TextView
@@ -95,6 +96,7 @@
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
                 android:text="Course"
+                android:textSize="10sp"
                 android:textColor="@android:color/white" />
 
             <TextView
@@ -109,6 +111,7 @@
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
                 android:text="Subject"
+                android:textSize="10sp"
                 android:textColor="@android:color/white" />
 
             <TextView
@@ -123,6 +126,7 @@
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
                 android:text="Chapter"
+                android:textSize="10sp"
                 android:textColor="@android:color/white" />
 
             <TextView
@@ -137,6 +141,7 @@
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
                 android:text="Topic"
+                android:textSize="10sp"
                 android:textColor="@android:color/white" />
 
         </LinearLayout>
@@ -152,7 +157,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
-                android:drawableLeft="@drawable/abc_btn_check_to_on_mtrl_000"
+                android:drawableLeft="@drawable/ic_like"
                 android:gravity="center_vertical"
                 android:paddingBottom="7dp"
                 android:paddingRight="10dp"
@@ -165,7 +170,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
-                android:drawableLeft="@drawable/abc_btn_check_to_on_mtrl_000"
+                android:drawableLeft="@drawable/ic_comment"
                 android:gravity="center_vertical"
                 android:paddingBottom="7dp"
                 android:paddingRight="10dp"
@@ -178,7 +183,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
-                android:drawableLeft="@drawable/abc_btn_check_to_on_mtrl_000"
+                android:drawableLeft="@drawable/ic_view"
                 android:gravity="center_vertical"
                 android:paddingBottom="7dp"
                 android:paddingRight="10dp"
@@ -199,13 +204,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
                 android:background="@android:color/holo_orange_light"
-                android:drawableLeft="@drawable/abc_ic_menu_paste_mtrl_am_alpha"
+                android:drawableLeft="@drawable/ic_bookmark"
                 android:drawablePadding="5dp"
                 android:gravity="center_vertical"
-                android:paddingBottom="7dp"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:paddingTop="7dp"
+                android:paddingBottom="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="5dp"
                 android:text="Bookmarks"
                 android:textColor="@android:color/white" />
 
@@ -215,13 +220,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
                 android:background="@android:color/holo_green_dark"
-                android:drawableLeft="@drawable/abc_ic_menu_paste_mtrl_am_alpha"
+                android:drawableLeft="@drawable/ic_like"
                 android:drawablePadding="5dp"
                 android:gravity="center_vertical"
-                android:paddingBottom="7dp"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:paddingTop="7dp"
+                android:paddingBottom="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="5dp"
                 android:text="Like"
                 android:textColor="@android:color/white" />
 
@@ -231,13 +236,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
                 android:background="@android:color/holo_blue_dark"
-                android:drawableLeft="@drawable/abc_ic_menu_paste_mtrl_am_alpha"
+                android:drawableLeft="@drawable/ic_comment"
                 android:drawablePadding="5dp"
                 android:gravity="center_vertical"
-                android:paddingBottom="7dp"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:paddingTop="7dp"
+                android:paddingBottom="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="5dp"
                 android:text="Comment"
                 android:textColor="@android:color/white" />
         </LinearLayout>

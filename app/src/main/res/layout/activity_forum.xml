@@ -13,6 +13,7 @@
         style="@style/TabLayoutStyle"
         app:tabMode="scrollable"
         app:tabPaddingStart="20dp"
+        android:elevation="2dp"
         app:tabPaddingEnd="20dp"/>
 
 

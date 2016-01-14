@@ -29,6 +29,7 @@ import com.education.corsalite.models.responsemodels.UserProfileResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencyBalanceResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencySummaryResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit.http.GET;
@@ -154,5 +155,5 @@ public interface ICorsaliteApi {
 
     // http://staging.corsalite.com/v1/webservices/Forums?idCourse=13&idUser=11391&type=AllPosts&BeginRowNumber=10&RowCount=3
     @GET("/Forums")
-    void getForumPosts(@Query("idCourse") String courseID, @Query("idUser") String userID, @Query("type") String type, @Query("BeginRowNumber") int beginTowNumber, @Query("RowCount") int rowCount, ApiCallback<List<ForumPost>> callback);
+    void getForumPosts(@Query("idCourse") String courseID, @Query("idUser") String userID, @Query("type") String type, @Query("BeginRowNumber") String beginTowNumber, @Query("RowCount") String rowCount, ApiCallback<ArrayList<ForumPost>> callback);
 }
