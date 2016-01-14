@@ -41,14 +41,6 @@
         android:padding="15dp"
         style="@style/virtual_currency_header_text"
         android:text="Rank" />
-    <TextView
-        android:gravity="center"
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:padding="15dp"
-        style="@style/virtual_currency_header_text"
-        android:text="Status" />
 
     <TextView
         android:gravity="center"
@@ -58,4 +50,13 @@
         android:padding="15dp"
         style="@style/virtual_currency_header_text"
         android:text="Action" />
+    <TextView
+        android:gravity="center"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        style="@style/virtual_currency_header_text"
+        android:text="Status" />
+
 </LinearLayout>
