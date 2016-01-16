@@ -19,6 +19,7 @@ import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.Encryption;
+import com.education.corsalite.utils.SystemUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -54,11 +55,15 @@ public class LoginActivity extends AbstractBaseActivity {
         forgotPasswordTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, WebviewActivity.class);
-                intent.putExtra(URL, Constants.FORGOT_PASSWORD_URL);
-                intent.putExtra(TITLE, getString(R.string.forgot_password));
-                intent.putExtra("clear_cookies", true);
-                startActivity(intent);
+                if(SystemUtils.isNetworkConnected(LoginActivity.this)) {
+                    Intent intent = new Intent(LoginActivity.this, WebviewActivity.class);
+                    intent.putExtra(URL, Constants.FORGOT_PASSWORD_URL);
+                    intent.putExtra(TITLE, getString(R.string.forgot_password));
+                    intent.putExtra("clear_cookies", true);
+                    startActivity(intent);
+                }else {
+                    showToast("Please check your network connection");
+                }
             }
         });
 
