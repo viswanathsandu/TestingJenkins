@@ -12,6 +12,7 @@ import com.education.corsalite.fragments.ProgressReportTabFragment;
 import com.education.corsalite.fragments.RecommendedTabFragment;
 import com.education.corsalite.fragments.TestCoverageTabFragment;
 import com.education.corsalite.fragments.TimeManagementTabFragment;
+import com.education.corsalite.fragments.UsageAnalysisFragment;
 
 /**
  * Created by Aastha on 27/09/15.
@@ -23,6 +24,7 @@ public class AnalyticsActivity extends AbstractBaseActivity implements Analytics
     public static final String K_TITLE_TEST_COVERAGE = "testCoverage";
     public static final String K_TITLE_TIME_MANAGEMENT = "timeManagement";
     public static final String K_TITLE_PROGRESS_REPORT= "progressReport";
+    public static final String K_TITLE_USAGE_ANALYSIS= "usageAnalysis";
 
 
     @Override
@@ -63,6 +65,10 @@ public class AnalyticsActivity extends AbstractBaseActivity implements Analytics
             case K_TITLE_TIME_MANAGEMENT:
                 TimeManagementTabFragment timeManagementTabFragment = new TimeManagementTabFragment();
                 getFragmentManager().beginTransaction().replace(R.id.fl_analytics_detail,timeManagementTabFragment).commit();
+                break;
+            case K_TITLE_USAGE_ANALYSIS:
+                UsageAnalysisFragment usageAnalysisFragment = new UsageAnalysisFragment();
+                getFragmentManager().beginTransaction().replace(R.id.fl_analytics_detail,usageAnalysisFragment).commit();
                 break;
             default:
                 AccuracySpeedTabFragment accuracySpeedTabFragment1 = new AccuracySpeedTabFragment();
