@@ -394,4 +394,10 @@ public class ApiManager {
             ApiClientService.get().getForumPosts(courseID, userID, type, BeginRowNumber, mRowcount, callback);
         }
     }
+
+    public void getMyPosts(String courseID, String userID, ApiCallback<ArrayList<ForumPost>> callback) {
+        if (isApiOnline()) {
+            ApiClientService.get().getForumPosts(courseID, userID, callback);
+        }
+    }
 }

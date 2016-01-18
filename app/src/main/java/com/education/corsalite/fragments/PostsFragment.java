@@ -14,6 +14,7 @@ import com.education.corsalite.R;
 import com.education.corsalite.adapters.PostAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
+import com.education.corsalite.listener.SocialEventsListener;
 import com.education.corsalite.models.responsemodels.ForumPost;
 import com.education.corsalite.models.responsemodels.PostFlaggedQuestions;
 import com.google.gson.Gson;
@@ -28,7 +29,7 @@ import retrofit.client.Response;
 /**
  * Created by sridharnalam on 1/8/16.
  */
-public class PostsFragment extends BaseFragment {
+public class PostsFragment extends BaseFragment implements SocialEventsListener {
     public static final String MEAL_TYPE_ARG = "MEAL_TYPE_ARG";
 
     private int mPage;
@@ -70,7 +71,16 @@ public class PostsFragment extends BaseFragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mPostAdapter = new PostAdapter(this);
         mRecyclerView.setAdapter(mPostAdapter);
-        loadForumPosts();
+        switch (mPage){
+            case 0:
+                loadForumPosts();
+                break;
+            case 1:
+                loadForumMyPosts();
+                break;
+            default:
+                break;
+        }
     }
 
     private void loadForumPosts() {
@@ -86,7 +96,34 @@ public class PostsFragment extends BaseFragment {
                 });
     }
 
-    private void setForumPosts(List<ForumPost> forumPosts){
+    private void loadForumMyPosts() {
+        // http://staging.corsalite.com/v1/webservices/Forums?idCourse=17&idUser=69
+        ApiManager.getInstance(getActivity()).getMyPosts("17", "69",
+                new ApiCallback<ArrayList<ForumPost>>(getActivity()) {
+                    @Override
+                    public void success(ArrayList<ForumPost> forumPosts, Response response) {
+                        super.success(forumPosts, response);
+                        setForumPosts(forumPosts);
+                    }
+                });
+    }
+
+    private void setForumPosts(List<ForumPost> forumPosts) {
         mPostAdapter.setForumPostList(forumPosts);
+    }
+
+    @Override
+    public void onLikeClicked() {
+        //TODO:
+    }
+
+    @Override
+    public void onCommentClicked() {
+        //TODO:
+    }
+
+    @Override
+    public void onBookmarkClicked() {
+        //TODO:
     }
 }

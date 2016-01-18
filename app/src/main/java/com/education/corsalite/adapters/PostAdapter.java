@@ -10,10 +10,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
-import com.education.corsalite.fragments.PostsFragment;
+import com.education.corsalite.listener.SocialEventsListener;
 import com.education.corsalite.models.responsemodels.ForumPost;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +25,11 @@ import butterknife.ButterKnife;
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
 
     private List<ForumPost> mForumPostList;
+    private SocialEventsListener mSocialEventsListener;
 
-    public PostAdapter(PostsFragment postsFragment) {
+    public PostAdapter(SocialEventsListener listener) {
         mForumPostList = new ArrayList<>();
+        mSocialEventsListener = listener;
     }
 
     @Override
@@ -73,6 +73,27 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
         holder.tvComments.setText(forumPost.getPostReplies()+" Comments");
         holder.tvLikes.setText(forumPost.getPostLikes()+" Likes");
         holder.tvViews.setText(forumPost.getPostViews()+" Views");
+
+        holder.tvActionBookmark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSocialEventsListener.onBookmarkClicked();
+            }
+        });
+
+        holder.tvActionComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSocialEventsListener.onCommentClicked();
+            }
+        });
+
+        holder.tvActionLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSocialEventsListener.onLikeClicked();
+            }
+        });
     }
 
     @Override
