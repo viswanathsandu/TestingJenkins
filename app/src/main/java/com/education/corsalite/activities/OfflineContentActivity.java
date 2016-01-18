@@ -60,6 +60,9 @@ public class OfflineContentActivity extends AbstractBaseActivity {
     @Override
     public void onEvent(OfflineEventClass offlineEventClass) {
         L.info("Saved data with this id: "+offlineEventClass.id);
+        if(offlineEventListener!=null) {
+            offlineEventListener.onUpdateOfflineData(offlineEventClass.id);
+        }
         super.onEvent(offlineEventClass);
     }
 
@@ -109,7 +112,7 @@ public class OfflineContentActivity extends AbstractBaseActivity {
 
     @Override
     public void onBackPressed() {
-        if(offlineEventListener!=null) {
+        if (offlineEventListener != null) {
             offlineEventListener.onUpdateOfflineData(selectedCourse.courseId.toString());
         }
         super.onBackPressed();

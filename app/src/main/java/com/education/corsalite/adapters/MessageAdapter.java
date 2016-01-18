@@ -33,12 +33,23 @@ public class MessageAdapter extends AbstractRecycleViewAdapter {
 
     @Override
     public MessageDataHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new MessageDataHolder(inflater.inflate(R.layout.row_messages_list, parent, false));
+        View view  =inflater.inflate(R.layout.row_messages_list, parent, false) ;
+        if((viewType+1)% 2 == 0)
+        {
+            view.setBackgroundColor(inflater.getContext().getResources().getColor(R.color.tab_recycler_alternate_row));
+
+        }else {
+            view.setBackgroundColor(inflater.getContext().getResources().getColor(R.color.white));
+        }
+        return new MessageDataHolder(view);
+    }
+    @Override
+    public int getItemViewType(int position) {
+        return position;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        // TODO :
         try {
             ((MessageDataHolder) holder).bindData(position, (Message)getItem(position));
         } catch (Exception e) {

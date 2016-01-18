@@ -20,7 +20,10 @@ import com.education.corsalite.holders.IconTreeItemHolder;
 import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
+import com.education.corsalite.utils.AppPref;
 import com.education.corsalite.utils.FileUtilities;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.unnamed.b.atv.model.TreeNode;
 import com.unnamed.b.atv.view.AndroidTreeView;
 
@@ -44,7 +47,7 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
     String selectedCourse;
     String subjectId = "";
     String chapterId = "";
-    String topicId = "";
+    ArrayList<String> contentIds;
 
     @Nullable
     @Override
@@ -65,7 +68,15 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
             }
 
             @Override
-            public void success(List<OfflineContent> offlineContents, Response response) {
+            public void success(List<OfflineContent> offlineContentsList, Response response) {
+                ArrayList<OfflineContent> offlineContents = new ArrayList<>(offlineContentsList);
+                String savedData = AppPref.getInstance(getActivity()).getValue("DATA_IN_PROGRESS");
+                ArrayList<OfflineContent> contents = new Gson().fromJson(savedData, new TypeToken<ArrayList<OfflineContent>>() {
+                }.getType());
+                if(contents != null) {
+                    offlineContents.addAll(contents);
+                    getTopicIds(contents);
+                }
                 offlineContentList = new ArrayList<>();
                 for(OfflineContent offlineContent: offlineContents) {
                     if(offlineContent.courseId.equalsIgnoreCase(course.courseId.toString())) {
@@ -83,6 +94,13 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
         });
     }
 
+    private void getTopicIds(ArrayList<OfflineContent> contents) {
+        contentIds = new ArrayList<>();
+        for(OfflineContent offlineContent : contents){
+            contentIds.add(offlineContent.contentId);
+        }
+    }
+
     /*private void updateContentIndexResponses(String courseId) {
         Type contentIndexType = new TypeToken<List<ContentIndex>>() {
         }.getType();
@@ -91,6 +109,12 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
         DbManager.getInstance(getActivity()).saveContentIndexList(jsonObject, courseId, LoginUserCache.getInstance().loginResponse.studentId);
     }*/
 
+    private void updateContentIndexResponses(String contentId){
+        if(contentIds != null){
+            contentIds.remove(contentId);
+            initNodes();
+        }
+    }
     @Override
     public void onCourseIdSelected(Course course) {
         getContentIndexResponse(course);
@@ -98,8 +122,8 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
     }
 
     @Override
-    public void onUpdateOfflineData(String courseId) {
-        //updateContentIndexResponses(courseId);
+    public void onUpdateOfflineData(String contentId) {
+        updateContentIndexResponses(contentId);
     }
 
     private void initNodes() {
@@ -114,7 +138,7 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
 
             }
             if(subjectRoot == null){
-                subjectRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_subject_white, offlineContent.subjectName,offlineContent.subjectId,"subject"));
+                subjectRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_subject_white, offlineContent.subjectName,offlineContent.subjectId,"subject",false));
                 root.addChild(subjectRoot);
             }
 
@@ -126,11 +150,12 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
                 }
             }
             if(chapterRoot == null){
-                chapterRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_chapter,  offlineContent.chapterName,offlineContent.chapterId,"chapter"));
+                chapterRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_chapter,  offlineContent.chapterName,offlineContent.chapterId,"chapter",false));
                 subjectRoot.addChild(chapterRoot);
             }
 
             TreeNode topicRoot =null;
+            boolean showProgress ;
             for(TreeNode topicNode:chapterRoot.getChildren()) {
                 if (((IconTreeItemHolder.IconTreeItem)topicNode.getValue()).id.equalsIgnoreCase(offlineContent.topicId)) {
                     topicRoot = topicNode ;
@@ -138,7 +163,7 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
                 }
             }
             if(topicRoot == null){
-                topicRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_chapter, offlineContent.topicName,offlineContent.topicId,"topic"));
+                topicRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_chapter, offlineContent.topicName,offlineContent.topicId,"topic",false));
                 chapterRoot.addChild(topicRoot);
             }
 
@@ -150,7 +175,8 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
                 }
             }
             if(contentRoot == null){
-                contentRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_topics,offlineContent.fileName, offlineContent.contentId,"content"));
+                showProgress = contentIds != null && contentIds.contains(offlineContent.contentId);
+                contentRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_topics,offlineContent.fileName, offlineContent.contentId,"content",showProgress));
                 topicRoot.addChild(contentRoot);
             }
         }
@@ -259,7 +285,6 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
         intent.putExtra("courseId", AbstractBaseActivity.selectedCourse.courseId.toString());
         intent.putExtra("subjectId", subjectId);
         intent.putExtra("chapterId", chapterId);
-        intent.putExtra("topicId",contentId);
         intent.putExtra("contentId",contentId);
         intent.putExtra("contentName",contentName);
         getActivity().startActivity(intent);
