@@ -1,7 +1,6 @@
 package com.education.corsalite.holders;
 
 import android.content.Context;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
@@ -46,6 +45,8 @@ public class CheckedItemViewHolder extends TreeNode.BaseNodeViewHolder<String> {
                 for (TreeNode n : node.getChildren()) {
                     getTreeView().selectNode(n, isChecked);
                 }
+                TreeNode pnode = node.getParent();
+                pnode.setSelected(isChecked);
             }
         });
         nodeSelector.setChecked(node.isSelected());

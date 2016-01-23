@@ -185,6 +185,8 @@ public class AnalyticsTitleFragment extends Fragment{
                     progressReport.setTextColor(Color.WHITE);
                     accuracy.setBackgroundColor(getResources().getColor(R.color.green));
                     accuracy.setTextColor(Color.WHITE);
+                    recommededReading.setBackgroundColor(getResources().getColor(R.color.green));
+                    recommededReading.setTextColor(Color.WHITE);
                     testCoverage.setBackgroundColor(getResources().getColor(R.color.green));
                     testCoverage.setTextColor(Color.WHITE);
                     break;

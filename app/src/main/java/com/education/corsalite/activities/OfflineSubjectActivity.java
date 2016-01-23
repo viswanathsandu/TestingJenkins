@@ -171,12 +171,12 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
             @Override
             public void onClick(View v) {
                 String finalContentIds = "";
-                if (!finalHtmlContentId.isEmpty() && htmlContent.isChecked()) {
+                if (!finalHtmlContentId.isEmpty()) {
                     finalContentIds += finalHtmlContentId;
                 }
-                if (!finalVideoContentId.isEmpty() && videoContent.isChecked()) {
+               /* if (!finalVideoContentId.isEmpty() && videoContent.isChecked()) {
                     finalContentIds += COMMA_STRING + finalVideoContentId;
-                }
+                }*/
                 if (finalContentIds.isEmpty()) {
                     Toast.makeText(OfflineSubjectActivity.this, getResources().getString(R.string.select_content_toast), Toast.LENGTH_SHORT).show();
                 } else {
