@@ -8,6 +8,6 @@
   "enableOffline":true,
   "enableUsageanalysis":true,
   "enableChallangeTest":true,
-  "enableForumTest":true,
+  "enableForum":true,
   "enableLogout":true
 }

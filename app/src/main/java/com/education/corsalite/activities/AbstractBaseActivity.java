@@ -247,7 +247,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             navigationView.findViewById(R.id.navigation_challenge_your_friends).setVisibility(View.VISIBLE);
         }
 
-        if(config.enableForumTest != null && config.enableForumTest) {
+        if(config.enableForum != null && config.enableForum) {
             navigationView.findViewById(R.id.navigation_forum).setVisibility(View.VISIBLE);
         }
         if(config.enableLogout != null && config.enableLogout) {
