@@ -85,11 +85,13 @@ public class NotesActivity extends AbstractBaseActivity {
     private void getBundleData() {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            if (bundle.containsKey(GridRecyclerAdapter.SUBJECT_ID) && bundle.getString(GridRecyclerAdapter.SUBJECT_ID) != null) {
-                mSubjectId = bundle.getString("subjectId");
+            String subjectId = GridRecyclerAdapter.SUBJECT_ID;
+            String chapterId = GridRecyclerAdapter.CHAPTER_ID;
+            if (bundle.containsKey(subjectId) && bundle.getString(subjectId) != null) {
+                mSubjectId = bundle.getString(subjectId);
             }
-            if (bundle.containsKey(GridRecyclerAdapter.CHAPTER_ID) && bundle.getString(GridRecyclerAdapter.CHAPTER_ID) != null) {
-                mChapterId = bundle.getString("chapterId");
+            if (bundle.containsKey(chapterId) && bundle.getString(chapterId) != null) {
+                mChapterId = bundle.getString(chapterId);
             }
         }
     }
@@ -148,7 +150,6 @@ public class NotesActivity extends AbstractBaseActivity {
         }
         spinnerLayout.setVisibility(View.VISIBLE);
         addSubjectsAndCreateViews(courses);
-//        courseSpinner.setSelection(0,true);
     }
 
     private void addSubjectsAndCreateViews(List<String> courses) {
@@ -167,6 +168,7 @@ public class NotesActivity extends AbstractBaseActivity {
                     }
                 }
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }

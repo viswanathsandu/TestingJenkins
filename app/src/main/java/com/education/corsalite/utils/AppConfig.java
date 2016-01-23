@@ -21,6 +21,7 @@ public class AppConfig {
     public Boolean enableLogout;
     public Boolean enableUsageanalysis;
     public Boolean enableChallangeTest;
+    public Boolean enableForum;
 
     public static void loadAppconfig(Context context) {
         String jsonResponse = FileUtils.loadJSONFromAsset(context.getAssets(), "config.json");

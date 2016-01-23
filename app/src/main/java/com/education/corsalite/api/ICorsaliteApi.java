@@ -6,11 +6,13 @@ import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.CourseAnalysis;
 import com.education.corsalite.models.responsemodels.CourseAnalysisPercentile;
 import com.education.corsalite.models.responsemodels.DefaultCourseResponse;
+import com.education.corsalite.models.responsemodels.DefaultForumResponse;
 import com.education.corsalite.models.responsemodels.DefaultNoteResponse;
 import com.education.corsalite.models.responsemodels.EditProfileModel;
 import com.education.corsalite.models.responsemodels.ExamHistory;
 import com.education.corsalite.models.responsemodels.ExamModels;
 import com.education.corsalite.models.responsemodels.ExerciseModel;
+import com.education.corsalite.models.responsemodels.ForumPost;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
 import com.education.corsalite.models.responsemodels.Message;
@@ -27,6 +29,7 @@ import com.education.corsalite.models.responsemodels.UserProfileResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencyBalanceResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencySummaryResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit.http.GET;
@@ -81,13 +84,13 @@ public interface ICorsaliteApi {
 
     @GET("/GetCourseAnalysisAsPercentile")
     void getCourseAnalysisPercentile(@Query("idStudent") String studentId,
-                           @Query("idCourse") String courseId,
-                           @Query("idSubject")String subjectID,
-                           @Query("GroupLevel")String groupLevel,
-                           @Query("BreakupByDate")String breakUpByDate,
-                           @Query("DurationInDays")String durationInDays,
-                           @Query("ReturnAllRowsWithoutPerfDataAlso")String returnAllRowsWithourPerfData,
-                           ApiCallback<List<CourseAnalysisPercentile>> callback);
+                                     @Query("idCourse") String courseId,
+                                     @Query("idSubject") String subjectID,
+                                     @Query("GroupLevel") String groupLevel,
+                                     @Query("BreakupByDate") String breakUpByDate,
+                                     @Query("DurationInDays") String durationInDays,
+                                     @Query("ReturnAllRowsWithoutPerfDataAlso") String returnAllRowsWithourPerfData,
+                                     ApiCallback<List<CourseAnalysisPercentile>> callback);
 
     @GET("/GetTestCoverage")
     void getTestCoverage(@Query("idStudent") String studentId,
@@ -108,7 +111,7 @@ public interface ICorsaliteApi {
     void getContentData(@Query("idContents") String idContents, @Query("UpdateTime") String UpdateTime, ApiCallback<List<Content>> callback);
 
     @GET("/Exercise")
-    void getExerciseData(@Query("idTopic") String idTopics, @Query("idCourse") String idCourse , @Query("idStudent") String idStudent, @Query("UpdateTime") String UpdateTime, ApiCallback<List<ExerciseModel>> callback);
+    void getExerciseData(@Query("idTopic") String idTopics, @Query("idCourse") String idCourse, @Query("idStudent") String idStudent, @Query("UpdateTime") String UpdateTime, ApiCallback<List<ExerciseModel>> callback);
 
     @GET("/FlaggedQuestions")
     void getFlaggedQuestions(@Query("idStudent") String idStudent, @Query("idSubject") String idSubject, @Query("idChapter") String idChapter, @Query("UpdateTime") String UpdateTime, ApiCallback<List<ExerciseModel>> callback);
@@ -138,17 +141,29 @@ public interface ICorsaliteApi {
     void updateExamDetails(@Query("Update") String update, ApiCallback<UpdateExamDetailsResponse> callback);
 
     @GET("/Note")
-    void getNotes(@Query("idStudent") String studentId, @Query("idSubject") String subjectId , @Query("idChapter") String chapterId, @Query("idTopic") String topicId, ApiCallback<List<Note>> callback);
+    void getNotes(@Query("idStudent") String studentId, @Query("idSubject") String subjectId, @Query("idChapter") String chapterId, @Query("idTopic") String topicId, ApiCallback<List<Note>> callback);
 
     @GET("/ExamHistory")
-    void getExamHistory(@Query("idStudent") String studentId, @Query("BeginRowNumber") String beginRowNum , @Query("RowCount") String rowCount,ApiCallback<List<ExamHistory>> callback);
+    void getExamHistory(@Query("idStudent") String studentId, @Query("BeginRowNumber") String beginRowNum, @Query("RowCount") String rowCount, ApiCallback<List<ExamHistory>> callback);
 
     @POST("/Note")
     void addNote(@Query("Insert") String insert, ApiCallback<DefaultNoteResponse> callback);
+
+
+    @POST("/Forums")
+    void addForum(@Query("Update") String insert, ApiCallback<DefaultForumResponse> callback);
+
 
     @POST("/Note")
     void updateNote(@Query("Update") String insert, ApiCallback<DefaultNoteResponse> callback);
 
     @GET("/UsageAnalysis")
     void getUsageAnalysis(@Query("idUser") String userId, ApiCallback<UsageAnalysis> callback);
+
+    // http://staging.corsalite.com/v1/webservices/Forums?idCourse=13&idUser=11391&type=AllPosts&BeginRowNumber=10&RowCount=3
+    @GET("/Forums")
+    void getForumPosts(@Query("idCourse") String courseID, @Query("idUser") String userID, @Query("type") String type, @Query("BeginRowNumber") String beginTowNumber, @Query("RowCount") String rowCount, ApiCallback<ArrayList<ForumPost>> callback);
+
+    @GET("/Forums")
+    void getForumPosts(@Query("idCourse") String courseID, @Query("idUser") String userID, ApiCallback<ArrayList<ForumPost>> callback);
 }
