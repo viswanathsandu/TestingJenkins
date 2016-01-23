@@ -69,7 +69,7 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener 
     private void setUI() {
         mLayoutManager = new LinearLayoutManager(mRecyclerView.getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mPostAdapter = new PostAdapter(this);
+        mPostAdapter = new PostAdapter(this, mPage);
         mRecyclerView.setAdapter(mPostAdapter);
         switch (mPage){
             case 0:

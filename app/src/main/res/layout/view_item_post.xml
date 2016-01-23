@@ -213,7 +213,6 @@
                 android:paddingTop="5dp"
                 android:text="Bookmarks"
                 android:textColor="@android:color/white" />
-
             <TextView
                 android:id="@+id/tv_post_action_Like"
                 android:layout_width="wrap_content"
@@ -228,6 +227,38 @@
                 android:paddingRight="10dp"
                 android:paddingTop="5dp"
                 android:text="Like"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/tv_post_action_lock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:background="@android:color/holo_red_light"
+                android:drawableLeft="@drawable/ic_like"
+                android:drawablePadding="5dp"
+                android:gravity="center_vertical"
+                android:paddingBottom="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="5dp"
+                android:text="Lock"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:id="@+id/tv_post_action_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:background="@android:color/holo_red_light"
+                android:drawableLeft="@drawable/ic_like"
+                android:drawablePadding="5dp"
+                android:gravity="center_vertical"
+                android:paddingBottom="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="5dp"
+                android:text="Delete"
                 android:textColor="@android:color/white" />
 
             <TextView
