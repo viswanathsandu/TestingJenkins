@@ -40,8 +40,8 @@
         android:padding="5dp">
         <ProgressBar
             android:id="@+id/pb_content"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"/>
 
@@ -61,8 +61,8 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:src="@drawable/ico_offline_delete"/>
-        <ImageView
 
+        <ImageView
             android:id="@+id/arrow_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
