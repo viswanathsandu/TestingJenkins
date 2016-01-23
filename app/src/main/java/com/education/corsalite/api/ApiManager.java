@@ -397,13 +397,19 @@ public class ApiManager {
 
     public void getAllPosts(String courseID, String userID, String type, String BeginRowNumber, String mRowcount, ApiCallback<ArrayList<ForumPost>> callback) {
         if (isApiOnline()) {
-            ApiClientService.get().getForumPosts(courseID, userID, type, BeginRowNumber, mRowcount, callback);
+            ApiClientService.get().getAllPosts(courseID, userID, type, BeginRowNumber, mRowcount, callback);
         }
     }
 
     public void getMyPosts(String courseID, String userID, ApiCallback<ArrayList<ForumPost>> callback) {
         if (isApiOnline()) {
-            ApiClientService.get().getForumPosts(courseID, userID, callback);
+            ApiClientService.get().getMyPosts(courseID, userID, callback);
+        }
+    }
+
+    public void getMyComments(String courseID, String userID, String type, ApiCallback<ArrayList<ForumPost>> callback) {
+        if (isApiOnline()) {
+            ApiClientService.get().getForumPosts(courseID, userID, type, callback);
         }
     }
 }

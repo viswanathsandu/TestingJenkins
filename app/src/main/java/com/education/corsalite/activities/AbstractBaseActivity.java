@@ -315,6 +315,14 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             }
         });
 
+        navigationView.findViewById(R.id.navigation_forum).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Localytics.tagEvent(getString(R.string.forum));
+                startActivity(new Intent(AbstractBaseActivity.this, ForumActivity.class));
+            }
+        });
+
         navigationView.findViewById(R.id.navigation_logout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -78,14 +78,29 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener 
             case 1:
                 loadForumMyPosts();
                 break;
+            case 2:
+                loadForumMyComments();
+                break;
             default:
                 break;
         }
     }
 
+    private void loadForumMyComments() {
+        // http://staging.corsalite.com/v1/webservices/Forums?idCourse=17&idUser=69&type=MyComments
+        ApiManager.getInstance(getActivity()).getMyComments("17", "69", "MyComments",
+                new ApiCallback<ArrayList<ForumPost>>(getActivity()) {
+                    @Override
+                    public void success(ArrayList<ForumPost> forumPosts, Response response) {
+                        super.success(forumPosts, response);
+                        setForumPosts(forumPosts);
+                    }
+                });
+    }
+
     private void loadForumPosts() {
         // // http://staging.corsalite.com/v1/webservices/Forums?idCourse=13&idUser=11391&type=AllPosts&BeginRowNumber=10&RowCount=3
-
+        // TODO: sridhar. Pass dynamic parameters respectively.
         ApiManager.getInstance(getActivity()).getAllPosts("13", "1139", "AllPosts", "10", "3",
                 new ApiCallback<ArrayList<ForumPost>>(getActivity()) {
                     @Override
