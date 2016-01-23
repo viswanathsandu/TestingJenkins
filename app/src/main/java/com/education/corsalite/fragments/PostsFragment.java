@@ -7,17 +7,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Toast;
 
-import com.db4o.collections.ArrayList4;
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.PostAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.listener.SocialEventsListener;
+import com.education.corsalite.models.requestmodels.ForumLikeRequest;
+import com.education.corsalite.models.responsemodels.BaseResponseModel;
+import com.education.corsalite.models.responsemodels.CommonResponseModel;
 import com.education.corsalite.models.responsemodels.ForumPost;
-import com.education.corsalite.models.responsemodels.PostFlaggedQuestions;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -128,17 +128,43 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener 
     }
 
     @Override
-    public void onLikeClicked() {
-        //TODO:
+    public void onLikeClicked(final int position) {
+        final ForumPost forumPost=mPostAdapter.getItem(position);
+
+        ApiManager.getInstance(getActivity()).addForumLike(new ForumLikeRequest(forumPost.getIdUser(), forumPost.getIdUserPost()), new ApiCallback<CommonResponseModel>(getActivity()) {
+            @Override
+            public void success(CommonResponseModel baseResponseModel, Response response) {
+                super.success(baseResponseModel, response);
+                if(baseResponseModel.isSuccessful()){
+                   forumPost.setPostLikes(Integer.parseInt(forumPost.getPostLikes())+1+"");
+                    mPostAdapter.updateCurrentItem(position);
+                }
+            }
+        });
     }
 
     @Override
-    public void onCommentClicked() {
-        //TODO:
+    public void onCommentClicked(int position) {
+
     }
 
     @Override
-    public void onBookmarkClicked() {
-        //TODO:
+    public void onBookmarkClicked(int position) {
+
+    }
+
+    @Override
+    public void onEditClicked(int position) {
+
+    }
+
+    @Override
+    public void onLockClicked(int position) {
+
+    }
+
+    @Override
+    public void onDeleteClicked(int position) {
+
     }
 }

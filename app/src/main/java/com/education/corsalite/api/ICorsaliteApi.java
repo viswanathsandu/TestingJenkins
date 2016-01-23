@@ -1,5 +1,7 @@
 package com.education.corsalite.api;
 
+import com.education.corsalite.models.responsemodels.BaseResponseModel;
+import com.education.corsalite.models.responsemodels.CommonResponseModel;
 import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.Course;
@@ -169,4 +171,7 @@ public interface ICorsaliteApi {
 
     @GET("/Forums")
     void getForumPosts(@Query("idCourse") String courseID, @Query("idUser") String userID, @Query("type") String type, ApiCallback<ArrayList<ForumPost>> callback);
+
+    @POST("/LikeForum")
+    void addForumLike(@Query("Insert") String forumLikeRequest, ApiCallback<CommonResponseModel> callback);
 }
