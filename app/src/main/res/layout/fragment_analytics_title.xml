@@ -44,5 +44,11 @@
             style="@style/analytics_title"
             android:drawableTop="@drawable/ico_recommend_unselected"
             android:text="Recommended Reading" />
+
+        <TextView
+            android:id="@+id/tv_usage_analysis"
+            style="@style/analytics_title"
+            android:drawableTop="@drawable/ico_sidemenu_groups"
+            android:text="Usage Analysis" />
     </LinearLayout>
 </ScrollView>

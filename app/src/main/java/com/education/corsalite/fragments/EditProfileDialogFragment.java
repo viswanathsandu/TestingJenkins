@@ -71,15 +71,19 @@ public class EditProfileDialogFragment extends DialogFragment {
         });
     }
 
+    public void setUpdateProfileDetailsListener(IUpdateProfileDetailsListener listener){
+        this.updateProfileDetailsListener = listener;
+    }
     private void updateUserProfile() {
-        String userProfileJson = new Gson().toJson(getUserData());
+        final UserProfileModel model = getUserData();
+        String userProfileJson = new Gson().toJson(model);
         ApiManager.getInstance(getActivity()).updateUserProfile(userProfileJson, new ApiCallback<EditProfileModel>(getActivity()) {
             @Override
             public void failure(CorsaliteError error) {
                 super.failure(error);
                 L.error(error.message);
                 // TODO : its returning failed. but data is being updated. Need to fix it
-                ((AbstractBaseActivity)getActivity()).showToast("Updated User Profile Successfully");
+                ((AbstractBaseActivity)getActivity()).showToast("Failed to Update User Profile");
                 getDialog().cancel();
             }
 
@@ -88,6 +92,8 @@ public class EditProfileDialogFragment extends DialogFragment {
                 super.success(editProfileResponse, response);
                 if (editProfileResponse.isSuccessful()) {
                     ((AbstractBaseActivity)getActivity()).showToast("Updated User Profile Successfully");
+                    if(updateProfileDetailsListener != null)
+                        updateProfileDetailsListener.onUpdateProfileDetails(model);
                     getDialog().cancel();
                 }
             }

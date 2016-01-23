@@ -58,6 +58,7 @@ public class CurrencyAdapter extends AbstractRecycleViewAdapter {
         @Bind(R.id.tv_event) TextView eventTxt;
         @Bind(R.id.tv_earned) TextView earnedTxt;
         @Bind(R.id.tv_balance) TextView balanceTxt;
+        @Bind(R.id.tv_time) TextView timeText;
 
         View parent;
 
@@ -73,7 +74,14 @@ public class CurrencyAdapter extends AbstractRecycleViewAdapter {
                 parent.setBackgroundColor(inflater.getContext().getResources().getColor(R.color.tab_recycler_alternate_row));
             }
             if(virtualCurrencyTransaction.eventDate != null ) {
-                dateTxt.setText(virtualCurrencyTransaction.eventDate);
+                String[] data = virtualCurrencyTransaction.eventDate.split(" ");
+                if(data != null){
+                    if(data[0] != null && data.length > 1)
+                        dateTxt.setText(data[0]);
+                    if(data[1] != null)
+                        timeText.setText(data[1]);
+                }else
+                    dateTxt.setText(virtualCurrencyTransaction.eventDate);
             }
             eventTxt.setText(virtualCurrencyTransaction.eventName);
             earnedTxt.setText(virtualCurrencyTransaction.earnedVirtualCurrency);
