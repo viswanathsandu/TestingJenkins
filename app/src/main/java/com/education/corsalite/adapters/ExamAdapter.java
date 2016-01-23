@@ -34,8 +34,20 @@ public class ExamAdapter extends AbstractRecycleViewAdapter {
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+    @Override
     public ExamDataHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ExamDataHolder(inflater.inflate(R.layout.row_exams_list, parent, false));
+        View view  =inflater.inflate(R.layout.row_exams_list, parent, false) ;
+        if((viewType+1)% 2 == 0)
+        {
+            view.setBackgroundColor(inflater.getContext().getResources().getColor(R.color.tab_recycler_alternate_row));
+
+        }else {
+            view.setBackgroundColor(inflater.getContext().getResources().getColor(R.color.white));
+        }
+        return new ExamDataHolder(view);
     }
 
     @Override
@@ -63,9 +75,7 @@ public class ExamAdapter extends AbstractRecycleViewAdapter {
         }
 
         public void bindData(final int position, final ExamDetail examDetail) {
-            if((position+1)% 2 == 0) {
-                parent.setBackgroundColor(inflater.getContext().getResources().getColor(R.color.tab_recycler_alternate_row));
-            }
+
             examTxt.setText(examDetail.name == null ? EMPTY_STRING : examDetail.name);
             daysRemainingTxt.setText(examDetail.daysRemaining == null ? "--" : String.valueOf(examDetail.daysRemaining));
             if(examDetail.examDate == null || examDetail.examDate.isEmpty()){

@@ -66,6 +66,7 @@ public class AddExamScheduleDialogFragment extends DialogFragment {
         if(type.equalsIgnoreCase(ADD_EXAM_DATE)){
             addExamDate.setVisibility(View.VISIBLE);
             addHallTicket.setVisibility(View.GONE);
+            examDatePicker.setMinDate(System.currentTimeMillis() - 1000);
         }else if(type.equalsIgnoreCase(ADD_HALL_TICKET)){
             addHallTicket.setVisibility(View.VISIBLE);
             addExamDate.setVisibility(View.GONE);

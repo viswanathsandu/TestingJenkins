@@ -46,11 +46,11 @@
                 android:text="Offline"
                 style="@style/navigation_drawer_element" />
 
-            <TextView
+           <!-- <TextView
                 android:id="@+id/navigation_usage_analysis"
                 android:drawableLeft="@drawable/ico_sidemenu_groups"
                 android:text="Usage Analysis"
-                style="@style/navigation_drawer_element" />
+                style="@style/navigation_drawer_element" />-->
 
             <TextView
                 android:id="@+id/navigation_challenge_your_friends"

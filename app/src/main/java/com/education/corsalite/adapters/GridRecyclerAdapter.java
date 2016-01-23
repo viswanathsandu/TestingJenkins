@@ -154,7 +154,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         TextView notes = (TextView) dialogView.findViewById(R.id.notes);
         notes.setText(TextUtils.isEmpty(chapter.notesCount) ? "0" : chapter.notesCount);
         TextView completedTopics = (TextView) dialogView.findViewById(R.id.completed_topics);
-        completedTopics.setText(getCompletedTopicsPercentage(chapter) + "%");
+        completedTopics.setText(String.format("%.2f",getCompletedTopicsPercentage(chapter)) + "%");
         dialogView.findViewById(R.id.take_test).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

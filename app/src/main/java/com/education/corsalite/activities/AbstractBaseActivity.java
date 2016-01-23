@@ -240,9 +240,9 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         if(config.enableOffline != null && config.enableOffline) {
             navigationView.findViewById(R.id.navigation_offline).setVisibility(View.VISIBLE);
         }
-        if(config.enableUsageanalysis!= null && config.enableUsageanalysis) {
+        /*if(config.enableUsageanalysis!= null && config.enableUsageanalysis) {
             navigationView.findViewById(R.id.navigation_usage_analysis).setVisibility(View.VISIBLE);
-        }
+        }*/
         if(config.enableChallangeTest != null && config.enableChallangeTest) {
             navigationView.findViewById(R.id.navigation_challenge_your_friends).setVisibility(View.VISIBLE);
         }
@@ -298,16 +298,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             }
         });
 
-        navigationView.findViewById(R.id.navigation_usage_analysis).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Localytics.tagEvent("Usage Analysis");
-                Intent intent = new Intent(AbstractBaseActivity.this, UsageAnalysisActivity.class);
-                startActivity(intent);
-                drawerLayout.closeDrawers();
-            }
-        });
-
         navigationView.findViewById(R.id.navigation_offline).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -325,11 +315,11 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             }
         });
 
-        navigationView.findViewById(R.id.navigation_forum).setOnClickListener(new View.OnClickListener() {
+        navigationView.findViewById(R.id.navigation_logout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Localytics.tagEvent(getString(R.string.forum));
-                startActivity(new Intent(AbstractBaseActivity.this, ForumActivity.class));
+                Localytics.tagEvent(getString(R.string.log_out));
+                logout();
             }
         });
     }

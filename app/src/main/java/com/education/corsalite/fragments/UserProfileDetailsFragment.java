@@ -29,6 +29,7 @@ import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.db.CourseList;
 import com.education.corsalite.models.requestmodels.Defaultcourserequest;
+import com.education.corsalite.models.requestmodels.UserProfileModel;
 import com.education.corsalite.models.responsemodels.BasicProfile;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
@@ -51,7 +52,8 @@ import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
 import retrofit.client.Response;
 
-public class UserProfileDetailsFragment extends BaseFragment implements EditProfilePicDialogFragment.IUpdateProfilePicListener {
+public class UserProfileDetailsFragment extends BaseFragment implements EditProfilePicDialogFragment.IUpdateProfilePicListener,
+        EditProfileDialogFragment.IUpdateProfileDetailsListener {
 
     private final String COURSES_ENROLLED_HTML = "<b><font color=#000000>Enrolled Courses:</font></b>&nbsp;";
     @Bind(R.id.iv_userProfilePic) ImageView profilePicImg;
@@ -164,6 +166,7 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
 
     private void showEditProfileFragment() {
         EditProfileDialogFragment dialogFragment = new EditProfileDialogFragment();
+        dialogFragment.setUpdateProfileDetailsListener(this);
         Bundle bundle = new Bundle();
         bundle.putString("user_profile_response", new Gson().toJson(user));
         dialogFragment.setArguments(bundle);
@@ -313,6 +316,13 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
             courses += TextUtils.isEmpty(courses) ? course.name : ", "+course.name;
         }
         enrolledCoursesTxt.setText(Html.fromHtml(COURSES_ENROLLED_HTML + courses));
+    }
+
+    @Override
+    public void onUpdateProfileDetails(UserProfileModel userProfileModel) {
+        usernameTxt.setText(userProfileModel.displayName);
+        userFullNameTxt.setText(userProfileModel.givenName);
+        emailTxt.setText(userProfileModel.emailId);
     }
 
     public interface UpdateExamData {

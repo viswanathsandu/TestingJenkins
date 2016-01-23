@@ -76,7 +76,6 @@
             android:name=".activities.AnalyticsActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="Analytics"
-            android:screenOrientation="landscape"
             android:theme="@style/UserProfileTheme" />
         <activity
             android:name=".activities.OfflineContentActivity"
@@ -140,6 +139,8 @@
         <activity
             android:name=".activities.TestStartActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
+            android:screenOrientation="landscape"
+            android:theme="@style/UserProfileTheme" />
             android:theme="@style/AppTheme" />
 
         <activity android:name=".activities.ForumActivity"

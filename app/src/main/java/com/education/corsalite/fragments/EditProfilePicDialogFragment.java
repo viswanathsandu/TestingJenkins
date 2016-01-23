@@ -1,7 +1,9 @@
 package com.education.corsalite.fragments;
 
+import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -25,10 +27,12 @@ import com.education.corsalite.models.requestmodels.UserProfileModel;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.EditProfileModel;
 import com.education.corsalite.models.responsemodels.UserProfileResponse;
+import com.education.corsalite.utils.ImageUtils;
 import com.education.corsalite.utils.L;
 import com.google.gson.Gson;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -75,7 +79,10 @@ public class EditProfilePicDialogFragment extends DialogFragment {
                     @Override
                     public void onClick(View view) {
                         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        File file = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
                         startActivityForResult(takePictureIntent, REQUEST_CODE_TAKE_PICTURE);
+                        //getDialog().dismiss();
                     }
                 });
 
@@ -83,12 +90,14 @@ public class EditProfilePicDialogFragment extends DialogFragment {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent intent = new Intent(Intent.ACTION_GET_CONTENT).setType("image/*");
+                        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        intent.setType("image/*");
                         try {
                             startActivityForResult(intent, REQUEST_CODE_PICK_GALLERY);
                         } catch (ActivityNotFoundException e) {
                             ((AbstractBaseActivity) getActivity()).showToast("No image source available");
                         }
+                       // getDialog().dismiss();
                     }
                 });
 
@@ -106,8 +115,9 @@ public class EditProfilePicDialogFragment extends DialogFragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == getActivity().RESULT_OK) {
             if (requestCode == REQUEST_CODE_TAKE_PICTURE) {
-                Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-                updateUserProfile(thumbnail);
+                /*Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+                updateUserProfile(thumbnail);*/
+                getCameraPic();
             } else if (requestCode == REQUEST_CODE_PICK_GALLERY) {
                 try {
                     Uri selectedImage = data.getData();
@@ -119,6 +129,31 @@ public class EditProfilePicDialogFragment extends DialogFragment {
         }else{
             //Do nothing
             //User cancelled operation
+        }
+    }
+
+    public String getPath(Uri uri, Activity activity) {
+        String[] projection = { MediaStore.MediaColumns.DATA };
+        Cursor cursor = activity.getContentResolver().query(uri, projection, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+    }
+    private void getCameraPic(){
+        File file = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
+        String path = file.getAbsolutePath();
+        //Not saving the captured image in the gallery
+        if(path != null){
+           Bitmap selectedImage = new ImageUtils(getActivity()).getCompressedProfileImage(path);
+            if(selectedImage != null)
+                updateUserProfile(selectedImage);
+        }
+    }
+
+    protected void deleteTempFile() {
+        File file = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
+        if (file != null && file.exists()) {
+            file.delete();
         }
     }
 
@@ -136,6 +171,7 @@ public class EditProfilePicDialogFragment extends DialogFragment {
                     ((AbstractBaseActivity) getActivity()).showToast("Failed to update profile pic");
                     getDialog().cancel();
                 }
+                deleteTempFile();
             }
 
             @Override
@@ -145,9 +181,11 @@ public class EditProfilePicDialogFragment extends DialogFragment {
                     ((AbstractBaseActivity)getActivity()).showToast("Updated User Profile Pic Successfully");
                     getDialog().cancel();
                     updateProfilePicListener.onUpdateProfilePic(image);
+                    deleteTempFile();
                 }
             }
         });
+
     }
 
     private UserProfileModel getUserData(Bitmap image) {
