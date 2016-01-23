@@ -64,6 +64,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
             holder.tvActionComment.setText("Edit");
         }
 
+        setupActionListener(holder, position);
+
         holder.tvQuestion.setText(forumPost.getSearchPost());
         holder.tvDate.setText(forumPost.getDatetime()+" by");
         holder.tvUserName.setText(forumPost.getDisplayName());
@@ -96,27 +98,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
         holder.tvLikes.setText(forumPost.getPostLikes()+" Likes");
         holder.tvViews.setText(forumPost.getPostViews()+" Views");
 
-        holder.tvActionBookmark.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mSocialEventsListener.onBookmarkClicked();
-            }
-        });
-
-        holder.tvActionComment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mSocialEventsListener.onCommentClicked();
-            }
-        });
-
-        holder.tvActionLike.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mSocialEventsListener.onLikeClicked();
-            }
-        });
-
         try {
             URL url = new URL(new URL(ApiClientService.getBaseUrl()), forumPost.getPhotoUrl());
             Glide.with(holder.ivUserPic.getContext())
@@ -130,15 +111,68 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
         }
     }
 
+    private void setupActionListener(PostHolder holder, final int position) {
+        holder.tvActionBookmark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSocialEventsListener.onBookmarkClicked(position);
+            }
+        });
+
+        holder.tvActionLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSocialEventsListener.onLikeClicked(position);
+            }
+        });
+
+        holder.tvActionDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSocialEventsListener.onDeleteClicked(position);
+            }
+        });
+        holder.tvActionLock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSocialEventsListener.onLockClicked(position);
+            }
+        });
+
+        if(mPage==0){
+            holder.tvActionComment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mSocialEventsListener.onCommentClicked(position);
+                }
+            });
+        } else if(mPage==1) {
+            holder.tvActionComment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mSocialEventsListener.onEditClicked(position);
+                }
+            });
+        }
+    }
+
     @Override
     public int getItemCount() {
         return mForumPostList.size();
+    }
+
+    public ForumPost getItem(int position){
+        return mForumPostList.get(position);
     }
 
     public void setForumPostList(List<ForumPost> forumPosts) {
         mForumPostList.clear();
         mForumPostList.addAll(forumPosts);
         notifyDataSetChanged();
+    }
+
+    public void updateCurrentItem(int position) {
+        notifyItemChanged(position);
     }
 
     public class PostHolder extends RecyclerView.ViewHolder {

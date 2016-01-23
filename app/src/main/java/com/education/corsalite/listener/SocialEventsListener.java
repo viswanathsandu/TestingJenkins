@@ -4,7 +4,16 @@ package com.education.corsalite.listener;
  * Created by sridharnalam on 1/14/16.
  */
 public interface SocialEventsListener {
-    public void onLikeClicked();
-    public void onCommentClicked();
-    public void onBookmarkClicked();
+
+    void onLikeClicked(int position);
+
+    void onCommentClicked(int position);
+
+    void onBookmarkClicked(int position);
+
+    void onEditClicked(int position);
+
+    void onLockClicked(int position);
+
+    void onDeleteClicked(int position);
 }
