@@ -10,6 +10,7 @@ import android.widget.FrameLayout;
 import com.education.corsalite.R;
 import com.education.corsalite.enums.Tests;
 import com.education.corsalite.fragments.TestChapterFragment;
+import com.education.corsalite.fragments.TestScheduledFragment;
 
 import butterknife.ButterKnife;
 
@@ -40,14 +41,17 @@ public class TestStartActivity extends AbstractBaseActivity {
         switch (test) {
             case INVALID : {
                 finish();
-            }
-            case SCHEDULED : {
-                fragmentTransaction.add(R.id.fragment_container, TestChapterFragment.newInstance(getIntent().getExtras()), TestChapterFragment.getMyTag())
-                .commit();
+                break;
             }
             case CHAPTER : {
                 fragmentTransaction.add(R.id.fragment_container, TestChapterFragment.newInstance(getIntent().getExtras()), TestChapterFragment.getMyTag())
-                .commit();
+                        .commit();
+                break;
+            }
+            case SCHEDULED : {
+                fragmentTransaction.add(R.id.fragment_container, TestScheduledFragment.newInstance(getIntent().getExtras()), TestScheduledFragment.getMyTag())
+                        .commit();
+                break;
             }
         }
     }

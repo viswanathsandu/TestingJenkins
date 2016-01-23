@@ -26,6 +26,7 @@ import com.education.corsalite.models.responsemodels.PostExamTemplate;
 import com.education.corsalite.models.responsemodels.PostExercise;
 import com.education.corsalite.models.responsemodels.PostFlaggedQuestions;
 import com.education.corsalite.models.responsemodels.PostQuestionPaper;
+import com.education.corsalite.models.responsemodels.ScheduledTest;
 import com.education.corsalite.models.responsemodels.StudyCenter;
 import com.education.corsalite.models.responsemodels.TestCoverage;
 import com.education.corsalite.models.responsemodels.UpdateExamDetailsResponse;
@@ -311,6 +312,12 @@ public class ApiManager {
     public void getFlaggedQuestions(String studentId, String subjectId, String chapterId, String UpdateTime, ApiCallback<List<ExerciseModel>> callback) {
         if (isApiOnline()) {
             ApiClientService.get().getFlaggedQuestions(studentId, subjectId, chapterId, UpdateTime, callback);
+        }
+    }
+
+    public void getScheduledTests(String studentId, ApiCallback<List<ScheduledTest>> callback) {
+        if (isApiOnline()) {
+            ApiClientService.get().getScheduledTests(studentId, callback);
         }
     }
 
