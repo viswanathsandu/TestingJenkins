@@ -34,6 +34,7 @@ public class Constants {
     public static final String TEST_TITLE =  "testTitle";
     public static final String SELECTED_COURSE =  "selectedCourse";
     public static final String SELECTED_ENTITY =  "selectedEntity";
+    public static final String SELECTED_EXAM_NAME = "selectedExamName";
     public static final String SELECTED_QUESTION_PAPER = "selectedQuestionPaper";
 
 

@@ -94,6 +94,7 @@ public class TestScheduledFragment extends BaseFragment implements AdapterView.O
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Bundle bundle = new Bundle();
+                        bundle.putString(Constants.SELECTED_EXAM_NAME, scheduledTest.examName);
                         bundle.putString(Constants.SELECTED_QUESTION_PAPER, scheduledTest.testQuestionPaperId);
                         startActivity(new Intent(getActivity(), ExerciseActivity.class));
                     }
