@@ -25,6 +25,7 @@ import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.holders.IconTreeItemHolder;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.ScheduledTest;
+import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.L;
 
 import java.util.ArrayList;
@@ -92,6 +93,8 @@ public class TestScheduledFragment extends BaseFragment implements AdapterView.O
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        Bundle bundle = new Bundle();
+                        bundle.putString(Constants.SELECTED_QUESTION_PAPER, scheduledTest.testQuestionPaperId);
                         startActivity(new Intent(getActivity(), ExerciseActivity.class));
                     }
                 })
