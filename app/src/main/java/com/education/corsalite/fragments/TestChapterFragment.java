@@ -200,8 +200,8 @@ public class TestChapterFragment extends BaseFragment {
     }
 
     private void setupTest() {
-        mExtras.putStringArrayList(ChapterTestSetupFragment.EXTRAS_CHAPTER_LEVELS, mChapterLevels);
-        ChapterTestSetupFragment fragment = ChapterTestSetupFragment.newInstance(mExtras);
-        fragment.show(getFragmentManager(), ChapterTestSetupFragment.getMyTag());
+        mExtras.putStringArrayList(TestChapterSetupFragment.EXTRAS_CHAPTER_LEVELS, mChapterLevels);
+        TestChapterSetupFragment fragment = TestChapterSetupFragment.newInstance(mExtras);
+        fragment.show(getFragmentManager(), TestChapterSetupFragment.getMyTag());
     }
 }

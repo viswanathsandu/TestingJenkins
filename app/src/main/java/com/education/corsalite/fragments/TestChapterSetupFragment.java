@@ -16,7 +16,6 @@ import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.activities.ExerciseActivity;
-import com.education.corsalite.activities.TestStartActivity;
 
 import java.util.ArrayList;
 
@@ -29,7 +28,7 @@ import butterknife.OnClick;
  *
  * @author Meeth D Jain
  */
-public class ChapterTestSetupFragment extends DialogFragment implements AdapterView.OnItemSelectedListener {
+public class TestChapterSetupFragment extends DialogFragment implements AdapterView.OnItemSelectedListener {
 
     public static final String EXTRAS_CHAPTER_LEVELS = "key_chapter_levels";
 
@@ -45,8 +44,8 @@ public class ChapterTestSetupFragment extends DialogFragment implements AdapterV
     private boolean mIsAdaptiveLearningEnabled;
     private ArrayList<String> mChapterLevels;
 
-    public static ChapterTestSetupFragment newInstance(Bundle bundle) {
-        ChapterTestSetupFragment fragment = new ChapterTestSetupFragment();
+    public static TestChapterSetupFragment newInstance(Bundle bundle) {
+        TestChapterSetupFragment fragment = new TestChapterSetupFragment();
         fragment.setArguments(bundle);
         return fragment;
     }
