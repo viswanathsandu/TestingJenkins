@@ -176,10 +176,16 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_exam_history:
+            case R.id.action_exam_history: {
                 Intent intent = new Intent(this, ExamHistoryActivity.class);
                 startActivity(intent);
                 return true;
+            }
+            case R.id.action_scheduled_test : {
+                Intent intent = new Intent(this, TestStartActivity.class);
+                startActivity(intent);
+                return true;
+            }
         }
         return super.onOptionsItemSelected(item);
     }
