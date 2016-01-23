@@ -44,6 +44,8 @@ public class TestScheduledFragment extends BaseFragment implements AdapterView.O
 
     @Bind(R.id.ll_container)
     LinearLayout mContainerLayout;
+    @Bind(R.id.ll_error)
+    LinearLayout mErrorLayout;
     @Bind(R.id.list_view_test_scheduled)
     ListView mListViewScheduledTests;
     @Bind(R.id.progress_bar)
@@ -111,6 +113,7 @@ public class TestScheduledFragment extends BaseFragment implements AdapterView.O
                         super.failure(error);
                         L.error(error.message);
                         mProgressBar.setVisibility(View.GONE);
+                        mErrorLayout.setVisibility(View.VISIBLE);
                         mFailureTextView.setText("Sorry, couldn't fetch data");
                     }
 
@@ -119,6 +122,7 @@ public class TestScheduledFragment extends BaseFragment implements AdapterView.O
                         super.failure(error);
                         L.error(error.getMessage());
                         mProgressBar.setVisibility(View.GONE);
+                        mErrorLayout.setVisibility(View.VISIBLE);
                         mFailureTextView.setText("Sorry, couldn't fetch data");
                     }
 
