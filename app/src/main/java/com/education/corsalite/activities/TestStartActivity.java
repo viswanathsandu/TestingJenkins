@@ -15,6 +15,7 @@ import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.fragments.ChapterTestSetupFragment;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.TestCoverage;
 import com.education.corsalite.utils.Constants;
@@ -38,6 +39,8 @@ import retrofit.client.Response;
 
 public class TestStartActivity extends AbstractBaseActivity {
 
+    public static final String EXTRAS_CHAPTER_LEVELS = "key_chapter_levels";
+
     @Bind(R.id.bar_chart_test_start)
     BarChart mTestBarChart;
     @Bind(R.id.ll_container)
@@ -51,6 +54,7 @@ public class TestStartActivity extends AbstractBaseActivity {
     @Bind(R.id.txt_view_test_start_note)
     TextView mNoteTxtView;
 
+    private ArrayList<String> mChapterLevels = new ArrayList<>();
     private String chapterID, chapterName, subjectId;
 
     @Override
@@ -61,7 +65,7 @@ public class TestStartActivity extends AbstractBaseActivity {
         frameLayout.addView(myView);
         ButterKnife.bind(this);
         setToolbarForTestStartScreen();
-        //Hide the toolabar button.
+        //Hide the toolbar button.
         toolbar.findViewById(R.id.start_btn).setVisibility(View.GONE);
 
         initializeGraph();
@@ -77,35 +81,21 @@ public class TestStartActivity extends AbstractBaseActivity {
                 break;
             }
             case R.id.btn_header_test_next : {
-                startActivity(ExerciseActivity.getMyIntent(this, getIntent().getExtras()));
-                finish();
+                setupTest();
                 break;
             }
         }
     }
 
-    private void initializeGraph() {
-        mTestBarChart.setBackgroundColor(Color.WHITE);
-        mTestBarChart.setDescription("");
-        mTestBarChart.setDrawBarShadow(false);
-        mTestBarChart.setDrawGridBackground(false);
-
-        YAxis rightAxis = mTestBarChart.getAxisRight();
-        rightAxis.setDrawGridLines(true);
-        rightAxis.setEnabled(false);
-
-        YAxis leftAxis = mTestBarChart.getAxisLeft();
-        leftAxis.setDrawGridLines(true);
-        leftAxis.setTextSize(15f);
-
-        XAxis xAxis = mTestBarChart.getXAxis();
-        xAxis.setDrawGridLines(false);
-        xAxis.setTextSize(15f);
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-
-        mTestBarChart.getLegend().setTextSize(15f);
-        mTestBarChart.getLegend().setEnabled(false);
-        mTestBarChart.getLegend().setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
+    private void loadDataFromIntent() {
+        Bundle bundle = getIntent().getExtras();
+        chapterID = bundle.getString(Constants.SELECTED_CHAPTERID, "");
+        chapterName = bundle.getString(Constants.SELECTED_CHAPTER_NAME, "");
+        subjectId = bundle.getString(Constants.SELECTED_SUBJECTID, "");
+        if (TextUtils.isEmpty(chapterID) || TextUtils.isEmpty(chapterName) || TextUtils.isEmpty(subjectId)) {
+            //In case data is missing finish this activity,
+            finish();
+        }
     }
 
     private void fetchDataFromServer() {
@@ -132,20 +122,15 @@ public class TestStartActivity extends AbstractBaseActivity {
                 });
     }
 
-    private void loadDataFromIntent() {
-        Bundle bundle = getIntent().getExtras();
-        chapterID = bundle.getString(Constants.SELECTED_CHAPTERID, "");
-        chapterName = bundle.getString(Constants.SELECTED_CHAPTER_NAME, "");
-        subjectId = bundle.getString(Constants.SELECTED_SUBJECTID, "");
-        if (TextUtils.isEmpty(chapterID) || TextUtils.isEmpty(chapterName) || TextUtils.isEmpty(subjectId)) {
-            //In case data is missing finish this activity,
-            finish();
-        }
+    private void setData(List<TestCoverage> testCoverages) {
+        mChapterNameTxtView.setText(getString(R.string.value_test_chapter_name, chapterName));
+        mNoteTxtView.setText(getNote());
+        mTestBarChart.setData(generateBarData(testCoverages));
+        mTestBarChart.invalidate();
     }
 
     private BarData generateBarData(List<TestCoverage> testCoverages) {
         int index = 0;
-        List<String> columnNames = new ArrayList<>();
         ArrayList<BarEntry> entries = new ArrayList<>();
 
         for (TestCoverage testCoverage : testCoverages) {
@@ -153,7 +138,7 @@ public class TestStartActivity extends AbstractBaseActivity {
             float answersRemaining = Data.getInt(testCoverage.questionCount) - Data.getInt(testCoverage.attendedQCount);
             float answersWrong = Data.getInt(testCoverage.attendedQCount) - Data.getInt(testCoverage.attendedCorrectQCount);
 
-            columnNames.add("Level " + testCoverage.level);
+            mChapterLevels.add("Level " + testCoverage.level);
 
             BarEntry barEntry = new BarEntry(new float[]{answersCorrect, answersRemaining, answersWrong}, index++);
             entries.add(barEntry);
@@ -164,22 +149,46 @@ public class TestStartActivity extends AbstractBaseActivity {
         barDataSet.setDrawValues(false);
         barDataSet.setBarSpacePercent(20f);
 
-        BarData barData = new BarData(columnNames);
+        BarData barData = new BarData(mChapterLevels);
         barData.addDataSet(barDataSet);
         barDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
 
         return barData;
     }
 
-    private void setData(List<TestCoverage> testCoverages) {
-        mChapterNameTxtView.setText(getString(R.string.value_test_chapter_name, chapterName));
-        mNoteTxtView.setText(getNote());
-        mTestBarChart.setData(generateBarData(testCoverages));
-        mTestBarChart.invalidate();
+    private void initializeGraph() {
+        mTestBarChart.setBackgroundColor(Color.WHITE);
+        mTestBarChart.setDescription("");
+        mTestBarChart.setDrawBarShadow(false);
+        mTestBarChart.setDrawGridBackground(false);
+
+        YAxis rightAxis = mTestBarChart.getAxisRight();
+        rightAxis.setDrawGridLines(true);
+        rightAxis.setEnabled(false);
+
+        YAxis leftAxis = mTestBarChart.getAxisLeft();
+        leftAxis.setDrawGridLines(true);
+        leftAxis.setTextSize(15f);
+
+        XAxis xAxis = mTestBarChart.getXAxis();
+        xAxis.setDrawGridLines(false);
+        xAxis.setTextSize(15f);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+
+        mTestBarChart.getLegend().setTextSize(15f);
+        mTestBarChart.getLegend().setEnabled(false);
+        mTestBarChart.getLegend().setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
     }
 
     private CharSequence getNote() {
         String noteValue = getString(R.string.value_test_note);
         return TextUtils.concat(Data.getBoldString(getString(R.string.label_note)), noteValue);
+    }
+
+    private void setupTest() {
+        Bundle bundle = getIntent().getExtras();
+        bundle.putStringArrayList(EXTRAS_CHAPTER_LEVELS, mChapterLevels);
+        ChapterTestSetupFragment fragment = ChapterTestSetupFragment.newInstance(bundle);
+        fragment.show(getSupportFragmentManager(), ChapterTestSetupFragment.getMyTag());
     }
 }
