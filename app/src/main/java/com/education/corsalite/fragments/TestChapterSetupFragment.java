@@ -3,6 +3,7 @@ package com.education.corsalite.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,7 +95,7 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
                 break;
             }
             case R.id.btn_next : {
-                startActivity(ExerciseActivity.getMyIntent(getActivity(), mExtras));
+                requestQuestionPaperDetails();
                 break;
             }
         }
@@ -109,6 +110,17 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    private void requestQuestionPaperDetails() {
+        String noOfQuestions = mNoOfQuestionsEditTxt.getText().toString();
+        if (!TextUtils.isEmpty(noOfQuestions) && TextUtils.isDigitsOnly(noOfQuestions)) {
+
+            //Todo Use mChapterLevel, noOfQuestions & mIsAdaptiveLearningEnabled for making api call
+            startActivity(ExerciseActivity.getMyIntent(getActivity(), mExtras));
+        } else {
+            Toast.makeText(getActivity(), "Please select the number of questions", Toast.LENGTH_SHORT).show();
+        }
     }
 }
 
