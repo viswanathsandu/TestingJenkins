@@ -31,6 +31,8 @@ import butterknife.OnClick;
  */
 public class ChapterTestSetupFragment extends DialogFragment implements AdapterView.OnItemSelectedListener {
 
+    public static final String EXTRAS_CHAPTER_LEVELS = "key_chapter_levels";
+
     @Bind(R.id.checkbox_adaptive_learning)
     CheckBox mAdaptiveLearningCheckbox;
     @Bind(R.id.edit_txt_chapter_test_setup_questions)
@@ -58,7 +60,7 @@ public class ChapterTestSetupFragment extends DialogFragment implements AdapterV
         super.onCreate(savedInstanceState);
 
         mExtras = getArguments();
-        mChapterLevels = mExtras.getStringArrayList(TestStartActivity.EXTRAS_CHAPTER_LEVELS);
+        mChapterLevels = mExtras.getStringArrayList(EXTRAS_CHAPTER_LEVELS);
     }
 
     @Nullable
