@@ -31,6 +31,7 @@ import com.education.corsalite.models.responsemodels.StudyCenter;
 import com.education.corsalite.models.responsemodels.TestCoverage;
 import com.education.corsalite.models.responsemodels.UpdateExamDetailsResponse;
 import com.education.corsalite.models.responsemodels.UsageAnalysis;
+import com.education.corsalite.models.responsemodels.UserEventsResponse;
 import com.education.corsalite.models.responsemodels.UserProfileResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencyBalanceResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencySummaryResponse;
@@ -404,6 +405,12 @@ public class ApiManager {
     public void getMyPosts(String courseID, String userID, ApiCallback<ArrayList<ForumPost>> callback) {
         if (isApiOnline()) {
             ApiClientService.get().getForumPosts(courseID, userID, callback);
+        }
+    }
+
+    public void postUserEvents(String insert, ApiCallback<UserEventsResponse> callback){
+        if(isApiOnline()){
+            ApiClientService.get().postUserEvents(insert,callback);
         }
     }
 }
