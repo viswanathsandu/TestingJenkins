@@ -1,194 +1,58 @@
 package com.education.corsalite.activities;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.widget.FrameLayout;
 
 import com.education.corsalite.R;
-import com.education.corsalite.api.ApiCallback;
-import com.education.corsalite.api.ApiManager;
-import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.fragments.ChapterTestSetupFragment;
-import com.education.corsalite.models.responsemodels.CorsaliteError;
-import com.education.corsalite.models.responsemodels.TestCoverage;
-import com.education.corsalite.utils.Constants;
-import com.education.corsalite.utils.Data;
-import com.education.corsalite.utils.L;
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
+import com.education.corsalite.enums.Tests;
+import com.education.corsalite.fragments.TestChapterFragment;
+import com.education.corsalite.fragments.TestScheduledFragment;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
-import retrofit.client.Response;
 
 public class TestStartActivity extends AbstractBaseActivity {
 
-    public static final String EXTRAS_CHAPTER_LEVELS = "key_chapter_levels";
-
-    @Bind(R.id.bar_chart_test_start)
-    BarChart mTestBarChart;
-    @Bind(R.id.ll_container)
-    LinearLayout mContainerLayout;
-    @Bind(R.id.progress_bar)
-    ProgressBar mProgressBar;
-    @Bind(R.id.txt_view_test_start_chapter_name)
-    TextView mChapterNameTxtView;
-    @Bind(R.id.tv_failure_text)
-    TextView mFailureTextView;
-    @Bind(R.id.txt_view_test_start_note)
-    TextView mNoteTxtView;
-
-    private ArrayList<String> mChapterLevels = new ArrayList<>();
-    private String chapterID, chapterName, subjectId;
+    public static final String KEY_TEST_TYPE = "key_test_type";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        RelativeLayout myView = (RelativeLayout) inflater.inflate(R.layout.activity_test_start, null);
+        FrameLayout myView = (FrameLayout) inflater.inflate(R.layout.activity_test_start, null);
         frameLayout.addView(myView);
         ButterKnife.bind(this);
         setToolbarForTestStartScreen();
         //Hide the toolbar button.
         toolbar.findViewById(R.id.start_btn).setVisibility(View.GONE);
 
-        initializeGraph();
-        loadDataFromIntent();
-        fetchDataFromServer();
+        if (savedInstanceState == null) {
+            int testType = getIntent().getIntExtra(KEY_TEST_TYPE, Tests.INVALID.getType());
+            loadTest(testType);
+        }
     }
 
-    @OnClick({R.id.btn_header_test_cancel, R.id.btn_header_test_next})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.btn_header_test_cancel : {
-                onBackPressed();
+    private void loadTest(int testType) {
+        Tests test = Tests.getTest(testType);
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        switch (test) {
+            case INVALID : {
+                finish();
                 break;
             }
-            case R.id.btn_header_test_next : {
-                setupTest();
+            case CHAPTER : {
+                fragmentTransaction.add(R.id.fragment_container, TestChapterFragment.newInstance(getIntent().getExtras()), TestChapterFragment.getMyTag())
+                        .commit();
+                break;
+            }
+            case SCHEDULED : {
+                fragmentTransaction.add(R.id.fragment_container, TestScheduledFragment.newInstance(getIntent().getExtras()), TestScheduledFragment.getMyTag())
+                        .commit();
                 break;
             }
         }
-    }
-
-    private void loadDataFromIntent() {
-        Bundle bundle = getIntent().getExtras();
-        chapterID = bundle.getString(Constants.SELECTED_CHAPTERID, "");
-        chapterName = bundle.getString(Constants.SELECTED_CHAPTER_NAME, "");
-        subjectId = bundle.getString(Constants.SELECTED_SUBJECTID, "");
-        if (TextUtils.isEmpty(chapterID) || TextUtils.isEmpty(chapterName) || TextUtils.isEmpty(subjectId)) {
-            //In case data is missing finish this activity,
-            finish();
-        }
-    }
-
-    private void fetchDataFromServer() {
-        ApiManager.getInstance(this).getTestCoverage(LoginUserCache.getInstance().loginResponse.studentId, AbstractBaseActivity.selectedCourse.courseId.toString(), subjectId, chapterID,
-                new ApiCallback<List<TestCoverage>>(this) {
-                    @Override
-                    public void failure(CorsaliteError error) {
-                        super.failure(error);
-                        L.error(error.message);
-                        mProgressBar.setVisibility(View.GONE);
-                        mFailureTextView.setText("Sorry, couldn't fetch data");
-                    }
-
-                    @Override
-                    public void success(List<TestCoverage> testCoverages, Response response) {
-                        super.success(testCoverages, response);
-                        if (isFinishing() || isDestroyed()) {
-                            return;
-                        }
-                        setData(testCoverages);
-                        mProgressBar.setVisibility(View.GONE);
-                        mContainerLayout.setVisibility(View.VISIBLE);
-                    }
-                });
-    }
-
-    private void setData(List<TestCoverage> testCoverages) {
-        mChapterNameTxtView.setText(getString(R.string.value_test_chapter_name, chapterName));
-        mNoteTxtView.setText(getNote());
-        mTestBarChart.setData(generateBarData(testCoverages));
-        mTestBarChart.invalidate();
-    }
-
-    private BarData generateBarData(List<TestCoverage> testCoverages) {
-        int index = 0;
-        ArrayList<BarEntry> entries = new ArrayList<>();
-
-        for (TestCoverage testCoverage : testCoverages) {
-            float answersCorrect = Data.getInt(testCoverage.attendedCorrectQCount);
-            float answersRemaining = Data.getInt(testCoverage.questionCount) - Data.getInt(testCoverage.attendedQCount);
-            float answersWrong = Data.getInt(testCoverage.attendedQCount) - Data.getInt(testCoverage.attendedCorrectQCount);
-
-            mChapterLevels.add("Level " + testCoverage.level);
-
-            BarEntry barEntry = new BarEntry(new float[]{answersCorrect, answersRemaining, answersWrong}, index++);
-            entries.add(barEntry);
-        }
-
-        BarDataSet barDataSet = new BarDataSet(entries, "");
-        barDataSet.setColors(new int[]{getResources().getColor(R.color.green), getResources().getColor(R.color.red), getResources().getColor(R.color.skyblue)});
-        barDataSet.setDrawValues(false);
-        barDataSet.setBarSpacePercent(20f);
-
-        BarData barData = new BarData(mChapterLevels);
-        barData.addDataSet(barDataSet);
-        barDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
-
-        return barData;
-    }
-
-    private void initializeGraph() {
-        mTestBarChart.setBackgroundColor(Color.WHITE);
-        mTestBarChart.setDescription("");
-        mTestBarChart.setDrawBarShadow(false);
-        mTestBarChart.setDrawGridBackground(false);
-
-        YAxis rightAxis = mTestBarChart.getAxisRight();
-        rightAxis.setDrawGridLines(true);
-        rightAxis.setEnabled(false);
-
-        YAxis leftAxis = mTestBarChart.getAxisLeft();
-        leftAxis.setDrawGridLines(true);
-        leftAxis.setTextSize(15f);
-
-        XAxis xAxis = mTestBarChart.getXAxis();
-        xAxis.setDrawGridLines(false);
-        xAxis.setTextSize(15f);
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-
-        mTestBarChart.getLegend().setTextSize(15f);
-        mTestBarChart.getLegend().setEnabled(false);
-        mTestBarChart.getLegend().setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
-    }
-
-    private CharSequence getNote() {
-        String noteValue = getString(R.string.value_test_note);
-        return TextUtils.concat(Data.getBoldString(getString(R.string.label_note)), noteValue);
-    }
-
-    private void setupTest() {
-        Bundle bundle = getIntent().getExtras();
-        bundle.putStringArrayList(EXTRAS_CHAPTER_LEVELS, mChapterLevels);
-        ChapterTestSetupFragment fragment = ChapterTestSetupFragment.newInstance(bundle);
-        fragment.show(getSupportFragmentManager(), ChapterTestSetupFragment.getMyTag());
     }
 }

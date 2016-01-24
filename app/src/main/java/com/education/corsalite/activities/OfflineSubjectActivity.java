@@ -114,7 +114,7 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
         d.setTitle(getResources().getString(R.string.offline_dialog_title_text));
         LinearLayout subjectLayout = (LinearLayout) d.findViewById(R.id.subject_layout);
         subjectLayout.removeAllViews();
-        subjectLayout.addView(getTextView(root.getChildren().get(0).getValue().toString() + "\n"));
+        subjectLayout.addView(getTextView(root.getChildren().get(0).getValue().toString()));
         LinearLayout topicLayout = (LinearLayout) d.findViewById(R.id.topic_layout);
         topicLayout.removeAllViews();
         List<OfflineContent> offlineContents = new ArrayList<>();
@@ -128,7 +128,7 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
                     for (TreeNode innerMostNode : innerNode.getChildren()) {
                         ContentModel contentModel = topicModel.contentMap.get(contentCount);
                         if (((CheckBox) innerMostNode.getViewHolder().getNodeView().findViewById(R.id.node_selector)).isChecked()) {
-                            contentText += "\t\t" + innerMostNode.getValue().toString() + "\n";
+                            contentText += "\t\t" + innerMostNode.getValue().toString();
                             if (contentModel.type.equals("mpg")) {
                                 videoContentId += contentModel.idContent + ",";
                             } else {
@@ -148,24 +148,15 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
             }
         }
         AppPref.getInstance(this).save("DATA_IN_PROGRESS", new Gson().toJson(offlineContents));
-        setUpDialogLogic(method(videoContentId), method(htmlContentId));
+        setUpDialogLogic(method(htmlContentId));
     }
 
-    private void setUpDialogLogic(String videoContentId, String htmlContentId) {
+    private void setUpDialogLogic(String htmlContentId) {
         d.show();
-        final CheckBox videoContent = (CheckBox) d.findViewById(R.id.download_video);
-        final CheckBox htmlContent = (CheckBox) d.findViewById(R.id.download_html);
-        if (videoContentId.isEmpty()) {
-            videoContent.setEnabled(false);
-        }
-        if (htmlContentId.isEmpty()) {
-            htmlContent.setEnabled(false);
-        }
         Button okButton = (Button) d.findViewById(R.id.ok);
         Button okCancel = (Button) d.findViewById(R.id.cancel);
 
         final String finalHtmlContentId = htmlContentId.trim();
-        final String finalVideoContentId = videoContentId.trim();
 
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -174,9 +165,6 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
                 if (!finalHtmlContentId.isEmpty()) {
                     finalContentIds += finalHtmlContentId;
                 }
-               /* if (!finalVideoContentId.isEmpty() && videoContent.isChecked()) {
-                    finalContentIds += COMMA_STRING + finalVideoContentId;
-                }*/
                 if (finalContentIds.isEmpty()) {
                     Toast.makeText(OfflineSubjectActivity.this, getResources().getString(R.string.select_content_toast), Toast.LENGTH_SHORT).show();
                 } else {

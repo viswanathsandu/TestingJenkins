@@ -7,6 +7,9 @@ import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.config.AppConfig;
 import com.education.corsalite.db.DbManager;
 import com.education.corsalite.enums.NetworkMode;
+import com.education.corsalite.models.requestmodels.ForumLikeRequest;
+import com.education.corsalite.models.responsemodels.BaseResponseModel;
+import com.education.corsalite.models.responsemodels.CommonResponseModel;
 import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.Course;
@@ -27,6 +30,7 @@ import com.education.corsalite.models.responsemodels.PostExamTemplate;
 import com.education.corsalite.models.responsemodels.PostExercise;
 import com.education.corsalite.models.responsemodels.PostFlaggedQuestions;
 import com.education.corsalite.models.responsemodels.PostQuestionPaper;
+import com.education.corsalite.models.responsemodels.ScheduledTest;
 import com.education.corsalite.models.responsemodels.StudyCenter;
 import com.education.corsalite.models.responsemodels.TestCoverage;
 import com.education.corsalite.models.responsemodels.UpdateExamDetailsResponse;
@@ -316,6 +320,12 @@ public class ApiManager {
         }
     }
 
+    public void getScheduledTests(String studentId, ApiCallback<List<ScheduledTest>> callback) {
+        if (isApiOnline()) {
+            ApiClientService.get().getScheduledTests(studentId, callback);
+        }
+    }
+
     public void getTestQuestionPaper(String testQuestionPaperId, String testAnswerPaperId, ApiCallback<List<ExerciseModel>> callback) {
         if(isApiOnline()) {
             ApiClientService.get().getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, callback);
@@ -398,13 +408,25 @@ public class ApiManager {
 
     public void getAllPosts(String courseID, String userID, String type, String BeginRowNumber, String mRowcount, ApiCallback<ArrayList<ForumPost>> callback) {
         if (isApiOnline()) {
-            ApiClientService.get().getForumPosts(courseID, userID, type, BeginRowNumber, mRowcount, callback);
+            ApiClientService.get().getAllPosts(courseID, userID, type, BeginRowNumber, mRowcount, callback);
         }
     }
 
     public void getMyPosts(String courseID, String userID, ApiCallback<ArrayList<ForumPost>> callback) {
         if (isApiOnline()) {
-            ApiClientService.get().getForumPosts(courseID, userID, callback);
+            ApiClientService.get().getMyPosts(courseID, userID, callback);
+        }
+    }
+
+    public void getMyComments(String courseID, String userID, String type, ApiCallback<ArrayList<ForumPost>> callback) {
+        if (isApiOnline()) {
+            ApiClientService.get().getForumPosts(courseID, userID, type, callback);
+        }
+    }
+
+    public void addForumLike(ForumLikeRequest forumLikeRequest, ApiCallback<CommonResponseModel> callback){
+        if(isApiOnline()){
+            ApiClientService.get().addForumLike(new Gson().toJson(forumLikeRequest), callback);
         }
     }
 

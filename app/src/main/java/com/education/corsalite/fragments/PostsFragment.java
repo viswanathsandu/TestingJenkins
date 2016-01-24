@@ -7,17 +7,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Toast;
 
-import com.db4o.collections.ArrayList4;
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.PostAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.listener.SocialEventsListener;
+import com.education.corsalite.models.requestmodels.ForumLikeRequest;
+import com.education.corsalite.models.responsemodels.BaseResponseModel;
+import com.education.corsalite.models.responsemodels.CommonResponseModel;
 import com.education.corsalite.models.responsemodels.ForumPost;
-import com.education.corsalite.models.responsemodels.PostFlaggedQuestions;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,14 +78,29 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener 
             case 1:
                 loadForumMyPosts();
                 break;
+            case 2:
+                loadForumMyComments();
+                break;
             default:
                 break;
         }
     }
 
+    private void loadForumMyComments() {
+        // http://staging.corsalite.com/v1/webservices/Forums?idCourse=17&idUser=69&type=MyComments
+        ApiManager.getInstance(getActivity()).getMyComments("17", "69", "MyComments",
+                new ApiCallback<ArrayList<ForumPost>>(getActivity()) {
+                    @Override
+                    public void success(ArrayList<ForumPost> forumPosts, Response response) {
+                        super.success(forumPosts, response);
+                        setForumPosts(forumPosts);
+                    }
+                });
+    }
+
     private void loadForumPosts() {
         // // http://staging.corsalite.com/v1/webservices/Forums?idCourse=13&idUser=11391&type=AllPosts&BeginRowNumber=10&RowCount=3
-
+        // TODO: sridhar. Pass dynamic parameters respectively.
         ApiManager.getInstance(getActivity()).getAllPosts("13", "1139", "AllPosts", "10", "3",
                 new ApiCallback<ArrayList<ForumPost>>(getActivity()) {
                     @Override
@@ -113,17 +128,43 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener 
     }
 
     @Override
-    public void onLikeClicked() {
-        //TODO:
+    public void onLikeClicked(final int position) {
+        final ForumPost forumPost=mPostAdapter.getItem(position);
+
+        ApiManager.getInstance(getActivity()).addForumLike(new ForumLikeRequest(forumPost.getIdUser(), forumPost.getIdUserPost()), new ApiCallback<CommonResponseModel>(getActivity()) {
+            @Override
+            public void success(CommonResponseModel baseResponseModel, Response response) {
+                super.success(baseResponseModel, response);
+                if(baseResponseModel.isSuccessful()){
+                   forumPost.setPostLikes(Integer.parseInt(forumPost.getPostLikes())+1+"");
+                    mPostAdapter.updateCurrentItem(position);
+                }
+            }
+        });
     }
 
     @Override
-    public void onCommentClicked() {
-        //TODO:
+    public void onCommentClicked(int position) {
+
     }
 
     @Override
-    public void onBookmarkClicked() {
-        //TODO:
+    public void onBookmarkClicked(int position) {
+
+    }
+
+    @Override
+    public void onEditClicked(int position) {
+
+    }
+
+    @Override
+    public void onLockClicked(int position) {
+
+    }
+
+    @Override
+    public void onDeleteClicked(int position) {
+
     }
 }

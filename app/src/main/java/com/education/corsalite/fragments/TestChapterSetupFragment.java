@@ -3,6 +3,7 @@ package com.education.corsalite.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +17,6 @@ import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.activities.ExerciseActivity;
-import com.education.corsalite.activities.TestStartActivity;
 
 import java.util.ArrayList;
 
@@ -29,7 +29,9 @@ import butterknife.OnClick;
  *
  * @author Meeth D Jain
  */
-public class ChapterTestSetupFragment extends DialogFragment implements AdapterView.OnItemSelectedListener {
+public class TestChapterSetupFragment extends DialogFragment implements AdapterView.OnItemSelectedListener {
+
+    public static final String EXTRAS_CHAPTER_LEVELS = "key_chapter_levels";
 
     @Bind(R.id.checkbox_adaptive_learning)
     CheckBox mAdaptiveLearningCheckbox;
@@ -43,8 +45,8 @@ public class ChapterTestSetupFragment extends DialogFragment implements AdapterV
     private boolean mIsAdaptiveLearningEnabled;
     private ArrayList<String> mChapterLevels;
 
-    public static ChapterTestSetupFragment newInstance(Bundle bundle) {
-        ChapterTestSetupFragment fragment = new ChapterTestSetupFragment();
+    public static TestChapterSetupFragment newInstance(Bundle bundle) {
+        TestChapterSetupFragment fragment = new TestChapterSetupFragment();
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -58,7 +60,7 @@ public class ChapterTestSetupFragment extends DialogFragment implements AdapterV
         super.onCreate(savedInstanceState);
 
         mExtras = getArguments();
-        mChapterLevels = mExtras.getStringArrayList(TestStartActivity.EXTRAS_CHAPTER_LEVELS);
+        mChapterLevels = mExtras.getStringArrayList(EXTRAS_CHAPTER_LEVELS);
     }
 
     @Nullable
@@ -93,7 +95,7 @@ public class ChapterTestSetupFragment extends DialogFragment implements AdapterV
                 break;
             }
             case R.id.btn_next : {
-                startActivity(ExerciseActivity.getMyIntent(getActivity(), mExtras));
+                requestQuestionPaperDetails();
                 break;
             }
         }
@@ -108,6 +110,17 @@ public class ChapterTestSetupFragment extends DialogFragment implements AdapterV
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    private void requestQuestionPaperDetails() {
+        String noOfQuestions = mNoOfQuestionsEditTxt.getText().toString();
+        if (!TextUtils.isEmpty(noOfQuestions) && TextUtils.isDigitsOnly(noOfQuestions)) {
+
+            //Todo Use mChapterLevel, noOfQuestions & mIsAdaptiveLearningEnabled for making api call
+            startActivity(ExerciseActivity.getMyIntent(getActivity(), mExtras));
+        } else {
+            Toast.makeText(getActivity(), "Please select the number of questions", Toast.LENGTH_SHORT).show();
+        }
     }
 }
 
