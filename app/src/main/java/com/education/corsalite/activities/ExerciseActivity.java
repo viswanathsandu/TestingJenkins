@@ -81,38 +81,29 @@ public class ExerciseActivity extends AbstractBaseActivity {
     @Bind(R.id.btn_previous) Button btnPrevious;
     @Bind(R.id.webview_question) WebView webviewQuestion;
     @Bind(R.id.webview_paragraph) WebView webviewParagraph;
-
     @Bind(R.id.tv_comment) TextView tvComment;
     @Bind(R.id.tv_level) TextView tvLevel;
     @Bind(R.id.tv_nav_title) TextView tvNavTitle;
-
     @Bind(R.id.tv_pagetitle) TextView tvPageTitle;
     @Bind(R.id.tv_timer) TextView tv_timer;
-
     @Bind(R.id.btn_view_full_question) Button btnViewFullQuestion;
     @Bind(R.id.btn_verify) Button btnVerify;
     @Bind(R.id.tv_clearanswer) TextView tvClearAnswer;
     @Bind(R.id.btn_submit) Button btnSubmit;
-
     @Bind(R.id.txtAnswerCount) TextView txtAnswerCount;
     @Bind(R.id.txtAnswerExp) WebView txtAnswerExp;
     @Bind(R.id.tv_serial_no) TextView tvSerialNo;
-
     @Bind(R.id.layout_timer) LinearLayout timerLayout;
     @Bind(R.id.explanation_layout) LinearLayout explanationLayout;
     @Bind(R.id.layout_choice) LinearLayout layoutChoice;
-
     @Bind(R.id.imv_refresh) ImageView imvRefresh;
     @Bind(R.id.btn_slider_test) Button slider;
     @Bind(R.id.ll_test_navigator) LinearLayout testNavLayout;
     @Bind(R.id.shadow_view) View shadowView;
-
     @Bind(R.id.gv_test) GridViewInScrollView gvTest;
     @Bind(R.id.test_nav_footer) LinearLayout testNavFooter;
     @Bind(R.id.navigator_layout) RelativeLayout navigatorLayout;
-
-    @Bind(R.id.header_progress)
-    ProgressBar headerProgress;
+    @Bind(R.id.header_progress) ProgressBar headerProgress;
     @Bind(R.id.tv_empty_layout) TextView tvEmptyLayout;
 
     //Flagged Answer View ID
@@ -129,20 +120,19 @@ public class ExerciseActivity extends AbstractBaseActivity {
     @Bind(R.id.tv_percentile) TextView tvPercentile;
     @Bind(R.id.imv_flag) ImageView imvFlag;
 
-    String webQuestion = "";
+    private String webQuestion = "";
     private int selectedPosition = 0;
     private int selectedAnswerPosition = -1;
-    String title = "";
-    String topic = "";
-    GridAdapter gridAdapter;
+    private String title = "";
+    private String topic = "";
+    private GridAdapter gridAdapter;
     private List<ExerciseModel> localExerciseModelList;
     private int previousQuestionPosition = -1;
-
-    String subjectId = null;
-    String chapterId = null;
-    String topicIds = null;
-
-    boolean isFlagged = false;
+    private String subjectId = null;
+    private String chapterId = null;
+    private String topicIds = null;
+    private String questionsCount = null;
+    private boolean isFlagged = false;
 
     public static Intent getMyIntent(Context context, @Nullable Bundle extras) {
         Intent intent = new Intent(context, ExerciseActivity.class);
@@ -184,7 +174,9 @@ public class ExerciseActivity extends AbstractBaseActivity {
             topic = getIntent().getExtras().getString(Constants.SELECTED_TOPIC);
             tvPageTitle.setText(topic);
         }
-
+        if (getIntent().hasExtra(Constants.QUESTIONS_COUNT)) {
+            questionsCount = getIntent().getExtras().getString(Constants.QUESTIONS_COUNT, "");
+        }
         // set selected position
         if (getIntent().hasExtra(Constants.SELECTED_POSITION)) {
             selectedPosition = getIntent().getExtras().getInt(Constants.SELECTED_POSITION);
@@ -211,11 +203,7 @@ public class ExerciseActivity extends AbstractBaseActivity {
         } else if(title.equalsIgnoreCase("Exercise Test")) {
             imvFlag.setVisibility(View.INVISIBLE);
             localExerciseModelList = WebActivity.exerciseModelList;
-            if (localExerciseModelList.size() > 1) {
-                webFooter.setVisibility(View.VISIBLE);
-            } else {
-                webFooter.setVisibility(View.GONE);
-            }
+            webFooter.setVisibility(localExerciseModelList.isEmpty() ? View.GONE : View.VISIBLE);
             btnVerify.setVisibility(View.VISIBLE);
             imvRefresh.setVisibility(View.GONE);
             timerLayout.setVisibility(View.GONE);
@@ -1055,7 +1043,7 @@ public class ExerciseActivity extends AbstractBaseActivity {
                     @Override
                     public void success(List<ExamModels> examModelses, Response response) {
                         super.success(examModelses, response);
-                        if (examModelses != null && examModelses.size() > 0) {
+                        if (examModelses != null && !examModelses.isEmpty()) {
                             postCustomExamTemplate(examModelses);
                         } else {
                             showToast("No data found.");
@@ -1080,7 +1068,7 @@ public class ExerciseActivity extends AbstractBaseActivity {
         ExamTemplateChapter examTemplateChapter = new ExamTemplateChapter();
         examTemplateChapter.chapterID = chapterId;
         examTemplateChapter.topicIDs = topicIds;
-
+        examTemplateChapter.questionCount = questionsCount;
         examTemplateConfig.examTemplateChapter.add(examTemplateChapter);
         postCustomExamTemplate.examTemplateConfig.add(examTemplateConfig);
 

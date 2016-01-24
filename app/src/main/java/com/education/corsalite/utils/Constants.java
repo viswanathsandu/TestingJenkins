@@ -36,7 +36,8 @@ public class Constants {
     public static final String SELECTED_ENTITY =  "selectedEntity";
     public static final String SELECTED_EXAM_NAME = "selectedExamName";
     public static final String SELECTED_QUESTION_PAPER = "selectedQuestionPaper";
-
+    public static final String QUESTIONS_COUNT = "questionsCount";
+    public static final String TEST_COVERAGE_LIST_GSON = "testCoverageListGson";
 
     public static enum AnswerState {
         UNATTEMPTED, ANSWERED, SKIPPED, FLAGGED

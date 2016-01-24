@@ -71,10 +71,6 @@ public interface ICorsaliteApi {
     @GET("/CourseStudyCenterData")
     void getCourseStudyCenterData(@Query("idStudent") String studentId, @Query("idCourse") String courseId, ApiCallback<List<StudyCenter>> callback);
 
-    @GET("/CourseStudyCenterData")
-    void getNotesData(ApiCallback<List<Note>> callback);
-
-    //http://staging.corsalite.com/v1/webservices/GetCourseAnalysis?idStudent=36&idCourse=13&idSubject=51&GroupLevel=Chapter&BreakupByDate=Month&DurationInDays=365&ReturnAllRowsWithoutPerfDataAlso=true
     @GET("/GetCourseAnalysis")
     void getCourseAnalysis(@Query("idStudent") String studentId,
                            @Query("idCourse") String courseId,
@@ -149,24 +145,18 @@ public interface ICorsaliteApi {
     @GET("/Note")
     void getNotes(@Query("idStudent") String studentId, @Query("idSubject") String subjectId, @Query("idChapter") String chapterId, @Query("idTopic") String topicId, ApiCallback<List<Note>> callback);
 
-    @GET("/ExamHistory")
-    void getExamHistory(@Query("idStudent") String studentId, @Query("BeginRowNumber") String beginRowNum, @Query("RowCount") String rowCount, ApiCallback<List<ExamHistory>> callback);
-
     @POST("/Note")
     void addNote(@Query("Insert") String insert, ApiCallback<DefaultNoteResponse> callback);
-
-
-    @POST("/Forums")
-    void addForum(@Query("Update") String insert, ApiCallback<DefaultForumResponse> callback);
-
 
     @POST("/Note")
     void updateNote(@Query("Update") String insert, ApiCallback<DefaultNoteResponse> callback);
 
+    @GET("/ExamHistory")
+    void getExamHistory(@Query("idStudent") String studentId, @Query("BeginRowNumber") String beginRowNum, @Query("RowCount") String rowCount, ApiCallback<List<ExamHistory>> callback);
+
     @GET("/UsageAnalysis")
     void getUsageAnalysis(@Query("idUser") String userId, ApiCallback<UsageAnalysis> callback);
 
-    // http://staging.corsalite.com/v1/webservices/Forums?idCourse=13&idUser=11391&type=AllPosts&BeginRowNumber=10&RowCount=3
     @GET("/Forums")
     void getAllPosts(@Query("idCourse") String courseID, @Query("idUser") String userID, @Query("type") String type, @Query("BeginRowNumber") String beginTowNumber, @Query("RowCount") String rowCount, ApiCallback<ArrayList<ForumPost>> callback);
 
@@ -175,6 +165,9 @@ public interface ICorsaliteApi {
 
     @GET("/Forums")
     void getForumPosts(@Query("idCourse") String courseID, @Query("idUser") String userID, @Query("type") String type, ApiCallback<ArrayList<ForumPost>> callback);
+
+    @POST("/Forums")
+    void addForum(@Query("Update") String insert, ApiCallback<DefaultForumResponse> callback);
 
     @POST("/UserEvents")
     void postUserEvents(@Query("Insert") String insert, ApiCallback<UserEventsResponse> callback);

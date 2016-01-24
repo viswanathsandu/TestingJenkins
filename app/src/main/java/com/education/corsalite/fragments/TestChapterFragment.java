@@ -28,6 +28,7 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +61,7 @@ public class TestChapterFragment extends BaseFragment {
     private ArrayList<String> mChapterLevels = new ArrayList<>();
     private Bundle mExtras;
     private String chapterID, chapterName, subjectId;
+    private List<TestCoverage> testCoverages;
 
     public static TestChapterFragment newInstance(Bundle bundle) {
         TestChapterFragment fragment = new TestChapterFragment();
@@ -129,6 +131,7 @@ public class TestChapterFragment extends BaseFragment {
                         if (getActivity().isFinishing() || getActivity().isDestroyed() || !isResumed()) {
                             return;
                         }
+                        TestChapterFragment.this.testCoverages = testCoverages;
                         setData(testCoverages);
                         mProgressBar.setVisibility(View.GONE);
                         mContainerLayout.setVisibility(View.VISIBLE);
@@ -137,10 +140,15 @@ public class TestChapterFragment extends BaseFragment {
     }
 
     private void setData(List<TestCoverage> testCoverages) {
-        mChapterNameTxtView.setText(getString(R.string.value_test_chapter_name, chapterName));
-        mNoteTxtView.setText(getNote());
-        mTestBarChart.setData(generateBarData(testCoverages));
-        mTestBarChart.invalidate();
+        for (TestCoverage coverage : testCoverages) {
+            if(coverage.idCourseSubjectChapter.equalsIgnoreCase(chapterID)) {
+                mChapterNameTxtView.setText(getString(R.string.value_test_chapter_name, chapterName));
+                mNoteTxtView.setText(getNote());
+                mTestBarChart.setData(generateBarData(testCoverages));
+                mTestBarChart.invalidate();
+                break;
+            }
+        }
     }
 
     private BarData generateBarData(List<TestCoverage> testCoverages) {
@@ -152,7 +160,7 @@ public class TestChapterFragment extends BaseFragment {
             float answersRemaining = Data.getInt(testCoverage.questionCount) - Data.getInt(testCoverage.attendedQCount);
             float answersWrong = Data.getInt(testCoverage.attendedQCount) - Data.getInt(testCoverage.attendedCorrectQCount);
 
-            mChapterLevels.add("Level " + testCoverage.level);
+            mChapterLevels.add(testCoverage.level);
 
             BarEntry barEntry = new BarEntry(new float[]{answersCorrect, answersRemaining, answersWrong}, index++);
             entries.add(barEntry);
@@ -201,6 +209,9 @@ public class TestChapterFragment extends BaseFragment {
 
     private void setupTest() {
         mExtras.putStringArrayList(TestChapterSetupFragment.EXTRAS_CHAPTER_LEVELS, mChapterLevels);
+        if(testCoverages != null) {
+            mExtras.putString(Constants.TEST_COVERAGE_LIST_GSON, new Gson().toJson(testCoverages));
+        }
         TestChapterSetupFragment fragment = TestChapterSetupFragment.newInstance(mExtras);
         fragment.show(getFragmentManager(), TestChapterSetupFragment.getMyTag());
     }
