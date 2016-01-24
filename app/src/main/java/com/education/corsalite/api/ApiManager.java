@@ -8,7 +8,6 @@ import com.education.corsalite.config.AppConfig;
 import com.education.corsalite.db.DbManager;
 import com.education.corsalite.enums.NetworkMode;
 import com.education.corsalite.models.requestmodels.ForumLikeRequest;
-import com.education.corsalite.models.responsemodels.BaseResponseModel;
 import com.education.corsalite.models.responsemodels.CommonResponseModel;
 import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ContentIndex;

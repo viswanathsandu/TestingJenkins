@@ -174,7 +174,7 @@ public interface ICorsaliteApi {
     void getMyPosts(@Query("idCourse") String courseID, @Query("idUser") String userID, ApiCallback<ArrayList<ForumPost>> callback);
 
     @GET("/Forums")
-    void getForumPosts(@Query("idCourse") String courseID, @Query("idUser") String userID, ApiCallback<ArrayList<ForumPost>> callback);
+    void getForumPosts(@Query("idCourse") String courseID, @Query("idUser") String userID, @Query("type") String type, ApiCallback<ArrayList<ForumPost>> callback);
 
     @POST("/UserEvents")
     void postUserEvents(@Query("Insert") String insert, ApiCallback<UserEventsResponse> callback);
