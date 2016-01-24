@@ -537,22 +537,22 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     public void onEvent(ContentReadingEvent event){
         L.debug("ContentReadingEvent id", event.id);
-        new UpdateUserEvents().postContentReading(this, event.id, event.pageView);
+        new UpdateUserEvents().postContentReading(this, event);
     }
 
     public void onEvent(ForumPostingEvent event){
         L.debug("ForumPostingEvent id", event.id);
-        new UpdateUserEvents().postForumPosting(this, event.id, event.pageView);
+        new UpdateUserEvents().postForumPosting(this, event);
     }
 
     public void onEvent(ExerciseAnsEvent event){
         L.debug("ExerciseAnsEvent id", event.id);
-        new UpdateUserEvents().postExerciseAns(this, event.id, event.pageView);
+        new UpdateUserEvents().postExerciseAns(this, event);
     }
 
     public void onEvent(TakingTestEvent event){
         L.debug("TakingTestEvent id", event.id);
-        new UpdateUserEvents().postTakingTest(this, event.id, event.pageView);
+        new UpdateUserEvents().postTakingTest(this, event);
     }
 
 }
