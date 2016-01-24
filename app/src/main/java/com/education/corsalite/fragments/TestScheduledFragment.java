@@ -1,7 +1,6 @@
 package com.education.corsalite.fragments;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -19,10 +17,10 @@ import android.widget.TextView;
 
 import com.education.corsalite.R;
 import com.education.corsalite.activities.ExerciseActivity;
+import com.education.corsalite.adapters.ScheduledTestAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.holders.IconTreeItemHolder;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.ScheduledTest;
 import com.education.corsalite.utils.Constants;
@@ -54,8 +52,8 @@ public class TestScheduledFragment extends BaseFragment implements AdapterView.O
     @Bind(R.id.tv_failure_text)
     TextView mFailureTextView;
 
-    ScheduledTestAdapter mAdapter;
-    List<ScheduledTest> mScheduledTestList;
+    private ScheduledTestAdapter mAdapter;
+    private List<ScheduledTest> mScheduledTestList;
 
     public static TestScheduledFragment newInstance(Bundle bundle) {
         TestScheduledFragment fragment = new TestScheduledFragment();
@@ -78,7 +76,7 @@ public class TestScheduledFragment extends BaseFragment implements AdapterView.O
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_test_scheduled, container, false);
         ButterKnife.bind(this, rootView);
-        mAdapter = new ScheduledTestAdapter();
+        mAdapter = new ScheduledTestAdapter(getActivity(), new ArrayList<ScheduledTest>());
         mListViewScheduledTests.setAdapter(mAdapter);
 
         getScheduledTests();
@@ -118,7 +116,7 @@ public class TestScheduledFragment extends BaseFragment implements AdapterView.O
                         L.error(error.message);
                         mProgressBar.setVisibility(View.GONE);
                         mErrorLayout.setVisibility(View.VISIBLE);
-                        mFailureTextView.setText("Sorry, couldn't fetch data");
+                        mFailureTextView.setText("Sorry, No exam scheduled");
                     }
 
                     @Override
@@ -145,53 +143,7 @@ public class TestScheduledFragment extends BaseFragment implements AdapterView.O
 
     private void setData(List<ScheduledTest> scheduledTests) {
         mScheduledTestList = scheduledTests;
+        mAdapter.updateData(mScheduledTestList);
         mAdapter.notifyDataSetChanged();
-    }
-
-    class ScheduledTestAdapter extends BaseAdapter {
-
-        @Override
-        public int getCount() {
-            return mScheduledTestList.size();
-        }
-
-        @Override
-        public ScheduledTest getItem(int position) {
-            return mScheduledTestList.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                convertView = inflater.inflate(R.layout.row_test_scheduled, parent, false);
-                convertView.setTag(new ViewHolder(convertView));
-            }
-
-            ViewHolder viewHolder = (ViewHolder) convertView.getTag();
-            viewHolder.mDueDate.setText(getItem(position).dueDate);
-            viewHolder.mStartTime.setText(getItem(position).startTime);
-            viewHolder.mExamName.setText(getItem(position).examName);
-
-            return convertView;
-        }
-    }
-
-    static class ViewHolder {
-        @Bind(R.id.txt_view_exam_name)
-        TextView mExamName;
-        @Bind(R.id.txt_view_due_date)
-        TextView mDueDate;
-        @Bind(R.id.txt_view_start_time)
-        TextView mStartTime;
-
-        public ViewHolder(View view) {
-            ButterKnife.bind(this, view);
-        }
     }
 }
