@@ -35,27 +35,27 @@ public class UpdateUserEvents {
         }
     }
 
-    public void postContentReading(Activity activity,String eventSourceId,String pageView){
-        UserEventsModel model = getUserEventsModel("Content Reading",getDate(System.currentTimeMillis()),
-                getDate(System.currentTimeMillis()), eventSourceId,pageView);
+    public void postContentReading(Activity activity,ContentReadingEvent event){
+        UserEventsModel model = getUserEventsModel("Content Reading",event.eventStartTime,
+                event.eventEndTime, event.id,event.pageView);
         postUserEvent(activity, model);
     }
 
-    public void postExerciseAns(Activity activity, String eventSourceId, String pageView){
-        UserEventsModel model = getUserEventsModel("Exercise Answering",getDate(System.currentTimeMillis()),
-                getDate(System.currentTimeMillis()), eventSourceId,pageView);
+    public void postExerciseAns(Activity activity, ExerciseAnsEvent event){
+        UserEventsModel model = getUserEventsModel("Exercise Answering",event.eventStartTime,
+                event.eventEndTime, event.id,event.pageView);
         postUserEvent(activity,model);
     }
 
-    public void postTakingTest(Activity activity,String eventSourceId,String pageView){
-        UserEventsModel model = getUserEventsModel("Taking Test",getDate(System.currentTimeMillis()),
-                getDate(System.currentTimeMillis()), eventSourceId,pageView);
+    public void postTakingTest(Activity activity,TakingTestEvent event){
+        UserEventsModel model = getUserEventsModel("Taking Test",event.eventStartTime,
+                event.eventEndTime, event.id,event.pageView);
         postUserEvent(activity,model);
     }
 
-    public void postForumPosting(Activity activity,String eventSourceId,String pageView){
-        UserEventsModel model = getUserEventsModel("Forum Posting",getDate(System.currentTimeMillis()),
-                getDate(System.currentTimeMillis()), eventSourceId,pageView);
+    public void postForumPosting(Activity activity,ForumPostingEvent event){
+        UserEventsModel model = getUserEventsModel("Forum Posting",event.eventStartTime,
+                event.eventEndTime, event.id,event.pageView);
         postUserEvent(activity,model);
     }
 

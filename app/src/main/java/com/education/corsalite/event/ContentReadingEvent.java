@@ -6,4 +6,6 @@ package com.education.corsalite.event;
 public class ContentReadingEvent {
     public String id;
     public String pageView;
+    public String eventStartTime;
+    public String eventEndTime;
 }
