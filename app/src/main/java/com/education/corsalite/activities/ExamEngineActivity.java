@@ -36,6 +36,8 @@ import com.education.corsalite.adapters.ExamEngineGridAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.event.ContentReadingEvent;
+import com.education.corsalite.event.ExerciseAnsEvent;
 import com.education.corsalite.fragments.FullQuestionDialog;
 import com.education.corsalite.models.requestmodels.ExamTemplateChapter;
 import com.education.corsalite.models.requestmodels.ExamTemplateConfig;
@@ -487,8 +489,16 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     failure++;
                 }
             }
+            postExerciseAnsEvent();
             navigateToExamResultActivity(localExamModelList.size(), success, failure);
         }
+    }
+
+    private void postExerciseAnsEvent(){
+        ExerciseAnsEvent event = new ExerciseAnsEvent();
+        event.id = chapterId;
+        event.pageView = "";
+        getEventbus().post(event);
     }
 
     private void navigateToExamResultActivity(int totalQuestions, int correct, int wrong) {

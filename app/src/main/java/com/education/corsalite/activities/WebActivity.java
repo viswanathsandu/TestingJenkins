@@ -35,6 +35,7 @@ import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.db.DbManager;
+import com.education.corsalite.event.ContentReadingEvent;
 import com.education.corsalite.fragments.EditorDialogFragment;
 import com.education.corsalite.fragments.VideoListDialog;
 import com.education.corsalite.models.ChapterModel;
@@ -139,6 +140,7 @@ public class WebActivity extends AbstractBaseActivity {
                 }
             }
         }
+        postContentReadingEvent();
         setListeners();
     }
 
@@ -146,6 +148,13 @@ public class WebActivity extends AbstractBaseActivity {
     public void onEvent(Course course) {
         super.onEvent(course);
         getContentIndex(course.courseId.toString(), studentId);
+    }
+
+    private void postContentReadingEvent(){
+        ContentReadingEvent event = new ContentReadingEvent();
+        event.id = mContentId;
+        event.pageView = "";
+        getEventbus().post(event);
     }
 
     private void initWebView() {

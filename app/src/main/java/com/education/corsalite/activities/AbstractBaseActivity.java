@@ -31,7 +31,12 @@ import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.db.DbAdapter;
 import com.education.corsalite.db.DbManager;
+import com.education.corsalite.event.ContentReadingEvent;
+import com.education.corsalite.event.ExerciseAnsEvent;
+import com.education.corsalite.event.ForumPostingEvent;
 import com.education.corsalite.event.OfflineEventClass;
+import com.education.corsalite.event.TakingTestEvent;
+import com.education.corsalite.event.UpdateUserEvents;
 import com.education.corsalite.models.ContentModel;
 import com.education.corsalite.models.requestmodels.LogoutModel;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
@@ -42,6 +47,7 @@ import com.education.corsalite.utils.AppConfig;
 import com.education.corsalite.utils.AppPref;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.CookieUtils;
+import com.education.corsalite.utils.L;
 import com.google.gson.Gson;
 import com.localytics.android.Localytics;
 
@@ -528,4 +534,25 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         super.onNewIntent(intent);
         setIntent(intent);
     }
+
+    public void onEvent(ContentReadingEvent event){
+        L.debug("ContentReadingEvent id", event.id);
+        new UpdateUserEvents().postContentReading(this, event.id, event.pageView);
+    }
+
+    public void onEvent(ForumPostingEvent event){
+        L.debug("ForumPostingEvent id", event.id);
+        new UpdateUserEvents().postForumPosting(this, event.id, event.pageView);
+    }
+
+    public void onEvent(ExerciseAnsEvent event){
+        L.debug("ExerciseAnsEvent id", event.id);
+        new UpdateUserEvents().postExerciseAns(this, event.id, event.pageView);
+    }
+
+    public void onEvent(TakingTestEvent event){
+        L.debug("TakingTestEvent id", event.id);
+        new UpdateUserEvents().postTakingTest(this, event.id, event.pageView);
+    }
+
 }
