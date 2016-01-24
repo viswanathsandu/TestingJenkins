@@ -150,7 +150,8 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
                 }
             }
             if(chapterRoot == null){
-                chapterRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_chapter,  offlineContent.chapterName,offlineContent.chapterId,"chapter",false));
+               boolean showProgress = contentIds != null && contentIds.contains(offlineContent.contentId);
+                chapterRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_chapter,  offlineContent.chapterName,offlineContent.chapterId,"chapter",showProgress));
                 subjectRoot.addChild(chapterRoot);
             }
 
@@ -163,7 +164,8 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
                 }
             }
             if(topicRoot == null){
-                topicRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_chapter, offlineContent.topicName,offlineContent.topicId,"topic",false));
+                showProgress = contentIds != null && contentIds.contains(offlineContent.contentId);
+                topicRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_chapter, offlineContent.topicName,offlineContent.topicId,"topic",showProgress));
                 chapterRoot.addChild(topicRoot);
             }
 
