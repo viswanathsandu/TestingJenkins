@@ -1,10 +1,8 @@
 package com.education.corsalite.deserializer;
 
 
-import android.util.Log;
-
 import com.education.corsalite.models.responsemodels.AnswerChoiceModel;
-import com.education.corsalite.models.responsemodels.ExerciseModel;
+import com.education.corsalite.models.responsemodels.ExamModel;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
@@ -20,35 +18,35 @@ import java.util.Map;
 /**
  * Created by Girish on 19/12/15.
  */
-public class ExerciseModelResponseDeserializer implements JsonDeserializer<ExerciseModel> {
+public class ExerciseModelResponseDeserializer implements JsonDeserializer<ExamModel> {
 
     @Override
-    public ExerciseModel deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public ExamModel deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         Gson gson=new Gson();
         JsonElement value = json.getAsJsonObject();
         JsonObject jsonObject = json.getAsJsonObject();
-        ExerciseModel exerciseModel = null;
+        ExamModel examModel = null;
         if(jsonObject != null) {
-            exerciseModel = gson.fromJson(jsonObject, ExerciseModel.class);
+            examModel = gson.fromJson(jsonObject, ExamModel.class);
             Iterable<Map.Entry<String, JsonElement>> entries = value.getAsJsonObject().entrySet();
 
             for (Map.Entry<String, JsonElement> entry : entries) {
                 if(entry.getKey().equalsIgnoreCase("ParagraphContent")) {
-                    exerciseModel.paragraphHtml = entry.getValue().getAsString();
+                    examModel.paragraphHtml = entry.getValue().getAsString();
                 }
                 if(entry.getKey().equalsIgnoreCase("QuestionContent")) {
-                    exerciseModel.questionHtml = entry.getValue().getAsString();
+                    examModel.questionHtml = entry.getValue().getAsString();
                 }
                 if(entry.getKey().equalsIgnoreCase("QuestionTypeComment")) {
-                    exerciseModel.comment = entry.getValue().getAsString();
+                    examModel.comment = entry.getValue().getAsString();
                 }
                 if(entry.getKey().equalsIgnoreCase("HintContent")) {
-                    exerciseModel.hintHtml = entry.getValue().getAsString();
+                    examModel.hintHtml = entry.getValue().getAsString();
                 }
                 if(entry.getKey().equalsIgnoreCase("AnswerChoices")) {
                     JsonArray jsonArray = entry.getValue().getAsJsonArray();
                     int size = jsonArray.size();
-                    exerciseModel.answerChoice = new ArrayList<>(size);
+                    examModel.answerChoice = new ArrayList<>(size);
                     for(int i = 0; i < size ; i++) {
                         JsonObject jObject = jsonArray.get(i).getAsJsonObject();
                         AnswerChoiceModel answerChoiceModel = new AnswerChoiceModel();
@@ -67,11 +65,11 @@ public class ExerciseModelResponseDeserializer implements JsonDeserializer<Exerc
                         if(!jObject.get("AnswerText").isJsonNull()) {
                             answerChoiceModel.answerKeyText = jObject.get("AnswerText").getAsString();
                         }
-                        exerciseModel.answerChoice.add(answerChoiceModel);
+                        examModel.answerChoice.add(answerChoiceModel);
                     }
                 }
             }
         }
-        return exerciseModel;
+        return examModel;
     }
 }

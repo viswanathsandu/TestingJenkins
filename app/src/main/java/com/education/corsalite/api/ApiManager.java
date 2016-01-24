@@ -19,7 +19,7 @@ import com.education.corsalite.models.responsemodels.DefaultNoteResponse;
 import com.education.corsalite.models.responsemodels.EditProfileModel;
 import com.education.corsalite.models.responsemodels.ExamHistory;
 import com.education.corsalite.models.responsemodels.ExamModels;
-import com.education.corsalite.models.responsemodels.ExerciseModel;
+import com.education.corsalite.models.responsemodels.ExamModel;
 import com.education.corsalite.models.responsemodels.ForumPost;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
@@ -300,20 +300,20 @@ public class ApiManager {
         }
     }
 
-    public void getExercise(String topicId, String courseId, String idStudent, String UpdateTime, ApiCallback<List<ExerciseModel>> callback) {
+    public void getExercise(String topicId, String courseId, String idStudent, String UpdateTime, ApiCallback<List<ExamModel>> callback) {
         if (isApiOnline()) {
             ApiClientService.get().getExerciseData(topicId, courseId, idStudent, UpdateTime, callback);
         } else {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/exercise.json");
             System.out.print("Response for 'api/exercise.json' is " + jsonResponse);
-            Type listType = new TypeToken<ArrayList<ExerciseModel>>() {
+            Type listType = new TypeToken<ArrayList<ExamModel>>() {
             }.getType();
-            List<ExerciseModel> exerciseModels = new Gson().fromJson(jsonResponse, listType);
-            callback.success(exerciseModels, MockUtils.getRetrofitResponse());
+            List<ExamModel> examModels = new Gson().fromJson(jsonResponse, listType);
+            callback.success(examModels, MockUtils.getRetrofitResponse());
         }
     }
 
-    public void getFlaggedQuestions(String studentId, String subjectId, String chapterId, String UpdateTime, ApiCallback<List<ExerciseModel>> callback) {
+    public void getFlaggedQuestions(String studentId, String subjectId, String chapterId, String UpdateTime, ApiCallback<List<ExamModel>> callback) {
         if (isApiOnline()) {
             ApiClientService.get().getFlaggedQuestions(studentId, subjectId, chapterId, UpdateTime, callback);
         }
@@ -325,7 +325,7 @@ public class ApiManager {
         }
     }
 
-    public void getTestQuestionPaper(String testQuestionPaperId, String testAnswerPaperId, ApiCallback<List<ExerciseModel>> callback) {
+    public void getTestQuestionPaper(String testQuestionPaperId, String testAnswerPaperId, ApiCallback<List<ExamModel>> callback) {
         if(isApiOnline()) {
             ApiClientService.get().getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, callback);
         }

@@ -24,9 +24,9 @@ import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 import com.education.corsalite.R;
-import com.education.corsalite.activities.ExerciseActivity;
+import com.education.corsalite.activities.ExamEngineActivity;
 import com.education.corsalite.models.responsemodels.AnswerChoiceModel;
-import com.education.corsalite.models.responsemodels.ExerciseModel;
+import com.education.corsalite.models.responsemodels.ExamModel;
 import com.education.corsalite.utils.Constants;
 
 import java.util.Collections;
@@ -46,7 +46,7 @@ public class FullQuestionDialog extends DialogFragment {
 
     @Bind(R.id.layout_full_question) LinearLayout layoutFullQuestion;
 
-    private List<ExerciseModel> localExerciseModelList;
+    private List<ExamModel> localExamModelList;
     Context context;
     int serialNumber = 0;
 
@@ -64,11 +64,11 @@ public class FullQuestionDialog extends DialogFragment {
         ButterKnife.bind(this, v);
         context = getActivity();
         getAvailableArguments();
-        if(localExerciseModelList != null) {
-            for(ExerciseModel exerciseModel : localExerciseModelList) {
-                if (exerciseModel.idQuestionType.equalsIgnoreCase("1") ||
-                        exerciseModel.idQuestionType.equalsIgnoreCase("2")) {
-                    setQuestionLayout(exerciseModel);
+        if(localExamModelList != null) {
+            for(ExamModel examModel : localExamModelList) {
+                if (examModel.idQuestionType.equalsIgnoreCase("1") ||
+                        examModel.idQuestionType.equalsIgnoreCase("2")) {
+                    setQuestionLayout(examModel);
                 }
             }
         }
@@ -82,9 +82,9 @@ public class FullQuestionDialog extends DialogFragment {
         if(getArguments().getString(Constants.SELECTED_TOPIC) != null) {
             tvModule.setText(getArguments().getString(Constants.SELECTED_TOPIC));
         }
-        localExerciseModelList = ((ExerciseActivity)getActivity()).getLocalExerciseModelList();
-        if(localExerciseModelList != null && localExerciseModelList.size() > 0) {
-            Collections.sort(localExerciseModelList);
+        localExamModelList = ((ExamEngineActivity)getActivity()).getLocalExamModelList();
+        if(localExamModelList != null && localExamModelList.size() > 0) {
+            Collections.sort(localExamModelList);
         }
     }
 
@@ -101,19 +101,19 @@ public class FullQuestionDialog extends DialogFragment {
         }
     }
 
-    private void setQuestionLayout(ExerciseModel exerciseModel) {
+    private void setQuestionLayout(ExamModel examModel) {
 
         LinearLayout questionLayout = new LinearLayout(context);
         questionLayout.setOrientation(LinearLayout.VERTICAL);
 
         TextView tvComment = new TextView(context);
         tvComment.setPadding(10,5,5,5);
-        tvComment.setText(exerciseModel.comment);
+        tvComment.setText(examModel.comment);
         tvComment.setBackgroundColor(getResources().getColor(R.color.golden_yellow));
         questionLayout.addView(tvComment);
 
         // set paragraph html
-        if(exerciseModel.paragraphHtml != null && exerciseModel.paragraphHtml.length() > 0) {
+        if(examModel.paragraphHtml != null && examModel.paragraphHtml.length() > 0) {
             WebView optionWebView = new WebView(context);
             optionWebView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
             optionWebView.setScrollbarFadingEnabled(true);
@@ -123,7 +123,7 @@ public class FullQuestionDialog extends DialogFragment {
             optionWebView.setWebChromeClient(new WebChromeClient());
             optionWebView.setWebViewClient(new MyWebViewClient());
 
-            optionWebView.loadData(exerciseModel.paragraphHtml, "text/html; charset=UTF-8", null);
+            optionWebView.loadData(examModel.paragraphHtml, "text/html; charset=UTF-8", null);
 
             LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             questionLayout.setLayoutParams(p);
@@ -131,7 +131,7 @@ public class FullQuestionDialog extends DialogFragment {
         }
 
         // set question html
-        if(exerciseModel.questionHtml != null && exerciseModel.questionHtml.length() > 0) {
+        if(examModel.questionHtml != null && examModel.questionHtml.length() > 0) {
 
             serialNumber = serialNumber + 1;
             LinearLayout llQuestionNumber = new LinearLayout(context);
@@ -154,7 +154,7 @@ public class FullQuestionDialog extends DialogFragment {
             optionWebView.setWebChromeClient(new WebChromeClient());
             optionWebView.setWebViewClient(new MyWebViewClient());
 
-            optionWebView.loadData(exerciseModel.questionHtml, "text/html; charset=UTF-8", null);
+            optionWebView.loadData(examModel.questionHtml, "text/html; charset=UTF-8", null);
             LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             questionLayout.setLayoutParams(p);
             llQuestionNumber.addView(optionWebView);
@@ -164,10 +164,10 @@ public class FullQuestionDialog extends DialogFragment {
         LinearLayout.LayoutParams p1 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         questionLayout.setLayoutParams(p1);
 
-        if (exerciseModel.idQuestionType.equalsIgnoreCase("1")) {
-            questionLayout.addView(loadAnswers(exerciseModel.answerChoice));
-        } else if (exerciseModel.idQuestionType.equalsIgnoreCase("2")) {
-            questionLayout.addView(loadChexkbox(exerciseModel.answerChoice));
+        if (examModel.idQuestionType.equalsIgnoreCase("1")) {
+            questionLayout.addView(loadAnswers(examModel.answerChoice));
+        } else if (examModel.idQuestionType.equalsIgnoreCase("2")) {
+            questionLayout.addView(loadChexkbox(examModel.answerChoice));
         }
         layoutFullQuestion.addView(questionLayout);
     }

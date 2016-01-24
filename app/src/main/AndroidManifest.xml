@@ -92,7 +92,7 @@
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="ExamHistory" />
         <activity
-            android:name=".activities.ExerciseActivity"
+            android:name=".activities.ExamEngineActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:hardwareAccelerated="true"
             android:label=""

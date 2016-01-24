@@ -3,7 +3,7 @@ package com.education.corsalite.services;
 import com.education.corsalite.api.ICorsaliteApi;
 import com.education.corsalite.deserializer.ExerciseModelResponseDeserializer;
 import com.education.corsalite.interceptors.SessionRequestInterceptor;
-import com.education.corsalite.models.responsemodels.ExerciseModel;
+import com.education.corsalite.models.responsemodels.ExamModel;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.squareup.okhttp.OkHttpClient;
@@ -52,7 +52,7 @@ public class ApiClientService {
     private static void setupRestClient() {
 
         Gson gson = new GsonBuilder()
-                .registerTypeAdapter(ExerciseModel.class, new ExerciseModelResponseDeserializer()) // This is the important line ;)
+                .registerTypeAdapter(ExamModel.class, new ExerciseModelResponseDeserializer()) // This is the important line ;)
                 .create();
 
         RestAdapter restAdapter = new RestAdapter.Builder()

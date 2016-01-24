@@ -46,7 +46,7 @@ import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
-import com.education.corsalite.models.responsemodels.ExerciseModel;
+import com.education.corsalite.models.responsemodels.ExamModel;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.FileUtilities;
 import com.education.corsalite.utils.FileUtils;
@@ -90,7 +90,7 @@ public class WebActivity extends AbstractBaseActivity {
     private List<ContentModel> contentModelList;
     private List<ContentModel> videoModelList;
     private List<Content> contentList;
-    public static List<ExerciseModel> exerciseModelList;
+    public static List<ExamModel> examModelList;
 
     private String mSubjectId = "";
     private String mChapterId = "";
@@ -318,7 +318,7 @@ public class WebActivity extends AbstractBaseActivity {
                     break;
 
                 case R.id.tv_exercise:
-                    Intent intent = new Intent(WebActivity.this, ExerciseActivity.class);
+                    Intent intent = new Intent(WebActivity.this, ExamEngineActivity.class);
                     intent.putExtra(Constants.SELECTED_TOPIC, topicModelList.get(spTopic.getSelectedItemPosition()).topicName);
                     intent.putExtra(Constants.TEST_TITLE, "Exercise Test");
                     intent.putExtra(Constants.SELECTED_POSITION, 0);
@@ -536,11 +536,11 @@ public class WebActivity extends AbstractBaseActivity {
         tvExercise.setEnabled(false);
         pbExercise.setVisibility(View.VISIBLE);
         ApiManager.getInstance(this).getExercise(topicModelList.get(topicPosition).idTopic, selectedCourse.courseId.toString(),
-                studentId, "", new ApiCallback<List<ExerciseModel>>(this) {
+                studentId, "", new ApiCallback<List<ExamModel>>(this) {
                     @Override
-                    public void success(List<ExerciseModel> exerciseModels, Response response) {
-                        super.success(exerciseModels, response);
-                        exerciseModelList = exerciseModels;
+                    public void success(List<ExamModel> examModels, Response response) {
+                        super.success(examModels, response);
+                        examModelList = examModels;
                         showExercise();
                     }
 
@@ -807,7 +807,7 @@ public class WebActivity extends AbstractBaseActivity {
     }
 
     private void showExercise() {
-        if(exerciseModelList != null && exerciseModelList.size() > 0) {
+        if(examModelList != null && examModelList.size() > 0) {
             tvExercise.setEnabled(true);
             pbExercise.setVisibility(View.GONE);
         } else {

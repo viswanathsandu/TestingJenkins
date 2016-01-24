@@ -16,7 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
-import com.education.corsalite.activities.ExerciseActivity;
+import com.education.corsalite.activities.ExamEngineActivity;
 import com.education.corsalite.adapters.ScheduledTestAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
@@ -94,7 +94,7 @@ public class TestScheduledFragment extends BaseFragment implements AdapterView.O
                         Bundle bundle = new Bundle();
                         bundle.putString(Constants.SELECTED_EXAM_NAME, scheduledTest.examName);
                         bundle.putString(Constants.SELECTED_QUESTION_PAPER, scheduledTest.testQuestionPaperId);
-                        startActivity(new Intent(getActivity(), ExerciseActivity.class));
+                        startActivity(new Intent(getActivity(), ExamEngineActivity.class));
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {

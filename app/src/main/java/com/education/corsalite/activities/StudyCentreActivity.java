@@ -447,7 +447,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
 
     private void startPartTest(StudyCenter studyCenter){
 
-        Intent exerciseIntent = new Intent(this, ExerciseActivity.class);
+        Intent exerciseIntent = new Intent(this, ExamEngineActivity.class);
         exerciseIntent.putExtra(Constants.TEST_TITLE, studyCenter.SubjectName);
         exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
         exerciseIntent.putExtra(Constants.SELECTED_TOPICID, studyCenter.idCourseSubject);

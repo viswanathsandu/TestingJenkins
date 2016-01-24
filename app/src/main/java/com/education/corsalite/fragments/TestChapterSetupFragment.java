@@ -16,7 +16,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.education.corsalite.R;
-import com.education.corsalite.activities.ExerciseActivity;
+import com.education.corsalite.activities.ExamEngineActivity;
 import com.education.corsalite.models.responsemodels.TestCoverage;
 import com.education.corsalite.utils.Constants;
 import com.google.gson.Gson;
@@ -139,7 +139,7 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
         if (!TextUtils.isEmpty(noOfQuestions) && TextUtils.isDigitsOnly(noOfQuestions)) {
             //Todo Use mChapterLevel, noOfQuestions & mIsAdaptiveLearningEnabled for making api call
             mExtras.putString(Constants.QUESTIONS_COUNT, noOfQuestions);
-            startActivity(ExerciseActivity.getMyIntent(getActivity(), mExtras));
+            startActivity(ExamEngineActivity.getMyIntent(getActivity(), mExtras));
             getActivity().finish();
         } else {
             Toast.makeText(getActivity(), "Please select the number of questions", Toast.LENGTH_SHORT).show();

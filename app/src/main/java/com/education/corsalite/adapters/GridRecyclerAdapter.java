@@ -21,7 +21,7 @@ import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
-import com.education.corsalite.activities.ExerciseActivity;
+import com.education.corsalite.activities.ExamEngineActivity;
 import com.education.corsalite.activities.NotesActivity;
 import com.education.corsalite.activities.OfflineSubjectActivity;
 import com.education.corsalite.activities.StudyCentreActivity;
@@ -195,7 +195,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
     }
 
     private void startFlaggedQuestionView(Chapters chapter) {
-        Intent exerciseIntent = new Intent(studyCentreActivity, ExerciseActivity.class);
+        Intent exerciseIntent = new Intent(studyCentreActivity, ExamEngineActivity.class);
 
         exerciseIntent.putExtra(Constants.TEST_TITLE, "Flagged Questions");
         exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
@@ -235,7 +235,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
     }
 
    /* private void startExerciseActivity(Chapters chapters) {
-        Intent intent = new Intent(studyCentreActivity, ExerciseActivity.class);
+        Intent intent = new Intent(studyCentreActivity, ExamEngineActivity.class);
         intent.putExtra(Constants.SELECTED_COURSE, "13" *//*AbstractBaseActivity.selectedCourse.courseId.toString()*//*);
         intent.putExtra(Constants.SELECTED_TOPICID, "1310");
         intent.putExtra(Constants.TEST_TITLE, "Take Test");

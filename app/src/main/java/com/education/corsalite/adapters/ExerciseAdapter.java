@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
-import com.education.corsalite.models.responsemodels.ExerciseModel;
+import com.education.corsalite.models.responsemodels.ExamModel;
 
 import java.util.List;
 
@@ -17,20 +17,20 @@ import java.util.List;
  */
 public class ExerciseAdapter extends BaseAdapter {
 
-    List<ExerciseModel> exerciseModelList;
+    List<ExamModel> examModelList;
     Context mContext;
     LayoutInflater inflater;
 
-    public ExerciseAdapter(List<ExerciseModel> exerciseModelList, Context mContext) {
-        this.exerciseModelList = exerciseModelList;
+    public ExerciseAdapter(List<ExamModel> examModelList, Context mContext) {
+        this.examModelList = examModelList;
         this.mContext = mContext;
         inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public int getCount() {
-        if(exerciseModelList != null) {
-            return exerciseModelList.size() + 1;
+        if(examModelList != null) {
+            return examModelList.size() + 1;
         }
         return 0;
     }
@@ -49,7 +49,7 @@ public class ExerciseAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = inflater.inflate(R.layout.row_spinner_text, parent, false);
         TextView tv = (TextView)convertView.findViewById(R.id.tv_spn);
-        tv.setText(position == 0 ? "Exercise" : exerciseModelList.get(position - 1).displayName);
+        tv.setText(position == 0 ? "Exercise" : examModelList.get(position - 1).displayName);
         return convertView;
     }
 }

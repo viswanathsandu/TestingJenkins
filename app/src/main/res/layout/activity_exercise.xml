@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF"
     android:orientation="vertical"
-    tools:context="com.education.corsalite.activities.ExerciseActivity">
+    tools:context=".activities.ExamEngineActivity">
 
     <ViewSwitcher
         android:id="@+id/vs_container"

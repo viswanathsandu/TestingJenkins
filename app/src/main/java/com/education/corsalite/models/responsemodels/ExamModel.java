@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by Girish on 03/11/15.
  */
-public class ExerciseModel extends BaseModel implements Serializable, Comparable {
+public class ExamModel extends BaseModel implements Serializable, Comparable {
 
     public String idTestQuestion;
     @SerializedName("VideoUrl")
@@ -55,7 +55,7 @@ public class ExerciseModel extends BaseModel implements Serializable, Comparable
 
     @Override
     public int compareTo(Object another) {
-        int compareQuestionId=Integer.valueOf(((ExerciseModel) another).idQuestionType);
+        int compareQuestionId=Integer.valueOf(((ExamModel) another).idQuestionType);
         return Integer.valueOf(this.idQuestionType) - compareQuestionId;
     }
 }
