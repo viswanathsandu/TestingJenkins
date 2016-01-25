@@ -23,6 +23,7 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -125,6 +126,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
     private String webQuestion = "";
     private int selectedAnswerPosition = -1;
+    private String enteredAnswer = ""; // for alphanumeric
     private String title = "";
     private String topic = "";
     private ExamEngineGridAdapter gridAdapter;
@@ -584,8 +586,17 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private void loadAlphaNumeric(int position) {
         resetExplanation();
         answerLayout.removeAllViews();
-
-
+        List<AnswerChoiceModel> answerChoiceModels = localExamModelList.get(position).answerChoice;
+        String preselectedAnswers = null;
+        if (!title.equalsIgnoreCase("Exercise Test") && !TextUtils.isEmpty(localExamModelList.get(selectedPosition).selectedAnswers)) {
+            preselectedAnswers = localExamModelList.get(selectedPosition).selectedAnswers;
+        }
+        if(!answerChoiceModels.isEmpty()) {
+            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LinearLayout container = (LinearLayout) inflater.inflate(R.layout.exam_engine_alphanumeric, null);
+            EditText answerTxt = (EditText) container.findViewById(R.id.answer_txt);
+            answerLayout.addView(container);
+        }
 
     }
 
@@ -713,10 +724,9 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private void loadAnswers(int position) {
         resetExplanation();
         answerLayout.removeAllViews();
-
         List<AnswerChoiceModel> answerChoiceModels = localExamModelList.get(position).answerChoice;
         final int size = answerChoiceModels.size();
-
+        final RadioButton[] optionRadioButtons = new RadioButton[size];
         String preselectedAnswers = null;
         if (!title.equalsIgnoreCase("Exercise Test") && !TextUtils.isEmpty(localExamModelList.get(selectedPosition).selectedAnswers)) {
             preselectedAnswers = localExamModelList.get(selectedPosition).selectedAnswers;
@@ -738,6 +748,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 optionRBtn.setChecked(true);
                 selectedAnswerPosition = Integer.valueOf(preselectedAnswers) + 1;
             }
+            optionRadioButtons[i] = optionRBtn;
             WebView webview = (WebView) container.findViewById(R.id.webview);
             webview.setScrollbarFadingEnabled(true);
             webview.getSettings().setLoadsImagesAutomatically(true);
@@ -752,8 +763,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     @Override
                     public void onClick(View v) {
                         for (int j = 0; j < size; j++) {
-                            optionRBtn.setChecked(false);
-                            if (optionRBtn.getId() == Integer.valueOf(answerChoiceModel.idAnswerKey)) {
+                            optionRadioButtons[j].setChecked(false);
+                            if (optionRadioButtons[j].getId() == Integer.valueOf(answerChoiceModel.idAnswerKey)) {
                                 selectedAnswerPosition = j + 1;
                                 localExamModelList.get(selectedPosition).selectedAnswers = String.valueOf(j);
                             }
