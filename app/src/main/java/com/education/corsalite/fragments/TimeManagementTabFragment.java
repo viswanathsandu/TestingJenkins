@@ -105,6 +105,9 @@ public class TimeManagementTabFragment extends Fragment {
                     @Override
                     public void failure(CorsaliteError error) {
                         super.failure(error);
+                        if(getActivity() == null) {
+                            return;
+                        }
                         L.error(error.message);
                         showFailMessage();
                     }
@@ -139,6 +142,9 @@ public class TimeManagementTabFragment extends Fragment {
                     @Override
                     public void failure(CorsaliteError error) {
                         super.failure(error);
+                        if(getActivity() == null) {
+                            return;
+                        }
                         L.error(error.message);
                         showFailMessage();
                     }

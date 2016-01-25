@@ -160,6 +160,9 @@ public class AccuracySpeedTabFragment extends Fragment   {
                     @Override
                     public void failure(CorsaliteError error)
                     {
+                        if(getActivity() == null) {
+                            return;
+                        }
                         L.error(error.message);
                         showFailMessage();
                     }
@@ -187,6 +190,9 @@ public class AccuracySpeedTabFragment extends Fragment   {
                     @Override
                     public void failure(CorsaliteError error) {
                         super.failure(error);
+                        if(getActivity() == null) {
+                            return;
+                        }
                         L.error(error.message);
                         showFailMessage();
                     }

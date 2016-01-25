@@ -62,6 +62,9 @@ public class UsageAnalysisFragment extends Fragment {
                     @Override
                     public void failure(CorsaliteError error) {
                         super.failure(error);
+                        if(getActivity() == null) {
+                            return;
+                        }
                         L.error(error.message);
                         mProgressBar.setVisibility(View.GONE);
                         mFailText.setVisibility(View.VISIBLE);
@@ -70,6 +73,9 @@ public class UsageAnalysisFragment extends Fragment {
                     @Override
                     public void success(UsageAnalysis usageAnalysis, Response response) {
                         super.success(usageAnalysis, response);
+                        if(getActivity() == null) {
+                            return;
+                        }
                         mProgressBar.setVisibility(View.GONE);
                         mLinearLayout.setVisibility(View.VISIBLE);
 

@@ -85,6 +85,9 @@ public class RecommendedTabFragment extends Fragment {
                     @Override
                     public void failure(CorsaliteError error) {
                         super.failure(error);
+                        if(getActivity() == null) {
+                            return;
+                        }
                         L.error(error.message);
                         mProgressBar.setVisibility(View.GONE);
                         mFailureText.setVisibility(View.VISIBLE);

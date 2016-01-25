@@ -122,6 +122,9 @@ public class ProgressReportTabFragment extends Fragment {
                 new ApiCallback<List<CourseAnalysis>>(getActivity()) {
                     @Override
                     public void failure(CorsaliteError error) {
+                        if(getActivity() == null) {
+                            return;
+                        }
                         L.error(error.message);
                         showFailMessage();
 
@@ -151,6 +154,9 @@ public class ProgressReportTabFragment extends Fragment {
                 new ApiCallback<List<CourseAnalysis>>(getActivity()) {
                     @Override
                     public void failure(CorsaliteError error) {
+                        if(getActivity() == null) {
+                            return;
+                        }
                         L.error(error.message);
                         mProgressBar.setVisibility(View.GONE);
                         mFailText.setVisibility(View.VISIBLE);
@@ -177,6 +183,9 @@ public class ProgressReportTabFragment extends Fragment {
                 new ApiCallback<List<CourseAnalysisPercentile>>(getActivity()) {
                     @Override
                     public void failure(CorsaliteError error) {
+                        if(getActivity() == null) {
+                            return;
+                        }
                         L.error(error.message);
                         showFailMessage();
                     }
@@ -204,6 +213,9 @@ public class ProgressReportTabFragment extends Fragment {
                 new ApiCallback<List<CourseAnalysisPercentile>>(getActivity()) {
                     @Override
                     public void failure(CorsaliteError error) {
+                        if(getActivity() == null) {
+                            return;
+                        }
                         L.error(error.message);
                         showFailMessage();
                     }
