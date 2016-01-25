@@ -55,9 +55,12 @@ import com.education.corsalite.utils.L;
 
 import java.io.File;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -103,6 +106,8 @@ public class WebActivity extends AbstractBaseActivity {
     private String selectedText = "";
     private String studentId = "";
     private String htmlFileText = "";
+    private long eventStartTime;
+    private long eventEndDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,7 +145,7 @@ public class WebActivity extends AbstractBaseActivity {
                 }
             }
         }
-        postContentReadingEvent();
+        eventStartTime = System.currentTimeMillis();
         setListeners();
     }
 
@@ -152,9 +157,18 @@ public class WebActivity extends AbstractBaseActivity {
 
     private void postContentReadingEvent(){
         ContentReadingEvent event = new ContentReadingEvent();
-        event.id = mContentId;
+        event.id = mChapterId;
         event.pageView = "";
+        event.eventStartTime = getDate(eventStartTime);
+        event.eventEndTime =  getDate(eventEndDate);
         getEventbus().post(event);
+    }
+
+    private String getDate(long millis) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
+                "yyyy-mm-dd hh:mm:ss", Locale.getDefault());
+        Date date = new Date(millis);
+        return dateFormat.format(date);
     }
 
     private void initWebView() {
@@ -866,4 +880,10 @@ public class WebActivity extends AbstractBaseActivity {
         videoListDialog.show(getFragmentManager(), "videoListDialog");
     }
 
+    @Override
+    public void onBackPressed() {
+        eventEndDate = System.currentTimeMillis();
+        postContentReadingEvent();
+        super.onBackPressed();
+    }
 }
