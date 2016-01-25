@@ -9,7 +9,9 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -123,7 +125,6 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
     public int selectedPosition = 0;
     public int previousQuestionPosition = -1;
-
     private String webQuestion = "";
     private int selectedAnswerPosition = -1;
     private String enteredAnswer = ""; // for alphanumeric
@@ -544,10 +545,10 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
         switch (QuestionType.getQuestionType(localExamModelList.get(position).idQuestionType)) {
             case SINGLE_SELECT_CHOICE:
-                loadAnswers(position);
+                loadSingleSelectChoiceAnswers(position);
                 break;
             case MULTI_SELECT_CHOICE:
-                loadChexkbox(position);
+                loadMultiSelectChoiceAnswers(position);
                 break;
             case ALPHANUMERIC:
                 loadAlphaNumeric(position);
@@ -587,20 +588,32 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         resetExplanation();
         answerLayout.removeAllViews();
         List<AnswerChoiceModel> answerChoiceModels = localExamModelList.get(position).answerChoice;
-        String preselectedAnswers = null;
+        String previousAnswer = "";
         if (!title.equalsIgnoreCase("Exercise Test") && !TextUtils.isEmpty(localExamModelList.get(selectedPosition).selectedAnswers)) {
-            preselectedAnswers = localExamModelList.get(selectedPosition).selectedAnswers;
+            previousAnswer = localExamModelList.get(selectedPosition).selectedAnswers;
         }
         if(!answerChoiceModels.isEmpty()) {
             LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             LinearLayout container = (LinearLayout) inflater.inflate(R.layout.exam_engine_alphanumeric, null);
             EditText answerTxt = (EditText) container.findViewById(R.id.answer_txt);
+            answerTxt.setText(previousAnswer);
+            answerTxt.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                @Override
+                public void afterTextChanged(Editable s) {}
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    localExamModelList.get(selectedPosition).selectedAnswers = s.toString();
+                }
+            });
             answerLayout.addView(container);
         }
-
+        setExplanationLayout();
     }
 
-    private void loadChexkbox(int position) {
+    private void loadMultiSelectChoiceAnswers(int position) {
         resetExplanation();
         answerLayout.removeAllViews();
 
@@ -721,7 +734,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
 
-    private void loadAnswers(int position) {
+    private void loadSingleSelectChoiceAnswers(int position) {
         resetExplanation();
         answerLayout.removeAllViews();
         List<AnswerChoiceModel> answerChoiceModels = localExamModelList.get(position).answerChoice;
