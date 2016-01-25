@@ -81,6 +81,9 @@ public class TestCoverageTabFragment extends Fragment {
             @Override
             public void failure(CorsaliteError error) {
                 super.failure(error);
+                if(getActivity() == null) {
+                    return;
+                }
                 L.info(error.message);
                 progressBar.setVisibility(View.GONE);
                 failureText.setVisibility(View.VISIBLE);
