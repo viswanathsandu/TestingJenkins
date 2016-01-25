@@ -62,6 +62,20 @@
         <item name="android:textAllCaps">false</item>
     </style>
 
+    <style name="analytics_recommended_reading_heading_text_style">
+        <item name="android:textColor">@color/text_white</item>
+        <item name="fontPath">@string/roboto_regular</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
     <style name="study_center_title_style">
         <item name="android:textColor">@color/black</item>
         <item name="fontPath">@string/roboto_light</item>
