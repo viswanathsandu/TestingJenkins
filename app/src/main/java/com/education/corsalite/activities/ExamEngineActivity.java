@@ -36,7 +36,7 @@ import com.education.corsalite.adapters.ExamEngineGridAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.event.ContentReadingEvent;
+import com.education.corsalite.enums.QuestionType;
 import com.education.corsalite.event.ExerciseAnsEvent;
 import com.education.corsalite.fragments.FullQuestionDialog;
 import com.education.corsalite.models.requestmodels.ExamTemplateChapter;
@@ -514,13 +514,11 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void loadQuestion(int position) {
-
         isFlagged = false;
         tvSerialNo.setText("Q" + (position + 1) + ")");
         if(!TextUtils.isEmpty(localExamModelList.get(position).displayName) && !title.equalsIgnoreCase("Flagged Questions")) {
             tvLevel.setText(localExamModelList.get(position).displayName.split("\\s+")[0].toUpperCase(Locale.ENGLISH));
         }
-
         if (TextUtils.isEmpty(localExamModelList.get(position).paragraphHtml)) {
             webviewParagraph.setVisibility(View.GONE);
         } else {
@@ -528,37 +526,42 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             webQuestion = localExamModelList.get(position).paragraphHtml;
             webviewParagraph.loadData(webQuestion, "text/html; charset=UTF-8", null);
         }
-
         webviewQuestion.setVisibility(View.GONE);
         if (localExamModelList.get(position).questionHtml != null) {
             webQuestion = localExamModelList.get(position).questionHtml;
             webviewQuestion.loadData(webQuestion, "text/html; charset=UTF-8", null);
             webviewQuestion.setVisibility(View.VISIBLE);
         }
-
         if (localExamModelList.get(position).comment != null) {
             tvComment.setText(localExamModelList.get(position).comment);
             tvComment.setVisibility(View.VISIBLE);
         } else {
             tvComment.setVisibility(View.GONE);
         }
-
         navigateButtonEnabled();
-        if (localExamModelList.get(position).idQuestionType.equalsIgnoreCase("1")) {
-            loadAnswers(position);
-        } else if (localExamModelList.get(position).idQuestionType.equalsIgnoreCase("2")) {
-            loadChexkbox(position);
-        } else {
-            if (localExamModelList.size() - 1 == 0) {
-                return;
-            }
-            if (localExamModelList.size() - 1 > selectedPosition) {
-                localExamModelList.remove(selectedPosition);
-                inflateUI(selectedPosition);
-            } else {
-                localExamModelList.remove(selectedPosition);
-                inflateUI(selectedPosition - 1);
-            }
+
+        switch (QuestionType.getQuestionType(localExamModelList.get(position).idQuestionType)) {
+            case SINGLE_SELECT_CHOICE:
+                loadAnswers(position);
+                break;
+            case MULTI_SELECT_CHOICE:
+                loadChexkbox(position);
+                break;
+            case ALPHANUMERIC:
+                loadAlphaNumeric(position);
+                break;
+            default:
+                if (localExamModelList.size() - 1 == 0) {
+                    return;
+                }
+                if (localExamModelList.size() - 1 > selectedPosition) {
+                    localExamModelList.remove(selectedPosition);
+                    inflateUI(selectedPosition);
+                } else {
+                    localExamModelList.remove(selectedPosition);
+                    inflateUI(selectedPosition - 1);
+                }
+                break;
         }
         if (mViewSwitcher.indexOfChild(mViewSwitcher.getCurrentView()) == 0) {
             mViewSwitcher.showNext();
@@ -576,6 +579,14 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             startActivity(intent);
             return true;
         }
+    }
+
+    private void loadAlphaNumeric(int position) {
+        resetExplanation();
+        answerLayout.removeAllViews();
+
+
+
     }
 
     private void loadChexkbox(int position) {
@@ -705,87 +716,55 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
         List<AnswerChoiceModel> answerChoiceModels = localExamModelList.get(position).answerChoice;
         final int size = answerChoiceModels.size();
-        final RadioButton[] radioButton = new RadioButton[size];
-        final TextView[] tvSerial = new TextView[size];
-        final LinearLayout[] rowLayout = new LinearLayout[size];
 
         String preselectedAnswers = null;
-        if (!title.equalsIgnoreCase("Exercise Test") &&
-                !TextUtils.isEmpty(localExamModelList.get(selectedPosition).selectedAnswers)) {
+        if (!title.equalsIgnoreCase("Exercise Test") && !TextUtils.isEmpty(localExamModelList.get(selectedPosition).selectedAnswers)) {
             preselectedAnswers = localExamModelList.get(selectedPosition).selectedAnswers;
         }
-
         for (int i = 0; i < size; i++) {
-
             final AnswerChoiceModel answerChoiceModel = answerChoiceModels.get(i);
-
-            rowLayout[i] = new LinearLayout(this);
-            rowLayout[i].setOrientation(LinearLayout.HORIZONTAL);
-            rowLayout[i].setGravity(Gravity.CENTER_VERTICAL);
-            LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-
-            tvSerial[i] = new TextView(this);
-            tvSerial[i].setText((i + 1) + ")");
-            tvSerial[i].setTextColor(Color.BLACK);
-            tvSerial[i].setGravity(Gravity.TOP);
-            tvSerial[i].setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-            p.setMargins(0, 0, 10, 0);
-            tvSerial[i].setLayoutParams(p);
-
-            radioButton[i] = new RadioButton(this);
-            radioButton[i].setId(Integer.valueOf(answerChoiceModel.idAnswerKey));
-            radioButton[i].setTag(answerChoiceModel);
-            radioButton[i].setBackgroundResource(R.drawable.selector_radio);
-
+            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LinearLayout container = (LinearLayout) inflater.inflate(R.layout.exam_engine_radio_btn, null);
+            TextView optionNumberTxt = (TextView) container.findViewById(R.id.option_number_txt);
+            optionNumberTxt.setText((i+1)+"");
+            final RadioButton optionRBtn =  (RadioButton) container.findViewById(R.id.option_radio_button);
+            optionRBtn.setId(Integer.valueOf(answerChoiceModel.idAnswerKey));
+            optionRBtn.setTag(answerChoiceModel);
             if(title.equalsIgnoreCase("Flagged Questions")) {
-                radioButton[i].setEnabled(false);
-                radioButton[i].setClickable(false);
+                optionRBtn.setEnabled(false);
+                optionRBtn.setClickable(false);
             }
-
-            radioButton[i].setLayoutParams(p);
-
-            rowLayout[i].addView(tvSerial[i]);
-            rowLayout[i].addView(radioButton[i]);
-
-            WebView optionWebView = new WebView(getApplicationContext());
-            optionWebView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
-            optionWebView.setScrollbarFadingEnabled(true);
-            optionWebView.getSettings().setLoadsImagesAutomatically(true);
-            optionWebView.getSettings().setJavaScriptEnabled(true);
-            optionWebView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-            optionWebView.setWebChromeClient(new WebChromeClient());
-            optionWebView.setWebViewClient(new MyWebViewClient());
-
-            optionWebView.loadData(answerChoiceModel.answerChoiceTextHtml, "text/html; charset=UTF-8", null);
-            p = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 1.0f);
-            optionWebView.setLayoutParams(p);
-            rowLayout[i].addView(optionWebView);
-            answerLayout.addView(rowLayout[i]);
+            if (!TextUtils.isEmpty(preselectedAnswers) && i == Integer.valueOf(preselectedAnswers)) {
+                optionRBtn.setChecked(true);
+                selectedAnswerPosition = Integer.valueOf(preselectedAnswers) + 1;
+            }
+            WebView webview = (WebView) container.findViewById(R.id.webview);
+            webview.setScrollbarFadingEnabled(true);
+            webview.getSettings().setLoadsImagesAutomatically(true);
+            webview.getSettings().setJavaScriptEnabled(true);
+            webview.setWebChromeClient(new WebChromeClient());
+            webview.setWebViewClient(new MyWebViewClient());
+            webview.loadData(answerChoiceModel.answerChoiceTextHtml, "text/html; charset=UTF-8", null);
+            answerLayout.addView(container);
 
             try {
-                radioButton[i].setOnClickListener(new View.OnClickListener() {
+                optionRBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        for (int x = 0; x < size; x++) {
-                            radioButton[x].setChecked(false);
-                            if (radioButton[x].getId() == Integer.valueOf(answerChoiceModel.idAnswerKey)) {
-                                selectedAnswerPosition = x + 1;
-                                localExamModelList.get(selectedPosition).selectedAnswers = String.valueOf(x);
+                        for (int j = 0; j < size; j++) {
+                            optionRBtn.setChecked(false);
+                            if (optionRBtn.getId() == Integer.valueOf(answerChoiceModel.idAnswerKey)) {
+                                selectedAnswerPosition = j + 1;
+                                localExamModelList.get(selectedPosition).selectedAnswers = String.valueOf(j);
                             }
                         }
                         ((RadioButton) v).setChecked(true);
                         btnVerify.setEnabled(true);
                     }
                 });
-            } catch (Exception ignored) {
-                ignored.printStackTrace();
+            } catch (Exception e) {
+                L.error(e.getMessage(), e);
             }
-        }
-
-        //set radiobutton check
-        if (!TextUtils.isEmpty(preselectedAnswers)) {
-            radioButton[Integer.valueOf(preselectedAnswers)].setChecked(true);
-            selectedAnswerPosition = Integer.valueOf(preselectedAnswers) + 1;
         }
         setExplanationLayout();
     }

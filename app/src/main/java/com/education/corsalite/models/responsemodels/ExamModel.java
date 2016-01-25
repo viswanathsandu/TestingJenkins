@@ -26,7 +26,6 @@ public class ExamModel extends BaseModel implements Serializable, Comparable {
     public String lastModifiedDateTime;
     @SerializedName("ExerciseNumber")
     public String exerciseNumber;
-
     public String idQuestionParagraph;
     @SerializedName("ParagraphHtml")
     public String paragraphHtml;
