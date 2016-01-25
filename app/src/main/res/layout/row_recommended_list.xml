@@ -8,11 +8,8 @@
         android:gravity="left"
         android:id="@+id/tv_subject_name"
         android:layout_weight="1"
-        android:layout_height="wrap_content"
-        android:layout_width="0dp"
-        android:padding="15dp"
-        android:text="Subject"
-        style="@style/analytics_text_style"
+        android:text="@string/subject_label"
+        style="@style/analytics_recommended_reading_text_style"
         android:singleLine="true"
         android:ellipsize="end"/>
 
@@ -20,79 +17,57 @@
         android:gravity="left"
         android:layout_weight="1.5"
         android:id="@+id/tv_chapter"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:padding="15dp"
-        android:text="Chapter"
-        style="@style/analytics_text_style" />
-
+        android:text="@string/chapter_label"
+        style="@style/analytics_recommended_reading_text_style" />
 
     <TextView
         android:gravity="left"
         android:layout_weight="2"
         android:id="@+id/tv_topic"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:padding="15dp"
-        android:text="Topic"
-        style="@style/analytics_text_style" />
+        android:text="@string/topic_label"
+        style="@style/analytics_recommended_reading_text_style" />
 
     <TextView
         android:gravity="left"
         android:layout_weight="1"
         android:id="@+id/tv_date"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:padding="15dp"
-        style="@style/analytics_text_style"
-        android:text="Recent Test Date" />
+        style="@style/analytics_recommended_reading_text_style"
+        android:text="@string/date_label" />
 
 
     <TextView
-        android:gravity="center"
+        android:gravity="left"
         android:layout_weight="1"
         android:id="@+id/tv_marks"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:padding="15dp"
-        style="@style/analytics_text_style"
-        android:text="Total Tested Marks"
+        style="@style/analytics_recommended_reading_text_style"
+        android:text="@string/marks_label"
         android:singleLine="true"
         android:ellipsize="end"/>
 
     <TextView
-        android:gravity="center"
+        android:gravity="left"
         android:layout_weight="1"
         android:id="@+id/tv_accuracy"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:padding="15dp"
-        android:text="Accuracy"
-        style="@style/analytics_text_style"
+        android:text="@string/accuracy_label"
+        style="@style/analytics_recommended_reading_text_style"
         android:singleLine="true"
         android:ellipsize="end"/>
 
     <TextView
-        android:gravity="center"
+        android:gravity="left"
         android:layout_weight="1"
         android:id="@+id/tv_speed"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:padding="15dp"
-        android:text="Speed"
-        style="@style/analytics_text_style"
+        android:text="@string/speed_label"
+        style="@style/analytics_recommended_reading_text_style"
         android:singleLine="true"
         android:ellipsize="end"/>
 
     <TextView
-        android:gravity="center"
+        android:gravity="left"
         android:layout_weight="1"
         android:id="@+id/tv_time"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:padding="15dp"
-        android:text="Time"
-        style="@style/analytics_text_style"
+        android:text="@string/time_label"
+        style="@style/analytics_recommended_reading_text_style"
         android:singleLine="true"
         android:ellipsize="end"/>
 </LinearLayout>
