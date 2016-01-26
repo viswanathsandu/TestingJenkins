@@ -119,7 +119,6 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String chapterLevel = mChapterLevels.get(position);
-        Toast.makeText(getActivity(), "Selected : " + chapterLevel, Toast.LENGTH_SHORT).show();
         if (testCoverages != null) {
             for (TestCoverage coverage : testCoverages) {
                 if(coverage.level.equalsIgnoreCase(chapterLevel+"")) {
