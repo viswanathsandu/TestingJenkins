@@ -212,6 +212,7 @@
                 android:paddingRight="10dp"
                 android:paddingTop="5dp"
                 android:text="Bookmarks"
+                android:visibility="gone"
                 android:textColor="@android:color/white" />
             <TextView
                 android:id="@+id/tv_post_action_Like"
@@ -243,6 +244,7 @@
                 android:paddingRight="10dp"
                 android:paddingTop="5dp"
                 android:text="Lock"
+                android:visibility="gone"
                 android:textColor="@android:color/white" />
 
             <TextView
