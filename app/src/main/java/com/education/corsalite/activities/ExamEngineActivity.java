@@ -10,6 +10,7 @@ import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.TypedValue;
@@ -551,7 +552,13 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 loadMultiSelectChoiceAnswers(position);
                 break;
             case ALPHANUMERIC:
-                loadAlphaNumeric(position);
+                loadEditTextAnswer(QuestionType.ALPHANUMERIC, position);
+                break;
+            case NUMERIC:
+                loadEditTextAnswer(QuestionType.NUMERIC, position);
+                break;
+            case FILL_IN_THE_BLANK:
+                loadEditTextAnswer(QuestionType.FILL_IN_THE_BLANK, position);
                 break;
             default:
                 if (localExamModelList.size() - 1 == 0) {
@@ -584,7 +591,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         }
     }
 
-    private void loadAlphaNumeric(int position) {
+    private void loadEditTextAnswer(QuestionType type, int position) {
         resetExplanation();
         answerLayout.removeAllViews();
         List<AnswerChoiceModel> answerChoiceModels = localExamModelList.get(position).answerChoice;
@@ -597,6 +604,15 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             LinearLayout container = (LinearLayout) inflater.inflate(R.layout.exam_engine_alphanumeric, null);
             EditText answerTxt = (EditText) container.findViewById(R.id.answer_txt);
             answerTxt.setText(previousAnswer);
+            switch (type) {
+                case ALPHANUMERIC:
+                case FILL_IN_THE_BLANK:
+                    answerTxt.setInputType(InputType.TYPE_CLASS_TEXT);
+                    break;
+                case NUMERIC:
+                    answerTxt.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    break;
+            }
             answerTxt.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {}

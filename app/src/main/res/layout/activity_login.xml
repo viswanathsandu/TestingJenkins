@@ -3,79 +3,79 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:focusableInTouchMode="true"
-    android:background="@color/blue">
+    android:background="@color/blue"
+    android:focusableInTouchMode="true">
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/bg_login"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/bg_login" />
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="500dp"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:background="@android:color/white"
         android:elevation="10dp"
         android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingBottom="20dp"
         android:paddingLeft="40dp"
         android:paddingRight="40dp"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
-        android:layout_centerInParent="true">
+        android:paddingTop="20dp">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="60dp"
-            android:src="@drawable/logo_signin"
+            android:layout_marginBottom="20dp"
             android:contentDescription="logo"
-            android:layout_marginBottom="20dp"/>
+            android:src="@drawable/logo_signin" />
 
         <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/username_txt"
+            fontPath="@string/roboto_regular"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Email"
-            android:text="corpdemo1@demo.com"
-            fontPath="@string/roboto_regular"
-            android:id="@+id/username_txt"
+            android:singleLine="true"
+            android:text="demo01@corsalite.com"
             android:textColor="@android:color/black"
-            app:met_primaryColor="@color/green"
-            android:singleLine="true"/>
+            app:met_primaryColor="@color/green" />
 
         <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/password_txt"
+            fontPath="@string/roboto_regular"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Password"
-            android:id="@+id/password_txt"
-            android:textColor="@android:color/black"
-            fontPath="@string/roboto_regular"
-            app:met_primaryColor="@color/green"
-            android:inputType="textPassword"
             android:layout_marginTop="20dp"
-            android:text="core@tech"
-            android:singleLine="true"/>
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:singleLine="true"
+            android:text="test@123"
+            android:textColor="@android:color/black"
+            app:met_primaryColor="@color/green" />
 
         <Button
+            android:id="@+id/login_btn"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:text="LOGIN"
-            android:id="@+id/login_btn"
-            android:background="@drawable/login_button_bg"
-            android:textColor="@android:color/white"
             android:layout_marginTop="30dp"
+            android:background="@drawable/login_button_bg"
             android:paddingLeft="45dp"
-            android:paddingRight="45dp" />
+            android:paddingRight="45dp"
+            android:text="LOGIN"
+            android:textColor="@android:color/white" />
 
         <TextView
             android:id="@+id/tv_forgot_password"
+            fontPath="@string/roboto_regular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Forgot Password?"
-            fontPath="@string/roboto_regular"
-            android:textColor="@color/red"
+            android:layout_marginBottom="10dp"
             android:layout_marginTop="27dp"
-            android:layout_marginBottom="10dp"/>
+            android:text="Forgot Password?"
+            android:textColor="@color/red" />
 
     </LinearLayout>
 </RelativeLayout>
