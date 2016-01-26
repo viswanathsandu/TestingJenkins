@@ -23,12 +23,15 @@ import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.AbsListView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
@@ -560,6 +563,12 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             case FILL_IN_THE_BLANK:
                 loadEditTextAnswer(QuestionType.FILL_IN_THE_BLANK, position);
                 break;
+            case N_BLANK_SINGLE_SELECT:
+                loadNBlankAnswer(QuestionType.N_BLANK_SINGLE_SELECT, position);
+                break;
+            case N_BLANK_MULTI_SELECT:
+                loadNBlankAnswer(QuestionType.N_BLANK_MULTI_SELECT, position);
+                break;
             default:
                 if (localExamModelList.size() - 1 == 0) {
                     return;
@@ -588,6 +597,34 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
             startActivity(intent);
             return true;
+        }
+    }
+
+    private void loadNBlankAnswer(QuestionType type, int position) {
+        resetExplanation();
+        answerLayout.removeAllViews();
+        List<AnswerChoiceModel> answerChoiceModels = localExamModelList.get(position).answerChoice;
+        if(answerChoiceModels == null || answerChoiceModels.isEmpty()) {
+            return;
+        }
+        AnswerChoiceModel answerModel = answerChoiceModels.get(0);
+        String [] lists = answerModel.answerChoiceTextHtml.split(":");
+        answerLayout.setOrientation(LinearLayout.HORIZONTAL);
+        for(String list : lists) {
+            String [] data = list.split("~");
+            String header = data[0];
+            String[] items = data[1].split(",");
+            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LinearLayout container = (LinearLayout) inflater.inflate(R.layout.exam_engine_n_blank_answer, null);
+            TextView headerTxt = (TextView) container.findViewById(R.id.header_txt);
+            headerTxt.setText(header);
+            ListView optionsListView = (ListView) container.findViewById(R.id.options_listview);
+            optionsListView.setChoiceMode(type == QuestionType.N_BLANK_SINGLE_SELECT
+                                            ? AbsListView.CHOICE_MODE_SINGLE
+                                            : AbsListView.CHOICE_MODE_MULTIPLE);
+            optionsListView.setAdapter(new ArrayAdapter<String>(this,
+                    android.R.layout.simple_list_item_multiple_choice, android.R.id.text1, items));
+            answerLayout.addView(container);
         }
     }
 
