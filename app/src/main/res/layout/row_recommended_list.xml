@@ -5,7 +5,6 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:gravity="left"
         android:id="@+id/tv_subject_name"
         android:layout_weight="1"
         android:text="@string/subject_label"
@@ -14,21 +13,18 @@
         android:ellipsize="end"/>
 
     <TextView
-        android:gravity="left"
         android:layout_weight="1.5"
         android:id="@+id/tv_chapter"
         android:text="@string/chapter_label"
         style="@style/analytics_recommended_reading_text_style" />
 
     <TextView
-        android:gravity="left"
         android:layout_weight="2"
         android:id="@+id/tv_topic"
         android:text="@string/topic_label"
         style="@style/analytics_recommended_reading_text_style" />
 
     <TextView
-        android:gravity="left"
         android:layout_weight="1"
         android:id="@+id/tv_date"
         style="@style/analytics_recommended_reading_text_style"
@@ -36,7 +32,6 @@
 
 
     <TextView
-        android:gravity="left"
         android:layout_weight="1"
         android:id="@+id/tv_marks"
         style="@style/analytics_recommended_reading_text_style"
@@ -45,7 +40,6 @@
         android:ellipsize="end"/>
 
     <TextView
-        android:gravity="left"
         android:layout_weight="1"
         android:id="@+id/tv_accuracy"
         android:text="@string/accuracy_label"
@@ -54,7 +48,6 @@
         android:ellipsize="end"/>
 
     <TextView
-        android:gravity="left"
         android:layout_weight="1"
         android:id="@+id/tv_speed"
         android:text="@string/speed_label"
@@ -63,7 +56,6 @@
         android:ellipsize="end"/>
 
     <TextView
-        android:gravity="left"
         android:layout_weight="1"
         android:id="@+id/tv_time"
         android:text="@string/time_label"
