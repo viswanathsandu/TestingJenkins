@@ -55,6 +55,16 @@
     <string name="value_test_chapter_name">Practice Test Coverage (%%) by Chapter - %1$s</string>
     <string name="value_test_note"> &#032; Your current level in this chapter is %1$s. Your accuracy at this level so far is %2$s%%, with a score of %3$s out of %4$s. You need to earn an overall accuracy of 70%% and a minimum coverage of 10 Marks (number of questions could be different) to break this level. At this point, you have to take more tests and answer questions correctly to improve your overall accuracy to 70%% and break this level. Meanwhile, you can try adaptive test to attempt questions from increasingly higher levels based on your performance</string>
 
+    <!-- Labels for recommended reading screen headings -->
+    <string name="subject_label">SUBJECT</string>
+    <string name="chapter_label">CHAPTER</string>
+    <string name="topic_label">TOPIC</string>
+    <string name="date_label">DATE</string>
+    <string name="time_label">TIME</string>
+    <string name="marks_label">MARKS</string>
+    <string name="accuracy_label">ACCURACY</string>
+    <string name="speed_label">SPEED</string>
+
 
     <!--Fonts-->
     <string name="roboto_regular">fonts/Roboto-Regular.ttf</string>
