@@ -13,6 +13,7 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.SparseBooleanArray;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -24,6 +25,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -67,6 +69,7 @@ import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -609,8 +612,10 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         }
         AnswerChoiceModel answerModel = answerChoiceModels.get(0);
         String [] lists = answerModel.answerChoiceTextHtml.split(":");
+        final ListView[] listViews = new ListView[lists.length];
         answerLayout.setOrientation(LinearLayout.HORIZONTAL);
-        for(String list : lists) {
+        for(int i=0; i<lists.length; i++) {
+            String list = lists[i];
             String [] data = list.split("~");
             String header = data[0];
             String[] items = data[1].split(",");
@@ -619,13 +624,76 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             TextView headerTxt = (TextView) container.findViewById(R.id.header_txt);
             headerTxt.setText(header);
             ListView optionsListView = (ListView) container.findViewById(R.id.options_listview);
+            optionsListView.setTag(header);
+            listViews[i] = optionsListView;
             optionsListView.setChoiceMode(type == QuestionType.N_BLANK_SINGLE_SELECT
                                             ? AbsListView.CHOICE_MODE_SINGLE
                                             : AbsListView.CHOICE_MODE_MULTIPLE);
             optionsListView.setAdapter(new ArrayAdapter<String>(this,
                     android.R.layout.simple_list_item_multiple_choice, android.R.id.text1, items));
+            optionsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    localExamModelList.get(selectedPosition).selectedAnswers = getAnswerForNBlankType(listViews);
+                }
+            });
+
             answerLayout.addView(container);
         }
+        loadAnswersInToNBlankType(listViews, localExamModelList.get(selectedPosition).selectedAnswers);
+        setExplanationLayout();
+    }
+
+    private void clearNBlankAnswers(ListView[] listviews) {
+        for(ListView listview : listviews) {
+            for(int i=0; i<listview.getAdapter().getCount(); i++) {
+                listview.setItemChecked(i, false);
+            }
+        }
+        localExamModelList.get(selectedPosition).selectedAnswers = "";
+    }
+
+    private void loadAnswersInToNBlankType(ListView[] listviews, String answer) {
+        if(listviews == null || TextUtils.isEmpty(answer)) {
+            return;
+        }
+        String [] lists = answer.split(":");
+        for(int i=0; i<lists.length; i++) {
+            String [] data = lists[i].split("~");
+            String header = data[0];
+            List<String> items = Arrays.asList(data[1].split(","));
+            for(ListView listView : listviews) {
+                if(listView.getTag().equals(header)) {
+                    for(int j=0; j<listView.getAdapter().getCount(); j++) {
+                        for(String item : items) {
+                            if (item.equals(listView.getAdapter().getItem(j))) {
+                                listView.setItemChecked(j, true);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private String getAnswerForNBlankType(ListView[] listviews) {
+        String answer = "";
+        for(int i=0; i<listviews.length; i++) {
+            String blankAnswer = "";
+            SparseBooleanArray checkedItems = listviews[i].getCheckedItemPositions();
+            for(int j=0; j< checkedItems.size(); j++) {
+                int key = checkedItems.keyAt(j);
+                if(checkedItems.get(key)) {
+                    blankAnswer += blankAnswer.isEmpty() ? "" : ",";
+                    blankAnswer += listviews[i].getItemAtPosition(key);
+                }
+            }
+            if(!blankAnswer.isEmpty()) {
+                answer += answer.isEmpty() ? "" : ":";
+                answer += listviews[i].getTag() + "~" + blankAnswer;
+            }
+        }
+        return answer;
     }
 
     private void loadEditTextAnswer(QuestionType type, int position) {
