@@ -7,7 +7,7 @@
   "enableMyProfile":true,
   "enableOffline":true,
   "enableUsageanalysis":true,
-  "enableChallangeTest":true,
+  "enableChallangeTest":false,
   "enableForum":true,
   "enableLogout":true
 }

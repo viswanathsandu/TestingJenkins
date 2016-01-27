@@ -1046,7 +1046,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
         @Override
         public void onFinish() {
-            tv_timer.setText("Completed.");
+            tv_timer.setText("TIME OVER");
         }
 
         @Override

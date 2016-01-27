@@ -193,8 +193,12 @@
                 android:layout_marginLeft="40dp"
                 android:layout_toLeftOf="@+id/tv_clearanswer"
                 android:layout_alignTop="@+id/tv_clearanswer"
+                android:layout_alignBottom="@+id/tv_clearanswer"
                 android:singleLine="false"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:gravity="center_vertical"/>
 
 
             <ScrollView
@@ -250,7 +254,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/webview_question"
-                        android:layout_marginTop="50dp">
+                        android:layout_marginTop="10dp">
 
                         <LinearLayout
                             android:id="@+id/answer_layout"
