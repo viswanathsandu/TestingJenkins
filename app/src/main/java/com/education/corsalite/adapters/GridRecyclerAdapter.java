@@ -26,7 +26,7 @@ import com.education.corsalite.activities.NotesActivity;
 import com.education.corsalite.activities.OfflineSubjectActivity;
 import com.education.corsalite.activities.StudyCentreActivity;
 import com.education.corsalite.activities.TestStartActivity;
-import com.education.corsalite.activities.WebActivity;
+import com.education.corsalite.activities.ContentReadingActivity;
 import com.education.corsalite.enums.Tests;
 import com.education.corsalite.models.responsemodels.Chapters;
 import com.education.corsalite.utils.Constants;
@@ -244,7 +244,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
     }*/
 
     private void startContentActivity(Chapters chapter) {
-        Intent intent = new Intent(studyCentreActivity, WebActivity.class);
+        Intent intent = new Intent(studyCentreActivity, ContentReadingActivity.class);
         putIntentExtras(chapter, intent, COURSE_ID, SUBJECT_ID, CHAPTER_ID);
         studyCentreActivity.startActivity(intent);
     }

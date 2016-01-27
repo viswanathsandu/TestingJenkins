@@ -213,7 +213,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             timerLayout.setVisibility(View.GONE);
         } else if(title.equalsIgnoreCase("Exercise Test")) {
             imvFlag.setVisibility(View.INVISIBLE);
-            localExamModelList = WebActivity.examModelList;
+            localExamModelList = ContentReadingActivity.examModelList;
             webFooter.setVisibility(localExamModelList.isEmpty() ? View.GONE : View.VISIBLE);
             btnVerify.setVisibility(View.VISIBLE);
             imvRefresh.setVisibility(View.GONE);

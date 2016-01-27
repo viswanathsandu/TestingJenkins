@@ -52,7 +52,7 @@
             android:label="@string/title_activity_webview"
             android:theme="@style/UserProfileTheme" />
         <activity
-            android:name=".activities.WebActivity"
+            android:name=".activities.ContentReadingActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label=""
             android:theme="@style/UserProfileTheme" />

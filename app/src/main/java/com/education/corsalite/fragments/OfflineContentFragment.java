@@ -13,7 +13,7 @@ import android.widget.Toast;
 import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.activities.OfflineContentActivity;
-import com.education.corsalite.activities.WebActivity;
+import com.education.corsalite.activities.ContentReadingActivity;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.db.DbManager;
 import com.education.corsalite.holders.IconTreeItemHolder;
@@ -283,7 +283,7 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
 
 
     private void startContentActivity(String chapterId,String subjectId,String contentId,String contentName) {
-        Intent intent = new Intent(getActivity(), WebActivity.class);
+        Intent intent = new Intent(getActivity(), ContentReadingActivity.class);
         intent.putExtra("courseId", AbstractBaseActivity.selectedCourse.courseId.toString());
         intent.putExtra("subjectId", subjectId);
         intent.putExtra("chapterId", chapterId);

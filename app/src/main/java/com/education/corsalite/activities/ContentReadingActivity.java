@@ -69,7 +69,7 @@ import retrofit.client.Response;
 /**
  * Created by Girish on 28/09/15.
  */
-public class WebActivity extends AbstractBaseActivity {
+public class ContentReadingActivity extends AbstractBaseActivity {
 
     @Bind(R.id.iv_editnotes) ImageView ivEditNotes;
     @Bind(R.id.iv_forum) ImageView ivForum;
@@ -341,7 +341,7 @@ public class WebActivity extends AbstractBaseActivity {
                     break;
 
                 case R.id.tv_exercise:
-                    Intent intent = new Intent(WebActivity.this, ExamEngineActivity.class);
+                    Intent intent = new Intent(ContentReadingActivity.this, ExamEngineActivity.class);
                     intent.putExtra(Constants.SELECTED_TOPIC, topicModelList.get(spTopic.getSelectedItemPosition()).topicName);
                     intent.putExtra(Constants.TEST_TITLE, "Exercise Test");
                     intent.putExtra(Constants.SELECTED_POSITION, 0);
@@ -659,7 +659,7 @@ public class WebActivity extends AbstractBaseActivity {
                             content.idContent, content.name, fileName);
                     offlineContents.add(offlineContent);
                 }
-                DbManager.getInstance(WebActivity.this).saveOfflineContent(offlineContents);
+                DbManager.getInstance(ContentReadingActivity.this).saveOfflineContent(offlineContents);
                 if (mViewSwitcher.getNextView() instanceof RelativeLayout) {
                     mViewSwitcher.showNext();
                 }
