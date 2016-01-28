@@ -155,7 +155,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         TextView notes = (TextView) dialogView.findViewById(R.id.notes);
         notes.setText(TextUtils.isEmpty(chapter.notesCount) ? "0" : chapter.notesCount);
         TextView completedTopics = (TextView) dialogView.findViewById(R.id.completed_topics);
-        completedTopics.setText(String.format("%.2f",getCompletedTopicsPercentage(chapter)) + "%");
+        completedTopics.setText(String.format("%.2f", getCompletedTopicsPercentage(chapter)) + "%");
         dialogView.findViewById(R.id.take_test).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -205,8 +205,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         studyCentreActivity.startActivity(exerciseIntent);
     }
 
-    private void startPartTest(Chapters chapter){
-
+    private void startPartTest(Chapters chapter) {
         Intent exerciseIntent = new Intent(studyCentreActivity, TestStartActivity.class);
         exerciseIntent.putExtra(TestStartActivity.KEY_TEST_TYPE, Tests.CHAPTER.getType());
         exerciseIntent.putExtra(Constants.TEST_TITLE, key);
@@ -279,29 +278,30 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
     }
 
     private void getLevelDrawable(StudyCenterSubjectViewHolder holder, String levelstr) {
+        int level = 0;
         if (!TextUtils.isEmpty(levelstr)) {
-            int level = Data.getInt(levelstr);
-            switch (level) {
-                case 0:
-                    holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_zero, 0, 0, 0);
-                    break;
-                case 1:
-                    holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_one, 0, 0, 0);
-                    break;
-                case 2:
-                    holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_two, 0, 0, 0);
-                    break;
-                case 3:
-                    holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_three, 0, 0, 0);
-                    break;
-                case 4:
-                    holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_four, 0, 0, 0);
-                    break;
-                case 5:
-                default:
-                    holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_five, 0, 0, 0);
-                    break;
-            }
+            level = Data.getInt(levelstr);
+        }
+        switch (level) {
+            case 0:
+                holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_zero, 0, 0, 0);
+                break;
+            case 1:
+                holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_one, 0, 0, 0);
+                break;
+            case 2:
+                holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_two, 0, 0, 0);
+                break;
+            case 3:
+                holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_three, 0, 0, 0);
+                break;
+            case 4:
+                holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_four, 0, 0, 0);
+                break;
+            case 5:
+            default:
+                holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_five, 0, 0, 0);
+                break;
         }
     }
 
