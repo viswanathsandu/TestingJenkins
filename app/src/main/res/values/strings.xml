@@ -32,9 +32,9 @@
     <string name="logout_successful">Logged out Successfully</string>
     <string name="login_failed">Login failed</string>
     <string name="login_successful">Logged in Successfully</string>
-    <string name="profile_fetched">User Profile fetched successfully...</string>
+    <string name="profile_fetched">User Profile fetched successfully</string>
     <string name="failed_fetch">Failed to fetch user profile information</string>
-    <string name="virtual_currency_fetched">Virtual currency fetched successfully...</string>
+    <string name="virtual_currency_fetched">Virtual currency fetched successfully</string>
     <string name="virtual_currency_fetch_failed">Failed to fetch virtual currency information</string>
     <string name="study_centre">Study Center</string>
     <string name="offline_content">Offline Content</string>
@@ -114,7 +114,7 @@
     <string name="add_guardian">Add Guardian</string>
     <string name="redeem">Redeem</string>
     <string name="app_close_alert">Press back button once again to exit the app</string>
-    <string name="study_center_offline_click_text">Not available for offline reading...</string>
+    <string name="study_center_offline_click_text">Not available for offline reading</string>
     <string name="select_content_toast">Please select content type to download</string>
     <string name="content_downloaded_toast">Your content is being downloaded in background</string>
     <string name="offline_dialog_title_text">List of items to be downloaded</string>

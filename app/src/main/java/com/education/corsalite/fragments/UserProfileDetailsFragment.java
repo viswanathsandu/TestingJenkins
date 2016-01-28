@@ -198,14 +198,14 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
                 public void failure(CorsaliteError error) {
                     super.failure(error);
                     closeProgress();
-                    showToast("Failed to update Default course...");
+                    showToast("Failed to update Default course");
                 }
 
                 @Override
                 public void success(DefaultCourseResponse defaultCourseResponse, Response response) {
                     super.success(defaultCourseResponse, response);
                     closeProgress();
-                    showToast("Default course updated successfully...");
+                    showToast("Default course updated successfully");
                 }
             });
         }

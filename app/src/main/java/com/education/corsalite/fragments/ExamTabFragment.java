@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.ExamAdapter;
@@ -92,13 +91,13 @@ public class ExamTabFragment extends BaseFragment implements ExamAdapter.IAddExa
             @Override
             public void failure(CorsaliteError error) {
                 super.failure(error);
-                showToast("Failed to update exam details...");
+                showToast("Failed to update exam details");
             }
 
             @Override
             public void success(UpdateExamDetailsResponse updateExamDetailsResponse, Response response) {
                 super.success(updateExamDetailsResponse, response);
-                showToast("Exam details updated successfully...");
+                showToast("Exam details updated successfully");
             }
         });
 

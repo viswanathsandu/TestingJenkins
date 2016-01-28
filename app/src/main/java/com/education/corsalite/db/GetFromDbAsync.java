@@ -34,9 +34,9 @@ public class GetFromDbAsync<T> extends AsyncTask<String, Void, Object> {
                 }
             }
         } else {
-            return MockUtils.getCorsaliteError("Failure", "Notwork not available...");
+            return MockUtils.getCorsaliteError("Failure", "Notwork not available");
         }
-        return MockUtils.getCorsaliteError("Failure", "No data found...");
+        return MockUtils.getCorsaliteError("Failure", "No data found");
     }
 
     @Override
