@@ -17,9 +17,12 @@ public class ExamResultActivity extends AbstractBaseActivity {
     private int wrong = 0;
     private String exam = "";
     private String examTimeTaken = "";
+    private String examRecommendedTime = "";
     private String examType = "";
     private String examDate = "";
 
+    TextView recommendedTimeTxt;
+    TextView timeTakenTxt;
     TextView totalQuestionTxt;
     TextView correctTxt;
     TextView wrongTxt;
@@ -38,6 +41,8 @@ public class ExamResultActivity extends AbstractBaseActivity {
     }
 
     private void initUi() {
+        recommendedTimeTxt = (TextView) findViewById(R.id.tv_recommended_time);
+        timeTakenTxt = (TextView) findViewById(R.id.tv_time_taken);
         totalQuestionTxt = (TextView) findViewById(R.id.tv_total_questions);
         correctTxt = (TextView) findViewById(R.id.tv_correct);
         wrongTxt = (TextView) findViewById(R.id.tv_wrong);
@@ -47,6 +52,7 @@ public class ExamResultActivity extends AbstractBaseActivity {
         Bundle bundle = getIntent().getExtras();
         exam = bundle.getString("exam", "Chapter");
         examType = bundle.getString("type", "Custom");
+        examRecommendedTime = bundle.getString("recommended_time", "00:00:00");
         examTimeTaken = bundle.getString("time_taken", "00:00:00");
         examDate  = bundle.getString("time_taken", "00:00:00");
         totalQuestions = bundle.getInt("total_questions", 0);
@@ -55,6 +61,8 @@ public class ExamResultActivity extends AbstractBaseActivity {
     }
 
     private void loadData() {
+        recommendedTimeTxt.setText(examRecommendedTime);
+        timeTakenTxt.setText(examTimeTaken);
         totalQuestionTxt.setText(totalQuestions+"");
         correctTxt.setText(correct+"");
         wrongTxt.setText(wrong+"");

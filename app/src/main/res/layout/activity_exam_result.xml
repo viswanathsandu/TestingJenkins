@@ -72,12 +72,30 @@
             <TextView
                 style="@style/exam_results_label"
                 android:layout_height="wrap_content"
+                android:text="Recommended Time : " />
+
+            <TextView
+                android:id="@+id/tv_recommended_time"
+                style="@style/exam_results_value"
+                android:layout_height="wrap_content"
+                android:text="00:00:00" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/exam_results_data_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/exam_results_label"
+                android:layout_height="wrap_content"
                 android:text="Time Taken : " />
 
             <TextView
+                android:id="@+id/tv_time_taken"
                 style="@style/exam_results_value"
                 android:layout_height="wrap_content"
-                android:text="00:30:00" />
+                android:text="00:00:00" />
         </LinearLayout>
 
     </LinearLayout>

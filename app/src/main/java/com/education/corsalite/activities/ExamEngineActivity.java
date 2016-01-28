@@ -64,9 +64,11 @@ import com.education.corsalite.models.responsemodels.PostFlaggedQuestions;
 import com.education.corsalite.models.responsemodels.PostQuestionPaper;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.L;
+import com.education.corsalite.utils.TimeUtils;
 import com.education.corsalite.views.GridViewInScrollView;
 import com.google.gson.Gson;
 
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -144,6 +146,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private String topicIds = null;
     private String questionsCount = null;
     private boolean isFlagged = false;
+    private long examDurationInSeconds = 0;
+    private long examDurationTakenInSeconds = 0;
 
     public static Intent getMyIntent(Context context, @Nullable Bundle extras) {
         Intent intent = new Intent(context, ExamEngineActivity.class);
@@ -515,7 +519,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         Intent intent = new Intent(this, ExamResultActivity.class);
         intent.putExtra("exam", "Chapter");
         intent.putExtra("type", "Custom");
-        intent.putExtra("time_taken", "00:00:30");
+        intent.putExtra("recommended_time", TimeUtils.getSecondsInTimeFormat(examDurationInSeconds));
+        intent.putExtra("time_taken", TimeUtils.getSecondsInTimeFormat(examDurationTakenInSeconds));
         intent.putExtra("total_questions", totalQuestions);
         intent.putExtra("correct", correct);
         intent.putExtra("wrong", wrong);
@@ -1006,7 +1011,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                             explanationLayout.setVisibility(View.VISIBLE);
                             layoutChoice.setVisibility(View.VISIBLE);
                         } else {
-                            String message = "Unknown error occured.Please try again.";
+                            String message = "Unknown error occured. Please try again.";
                             if (postExercise != null && !TextUtils.isEmpty(postExercise.message)) {
                                 message = postExercise.message;
                             }
@@ -1051,10 +1056,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
         @Override
         public void onTick(long millisUntilFinished) {
-            long millis = millisUntilFinished;
-            String hms = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis),
-                    TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
-                    TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
+            examDurationTakenInSeconds = examDurationInSeconds - millisUntilFinished/1000;
+            String hms = TimeUtils.getSecondsInTimeFormat(millisUntilFinished/1000);
             tv_timer.setText(hms);
         }
     }
@@ -1204,9 +1207,10 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                                 webFooter.setVisibility(View.GONE);
                             }
                             renderQuestionLayout();
+                            examDurationInSeconds = getExamDurationInSeconds(examModels);
                             //dummy timer.. need to fetch time and interval from service
-                            tv_timer.setText("00:30:00");
-                            final CounterClass timer = new CounterClass(1800000, 1000);
+                            tv_timer.setText(TimeUtils.getSecondsInTimeFormat(examDurationInSeconds));
+                            final CounterClass timer = new CounterClass(examDurationInSeconds * 1000, 1000);
                             timer.start();
                         } else {
                             headerProgress.setVisibility(View.GONE);
@@ -1214,6 +1218,21 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                         }
                     }
                 });
+    }
+
+    private long getExamDurationInSeconds(List<ExamModel> models) {
+        long examDuration = 0;
+        for(ExamModel model : models) {
+            long duration = 0;
+            try {
+                duration = Integer.valueOf(model.recommendedTime) * 60;
+            } catch (Exception e) {
+                L.error(e.getMessage(), e);
+                duration = 0;
+            }
+            examDuration += duration;
+        }
+        return examDuration;
     }
 
     private void showFullQuestionDialog() {
