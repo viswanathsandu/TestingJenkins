@@ -139,7 +139,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_below="@id/layout_header"
                 android:layout_marginRight="40dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:visibility="gone">
 
                 <Button
@@ -163,7 +163,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/layout_header"
                 android:layout_marginRight="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="10dp"
                 android:layout_toLeftOf="@id/footer_layout"
                 android:background="@drawable/shape_rounded_corners_black"
                 android:drawablePadding="5dp"
@@ -181,7 +182,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/layout_header"
                 android:layout_marginLeft="40dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="5dp"
                 android:layout_toLeftOf="@id/tv_clearanswer" />
 
             <TextView
@@ -192,8 +193,6 @@
                 android:layout_below="@id/tv_level"
                 android:layout_marginLeft="40dp"
                 android:layout_toLeftOf="@+id/tv_clearanswer"
-                android:layout_alignTop="@+id/tv_clearanswer"
-                android:layout_alignBottom="@+id/tv_clearanswer"
                 android:singleLine="false"
                 android:textColor="@color/black"
                 android:maxLines="2"
