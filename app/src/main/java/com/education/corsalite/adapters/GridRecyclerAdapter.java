@@ -79,7 +79,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
             holder.gridLayoutGray.setVisibility(View.GONE);
             holder.textView.setText(label);
             holder.timeSpent.setText(getDateFromMillis(chapter.timeSpent));
-            holder.level.setText(studyCentreActivity.getResources().getString(R.string.level_text) + Data.getInt(chapter.completedTopics));
+            holder.level.setText(studyCentreActivity.getResources().getString(R.string.level_text) + Data.getInt(chapter.passedComplexity));
             holder.rootGridLayout.setBackground(getColorDrawable(holder, chapter));
 
             int max = Data.getInt(chapter.totalTopics);
@@ -98,7 +98,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
 
             holder.textViewGray.setText(label);
             holder.timeSpentGray.setText(getDateFromMillis(chapter.timeSpent));
-            holder.levelGray.setText(studyCentreActivity.getResources().getString(R.string.level_text) + Data.getInt(chapter.completedTopics));
+            holder.levelGray.setText(studyCentreActivity.getResources().getString(R.string.level_text) + Data.getInt(chapter.passedComplexity));
 
             int max = Data.getInt(chapter.totalTopics);
             holder.progressBarGray.setMax(max == 0 ? 1 : max);
