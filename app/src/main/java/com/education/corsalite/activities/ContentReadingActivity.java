@@ -669,7 +669,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
                 String topicName = topicModelList.get(spTopic.getSelectedItemPosition()).topicName;
                 String fileName;
 
-                List<OfflineContent> offlineContents = new ArrayList<>(contents.size());
+                /*List<OfflineContent> offlineContents = new ArrayList<>(contents.size());
                 OfflineContent offlineContent;
                 for (Content content : contents) {
                     if (TextUtils.isEmpty(content.type)) {
@@ -683,6 +683,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
                     offlineContents.add(offlineContent);
                 }
                 DbManager.getInstance(ContentReadingActivity.this).saveOfflineContent(offlineContents);
+                */
                 if (mViewSwitcher.getNextView() instanceof RelativeLayout) {
                     mViewSwitcher.showNext();
                 }

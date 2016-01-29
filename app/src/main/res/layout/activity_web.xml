@@ -39,9 +39,8 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:padding="50dp"
-                    android:text="Not available \nfor Offline"
+                    android:text="Not available for Offline"
                     android:textSize="25sp"
-                    android:textStyle="bold"
                     android:visibility="gone" />
 
             </FrameLayout>
