@@ -76,7 +76,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
             holder.gridLayoutGray.setVisibility(View.GONE);
             holder.textView.setText(label);
             holder.timeSpent.setText(getDateFromMillis(chapter.timeSpent));
-            holder.level.setText(studyCentreActivity.getResources().getString(R.string.level_text) + Data.getInt(chapter.passedComplexity));
+            holder.level.setText(studyCentreActivity.getResources().getString(R.string.level_text) + " " + Data.getInt(chapter.passedComplexity));
             holder.rootGridLayout.setBackground(getColorDrawable(holder, chapter));
             int max = Data.getInt(chapter.totalTopics);
             holder.progressBar.setMax(max == 0 ? 1 : max);
@@ -90,7 +90,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
             holder.rootGridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.grayshape));
             holder.textViewGray.setText(label);
             holder.timeSpentGray.setText(getDateFromMillis(chapter.timeSpent));
-            holder.levelGray.setText(studyCentreActivity.getResources().getString(R.string.level_text) + Data.getInt(chapter.passedComplexity));
+            holder.levelGray.setText(studyCentreActivity.getResources().getString(R.string.level_text) + " " + Data.getInt(chapter.passedComplexity));
             int max = Data.getInt(chapter.totalTopics);
             holder.progressBarGray.setMax(max == 0 ? 1 : max);
             holder.progressBarGray.setProgress(Data.getInt(chapter.completedTopics));
@@ -196,6 +196,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         exerciseIntent.putExtra(Constants.SELECTED_SUBJECT, key);
         exerciseIntent.putExtra(Constants.SELECTED_CHAPTERID, chapter.idCourseSubjectchapter);
         exerciseIntent.putExtra(Constants.SELECTED_CHAPTER_NAME, chapter.chapterName);
+        exerciseIntent.putExtra(Constants.LEVEL_CROSSED, chapter.passedComplexity);
         studyCentreActivity.startActivity(exerciseIntent);
 
     }
