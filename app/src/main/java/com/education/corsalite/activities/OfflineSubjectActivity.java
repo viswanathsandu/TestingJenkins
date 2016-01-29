@@ -195,7 +195,6 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
             @Override
             public void failure(CorsaliteError error) {
                 super.failure(error);
-
             }
 
             @Override
@@ -367,6 +366,7 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
                 tView.restoreState(state);
             }
         }
+        tView.expandLevel(1);
     }
 
     private void setChapterNameAndChildren(ChapterModel chapters, int pos) {

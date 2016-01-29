@@ -7,61 +7,84 @@
     android:orientation="vertical"
     tools:context=".activities.ContentReadingActivity">
 
-    <ViewSwitcher
-        android:id="@+id/vs_container"
+    <include
+        android:id="@+id/top_layout"
+        layout="@layout/webview_subject_bar" />
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ProgressBar
-            android:id="@+id/headerProgress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-
-        <RelativeLayout
+        <ViewSwitcher
+            android:id="@+id/vs_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-            <include
-                android:id="@+id/top_layout"
-                layout="@layout/webview_subject_bar" />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <WebView
-                android:layout_below="@id/top_layout"
-                android:id="@+id/webView_content_reading"
+                <ProgressBar
+                    android:id="@+id/headerProgress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center" />
+
+                <TextView
+                    android:id="@+id/not_available_offline_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:background="#FFFFFF"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:padding="50dp"
+                    android:text="Not available \nfor Offline"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+            </FrameLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="2dp"
-                android:gravity="center" />
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tv_video"
-                android:layout_below="@id/top_layout"
-                android:layout_marginTop="20dp"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="20dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Watch Videos"
-                android:drawablePadding="5dp"
-                android:textColor="@color/white"
-                android:drawableLeft="@drawable/ico_video"
-                android:background="@drawable/shape_rounded_corners_black_80"/>
+                <WebView
+                    android:id="@+id/webView_content_reading"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="2dp"
+                    android:gravity="center" />
 
-            <include
-                android:layout_centerVertical="true"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/footer_layout"
-                layout="@layout/webview_footer" />
+                <TextView
+                    android:id="@+id/tv_video"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/shape_rounded_corners_black_80"
+                    android:drawableLeft="@drawable/ico_video"
+                    android:drawablePadding="5dp"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="5dp"
+                    android:text="Watch Videos"
+                    android:textColor="@color/white" />
 
-        </RelativeLayout>
-    </ViewSwitcher>
+            </RelativeLayout>
+        </ViewSwitcher>
 
+        <include
+            android:id="@+id/footer_layout"
+            layout="@layout/webview_footer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true" />
+
+    </RelativeLayout>
 </LinearLayout>
