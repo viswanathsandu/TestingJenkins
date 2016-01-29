@@ -86,7 +86,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
             holder.progressBar.setMax(max == 0 ? 1 : max);
             holder.progressBar.setProgress(Data.getInt(chapter.completedTopics));
 
-            getLevelDrawable(holder, chapter.completedTopics);
+            getLevelDrawable(holder, chapter.passedComplexity);
 
             holder.star.setText((int) Data.getDoubleInInt(chapter.earnedMarks) + "/" + (int) Data.getDoubleInInt(chapter.totalTestedMarks));
 
