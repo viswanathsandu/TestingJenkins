@@ -41,6 +41,7 @@ import com.unnamed.b.atv.view.AndroidTreeView;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -374,6 +375,7 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
         headerProgress.setVisibility(View.GONE);
         TreeNode subjectName = new TreeNode(chapters.chapterName).setViewHolder(new CheckedItemViewHolder(this, false));
         topicModelList = (ArrayList<TopicModel>) chapters.topicMap;
+        Collections.sort(topicModelList);
         for (int i = 0; i < chapters.topicMap.size(); i++) {
             addTopic(chapters.topicMap.get(i), subjectName, d);
         }

@@ -47,6 +47,7 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
     String selectedCourse;
     String subjectId = "";
     String chapterId = "";
+    String topicId = "";
     ArrayList<String> contentIds;
 
     @Nullable
@@ -203,8 +204,11 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
             if(item.tag.equalsIgnoreCase("chapter")){
                 chapterId = item.id;
             }
+            if(item.tag.equalsIgnoreCase("topic")){
+                topicId = item.id;
+            }
             if(item.tag.equalsIgnoreCase("content")) {
-                startContentActivity(chapterId,subjectId,item.id,item.text);
+                startContentActivity(topicId, chapterId,subjectId,item.id,item.text);
             }
 
 
@@ -282,11 +286,12 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
     }
 
 
-    private void startContentActivity(String chapterId,String subjectId,String contentId,String contentName) {
+    private void startContentActivity(String topicId, String chapterId,String subjectId,String contentId,String contentName) {
         Intent intent = new Intent(getActivity(), ContentReadingActivity.class);
         intent.putExtra("courseId", AbstractBaseActivity.selectedCourse.courseId.toString());
         intent.putExtra("subjectId", subjectId);
         intent.putExtra("chapterId", chapterId);
+        intent.putExtra("topicId", topicId);
         intent.putExtra("contentId",contentId);
         intent.putExtra("contentName",contentName);
         getActivity().startActivity(intent);

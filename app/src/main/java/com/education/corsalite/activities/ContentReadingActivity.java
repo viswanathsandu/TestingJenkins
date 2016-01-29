@@ -18,7 +18,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -35,7 +34,6 @@ import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.db.DbManager;
 import com.education.corsalite.event.ContentReadingEvent;
 import com.education.corsalite.fragments.EditorDialogFragment;
 import com.education.corsalite.fragments.VideoListDialog;
@@ -43,7 +41,6 @@ import com.education.corsalite.models.ChapterModel;
 import com.education.corsalite.models.ContentModel;
 import com.education.corsalite.models.SubjectModel;
 import com.education.corsalite.models.TopicModel;
-import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
@@ -73,22 +70,36 @@ import retrofit.client.Response;
  */
 public class ContentReadingActivity extends AbstractBaseActivity {
 
-    @Bind(R.id.iv_editnotes) ImageView ivEditNotes;
-    @Bind(R.id.iv_forum) ImageView ivForum;
-    @Bind(R.id.webView_content_reading) WebView webviewContentReading;
-    @Bind(R.id.sp_subject) Spinner spSubject;
-    @Bind(R.id.sp_chapter) Spinner spChapter;
-    @Bind(R.id.sp_topic) Spinner spTopic;
-    @Bind(R.id.tv_exercise) TextView tvExercise;
-    @Bind(R.id.layout_exercise) RelativeLayout exerciseButtoncontainer;
-    @Bind(R.id.pb_exercise) ProgressBar pbExercise;
-    @Bind(R.id.vs_container) ViewSwitcher mViewSwitcher;
-    @Bind(R.id.footer_layout) RelativeLayout webFooter;
-    @Bind(R.id.btn_next) Button btnNext;
-    @Bind(R.id.btn_previous) Button btnPrevious;
-    @Bind(R.id.tv_video) TextView tvVideo;
-    @Bind(R.id.not_available_offline_txt) TextView notAvailableForOfflineTxt;
-
+    @Bind(R.id.iv_editnotes)
+    ImageView ivEditNotes;
+    @Bind(R.id.iv_forum)
+    ImageView ivForum;
+    @Bind(R.id.webView_content_reading)
+    WebView webviewContentReading;
+    @Bind(R.id.sp_subject)
+    Spinner spSubject;
+    @Bind(R.id.sp_chapter)
+    Spinner spChapter;
+    @Bind(R.id.sp_topic)
+    Spinner spTopic;
+    @Bind(R.id.tv_exercise)
+    TextView tvExercise;
+    @Bind(R.id.layout_exercise)
+    RelativeLayout exerciseButtoncontainer;
+    @Bind(R.id.pb_exercise)
+    ProgressBar pbExercise;
+    @Bind(R.id.vs_container)
+    ViewSwitcher mViewSwitcher;
+    @Bind(R.id.footer_layout)
+    RelativeLayout webFooter;
+    @Bind(R.id.btn_next)
+    Button btnNext;
+    @Bind(R.id.btn_previous)
+    Button btnPrevious;
+    @Bind(R.id.tv_video)
+    TextView tvVideo;
+    @Bind(R.id.not_available_offline_txt)
+    TextView notAvailableForOfflineTxt;
 
 
     private List<ContentIndex> contentIndexList;
@@ -238,8 +249,6 @@ public class ContentReadingActivity extends AbstractBaseActivity {
             webviewContentReading.loadData(htmlUrl, "text/html; charset=UTF-8", null);
         }
         navigateButtonEnabled();
-
-
     }
 
     public void navigateButtonEnabled() {
@@ -277,36 +286,19 @@ public class ContentReadingActivity extends AbstractBaseActivity {
             case R.id.action_read_offline:
                 saveFileToDisk();
                 return true;
-
             case R.id.action_download_pdf:
                 showToast("Download PDF");
                 return true;
-
             case R.id.action_view_notes:
                 showToast("View Notes");
                 return true;
-
             case R.id.action_rate_it:
                 showToast("Rate It");
                 return true;
-
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
-
-    // Removing as previous and next is there for each content if
-    // there are more than 1 content for each topic
-    /*
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if ((keyCode == KeyEvent.KEYCODE_BACK) && webviewContentReading.canGoBack()) {
-            webviewContentReading.goBack();
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
-    }*/
-
 
     private void setListeners() {
         ivEditNotes.setOnClickListener(mClickListener);
@@ -473,7 +465,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
                     }
                 }
             }
-            if(SystemUtils.isNetworkConnected(this)) {
+            if (SystemUtils.isNetworkConnected(this)) {
                 getContent(contentModelList.get(mContentIdPosition).idContent, false);
             } else {
                 mViewSwitcher.showPrevious();
