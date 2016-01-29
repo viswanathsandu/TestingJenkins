@@ -61,12 +61,9 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
 
     @Override
     public void onBindViewHolder(final StudyCenterSubjectViewHolder holder, final int position) {
-
         Resources r = studyCentreActivity.getResources();
         final Chapters chapter = chapters.get(position);
         String label = chapter.chapterName;
-
-
         if (chapter.isChapterOffline) {
             holder.rootGridLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -81,31 +78,23 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
             holder.timeSpent.setText(getDateFromMillis(chapter.timeSpent));
             holder.level.setText(studyCentreActivity.getResources().getString(R.string.level_text) + Data.getInt(chapter.passedComplexity));
             holder.rootGridLayout.setBackground(getColorDrawable(holder, chapter));
-
             int max = Data.getInt(chapter.totalTopics);
             holder.progressBar.setMax(max == 0 ? 1 : max);
             holder.progressBar.setProgress(Data.getInt(chapter.completedTopics));
-
             getLevelDrawable(holder, chapter.passedComplexity);
-
             holder.star.setText((int) Data.getDoubleInInt(chapter.earnedMarks) + "/" + (int) Data.getDoubleInInt(chapter.totalTestedMarks));
-
             holder.timeSpent.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_time, 0, 0, 0);
         } else {
             holder.gridLayoutGray.setVisibility(View.VISIBLE);
             holder.gridLayout.setVisibility(View.GONE);
             holder.rootGridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.grayshape));
-
             holder.textViewGray.setText(label);
             holder.timeSpentGray.setText(getDateFromMillis(chapter.timeSpent));
             holder.levelGray.setText(studyCentreActivity.getResources().getString(R.string.level_text) + Data.getInt(chapter.passedComplexity));
-
             int max = Data.getInt(chapter.totalTopics);
             holder.progressBarGray.setMax(max == 0 ? 1 : max);
             holder.progressBarGray.setProgress(Data.getInt(chapter.completedTopics));
-
             getLevelDrawable(holder, chapter.completedTopics);
-
             holder.starGray.setText((int) Data.getDoubleInInt(chapter.earnedMarks) + "/" + (int) Data.getDoubleInInt(chapter.totalTestedMarks));
             holder.gridLayoutGray.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -113,16 +102,9 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
                     Toast.makeText(studyCentreActivity, studyCentreActivity.getResources().getString(R.string.study_center_offline_click_text), Toast.LENGTH_SHORT).show();
                 }
             });
-
-            Drawable drawable = holder.timeSpentGray.getCompoundDrawables()[0];
-            drawable.setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
-
-            drawable = holder.levelGray.getCompoundDrawables()[0];
-            drawable.setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
-
-            drawable = holder.starGray.getCompoundDrawables()[0];
-            drawable.setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
-
+            holder.timeSpentGray.getCompoundDrawables()[0].setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
+            holder.levelGray.getCompoundDrawables()[0].setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
+            holder.starGray.getCompoundDrawables()[0].setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
         }
     }
 
@@ -233,15 +215,6 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         studyCentreActivity.startActivity(intent);
     }
 
-   /* private void startExerciseActivity(Chapters chapters) {
-        Intent intent = new Intent(studyCentreActivity, ExamEngineActivity.class);
-        intent.putExtra(Constants.SELECTED_COURSE, "13" *//*AbstractBaseActivity.selectedCourse.courseId.toString()*//*);
-        intent.putExtra(Constants.SELECTED_TOPICID, "1310");
-        intent.putExtra(Constants.TEST_TITLE, "Take Test");
-        intent.putExtra(Constants.SELECTED_TOPIC, "Take Test");
-        studyCentreActivity.startActivity(intent);
-    }*/
-
     private void startContentActivity(Chapters chapter) {
         Intent intent = new Intent(studyCentreActivity, ContentReadingActivity.class);
         putIntentExtras(chapter, intent, COURSE_ID, SUBJECT_ID, CHAPTER_ID);
@@ -283,9 +256,6 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
             level = Data.getInt(levelstr);
         }
         switch (level) {
-            case 0:
-                holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_zero, 0, 0, 0);
-                break;
             case 1:
                 holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_one, 0, 0, 0);
                 break;
@@ -299,8 +269,11 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
                 holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_four, 0, 0, 0);
                 break;
             case 5:
-            default:
                 holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_five, 0, 0, 0);
+                break;
+            case 0:
+            default:
+                holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_zero, 0, 0, 0);
                 break;
         }
     }
