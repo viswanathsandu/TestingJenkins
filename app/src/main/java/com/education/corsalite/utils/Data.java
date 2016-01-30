@@ -2,7 +2,6 @@ package com.education.corsalite.utils;
 
 import android.graphics.Typeface;
 import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.StyleSpan;
 
@@ -12,8 +11,8 @@ import android.text.style.StyleSpan;
 public class Data {
 
     public static int getInt(String str) {
-                if(!TextUtils.isEmpty(str)) {
-                    try {
+        if (!TextUtils.isEmpty(str)) {
+            try {
                 int value = Integer.parseInt(str);
                 return value;
             } catch (NumberFormatException e) {
@@ -23,8 +22,20 @@ public class Data {
         return 0;
     }
 
+    public static int getInt(String str, int defaultValue) {
+        if (!TextUtils.isEmpty(str)) {
+            try {
+                int value = Integer.parseInt(str);
+                return value;
+            } catch (NumberFormatException e) {
+                L.error("Number Format exception", e);
+            }
+        }
+        return defaultValue;
+    }
+
     public static long getLong(String str) {
-        if(!TextUtils.isEmpty(str)) {
+        if (!TextUtils.isEmpty(str)) {
             try {
                 long value = Long.parseLong(str);
                 return value;
@@ -36,10 +47,10 @@ public class Data {
     }
 
     public static int getDoubleInInt(String str) {
-        if(!TextUtils.isEmpty(str)) {
+        if (!TextUtils.isEmpty(str)) {
             try {
                 double value = Double.parseDouble(str);
-                return (int)value;
+                return (int) value;
             } catch (NumberFormatException e) {
                 L.error("Number Format exception", e);
             }
@@ -48,10 +59,10 @@ public class Data {
     }
 
     public static double getDoubleWithTwoDecimals(String str) {
-        if(!TextUtils.isEmpty(str)) {
+        if (!TextUtils.isEmpty(str)) {
             try {
                 double value = Double.parseDouble(str);
-                return Math.round(value * 100.0)/100.0;
+                return Math.round(value * 100.0) / 100.0;
             } catch (NumberFormatException e) {
                 L.error("Number Format exception", e);
             }
@@ -61,7 +72,7 @@ public class Data {
 
     public static SpannableString getBoldString(String text) {
         SpannableString spannableString = new SpannableString(text);
-        spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, text.length() -1, 0);
+        spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, text.length() - 1, 0);
         return spannableString;
     }
 }
