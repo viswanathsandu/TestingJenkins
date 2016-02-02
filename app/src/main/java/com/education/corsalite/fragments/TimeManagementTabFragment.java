@@ -238,7 +238,7 @@ public class TimeManagementTabFragment extends Fragment {
 
     private synchronized void showFailMessage(){
         failCount++;
-        if(failCount == 2){
+        if(failCount > 2){
             mFailText.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.GONE);
         }
