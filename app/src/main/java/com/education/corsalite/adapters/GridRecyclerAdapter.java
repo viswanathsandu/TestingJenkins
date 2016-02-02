@@ -81,9 +81,15 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
             int max = Data.getInt(chapter.totalTopics);
             holder.progressBar.setMax(max == 0 ? 1 : max);
             holder.progressBar.setProgress(Data.getInt(chapter.completedTopics));
-            getLevelDrawable(holder, chapter.passedComplexity+1);
+            getLevelDrawable(holder, chapter.passedComplexity+1, holder.level);
             holder.star.setText((int) Data.getDoubleInInt(chapter.earnedMarks) + "/" + (int) Data.getDoubleInInt(chapter.totalTestedMarks));
             holder.timeSpent.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_time, 0, 0, 0);
+            holder.timeSpent.getCompoundDrawables()[0] = holder.timeSpent.getCompoundDrawables()[0].mutate();
+            holder.timeSpent.getCompoundDrawables()[0].setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
+            holder.level.getCompoundDrawables()[0] = holder.level.getCompoundDrawables()[0].mutate();
+            holder.level.getCompoundDrawables()[0].setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
+            holder.star.getCompoundDrawables()[0] = holder.star.getCompoundDrawables()[0].mutate();
+            holder.star.getCompoundDrawables()[0].setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
         } else {
             holder.gridLayoutGray.setVisibility(View.VISIBLE);
             holder.gridLayout.setVisibility(View.GONE);
@@ -94,7 +100,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
             int max = Data.getInt(chapter.totalTopics);
             holder.progressBarGray.setMax(max == 0 ? 1 : max);
             holder.progressBarGray.setProgress(Data.getInt(chapter.completedTopics));
-            getLevelDrawable(holder, chapter.passedComplexity+1);
+            getLevelDrawable(holder, chapter.passedComplexity+1, holder.levelGray);
             holder.starGray.setText((int) Data.getDoubleInInt(chapter.earnedMarks) + "/" + (int) Data.getDoubleInInt(chapter.totalTestedMarks));
             holder.gridLayoutGray.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -102,8 +108,11 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
                     Toast.makeText(studyCentreActivity, studyCentreActivity.getResources().getString(R.string.study_center_offline_click_text), Toast.LENGTH_SHORT).show();
                 }
             });
+            holder.timeSpentGray.getCompoundDrawables()[0] = holder.timeSpentGray.getCompoundDrawables()[0].mutate();
             holder.timeSpentGray.getCompoundDrawables()[0].setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
+            holder.levelGray.getCompoundDrawables()[0] = holder.levelGray.getCompoundDrawables()[0].mutate();
             holder.levelGray.getCompoundDrawables()[0].setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
+            holder.starGray.getCompoundDrawables()[0] = holder.starGray.getCompoundDrawables()[0].mutate();
             holder.starGray.getCompoundDrawables()[0].setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
         }
     }
@@ -251,24 +260,24 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         }
     }
 
-    private void getLevelDrawable(StudyCenterSubjectViewHolder holder, int levelstr) {
+    private void getLevelDrawable(StudyCenterSubjectViewHolder holder, int levelstr, TextView level) {
         switch (levelstr) {
             case 2:
-                holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_two, 0, 0, 0);
+                level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_two, 0, 0, 0);
                 break;
             case 3:
-                holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_three, 0, 0, 0);
+                level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_three, 0, 0, 0);
                 break;
             case 4:
-                holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_four, 0, 0, 0);
+                level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_four, 0, 0, 0);
                 break;
             case 5:
-                holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_five, 0, 0, 0);
+                level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_five, 0, 0, 0);
                 break;
             case 0:
             case 1:
             default:
-                holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_one, 0, 0, 0);
+                level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_one, 0, 0, 0);
                 break;
         }
     }
