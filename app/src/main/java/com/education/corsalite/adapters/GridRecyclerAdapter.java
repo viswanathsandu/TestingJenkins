@@ -23,7 +23,7 @@ import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.activities.ExamEngineActivity;
 import com.education.corsalite.activities.NotesActivity;
-import com.education.corsalite.activities.OfflineSubjectActivity;
+import com.education.corsalite.activities.SaveForOfflineActivity;
 import com.education.corsalite.activities.StudyCentreActivity;
 import com.education.corsalite.activities.TestStartActivity;
 import com.education.corsalite.activities.ContentReadingActivity;
@@ -208,7 +208,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
     }
 
     private void startOfflineActivity(Chapters chapter) {
-        Intent intent = new Intent(studyCentreActivity, OfflineSubjectActivity.class);
+        Intent intent = new Intent(studyCentreActivity, SaveForOfflineActivity.class);
         putIntentExtras(chapter, intent, COURSE_ID, SUBJECT_ID, CHAPTER_ID);
         intent.putExtra("chapterName", chapter.chapterName);
         intent.putExtra("courseName", AbstractBaseActivity.selectedCourse.name.toString());

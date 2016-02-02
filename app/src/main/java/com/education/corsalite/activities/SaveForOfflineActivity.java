@@ -50,7 +50,7 @@ import retrofit.client.Response;
 /**
  * Created by ayush on 05/10/15.
  */
-public class OfflineSubjectActivity extends AbstractBaseActivity {
+public class SaveForOfflineActivity extends AbstractBaseActivity {
 
     public static final String COMMA_STRING = ",";
     public static final String SUBJECT_ID = "subjectId";
@@ -129,7 +129,7 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
                     for (TreeNode innerMostNode : innerNode.getChildren()) {
                         ContentModel contentModel = topicModel.contentMap.get(contentCount);
                         if (((CheckBox) innerMostNode.getViewHolder().getNodeView().findViewById(R.id.node_selector)).isChecked()) {
-                            contentText += "\t\t" + innerMostNode.getValue().toString();
+                            contentText += "\t\t" + innerMostNode.getValue().toString() + "\n";
                             if (contentModel.type.equals("mpg")) {
                                 videoContentId += contentModel.idContent + ",";
                             } else {
@@ -167,9 +167,9 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
                     finalContentIds += finalHtmlContentId;
                 }
                 if (finalContentIds.isEmpty()) {
-                    Toast.makeText(OfflineSubjectActivity.this, getResources().getString(R.string.select_content_toast), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SaveForOfflineActivity.this, getResources().getString(R.string.select_content_toast), Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(OfflineSubjectActivity.this, getResources().getString(R.string.content_downloaded_toast), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SaveForOfflineActivity.this, getResources().getString(R.string.content_downloaded_toast), Toast.LENGTH_SHORT).show();
                     getContent(finalContentIds);
                     finish();
                 }
@@ -241,7 +241,7 @@ public class OfflineSubjectActivity extends AbstractBaseActivity {
             offlineContents.add(offlineContent);
             saveFileToDisk(getHtmlText(content),content);
         }
-        AppPref.getInstance(OfflineSubjectActivity.this).save("DATA_IN_PROGRESS", null);
+        AppPref.getInstance(SaveForOfflineActivity.this).save("DATA_IN_PROGRESS", null);
         DbManager.getInstance(this).saveOfflineContent(offlineContents);
 
     }
