@@ -62,6 +62,7 @@ import com.education.corsalite.models.responsemodels.PostExamTemplate;
 import com.education.corsalite.models.responsemodels.PostExercise;
 import com.education.corsalite.models.responsemodels.PostFlaggedQuestions;
 import com.education.corsalite.models.responsemodels.PostQuestionPaper;
+import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.TimeUtils;
@@ -798,8 +799,12 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             optionWebView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
             optionWebView.setWebChromeClient(new WebChromeClient());
             optionWebView.setWebViewClient(new MyWebViewClient());
-
-            optionWebView.loadData(answerChoiceModel.answerChoiceTextHtml, "text/html; charset=UTF-8", null);
+            if(answerChoiceModel.answerChoiceTextHtml.startsWith("./") && answerChoiceModel.answerChoiceTextHtml.endsWith(".html")) {
+                answerChoiceModel.answerChoiceTextHtml.replace("./", ApiClientService.getBaseUrl());
+                optionWebView.loadUrl(answerChoiceModel.answerChoiceTextHtml);
+            } else {
+                optionWebView.loadData(answerChoiceModel.answerChoiceTextHtml, "text/html; charset=UTF-8", null);
+            }
             p = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 1.0f);
             optionWebView.setLayoutParams(p);
             rowLayout[i].addView(optionWebView);
@@ -1225,7 +1230,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         for(ExamModel model : models) {
             long duration = 0;
             try {
-                duration = Integer.valueOf(model.recommendedTime) * 60;
+                duration = Integer.valueOf(model.recommendedTime);
             } catch (Exception e) {
                 L.error(e.getMessage(), e);
                 duration = 0;
