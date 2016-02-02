@@ -60,7 +60,8 @@ public class TestChapterFragment extends BaseFragment {
 
     private ArrayList<String> mChapterLevels = new ArrayList<>();
     private Bundle mExtras;
-    private String chapterID, chapterName, subjectId, levelCrossed;
+    private String chapterID, chapterName, subjectId;
+    private int levelCrossed;
     private List<TestCoverage> testCoverages;
 
     public static TestChapterFragment newInstance(Bundle bundle) {
@@ -108,8 +109,7 @@ public class TestChapterFragment extends BaseFragment {
         chapterID = mExtras.getString(Constants.SELECTED_CHAPTERID, "");
         chapterName = mExtras.getString(Constants.SELECTED_CHAPTER_NAME, "");
         subjectId = mExtras.getString(Constants.SELECTED_SUBJECTID, "");
-        levelCrossed = mExtras.getString(Constants.LEVEL_CROSSED, "0");
-        levelCrossed = (Integer.valueOf(levelCrossed) + 1)+"";
+        levelCrossed = mExtras.getInt(Constants.LEVEL_CROSSED, 0) + 1;
         if (TextUtils.isEmpty(chapterID) || TextUtils.isEmpty(chapterName) || TextUtils.isEmpty(subjectId)) {
             //In case data is missing finish this activity,
             getActivity().finish();
@@ -204,9 +204,9 @@ public class TestChapterFragment extends BaseFragment {
         mTestBarChart.getLegend().setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
     }
 
-    private CharSequence getNote(String levelCrossed, String questionsAttempted, String questionCorrect) {
+    private CharSequence getNote(int levelCrossed, String questionsAttempted, String questionCorrect) {
         double accuracyPercentage = Double.valueOf(questionCorrect) / Double.valueOf(questionsAttempted) * 100;
-        String noteValue = getString(R.string.value_test_note, levelCrossed, ((int)accuracyPercentage)+"", questionCorrect, questionsAttempted);
+        String noteValue = getString(R.string.value_test_note, levelCrossed+"", ((int)accuracyPercentage)+"", questionCorrect, questionsAttempted);
         return TextUtils.concat(Data.getBoldString(getString(R.string.label_note)), noteValue);
     }
 

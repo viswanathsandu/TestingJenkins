@@ -24,7 +24,7 @@ public class Chapters {
     @SerializedName("TimeSpent")
     public String timeSpent;
     @SerializedName("PassedComplexity")
-    public String passedComplexity;
+    public Integer passedComplexity;
     @SerializedName("ScoreAmber")
     public String scoreAmber;
     @SerializedName("notesCount")

@@ -76,12 +76,12 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
             holder.gridLayoutGray.setVisibility(View.GONE);
             holder.textView.setText(label);
             holder.timeSpent.setText(getDateFromMillis(chapter.timeSpent));
-            holder.level.setText(studyCentreActivity.getResources().getString(R.string.level_text) + " " + Data.getInt(chapter.passedComplexity));
+            holder.level.setText(studyCentreActivity.getResources().getString(R.string.level_text) + " " + (chapter.passedComplexity + 1));
             holder.rootGridLayout.setBackground(getColorDrawable(holder, chapter));
             int max = Data.getInt(chapter.totalTopics);
             holder.progressBar.setMax(max == 0 ? 1 : max);
             holder.progressBar.setProgress(Data.getInt(chapter.completedTopics));
-            getLevelDrawable(holder, chapter.passedComplexity);
+            getLevelDrawable(holder, chapter.passedComplexity+1);
             holder.star.setText((int) Data.getDoubleInInt(chapter.earnedMarks) + "/" + (int) Data.getDoubleInInt(chapter.totalTestedMarks));
             holder.timeSpent.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_time, 0, 0, 0);
         } else {
@@ -90,11 +90,11 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
             holder.rootGridLayout.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.grayshape));
             holder.textViewGray.setText(label);
             holder.timeSpentGray.setText(getDateFromMillis(chapter.timeSpent));
-            holder.levelGray.setText(studyCentreActivity.getResources().getString(R.string.level_text) + " " + Data.getInt(chapter.passedComplexity));
+            holder.levelGray.setText(studyCentreActivity.getResources().getString(R.string.level_text) + " " + (chapter.passedComplexity + 1));
             int max = Data.getInt(chapter.totalTopics);
             holder.progressBarGray.setMax(max == 0 ? 1 : max);
             holder.progressBarGray.setProgress(Data.getInt(chapter.completedTopics));
-            getLevelDrawable(holder, chapter.completedTopics);
+            getLevelDrawable(holder, chapter.passedComplexity+1);
             holder.starGray.setText((int) Data.getDoubleInInt(chapter.earnedMarks) + "/" + (int) Data.getDoubleInInt(chapter.totalTestedMarks));
             holder.gridLayoutGray.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -251,13 +251,8 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         }
     }
 
-    private void getLevelDrawable(StudyCenterSubjectViewHolder holder, String levelstr) {
-        int level = 0;
-        if (!TextUtils.isEmpty(levelstr)) {
-            level = Data.getInt(levelstr);
-        }
-        switch (level) {
-//                holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_zero, 0, 0, 0);
+    private void getLevelDrawable(StudyCenterSubjectViewHolder holder, int levelstr) {
+        switch (levelstr) {
             case 2:
                 holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_two, 0, 0, 0);
                 break;
@@ -272,7 +267,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
                 break;
             case 0:
             case 1:
-                default:
+            default:
                 holder.level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_one, 0, 0, 0);
                 break;
         }
