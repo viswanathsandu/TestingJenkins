@@ -32,6 +32,7 @@
 
         <activity
             android:name=".activities.SplashActivity"
+            android:screenOrientation="sensorLandscape"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:theme="@style/AppTheme">
             <intent-filter>
@@ -41,70 +42,84 @@
         </activity>
         <activity
             android:name=".activities.LoginActivity"
+            android:screenOrientation="sensorLandscape"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"></activity>
         <activity
             android:name=".activities.UserProfileActivity"
+            android:screenOrientation="sensorLandscape"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:theme="@style/UserProfileTheme" />
         <activity
             android:name=".activities.WebviewActivity"
+            android:screenOrientation="sensorLandscape"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="@string/title_activity_webview"
             android:theme="@style/UserProfileTheme" />
         <activity
             android:name=".activities.ContentReadingActivity"
+            android:screenOrientation="sensorLandscape"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label=""
             android:theme="@style/UserProfileTheme" />
         <activity
             android:name=".activities.VideoActivity"
+            android:screenOrientation="sensorLandscape"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:hardwareAccelerated="true"
             android:label=""
             android:theme="@style/UserProfileTheme" />
         <activity
             android:name=".activities.VirtualCurrencyActivity"
+            android:screenOrientation="sensorLandscape"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="@string/title_activity_currency"
             android:theme="@style/UserProfileTheme" />
         <activity
             android:name=".activities.StudyCentreActivity"
+            android:screenOrientation="sensorLandscape"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="Study Center"
             android:theme="@style/UserProfileTheme" />
         <activity
             android:name=".activities.AnalyticsActivity"
+            android:screenOrientation="sensorLandscape"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="Analytics"
             android:theme="@style/UserProfileTheme" />
         <activity
             android:name=".activities.OfflineContentActivity"
+            android:screenOrientation="sensorLandscape"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="Offline Content"
             android:theme="@style/UserProfileTheme" />
         <activity
             android:name=".activities.NotesActivity"
+            android:screenOrientation="sensorLandscape"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="Notes"
             android:theme="@style/UserProfileTheme" />
         <activity
             android:name=".activities.ExamHistoryActivity"
+            android:screenOrientation="sensorLandscape"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="ExamHistory" />
         <activity
             android:name=".activities.ExamEngineActivity"
+            android:screenOrientation="sensorLandscape"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:hardwareAccelerated="true"
             android:label=""
             android:theme="@style/UserProfileTheme" />
         <activity
             android:name=".activities.UsageAnalysisActivity"
+            android:screenOrientation="sensorLandscape"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:hardwareAccelerated="true"
             android:label="Usage Analysis"
             android:theme="@style/UserProfileTheme" />
         <activity
             android:name=".activities.OfflineSubjectActivity"
+            android:screenOrientation="sensorLandscape"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="Notes"
             android:theme="@style/UserProfileTheme" />
@@ -126,6 +141,7 @@
 
         <activity
             android:name=".activities.ChallengeActivity"
+            android:screenOrientation="sensorLandscape"
             android:label="@string/title_activity_challenge"
             android:theme="@style/AppTheme">
             <meta-data
@@ -134,16 +150,18 @@
         </activity>
         <activity
             android:name=".activities.ExamResultActivity"
+            android:screenOrientation="sensorLandscape"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".activities.TestStartActivity"
+            android:screenOrientation="sensorLandscape"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
-            android:screenOrientation="landscape"
             android:theme="@style/UserProfileTheme" />
             android:theme="@style/AppTheme" />
 
         <activity android:name=".activities.ForumActivity"
+            android:screenOrientation="sensorLandscape"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:theme="@style/AppTheme" />
     </application>
