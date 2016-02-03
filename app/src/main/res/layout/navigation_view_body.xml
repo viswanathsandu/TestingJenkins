@@ -46,12 +46,6 @@
                 android:text="Offline"
                 style="@style/navigation_drawer_element" />
 
-           <!-- <TextView
-                android:id="@+id/navigation_usage_analysis"
-                android:drawableLeft="@drawable/ico_sidemenu_groups"
-                android:text="Usage Analysis"
-                style="@style/navigation_drawer_element" />-->
-
             <TextView
                 android:id="@+id/navigation_challenge_your_friends"
                 android:text="@string/challenge_your_friends"
