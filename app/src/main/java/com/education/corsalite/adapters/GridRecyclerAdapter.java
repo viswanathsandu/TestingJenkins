@@ -152,7 +152,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
             public void onClick(View v) {
                 dialog.cancel();
                 // startExerciseActivity(chapter);
-                startPartTest(chapter);
+                startTakeTest(chapter);
             }
         });
         dialogView.findViewById(R.id.start_reading).setOnClickListener(new View.OnClickListener() {
@@ -196,7 +196,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         studyCentreActivity.startActivity(exerciseIntent);
     }
 
-    private void startPartTest(Chapters chapter) {
+    private void startTakeTest(Chapters chapter) {
         Intent exerciseIntent = new Intent(studyCentreActivity, TestStartActivity.class);
         exerciseIntent.putExtra(TestStartActivity.KEY_TEST_TYPE, Tests.CHAPTER.getType());
         exerciseIntent.putExtra(Constants.TEST_TITLE, key);
