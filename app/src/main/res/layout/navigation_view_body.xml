@@ -24,25 +24,25 @@
 
             <TextView
                 android:id="@+id/navigation_study_center"
-                android:drawableLeft="@drawable/ico_sidemenu_groups"
+                android:drawableLeft="@drawable/ico_sidemenu_studycenter"
                 android:text="Study Center"
                 style="@style/navigation_drawer_element" />
 
             <TextView
                 android:id="@+id/navigation_smart_class"
-                android:drawableLeft="@drawable/ico_sidemenu_groups"
+                android:drawableLeft="@drawable/ico_sidemenu_smartclass"
                 android:text="Smart Class"
                 style="@style/navigation_drawer_element" />
 
             <TextView
                 android:id="@+id/navigation_analytics"
-                android:drawableLeft="@drawable/ico_sidemenu_groups"
+                android:drawableLeft="@drawable/ico_sidemenu_analytics"
                 android:text="Analytics"
                 style="@style/navigation_drawer_element" />
 
             <TextView
                 android:id="@+id/navigation_offline"
-                android:drawableLeft="@drawable/ico_sidemenu_groups"
+                android:drawableLeft="@drawable/ico_sidemenu_offline"
                 android:text="Offline"
                 style="@style/navigation_drawer_element" />
 
@@ -61,13 +61,13 @@
             <TextView
                 android:id="@+id/navigation_forum"
                 android:text="@string/forum"
-                android:drawableLeft="@drawable/ico_add_forum"
+                android:drawableLeft="@drawable/ico_forum"
                 style="@style/navigation_drawer_element" />
 
             <TextView
                 android:id="@+id/navigation_logout"
                 android:text="@string/log_out"
-                android:drawableLeft="@drawable/ico_sidemenu_calendar"
+                android:drawableLeft="@drawable/ico_sidemenu_logout"
                 style="@style/navigation_drawer_element" />
 
         </LinearLayout>

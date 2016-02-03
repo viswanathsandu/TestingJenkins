@@ -437,8 +437,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     inflateUI(selectedPosition - 1);
                     break;
                 case R.id.btn_verify:
-                    postAnswer(localExamModelList.get(selectedPosition).answerChoice.get(selectedAnswerPosition),
-                            localExamModelList.get(selectedPosition).idQuestion);
+                    verifyAnswer();
                     break;
                 case R.id.tv_clearanswer:
                     clearAnswers();
@@ -461,6 +460,10 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             }
         }
     };
+
+    private void verifyAnswer() {
+        postAnswer(localExamModelList.get(selectedPosition));
+    }
 
     private void showSubmitTestAlert() {
         final AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -722,6 +725,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     break;
                 case NUMERIC:
                     answerTxt.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    answerTxt.setHint("Numeric");
                     break;
             }
             answerTxt.addTextChangedListener(new TextWatcher() {
@@ -733,6 +737,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     localExamModelList.get(selectedPosition).selectedAnswers = s.toString();
+                    btnVerify.setEnabled(!s.toString().trim().isEmpty());
                 }
             });
             answerLayout.addView(container);
@@ -986,13 +991,32 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         layoutChoice.setVisibility(View.GONE);
     }
 
-    private void postAnswer(AnswerChoiceModel answerChoiceModel, String questionId) {
+    private int getScore(ExamModel model) {
+        int score = 0;
+        switch (QuestionType.getQuestionType(model.idQuestionType)) {
+            case SINGLE_SELECT_CHOICE:
+                score = model.answerChoice.get(selectedAnswerPosition - 1).isCorrectAnswer.equalsIgnoreCase("Y") ? 1 : 0;
+                break;
+            case ALPHANUMERIC:
+            case NUMERIC:
+            case FILL_IN_THE_BLANK:
+                score = model.answerChoice.get(0).answerChoiceTextHtml.equalsIgnoreCase(enteredAnswer) ? 1 : 0;
+                break;
+        }
+        return score;
+    }
+
+    private void postAnswer(ExamModel model) {
         PostExerciseRequestModel postExerciseRequestModel = new PostExerciseRequestModel();
         postExerciseRequestModel.updateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
         postExerciseRequestModel.idStudent = LoginUserCache.getInstance().loginResponse.studentId;
-        postExerciseRequestModel.idQuestion = questionId;
+        postExerciseRequestModel.idQuestion = model.idQuestion;
         postExerciseRequestModel.studentAnswerChoice = selectedAnswerPosition + "";
-        postExerciseRequestModel.score = answerChoiceModel.isCorrectAnswer.equalsIgnoreCase("Y") ? "1" : "0";
+        postExerciseRequestModel.score = getScore(model)+"";
+        showToast(postExerciseRequestModel.score.equalsIgnoreCase("1") ? "Correct Answer" : "Wrong Answer");
+        btnVerify.setEnabled(false);
+        explanationLayout.setVisibility(View.VISIBLE);
+        layoutChoice.setVisibility(View.VISIBLE);
 
         ApiManager.getInstance(this).postExerciseAnswer(new Gson().toJson(postExerciseRequestModel),
                 new ApiCallback<PostExercise>(this) {
@@ -1011,16 +1035,12 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     @Override
                     public void success(PostExercise postExercise, Response response) {
                         super.success(postExercise, response);
-                        if (postExercise.isSuccessful()) {
-                            btnVerify.setEnabled(false);
-                            explanationLayout.setVisibility(View.VISIBLE);
-                            layoutChoice.setVisibility(View.VISIBLE);
-                        } else {
+                        if (!postExercise.isSuccessful()) {
                             String message = "Unknown error occured. Please try again.";
                             if (postExercise != null && !TextUtils.isEmpty(postExercise.message)) {
                                 message = postExercise.message;
                             }
-                            showToast(message);
+                            L.error(message);
                         }
 
                     }
