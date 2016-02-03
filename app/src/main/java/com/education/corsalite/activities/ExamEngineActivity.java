@@ -1156,16 +1156,17 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         postCustomExamTemplate.examTemplateConfig.add(examTemplateConfig);
 
         ApiManager.getInstance(this).postCustomExamTemplate(new Gson().toJson(postCustomExamTemplate),
-                new ApiCallback<PostExamTemplate>(this) {
-                    @Override
-                    public void success(PostExamTemplate postExamTemplate, Response response) {
-                        super.success(postExamTemplate, response);
-                        if (postExamTemplate != null && !TextUtils.isEmpty(postExamTemplate.idExamTemplate)) {
-                            postQuestionPaper(LoginUserCache.getInstance().loginResponse.entitiyId, postExamTemplate.idExamTemplate,
-                                    LoginUserCache.getInstance().loginResponse.studentId);
-                        }
+            new ApiCallback<PostExamTemplate>(this) {
+                @Override
+                public void success(PostExamTemplate postExamTemplate, Response response) {
+                    super.success(postExamTemplate, response);
+                    if (postExamTemplate != null && !TextUtils.isEmpty(postExamTemplate.idExamTemplate)) {
+                        postQuestionPaper(LoginUserCache.getInstance().loginResponse.entitiyId,
+                                        postExamTemplate.idExamTemplate,
+                                        LoginUserCache.getInstance().loginResponse.studentId);
                     }
-                });
+                }
+            });
     }
 
     private void postFlaggedQuestion() {
@@ -1200,7 +1201,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         postQuestionPaper.idCollegeBatch = "";
         postQuestionPaper.idEntity = entityId;
         postQuestionPaper.idExamTemplate = examTemplateId;
-        postQuestionPaper.idSubject = subjectId;
+        postQuestionPaper.idSubject = "";
         postQuestionPaper.idStudent = studentId;
 
         ApiManager.getInstance(this).postQuestionPaper(new Gson().toJson(postQuestionPaper),

@@ -12,21 +12,21 @@ public class ExamTemplateConfig {
     @SerializedName("SubjectID")
     public String subjectId;
     @SerializedName("QuestionTypeID")
-    public int questionTypeID;
+    public Integer questionTypeID = 1;
     @SerializedName("MarksPerQuestion")
-    public int marksPerQuestion;
+    public Integer marksPerQuestion = 1;
     @SerializedName("NegativeMarksPerQuestion")
-    public int negativeMarksPerQuestion;
+    public Integer negativeMarksPerQuestion = 0;
     @SerializedName("PartialMarkYN")
-    public String partialMarkYN;
+    public String partialMarkYN = "Y";
     @SerializedName("QuestionCount")
-    public String questionCount;
+    public String questionCount = "10";
     @SerializedName("ComplexityFrom")
     public String complexityFrom;
     @SerializedName("ComplexityTo")
     public String complexityTo;
     @SerializedName("Duration")
-    public String duration;
+    public String duration = "300";
     @SerializedName("ExamTemplateChapter")
     public List<ExamTemplateChapter> examTemplateChapter;
 }

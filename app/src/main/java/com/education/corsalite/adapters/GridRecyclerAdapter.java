@@ -21,22 +21,19 @@ import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
+import com.education.corsalite.activities.ContentReadingActivity;
 import com.education.corsalite.activities.ExamEngineActivity;
 import com.education.corsalite.activities.NotesActivity;
 import com.education.corsalite.activities.SaveForOfflineActivity;
 import com.education.corsalite.activities.StudyCentreActivity;
 import com.education.corsalite.activities.TestStartActivity;
-import com.education.corsalite.activities.ContentReadingActivity;
 import com.education.corsalite.enums.Tests;
 import com.education.corsalite.models.responsemodels.Chapters;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.Data;
 import com.localytics.android.Localytics;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapter.StudyCenterSubjectViewHolder> {
     public static final String COURSE_ID = "courseId";
@@ -287,10 +284,10 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         return chapters.size();
     }
 
-    public String getDateFromMillis(String millisStr) {
-        if (!TextUtils.isEmpty(millisStr)) {
-            SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
-            return formatter.format(new Date(Data.getLong(millisStr)));
+    public String getDateFromMillis(String secondsStr) {
+        if (!TextUtils.isEmpty(secondsStr)) {
+            long seconds = Data.getLong(secondsStr);
+            return String.format("%d:%02d:%02d", seconds/3600, (seconds%3600)/60, (seconds%60));
         } else {
             return "00:00:00";
         }

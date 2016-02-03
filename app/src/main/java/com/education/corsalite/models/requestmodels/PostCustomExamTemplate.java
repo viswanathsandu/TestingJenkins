@@ -14,7 +14,7 @@ public class PostCustomExamTemplate {
     @SerializedName("Name")
     public String examName;
     @SerializedName("DoTestBySlidingComplexity")
-    public String examDoTestBySlidingComplexity;
+    public String examDoTestBySlidingComplexity = "Y";
     @SerializedName("ExamTemplateConfig")
     public List<ExamTemplateConfig> examTemplateConfig;
 }

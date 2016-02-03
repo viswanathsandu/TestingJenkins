@@ -3,6 +3,7 @@ package com.education.corsalite.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
@@ -73,6 +74,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         super.onCreate(savedInstanceState);
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         RelativeLayout myView = (RelativeLayout) inflater.inflate(R.layout.activity_study_center, null);
+
         linearLayout = (LinearLayout) myView.findViewById(R.id.subjects_name_id);
         frameLayout.addView(myView);
         setUpViews(myView);
@@ -381,6 +383,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     private View getSubjectView(StudyCenter studyCenter, String subjectId, boolean isSelected) {
         View v = getView();
         TextView tv = (TextView) v.findViewById(R.id.subject);
+        tv.setTypeface(Typeface.createFromAsset(getAssets(), getString(R.string.roboto_light)));
         tv.setText(studyCenter.SubjectName);
         tv.setTag(subjectId);
 
@@ -446,14 +449,12 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     }
 
     private void startPartTest(StudyCenter studyCenter){
-
         Intent exerciseIntent = new Intent(this, ExamEngineActivity.class);
         exerciseIntent.putExtra(Constants.TEST_TITLE, studyCenter.SubjectName);
         exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
-        exerciseIntent.putExtra(Constants.SELECTED_TOPICID, studyCenter.idCourseSubject);
+        exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, studyCenter.idCourseSubject+"");
         exerciseIntent.putExtra(Constants.SELECTED_TOPIC, studyCenter.SubjectName);
         startActivity(exerciseIntent);
-
     }
 
     private void setListener(final TextView textView, final String text) {
