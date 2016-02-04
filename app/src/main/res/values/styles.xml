@@ -294,7 +294,8 @@
 
     <style name="exam_results_label">
         <item name="android:layout_weight">1</item>
-        <item name="android:textColor">@color/text_black</item>
+        <item name="android:textColor">@color/text_white</item>
+        <item name="android:background">@color/light_green</item>
         <item name="android:gravity">right</item>
         <item name="android:layout_width">0dp</item>
         <item name="android:paddingRight">10dp</item>
@@ -302,7 +303,8 @@
 
     <style name="exam_results_value">
         <item name="android:layout_weight">1</item>
-        <item name="android:textColor">@color/text_black</item>
+        <item name="android:textColor">@color/gray_dark_border</item>
+        <item name="android:background">@color/white</item>
         <item name="android:gravity">left</item>
         <item name="android:layout_width">0dp</item>
         <item name="android:paddingLeft">10dp</item>

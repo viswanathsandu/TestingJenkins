@@ -1,8 +1,10 @@
 package com.education.corsalite.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -10,7 +12,7 @@ import com.education.corsalite.R;
 
 import butterknife.ButterKnife;
 
-public class ExamResultActivity extends AbstractBaseActivity {
+public class ExamResultActivity extends AbstractBaseActivity implements View.OnClickListener {
 
     private int totalQuestions = 0;
     private int correct = 0;
@@ -21,11 +23,12 @@ public class ExamResultActivity extends AbstractBaseActivity {
     private String examType = "";
     private String examDate = "";
 
-    TextView recommendedTimeTxt;
-    TextView timeTakenTxt;
-    TextView totalQuestionTxt;
-    TextView correctTxt;
-    TextView wrongTxt;
+    private TextView recommendedTimeTxt;
+    private TextView timeTakenTxt;
+    private TextView totalQuestionTxt;
+    private TextView correctTxt;
+    private TextView wrongTxt;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,9 @@ public class ExamResultActivity extends AbstractBaseActivity {
         totalQuestionTxt = (TextView) findViewById(R.id.tv_total_questions);
         correctTxt = (TextView) findViewById(R.id.tv_correct);
         wrongTxt = (TextView) findViewById(R.id.tv_wrong);
+        findViewById(R.id.view_answers_btn).setOnClickListener(this);
+        findViewById(R.id.exam_history_btn).setOnClickListener(this);
+        findViewById(R.id.course_analysis_btn).setOnClickListener(this);
     }
 
     private void loadIntentData() {
@@ -66,5 +72,18 @@ public class ExamResultActivity extends AbstractBaseActivity {
         totalQuestionTxt.setText(totalQuestions+"");
         correctTxt.setText(correct+"");
         wrongTxt.setText(wrong+"");
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.view_answers_btn :
+                break;
+            case R.id.exam_history_btn :
+                startActivity(new Intent(this, ExamHistoryActivity.class));
+                break;
+            case R.id.course_analysis_btn :
+                break;
+        }
     }
 }

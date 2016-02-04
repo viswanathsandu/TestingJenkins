@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
-import com.education.corsalite.activities.UserProfileActivity;
 import com.education.corsalite.models.responsemodels.VirtualCurrencyTransaction;
 
 import java.util.List;
@@ -85,7 +84,7 @@ public class CurrencyAdapter extends AbstractRecycleViewAdapter {
             }
             eventTxt.setText(virtualCurrencyTransaction.eventName);
             earnedTxt.setText(virtualCurrencyTransaction.earnedVirtualCurrency);
-            balanceTxt.setText(UserProfileActivity.BALANCE_CURRENCY);
+            balanceTxt.setText(virtualCurrencyTransaction.balance);
         }
     }
 }
