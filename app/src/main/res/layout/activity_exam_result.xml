@@ -110,31 +110,19 @@
             android:layout_height="fill_parent">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/exam_results_data_header"
                 android:layout_column="1"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:text="Total Questions"
-                android:textColor="@color/text_black" />
+                android:text="Total Questions" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/exam_results_data_header"
                 android:layout_column="2"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:text="Correct"
-                android:textColor="@color/text_black" />
+                android:text="Correct" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/exam_results_data_header"
                 android:layout_column="3"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:text="Wrong"
-                android:textColor="@color/text_black" />
+                android:text="Wrong" />
         </TableRow>
 
         <TableRow>

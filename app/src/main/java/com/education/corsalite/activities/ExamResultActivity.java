@@ -78,11 +78,14 @@ public class ExamResultActivity extends AbstractBaseActivity implements View.OnC
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.view_answers_btn :
+                // TODO : navigate to view answers screen
+                showToast("Under development");
                 break;
             case R.id.exam_history_btn :
                 startActivity(new Intent(this, ExamHistoryActivity.class));
                 break;
             case R.id.course_analysis_btn :
+                startActivity(new Intent(this, AnalyticsActivity.class));
                 break;
         }
     }
