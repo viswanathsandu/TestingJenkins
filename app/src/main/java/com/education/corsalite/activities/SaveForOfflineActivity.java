@@ -32,6 +32,7 @@ import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
+import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.AppPref;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.FileUtilities;
@@ -149,21 +150,21 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
             }
         }
         AppPref.getInstance(this).save("DATA_IN_PROGRESS", new Gson().toJson(offlineContents));
-        setUpDialogLogic(method(htmlContentId));
+        setUpDialogLogic(method(htmlContentId), method(videoContentId));
     }
 
-    private void setUpDialogLogic(String htmlContentId) {
+    private void setUpDialogLogic(String htmlContentId, String videoContentID) {
         d.show();
         Button okButton = (Button) d.findViewById(R.id.ok);
         Button okCancel = (Button) d.findViewById(R.id.cancel);
 
         final String finalHtmlContentId = htmlContentId.trim();
-
+        final String finalVideoContentId = videoContentID.trim();
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String finalContentIds = "";
-                if (!finalHtmlContentId.isEmpty()) {
+                if (!finalHtmlContentId.isEmpty() && !finalVideoContentId.isEmpty()) {
                     finalContentIds += finalHtmlContentId;
                 }
                 if (finalContentIds.isEmpty()) {
@@ -227,17 +228,20 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
     }
 
     private void storeDataInDb(List<Content> contents){
-        String fileName;
+        String fileName = "";
         List<OfflineContent> offlineContents = new ArrayList<OfflineContent>(contents.size());
         OfflineContent offlineContent;
         for(Content content : contents) {
             if(TextUtils.isEmpty(content.type)) {
                 fileName = content.name + ".html";
-            } else {
+            } else if(content.type.equalsIgnoreCase("html")){
                 fileName = content.name + "." + content.type;
+            } else if(content.type.equalsIgnoreCase("mpg")){
+                fileName = content.name.replace("./", ApiClientService.getBaseUrl()) + "." + content.type;
             }
             TopicModel topicModel = topicModelHashMap.get(content.idContent);
-            offlineContent = new OfflineContent(mCourseId, mCourseName, mSubjectId, mSubjectName, mChapterId, mChapterName, topicModel.idTopic, topicModel.topicName, content.idContent, content.name, fileName);
+            offlineContent = new OfflineContent(mCourseId, mCourseName, mSubjectId, mSubjectName,
+                    mChapterId, mChapterName, topicModel.idTopic, topicModel.topicName, content.idContent, content.name, fileName);
             offlineContents.add(offlineContent);
             saveFileToDisk(getHtmlText(content),content);
         }
