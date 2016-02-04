@@ -136,7 +136,6 @@ public class LoginActivity extends AbstractBaseActivity {
     }
 
     private void login(){
-
         if(checkForValidEmail()) {
             if(checkPasswordField()) {
                 login(usernameTxt.getText().toString(), Encryption.md5(passwordTxt.getText().toString()), false);
