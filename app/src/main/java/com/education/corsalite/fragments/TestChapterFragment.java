@@ -130,7 +130,7 @@ public class TestChapterFragment extends BaseFragment {
                     @Override
                     public void success(List<TestCoverage> testCoverages, Response response) {
                         super.success(testCoverages, response);
-                        if (getActivity().isFinishing() || getActivity().isDestroyed() || !isResumed()) {
+                        if (getActivity() != null && getActivity().isFinishing() || getActivity().isDestroyed() || !isResumed()) {
                             return;
                         }
                         TestChapterFragment.this.testCoverages = testCoverages;

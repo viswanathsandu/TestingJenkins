@@ -2,6 +2,7 @@ package com.education.corsalite.app;
 
 import android.content.Context;
 
+import com.crashlytics.android.Crashlytics;
 import com.education.corsalite.R;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
@@ -9,6 +10,7 @@ import com.localytics.android.LocalyticsActivityLifecycleCallbacks;
 
 import java.util.HashMap;
 
+import io.fabric.sdk.android.Fabric;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 /**
@@ -19,11 +21,12 @@ public class CorsaliteApplication extends com.orm.SugarApp{
     public CorsaliteApplication(){
         super();
     }
+
     @Override
     public void onCreate()
     {
         super.onCreate();
-
+        Fabric.with(this, new Crashlytics());
         registerActivityLifecycleCallbacks(
                 new LocalyticsActivityLifecycleCallbacks(this));
     }
