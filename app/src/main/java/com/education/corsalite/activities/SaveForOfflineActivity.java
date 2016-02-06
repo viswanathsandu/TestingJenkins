@@ -164,8 +164,11 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
             @Override
             public void onClick(View v) {
                 String finalContentIds = "";
-                if (!finalHtmlContentId.isEmpty() && !finalVideoContentId.isEmpty()) {
+                if (!finalHtmlContentId.isEmpty()) {
                     finalContentIds += finalHtmlContentId;
+                }
+                if (!finalVideoContentId.isEmpty()) {
+                    finalContentIds += COMMA_STRING + finalVideoContentId;
                 }
                 if (finalContentIds.isEmpty()) {
                     Toast.makeText(SaveForOfflineActivity.this, getResources().getString(R.string.select_content_toast), Toast.LENGTH_SHORT).show();
