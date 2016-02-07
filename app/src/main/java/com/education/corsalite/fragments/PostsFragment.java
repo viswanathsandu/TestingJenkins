@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.PostAdapter;
@@ -15,7 +14,6 @@ import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.listener.SocialEventsListener;
 import com.education.corsalite.models.requestmodels.ForumLikeRequest;
-import com.education.corsalite.models.responsemodels.BaseResponseModel;
 import com.education.corsalite.models.responsemodels.CommonResponseModel;
 import com.education.corsalite.models.responsemodels.ForumPost;
 
@@ -164,7 +162,17 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener 
     }
 
     @Override
-    public void onDeleteClicked(int position) {
+    public void onDeleteClicked(final int position) {
+        final ForumPost forumPost = mPostAdapter.getItem(position);
 
+        ApiManager.getInstance(getActivity()).deleteForum(new ForumLikeRequest(forumPost.getIdUser(), forumPost.getIdUserPost()), new ApiCallback<CommonResponseModel>(getActivity()) {
+            @Override
+            public void success(CommonResponseModel baseResponseModel, Response response) {
+                super.success(baseResponseModel, response);
+                if (baseResponseModel.isSuccessful()) {
+                    mPostAdapter.deleteForumPost(position);
+                }
+            }
+        });
     }
 }
