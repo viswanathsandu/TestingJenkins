@@ -383,7 +383,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     private View getSubjectView(StudyCenter studyCenter, String subjectId, boolean isSelected) {
         View v = getView();
         TextView tv = (TextView) v.findViewById(R.id.subject);
-        tv.setTypeface(Typeface.createFromAsset(getAssets(), getString(R.string.roboto_light)));
+        tv.setTypeface(Typeface.createFromAsset(getAssets(), getString(R.string.roboto_regular)));
         tv.setText(studyCenter.SubjectName);
         tv.setTag(subjectId);
 
