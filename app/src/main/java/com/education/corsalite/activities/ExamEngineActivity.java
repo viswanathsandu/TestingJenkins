@@ -87,51 +87,96 @@ import retrofit.client.Response;
  */
 public class ExamEngineActivity extends AbstractBaseActivity {
 
-    @Bind(R.id.vs_container) ViewSwitcher mViewSwitcher;
-    @Bind(R.id.footer_layout) RelativeLayout webFooter;
-    @Bind(R.id.answer_layout) LinearLayout answerLayout;
-    @Bind(R.id.btn_next) Button btnNext;
-    @Bind(R.id.btn_previous) Button btnPrevious;
-    @Bind(R.id.webview_question) WebView webviewQuestion;
-    @Bind(R.id.webview_paragraph) WebView webviewParagraph;
-    @Bind(R.id.tv_comment) TextView tvComment;
-    @Bind(R.id.tv_level) TextView tvLevel;
-    @Bind(R.id.tv_nav_title) TextView tvNavTitle;
-    @Bind(R.id.tv_pagetitle) TextView tvPageTitle;
-    @Bind(R.id.tv_timer) TextView tv_timer;
-    @Bind(R.id.btn_view_full_question) Button btnViewFullQuestion;
-    @Bind(R.id.btn_verify) Button btnVerify;
-    @Bind(R.id.tv_clearanswer) TextView tvClearAnswer;
-    @Bind(R.id.btn_submit) Button btnSubmit;
-    @Bind(R.id.txtAnswerCount) TextView txtAnswerCount;
-    @Bind(R.id.txtAnswerExp) WebView txtAnswerExp;
-    @Bind(R.id.tv_serial_no) TextView tvSerialNo;
-    @Bind(R.id.layout_timer) LinearLayout timerLayout;
-    @Bind(R.id.explanation_layout) LinearLayout explanationLayout;
-    @Bind(R.id.layout_choice) LinearLayout layoutChoice;
-    @Bind(R.id.imv_refresh) ImageView imvRefresh;
-    @Bind(R.id.btn_slider_test) Button slider;
-    @Bind(R.id.ll_test_navigator) LinearLayout testNavLayout;
-    @Bind(R.id.shadow_view) View shadowView;
-    @Bind(R.id.gv_test) GridViewInScrollView gvTest;
-    @Bind(R.id.test_nav_footer) LinearLayout testNavFooter;
-    @Bind(R.id.navigator_layout) RelativeLayout navigatorLayout;
-    @Bind(R.id.header_progress) ProgressBar headerProgress;
-    @Bind(R.id.tv_empty_layout) TextView tvEmptyLayout;
+    @Bind(R.id.vs_container)
+    ViewSwitcher mViewSwitcher;
+    @Bind(R.id.footer_layout)
+    RelativeLayout webFooter;
+    @Bind(R.id.answer_layout)
+    LinearLayout answerLayout;
+    @Bind(R.id.btn_next)
+    Button btnNext;
+    @Bind(R.id.btn_previous)
+    Button btnPrevious;
+    @Bind(R.id.webview_question)
+    WebView webviewQuestion;
+    @Bind(R.id.webview_paragraph)
+    WebView webviewParagraph;
+    @Bind(R.id.tv_comment)
+    TextView tvComment;
+    @Bind(R.id.tv_level)
+    TextView tvLevel;
+    @Bind(R.id.tv_nav_title)
+    TextView tvNavTitle;
+    @Bind(R.id.tv_pagetitle)
+    TextView tvPageTitle;
+    @Bind(R.id.tv_timer)
+    TextView tv_timer;
+    @Bind(R.id.btn_view_full_question)
+    Button btnViewFullQuestion;
+    @Bind(R.id.btn_verify)
+    Button btnVerify;
+    @Bind(R.id.tv_clearanswer)
+    TextView tvClearAnswer;
+    @Bind(R.id.btn_submit)
+    Button btnSubmit;
+    @Bind(R.id.txtAnswerCount)
+    TextView txtAnswerCount;
+    @Bind(R.id.txtAnswerExp)
+    WebView txtAnswerExp;
+    @Bind(R.id.tv_serial_no)
+    TextView tvSerialNo;
+    @Bind(R.id.layout_timer)
+    LinearLayout timerLayout;
+    @Bind(R.id.layout_header)
+    LinearLayout headerLayout;
+    @Bind(R.id.explanation_layout)
+    LinearLayout explanationLayout;
+    @Bind(R.id.layout_choice)
+    LinearLayout layoutChoice;
+    @Bind(R.id.imv_refresh)
+    ImageView imvRefresh;
+    @Bind(R.id.btn_slider_test)
+    Button slider;
+    @Bind(R.id.ll_test_navigator)
+    LinearLayout testNavLayout;
+    @Bind(R.id.shadow_view)
+    View shadowView;
+    @Bind(R.id.gv_test)
+    GridViewInScrollView gvTest;
+    @Bind(R.id.test_nav_footer)
+    LinearLayout testNavFooter;
+    @Bind(R.id.navigator_layout)
+    RelativeLayout navigatorLayout;
+    @Bind(R.id.header_progress)
+    ProgressBar headerProgress;
+    @Bind(R.id.tv_empty_layout)
+    TextView tvEmptyLayout;
 
     //Flagged Answer View ID
-    @Bind(R.id.flagged_explanation) LinearLayout flaggedLayout;
-    @Bind(R.id.flagged_answer) WebView webViewFlaggedAnswer;
-    @Bind(R.id.tv_question_status) TextView tvQuestionStatus;
-    @Bind(R.id.tv_recommended_time) TextView tvRecommendedTime;
-    @Bind(R.id.tv_max_marks) TextView tvMaxMarks;
-    @Bind(R.id.tv_time_taken) TextView tvTimeTaken;
-    @Bind(R.id.tv_positive_max_marks) TextView tvPositiveMaxMarks;
-    @Bind(R.id.tv_average_time) TextView tvAverageTime;
-    @Bind(R.id.tv_negative_max_marks) TextView tvNegativeMaxMarks;
-    @Bind(R.id.tv_peer_average) TextView tvPeerAverage;
-    @Bind(R.id.tv_percentile) TextView tvPercentile;
-    @Bind(R.id.imv_flag) ImageView imvFlag;
+    @Bind(R.id.flagged_explanation)
+    LinearLayout flaggedLayout;
+    @Bind(R.id.flagged_answer)
+    WebView webViewFlaggedAnswer;
+    @Bind(R.id.tv_question_status)
+    TextView tvQuestionStatus;
+    @Bind(R.id.tv_recommended_time)
+    TextView tvRecommendedTime;
+    @Bind(R.id.tv_max_marks)
+    TextView tvMaxMarks;
+    @Bind(R.id.tv_time_taken)
+    TextView tvTimeTaken;
+    @Bind(R.id.tv_positive_max_marks)
+    TextView tvPositiveMaxMarks;
+    @Bind(R.id.tv_average_time)
+    TextView tvAverageTime;
+    @Bind(R.id.tv_negative_max_marks)
+    TextView tvNegativeMaxMarks;
+    @Bind(R.id.tv_peer_average)
+    TextView tvPeerAverage;
+    @Bind(R.id.tv_percentile)
+    TextView tvPercentile;
+    @Bind(R.id.imv_flag)
+    ImageView imvFlag;
 
     public int selectedPosition = 0;
     public int previousQuestionPosition = -1;
@@ -141,7 +186,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private String title = "";
     private String topic = "";
     private ExamEngineGridAdapter gridAdapter;
-    private List<ExamModel> localExamModelList;
+    private ArrayList<ExamModel> localExamModelList;
     private String subjectId = null;
     private String chapterId = null;
     private String topicIds = null;
@@ -197,17 +242,17 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         if (getIntent().hasExtra(Constants.SELECTED_POSITION)) {
             selectedPosition = getIntent().getExtras().getInt(Constants.SELECTED_POSITION);
         }
-        if(getIntent().hasExtra(Constants.SELECTED_SUBJECTID)) {
+        if (getIntent().hasExtra(Constants.SELECTED_SUBJECTID)) {
             subjectId = getIntent().getExtras().getString(Constants.SELECTED_SUBJECTID);
         }
-        if(getIntent().hasExtra(Constants.SELECTED_CHAPTERID)) {
+        if (getIntent().hasExtra(Constants.SELECTED_CHAPTERID)) {
             chapterId = getIntent().getExtras().getString(Constants.SELECTED_CHAPTERID);
         }
-        if(getIntent().hasExtra(Constants.SELECTED_TOPICID)) {
+        if (getIntent().hasExtra(Constants.SELECTED_TOPICID)) {
             topicIds = getIntent().getExtras().getString(Constants.SELECTED_TOPICID);
         }
 
-        if(title.equalsIgnoreCase("Flagged Questions")) {
+        if (title.equalsIgnoreCase("Flagged Questions")) {
             imvFlag.setVisibility(View.VISIBLE);
             tvPageTitle.setText(title);
             getFlaggedQuestion();
@@ -216,14 +261,24 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             btnVerify.setVisibility(View.GONE);
             imvRefresh.setVisibility(View.GONE);
             timerLayout.setVisibility(View.GONE);
-        } else if(title.equalsIgnoreCase("Exercise Test")) {
+        } else if (title.equalsIgnoreCase("Exercise Test")) {
             imvFlag.setVisibility(View.INVISIBLE);
-            localExamModelList = ContentReadingActivity.examModelList;
+            localExamModelList = (ArrayList<ExamModel>) ContentReadingActivity.examModelList;
             webFooter.setVisibility(localExamModelList.isEmpty() ? View.GONE : View.VISIBLE);
             btnVerify.setVisibility(View.VISIBLE);
             imvRefresh.setVisibility(View.GONE);
             timerLayout.setVisibility(View.GONE);
             testNavFooter.setVisibility(View.GONE);
+            renderQuestionLayout();
+        } else if (title.equalsIgnoreCase("View Answers")) {
+            selectedPosition = 0;
+            headerLayout.setVisibility(View.GONE);
+            localExamModelList = (ArrayList<ExamModel>) getIntent().getExtras().get("ExamModels");
+            webFooter.setVisibility(localExamModelList.isEmpty() ? View.GONE : View.VISIBLE);
+            btnVerify.setVisibility(View.GONE);
+            tvClearAnswer.setVisibility(View.GONE);
+            imvFlag.setVisibility(View.INVISIBLE);
+            explanationLayout.setVisibility(View.VISIBLE);
             renderQuestionLayout();
         } else {
             imvFlag.setVisibility(View.VISIBLE);
@@ -485,16 +540,16 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void submitTest() {
-        if(localExamModelList != null && !localExamModelList.isEmpty()) {
+        if (localExamModelList != null && !localExamModelList.isEmpty()) {
             int score = 0;
             int success = 0;
             int failure = 0;
-            for(ExamModel model : localExamModelList) {
-                if(!TextUtils.isEmpty(model.selectedAnswers)) {
+            for (ExamModel model : localExamModelList) {
+                if (!TextUtils.isEmpty(model.selectedAnswers)) {
                     int selectedOption = -1;
                     try {
                         selectedOption = Integer.parseInt(model.selectedAnswers);
-                        if(model.answerChoice.get(selectedOption).isCorrectAnswer.equals("Y")) {
+                        if (model.answerChoice.get(selectedOption).isCorrectAnswer.equals("Y")) {
                             success++;
                         } else {
                             failure++;
@@ -512,7 +567,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         }
     }
 
-    private void postExerciseAnsEvent(){
+    private void postExerciseAnsEvent() {
         ExerciseAnsEvent event = new ExerciseAnsEvent();
         event.id = chapterId;
         event.pageView = "";
@@ -528,6 +583,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         intent.putExtra("total_questions", totalQuestions);
         intent.putExtra("correct", correct);
         intent.putExtra("wrong", wrong);
+        intent.putExtra("ExamModels", localExamModelList);
         startActivity(intent);
         finish();
     }
@@ -535,7 +591,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private void loadQuestion(int position) {
         isFlagged = false;
         tvSerialNo.setText("Q" + (position + 1) + ")");
-        if(!TextUtils.isEmpty(localExamModelList.get(position).displayName) && !title.equalsIgnoreCase("Flagged Questions")) {
+        if (!TextUtils.isEmpty(localExamModelList.get(position).displayName) && !title.equalsIgnoreCase("Flagged Questions")) {
             tvLevel.setText(localExamModelList.get(position).displayName.split("\\s+")[0].toUpperCase(Locale.ENGLISH));
         }
         if (TextUtils.isEmpty(localExamModelList.get(position).paragraphHtml)) {
@@ -616,16 +672,16 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         resetExplanation();
         answerLayout.removeAllViews();
         List<AnswerChoiceModel> answerChoiceModels = localExamModelList.get(position).answerChoice;
-        if(answerChoiceModels == null || answerChoiceModels.isEmpty()) {
+        if (answerChoiceModels == null || answerChoiceModels.isEmpty()) {
             return;
         }
         AnswerChoiceModel answerModel = answerChoiceModels.get(0);
-        String [] lists = answerModel.answerChoiceTextHtml.split(":");
+        String[] lists = answerModel.answerChoiceTextHtml.split(":");
         final ListView[] listViews = new ListView[lists.length];
         answerLayout.setOrientation(LinearLayout.HORIZONTAL);
-        for(int i=0; i<lists.length; i++) {
+        for (int i = 0; i < lists.length; i++) {
             String list = lists[i];
-            String [] data = list.split("~");
+            String[] data = list.split("~");
             String header = data[0];
             String[] items = data[1].split(",");
             LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -636,8 +692,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             optionsListView.setTag(header);
             listViews[i] = optionsListView;
             optionsListView.setChoiceMode(type == QuestionType.N_BLANK_SINGLE_SELECT
-                                            ? AbsListView.CHOICE_MODE_SINGLE
-                                            : AbsListView.CHOICE_MODE_MULTIPLE);
+                    ? AbsListView.CHOICE_MODE_SINGLE
+                    : AbsListView.CHOICE_MODE_MULTIPLE);
             optionsListView.setAdapter(new ArrayAdapter<String>(this,
                     android.R.layout.simple_list_item_multiple_choice, android.R.id.text1, items));
             optionsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -654,8 +710,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void clearNBlankAnswers(ListView[] listviews) {
-        for(ListView listview : listviews) {
-            for(int i=0; i<listview.getAdapter().getCount(); i++) {
+        for (ListView listview : listviews) {
+            for (int i = 0; i < listview.getAdapter().getCount(); i++) {
                 listview.setItemChecked(i, false);
             }
         }
@@ -663,18 +719,18 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void loadAnswersInToNBlankType(ListView[] listviews, String answer) {
-        if(listviews == null || TextUtils.isEmpty(answer)) {
+        if (listviews == null || TextUtils.isEmpty(answer)) {
             return;
         }
-        String [] lists = answer.split(":");
-        for(int i=0; i<lists.length; i++) {
-            String [] data = lists[i].split("~");
+        String[] lists = answer.split(":");
+        for (int i = 0; i < lists.length; i++) {
+            String[] data = lists[i].split("~");
             String header = data[0];
             List<String> items = Arrays.asList(data[1].split(","));
-            for(ListView listView : listviews) {
-                if(listView.getTag().equals(header)) {
-                    for(int j=0; j<listView.getAdapter().getCount(); j++) {
-                        for(String item : items) {
+            for (ListView listView : listviews) {
+                if (listView.getTag().equals(header)) {
+                    for (int j = 0; j < listView.getAdapter().getCount(); j++) {
+                        for (String item : items) {
                             if (item.equals(listView.getAdapter().getItem(j))) {
                                 listView.setItemChecked(j, true);
                             }
@@ -687,17 +743,17 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
     private String getAnswerForNBlankType(ListView[] listviews) {
         String answer = "";
-        for(int i=0; i<listviews.length; i++) {
+        for (int i = 0; i < listviews.length; i++) {
             String blankAnswer = "";
             SparseBooleanArray checkedItems = listviews[i].getCheckedItemPositions();
-            for(int j=0; j< checkedItems.size(); j++) {
+            for (int j = 0; j < checkedItems.size(); j++) {
                 int key = checkedItems.keyAt(j);
-                if(checkedItems.get(key)) {
+                if (checkedItems.get(key)) {
                     blankAnswer += blankAnswer.isEmpty() ? "" : ",";
                     blankAnswer += listviews[i].getItemAtPosition(key);
                 }
             }
-            if(!blankAnswer.isEmpty()) {
+            if (!blankAnswer.isEmpty()) {
                 answer += answer.isEmpty() ? "" : ":";
                 answer += listviews[i].getTag() + "~" + blankAnswer;
             }
@@ -713,7 +769,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         if (!title.equalsIgnoreCase("Exercise Test") && !TextUtils.isEmpty(localExamModelList.get(selectedPosition).selectedAnswers)) {
             previousAnswer = localExamModelList.get(selectedPosition).selectedAnswers;
         }
-        if(!answerChoiceModels.isEmpty()) {
+        if (!answerChoiceModels.isEmpty()) {
             LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             LinearLayout container = (LinearLayout) inflater.inflate(R.layout.exam_engine_alphanumeric, null);
             EditText answerTxt = (EditText) container.findViewById(R.id.answer_txt);
@@ -730,9 +786,12 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             }
             answerTxt.addTextChangedListener(new TextWatcher() {
                 @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+
                 @Override
-                public void afterTextChanged(Editable s) {}
+                public void afterTextChanged(Editable s) {
+                }
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -784,7 +843,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             checkBoxes[i].setTag(answerChoiceModel);
             checkBoxes[i].setBackgroundResource(R.drawable.selector_checkbox);
 
-            if(title.equalsIgnoreCase("Flagged Questions")) {
+            if (title.equalsIgnoreCase("Flagged Questions") || title.equalsIgnoreCase("View Answers")) {
                 checkBoxes[i].setEnabled(false);
                 checkBoxes[i].setClickable(false);
             }
@@ -804,7 +863,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             optionWebView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
             optionWebView.setWebChromeClient(new WebChromeClient());
             optionWebView.setWebViewClient(new MyWebViewClient());
-            if(answerChoiceModel.answerChoiceTextHtml.startsWith("./") && answerChoiceModel.answerChoiceTextHtml.endsWith(".html")) {
+            if (answerChoiceModel.answerChoiceTextHtml.startsWith("./") && answerChoiceModel.answerChoiceTextHtml.endsWith(".html")) {
                 answerChoiceModel.answerChoiceTextHtml = answerChoiceModel.answerChoiceTextHtml.replace("./", ApiClientService.getBaseUrl());
                 optionWebView.loadUrl(answerChoiceModel.answerChoiceTextHtml);
             } else {
@@ -862,6 +921,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         //set checkBox check
         if (preselectedAnswers != null && preselectedAnswers.length > 0) {
             for (String selectedChoice : preselectedAnswers) {
+                checkBoxes[Integer.valueOf(selectedChoice)].setEnabled(true);
                 checkBoxes[Integer.valueOf(selectedChoice)].setChecked(true);
                 selectedAnswerPosition = Integer.valueOf(selectedChoice) + 1;
             }
@@ -885,17 +945,18 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             LinearLayout container = (LinearLayout) inflater.inflate(R.layout.exam_engine_radio_btn, null);
             TextView optionNumberTxt = (TextView) container.findViewById(R.id.option_number_txt);
-            optionNumberTxt.setText((i+1)+"");
-            final RadioButton optionRBtn =  (RadioButton) container.findViewById(R.id.option_radio_button);
+            optionNumberTxt.setText((i + 1) + "");
+            final RadioButton optionRBtn = (RadioButton) container.findViewById(R.id.option_radio_button);
             optionRBtn.setId(Integer.valueOf(answerChoiceModel.idAnswerKey));
             optionRBtn.setTag(answerChoiceModel);
-            if(title.equalsIgnoreCase("Flagged Questions")) {
-                optionRBtn.setEnabled(false);
-                optionRBtn.setClickable(false);
-            }
             if (!TextUtils.isEmpty(preselectedAnswers) && i == Integer.valueOf(preselectedAnswers)) {
                 optionRBtn.setChecked(true);
                 selectedAnswerPosition = Integer.valueOf(preselectedAnswers) + 1;
+            }
+            if (title.equalsIgnoreCase("Flagged Questions") || title.equalsIgnoreCase("View Answers")) {
+                if (!optionRBtn.isChecked())
+                    optionRBtn.setEnabled(false);
+                optionRBtn.setClickable(false);
             }
             optionRadioButtons[i] = optionRBtn;
             WebView webview = (WebView) container.findViewById(R.id.webview);
@@ -974,7 +1035,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void setFlaggedQuestionLayout(String correctAnswers) {
-        if(title.equalsIgnoreCase("Flagged Questions")) {
+        if (title.equalsIgnoreCase("Flagged Questions")) {
             flaggedLayout.setVisibility(View.VISIBLE);
         } else {
             flaggedLayout.setVisibility(View.GONE);
@@ -986,9 +1047,15 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private void resetExplanation() {
         selectedAnswerPosition = -1;
         btnVerify.setEnabled(false);
-        explanationLayout.setVisibility(View.GONE);
-        flaggedLayout.setVisibility(View.GONE);
-        layoutChoice.setVisibility(View.GONE);
+        if (title.equalsIgnoreCase("View Answers")) {
+            explanationLayout.setVisibility(View.VISIBLE);
+            flaggedLayout.setVisibility(View.VISIBLE);
+            layoutChoice.setVisibility(View.VISIBLE);
+        } else {
+            explanationLayout.setVisibility(View.GONE);
+            flaggedLayout.setVisibility(View.GONE);
+            layoutChoice.setVisibility(View.GONE);
+        }
     }
 
     private int getScore(ExamModel model) {
@@ -1012,7 +1079,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         postExerciseRequestModel.idStudent = LoginUserCache.getInstance().loginResponse.studentId;
         postExerciseRequestModel.idQuestion = model.idQuestion;
         postExerciseRequestModel.studentAnswerChoice = selectedAnswerPosition + "";
-        postExerciseRequestModel.score = getScore(model)+"";
+        postExerciseRequestModel.score = getScore(model) + "";
         showToast(postExerciseRequestModel.score.equalsIgnoreCase("1") ? "Correct Answer" : "Wrong Answer");
         btnVerify.setEnabled(false);
         explanationLayout.setVisibility(View.VISIBLE);
@@ -1060,7 +1127,6 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
 
-
     private void setAnswerState() {
         if (selectedAnswerPosition != -1) {
             localExamModelList.get(previousQuestionPosition).answerColorSelection = Constants.AnswerState.ANSWERED;
@@ -1081,8 +1147,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
         @Override
         public void onTick(long millisUntilFinished) {
-            examDurationTakenInSeconds = examDurationInSeconds - millisUntilFinished/1000;
-            String hms = TimeUtils.getSecondsInTimeFormat(millisUntilFinished/1000);
+            examDurationTakenInSeconds = examDurationInSeconds - millisUntilFinished / 1000;
+            String hms = TimeUtils.getSecondsInTimeFormat(millisUntilFinished / 1000);
             tv_timer.setText(hms);
         }
     }
@@ -1094,7 +1160,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     @Override
                     public void success(List<ExamModel> examModels, Response response) {
                         super.success(examModels, response);
-                        localExamModelList = examModels;
+                        localExamModelList = (ArrayList<ExamModel>) examModels;
                         if (localExamModelList != null && localExamModelList.size() > 0) {
                             if (localExamModelList.size() > 1) {
                                 webFooter.setVisibility(View.VISIBLE);
@@ -1116,7 +1182,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         String selectedCourseId;
         entityId = LoginUserCache.getInstance().loginResponse.entitiyId;
 
-        if(getIntent().hasExtra(Constants.SELECTED_COURSE)) {
+        if (getIntent().hasExtra(Constants.SELECTED_COURSE)) {
             selectedCourseId = getIntent().getExtras().getString(Constants.SELECTED_COURSE);
         } else {
             selectedCourseId = selectedCourse.courseId.toString();
@@ -1137,7 +1203,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 });
     }
 
-    private void postCustomExamTemplate(List<ExamModels> examModelsList){
+    private void postCustomExamTemplate(List<ExamModels> examModelsList) {
 
         PostCustomExamTemplate postCustomExamTemplate = new PostCustomExamTemplate();
         postCustomExamTemplate.examId = examModelsList.get(0).examId;
@@ -1156,28 +1222,28 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         postCustomExamTemplate.examTemplateConfig.add(examTemplateConfig);
 
         ApiManager.getInstance(this).postCustomExamTemplate(new Gson().toJson(postCustomExamTemplate),
-            new ApiCallback<PostExamTemplate>(this) {
-                @Override
-                public void success(PostExamTemplate postExamTemplate, Response response) {
-                    super.success(postExamTemplate, response);
-                    if (postExamTemplate != null && !TextUtils.isEmpty(postExamTemplate.idExamTemplate)) {
-                        postQuestionPaper(LoginUserCache.getInstance().loginResponse.entitiyId,
-                                        postExamTemplate.idExamTemplate,
-                                        LoginUserCache.getInstance().loginResponse.studentId);
+                new ApiCallback<PostExamTemplate>(this) {
+                    @Override
+                    public void success(PostExamTemplate postExamTemplate, Response response) {
+                        super.success(postExamTemplate, response);
+                        if (postExamTemplate != null && !TextUtils.isEmpty(postExamTemplate.idExamTemplate)) {
+                            postQuestionPaper(LoginUserCache.getInstance().loginResponse.entitiyId,
+                                    postExamTemplate.idExamTemplate,
+                                    LoginUserCache.getInstance().loginResponse.studentId);
+                        }
                     }
-                }
-            });
+                });
     }
 
     private void postFlaggedQuestion() {
         FlaggedQuestionModel flaggedQuestionModel = new FlaggedQuestionModel();
-        if(isFlagged) {
+        if (isFlagged) {
             flaggedQuestionModel.flaggedYN = "N";
         } else {
             flaggedQuestionModel.flaggedYN = "Y";
         }
         flaggedQuestionModel.idTestAnswerPaper = "";
-        flaggedQuestionModel.idTestQuestion = localExamModelList.get(selectedPosition).idTestQuestion+"";
+        flaggedQuestionModel.idTestQuestion = localExamModelList.get(selectedPosition).idTestQuestion + "";
         flaggedQuestionModel.updateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 
         ApiManager.getInstance(this).postFlaggedQuestions(new Gson().toJson(flaggedQuestionModel),
@@ -1186,7 +1252,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     public void success(PostFlaggedQuestions postFlaggedQuestions, Response response) {
                         super.success(postFlaggedQuestions, response);
                         isFlagged = !isFlagged;
-                        if(isFlagged) {
+                        if (isFlagged) {
                             imvFlag.setImageResource(R.drawable.ico_offline_info_white);
                         } else {
                             imvFlag.setImageResource(R.drawable.ico_offline_info);
@@ -1225,8 +1291,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     @Override
                     public void success(List<ExamModel> examModels, Response response) {
                         super.success(examModels, response);
-                        localExamModelList = examModels;
-                        if(localExamModelList != null ) {
+                        localExamModelList = (ArrayList<ExamModel>) examModels;
+                        if (localExamModelList != null) {
                             if (localExamModelList.size() > 1) {
                                 webFooter.setVisibility(View.VISIBLE);
                             } else {
@@ -1248,7 +1314,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
     private long getExamDurationInSeconds(List<ExamModel> models) {
         long examDuration = 0;
-        for(ExamModel model : models) {
+        for (ExamModel model : models) {
             long duration = 0;
             try {
                 duration = Integer.valueOf(model.recommendedTime);
