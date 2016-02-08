@@ -30,6 +30,7 @@ import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.db.DbManager;
 import com.education.corsalite.enums.Tests;
+import com.education.corsalite.fragments.MockTestDialog;
 import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.models.responsemodels.Chapters;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
@@ -178,14 +179,17 @@ public class StudyCentreActivity extends AbstractBaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent = null;
         switch (item.getItemId()) {
-            case R.id.action_exam_history: {
-                Intent intent = new Intent(this, ExamHistoryActivity.class);
+            case R.id.action_exam_history:
+                intent = new Intent(this, ExamHistoryActivity.class);
                 startActivity(intent);
                 return true;
-            }
+            case R.id.action_mock_test :
+                showMockTestsDialog();
+                return true;
             case R.id.action_scheduled_test : {
-                Intent intent = new Intent(this, TestStartActivity.class);
+                intent = new Intent(this, TestStartActivity.class);
                 intent.putExtra(TestStartActivity.KEY_TEST_TYPE, Tests.SCHEDULED.getType());
                 startActivity(intent);
                 return true;
@@ -455,6 +459,12 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, studyCenter.idCourseSubject+"");
         exerciseIntent.putExtra(Constants.SELECTED_TOPIC, studyCenter.SubjectName);
         startActivity(exerciseIntent);
+    }
+
+    private void showMockTestsDialog() {
+        showToast("Showing mock tests");
+        MockTestDialog dialog = new MockTestDialog();
+        dialog.show(getFragmentManager(), "MockTestsListDialog");
     }
 
     private void setListener(final TextView textView, final String text) {
