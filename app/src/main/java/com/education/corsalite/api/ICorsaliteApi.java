@@ -176,6 +176,8 @@ public interface ICorsaliteApi {
     @POST("/LikeForum")
     void addForumLike(@Query("Insert") String forumLikeRequest, ApiCallback<CommonResponseModel> callback);
 
+    @POST("/ForumDelete")
+    void deleteForum(@Query("Delete") String forumDeleteRequest, ApiCallback<CommonResponseModel> callback);
 
     @GET("/MockTest")
     void getMockTests(@Query("idCourse") String courseID, @Query("idStudent") String studentId, ApiCallback<List<MockTest>> callback);

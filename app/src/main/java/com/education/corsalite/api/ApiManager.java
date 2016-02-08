@@ -429,6 +429,12 @@ public class ApiManager {
         }
     }
 
+    public void deleteForum(ForumLikeRequest forumdeleteRequest, ApiCallback<CommonResponseModel> callback){
+        if(isApiOnline()){
+            ApiClientService.get().deleteForum(new Gson().toJson(forumdeleteRequest), callback);
+        }
+    }
+
     public void postUserEvents(String insert, ApiCallback<UserEventsResponse> callback){
         if(isApiOnline()){
             ApiClientService.get().postUserEvents(insert,callback);
