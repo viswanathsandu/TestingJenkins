@@ -1,5 +1,6 @@
 package com.education.corsalite.api;
 
+import com.education.corsalite.models.MockTest;
 import com.education.corsalite.models.responsemodels.CommonResponseModel;
 import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ContentIndex;
@@ -177,4 +178,7 @@ public interface ICorsaliteApi {
 
     @POST("/ForumDelete")
     void deleteForum(@Query("Delete") String forumDeleteRequest, ApiCallback<CommonResponseModel> callback);
+
+    @GET("/MockTest")
+    void getMockTests(@Query("idCourse") String courseID, @Query("idStudent") String studentId, ApiCallback<List<MockTest>> callback);
 }

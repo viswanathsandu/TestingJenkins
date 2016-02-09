@@ -48,6 +48,7 @@ import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.enums.QuestionType;
 import com.education.corsalite.event.ExerciseAnsEvent;
 import com.education.corsalite.fragments.FullQuestionDialog;
+import com.education.corsalite.models.MockTest;
 import com.education.corsalite.models.requestmodels.ExamTemplateChapter;
 import com.education.corsalite.models.requestmodels.ExamTemplateConfig;
 import com.education.corsalite.models.requestmodels.FlaggedQuestionModel;
@@ -186,7 +187,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private String title = "";
     private String topic = "";
     private ExamEngineGridAdapter gridAdapter;
-    private ArrayList<ExamModel> localExamModelList;
+    private List<ExamModel> localExamModelList;
+    private List<ExamModel> flaggedQuestions;
     private String subjectId = null;
     private String chapterId = null;
     private String topicIds = null;
@@ -255,7 +257,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         if (title.equalsIgnoreCase("Flagged Questions")) {
             imvFlag.setVisibility(View.VISIBLE);
             tvPageTitle.setText(title);
-            getFlaggedQuestion();
+            getFlaggedQuestion(true);
             navigatorLayout.setVisibility(View.GONE);
             tvClearAnswer.setVisibility(View.GONE);
             btnVerify.setVisibility(View.GONE);
@@ -270,6 +272,17 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             timerLayout.setVisibility(View.GONE);
             testNavFooter.setVisibility(View.GONE);
             renderQuestionLayout();
+        } else if(title.equalsIgnoreCase("Mock Test")) {
+            imvFlag.setVisibility(View.VISIBLE);
+            String mockTestJson = getIntent().getExtras().getString("mock_tests_object", "");
+            MockTest mockTest = new Gson().fromJson(mockTestJson, MockTest.class);
+            postQuestionPaper(LoginUserCache.getInstance().loginResponse.entitiyId,
+                    mockTest.examTemplateId,
+                    LoginUserCache.getInstance().loginResponse.studentId);
+            imvRefresh.setVisibility(View.VISIBLE);
+            timerLayout.setVisibility(View.VISIBLE);
+            testNavFooter.setVisibility(View.VISIBLE);
+            btnVerify.setVisibility(View.GONE);
         } else if (title.equalsIgnoreCase("View Answers")) {
             selectedPosition = 0;
             headerLayout.setVisibility(View.GONE);
@@ -288,7 +301,6 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             }
             // get Exam Id
             getStandardExamByCourse();
-
             imvRefresh.setVisibility(View.VISIBLE);
             timerLayout.setVisibility(View.VISIBLE);
             testNavFooter.setVisibility(View.VISIBLE);
@@ -590,6 +602,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
     private void loadQuestion(int position) {
         isFlagged = false;
+        updateFlaggedQuestion(localExamModelList.get(position).isFlagged);
         tvSerialNo.setText("Q" + (position + 1) + ")");
         if (!TextUtils.isEmpty(localExamModelList.get(position).displayName) && !title.equalsIgnoreCase("Flagged Questions")) {
             tvLevel.setText(localExamModelList.get(position).displayName.split("\\s+")[0].toUpperCase(Locale.ENGLISH));
@@ -692,8 +705,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             optionsListView.setTag(header);
             listViews[i] = optionsListView;
             optionsListView.setChoiceMode(type == QuestionType.N_BLANK_SINGLE_SELECT
-                    ? AbsListView.CHOICE_MODE_SINGLE
-                    : AbsListView.CHOICE_MODE_MULTIPLE);
+                                            ? AbsListView.CHOICE_MODE_SINGLE
+                                            : AbsListView.CHOICE_MODE_MULTIPLE);
             optionsListView.setAdapter(new ArrayAdapter<String>(this,
                     android.R.layout.simple_list_item_multiple_choice, android.R.id.text1, items));
             optionsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -786,12 +799,9 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             }
             answerTxt.addTextChangedListener(new TextWatcher() {
                 @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                }
-
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
                 @Override
-                public void afterTextChanged(Editable s) {
-                }
+                public void afterTextChanged(Editable s) {}
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -954,8 +964,9 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 selectedAnswerPosition = Integer.valueOf(preselectedAnswers) + 1;
             }
             if (title.equalsIgnoreCase("Flagged Questions") || title.equalsIgnoreCase("View Answers")) {
-                if (!optionRBtn.isChecked())
+                if (!optionRBtn.isChecked()) {
                     optionRBtn.setEnabled(false);
+                }
                 optionRBtn.setClickable(false);
             }
             optionRadioButtons[i] = optionRBtn;
@@ -1126,7 +1137,6 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         }
     }
 
-
     private void setAnswerState() {
         if (selectedAnswerPosition != -1) {
             localExamModelList.get(previousQuestionPosition).answerColorSelection = Constants.AnswerState.ANSWERED;
@@ -1153,28 +1163,49 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         }
     }
 
-    private void getFlaggedQuestion() {
+    private void getFlaggedQuestion(final boolean showFlaggedQuestions) {
         ApiManager.getInstance(this).getFlaggedQuestions(LoginUserCache.getInstance().loginResponse.studentId,
                 subjectId,
                 chapterId, "", new ApiCallback<List<ExamModel>>(this) {
                     @Override
                     public void success(List<ExamModel> examModels, Response response) {
                         super.success(examModels, response);
-                        localExamModelList = (ArrayList<ExamModel>) examModels;
-                        if (localExamModelList != null && localExamModelList.size() > 0) {
-                            if (localExamModelList.size() > 1) {
-                                webFooter.setVisibility(View.VISIBLE);
-                            } else {
-                                webFooter.setVisibility(View.GONE);
-                            }
-                            tvLevel.setText("TOTAL NUMBER OF QUESTIONS : " + examModels.size());
-                            renderQuestionLayout();
+                        if(showFlaggedQuestions) {
+                            showFlaggedQuestions(examModels);
                         } else {
-                            headerProgress.setVisibility(View.GONE);
-                            tvEmptyLayout.setVisibility(View.VISIBLE);
+                            flaggedQuestions = examModels;
+                            updateQuestionsWithFlagStatus();
                         }
+
                     }
                 });
+    }
+
+    private void updateQuestionsWithFlagStatus() {
+        for(ExamModel model : localExamModelList) {
+            for(ExamModel flagQuestion : flaggedQuestions) {
+                if(model.idQuestion.equalsIgnoreCase(flagQuestion.idQuestion)) {
+                    model.isFlagged = true;
+                    break;
+                }
+            }
+        }
+    }
+
+    private void showFlaggedQuestions(List<ExamModel> models) {
+        localExamModelList = models;
+        if (models != null && models.size() > 0) {
+            if (models.size() > 1) {
+                webFooter.setVisibility(View.VISIBLE);
+            } else {
+                webFooter.setVisibility(View.GONE);
+            }
+            tvLevel.setText("TOTAL NUMBER OF QUESTIONS : " + localExamModelList.size());
+            renderQuestionLayout();
+        } else {
+            headerProgress.setVisibility(View.GONE);
+            tvEmptyLayout.setVisibility(View.VISIBLE);
+        }
     }
 
     private void getStandardExamByCourse() {
@@ -1222,28 +1253,27 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         postCustomExamTemplate.examTemplateConfig.add(examTemplateConfig);
 
         ApiManager.getInstance(this).postCustomExamTemplate(new Gson().toJson(postCustomExamTemplate),
-                new ApiCallback<PostExamTemplate>(this) {
-                    @Override
-                    public void success(PostExamTemplate postExamTemplate, Response response) {
-                        super.success(postExamTemplate, response);
-                        if (postExamTemplate != null && !TextUtils.isEmpty(postExamTemplate.idExamTemplate)) {
-                            postQuestionPaper(LoginUserCache.getInstance().loginResponse.entitiyId,
-                                    postExamTemplate.idExamTemplate,
-                                    LoginUserCache.getInstance().loginResponse.studentId);
-                        }
+            new ApiCallback<PostExamTemplate>(this) {
+                @Override
+                public void success(PostExamTemplate postExamTemplate, Response response) {
+                    super.success(postExamTemplate, response);
+                    if (postExamTemplate != null && !TextUtils.isEmpty(postExamTemplate.idExamTemplate)) {
+                        postQuestionPaper(LoginUserCache.getInstance().loginResponse.entitiyId,
+                                        postExamTemplate.idExamTemplate,
+                                        LoginUserCache.getInstance().loginResponse.studentId);
                     }
-                });
+                }
+            });
     }
 
     private void postFlaggedQuestion() {
         FlaggedQuestionModel flaggedQuestionModel = new FlaggedQuestionModel();
-        if (isFlagged) {
-            flaggedQuestionModel.flaggedYN = "N";
-        } else {
-            flaggedQuestionModel.flaggedYN = "Y";
-        }
+        flaggedQuestionModel.flaggedYN = isFlagged ? "N" : "Y";
         flaggedQuestionModel.idTestAnswerPaper = "";
         flaggedQuestionModel.idTestQuestion = localExamModelList.get(selectedPosition).idTestQuestion + "";
+        flaggedQuestionModel.flaggedYN = isFlagged ? "N" : "Y";
+        flaggedQuestionModel.idTestAnswerPaper = "null";
+        flaggedQuestionModel.idTestQuestion = localExamModelList.get(selectedPosition).idTestQuestion+"";
         flaggedQuestionModel.updateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 
         ApiManager.getInstance(this).postFlaggedQuestions(new Gson().toJson(flaggedQuestionModel),
@@ -1252,14 +1282,14 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     public void success(PostFlaggedQuestions postFlaggedQuestions, Response response) {
                         super.success(postFlaggedQuestions, response);
                         isFlagged = !isFlagged;
-                        if (isFlagged) {
-                            imvFlag.setImageResource(R.drawable.ico_offline_info_white);
-                        } else {
-                            imvFlag.setImageResource(R.drawable.ico_offline_info);
-                        }
-
+                        localExamModelList.get(selectedPosition).isFlagged = isFlagged;
+                        updateFlaggedQuestion(isFlagged);
                     }
                 });
+    }
+
+    private void updateFlaggedQuestion(boolean isFlagged) {
+        imvFlag.setImageResource(isFlagged ? R.drawable.btn_flag_select : R.drawable.btn_flag_unselect);
     }
 
     private void postQuestionPaper(String entityId, String examTemplateId, String studentId) {
@@ -1291,8 +1321,9 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     @Override
                     public void success(List<ExamModel> examModels, Response response) {
                         super.success(examModels, response);
-                        localExamModelList = (ArrayList<ExamModel>) examModels;
-                        if (localExamModelList != null) {
+                        localExamModelList = examModels;
+                        getFlaggedQuestion(false);
+                        if(localExamModelList != null ) {
                             if (localExamModelList.size() > 1) {
                                 webFooter.setVisibility(View.VISIBLE);
                             } else {
