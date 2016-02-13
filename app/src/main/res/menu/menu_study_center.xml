@@ -16,6 +16,11 @@
         android:title="@string/menu_scheduled_test" />
 
     <item
+        android:id="@+id/action_mock_test"
+        app:showAsAction="never"
+        android:title="@string/menu_mock_test" />
+
+    <item
         android:id="@+id/action_challenge_your_friends"
         app:showAsAction="never"
         android:title="@string/menu_challenge_your_friends" />

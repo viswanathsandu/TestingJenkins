@@ -83,7 +83,7 @@ public class UsageAnalysisFragment extends Fragment {
                         initializeGraph(mChart2);
                         CombinedData data1 = new CombinedData(usageAnalysis.pagesName);
                         data1.setData(generateLineData(usageAnalysis.pageUsagePercentageList));
-                        data1.setData(generateBarData(usageAnalysis.userAuditList, "Student Audit",getResources().getColor(R.color.green)));
+                        data1.setData(generateBarData(usageAnalysis.userAuditList, "Student Audit", getResources().getColor(R.color.green)));
                         mChart1.setData(data1);
                         mChart1.invalidate();
 

@@ -7,6 +7,7 @@ import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.config.AppConfig;
 import com.education.corsalite.db.DbManager;
 import com.education.corsalite.enums.NetworkMode;
+import com.education.corsalite.models.MockTest;
 import com.education.corsalite.models.requestmodels.ForumLikeRequest;
 import com.education.corsalite.models.responsemodels.CommonResponseModel;
 import com.education.corsalite.models.responsemodels.Content;
@@ -339,7 +340,6 @@ public class ApiManager {
 
     public void getNotes(String studentId, String mSubjectId, String mChapterId, String mTopicId, ApiCallback<List<Note>> callback) {
         if (isApiOnline()) {
-            // TODO : uncomment it when API works fine
             ApiClientService.get().getNotes(studentId, mSubjectId, mChapterId, mTopicId, callback);
         } else {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/notes.json");
@@ -429,9 +429,21 @@ public class ApiManager {
         }
     }
 
+    public void deleteForum(ForumLikeRequest forumdeleteRequest, ApiCallback<CommonResponseModel> callback){
+        if(isApiOnline()){
+            ApiClientService.get().deleteForum(new Gson().toJson(forumdeleteRequest), callback);
+        }
+    }
+
     public void postUserEvents(String insert, ApiCallback<UserEventsResponse> callback){
         if(isApiOnline()){
             ApiClientService.get().postUserEvents(insert,callback);
+        }
+    }
+
+    public void getMockTests(String courseId, String studentId, ApiCallback<List<MockTest>> callback) {
+        if (isApiOnline()) {
+            ApiClientService.get().getMockTests(courseId, studentId, callback);
         }
     }
 }

@@ -43,6 +43,7 @@ public class ExamModel extends BaseModel implements Serializable, Comparable {
     public String complexity;
     @SerializedName("AnswerChoice")
     public List<AnswerChoiceModel> answerChoice;
+    public boolean isFlagged = false;
 
     public Constants.AnswerState answerColorSelection = Constants.AnswerState.UNATTEMPTED;
     public String selectedAnswers;

@@ -230,7 +230,7 @@
                         android:layout_below="@id/webview_paragraph"
                         android:layout_gravity="center_vertical"
                         android:layout_marginTop="10dp"
-                        android:src="@drawable/ico_offline_info" />
+                        android:src="@drawable/btn_flag_unselect" />
 
                     <TextView
                         android:id="@+id/tv_serial_no"

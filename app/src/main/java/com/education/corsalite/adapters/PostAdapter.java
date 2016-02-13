@@ -171,6 +171,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
         notifyDataSetChanged();
     }
 
+    public void deleteForumPost(int position) {
+        mForumPostList.remove(position);
+        notifyDataSetChanged();
+    }
+
     public void updateCurrentItem(int position) {
         notifyItemChanged(position);
     }
