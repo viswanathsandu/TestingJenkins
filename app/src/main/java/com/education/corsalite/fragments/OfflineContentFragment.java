@@ -2,6 +2,7 @@ package com.education.corsalite.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.activities.OfflineContentActivity;
 import com.education.corsalite.activities.ContentReadingActivity;
+import com.education.corsalite.activities.VideoActivity;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.db.DbManager;
 import com.education.corsalite.holders.IconTreeItemHolder;
@@ -21,12 +23,14 @@ import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.utils.AppPref;
+import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.FileUtilities;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.unnamed.b.atv.model.TreeNode;
 import com.unnamed.b.atv.view.AndroidTreeView;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -49,6 +53,10 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
     String chapterId = "";
     String topicId = "";
     ArrayList<String> contentIds;
+    Course course;
+    String subjectName;
+    String chapterName;
+    String topicName;
 
     @Nullable
     @Override
@@ -120,6 +128,7 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
     public void onCourseIdSelected(Course course) {
         getContentIndexResponse(course);
         this.selectedCourse = course.courseId.toString();
+        this.course = course;
     }
 
     @Override
@@ -151,7 +160,7 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
                 }
             }
             if(chapterRoot == null){
-               boolean showProgress = contentIds != null && contentIds.contains(offlineContent.contentId);
+                boolean showProgress = contentIds != null && contentIds.contains(offlineContent.contentId);
                 chapterRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_chapter,  offlineContent.chapterName,offlineContent.chapterId,"chapter",showProgress));
                 subjectRoot.addChild(chapterRoot);
             }
@@ -200,15 +209,21 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
             IconTreeItemHolder.IconTreeItem item = (IconTreeItemHolder.IconTreeItem) value;
             if(item.tag.equalsIgnoreCase("subject")){
                 subjectId = item.id;
+                subjectName = item.text;
             }
             if(item.tag.equalsIgnoreCase("chapter")){
                 chapterId = item.id;
+                chapterName = item.text;
             }
             if(item.tag.equalsIgnoreCase("topic")){
                 topicId = item.id;
+                topicName = item.text;
             }
             if(item.tag.equalsIgnoreCase("content")) {
-                startContentActivity(topicId, chapterId,subjectId,item.id,item.text);
+                if(item.text.endsWith("html"))
+                    startContentActivity(topicId, chapterId,subjectId,item.id,item.text);
+                else
+                    startVideoActivity(course.name,subjectName,chapterName,topicName,item.text);
             }
 
 
@@ -292,10 +307,24 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
         intent.putExtra("subjectId", subjectId);
         intent.putExtra("chapterId", chapterId);
         intent.putExtra("topicId", topicId);
-        intent.putExtra("contentId",contentId);
+        intent.putExtra("contentId", contentId);
         intent.putExtra("contentName",contentName);
         getActivity().startActivity(intent);
     }
 
+    private void startVideoActivity(String name,String mSubjectName,String mChapterName,String topicName,String contentName){
+        String folderStructure =  name + File.separator +mSubjectName + File.separator +
+                mChapterName + File.separator + topicName;
+        File SDCardRoot = Environment.getExternalStorageDirectory();
+        File outDir = new File(SDCardRoot.getAbsolutePath() + File.separator + Constants.PARENT_FOLDER + File.separator +folderStructure);
+        File file = new File(outDir.getAbsolutePath() + File.separator + Constants.VIDEO_FOLDER);
+        File newFile = new File(file,contentName);
+        Intent intent = new Intent(getActivity(), VideoActivity.class);
+        intent.putExtra("videopath", newFile.getAbsolutePath());
+        if(newFile.exists()){
+            getActivity().startActivity(intent);
+        }else
+            showToast("File does not exist");
+    }
 
 }

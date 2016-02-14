@@ -2,7 +2,9 @@ package com.education.corsalite.activities;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,6 +43,12 @@ import com.unnamed.b.atv.model.TreeNode;
 import com.unnamed.b.atv.view.AndroidTreeView;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -131,7 +139,7 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
                         ContentModel contentModel = topicModel.contentMap.get(contentCount);
                         if (((CheckBox) innerMostNode.getViewHolder().getNodeView().findViewById(R.id.node_selector)).isChecked()) {
                             contentText += "\t\t" + innerMostNode.getValue().toString() + "\n";
-                            if (contentModel.type.equals("mpg")) {
+                            if (contentModel.type.equals(Constants.VIDEO_FILE)) {
                                 videoContentId += contentModel.idContent + ",";
                             } else {
                                 htmlContentId += contentModel.idContent + ",";
@@ -211,13 +219,21 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
         });
     }
 
-    private void saveFileToDisk(String htmlText, Content content) {
+    private void saveFileToDisk(final String htmlText,final Content content) {
         TopicModel topicModel = topicModelHashMap.get(content.idContent);
         FileUtilities fileUtilities = new FileUtilities(this);
-        String folderStructure =  selectedCourse.name + File.separator +mSubjectName + File.separator +
+        final String folderStructure =  selectedCourse.name + File.separator +mSubjectName + File.separator +
                 mChapterName + File.separator + topicModel.topicName;
-
-        if(TextUtils.isEmpty(htmlText) || htmlText.endsWith(Constants.HTML_FILE)) {
+        if(content.type.equalsIgnoreCase(Constants.VIDEO_FILE)){
+            new AsyncTask<Void, Void, Void>() {
+                @Override
+                protected Void doInBackground(Void... voids) {
+                    downloadFile(content.name+"."+Constants.VIDEO_FILE, ApiClientService.getBaseUrl() + htmlText.replaceFirst("./", ""), folderStructure);
+                    return null;
+                }
+            }.execute();
+        }
+        else if(TextUtils.isEmpty(htmlText) || htmlText.endsWith(Constants.HTML_FILE)) {
             showToast(getString(R.string.file_exists));
         } else {
             String htmlUrl = fileUtilities.write(content.name + "." + Constants.HTML_FILE, htmlText, folderStructure);
@@ -228,6 +244,44 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
                 showToast(getString(R.string.file_save_failed));
             }
         }
+    }
+    private void downloadFile(String fileName,String download_file_path,String folderStructure){
+        try {
+            URL url = new URL(download_file_path);
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+
+            urlConnection.setRequestMethod("GET");
+            urlConnection.setDoOutput(true);
+            urlConnection.connect();
+
+            File SDCardRoot = Environment.getExternalStorageDirectory();
+            File outDir = new File(SDCardRoot.getAbsolutePath() + File.separator + Constants.PARENT_FOLDER + File.separator +folderStructure);
+            if (!outDir.exists()) {
+                outDir.mkdirs();
+            }
+            File file = new File(outDir.getAbsolutePath() + File.separator + Constants.VIDEO_FOLDER);
+            if(!file.exists())
+                file.mkdir();
+            File newFile = new File(file,fileName);
+            newFile.createNewFile();
+            FileOutputStream fileOutput = new FileOutputStream(newFile);
+            InputStream inputStream = urlConnection.getInputStream();
+            byte[] buffer = new byte[1024];
+            int bufferLength ;
+            while ( (bufferLength = inputStream.read(buffer)) > 0 ) {
+                fileOutput.write(buffer, 0, bufferLength);
+            }
+            fileOutput.close();
+            showToast(getString(R.string.file_saved));
+
+        } catch (final MalformedURLException e) {
+            e.printStackTrace();
+        } catch (final IOException e) {
+            e.printStackTrace();
+        }
+        catch (final Exception e) {
+        }
+
     }
 
     private void storeDataInDb(List<Content> contents){
