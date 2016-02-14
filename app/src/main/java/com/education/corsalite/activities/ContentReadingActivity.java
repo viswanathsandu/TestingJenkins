@@ -293,7 +293,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
                 showToast("View Notes");
                 return true;
             case R.id.action_rate_it:
-                showToast("Rate It");
+                showToast("Rate Content");
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -317,29 +317,24 @@ public class ContentReadingActivity extends AbstractBaseActivity {
                 case R.id.iv_forum:
                     showToast("Forum button is clicked");
                     break;
-
                 case R.id.iv_editnotes:
                     webviewContentReading.loadUrl("javascript:alert(copy())");
                     break;
-
                 case R.id.btn_next:
                     mContentIdPosition = mContentIdPosition + 1;
                     loadNext();
                     break;
-
                 case R.id.btn_previous:
                     mContentIdPosition = mContentIdPosition - 1;
                     loadPrevious();
                     break;
-
                 case R.id.tv_video:
                     showVideoDialog();
                     break;
-
                 case R.id.tv_exercise:
                     Intent intent = new Intent(ContentReadingActivity.this, ExamEngineActivity.class);
                     intent.putExtra(Constants.SELECTED_TOPIC, topicModelList.get(spTopic.getSelectedItemPosition()).topicName);
-                    intent.putExtra(Constants.TEST_TITLE, "Exercise Test");
+                    intent.putExtra(Constants.TEST_TITLE, "Exercises");
                     intent.putExtra(Constants.SELECTED_POSITION, 0);
                     startActivity(intent);
                     break;

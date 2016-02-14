@@ -554,5 +554,4 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         L.debug("TakingTestEvent id", event.id);
         new UpdateUserEvents().postTakingTest(this, event);
     }
-
 }

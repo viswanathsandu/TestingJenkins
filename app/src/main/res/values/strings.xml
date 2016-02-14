@@ -14,7 +14,7 @@
     <string name="menu_read_offline">Read Offline</string>
     <string name="menu_download_pdf">Download PDF</string>
     <string name="menu_view_notes">View Notes</string>
-    <string name="menu_rate_it">Rate It</string>
+    <string name="menu_rate_it">Rate Content</string>
     <string name="menu_take_test">Take Test</string>
     <string name="menu_part_test">Part Test</string>
     <string name="menu_scheduled_test">Scheduled Test</string>

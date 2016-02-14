@@ -156,7 +156,7 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
             @Override
             public void success(DefaultNoteResponse defaultNoteResponse, Response response) {
                 super.success(defaultNoteResponse, response);
-                Toast.makeText(getActivity(), "Note successfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Added Note successfully", Toast.LENGTH_SHORT).show();
                 dismiss();
             }
         });
