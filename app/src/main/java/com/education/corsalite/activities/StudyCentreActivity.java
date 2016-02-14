@@ -31,6 +31,7 @@ import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.db.DbManager;
 import com.education.corsalite.enums.Tests;
 import com.education.corsalite.fragments.MockTestDialog;
+import com.education.corsalite.fragments.ScheduledTestDialog;
 import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.models.responsemodels.Chapters;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
@@ -189,9 +190,10 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                 showMockTestsDialog();
                 return true;
             case R.id.action_scheduled_test : {
-                intent = new Intent(this, TestStartActivity.class);
+                /*intent = new Intent(this, TestStartActivity.class);
                 intent.putExtra(TestStartActivity.KEY_TEST_TYPE, Tests.SCHEDULED.getType());
-                startActivity(intent);
+                startActivity(intent);*/
+                showScheduledTestsDialog();
                 return true;
             }
         }
@@ -443,7 +445,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         dialogView.findViewById(R.id.take_test).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(dialog != null ) {
+                if (dialog != null) {
                     dialog.cancel();
                 }
                 startPartTest(studyCenter);
@@ -456,7 +458,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         Intent exerciseIntent = new Intent(this, ExamEngineActivity.class);
         exerciseIntent.putExtra(Constants.TEST_TITLE, studyCenter.SubjectName);
         exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
-        exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, studyCenter.idCourseSubject+"");
+        exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, studyCenter.idCourseSubject + "");
         exerciseIntent.putExtra(Constants.SELECTED_TOPIC, studyCenter.SubjectName);
         startActivity(exerciseIntent);
     }
@@ -465,6 +467,12 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         showToast("Showing mock tests");
         MockTestDialog dialog = new MockTestDialog();
         dialog.show(getFragmentManager(), "MockTestsListDialog");
+    }
+
+    private void showScheduledTestsDialog() {
+        showToast("Showing mock tests");
+        ScheduledTestDialog dialog = new ScheduledTestDialog();
+        dialog.show(getFragmentManager(), "ScheduledTestsListDialog");
     }
 
     private void setListener(final TextView textView, final String text) {
