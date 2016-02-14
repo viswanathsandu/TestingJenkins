@@ -109,6 +109,7 @@
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="Notes"
             android:theme="@style/UserProfileTheme" />
+        <service android:name=".services.VideoDownloadService"/>
 
         <receiver
             android:name="com.localytics.android.ReferralReceiver"
