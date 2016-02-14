@@ -70,6 +70,7 @@ import com.education.corsalite.utils.TimeUtils;
 import com.education.corsalite.views.GridViewInScrollView;
 import com.google.gson.Gson;
 
+import java.io.Serializable;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -595,7 +596,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         intent.putExtra("total_questions", totalQuestions);
         intent.putExtra("correct", correct);
         intent.putExtra("wrong", wrong);
-        intent.putExtra("ExamModels", localExamModelList);
+        intent.putExtra("ExamModels", (Serializable) localExamModelList);
         startActivity(intent);
         finish();
     }
