@@ -8,6 +8,7 @@ import com.education.corsalite.config.AppConfig;
 import com.education.corsalite.db.DbManager;
 import com.education.corsalite.enums.NetworkMode;
 import com.education.corsalite.models.MockTest;
+import com.education.corsalite.models.ScheduledTestList;
 import com.education.corsalite.models.requestmodels.ForumLikeRequest;
 import com.education.corsalite.models.responsemodels.CommonResponseModel;
 import com.education.corsalite.models.responsemodels.Content;
@@ -19,8 +20,8 @@ import com.education.corsalite.models.responsemodels.DefaultCourseResponse;
 import com.education.corsalite.models.responsemodels.DefaultNoteResponse;
 import com.education.corsalite.models.responsemodels.EditProfileModel;
 import com.education.corsalite.models.responsemodels.ExamHistory;
-import com.education.corsalite.models.responsemodels.ExamModels;
 import com.education.corsalite.models.responsemodels.ExamModel;
+import com.education.corsalite.models.responsemodels.ExamModels;
 import com.education.corsalite.models.responsemodels.ForumPost;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
@@ -326,6 +327,12 @@ public class ApiManager {
         }
     }
 
+    public void getScheduledTestsList(String studentId, ApiCallback<ScheduledTestList> callback) {
+        if (isApiOnline()) {
+            ApiClientService.get().getScheduledTestsList(studentId, callback);
+        }
+    }
+
     public void getTestQuestionPaper(String testQuestionPaperId, String testAnswerPaperId, ApiCallback<List<ExamModel>> callback) {
         if(isApiOnline()) {
             ApiClientService.get().getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, callback);
@@ -437,7 +444,7 @@ public class ApiManager {
 
     public void postUserEvents(String insert, ApiCallback<UserEventsResponse> callback){
         if(isApiOnline()){
-            ApiClientService.get().postUserEvents(insert,callback);
+            ApiClientService.get().postUserEvents(insert, callback);
         }
     }
 
@@ -446,4 +453,5 @@ public class ApiManager {
             ApiClientService.get().getMockTests(courseId, studentId, callback);
         }
     }
+
 }
