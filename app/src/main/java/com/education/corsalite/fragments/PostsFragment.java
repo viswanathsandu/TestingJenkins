@@ -134,7 +134,7 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener 
             public void success(CommonResponseModel baseResponseModel, Response response) {
                 super.success(baseResponseModel, response);
                 if(baseResponseModel.isSuccessful()){
-                   forumPost.setPostLikes(Integer.parseInt(forumPost.getPostLikes())+1+"");
+                   forumPost.setPostLikes(Integer.parseInt(forumPost.getPostLikes()) + 1 + "");
                     mPostAdapter.updateCurrentItem(position);
                 }
             }

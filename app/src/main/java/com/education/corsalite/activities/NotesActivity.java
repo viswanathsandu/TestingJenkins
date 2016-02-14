@@ -87,11 +87,15 @@ public class NotesActivity extends AbstractBaseActivity {
         if (bundle != null) {
             String subjectId = GridRecyclerAdapter.SUBJECT_ID;
             String chapterId = GridRecyclerAdapter.CHAPTER_ID;
+            String topicId = GridRecyclerAdapter.TOPIC_ID;
             if (bundle.containsKey(subjectId) && bundle.getString(subjectId) != null) {
                 mSubjectId = bundle.getString(subjectId);
             }
             if (bundle.containsKey(chapterId) && bundle.getString(chapterId) != null) {
                 mChapterId = bundle.getString(chapterId);
+            }
+            if (bundle.containsKey(topicId) && bundle.getString(topicId) != null) {
+                mTopicId = bundle.getString(topicId);
             }
         }
     }
