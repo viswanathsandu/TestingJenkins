@@ -147,9 +147,9 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         setToolbarTitle(getResources().getString(R.string.exam_history));
     }
 
-    protected void setToolbarForNotes(String title) {
+    protected void setToolbarForNotes() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
-        setToolbarTitle(title);
+        setToolbarTitle(getString(R.string.notes));
         loadCoursesList();
     }
     protected void setToolbarForOfflineContent() {

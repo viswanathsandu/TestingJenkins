@@ -41,6 +41,7 @@ import com.education.corsalite.models.ChapterModel;
 import com.education.corsalite.models.ContentModel;
 import com.education.corsalite.models.SubjectModel;
 import com.education.corsalite.models.TopicModel;
+import com.education.corsalite.models.responsemodels.Chapters;
 import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
@@ -290,7 +291,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
                 showToast("Download PDF");
                 return true;
             case R.id.action_view_notes:
-                showToast("View Notes");
+                startNotesActivity();
                 return true;
             case R.id.action_rate_it:
                 showToast("Rate Content");
@@ -298,6 +299,14 @@ public class ContentReadingActivity extends AbstractBaseActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void startNotesActivity() {
+        Intent intent = new Intent(this, NotesActivity.class);
+        intent.putExtra("courseId", AbstractBaseActivity.selectedCourse.courseId.toString());
+        intent.putExtra("subjectId", mSubjectId);
+        intent.putExtra("chapterId", mChapterId);
+        startActivity(intent);
     }
 
     private void setListeners() {
