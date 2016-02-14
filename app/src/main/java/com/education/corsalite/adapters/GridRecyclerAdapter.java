@@ -31,6 +31,7 @@ import com.education.corsalite.enums.Tests;
 import com.education.corsalite.models.responsemodels.Chapters;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.Data;
+import com.github.lzyzsd.circleprogress.DonutProgress;
 import com.localytics.android.Localytics;
 
 import java.util.List;
@@ -52,7 +53,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
 
     @Override
     public StudyCenterSubjectViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.study_centre_grid_view, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.study_centre_grid_view_new, parent, false);
         return new StudyCenterSubjectViewHolder(view);
     }
 
@@ -83,10 +84,10 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
             holder.timeSpent.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_time, 0, 0, 0);
             holder.timeSpent.getCompoundDrawables()[0] = holder.timeSpent.getCompoundDrawables()[0].mutate();
             holder.timeSpent.getCompoundDrawables()[0].setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
-            holder.level.getCompoundDrawables()[0] = holder.level.getCompoundDrawables()[0].mutate();
-            holder.level.getCompoundDrawables()[0].setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
-            holder.star.getCompoundDrawables()[0] = holder.star.getCompoundDrawables()[0].mutate();
-            holder.star.getCompoundDrawables()[0].setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
+            holder.level.getCompoundDrawables()[1] = holder.level.getCompoundDrawables()[1].mutate();
+            holder.level.getCompoundDrawables()[1].setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
+            holder.star.getCompoundDrawables()[1] = holder.star.getCompoundDrawables()[1].mutate();
+            holder.star.getCompoundDrawables()[1].setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
         } else {
             holder.gridLayoutGray.setVisibility(View.VISIBLE);
             holder.gridLayout.setVisibility(View.GONE);
@@ -107,10 +108,10 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
             });
             holder.timeSpentGray.getCompoundDrawables()[0] = holder.timeSpentGray.getCompoundDrawables()[0].mutate();
             holder.timeSpentGray.getCompoundDrawables()[0].setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
-            holder.levelGray.getCompoundDrawables()[0] = holder.levelGray.getCompoundDrawables()[0].mutate();
-            holder.levelGray.getCompoundDrawables()[0].setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
-            holder.starGray.getCompoundDrawables()[0] = holder.starGray.getCompoundDrawables()[0].mutate();
-            holder.starGray.getCompoundDrawables()[0].setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
+            holder.levelGray.getCompoundDrawables()[1] = holder.levelGray.getCompoundDrawables()[1].mutate();
+            holder.levelGray.getCompoundDrawables()[1].setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
+            holder.starGray.getCompoundDrawables()[1] = holder.starGray.getCompoundDrawables()[1].mutate();
+            holder.starGray.getCompoundDrawables()[1].setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
         }
     }
 
@@ -260,21 +261,21 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
     private void getLevelDrawable(StudyCenterSubjectViewHolder holder, int levelstr, TextView level) {
         switch (levelstr) {
             case 2:
-                level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_two, 0, 0, 0);
+                level.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.level_two, 0, 0);
                 break;
             case 3:
-                level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_three, 0, 0, 0);
+                level.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.level_three, 0, 0);
                 break;
             case 4:
-                level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_four, 0, 0, 0);
+                level.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.level_four, 0, 0);
                 break;
             case 5:
-                level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_five, 0, 0, 0);
+                level.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.level_five, 0, 0);
                 break;
             case 0:
             case 1:
             default:
-                level.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_level_one, 0, 0, 0);
+                level.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.level_one, 0, 0);
                 break;
         }
     }
@@ -307,8 +308,8 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         public TextView starGray;
         public TextView gridChildTextGray;
         public LinearLayout gridLayoutGray;
-        public ProgressBar progressBar;
-        public ProgressBar progressBarGray;
+        public DonutProgress progressBar;
+        public DonutProgress progressBarGray;
 
         public StudyCenterSubjectViewHolder(View itemView) {
             super(itemView);
@@ -318,14 +319,14 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
             timeSpent = (TextView) itemView.findViewById(R.id.clock);
             level = (TextView) itemView.findViewById(R.id.level);
             star = (TextView) itemView.findViewById(R.id.star);
-            progressBar = (ProgressBar) itemView.findViewById(R.id.progress_id);
+            progressBar = (DonutProgress) itemView.findViewById(R.id.progress_id);
             gridChildText = (TextView) itemView.findViewById(R.id.grid_child_text_view);
             gridLayoutGray = (LinearLayout) itemView.findViewById(R.id.grid_layout_gray);
             textViewGray = (TextView) itemView.findViewById(R.id.subject_name_gray);
             timeSpentGray = (TextView) itemView.findViewById(R.id.clock_gray);
             levelGray = (TextView) itemView.findViewById(R.id.level_gray);
             starGray = (TextView) itemView.findViewById(R.id.star_gray);
-            progressBarGray = (ProgressBar) itemView.findViewById(R.id.progress_id_gray);
+            progressBarGray = (DonutProgress) itemView.findViewById(R.id.progress_id_gray);
             gridChildTextGray = (TextView) itemView.findViewById(R.id.grid_child_text_view_gray);
 
         }
