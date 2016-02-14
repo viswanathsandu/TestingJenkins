@@ -306,6 +306,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
         intent.putExtra("courseId", AbstractBaseActivity.selectedCourse.courseId.toString());
         intent.putExtra("subjectId", mSubjectId);
         intent.putExtra("chapterId", mChapterId);
+        intent.putExtra("topicId", mTopicId);
         startActivity(intent);
     }
 

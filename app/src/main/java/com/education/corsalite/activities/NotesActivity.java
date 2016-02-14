@@ -93,6 +93,7 @@ public class NotesActivity extends AbstractBaseActivity {
             if (bundle.containsKey(chapterId) && bundle.getString(chapterId) != null) {
                 mChapterId = bundle.getString(chapterId);
             }
+
         }
     }
 
