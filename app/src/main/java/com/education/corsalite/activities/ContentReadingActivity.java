@@ -41,6 +41,7 @@ import com.education.corsalite.models.ChapterModel;
 import com.education.corsalite.models.ContentModel;
 import com.education.corsalite.models.SubjectModel;
 import com.education.corsalite.models.TopicModel;
+import com.education.corsalite.models.responsemodels.Chapters;
 import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
@@ -228,7 +229,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
     private void addToNote(String htmlText) {
         EditorDialogFragment fragment = new EditorDialogFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("type", "Notes");
+        bundle.putString("type", "Note");
         bundle.putString("operation", "Add");
         bundle.putString("student_id", LoginUserCache.getInstance().getLongResponse().studentId);
         bundle.putString("topic_id", mTopicId);
@@ -290,14 +291,22 @@ public class ContentReadingActivity extends AbstractBaseActivity {
                 showToast("Download PDF");
                 return true;
             case R.id.action_view_notes:
-                showToast("View Notes");
+                startNotesActivity();
                 return true;
             case R.id.action_rate_it:
-                showToast("Rate It");
+                showToast("Rate Content");
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void startNotesActivity() {
+        Intent intent = new Intent(this, NotesActivity.class);
+        intent.putExtra("courseId", AbstractBaseActivity.selectedCourse.courseId.toString());
+        intent.putExtra("subjectId", mSubjectId);
+        intent.putExtra("chapterId", mChapterId);
+        startActivity(intent);
     }
 
     private void setListeners() {
@@ -317,29 +326,24 @@ public class ContentReadingActivity extends AbstractBaseActivity {
                 case R.id.iv_forum:
                     showToast("Forum button is clicked");
                     break;
-
                 case R.id.iv_editnotes:
                     webviewContentReading.loadUrl("javascript:alert(copy())");
                     break;
-
                 case R.id.btn_next:
                     mContentIdPosition = mContentIdPosition + 1;
                     loadNext();
                     break;
-
                 case R.id.btn_previous:
                     mContentIdPosition = mContentIdPosition - 1;
                     loadPrevious();
                     break;
-
                 case R.id.tv_video:
                     showVideoDialog();
                     break;
-
                 case R.id.tv_exercise:
                     Intent intent = new Intent(ContentReadingActivity.this, ExamEngineActivity.class);
                     intent.putExtra(Constants.SELECTED_TOPIC, topicModelList.get(spTopic.getSelectedItemPosition()).topicName);
-                    intent.putExtra(Constants.TEST_TITLE, "Exercise Test");
+                    intent.putExtra(Constants.TEST_TITLE, "Exercises");
                     intent.putExtra(Constants.SELECTED_POSITION, 0);
                     startActivity(intent);
                     break;

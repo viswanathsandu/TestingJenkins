@@ -9,6 +9,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
+import com.education.corsalite.models.responsemodels.ExamModel;
+import com.education.corsalite.utils.Constants;
+
+import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 
@@ -79,7 +83,11 @@ public class ExamResultActivity extends AbstractBaseActivity implements View.OnC
         switch (v.getId()) {
             case R.id.view_answers_btn :
                 // TODO : navigate to view answers screen
-                showToast("Under development");
+                ArrayList<ExamModel > exammodeal = (ArrayList<ExamModel>) getIntent().getExtras().get("ExamModels");
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("ExamModels", exammodeal);
+                bundle.putString(Constants.TEST_TITLE, "View Answers");
+                startActivity(ExamEngineActivity.getMyIntent(this, bundle));
                 break;
             case R.id.exam_history_btn :
                 startActivity(new Intent(this, ExamHistoryActivity.class));

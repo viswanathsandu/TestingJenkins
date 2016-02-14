@@ -149,7 +149,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     protected void setToolbarForNotes() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
-        setToolbarTitle(getResources().getString(R.string.notes));
+        setToolbarTitle(getString(R.string.notes));
         loadCoursesList();
     }
     protected void setToolbarForOfflineContent() {
@@ -554,5 +554,4 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         L.debug("TakingTestEvent id", event.id);
         new UpdateUserEvents().postTakingTest(this, event);
     }
-
 }
