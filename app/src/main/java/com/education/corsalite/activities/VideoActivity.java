@@ -7,8 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
@@ -41,6 +39,7 @@ public class VideoActivity extends AbstractBaseActivity {
     List<ContentModel> mContentModels;
     int selectedPosition = 0;
     List<Content> contents;
+    private String videoPath;
 
     private MediaController mediaControls;
 
@@ -58,7 +57,12 @@ public class VideoActivity extends AbstractBaseActivity {
         if(getIntent().hasExtra("videoList")) {
             mContentModels = (List<ContentModel>)getIntent().getExtras().getSerializable("videoList");
         }
-        if(selectedPosition >= 0) {
+
+        if(getIntent().hasExtra("videopath")){
+            videoPath = getIntent().getStringExtra("videopath");
+            loadLocalVideo();
+        }
+        if(selectedPosition >= 0 && mContentModels != null) {
             getContent();
             setToolbarForVideo(mContentModels, selectedPosition);
         }
@@ -167,5 +171,10 @@ public class VideoActivity extends AbstractBaseActivity {
                 onEvent(selectedPosition);
             }
         });
+    }
+
+    private void loadLocalVideo(){
+        videoViewRelative.setVideoPath(videoPath);
+        videoViewRelative.start();
     }
 }
