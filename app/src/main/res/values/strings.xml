@@ -90,6 +90,7 @@
     <string name="level_text">Level</string>
     <string name="exercise">Exercise</string>
     <string name="completed_topics">Completed Topics</string>
+    <string name="topics">Topics</string>
     <string name="start_reading">Start Reading</string>
     <string name="flagged_questions">Flagged Questions</string>
     <string name="part_test">Part Test</string>
