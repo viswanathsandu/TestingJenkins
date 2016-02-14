@@ -39,6 +39,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
     public static final String COURSE_ID = "courseId";
     public static final String SUBJECT_ID = "subjectId";
     public static final String CHAPTER_ID = "chapterId";
+    public static final String TOPIC_ID = "topicId";
     public static final String SUBJECT = "subject";
     private List<Chapters> chapters;
     private String key;
