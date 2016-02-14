@@ -140,7 +140,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/grayshape"
         android:orientation="vertical"
-        android:visibility="gone">
+        >
 
         <TextView
             android:id="@+id/subject_name_gray"
@@ -227,7 +227,10 @@
                     android:layout_width="64dp"
                     android:layout_height="64dp"
                     android:gravity="center_vertical|center"
+                    custom:donut_finished_stroke_width="6dp"
+                    custom:donut_unfinished_stroke_width="6dp"
                     custom:donut_finished_color="#FFFFFF"
+                    custom:donut_unfinished_color="@color/dark_gray"
                     custom:donut_progress="30"
                     custom:donut_text_color="#FFFFFF"/>
 
