@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -76,9 +75,13 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
             holder.timeSpent.setText(getDateFromMillis(chapter.timeSpent));
             holder.level.setText(studyCentreActivity.getResources().getString(R.string.level_text) + " " + (chapter.passedComplexity + 1));
             holder.rootGridLayout.setBackground(getColorDrawable(holder, chapter));
-            int max = Data.getInt(chapter.totalTopics);
-            holder.progressBar.setMax(max == 0 ? 1 : max);
-            holder.progressBar.setProgress(Data.getInt(chapter.completedTopics));
+            int totalTopics = Data.getInt(chapter.totalTopics);
+            int completedTopics = Data.getInt(chapter.completedTopics);
+            int percentage = (completedTopics != 0)
+                                ? completedTopics * 100 /totalTopics
+                                : 0;
+            holder.progressBar.setMax(100);
+            holder.progressBar.setProgress(percentage);
             getLevelDrawable(holder, chapter.passedComplexity+1, holder.level);
             holder.star.setText((int) Data.getDoubleInInt(chapter.earnedMarks) + "/" + (int) Data.getDoubleInInt(chapter.totalTestedMarks));
             holder.timeSpent.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_time, 0, 0, 0);
@@ -95,9 +98,13 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
             holder.textViewGray.setText(label);
             holder.timeSpentGray.setText(getDateFromMillis(chapter.timeSpent));
             holder.levelGray.setText(studyCentreActivity.getResources().getString(R.string.level_text) + " " + (chapter.passedComplexity + 1));
-            int max = Data.getInt(chapter.totalTopics);
-            holder.progressBarGray.setMax(max == 0 ? 1 : max);
-            holder.progressBarGray.setProgress(Data.getInt(chapter.completedTopics));
+            int totalTopics = Data.getInt(chapter.totalTopics);
+            int completedTopics = Data.getInt(chapter.completedTopics);
+            int percentage = (completedTopics != 0)
+                    ? completedTopics * 100 /totalTopics
+                    : 0;
+            holder.progressBarGray.setMax(100);
+            holder.progressBarGray.setProgress(percentage);
             getLevelDrawable(holder, chapter.passedComplexity+1, holder.levelGray);
             holder.starGray.setText((int) Data.getDoubleInInt(chapter.earnedMarks) + "/" + (int) Data.getDoubleInInt(chapter.totalTestedMarks));
             holder.gridLayoutGray.setOnClickListener(new View.OnClickListener() {
