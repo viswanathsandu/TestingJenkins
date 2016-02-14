@@ -65,7 +65,7 @@ public class NotesActivity extends AbstractBaseActivity {
         spinnerLayout = (LinearLayout) myView.findViewById(R.id.spinner_layout);
         progressBar = (ProgressBar)myView.findViewById(R.id.headerProgress);
         frameLayout.addView(myView);
-        setToolbarForNotes();
+        setToolbarForNotes(getResources().getString(R.string.notes));
         getBundleData();
         initUI();
         setAdapter();

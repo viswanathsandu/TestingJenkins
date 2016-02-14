@@ -54,7 +54,7 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
         View rootView = inflater.inflate(R.layout.editor_dialog_layout, container,
                 false);
 
-        type = getArguments().getString("type", "Notes");
+        type = getArguments().getString("type", "Note");
         operation = getArguments().getString("operation", "Add");
         studentId = getArguments().getString("student_id", "");
         topicId = getArguments().getString("topic_id", "");
@@ -62,7 +62,7 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
         notesId = getArguments().getString("notes_id", "");
         originalContent = getArguments().getString("content", "");
 
-        getDialog().setTitle("Corsalite Html Editor");
+        getDialog().setTitle(operation+" "+type);
         initUi(rootView);
         loadWebview();
         return rootView;
@@ -150,13 +150,13 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
             @Override
             public void failure(CorsaliteError error) {
                 super.failure(error);
-                Toast.makeText(getActivity(), "Failed to add notes", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Failed to add Note", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void success(DefaultNoteResponse defaultNoteResponse, Response response) {
                 super.success(defaultNoteResponse, response);
-                Toast.makeText(getActivity(), "Added Notes successfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Note successfully", Toast.LENGTH_SHORT).show();
                 dismiss();
             }
         });
@@ -170,13 +170,13 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
             @Override
             public void failure(CorsaliteError error) {
                 super.failure(error);
-                Toast.makeText(getActivity(), "Failed to update notes", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Failed to update Note", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void success(DefaultNoteResponse defaultNoteResponse, Response response) {
                 super.success(defaultNoteResponse, response);
-                Toast.makeText(getActivity(), "Updated Notes successfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Updated Note successfully", Toast.LENGTH_SHORT).show();
                 dismiss();
             }
         });

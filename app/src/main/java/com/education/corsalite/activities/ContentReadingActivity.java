@@ -228,7 +228,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
     private void addToNote(String htmlText) {
         EditorDialogFragment fragment = new EditorDialogFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("type", "Notes");
+        bundle.putString("type", "Note");
         bundle.putString("operation", "Add");
         bundle.putString("student_id", LoginUserCache.getInstance().getLongResponse().studentId);
         bundle.putString("topic_id", mTopicId);
