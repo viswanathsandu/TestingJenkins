@@ -80,7 +80,7 @@ public class ScheduledTestDialog extends DialogFragment implements ScheduledTest
         scheduledTestsListAdapter.setScheduledTestSelectedListener(this);
         rvMockTestList.setAdapter(scheduledTestsListAdapter);
 
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
 //
             for (int i = 0; i < mScheduledTestList.MockTest.size(); i++) {
