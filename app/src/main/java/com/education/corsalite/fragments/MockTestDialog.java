@@ -23,7 +23,6 @@ import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.MockTest;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.utils.Constants;
-import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -70,7 +69,7 @@ public class MockTestDialog extends DialogFragment implements MockTestsListAdapt
         dismiss();
         Intent intent = new Intent(getActivity(), ExamEngineActivity.class);
         intent.putExtra(Constants.TEST_TITLE, "Mock Test");
-        intent.putExtra("mock_tests_object", new Gson().toJson(mMockTestList.get(position)));
+        intent.putExtra("exam_template_id", mMockTestList.get(position).examTemplateId);
         startActivity(intent);
     }
 
