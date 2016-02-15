@@ -400,6 +400,9 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     private void loadCoursesList() {
+        if(LoginUserCache.getInstance().loginResponse == null) {
+            return;
+        }
         ApiManager.getInstance(this).getCourses(LoginUserCache.getInstance().loginResponse.studentId, new ApiCallback<List<Course>>(this) {
             @Override
             public void failure(CorsaliteError error) {

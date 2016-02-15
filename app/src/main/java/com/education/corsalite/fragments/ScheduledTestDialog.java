@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,25 +20,18 @@ import android.widget.TextView;
 
 import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
-import com.education.corsalite.activities.ExamEngineActivity;
-import com.education.corsalite.adapters.MockTestsListAdapter;
 import com.education.corsalite.adapters.ScheduledTestsListAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.models.MockTest;
 import com.education.corsalite.models.ScheduledTestList;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
-import com.education.corsalite.models.responsemodels.ScheduledTest;
-import com.education.corsalite.services.NotifyScheduledTest;
-import com.education.corsalite.utils.Constants;
+import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.NotifyReceiver;
-import com.google.gson.Gson;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -82,21 +74,42 @@ public class ScheduledTestDialog extends DialogFragment implements ScheduledTest
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
-//
             for (int i = 0; i < mScheduledTestList.MockTest.size(); i++) {
                 Date scheduledTestTime = df.parse(mScheduledTestList.MockTest.get(i).startTime);
-                Intent broadCastIntent = new Intent(this.getActivity(), NotifyReceiver.class);
-                broadCastIntent.putExtra("Exam Name", mScheduledTestList.MockTest.get(i).examName);
-                broadCastIntent.putExtra("Exam Id", mScheduledTestList.MockTest.get(i).testQuestionPaperId);
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(this.getActivity(), 0, broadCastIntent, 0);
-
-                AlarmManager alarmManager = (AlarmManager)this.getActivity().getSystemService(Context.ALARM_SERVICE);
-                alarmManager.set(AlarmManager.RTC, scheduledTestTime.getTime() - (10 * 60 * 1000), pendingIntent);
+                examAdvancedNotification(mScheduledTestList.MockTest.get(i).testQuestionPaperId,
+                                        mScheduledTestList.MockTest.get(i).examName,
+                                        scheduledTestTime);
+                examStartedNotification(mScheduledTestList.MockTest.get(i).testQuestionPaperId,
+                                        mScheduledTestList.MockTest.get(i).examName,
+                                        scheduledTestTime);
             }
         } catch (ParseException e) {
-            e.printStackTrace();
+            L.error(e.getMessage(), e);
         }
+    }
 
+    private void examAdvancedNotification(String examId, String examName, Date scheduledTime) {
+        Intent broadCastIntent = new Intent(this.getActivity(), NotifyReceiver.class);
+        broadCastIntent.putExtra("title", examName);
+        broadCastIntent.putExtra("sub_title", "Exam starts at "+new SimpleDateFormat("hh:mm a").format(scheduledTime));
+        broadCastIntent.putExtra("id", examId);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this.getActivity(), 0, broadCastIntent, 0);
+        AlarmManager alarmManager = (AlarmManager)this.getActivity().getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC, 5000,
+                //scheduledTestTime.getTime() - (10 * 60 * 1000),
+                pendingIntent);
+    }
+
+    private void examStartedNotification(String examId, String examName, Date scheduledTime) {
+        Intent broadCastIntent = new Intent(this.getActivity(), NotifyReceiver.class);
+        broadCastIntent.putExtra("title", examName);
+        broadCastIntent.putExtra("sub_title", "Exam started at "+new SimpleDateFormat("hh:mm a").format(scheduledTime));
+        broadCastIntent.putExtra("id", examId+1);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this.getActivity(), 0, broadCastIntent, 0);
+        AlarmManager alarmManager = (AlarmManager)this.getActivity().getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC, 10000,
+                //scheduledTestTime.getTime(),
+                pendingIntent);
     }
 
     @Override

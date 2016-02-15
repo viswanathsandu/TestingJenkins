@@ -275,11 +275,18 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             renderQuestionLayout();
         } else if(title.equalsIgnoreCase("Mock Test")) {
             imvFlag.setVisibility(View.VISIBLE);
-            String mockTestJson = getIntent().getExtras().getString("mock_tests_object", "");
-            MockTest mockTest = new Gson().fromJson(mockTestJson, MockTest.class);
+            String examTemplateId = getIntent().getExtras().getString("exam_template_id");
             postQuestionPaper(LoginUserCache.getInstance().loginResponse.entitiyId,
-                    mockTest.examTemplateId,
-                    LoginUserCache.getInstance().loginResponse.studentId);
+                        examTemplateId, LoginUserCache.getInstance().loginResponse.studentId);
+            imvRefresh.setVisibility(View.VISIBLE);
+            timerLayout.setVisibility(View.VISIBLE);
+            testNavFooter.setVisibility(View.VISIBLE);
+            btnVerify.setVisibility(View.GONE);
+        } else if(title.equalsIgnoreCase("Schedule Test")) {
+            imvFlag.setVisibility(View.VISIBLE);
+            String examTemplateId = getIntent().getExtras().getString("exam_template_id");
+            postQuestionPaper(LoginUserCache.getInstance().loginResponse.entitiyId,
+                    examTemplateId, LoginUserCache.getInstance().loginResponse.studentId);
             imvRefresh.setVisibility(View.VISIBLE);
             timerLayout.setVisibility(View.VISIBLE);
             testNavFooter.setVisibility(View.VISIBLE);
