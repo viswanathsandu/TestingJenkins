@@ -284,9 +284,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             btnVerify.setVisibility(View.GONE);
         } else if(title.equalsIgnoreCase("Schedule Test")) {
             imvFlag.setVisibility(View.VISIBLE);
-            String examTemplateId = getIntent().getExtras().getString("exam_template_id");
-            postQuestionPaper(LoginUserCache.getInstance().loginResponse.entitiyId,
-                    examTemplateId, LoginUserCache.getInstance().loginResponse.studentId);
+            String testQuestionPaperId = getIntent().getExtras().getString("test_question_paper_id");
+            getTestQuestionPaper(testQuestionPaperId, null);
             imvRefresh.setVisibility(View.VISIBLE);
             timerLayout.setVisibility(View.VISIBLE);
             testNavFooter.setVisibility(View.VISIBLE);

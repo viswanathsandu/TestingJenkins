@@ -40,10 +40,7 @@ import com.education.corsalite.models.responsemodels.StudyCenter;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.Data;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import retrofit.client.Response;
@@ -467,13 +464,11 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     }
 
     private void showMockTestsDialog() {
-        showToast("Showing mock tests");
         MockTestDialog dialog = new MockTestDialog();
         dialog.show(getFragmentManager(), "MockTestsListDialog");
     }
 
     private void showScheduledTestsDialog() {
-        showToast("Showing mock tests");
         ScheduledTestDialog dialog = new ScheduledTestDialog();
         dialog.show(getFragmentManager(), "ScheduledTestsListDialog");
     }

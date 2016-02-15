@@ -25,7 +25,7 @@ public class NotifyReceiver extends BroadcastReceiver {
     private PendingIntent getScheduledExamActivityIntent(Context context, String examTemplateId) {
         Intent intent = new Intent(context, ExamEngineActivity.class);
         intent.putExtra(Constants.TEST_TITLE, "Schedule Test");
-        intent.putExtra("exam_template_id", examTemplateId);
+        intent.putExtra("test_question_paper_id", examTemplateId);
         PendingIntent pendingIntent = PendingIntent.getActivity(
                     context, 0, intent,
                     PendingIntent.FLAG_UPDATE_CURRENT);

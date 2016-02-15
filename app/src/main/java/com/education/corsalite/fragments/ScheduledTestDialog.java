@@ -17,15 +17,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
+import com.education.corsalite.activities.ExamEngineActivity;
 import com.education.corsalite.adapters.ScheduledTestsListAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.ScheduledTestList;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
+import com.education.corsalite.utils.Constants;
+import com.education.corsalite.utils.Data;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.NotifyReceiver;
 
@@ -60,7 +64,7 @@ public class ScheduledTestDialog extends DialogFragment implements ScheduledTest
         View v = inflater.inflate(R.layout.fragment_mocktest_list, container, false);
         ButterKnife.bind(this, v);
         loadScheduledTests();
-        tvTitle.setText("Scheduled Tests");
+        tvTitle.setText("Scheduled Exams");
         return v;
     }
 
@@ -92,7 +96,7 @@ public class ScheduledTestDialog extends DialogFragment implements ScheduledTest
         Intent broadCastIntent = new Intent(this.getActivity(), NotifyReceiver.class);
         broadCastIntent.putExtra("title", examName);
         broadCastIntent.putExtra("sub_title", "Exam starts at "+new SimpleDateFormat("hh:mm a").format(scheduledTime));
-        broadCastIntent.putExtra("id", examId);
+        broadCastIntent.putExtra("id", Data.getInt(examId));
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this.getActivity(), 0, broadCastIntent, 0);
         AlarmManager alarmManager = (AlarmManager)this.getActivity().getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC, 5000,
@@ -104,10 +108,10 @@ public class ScheduledTestDialog extends DialogFragment implements ScheduledTest
         Intent broadCastIntent = new Intent(this.getActivity(), NotifyReceiver.class);
         broadCastIntent.putExtra("title", examName);
         broadCastIntent.putExtra("sub_title", "Exam started at "+new SimpleDateFormat("hh:mm a").format(scheduledTime));
-        broadCastIntent.putExtra("id", examId+1);
+        broadCastIntent.putExtra("id", Data.getInt(examId));
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this.getActivity(), 0, broadCastIntent, 0);
         AlarmManager alarmManager = (AlarmManager)this.getActivity().getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC, 10000,
+        alarmManager.set(AlarmManager.RTC, 8000,
                 //scheduledTestTime.getTime(),
                 pendingIntent);
     }
@@ -115,10 +119,21 @@ public class ScheduledTestDialog extends DialogFragment implements ScheduledTest
     @Override
     public void onScheduledTestSelected(int position) {
         dismiss();
-        /*Intent intent = new Intent(getActivity(), ExamEngineActivity.class);
-        intent.putExtra(Constants.TEST_TITLE, "Scheduled Test");
-        intent.putExtra("mock_tests_object", new Gson().toJson(mMockTestList.get(position)));
-        startActivity(intent);*/
+        try {
+            ScheduledTestList.ScheduledTestsArray exam = mScheduledTestList.MockTest.get(position);
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            long startTimeInMillis = df.parse(exam.startTime).getTime();
+            if (startTimeInMillis < (new Date().getTime() + 1000*60)) {
+                Intent intent = new Intent(getActivity(), ExamEngineActivity.class);
+                intent.putExtra(Constants.TEST_TITLE, "Scheduled Test");
+                intent.putExtra("test_question_paper_id", mScheduledTestList.MockTest.get(position).testQuestionPaperId);
+                startActivity(intent);
+                return;
+            }
+        } catch (ParseException e) {
+            L.error(e.getMessage(), e);
+        }
+        Toast.makeText(getActivity(), "Please access the test during scheduled time", Toast.LENGTH_SHORT).show();
     }
 
     private void loadScheduledTests() {
