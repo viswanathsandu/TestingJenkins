@@ -27,6 +27,7 @@ import com.education.corsalite.R;
 import com.education.corsalite.activities.ExamEngineActivity;
 import com.education.corsalite.models.responsemodels.AnswerChoiceModel;
 import com.education.corsalite.models.responsemodels.ExamModel;
+import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.Constants;
 
 import java.util.Collections;
@@ -68,6 +69,8 @@ public class FullQuestionDialog extends DialogFragment {
             for(ExamModel examModel : localExamModelList) {
                 if (examModel.idQuestionType.equalsIgnoreCase("1") ||
                         examModel.idQuestionType.equalsIgnoreCase("2")) {
+
+                    // TODO : handle for other question types
                     setQuestionLayout(examModel);
                 }
             }
@@ -278,7 +281,12 @@ public class FullQuestionDialog extends DialogFragment {
             optionWebView.setWebChromeClient(new WebChromeClient());
             optionWebView.setWebViewClient(new MyWebViewClient());
 
-            optionWebView.loadData(answerChoiceModel.answerChoiceTextHtml, "text/html; charset=UTF-8", null);
+            if (answerChoiceModel.answerChoiceTextHtml.startsWith("./") && answerChoiceModel.answerChoiceTextHtml.endsWith(".html")) {
+                answerChoiceModel.answerChoiceTextHtml = answerChoiceModel.answerChoiceTextHtml.replace("./", ApiClientService.getBaseUrl());
+                optionWebView.loadUrl(answerChoiceModel.answerChoiceTextHtml);
+            } else {
+                optionWebView.loadData(answerChoiceModel.answerChoiceTextHtml, "text/html; charset=UTF-8", null);
+            }
             p = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1.0f);
             optionWebView.setLayoutParams(p);
             rowLayout[i].addView(optionWebView);
