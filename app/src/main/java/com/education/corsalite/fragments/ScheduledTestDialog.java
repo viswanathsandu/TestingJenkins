@@ -1,12 +1,18 @@
 package com.education.corsalite.fragments;
 
+import android.annotation.TargetApi;
+import android.app.AlarmManager;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,9 +31,14 @@ import com.education.corsalite.models.MockTest;
 import com.education.corsalite.models.ScheduledTestList;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.ScheduledTest;
+import com.education.corsalite.services.NotifyScheduledTest;
 import com.education.corsalite.utils.Constants;
+import com.education.corsalite.utils.NotifyReceiver;
 import com.google.gson.Gson;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
@@ -61,12 +72,31 @@ public class ScheduledTestDialog extends DialogFragment implements ScheduledTest
         return v;
     }
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     private void showScheduledTests() {
         final LinearLayoutManager layoutManager = new org.solovyev.android.views.llm.LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rvMockTestList.setLayoutManager(layoutManager);
         ScheduledTestsListAdapter scheduledTestsListAdapter = new ScheduledTestsListAdapter(mScheduledTestList, getActivity().getLayoutInflater());
         scheduledTestsListAdapter.setScheduledTestSelectedListener(this);
         rvMockTestList.setAdapter(scheduledTestsListAdapter);
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        try {
+//
+            for (int i = 0; i < mScheduledTestList.MockTest.size(); i++) {
+                Date scheduledTestTime = df.parse(mScheduledTestList.MockTest.get(i).startTime);
+                Intent broadCastIntent = new Intent(this.getActivity(), NotifyReceiver.class);
+                broadCastIntent.putExtra("Exam Name", mScheduledTestList.MockTest.get(i).examName);
+                broadCastIntent.putExtra("Exam Id", mScheduledTestList.MockTest.get(i).testQuestionPaperId);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(this.getActivity(), 0, broadCastIntent, 0);
+
+                AlarmManager alarmManager = (AlarmManager)this.getActivity().getSystemService(Context.ALARM_SERVICE);
+                alarmManager.set(AlarmManager.RTC, scheduledTestTime.getTime() - (10 * 60 * 1000), pendingIntent);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override

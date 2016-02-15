@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.education.corsalite">
+<manifest package="com.education.corsalite"
+          xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
     <application
         android:name=".app.CorsaliteApplication"
@@ -19,111 +19,112 @@
         tools:replace="android:icon">
         <meta-data
             android:name="DATABASE"
-            android:value="corsalite_db.db" />
+            android:value="corsalite_db.db"/>
         <meta-data
             android:name="VERSION"
-            android:value="2" />
+            android:value="2"/>
         <meta-data
             android:name="QUERY_LOG"
-            android:value="true" />
+            android:value="true"/>
         <meta-data
             android:name="DOMAIN_PACKAGE_NAME"
-            android:value="com.education.corsalite.models.db" />
+            android:value="com.education.corsalite.models.db"/>
 
         <activity
             android:name=".activities.SplashActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:theme="@style/AppTheme">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity
             android:name=".activities.LoginActivity"
-            android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"></activity>
+            android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"/>
         <activity
             android:name=".activities.UserProfileActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
-            android:theme="@style/UserProfileTheme" />
+            android:theme="@style/UserProfileTheme"/>
         <activity
             android:name=".activities.WebviewActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="@string/title_activity_webview"
-            android:theme="@style/UserProfileTheme" />
+            android:theme="@style/UserProfileTheme"/>
         <activity
             android:name=".activities.ContentReadingActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label=""
-            android:theme="@style/UserProfileTheme" />
+            android:theme="@style/UserProfileTheme"/>
         <activity
             android:name=".activities.VideoActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:hardwareAccelerated="true"
             android:label=""
-            android:theme="@style/UserProfileTheme" />
+            android:theme="@style/UserProfileTheme"/>
         <activity
             android:name=".activities.VirtualCurrencyActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="@string/title_activity_currency"
-            android:theme="@style/UserProfileTheme" />
+            android:theme="@style/UserProfileTheme"/>
         <activity
             android:name=".activities.StudyCentreActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="Study Center"
-            android:theme="@style/UserProfileTheme" />
+            android:theme="@style/UserProfileTheme"/>
         <activity
             android:name=".activities.AnalyticsActivity"
-            android:screenOrientation="sensorLandscape"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="Analytics"
-            android:theme="@style/UserProfileTheme" />
+            android:screenOrientation="sensorLandscape"
+            android:theme="@style/UserProfileTheme"/>
         <activity
             android:name=".activities.OfflineContentActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="Offline Content"
-            android:theme="@style/UserProfileTheme" />
+            android:theme="@style/UserProfileTheme"/>
         <activity
             android:name=".activities.NotesActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="Notes"
-            android:theme="@style/UserProfileTheme" />
+            android:theme="@style/UserProfileTheme"/>
         <activity
             android:name=".activities.ExamHistoryActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
-            android:label="ExamHistory" />
+            android:label="ExamHistory"/>
         <activity
             android:name=".activities.ExamEngineActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:hardwareAccelerated="true"
             android:label=""
-            android:theme="@style/UserProfileTheme" />
+            android:theme="@style/UserProfileTheme"/>
         <activity
             android:name=".activities.UsageAnalysisActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:hardwareAccelerated="true"
             android:label="Usage Analysis"
-            android:theme="@style/UserProfileTheme" />
+            android:theme="@style/UserProfileTheme"/>
         <activity
             android:name=".activities.SaveForOfflineActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="Notes"
-            android:theme="@style/UserProfileTheme" />
+            android:theme="@style/UserProfileTheme"/>
 
         <receiver
             android:name="com.localytics.android.ReferralReceiver"
             android:exported="true">
             <intent-filter>
-                <action android:name="com.android.vending.INSTALL_REFERRER" />
+                <action android:name="com.android.vending.INSTALL_REFERRER"/>
             </intent-filter>
         </receiver>
 
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="94f6d0edefb49d0f21836a7acf733f25afe4cc72" />
+            android:value="94f6d0edefb49d0f21836a7acf733f25afe4cc72"/>
         <meta-data
             android:name="LOCALYTICS_APP_KEY"
-            android:value="f34e80c23ff3d6eb90eedbb-e3eaf25c-a34c-11e5-a67e-003e57fecdee" />
+            android:value="f34e80c23ff3d6eb90eedbb-e3eaf25c-a34c-11e5-a67e-003e57fecdee"/>
 
         <activity
             android:name=".activities.ChallengeActivity"
@@ -131,22 +132,27 @@
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
+                android:resource="@xml/searchable"/>
         </activity>
         <activity
             android:name=".activities.ExamResultActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"/>
         <activity
             android:name=".activities.TestStartActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:screenOrientation="sensorLandscape"
-            android:theme="@style/UserProfileTheme" />
-            android:theme="@style/AppTheme" />
-
-        <activity android:name=".activities.ForumActivity"
+            android:theme="@style/UserProfileTheme"/>
+        android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activities.ForumActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"/>
+
+        <receiver
+            android:name=".utils.NotifyReceiver"
+            android:enabled="true"
+            android:exported="true"/>
     </application>
 
 </manifest>

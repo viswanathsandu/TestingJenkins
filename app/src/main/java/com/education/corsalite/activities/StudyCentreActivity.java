@@ -29,7 +29,6 @@ import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.db.DbManager;
-import com.education.corsalite.enums.Tests;
 import com.education.corsalite.fragments.MockTestDialog;
 import com.education.corsalite.fragments.ScheduledTestDialog;
 import com.education.corsalite.models.db.OfflineContent;
@@ -41,7 +40,10 @@ import com.education.corsalite.models.responsemodels.StudyCenter;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.Data;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import retrofit.client.Response;
@@ -82,6 +84,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         setUpViews(myView);
         setToolbarForStudyCenter();
         initUI();
+
         sendAnalytics(getString(R.string.screen_studycenter));
     }
 
@@ -399,7 +402,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
             tv.setSelected(true);
             selectedSubjectTxt = tv;
         }
-        setListener(tv,studyCenter.SubjectName);
+        setListener(tv, studyCenter.SubjectName);
         return v;
     }
 
