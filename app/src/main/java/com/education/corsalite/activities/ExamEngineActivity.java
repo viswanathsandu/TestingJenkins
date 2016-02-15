@@ -1183,11 +1183,13 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void updateQuestionsWithFlagStatus() {
-        for(ExamModel model : localExamModelList) {
-            for(ExamModel flagQuestion : flaggedQuestions) {
-                if(model.idQuestion.equalsIgnoreCase(flagQuestion.idQuestion)) {
-                    model.isFlagged = true;
-                    break;
+        if(flaggedQuestions != null && localExamModelList != null) {
+            for (ExamModel model : localExamModelList) {
+                for (ExamModel flagQuestion : flaggedQuestions) {
+                    if (model.idQuestion.equalsIgnoreCase(flagQuestion.idQuestion)) {
+                        model.isFlagged = true;
+                        break;
+                    }
                 }
             }
         }
