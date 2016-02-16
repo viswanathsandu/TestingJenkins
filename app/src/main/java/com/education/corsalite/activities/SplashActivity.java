@@ -53,6 +53,7 @@ public class SplashActivity extends AbstractBaseActivity {
             login(username, passwordHash, false);
         } else {
             isLoginApiFinished = true;
+            navigateToNextScreen();
         }
     }
     private void login(final String username, final String password, final boolean fetchLocal) {
@@ -61,6 +62,8 @@ public class SplashActivity extends AbstractBaseActivity {
             public void failure(CorsaliteError error) {
                 super.failure(error);
                 closeProgress();
+                isLoginSuccess = false;
+                isLoginApiFinished = true;
                 if (error != null && !TextUtils.isEmpty(error.message)) {
                     showToast(error.message);
                     navigateToNextScreen();
@@ -73,10 +76,10 @@ public class SplashActivity extends AbstractBaseActivity {
                 closeProgress();
                 isLoginApiFinished = true;
                 if (loginResponse.isSuccessful()) {
+                    onLoginsuccess(loginResponse, fetchLocal);
                     dbManager.saveReqRes(ApiCacheHolder.getInstance().login);
                     appPref.save("loginId", username);
                     appPref.save("passwordHash", password);
-                    onLoginsuccess(loginResponse, fetchLocal);
                 } else {
                     showToast(getResources().getString(R.string.login_failed));
                 }
