@@ -246,9 +246,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         if(config.enableOffline != null && config.enableOffline) {
             navigationView.findViewById(R.id.navigation_offline).setVisibility(View.VISIBLE);
         }
-        /*if(config.enableUsageanalysis!= null && config.enableUsageanalysis) {
-            navigationView.findViewById(R.id.navigation_usage_analysis).setVisibility(View.VISIBLE);
-        }*/
         if(config.enableChallangeTest != null && config.enableChallangeTest) {
             navigationView.findViewById(R.id.navigation_challenge_your_friends).setVisibility(View.VISIBLE);
         }
@@ -400,7 +397,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     private void loadCoursesList() {
-        if(LoginUserCache.getInstance().loginResponse == null) {
+        if(LoginUserCache.getInstance().loginResponse == null || LoginUserCache.getInstance().loginResponse.studentId == null) {
             return;
         }
         ApiManager.getInstance(this).getCourses(LoginUserCache.getInstance().loginResponse.studentId, new ApiCallback<List<Course>>(this) {

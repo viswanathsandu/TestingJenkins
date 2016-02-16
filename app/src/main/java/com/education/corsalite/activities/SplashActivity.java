@@ -46,12 +46,6 @@ public class SplashActivity extends AbstractBaseActivity {
         }.start();
     }
 
-    private void redirectToLogin(){
-        Intent intent = new Intent(this,LoginActivity.class);
-        startActivity(intent);
-        finish();
-    }
-
     private void checkAutoLogin() {
         String username = appPref.getValue("loginId");
         String passwordHash =  appPref.getValue("passwordHash");
@@ -79,7 +73,6 @@ public class SplashActivity extends AbstractBaseActivity {
                 closeProgress();
                 isLoginApiFinished = true;
                 if (loginResponse.isSuccessful()) {
-                    ApiCacheHolder.getInstance().setLoginResponse(loginResponse);
                     dbManager.saveReqRes(ApiCacheHolder.getInstance().login);
                     appPref.save("loginId", username);
                     appPref.save("passwordHash", password);
@@ -93,7 +86,7 @@ public class SplashActivity extends AbstractBaseActivity {
     }
 
     private void onLoginsuccess(LoginResponse response, boolean fetchLocal) {
-        if(response != null) {
+        if(response != null && response.studentId != null) {
             LoginUserCache.getInstance().setLoginResponse(response);
             if(!fetchLocal) {
                 isLoginSuccess = true;
