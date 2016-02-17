@@ -14,6 +14,7 @@ import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.ApiCacheHolder;
+import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.utils.Constants;
@@ -108,6 +109,7 @@ public class LoginActivity extends AbstractBaseActivity {
 
     private void onLoginsuccess(LoginResponse response, boolean fetchLocal) {
         if(response != null) {
+            LoginUserCache.getInstance().setLoginResponse(response);
             if(!fetchLocal) {
                 showToast(getResources().getString(R.string.login_successful));
             }
