@@ -288,28 +288,26 @@ public class StudyCentreActivity extends AbstractBaseActivity {
 
             @Override
             public void success(List<OfflineContent> offlineContents, Response response) {
-                if (offlineContents != null && offlineContents.size() > 0) {
-                    mCourseData = new CourseData();
-                    mCourseData.StudyCenter = studyCenters;
-                    key = mCourseData.StudyCenter.get(getIndex(studyCenters)).SubjectName;
-                    studyCenter = mCourseData.StudyCenter.get(getIndex(studyCenters));
-                    setupSubjects(mCourseData);
-                    for (Chapters chapter : studyCenter.Chapters) {
-                        boolean idMatchFound = false;
-                        for (OfflineContent offlineContent : offlineContents) {
-                            if (chapter.idCourseSubjectchapter.equals(offlineContent.chapterId)) {
-                                idMatchFound = true;
-                            }
+                mCourseData = new CourseData();
+                mCourseData.StudyCenter = studyCenters;
+                key = mCourseData.StudyCenter.get(getIndex(studyCenters)).SubjectName;
+                studyCenter = mCourseData.StudyCenter.get(getIndex(studyCenters));
+                setupSubjects(mCourseData);
+                for (Chapters chapter : studyCenter.Chapters) {
+                    boolean idMatchFound = false;
+                    for (OfflineContent offlineContent : offlineContents) {
+                        if (chapter.idCourseSubjectchapter.equals(offlineContent.chapterId)) {
+                            idMatchFound = true;
                         }
-                        if (idMatchFound) {
-                            chapter.isChapterOffline = true;
-                        } else {
-                            chapter.isChapterOffline = false;
-                        }
-                        idMatchFound = false;
                     }
-                    initDataAdapter(subjects.get(getIndex(studyCenters)));
+                    if (idMatchFound) {
+                        chapter.isChapterOffline = true;
+                    } else {
+                        chapter.isChapterOffline = false;
+                    }
+                    idMatchFound = false;
                 }
+                initDataAdapter(subjects.get(getIndex(studyCenters)));
             }
         });
     }
