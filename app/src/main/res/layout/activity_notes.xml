@@ -5,44 +5,22 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <!--<ScrollView-->
-        <!--android:id="@+id/horizontal_scroll"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:scrollbars="horizontal">-->
-
-        <!--<LinearLayout-->
-            <!--android:id="@+id/subjects_name_id"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:orientation="horizontal"-->
-            <!--android:paddingLeft="15dp" />-->
-    <!--</ScrollView>-->
-
-    <ProgressBar
-        android:id="@+id/headerProgress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_gravity="center_horizontal"
-        android:visibility="visible" />
     <LinearLayout
+        android:id="@+id/spinner_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/light_40"
         android:padding="10dp"
-        android:visibility="gone"
-        android:id="@+id/spinner_layout">
+        android:visibility="gone">
+
         <Spinner
             android:id="@+id/spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawSelectorOnTop="true"
             android:background="@drawable/spinner_bg"
+            android:drawSelectorOnTop="true"
             android:paddingLeft="10dp"
-            android:paddingRight="6dp"
-            />
+            android:paddingRight="20dp" />
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -55,18 +33,30 @@
         android:paddingTop="16dp" />
 
     <LinearLayout
+        android:id="@+id/no_notes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:id="@+id/no_notes"
         android:visibility="gone">
 
         <TextView
+            fontPath="@string/roboto_regular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:text="No Notes Available" />
+            android:text="No Notes Available"
+            android:textColor="@color/text_black"
+            android:textSize="14sp" />
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/headerProgress"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="gone">
 
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
 </RelativeLayout>

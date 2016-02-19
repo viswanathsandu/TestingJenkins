@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -52,7 +51,7 @@ public class NotesActivity extends AbstractBaseActivity {
     private TextView selectedSubjectTxt;
     private String key;
     private LinearLayout notesLayout;
-    private ProgressBar progressBar;
+    private LinearLayout progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +62,7 @@ public class NotesActivity extends AbstractBaseActivity {
         courseSpinner = (Spinner) myView.findViewById(R.id.spinner);
         notesLayout = (LinearLayout) myView.findViewById(R.id.no_notes);
         spinnerLayout = (LinearLayout) myView.findViewById(R.id.spinner_layout);
-        progressBar = (ProgressBar)myView.findViewById(R.id.headerProgress);
+        progressBar = (LinearLayout) myView.findViewById(R.id.headerProgress);
         frameLayout.addView(myView);
         setToolbarForNotes();
         getBundleData();
@@ -221,6 +220,7 @@ public class NotesActivity extends AbstractBaseActivity {
             @Override
             public void failure(CorsaliteError error) {
                 super.failure(error);
+                progressBar.setVisibility(View.GONE);
                 if (error != null && !TextUtils.isEmpty(error.message)) {
                     showToast(error.message);
                 }
@@ -229,6 +229,7 @@ public class NotesActivity extends AbstractBaseActivity {
             @Override
             public void success(List<Note> notesList, Response response) {
                 super.success(notesList, response);
+                progressBar.setVisibility(View.GONE);
                 mListData = new ArrayList<SubjectNameSection>();
                 if (notesList != null) {
                     showData();
