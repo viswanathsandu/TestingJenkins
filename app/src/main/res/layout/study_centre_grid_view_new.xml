@@ -20,7 +20,6 @@
         <TextView
             android:id="@+id/subject_name"
             style="@style/grid_text_style"
-            fontPath="@string/roboto_bold"
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:ellipsize="end"
@@ -70,8 +69,7 @@
                 android:gravity="center_vertical|center_horizontal"
                 android:paddingLeft="4dp"
                 android:text="28/347"
-                android:textColor="@color/white"
-                android:textSize="12sp"/>
+                android:textColor="@color/white"/>
 
             <TextView
                 android:id="@+id/level"
@@ -86,7 +84,6 @@
                 android:gravity="center_vertical|center"
                 android:paddingLeft="4dp"
                 android:textColor="@color/white"
-                android:textSize="12sp"
                 tools:text="level 2"/>
 
             <LinearLayout
@@ -126,7 +123,6 @@
                     android:paddingRight="16dp"
                     android:text="@string/topics"
                     android:textColor="@color/white"
-                    android:textSize="12sp"
                     android:visibility="visible"/>
             </LinearLayout>
         </LinearLayout>
@@ -139,8 +135,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/grayshape"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/subject_name_gray"
