@@ -63,6 +63,7 @@ import com.education.corsalite.models.responsemodels.PostExamTemplate;
 import com.education.corsalite.models.responsemodels.PostExercise;
 import com.education.corsalite.models.responsemodels.PostFlaggedQuestions;
 import com.education.corsalite.models.responsemodels.PostQuestionPaper;
+import com.education.corsalite.models.responsemodels.TestPaperIndex;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.L;
@@ -194,6 +195,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private String chapterId = null;
     private String topicIds = null;
     private String questionsCount = null;
+    private TestPaperIndex moctTestPaperIndex;
     private boolean isFlagged = false;
     private long examDurationInSeconds = 0;
     private long examDurationTakenInSeconds = 0;
@@ -275,9 +277,12 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             renderQuestionLayout();
         } else if(title.equalsIgnoreCase("Mock Test")) {
             imvFlag.setVisibility(View.VISIBLE);
-            String examTemplateId = getIntent().getExtras().getString("exam_template_id");
-            postQuestionPaper(LoginUserCache.getInstance().loginResponse.entitiyId,
-                        examTemplateId, LoginUserCache.getInstance().loginResponse.studentId);
+            String testInstructions = getIntent().getStringExtra("Test_Instructions");
+            if(!TextUtils.isEmpty(testInstructions)) {
+                moctTestPaperIndex = new Gson().fromJson(testInstructions, TestPaperIndex.class);
+            }
+            String testQuestionPaperId = getIntent().getStringExtra("test_question_papaer_id");
+            getTestQuestionPaper(testQuestionPaperId, null);
             imvRefresh.setVisibility(View.VISIBLE);
             timerLayout.setVisibility(View.VISIBLE);
             testNavFooter.setVisibility(View.VISIBLE);

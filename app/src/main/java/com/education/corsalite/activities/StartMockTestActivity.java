@@ -30,6 +30,7 @@ public class StartMockTestActivity extends AbstractBaseActivity {
 
     private LayoutInflater inflater;
     private TestPaperIndex testPaperIndex;
+    private String testQuestionPaperId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,8 @@ public class StartMockTestActivity extends AbstractBaseActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(StartMockTestActivity.this, ExamEngineActivity.class);
                 intent.putExtra(Constants.TEST_TITLE, "Mock Test");
+                intent.putExtra("test_question_papaer_id", testQuestionPaperId);
+                intent.putExtra("Test_Instructions", new Gson().toJson(testPaperIndex));
                 intent.putExtra("exam_template_id", testPaperIndex.examDetails.get(0).examTemplateId);
                 startActivity(intent);
             }
@@ -72,6 +75,7 @@ public class StartMockTestActivity extends AbstractBaseActivity {
     private void getBundleData() {
         String testString = getIntent().getStringExtra("Test_Instructions");
         testPaperIndex = new Gson().fromJson(testString, TestPaperIndex.class);
+        testQuestionPaperId = getIntent().getStringExtra("test_question_papaer_id");
     }
 
 }

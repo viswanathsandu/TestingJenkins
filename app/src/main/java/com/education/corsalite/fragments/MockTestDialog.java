@@ -45,8 +45,8 @@ public class MockTestDialog extends DialogFragment implements MockTestsListAdapt
     @Bind(R.id.tv_title)TextView tvTitle;
     @Bind(R.id.mocktests_recyclerview)RecyclerView rvMockTestList;
     private Dialog dialog;
-
     private List<MockTest> mMockTestList;
+    private String testQuestionPaperId;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -74,11 +74,6 @@ public class MockTestDialog extends DialogFragment implements MockTestsListAdapt
 
     @Override
     public void onMockTestSelected(int position) {
-       // dismiss();
-        /*Intent intent = new Intent(getActivity(), ExamEngineActivity.class);
-        intent.putExtra(Constants.TEST_TITLE, "Mock Test");
-        intent.putExtra("exam_template_id", mMockTestList.get(position).examTemplateId);
-        startActivity(intent);*/
         postQuestionPaper(LoginUserCache.getInstance().loginResponse.entitiyId,
                 mMockTestList.get(position).examTemplateId, LoginUserCache.getInstance().loginResponse.studentId);
     }
@@ -113,21 +108,22 @@ public class MockTestDialog extends DialogFragment implements MockTestsListAdapt
         postQuestionPaper.idExamTemplate = examTemplateId;
         postQuestionPaper.idSubject = "";
         postQuestionPaper.idStudent = studentId;
-
         showProgress();
         ApiManager.getInstance(getActivity()).postQuestionPaper(new Gson().toJson(postQuestionPaper),
-                new ApiCallback<PostQuestionPaper>(getActivity()) {
-                    @Override
-                    public void success(PostQuestionPaper postQuestionPaper, Response response) {
-                        super.success(postQuestionPaper, response);
-                        if (postQuestionPaper != null && !TextUtils.isEmpty(postQuestionPaper.idTestQuestionPaper)) {
-                            getIndex(postQuestionPaper.idTestQuestionPaper, null, "N");
-                        } else {
-dialog.dismiss();
-                        }
+            new ApiCallback<PostQuestionPaper>(getActivity()) {
+                @Override
+                public void success(PostQuestionPaper postQuestionPaper, Response response) {
+                    super.success(postQuestionPaper, response);
+                    if (postQuestionPaper != null && !TextUtils.isEmpty(postQuestionPaper.idTestQuestionPaper)) {
+                        testQuestionPaperId = postQuestionPaper.idTestQuestionPaper;
+                        getIndex(postQuestionPaper.idTestQuestionPaper, null, "N");
+                    } else {
+                        dialog.dismiss();
                     }
-                });
+                }
+            });
     }
+
 
     private void getIndex(String qId,String aID,String all){
         ApiManager.getInstance(getActivity()).getTestPaperIndex(qId, aID, all, new ApiCallback<TestPaperIndex>(getActivity()) {
@@ -139,6 +135,7 @@ dialog.dismiss();
                 if (testPaperIndexes != null) {
                     Intent intent = new Intent(getActivity(), StartMockTestActivity.class);
                     intent.putExtra("Test_Instructions", new Gson().toJson(testPaperIndexes));
+                    intent.putExtra("test_question_papaer_id", testQuestionPaperId);
                     startActivity(intent);
                 }
             }

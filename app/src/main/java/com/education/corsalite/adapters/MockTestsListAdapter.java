@@ -31,7 +31,7 @@ public class MockTestsListAdapter extends AbstractRecycleViewAdapter {
         addAll(videoList);
     }
 
-    public void setMockTestSelectedListener(IMockTestSelectedListener mListener){
+    public void setMockTestSelectedListener(IMockTestSelectedListener mListener) {
         this.mListener = mListener;
     }
 
@@ -48,11 +48,9 @@ public class MockTestsListAdapter extends AbstractRecycleViewAdapter {
     public class MockTestDataHolder extends RecyclerView.ViewHolder {
 
         @Bind(R.id.mock_test_txt) TextView tvName;
-        View parent;
 
         public MockTestDataHolder(View view) {
             super(view);
-            this.parent = view;
             ButterKnife.bind(this, view);
         }
 
@@ -61,15 +59,15 @@ public class MockTestsListAdapter extends AbstractRecycleViewAdapter {
             tvName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                if(mListener != null) {
-                    mListener.onMockTestSelected(position);
-                }
+                    if (mListener != null) {
+                        mListener.onMockTestSelected(position);
+                    }
                 }
             });
         }
     }
 
-    public interface IMockTestSelectedListener{
+    public interface IMockTestSelectedListener {
         void onMockTestSelected(int position);
     }
 }

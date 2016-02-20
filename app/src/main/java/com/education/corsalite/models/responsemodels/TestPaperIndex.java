@@ -8,6 +8,9 @@ import java.util.List;
  * Created by madhuri on 2/20/16.
  */
 public class TestPaperIndex {
+
     @SerializedName("ExamDetails")
-   public List<ExamDetails> examDetails;
+    public List<ExamDetails> examDetails;
+    @SerializedName("QuestionPaperIndex")
+    public List<QuestionPaperIndex> questionPaperIndecies;
 }
