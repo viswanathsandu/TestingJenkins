@@ -28,6 +28,7 @@ import android.widget.ViewSwitcher;
 
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.ChapterAdapter;
+import com.education.corsalite.adapters.GridRecyclerAdapter;
 import com.education.corsalite.adapters.SubjectAdapter;
 import com.education.corsalite.adapters.TopicAdapter;
 import com.education.corsalite.api.ApiCallback;
@@ -303,10 +304,10 @@ public class ContentReadingActivity extends AbstractBaseActivity {
 
     private void startNotesActivity() {
         Intent intent = new Intent(this, NotesActivity.class);
-        intent.putExtra("courseId", AbstractBaseActivity.selectedCourse.courseId.toString());
-        intent.putExtra("subjectId", mSubjectId);
-        intent.putExtra("chapterId", mChapterId);
-        intent.putExtra("topicId", mTopicId);
+        intent.putExtra(GridRecyclerAdapter.COURSE_ID, AbstractBaseActivity.selectedCourse.courseId.toString());
+        intent.putExtra(GridRecyclerAdapter.SUBJECT_ID, subjectModelList.get(spSubject.getSelectedItemPosition()).idSubject);
+        intent.putExtra(GridRecyclerAdapter.CHAPTER_ID, chapterModelList.get(spChapter.getSelectedItemPosition()).idChapter);
+        intent.putExtra(GridRecyclerAdapter.TOPIC_ID, topicModelList.get(spTopic.getSelectedItemPosition()).idTopic);
         startActivity(intent);
     }
 
