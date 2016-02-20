@@ -201,11 +201,12 @@ public class NotesActivity extends AbstractBaseActivity {
 
     private void callNotesData(Integer idCourseSubject) {
         hideList();
-        mChapterId = null;
-        if(mSubjectId.equalsIgnoreCase(idCourseSubject.toString())) {
+        if(!TextUtils.isEmpty(mSubjectId) && mSubjectId.equalsIgnoreCase(idCourseSubject.toString())) {
             getNotesData(mSubjectId, mChapterId, mTopicId);
         } else {
             mSubjectId = idCourseSubject.toString();
+            mChapterId = null;
+            mTopicId = null;
             getNotesData(idCourseSubject.toString(), null, null);
         }
         mAdapter.notifyDataSetChanged();

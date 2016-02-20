@@ -27,7 +27,7 @@ public class Chapters {
     public Integer passedComplexity;
     @SerializedName("ScoreAmber")
     public String scoreAmber;
-    @SerializedName("notesCount")
+    @SerializedName("NotesCount")
     public String notesCount;
 
     public boolean isChapterOffline = true;
