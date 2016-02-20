@@ -4,7 +4,9 @@
     <item>
         <layer-list>
             <item>
-                <bitmap android:gravity="right"  android:src="@drawable/ico_dropdown_black" />
+                <bitmap
+                    android:gravity="right"
+                    android:src="@drawable/ico_dropdown_black" />
             </item>
         </layer-list>
     </item>

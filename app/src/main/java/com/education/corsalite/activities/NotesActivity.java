@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -52,7 +51,7 @@ public class NotesActivity extends AbstractBaseActivity {
     private TextView selectedSubjectTxt;
     private String key;
     private LinearLayout notesLayout;
-    private ProgressBar progressBar;
+    private LinearLayout progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,15 +62,23 @@ public class NotesActivity extends AbstractBaseActivity {
         courseSpinner = (Spinner) myView.findViewById(R.id.spinner);
         notesLayout = (LinearLayout) myView.findViewById(R.id.no_notes);
         spinnerLayout = (LinearLayout) myView.findViewById(R.id.spinner_layout);
-        progressBar = (ProgressBar)myView.findViewById(R.id.headerProgress);
+        progressBar = (LinearLayout) myView.findViewById(R.id.headerProgress);
         frameLayout.addView(myView);
         setToolbarForNotes();
         getBundleData();
         initUI();
         setAdapter();
-        getNotesData();
         sendAnalytics(getString(R.string.screen_notes));
     }
+
+
+    @Override
+    public void onEvent(Course course) {
+        super.onEvent(course);
+        progressBar.setVisibility(View.VISIBLE);
+        getStudyCentreData(course.courseId.toString());
+    }
+
 
     private void hideList() {
         recyclerView.setVisibility(View.GONE);
@@ -85,18 +92,9 @@ public class NotesActivity extends AbstractBaseActivity {
     private void getBundleData() {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            String subjectId = GridRecyclerAdapter.SUBJECT_ID;
-            String chapterId = GridRecyclerAdapter.CHAPTER_ID;
-            String topicId = GridRecyclerAdapter.TOPIC_ID;
-            if (bundle.containsKey(subjectId) && bundle.getString(subjectId) != null) {
-                mSubjectId = bundle.getString(subjectId);
-            }
-            if (bundle.containsKey(chapterId) && bundle.getString(chapterId) != null) {
-                mChapterId = bundle.getString(chapterId);
-            }
-            if (bundle.containsKey(topicId) && bundle.getString(topicId) != null) {
-                mTopicId = bundle.getString(topicId);
-            }
+            mSubjectId = bundle.getString(GridRecyclerAdapter.SUBJECT_ID);
+            mChapterId = bundle.getString(GridRecyclerAdapter.CHAPTER_ID);
+            mTopicId = bundle.getString(GridRecyclerAdapter.TOPIC_ID);
         }
     }
 
@@ -110,13 +108,6 @@ public class NotesActivity extends AbstractBaseActivity {
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
         recyclerView.setAdapter(mAdapter);
-    }
-
-    @Override
-    public void onEvent(Course course) {
-        super.onEvent(course);
-        progressBar.setVisibility(View.VISIBLE);
-        getStudyCentreData(course.courseId.toString());
     }
 
     private void getStudyCentreData(String courseId) {
@@ -210,17 +201,22 @@ public class NotesActivity extends AbstractBaseActivity {
 
     private void callNotesData(Integer idCourseSubject) {
         hideList();
-        mSubjectId = idCourseSubject.toString();
         mChapterId = null;
-        getNotesData();
+        if(mSubjectId.equalsIgnoreCase(idCourseSubject.toString())) {
+            getNotesData(mSubjectId, mChapterId, mTopicId);
+        } else {
+            mSubjectId = idCourseSubject.toString();
+            getNotesData(idCourseSubject.toString(), null, null);
+        }
         mAdapter.notifyDataSetChanged();
     }
 
-    private void getNotesData() {
+    private void getNotesData(String subjectId, String chapterId, String topicId) {
         ApiManager.getInstance(this).getNotes(LoginUserCache.getInstance().loginResponse.studentId, mSubjectId, mChapterId, mTopicId, new ApiCallback<List<Note>>(this) {
             @Override
             public void failure(CorsaliteError error) {
                 super.failure(error);
+                progressBar.setVisibility(View.GONE);
                 if (error != null && !TextUtils.isEmpty(error.message)) {
                     showToast(error.message);
                 }
@@ -229,6 +225,7 @@ public class NotesActivity extends AbstractBaseActivity {
             @Override
             public void success(List<Note> notesList, Response response) {
                 super.success(notesList, response);
+                progressBar.setVisibility(View.GONE);
                 mListData = new ArrayList<SubjectNameSection>();
                 if (notesList != null) {
                     showData();
