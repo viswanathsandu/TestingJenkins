@@ -27,6 +27,7 @@ import com.education.corsalite.models.responsemodels.PostQuestionPaper;
 import com.education.corsalite.models.responsemodels.ScheduledTest;
 import com.education.corsalite.models.responsemodels.StudyCenter;
 import com.education.corsalite.models.responsemodels.TestCoverage;
+import com.education.corsalite.models.responsemodels.TestPaperIndex;
 import com.education.corsalite.models.responsemodels.UpdateExamDetailsResponse;
 import com.education.corsalite.models.responsemodels.UsageAnalysis;
 import com.education.corsalite.models.responsemodels.UserEventsResponse;
@@ -185,4 +186,7 @@ public interface ICorsaliteApi {
 
     @GET("/MockTest")
     void getMockTests(@Query("idCourse") String courseID, @Query("idStudent") String studentId, ApiCallback<List<MockTest>> callback);
+
+    @GET("/TestPaperIndex")
+    void getTestPaperIndex(@Query("idTestQuestionPaper")String questionPaperId,@Query("idTestAnswerPaper") String answerPaperId,@Query("doGetAllStage") String allStage ,ApiCallback<TestPaperIndex> callback);
 }

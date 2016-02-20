@@ -148,6 +148,10 @@
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:theme="@style/AppTheme" />
 
+        <activity android:name=".activities.StartMockTestActivity"
+            android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
+            android:theme="@style/AppTheme" />
+
         <receiver
             android:name=".utils.NotifyReceiver"
             android:enabled="true"
