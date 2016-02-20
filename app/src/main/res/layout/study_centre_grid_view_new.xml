@@ -8,13 +8,13 @@
     android:layout_height="match_parent"
     android:layout_marginBottom="16dp"
     android:layout_marginRight="16dp"
-    android:background="@drawable/redshape"
     android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/grid_layout_color"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/redshape"
         android:orientation="vertical">
 
         <TextView
@@ -30,7 +30,7 @@
             android:paddingRight="16dp"
             android:text="Subject name"
             android:textColor="@color/white"
-            android:textSize="14sp"/>
+            android:textSize="16sp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -151,7 +151,7 @@
             android:paddingRight="16dp"
             android:text="Subject name"
             android:textColor="@color/dark_gray"
-            android:textSize="14sp"/>
+            android:textSize="16sp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
