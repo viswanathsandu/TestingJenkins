@@ -3,7 +3,6 @@ package com.education.corsalite.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.WebView;
@@ -18,12 +17,11 @@ import com.google.gson.Gson;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by madhuri on 2/20/16.
  */
-public class TestPaperIndexActivity extends AbstractBaseActivity {
+public class StartMockTestActivity extends AbstractBaseActivity {
 
     @Bind(R.id.webview)WebView instuctions;
     @Bind(R.id.tv_title)TextView title;
@@ -57,7 +55,7 @@ public class TestPaperIndexActivity extends AbstractBaseActivity {
         btStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(TestPaperIndexActivity.this, ExamEngineActivity.class);
+                Intent intent = new Intent(StartMockTestActivity.this, ExamEngineActivity.class);
                 intent.putExtra(Constants.TEST_TITLE, "Mock Test");
                 intent.putExtra("exam_template_id", testPaperIndex.examDetails.get(0).examTemplateId);
                 startActivity(intent);

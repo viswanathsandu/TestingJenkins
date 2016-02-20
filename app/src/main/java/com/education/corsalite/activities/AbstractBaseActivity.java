@@ -137,9 +137,8 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     protected void setToolbarForTestIndexScreen() {
-        toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
+        toolbar.findViewById(R.id.spinner_layout).setVisibility(View.GONE);
         setToolbarTitle("Test Instructions");
-        loadCoursesList();
     }
 
     protected void setToolbarForContentReading() {
