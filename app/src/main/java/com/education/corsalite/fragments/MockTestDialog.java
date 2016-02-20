@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,13 +17,18 @@ import android.widget.TextView;
 import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.activities.ExamEngineActivity;
+import com.education.corsalite.activities.TestPaperIndexActivity;
 import com.education.corsalite.adapters.MockTestsListAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.MockTest;
+import com.education.corsalite.models.requestmodels.PostQuestionPaperRequest;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
+import com.education.corsalite.models.responsemodels.PostQuestionPaper;
+import com.education.corsalite.models.responsemodels.TestPaperIndex;
 import com.education.corsalite.utils.Constants;
+import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -66,11 +72,13 @@ public class MockTestDialog extends DialogFragment implements MockTestsListAdapt
 
     @Override
     public void onMockTestSelected(int position) {
-        dismiss();
-        Intent intent = new Intent(getActivity(), ExamEngineActivity.class);
+       // dismiss();
+        /*Intent intent = new Intent(getActivity(), ExamEngineActivity.class);
         intent.putExtra(Constants.TEST_TITLE, "Mock Test");
         intent.putExtra("exam_template_id", mMockTestList.get(position).examTemplateId);
-        startActivity(intent);
+        startActivity(intent);*/
+        postQuestionPaper(LoginUserCache.getInstance().loginResponse.entitiyId,
+                mMockTestList.get(position).examTemplateId, LoginUserCache.getInstance().loginResponse.studentId);
     }
 
     private void loadMockTests() {
@@ -82,7 +90,7 @@ public class MockTestDialog extends DialogFragment implements MockTestsListAdapt
                     @Override
                     public void success(List<MockTest> mockTests, Response response) {
                         super.success(mockTests, response);
-                        if(mockTests != null && !mockTests.isEmpty()) {
+                        if (mockTests != null && !mockTests.isEmpty()) {
                             mMockTestList = mockTests;
                             showMockTests();
                         }
@@ -91,8 +99,45 @@ public class MockTestDialog extends DialogFragment implements MockTestsListAdapt
                     @Override
                     public void failure(CorsaliteError error) {
                         super.failure(error);
-                        ((AbstractBaseActivity)getActivity()).showToast("No mock tests available");
+                        ((AbstractBaseActivity) getActivity()).showToast("No mock tests available");
                     }
                 });
+    }
+
+    private void postQuestionPaper(String entityId, String examTemplateId, String studentId) {
+        PostQuestionPaperRequest postQuestionPaper = new PostQuestionPaperRequest();
+        postQuestionPaper.idCollegeBatch = "";
+        postQuestionPaper.idEntity = entityId;
+        postQuestionPaper.idExamTemplate = examTemplateId;
+        postQuestionPaper.idSubject = "";
+        postQuestionPaper.idStudent = studentId;
+
+        ApiManager.getInstance(getActivity()).postQuestionPaper(new Gson().toJson(postQuestionPaper),
+                new ApiCallback<PostQuestionPaper>(getActivity()) {
+                    @Override
+                    public void success(PostQuestionPaper postQuestionPaper, Response response) {
+                        super.success(postQuestionPaper, response);
+                        if (postQuestionPaper != null && !TextUtils.isEmpty(postQuestionPaper.idTestQuestionPaper)) {
+                            getIndex(postQuestionPaper.idTestQuestionPaper, null,"N");
+                        } else {
+
+                        }
+                    }
+                });
+    }
+
+    private void getIndex(String qId,String aID,String all){
+        ApiManager.getInstance(getActivity()).getTestPaperIndex(qId, aID, all, new ApiCallback<TestPaperIndex>(getActivity()) {
+            @Override
+            public void success(TestPaperIndex testPaperIndexes, Response response) {
+                super.success(testPaperIndexes, response);
+                dismiss();
+                if(testPaperIndexes != null){
+                    Intent intent = new Intent(getActivity(), TestPaperIndexActivity.class);
+                    intent.putExtra("Test_Instructions",new Gson().toJson(testPaperIndexes));
+                    startActivity(intent);
+                }
+            }
+        });
     }
 }
