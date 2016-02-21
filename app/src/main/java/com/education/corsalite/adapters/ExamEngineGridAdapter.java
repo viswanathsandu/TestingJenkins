@@ -23,10 +23,16 @@ public class ExamEngineGridAdapter extends BaseAdapter {
     private View grid;
     private LayoutInflater inflater;
     private List<ExamModel> mModelList;
+    private String selectedSectionName;
+
     public ExamEngineGridAdapter(ExamEngineActivity activity, List<ExamModel> modelList) {
         this.mActivity = activity;
         this.mModelList = modelList;
         inflater = (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
+
+    public void setSelectedSectionName(String sectionName) {
+        this.selectedSectionName = sectionName;
     }
 
     @Override
@@ -59,41 +65,48 @@ public class ExamEngineGridAdapter extends BaseAdapter {
         } else {
             btnCounter.setText(String.valueOf(position + 1));
         }
-        switch (mModelList.get(position).answerColorSelection) {
-            case ANSWERED:
-                btnCounter.setBackgroundResource(R.drawable.rounded_corners_green);
-                btnCounter.setTextColor(mActivity.getResources().getColor(R.color.white));
-                break;
+        if(!mModelList.get(position).sectionName.equals(selectedSectionName)) {
+            btnCounter.setEnabled(false);
+            btnCounter.setClickable(false);
+            btnCounter.setBackgroundResource(R.drawable.rounded_corners_gray);
+            btnCounter.setTextColor(mActivity.getResources().getColor(R.color.dark_gray));
+        } else {
+            switch (mModelList.get(position).answerColorSelection) {
+                case ANSWERED:
+                    btnCounter.setBackgroundResource(R.drawable.rounded_corners_green);
+                    btnCounter.setTextColor(mActivity.getResources().getColor(R.color.white));
+                    break;
 
-            case SKIPPED:
-                btnCounter.setBackgroundResource(R.drawable.rounded_corners_red);
-                btnCounter.setTextColor(mActivity.getResources().getColor(R.color.white));
-                break;
+                case SKIPPED:
+                    btnCounter.setBackgroundResource(R.drawable.rounded_corners_red);
+                    btnCounter.setTextColor(mActivity.getResources().getColor(R.color.white));
+                    break;
 
-            case FLAGGED:
-                btnCounter.setBackgroundResource(R.drawable.rounded_corners_yellow);
-                btnCounter.setTextColor(mActivity.getResources().getColor(R.color.black));
-                break;
+                case FLAGGED:
+                    btnCounter.setBackgroundResource(R.drawable.rounded_corners_yellow);
+                    btnCounter.setTextColor(mActivity.getResources().getColor(R.color.black));
+                    break;
 
-            case UNATTEMPTED:
-                btnCounter.setBackgroundResource(R.drawable.rounded_corners_gray);
-                btnCounter.setTextColor(mActivity.getResources().getColor(R.color.black));
-                break;
-        }
-
-        if (position == mActivity.selectedPosition) {
-            btnCounter.setPaintFlags(btnCounter.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-            mActivity.previousQuestionPosition = position;
-        } else if ((btnCounter.getPaintFlags() & Paint.UNDERLINE_TEXT_FLAG) > 0) {
-            btnCounter.setPaintFlags(btnCounter.getPaintFlags() & (~Paint.UNDERLINE_TEXT_FLAG));
-        }
-
-        v.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mActivity.inflateUI(position);
+                case UNATTEMPTED:
+                    btnCounter.setBackgroundResource(R.drawable.rounded_corners_gray);
+                    btnCounter.setTextColor(mActivity.getResources().getColor(R.color.black));
+                    break;
             }
-        });
+
+            if (position == mActivity.selectedPosition) {
+                btnCounter.setPaintFlags(btnCounter.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+                mActivity.previousQuestionPosition = position;
+            } else if ((btnCounter.getPaintFlags() & Paint.UNDERLINE_TEXT_FLAG) > 0) {
+                btnCounter.setPaintFlags(btnCounter.getPaintFlags() & (~Paint.UNDERLINE_TEXT_FLAG));
+            }
+
+            v.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mActivity.inflateUI(position);
+                }
+            });
+        }
         return v;
     }
 }

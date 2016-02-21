@@ -67,7 +67,9 @@
                     android:id="@+id/sections_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"/>
+                    android:visibility="gone"
+                    android:layout_marginRight="20dp"
+                    />
 
                 </RelativeLayout>
                 <LinearLayout

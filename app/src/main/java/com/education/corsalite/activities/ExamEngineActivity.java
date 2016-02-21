@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.InputType;
@@ -43,13 +44,13 @@ import android.widget.ViewSwitcher;
 
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.ExamEngineGridAdapter;
+import com.education.corsalite.adapters.MockSubjectsAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.enums.QuestionType;
 import com.education.corsalite.event.ExerciseAnsEvent;
 import com.education.corsalite.fragments.FullQuestionDialog;
-import com.education.corsalite.models.MockTest;
 import com.education.corsalite.models.requestmodels.ExamTemplateChapter;
 import com.education.corsalite.models.requestmodels.ExamTemplateConfig;
 import com.education.corsalite.models.requestmodels.FlaggedQuestionModel;
@@ -74,14 +75,12 @@ import com.education.corsalite.views.GridViewInScrollView;
 import com.google.gson.Gson;
 
 import java.io.Serializable;
-import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -199,7 +198,10 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private String chapterId = null;
     private String topicIds = null;
     private String questionsCount = null;
-    private TestPaperIndex moctTestPaperIndex;
+    private TestPaperIndex mockTestPaperIndex;
+    private List<String> sections;
+    private String selectedSection;
+    private MockSubjectsAdapter sectionsAdapter;
     private boolean isFlagged = false;
     private long examDurationInSeconds = 0;
     private long examDurationTakenInSeconds = 0;
@@ -248,9 +250,9 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             loadFlaggedQuestions();
         } else if (title.equalsIgnoreCase("Exercise Test")) {
             loadExerciseTest();
-        } else if(title.equalsIgnoreCase("Mock Test")) {
+        } else if (title.equalsIgnoreCase("Mock Test")) {
             loadMockTest();
-        } else if(title.equalsIgnoreCase("Schedule Test")) {
+        } else if (title.equalsIgnoreCase("Schedule Test")) {
             loadScheduledTest();
         } else if (title.equalsIgnoreCase("View Answers")) {
             loadViewAnswers();
@@ -297,11 +299,12 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private void loadMockTest() {
         imvFlag.setVisibility(View.VISIBLE);
         String testInstructions = getIntent().getStringExtra("Test_Instructions");
-        if(!TextUtils.isEmpty(testInstructions)) {
-            moctTestPaperIndex = new Gson().fromJson(testInstructions, TestPaperIndex.class);
-        }
         String testQuestionPaperId = getIntent().getStringExtra("test_question_papaer_id");
         getTestQuestionPaper(testQuestionPaperId, null);
+        if (!TextUtils.isEmpty(testInstructions)) {
+            mockTestPaperIndex = new Gson().fromJson(testInstructions, TestPaperIndex.class);
+            fetchSections(mockTestPaperIndex);
+        }
         imvRefresh.setVisibility(View.VISIBLE);
         timerLayout.setVisibility(View.VISIBLE);
         testNavFooter.setVisibility(View.VISIBLE);
@@ -331,25 +334,51 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void fetchSections(TestPaperIndex testPaperIndex) {
-        if(testPaperIndex != null && testPaperIndex.questionPaperIndecies != null) {
-            List<String> sections = new ArrayList<>();
-            for(QuestionPaperIndex questionPaperIndex : testPaperIndex.questionPaperIndecies) {
-                if(!TextUtils.isEmpty(questionPaperIndex.sectionName)) {
-                    if(!sections.contains(questionPaperIndex.sectionName)) {
+        if (testPaperIndex != null && testPaperIndex.questionPaperIndecies != null) {
+            sections = new ArrayList<>();
+            for (QuestionPaperIndex questionPaperIndex : testPaperIndex.questionPaperIndecies) {
+                if (!TextUtils.isEmpty(questionPaperIndex.sectionName)) {
+                    if (!sections.contains(questionPaperIndex.sectionName)) {
                         sections.add(questionPaperIndex.sectionName);
                     }
                 }
             }
+            sectionsRecyclerView.setVisibility(View.VISIBLE);
+            sectionsRecyclerView.setHasFixedSize(true);
+            sectionsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+            sectionsAdapter = new MockSubjectsAdapter();
+            sectionsAdapter.setData(sections);
+            sectionsAdapter.setOnMockSubjectClickListener(onMockSectionClickListener);
+            sectionsRecyclerView.setAdapter(sectionsAdapter);
         }
     }
 
+    private MockSubjectsAdapter.OnMockSectionClickListener onMockSectionClickListener = new MockSubjectsAdapter.OnMockSectionClickListener() {
+        @Override
+        public void onSectionClick(String section) {
+            selectSection(section);
+        }
+    };
+
+    private void selectSection(String section) {
+        selectedSection = section;
+        sectionsAdapter.setSelectedItem(section);
+        gridAdapter.setSelectedSectionName(section);
+        gridAdapter.notifyDataSetChanged();
+    }
+
     private void renderQuestionLayout() {
+        gridAdapter = new ExamEngineGridAdapter(this, localExamModelList);
+        if (sections != null && !sections.isEmpty()) {
+            gridAdapter.setSelectedSectionName(localExamModelList.get(selectedPosition).sectionName);
+            selectedSection = sections.get(0);
+        }
         if (selectedPosition >= 0) {
             inflateUI(selectedPosition);
         }
-        gridAdapter = new ExamEngineGridAdapter(this, localExamModelList);
         gvTest.setAdapter(gridAdapter);
         gvTest.setExpanded(true);
+
     }
 
     private void setListener() {
@@ -508,6 +537,9 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         resetExplanation();
         if (localExamModelList != null && localExamModelList.size() > 0) {
             loadQuestion(position);
+        }
+        if (!localExamModelList.get(position).sectionName.equals(selectedSection)) {
+            selectSection(localExamModelList.get(position).sectionName);
         }
     }
 
@@ -740,8 +772,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             optionsListView.setTag(header);
             listViews[i] = optionsListView;
             optionsListView.setChoiceMode(type == QuestionType.N_BLANK_SINGLE_SELECT
-                                            ? AbsListView.CHOICE_MODE_SINGLE
-                                            : AbsListView.CHOICE_MODE_MULTIPLE);
+                    ? AbsListView.CHOICE_MODE_SINGLE
+                    : AbsListView.CHOICE_MODE_MULTIPLE);
             optionsListView.setAdapter(new ArrayAdapter<String>(this,
                     android.R.layout.simple_list_item_multiple_choice, android.R.id.text1, items));
             optionsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -834,9 +866,12 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             }
             answerTxt.addTextChangedListener(new TextWatcher() {
                 @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+
                 @Override
-                public void afterTextChanged(Editable s) {}
+                public void afterTextChanged(Editable s) {
+                }
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -1205,7 +1240,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     @Override
                     public void success(List<ExamModel> examModels, Response response) {
                         super.success(examModels, response);
-                        if(showFlaggedQuestions) {
+                        if (showFlaggedQuestions) {
                             showFlaggedQuestions(examModels);
                         } else {
                             flaggedQuestions = examModels;
@@ -1217,7 +1252,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void updateQuestionsWithFlagStatus() {
-        if(flaggedQuestions != null && localExamModelList != null) {
+        if (flaggedQuestions != null && localExamModelList != null) {
             for (ExamModel model : localExamModelList) {
                 for (ExamModel flagQuestion : flaggedQuestions) {
                     if (model.idQuestion.equalsIgnoreCase(flagQuestion.idQuestion)) {
@@ -1290,17 +1325,17 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         postCustomExamTemplate.examTemplateConfig.add(examTemplateConfig);
 
         ApiManager.getInstance(this).postCustomExamTemplate(new Gson().toJson(postCustomExamTemplate),
-            new ApiCallback<PostExamTemplate>(this) {
-                @Override
-                public void success(PostExamTemplate postExamTemplate, Response response) {
-                    super.success(postExamTemplate, response);
-                    if (postExamTemplate != null && !TextUtils.isEmpty(postExamTemplate.idExamTemplate)) {
-                        postQuestionPaper(LoginUserCache.getInstance().loginResponse.entitiyId,
-                                        postExamTemplate.idExamTemplate,
-                                        LoginUserCache.getInstance().loginResponse.studentId);
+                new ApiCallback<PostExamTemplate>(this) {
+                    @Override
+                    public void success(PostExamTemplate postExamTemplate, Response response) {
+                        super.success(postExamTemplate, response);
+                        if (postExamTemplate != null && !TextUtils.isEmpty(postExamTemplate.idExamTemplate)) {
+                            postQuestionPaper(LoginUserCache.getInstance().loginResponse.entitiyId,
+                                    postExamTemplate.idExamTemplate,
+                                    LoginUserCache.getInstance().loginResponse.studentId);
+                        }
                     }
-                }
-            });
+                });
     }
 
     private void postFlaggedQuestion() {
@@ -1310,7 +1345,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         flaggedQuestionModel.idTestQuestion = localExamModelList.get(selectedPosition).idTestQuestion + "";
         flaggedQuestionModel.flaggedYN = isFlagged ? "N" : "Y";
         flaggedQuestionModel.idTestAnswerPaper = "null";
-        flaggedQuestionModel.idTestQuestion = localExamModelList.get(selectedPosition).idTestQuestion+"";
+        flaggedQuestionModel.idTestQuestion = localExamModelList.get(selectedPosition).idTestQuestion + "";
         flaggedQuestionModel.updateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 
         ApiManager.getInstance(this).postFlaggedQuestions(new Gson().toJson(flaggedQuestionModel),
@@ -1360,7 +1395,12 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                         super.success(examModels, response);
                         localExamModelList = examModels;
                         getFlaggedQuestion(false);
-                        if(localExamModelList != null ) {
+                        if (mockTestPaperIndex != null && mockTestPaperIndex.questionPaperIndecies != null) {
+                            for (int i = 0; i < mockTestPaperIndex.questionPaperIndecies.size(); i++) {
+                                localExamModelList.get(i).sectionName = mockTestPaperIndex.questionPaperIndecies.get(i).sectionName;
+                            }
+                        }
+                        if (localExamModelList != null) {
                             if (localExamModelList.size() > 1) {
                                 webFooter.setVisibility(View.VISIBLE);
                             } else {

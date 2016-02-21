@@ -45,6 +45,9 @@ public class ExamModel extends BaseModel implements Serializable, Comparable {
     public List<AnswerChoiceModel> answerChoice;
     public boolean isFlagged = false;
 
+    // To be used by app only. This is not a part of response
+    public String sectionName;
+
     public Constants.AnswerState answerColorSelection = Constants.AnswerState.UNATTEMPTED;
     public String selectedAnswers;
 
