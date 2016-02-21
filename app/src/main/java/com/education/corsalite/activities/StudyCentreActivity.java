@@ -186,16 +186,14 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                 intent = new Intent(this, ExamHistoryActivity.class);
                 startActivity(intent);
                 return true;
-            case R.id.action_mock_test :
+            case R.id.action_mock_test:
                 showMockTestsDialog();
                 return true;
-            case R.id.action_scheduled_test : {
-                /*intent = new Intent(this, TestStartActivity.class);
-                intent.putExtra(TestStartActivity.KEY_TEST_TYPE, Tests.SCHEDULED.getType());
-                startActivity(intent);*/
+            case R.id.action_scheduled_test:
                 showScheduledTestsDialog();
                 return true;
-            }
+            case R.id.action_challenge_your_friends:
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }

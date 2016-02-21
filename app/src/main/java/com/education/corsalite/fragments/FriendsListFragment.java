@@ -3,19 +3,28 @@ package com.education.corsalite.fragments;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.v7.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.education.corsalite.R;
+import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.activities.ChallengeActivity;
 import com.education.corsalite.adapters.DividerItemDecoration;
 import com.education.corsalite.adapters.FriendsAdapter;
+import com.education.corsalite.api.ApiCallback;
+import com.education.corsalite.api.ApiManager;
+import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.models.responsemodels.CorsaliteError;
+import com.education.corsalite.models.responsemodels.FriendsData;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit.client.Response;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -64,10 +73,7 @@ public class FriendsListFragment extends BaseFragment  implements SearchView.OnQ
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new FriendsAdapter(generateData());
-        mRecyclerView.setAdapter(mAdapter);
-        //TODO: Sridhar, Need to fix horizontal devider
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), R.drawable.horizontal_line, true, true));
+        loadFriendsList();
 
         mFriendSearchView.setIconifiedByDefault(false);
 
@@ -77,32 +83,50 @@ public class FriendsListFragment extends BaseFragment  implements SearchView.OnQ
         mTextViewNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mFriendsListCallback.onNextClick(new ArrayList<FriendData>());
+                if (mAdapter.getSelectedFriends() != null && mAdapter.getSelectedFriends().size() > 0) {
+                    mFriendsListCallback.onNextClick(mAdapter.getSelectedFriends());
+                }
             }
         });
         return view;
     }
 
-    public List<FriendData> generateData(){
-        List<FriendData> list =new ArrayList<FriendData>();
-        list.add(new FriendData("", "Sridhar", "sridhar.nalam@gmail.com"));
-        list.add(new FriendData("", "Anu", "anu.radha@gmail.com"));
-        list.add(new FriendData("", "Balu", "bala.gopal@gmail.com"));
-        list.add(new FriendData("", "Madhu", "madhu.babu@gmail.com"));
-        list.add(new FriendData("", "Anil", "anil.rayudu@gmail.com"));
-        list.add(new FriendData("", "Prasanth", "prasanth.ndu@gmail.com"));
-        list.add(new FriendData("", "Bunny", "bunny.happy@gmail.com"));
-        list.add(new FriendData("", "Srinu", "srinu.vasu@gmail.com"));
-        list.add(new FriendData("", "Prasad", "prasad.challa@gmail.com"));
-        list.add(new FriendData("", "Jaya", "jaya.sree@gmail.com"));
-        list.add(new FriendData("", "Jaswanth", "jaswanth.joy@gmail.com"));
-        list.add(new FriendData("", "Naveen", "naveen.novel@gmail.com"));
-        return list;
+    private void loadFriendsList() {
+        ApiManager.getInstance(getActivity()).getFriendsList(
+                LoginUserCache.getInstance().loginResponse.userId,
+                AbstractBaseActivity.selectedCourse.courseId.toString(),
+                new ApiCallback<FriendsData>(getActivity()) {
+
+                    @Override
+                    public void success(FriendsData friendsData, Response response) {
+                        super.success(friendsData, response);
+                        if (friendsData != null) {
+                            FriendsListFragment.this.friendsData = friendsData;
+                            showFriendsList();
+                        }
+                    }
+
+                    @Override
+                    public void failure(CorsaliteError error) {
+                        super.failure(error);
+                        ((AbstractBaseActivity) getActivity()).showToast("No friends available");
+                    }
+                });
     }
+
+    private void showFriendsList() {
+        mAdapter = new FriendsAdapter(friendsData, getActivity().getLayoutInflater());
+        mRecyclerView.setAdapter(mAdapter);
+        //TODO: Sridhar, Need to fix horizontal devider
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), R.drawable.horizontal_line, true, true));
+    }
+
+    FriendsData friendsData;
 
     @Override
     public boolean onClose() {
-        mAdapter.setFilter(generateData());
+        if (friendsData != null && friendsData.friendsList != null && friendsData.friendsList.size() > 0)
+            mAdapter.setFilter(friendsData.friendsList);
         return false;
     }
 
@@ -113,57 +137,23 @@ public class FriendsListFragment extends BaseFragment  implements SearchView.OnQ
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        final List<FriendData> filteredModelList = filter(generateData(), newText);
-        mAdapter.setFilter(filteredModelList);
+        final List<FriendsData.Friends> filteredModelList = filter(newText);
+        mAdapter.setFilter((ArrayList<FriendsData.Friends>) filteredModelList);
         return true;
     }
 
-    private List<FriendData> filter(List<FriendData> models, String query) {
+    private List<FriendsData.Friends> filter(String query) {
         query = query.toLowerCase();
 
-        final List<FriendData> filteredModelList = new ArrayList<>();
-        for (FriendData model : models) {
-            final String text = model.getName().toLowerCase();
-            if (text.contains(query)) {
-                filteredModelList.add(model);
+        final List<FriendsData.Friends> filteredModelList = new ArrayList<>();
+        if (friendsData != null && friendsData.friendsList != null && friendsData.friendsList.size() > 0) {
+            for (FriendsData.Friends model : friendsData.friendsList) {
+                final String text = model.displayName.toLowerCase();
+                if (text.contains(query)) {
+                    filteredModelList.add(model);
+                }
             }
         }
         return filteredModelList;
-    }
-
-    public class FriendData {
-        private String pic;
-        private String name;
-        private String email;
-
-        public FriendData(String pic, String name, String email) {
-            this.pic = pic;
-            this.name = name;
-            this.email = email;
-        }
-
-        public String getPic() {
-            return pic;
-        }
-
-        public void setPic(String pic) {
-            this.pic = pic;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getEmail() {
-            return email;
-        }
-
-        public void setEmail(String email) {
-            this.email = email;
-        }
     }
 }

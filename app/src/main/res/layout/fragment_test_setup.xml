@@ -1,14 +1,230 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/white"
-    tools:context="com.education.corsalite.fragments.TestSetupFragment">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/white"
+                android:padding="5dp"
+                tools:context="com.education.corsalite.fragments.TestSetupFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_above="@+id/ll_action_buttons">
 
-</FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="Course Name"
+                android:textColor="#6A000000"
+                android:textSize="22sp"/>
+
+            <Spinner
+                android:id="@+id/selectSubjectSpinner"
+                style="@android:style/Widget.Holo.Light.Spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"></Spinner>
+
+            <TextView
+                android:id="@+id/tv_selectSubjError"
+                style="@android:style/TextAppearance.Small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Virtual Currecny"
+                android:textColor="@color/red"
+                android:visibility="gone"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#E1E1E1"/>
+
+            <Spinner
+                android:id="@+id/selectChapterSpinner"
+                style="@android:style/Widget.Holo.Light.Spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"></Spinner>
+
+            <TextView
+                android:id="@+id/tv_selectChapError"
+                style="@android:style/TextAppearance.Small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Virtual Currecny"
+                android:textColor="@color/red"
+                android:visibility="gone"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#E1E1E1"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_noOfQues"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:text="No., of questions"
+                    android:textColor="@color/text_black"
+                    android:textSize="18sp"/>
+
+                <EditText
+                    android:id="@+id/et_noOfQues"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:ems="2"
+                    android:gravity="center"
+                    android:hint="00"
+                    android:inputType="number"
+                    android:singleLine="true"
+                    android:textColor="@color/text_black"
+                    android:textColorHint="#46000000"
+                    android:textSize="18sp"/>
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_noOfQuesError"
+                style="@android:style/TextAppearance.Small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Virtual Currecny"
+                android:textColor="@color/red"
+                android:visibility="gone"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#E1E1E1"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_timeinMins"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:text="Time in mins"
+                    android:textColor="@color/text_black"
+                    android:textSize="18sp"/>
+
+                <EditText
+                    android:id="@+id/et_timeInMins"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:ems="2"
+                    android:gravity="center"
+                    android:hint="00"
+                    android:inputType="number"
+                    android:singleLine="true"
+                    android:textColor="@color/text_black"
+                    android:textColorHint="#46000000"
+                    android:textSize="18sp"/>
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_timeInMinsError"
+                style="@android:style/TextAppearance.Small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Virtual Currecny"
+                android:textColor="@color/red"
+                android:visibility="gone"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#E1E1E1"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_virCurrency"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:text="Virtual Currecny"
+                    android:textColor="@color/text_black"
+                    android:textSize="18sp"/>
+
+                <EditText
+                    android:id="@+id/et_virCurrency"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:ems="5"
+                    android:gravity="center"
+                    android:hint="000"
+                    android:inputType="number"
+                    android:singleLine="true"
+                    android:textColor="@color/text_black"
+                    android:textColorHint="#46000000"
+                    android:textSize="18sp"/>
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_virCurrencyError"
+                style="@android:style/TextAppearance.Small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Virtual Currecny"
+                android:textColor="@color/red"
+                android:visibility="gone"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#E1E1E1"/>
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/ll_action_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_vertical|right"
+        android:paddingRight="10dp">
+
+        <TextView
+            android:id="@+id/tv_testsetup_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:text="Cancel"
+            android:textColor="@android:color/black"/>
+
+        <TextView
+            android:id="@+id/tv_testsetup_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:text="Challenge"
+            android:textColor="@android:color/holo_green_dark"/>
+    </LinearLayout>
+
+</RelativeLayout>

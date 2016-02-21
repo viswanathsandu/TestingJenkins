@@ -9,12 +9,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.fragments.FriendsListFragment;
 import com.education.corsalite.fragments.TestSetupFragment;
+import com.education.corsalite.models.responsemodels.FriendsData;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ChallengeActivity extends AbstractBaseActivity {
@@ -35,15 +38,16 @@ public class ChallengeActivity extends AbstractBaseActivity {
     private void initListeners() {
         mFriendsListCallback = new FriendsListCallback() {
             @Override
-            public void onNextClick(List<FriendsListFragment.FriendData> selectedFriends) {
+            public void onNextClick(ArrayList<FriendsData.Friends> selectedFriends) {
+                Toast.makeText(ChallengeActivity.this, selectedFriends.size() + "", Toast.LENGTH_LONG).show();
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, TestSetupFragment.newInstance(mTestSetupCallback)).commit();
+                        .replace(R.id.fragment_container, TestSetupFragment.newInstance(mTestSetupCallback, selectedFriends)).commit();
             }
         };
     }
 
     public interface FriendsListCallback extends Serializable {
-        public void onNextClick(List<FriendsListFragment.FriendData> selectedFriends);
+        public void onNextClick(ArrayList<FriendsData.Friends> selectedFriends);
     }
 
     public interface TestSetupCallback extends Serializable {
