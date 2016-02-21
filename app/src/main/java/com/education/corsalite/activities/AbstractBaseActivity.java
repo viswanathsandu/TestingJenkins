@@ -37,6 +37,7 @@ import com.education.corsalite.event.ForumPostingEvent;
 import com.education.corsalite.event.OfflineEventClass;
 import com.education.corsalite.event.TakingTestEvent;
 import com.education.corsalite.event.UpdateUserEvents;
+import com.education.corsalite.fragments.ScheduledTestDialog;
 import com.education.corsalite.models.ContentModel;
 import com.education.corsalite.models.requestmodels.LogoutModel;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
@@ -306,10 +307,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Localytics.tagEvent("Study Center");
-                Intent intent = new Intent(AbstractBaseActivity.this, StudyCentreActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                finish();
+                loadStudyCenterScreen();
             }
         });
 
@@ -356,9 +354,22 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         });
     }
 
-    private void loadWelcomeScreen() {
-        Intent intent = new Intent(this, WelcomeActivity.class);
+    protected void loadStudyCenterScreen() {
+        Intent intent = new Intent(AbstractBaseActivity.this, StudyCentreActivity.class);
         startActivity(intent);
+        finish();
+    }
+
+    protected void loadWelcomeScreen() {
+        Intent intent = new Intent(this, WelcomeActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
+    }
+
+    protected void showScheduledTestsDialog() {
+        ScheduledTestDialog dialog = new ScheduledTestDialog();
+        dialog.show(getFragmentManager(), "ScheduledTestsListDialog");
     }
 
     private void loadSmartClass() {
@@ -579,5 +590,12 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     public void onEvent(TakingTestEvent event){
         L.debug("TakingTestEvent id", event.id);
         new UpdateUserEvents().postTakingTest(this, event);
+    }
+
+    protected void redeem() {
+        Intent intent = new Intent(this, WebviewActivity.class);
+        intent.putExtra(LoginActivity.TITLE, getString(R.string.redeem));
+        intent.putExtra(LoginActivity.URL, Constants.REDEEM_URL);
+        startActivity(intent);
     }
 }
