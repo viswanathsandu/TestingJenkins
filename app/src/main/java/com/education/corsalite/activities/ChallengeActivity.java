@@ -32,25 +32,32 @@ public class ChallengeActivity extends AbstractBaseActivity {
         frameLayout.addView(myView);
         initListeners();
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragment_container, FriendsListFragment.newInstance(mFriendsListCallback)).commit();
+                .add(R.id.fragment_container, FriendsListFragment.newInstance(mFriendsListCallback), "FriendsList").addToBackStack(null).commit();
     }
 
     private void initListeners() {
         mFriendsListCallback = new FriendsListCallback() {
             @Override
             public void onNextClick(ArrayList<FriendsData.Friends> selectedFriends) {
-                Toast.makeText(ChallengeActivity.this, selectedFriends.size() + "", Toast.LENGTH_LONG).show();
+                showToast(selectedFriends.size() + "");
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, TestSetupFragment.newInstance(mTestSetupCallback, selectedFriends)).commit();
+                        .replace(R.id.fragment_container, TestSetupFragment.newInstance(mTestSetupCallback, selectedFriends)).addToBackStack(null).commit();
+            }
+        };
+
+        mTestSetupCallback = new TestSetupCallback() {
+            @Override
+            public void popUpFriendsListFragment() {
+                getSupportFragmentManager().popBackStackImmediate();
             }
         };
     }
 
     public interface FriendsListCallback extends Serializable {
-        public void onNextClick(ArrayList<FriendsData.Friends> selectedFriends);
+        void onNextClick(ArrayList<FriendsData.Friends> selectedFriends);
     }
 
     public interface TestSetupCallback extends Serializable {
-
+        void popUpFriendsListFragment();
     }
 }

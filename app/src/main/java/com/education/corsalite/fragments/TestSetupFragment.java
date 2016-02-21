@@ -91,8 +91,13 @@ public class TestSetupFragment extends BaseFragment {
 
     @OnClick(R.id.tv_testsetup_next)
     public void onNextClick() {
-        String selectedSubject = selectSubjSpinner.getSelectedItem().toString();
-        String selectedChapter = selectChapSpinner.getSelectedItem().toString();
+        String selectedSubject = null, selectedChapter = null;
+        if (selectSubjSpinner.getAdapter() != null) {
+            selectedSubject = selectSubjSpinner.getSelectedItem().toString();
+        }
+        if (selectSubjSpinner.getAdapter() != null) {
+            selectedChapter = selectChapSpinner.getSelectedItem().toString();
+        }
         String noOfQuestions = noOfQuesEdit.getText().toString();
         String timeInMins = timeInMinsEdit.getText().toString();
         String virCurrency = virtCurrencyEdit.getText().toString();
@@ -101,11 +106,11 @@ public class TestSetupFragment extends BaseFragment {
             selectSubjError.setVisibility(View.GONE);
             if (selectedChapter != null && !selectedChapter.isEmpty() && !selectedChapter.equalsIgnoreCase("Chapter")) {
                 selectChapError.setVisibility(View.GONE);
-                if (noOfQuestions != null && !noOfQuestions.isEmpty() && !isValidNoQues(noOfQuestions)) {
+                if (noOfQuestions != null && !noOfQuestions.isEmpty() && isValidNoQues(noOfQuestions)) {
                     noOfQuesError.setVisibility(View.GONE);
-                    if (timeInMins != null && !timeInMins.isEmpty() && !isValidTime(timeInMins)) {
+                    if (timeInMins != null && !timeInMins.isEmpty() && isValidTime(timeInMins)) {
                         timeInMinsError.setVisibility(View.GONE);
-                        if (virCurrency != null && !virCurrency.isEmpty() && !isValidCurrency(virCurrency)) {
+                        if (virCurrency != null && !virCurrency.isEmpty() && isValidCurrency(virCurrency)) {
                             virCurrencyError.setVisibility(View.GONE);
                             challengeTest();
                         } else {
@@ -117,7 +122,7 @@ public class TestSetupFragment extends BaseFragment {
                         timeInMinsError.setVisibility(View.VISIBLE);
                     }
                 } else {
-                    noOfQuesError.setText("Please select chapter");
+                    noOfQuesError.setText("Enter valid no. of questions");
                     noOfQuesError.setVisibility(View.VISIBLE);
                 }
             } else {
@@ -172,7 +177,7 @@ public class TestSetupFragment extends BaseFragment {
 
     @OnClick(R.id.tv_testsetup_cancel)
     public void onCancelClick() {
-
+        mTestSetupCallback.popUpFriendsListFragment();
     }
 
     private void loadContent() {
@@ -203,21 +208,37 @@ public class TestSetupFragment extends BaseFragment {
                 subjectsList = contentIndexList.get(i).subjectModelList;
             }
         }
-        selectSubjSpinner.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.mocktest_spinner_item, R.id.mock_test_txt, getSubjects(subjectsList)));
+        selectSubjSpinner.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.challenge_spinner_item, R.id.mock_test_txt, getSubjects(subjectsList)));
         final List<SubjectModel> finalSubjectsList = subjectsList;
         selectSubjSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 if (adapterView.getItemAtPosition(position).toString().equalsIgnoreCase("Select Subject")) {
-                    selectChapSpinner.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.mocktest_spinner_item, R.id.mock_test_txt, getChapters(null)));
+                    selectChapSpinner.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.challenge_spinner_item, R.id.mock_test_txt, getChapters(null)));
                 } else {
+                    selectSubjError.setVisibility(View.GONE);
                     for (int i = 0; i < finalSubjectsList.size(); i++) {
                         if (finalSubjectsList.get(i).subjectName.equalsIgnoreCase(adapterView.getItemAtPosition(position).toString())) {
                             List<ChapterModel> chaptersList = finalSubjectsList.get(i).chapters;
-                            selectChapSpinner.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.mocktest_spinner_item, R.id.mock_test_txt, getChapters(chaptersList)));
+                            selectChapSpinner.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.challenge_spinner_item, R.id.mock_test_txt, getChapters(chaptersList)));
                         }
 
                     }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        selectChapSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                if (adapterView.getItemAtPosition(position).toString().equalsIgnoreCase("Chapter")) {
+                } else {
+                    selectChapError.setVisibility(View.GONE);
                 }
             }
 

@@ -15,10 +15,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/white"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="8dp">
 
             <TextView
                 android:id="@+id/tv_title"
+                fontPath="@string/roboto_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
@@ -29,6 +31,7 @@
             <Spinner
                 android:id="@+id/selectSubjectSpinner"
                 style="@android:style/Widget.Holo.Light.Spinner"
+                fontPath="@string/roboto_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"></Spinner>
@@ -36,6 +39,7 @@
             <TextView
                 android:id="@+id/tv_selectSubjError"
                 style="@android:style/TextAppearance.Small"
+                fontPath="@string/roboto_light"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Virtual Currecny"
@@ -50,6 +54,7 @@
             <Spinner
                 android:id="@+id/selectChapterSpinner"
                 style="@android:style/Widget.Holo.Light.Spinner"
+                fontPath="@string/roboto_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"></Spinner>
@@ -57,6 +62,7 @@
             <TextView
                 android:id="@+id/tv_selectChapError"
                 style="@android:style/TextAppearance.Small"
+                fontPath="@string/roboto_light"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Virtual Currecny"
@@ -74,6 +80,7 @@
 
                 <TextView
                     android:id="@+id/tv_noOfQues"
+                    fontPath="@string/roboto_medium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
@@ -84,6 +91,7 @@
 
                 <EditText
                     android:id="@+id/et_noOfQues"
+                    fontPath="@string/roboto_medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -101,6 +109,7 @@
             <TextView
                 android:id="@+id/tv_noOfQuesError"
                 style="@android:style/TextAppearance.Small"
+                fontPath="@string/roboto_light"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Virtual Currecny"
@@ -118,6 +127,7 @@
 
                 <TextView
                     android:id="@+id/tv_timeinMins"
+                    fontPath="@string/roboto_medium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
@@ -128,6 +138,7 @@
 
                 <EditText
                     android:id="@+id/et_timeInMins"
+                    fontPath="@string/roboto_medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -145,6 +156,7 @@
             <TextView
                 android:id="@+id/tv_timeInMinsError"
                 style="@android:style/TextAppearance.Small"
+                fontPath="@string/roboto_light"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Virtual Currecny"
@@ -162,6 +174,7 @@
 
                 <TextView
                     android:id="@+id/tv_virCurrency"
+                    fontPath="@string/roboto_medium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
@@ -172,14 +185,16 @@
 
                 <EditText
                     android:id="@+id/et_virCurrency"
+                    fontPath="@string/roboto_medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:ems="5"
-                    android:gravity="center"
-                    android:hint="000"
+                    android:gravity="end"
+                    android:hint="00"
                     android:inputType="number"
+                    android:paddingRight="12dp"
                     android:singleLine="true"
                     android:textColor="@color/text_black"
                     android:textColorHint="#46000000"
@@ -189,6 +204,7 @@
             <TextView
                 android:id="@+id/tv_virCurrencyError"
                 style="@android:style/TextAppearance.Small"
+                fontPath="@string/roboto_light"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Virtual Currecny"
@@ -212,6 +228,7 @@
 
         <TextView
             android:id="@+id/tv_testsetup_cancel"
+            fontPath="@string/roboto_regular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="15dp"
@@ -220,6 +237,7 @@
 
         <TextView
             android:id="@+id/tv_testsetup_next"
+            fontPath="@string/roboto_regular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="15dp"

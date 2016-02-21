@@ -88,6 +88,13 @@ public class FriendsListFragment extends BaseFragment  implements SearchView.OnQ
                 }
             }
         });
+
+        mTextViewCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               getActivity().finish();
+            }
+        });
         return view;
     }
 
