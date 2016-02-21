@@ -102,7 +102,7 @@ public class SplashActivity extends AbstractBaseActivity {
 
     private void navigateToNextScreen() {
         if(isTimerFinished && isLoginApiFinished) {
-            startActivity(new Intent(SplashActivity.this, isLoginSuccess ? StudyCentreActivity.class : LoginActivity.class));
+            startActivity(new Intent(SplashActivity.this, isLoginSuccess ? WelcomeActivity.class : LoginActivity.class));
             finish();
         }
     }

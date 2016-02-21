@@ -136,6 +136,11 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         loadCoursesList();
     }
 
+    protected void setToolbarForWelcomeScreen() {
+        toolbar.findViewById(R.id.spinner_layout).setVisibility(View.GONE);
+        setToolbarTitle("Corsalite");
+    }
+
     protected void setToolbarForTestIndexScreen() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.GONE);
         setToolbarTitle("Test Instructions");
@@ -236,6 +241,9 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         if(config == null) {
             return;
         }
+
+        navigationView.findViewById(R.id.navigation_welcome).setVisibility(View.VISIBLE);
+
         if(config.enableMyProfile != null && config.enableMyProfile) {
             navigationView.findViewById(R.id.navigation_profile).setVisibility(View.VISIBLE);
         }
@@ -275,6 +283,14 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     startActivity(intent);
                     drawerLayout.closeDrawers();
                 }
+            }
+        });
+
+        navigationView.findViewById(R.id.navigation_welcome).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadWelcomeScreen();
+                drawerLayout.closeDrawers();
             }
         });
 
@@ -338,6 +354,11 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 logout();
             }
         });
+    }
+
+    private void loadWelcomeScreen() {
+        Intent intent = new Intent(this, WelcomeActivity.class);
+        startActivity(intent);
     }
 
     private void loadSmartClass() {

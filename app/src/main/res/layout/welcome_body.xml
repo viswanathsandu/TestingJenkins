@@ -10,12 +10,12 @@
         android:background="@drawable/welcome_bg"
         android:gravity="center_horizontal|bottom"
         android:orientation="vertical"
-        android:paddingBottom="50dp">
+        android:paddingBottom="30dp">
 
 
         <ImageView
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_marginBottom="30dp"
             android:src="@drawable/profile_pic" />
 
@@ -25,16 +25,16 @@
             android:layout_height="wrap_content"
             android:text="Welcome"
             android:textColor="@color/text_white"
-            android:textSize="24sp" />
+            android:textSize="22sp" />
 
         <TextView
-            fontPath="@string/roboto_bold"
+            fontPath="@string/roboto_medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="First Name Last Name"
             android:textAllCaps="true"
             android:textColor="@color/text_white"
-            android:textSize="30sp" />
+            android:textSize="26sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -48,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:text="Last Visit : "
                 android:textColor="@color/text_white"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <TextView
                 fontPath="@string/roboto_regular"
@@ -58,7 +58,7 @@
                 android:layout_marginRight="20dp"
                 android:text="22/11/2015"
                 android:textColor="@color/text_white"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
 
             <TextView
@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:text="02:37 pm"
                 android:textColor="@color/text_white"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
         </LinearLayout>
 
