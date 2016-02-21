@@ -17,6 +17,12 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/navigation_welcome"
+                android:drawableLeft="@drawable/ico_sidemenu_dashboard"
+                android:text="Home"
+                style="@style/navigation_drawer_element"/>
+
+            <TextView
                 android:id="@+id/navigation_profile"
                 android:drawableLeft="@drawable/ico_sidemenu_myprofile"
                 android:text="@string/title_activity_user_profile"
