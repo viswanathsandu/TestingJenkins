@@ -9,12 +9,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.fragments.FriendsListFragment;
 import com.education.corsalite.fragments.TestSetupFragment;
+import com.education.corsalite.models.responsemodels.FriendsData;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ChallengeActivity extends AbstractBaseActivity {
@@ -29,24 +32,32 @@ public class ChallengeActivity extends AbstractBaseActivity {
         frameLayout.addView(myView);
         initListeners();
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragment_container, FriendsListFragment.newInstance(mFriendsListCallback)).commit();
+                .add(R.id.fragment_container, FriendsListFragment.newInstance(mFriendsListCallback), "FriendsList").addToBackStack(null).commit();
     }
 
     private void initListeners() {
         mFriendsListCallback = new FriendsListCallback() {
             @Override
-            public void onNextClick(List<FriendsListFragment.FriendData> selectedFriends) {
+            public void onNextClick(ArrayList<FriendsData.Friends> selectedFriends) {
+                showToast(selectedFriends.size() + "");
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, TestSetupFragment.newInstance(mTestSetupCallback)).commit();
+                        .replace(R.id.fragment_container, TestSetupFragment.newInstance(mTestSetupCallback, selectedFriends)).addToBackStack(null).commit();
+            }
+        };
+
+        mTestSetupCallback = new TestSetupCallback() {
+            @Override
+            public void popUpFriendsListFragment() {
+                getSupportFragmentManager().popBackStackImmediate();
             }
         };
     }
 
     public interface FriendsListCallback extends Serializable {
-        public void onNextClick(List<FriendsListFragment.FriendData> selectedFriends);
+        void onNextClick(ArrayList<FriendsData.Friends> selectedFriends);
     }
 
     public interface TestSetupCallback extends Serializable {
-
+        void popUpFriendsListFragment();
     }
 }

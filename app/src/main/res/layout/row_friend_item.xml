@@ -29,6 +29,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="7dp"
             android:text="Sridhar Nalam"
+            fontPath="@string/roboto_bold"
             android:textColor="@android:color/black"
             android:textStyle="bold" />
 
@@ -38,6 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_friend_name"
             android:paddingLeft="7dp"
+            fontPath="@string/roboto_light"
             android:textColor="@android:color/black"
             android:text="sridhar.nalam@gmail.com" />
 

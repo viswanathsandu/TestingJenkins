@@ -23,6 +23,7 @@ import com.education.corsalite.models.responsemodels.ExamHistory;
 import com.education.corsalite.models.responsemodels.ExamModel;
 import com.education.corsalite.models.responsemodels.ExamModels;
 import com.education.corsalite.models.responsemodels.ForumPost;
+import com.education.corsalite.models.responsemodels.FriendsData;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
 import com.education.corsalite.models.responsemodels.Message;
@@ -331,6 +332,12 @@ public class ApiManager {
     public void getScheduledTestsList(String studentId, ApiCallback<ScheduledTestList> callback) {
         if (isApiOnline()) {
             ApiClientService.get().getScheduledTestsList(studentId, callback);
+        }
+    }
+
+    public void getFriendsList(String userId, String courseId, ApiCallback<FriendsData> callback) {
+        if (isApiOnline()) {
+            ApiClientService.get().getFriendsList(userId, courseId, callback);
         }
     }
 
