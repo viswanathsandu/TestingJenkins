@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/welcome_bg"
+        android:gravity="center_horizontal|bottom"
+        android:orientation="vertical"
+        android:paddingBottom="30dp">
+
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginBottom="30dp"
+            android:src="@drawable/profile_pic" />
+
+        <TextView
+            fontPath="@string/roboto_regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Welcome"
+            android:textColor="@color/text_white"
+            android:textSize="22sp" />
+
+        <TextView
+            fontPath="@string/roboto_medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="First Name Last Name"
+            android:textAllCaps="true"
+            android:textColor="@color/text_white"
+            android:textSize="26sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_marginBottom="40dp">
+
+            <TextView
+                fontPath="@string/roboto_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Last Visit : "
+                android:textColor="@color/text_white"
+                android:textSize="18sp" />
+
+            <TextView
+                fontPath="@string/roboto_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:text="22/11/2015"
+                android:textColor="@color/text_white"
+                android:textSize="18sp" />
+
+
+            <TextView
+                fontPath="@string/roboto_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="02:37 pm"
+                android:textColor="@color/text_white"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/redeem_btn"
+                style="@style/welcome_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Redeem"
+                android:background="#A570B5"/>
+
+            <Button
+                android:id="@+id/studycenter_btn"
+                style="@style/welcome_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Study Center"
+                android:background="@color/green"/>
+
+            <Button
+                android:id="@+id/scheduled_tests_btn"
+                style="@style/welcome_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Scheduled Tests"
+                android:background="#00B8AB"/>
+
+            <Button
+                android:id="@+id/messages_btn"
+                style="@style/welcome_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Messages"
+                android:background="#7195BF"/>
+
+            <Button
+                android:id="@+id/recommended_reading_btn"
+                style="@style/welcome_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#FFBA4D"
+                android:text="Recommended Reading" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

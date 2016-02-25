@@ -61,6 +61,9 @@ public class DbManager {
      * User Profile Db stuff
      */
     public <T> void saveReqRes(final ReqRes<T> reqres) {
+        if(reqres == null) {
+            return;
+        }
         new Thread(new Runnable() {
             @Override
             public void run() {

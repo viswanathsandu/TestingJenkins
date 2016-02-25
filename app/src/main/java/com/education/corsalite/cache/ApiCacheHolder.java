@@ -30,9 +30,11 @@ public class ApiCacheHolder {
 
     private static ApiCacheHolder instance;
 
+    private LoginRequest loginRequest = null;
     public LoginReqRes login;
     public UserProfileReqRes userProfile;
     public CoursesReqRes courses;
+    private StudyCenterRequest studyCenterRequest = null;
     public StudyCenterReqRes studyCenter;
     public ContentIndexReqRes contentIndex;
     public ContentReqRes contentReqIndex;
@@ -46,12 +48,13 @@ public class ApiCacheHolder {
     }
 
     public void setLoginRequest(String loginId, String passwordHash) {
-        login = new LoginReqRes();
-        login.request = new LoginRequest(loginId, passwordHash);
+        loginRequest = new LoginRequest(loginId, passwordHash);
     }
 
     public void setLoginResponse(LoginResponse response) {
-        if(login != null) {
+        if(loginRequest != null && response != null) {
+            login = new LoginReqRes();
+            login.request = loginRequest;
             login.response = response;
         }
     }
@@ -79,12 +82,13 @@ public class ApiCacheHolder {
     }
 
     public void setStudyCenterRequest(String studentId, String courseId) {
-        studyCenter = new StudyCenterReqRes();
-        studyCenter.request = new StudyCenterRequest(studentId, courseId);
+        studyCenterRequest = new StudyCenterRequest(studentId, courseId);
     }
 
     public void setStudyCenterResponse(List<StudyCenter> response) {
-        if(studyCenter != null) {
+        if(studyCenterRequest != null && response != null) {
+            studyCenter = new StudyCenterReqRes();
+            studyCenter.request = studyCenterRequest;
             studyCenter.response = response;
         }
     }

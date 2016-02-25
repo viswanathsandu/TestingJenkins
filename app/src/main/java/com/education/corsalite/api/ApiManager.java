@@ -35,6 +35,7 @@ import com.education.corsalite.models.responsemodels.PostQuestionPaper;
 import com.education.corsalite.models.responsemodels.ScheduledTest;
 import com.education.corsalite.models.responsemodels.StudyCenter;
 import com.education.corsalite.models.responsemodels.TestCoverage;
+import com.education.corsalite.models.responsemodels.TestPaperIndex;
 import com.education.corsalite.models.responsemodels.UpdateExamDetailsResponse;
 import com.education.corsalite.models.responsemodels.UsageAnalysis;
 import com.education.corsalite.models.responsemodels.UserEventsResponse;
@@ -458,6 +459,12 @@ public class ApiManager {
     public void getMockTests(String courseId, String studentId, ApiCallback<List<MockTest>> callback) {
         if (isApiOnline()) {
             ApiClientService.get().getMockTests(courseId, studentId, callback);
+        }
+    }
+
+    public void getTestPaperIndex(String questionPaperId,String answerPpaerId,String allPosts,ApiCallback<TestPaperIndex> callback){
+        if(isApiOnline()){
+            ApiClientService.get().getTestPaperIndex(questionPaperId,answerPpaerId,allPosts,callback);
         }
     }
 

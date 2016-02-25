@@ -46,12 +46,6 @@ public class SplashActivity extends AbstractBaseActivity {
         }.start();
     }
 
-    private void redirectToLogin(){
-        Intent intent = new Intent(this,LoginActivity.class);
-        startActivity(intent);
-        finish();
-    }
-
     private void checkAutoLogin() {
         String username = appPref.getValue("loginId");
         String passwordHash =  appPref.getValue("passwordHash");
@@ -59,6 +53,7 @@ public class SplashActivity extends AbstractBaseActivity {
             login(username, passwordHash, false);
         } else {
             isLoginApiFinished = true;
+            navigateToNextScreen();
         }
     }
     private void login(final String username, final String password, final boolean fetchLocal) {
@@ -67,6 +62,8 @@ public class SplashActivity extends AbstractBaseActivity {
             public void failure(CorsaliteError error) {
                 super.failure(error);
                 closeProgress();
+                isLoginSuccess = false;
+                isLoginApiFinished = true;
                 if (error != null && !TextUtils.isEmpty(error.message)) {
                     showToast(error.message);
                     navigateToNextScreen();
@@ -79,11 +76,10 @@ public class SplashActivity extends AbstractBaseActivity {
                 closeProgress();
                 isLoginApiFinished = true;
                 if (loginResponse.isSuccessful()) {
-                    ApiCacheHolder.getInstance().setLoginResponse(loginResponse);
+                    onLoginsuccess(loginResponse, fetchLocal);
                     dbManager.saveReqRes(ApiCacheHolder.getInstance().login);
                     appPref.save("loginId", username);
                     appPref.save("passwordHash", password);
-                    onLoginsuccess(loginResponse, fetchLocal);
                 } else {
                     showToast(getResources().getString(R.string.login_failed));
                 }
@@ -93,7 +89,7 @@ public class SplashActivity extends AbstractBaseActivity {
     }
 
     private void onLoginsuccess(LoginResponse response, boolean fetchLocal) {
-        if(response != null) {
+        if(response != null && response.studentId != null) {
             LoginUserCache.getInstance().setLoginResponse(response);
             if(!fetchLocal) {
                 isLoginSuccess = true;
@@ -106,7 +102,7 @@ public class SplashActivity extends AbstractBaseActivity {
 
     private void navigateToNextScreen() {
         if(isTimerFinished && isLoginApiFinished) {
-            startActivity(new Intent(SplashActivity.this, isLoginSuccess ? StudyCentreActivity.class : LoginActivity.class));
+            startActivity(new Intent(SplashActivity.this, isLoginSuccess ? WelcomeActivity.class : LoginActivity.class));
             finish();
         }
     }

@@ -11,7 +11,6 @@ import com.education.corsalite.activities.ExamEngineActivity;
 import com.education.corsalite.services.NotifyScheduledTest;
 
 public class NotifyReceiver extends BroadcastReceiver {
-
     @Override
     public void onReceive(Context context, Intent intent) {
         Bundle extras = intent.getExtras();

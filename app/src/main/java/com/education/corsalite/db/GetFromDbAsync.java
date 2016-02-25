@@ -26,15 +26,17 @@ public class GetFromDbAsync<T> extends AsyncTask<String, Void, Object> {
 
     @Override
     protected Object doInBackground(String... params) {
-        List<? extends ReqRes> reqResList = dbService.Get(reqres.getClass());
-        if(reqResList != null && !reqResList.isEmpty()) {
-            for (ReqRes reqresItem: reqResList) {
-                if(reqresItem.isRequestSame(reqres)) {
-                    return reqresItem.response;
+        if(reqres != null) {
+            List<? extends ReqRes> reqResList = dbService.Get(reqres.getClass());
+            if (reqResList != null && !reqResList.isEmpty()) {
+                for (ReqRes reqresItem : reqResList) {
+                    if (reqresItem.isRequestSame(reqres)) {
+                        return reqresItem.response;
+                    }
                 }
+            } else {
+                return MockUtils.getCorsaliteError("Failure", "Notwork not available");
             }
-        } else {
-            return MockUtils.getCorsaliteError("Failure", "Notwork not available");
         }
         return MockUtils.getCorsaliteError("Failure", "No data found");
     }
