@@ -85,7 +85,7 @@
                 android:layout_height="8dp"
                 android:layout_gravity="center"
                 android:layout_marginRight="15dp"
-                android:background="@color/yellow" />
+                android:background="@color/flagged_yellow" />
 
             <TextView
                 android:id="@+id/tv_review"

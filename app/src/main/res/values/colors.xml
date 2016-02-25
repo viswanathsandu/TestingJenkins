@@ -20,6 +20,7 @@
     <color name="yellow">#ffff00</color>
     <color name="amber">#FF7E00</color>
     <color name="golden_yellow">#ffd700</color>
+    <color name="flagged_yellow">#FFC117</color>
     <color name="black">#000000</color>
     <color name="dark_gray">#a9a9a9</color>
     <color name="cyan">#008B8B</color>

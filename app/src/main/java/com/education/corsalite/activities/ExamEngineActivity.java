@@ -67,6 +67,7 @@ import com.education.corsalite.models.responsemodels.TestPaperIndex;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.L;
+import com.education.corsalite.utils.SystemUtils;
 import com.education.corsalite.utils.TimeUtils;
 import com.education.corsalite.views.GridViewInScrollView;
 import com.google.gson.Gson;
@@ -199,6 +200,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private boolean isFlagged = false;
     private long examDurationInSeconds = 0;
     private long examDurationTakenInSeconds = 0;
+    private String testQuestionPapaerId = null;
 
     public static Intent getMyIntent(Context context, @Nullable Bundle extras) {
         Intent intent = new Intent(context, ExamEngineActivity.class);
@@ -281,16 +283,16 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             if(!TextUtils.isEmpty(testInstructions)) {
                 moctTestPaperIndex = new Gson().fromJson(testInstructions, TestPaperIndex.class);
             }
-            String testQuestionPaperId = getIntent().getStringExtra("test_question_papaer_id");
-            getTestQuestionPaper(testQuestionPaperId, null);
+            testQuestionPapaerId = getIntent().getStringExtra("test_question_papaer_id");
+            getTestQuestionPaper(null);
             imvRefresh.setVisibility(View.VISIBLE);
             timerLayout.setVisibility(View.VISIBLE);
             testNavFooter.setVisibility(View.VISIBLE);
             btnVerify.setVisibility(View.GONE);
         } else if(title.equalsIgnoreCase("Schedule Test")) {
             imvFlag.setVisibility(View.VISIBLE);
-            String testQuestionPaperId = getIntent().getExtras().getString("test_question_paper_id");
-            getTestQuestionPaper(testQuestionPaperId, null);
+            testQuestionPapaerId = getIntent().getExtras().getString("test_question_paper_id");
+            getTestQuestionPaper(null);
             imvRefresh.setVisibility(View.VISIBLE);
             timerLayout.setVisibility(View.VISIBLE);
             testNavFooter.setVisibility(View.VISIBLE);
@@ -587,8 +589,19 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 }
             }
             postExerciseAnsEvent();
-            navigateToExamResultActivity(localExamModelList.size(), success, failure);
+            if(SystemUtils.isNetworkConnected(this)) {
+                openAdvancedExamResultSummary();
+            } else {
+                navigateToExamResultActivity(localExamModelList.size(), success, failure);
+            }
         }
+    }
+
+    private void openAdvancedExamResultSummary() {
+        Intent intent = new Intent(this, WebviewActivity.class);
+        intent.putExtra(LoginActivity.URL, Constants.EXAM_RESULTS_SUMMARY_URL);
+        intent.putExtra(LoginActivity.TITLE, getString(R.string.results));
+        startActivity(intent);
     }
 
     private void postExerciseAnsEvent() {
@@ -1320,7 +1333,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     public void success(PostQuestionPaper postQuestionPaper, Response response) {
                         super.success(postQuestionPaper, response);
                         if (postQuestionPaper != null && !TextUtils.isEmpty(postQuestionPaper.idTestQuestionPaper)) {
-                            getTestQuestionPaper(postQuestionPaper.idTestQuestionPaper, null);
+                            testQuestionPapaerId = postQuestionPaper.idTestQuestionPaper;
+                            getTestQuestionPaper(null);
                         } else {
                             headerProgress.setVisibility(View.GONE);
                             tvEmptyLayout.setVisibility(View.VISIBLE);
@@ -1329,8 +1343,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 });
     }
 
-    private void getTestQuestionPaper(String testQuestionPaperId, String testAnswerPaperId) {
-        ApiManager.getInstance(this).getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId,
+    private void getTestQuestionPaper(String testAnswerPaperId) {
+        ApiManager.getInstance(this).getTestQuestionPaper(testQuestionPapaerId, testAnswerPaperId,
                 new ApiCallback<List<ExamModel>>(this) {
                     @Override
                     public void success(List<ExamModel> examModels, Response response) {

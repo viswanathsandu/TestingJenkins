@@ -112,6 +112,7 @@
     <string name="ic_close">&#xe048;</string>
     <string name="ic_email">&#xe087;</string>
     <string name="forgot_password">Forgot Password</string>
+    <string name="results">Results</string>
     <string name="add_course">Add Course</string>
     <string name="add_guardian">Add Guardian</string>
     <string name="redeem">Redeem</string>
