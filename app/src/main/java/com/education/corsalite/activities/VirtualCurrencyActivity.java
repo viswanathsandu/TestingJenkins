@@ -1,7 +1,6 @@
 package com.education.corsalite.activities;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +8,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.education.corsalite.R;
-import com.education.corsalite.utils.Constants;
 
 /**
  * Created by GIRISH on 13/09/15.
@@ -37,12 +35,5 @@ public class VirtualCurrencyActivity extends AbstractBaseActivity {
                 redeem();
             }
         });
-    }
-
-    private void redeem() {
-        Intent intent = new Intent(this, WebviewActivity.class);
-        intent.putExtra(LoginActivity.TITLE, getString(R.string.redeem));
-        intent.putExtra(LoginActivity.URL, Constants.REDEEM_URL);
-        startActivity(intent);
     }
 }

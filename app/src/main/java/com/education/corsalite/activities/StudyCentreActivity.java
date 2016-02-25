@@ -30,7 +30,6 @@ import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.db.DbManager;
 import com.education.corsalite.fragments.MockTestDialog;
-import com.education.corsalite.fragments.ScheduledTestDialog;
 import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.models.responsemodels.Chapters;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
@@ -66,7 +65,6 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     private String key;
     private TextView selectedSubjectTxt;
     private View selectedColorFilter;
-    private boolean closeApp = false;
     private ArrayList<Object> offlineContentList;
     private boolean isNetworkConnected;
 
@@ -466,11 +464,6 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         dialog.show(getFragmentManager(), "MockTestsListDialog");
     }
 
-    private void showScheduledTestsDialog() {
-        ScheduledTestDialog dialog = new ScheduledTestDialog();
-        dialog.show(getFragmentManager(), "ScheduledTestsListDialog");
-    }
-
     private void setListener(final TextView textView, final String text) {
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -550,11 +543,10 @@ public class StudyCentreActivity extends AbstractBaseActivity {
 
     @Override
     public void onBackPressed() {
-        if (!closeApp) {
-            closeApp = true;
-            showToast(getString(R.string.app_close_alert));
+        if(isTaskRoot()) {
+            loadWelcomeScreen();
         } else {
-            finish();
+            super.onBackPressed();
         }
     }
 }
