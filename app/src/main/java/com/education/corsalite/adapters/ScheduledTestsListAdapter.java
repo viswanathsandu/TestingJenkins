@@ -7,11 +7,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
-import com.education.corsalite.models.MockTest;
 import com.education.corsalite.models.ScheduledTestList;
-import com.education.corsalite.models.responsemodels.ScheduledTest;
+import com.education.corsalite.utils.L;
 
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -50,6 +50,7 @@ public class ScheduledTestsListAdapter extends AbstractRecycleViewAdapter {
     public class ScheduledTestDataHolder extends RecyclerView.ViewHolder {
 
         @Bind(R.id.mock_test_txt) TextView tvName;
+        @Bind(R.id.mock_test_time_txt) TextView tvTime;
         View parent;
 
         public ScheduledTestDataHolder(View view) {
@@ -60,6 +61,12 @@ public class ScheduledTestsListAdapter extends AbstractRecycleViewAdapter {
 
         public void bindData(final int position, final ScheduledTestList.ScheduledTestsArray mockTest) {
             tvName.setText(mockTest.examName);
+            try {
+                Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(mockTest.startTime);
+                tvTime.setText(new SimpleDateFormat("yyyy/MM/dd hh:mm a").format(date));
+            } catch (Exception e) {
+                L.error(e.getMessage(), e);
+            }
             tvName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

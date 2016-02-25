@@ -11,12 +11,6 @@ import com.education.corsalite.models.MockTest;
 
 import java.util.List;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-
-/**
- * Created by Girish on 18/10/15.
- */
 public class MockTestsListAdapter extends AbstractRecycleViewAdapter {
 
     LayoutInflater inflater;
@@ -47,11 +41,11 @@ public class MockTestsListAdapter extends AbstractRecycleViewAdapter {
 
     public class MockTestDataHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.mock_test_txt) TextView tvName;
+        private TextView tvName;
 
         public MockTestDataHolder(View view) {
             super(view);
-            ButterKnife.bind(this, view);
+            tvName = (TextView) view.findViewById(R.id.mock_test_txt);
         }
 
         public void bindData(final int position, final MockTest mockTest) {
