@@ -42,6 +42,7 @@ import com.education.corsalite.models.responsemodels.UserEventsResponse;
 import com.education.corsalite.models.responsemodels.UserProfileResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencyBalanceResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencySummaryResponse;
+import com.education.corsalite.models.responsemodels.WelcomeDetails;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.FileUtils;
 import com.education.corsalite.utils.L;
@@ -464,8 +465,13 @@ public class ApiManager {
 
     public void getTestPaperIndex(String questionPaperId,String answerPpaerId,String allPosts,ApiCallback<TestPaperIndex> callback){
         if(isApiOnline()){
-            ApiClientService.get().getTestPaperIndex(questionPaperId,answerPpaerId,allPosts,callback);
+            ApiClientService.get().getTestPaperIndex(questionPaperId, answerPpaerId, allPosts, callback);
         }
     }
 
+    public void getWelcomeDetails(String idStudent,ApiCallback<WelcomeDetails> callback){
+        if(isApiOnline()){
+            ApiClientService.get().getWelcomeDetails(idStudent,callback);
+        }
+    }
 }
