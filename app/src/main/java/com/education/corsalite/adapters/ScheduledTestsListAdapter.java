@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
@@ -51,6 +52,7 @@ public class ScheduledTestsListAdapter extends AbstractRecycleViewAdapter {
 
         @Bind(R.id.mock_test_txt) TextView tvName;
         @Bind(R.id.mock_test_time_txt) TextView tvTime;
+        @Bind(R.id.download_test)ImageView ivDownload;
         View parent;
 
         public ScheduledTestDataHolder(View view) {
@@ -75,10 +77,19 @@ public class ScheduledTestsListAdapter extends AbstractRecycleViewAdapter {
                 }
                 }
             });
+            ivDownload.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (mListener != null) {
+                        mListener.onSchedledDownload(position);
+                    }
+                }
+            });
         }
     }
 
     public interface IScheduledTestSelectedListener{
         void onScheduledTestSelected(int position);
+        void onSchedledDownload(int position);
     }
 }

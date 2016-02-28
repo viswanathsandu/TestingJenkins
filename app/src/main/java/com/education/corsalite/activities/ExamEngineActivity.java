@@ -48,9 +48,12 @@ import com.education.corsalite.adapters.MockSubjectsAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.db.DbManager;
 import com.education.corsalite.enums.QuestionType;
 import com.education.corsalite.event.ExerciseAnsEvent;
 import com.education.corsalite.fragments.FullQuestionDialog;
+import com.education.corsalite.models.MockTest;
+import com.education.corsalite.models.OfflineMockTestModel;
 import com.education.corsalite.models.requestmodels.ExamTemplateChapter;
 import com.education.corsalite.models.requestmodels.ExamTemplateConfig;
 import com.education.corsalite.models.requestmodels.FlaggedQuestionModel;
@@ -66,6 +69,7 @@ import com.education.corsalite.models.responsemodels.PostExercise;
 import com.education.corsalite.models.responsemodels.PostFlaggedQuestions;
 import com.education.corsalite.models.responsemodels.PostQuestionPaper;
 import com.education.corsalite.models.responsemodels.QuestionPaperIndex;
+import com.education.corsalite.models.responsemodels.ScheduledTest;
 import com.education.corsalite.models.responsemodels.TestPaperIndex;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.Constants;
@@ -74,6 +78,7 @@ import com.education.corsalite.utils.SystemUtils;
 import com.education.corsalite.utils.TimeUtils;
 import com.education.corsalite.views.GridViewInScrollView;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -207,6 +212,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private long examDurationInSeconds = 0;
     private long examDurationTakenInSeconds = 0;
     private String testQuestionPaperId = null;
+    private boolean isOffline;
 
     public static Intent getMyIntent(Context context, @Nullable Bundle extras) {
         Intent intent = new Intent(context, ExamEngineActivity.class);
@@ -248,14 +254,26 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         subjectId = getIntent().getExtras().getString(Constants.SELECTED_SUBJECTID);
         chapterId = getIntent().getExtras().getString(Constants.SELECTED_CHAPTERID);
         topicIds = getIntent().getExtras().getString(Constants.SELECTED_TOPICID);
+        isOffline = getIntent().getExtras().getBoolean(Constants.IS_OFFLINE, false);
+        String testModels = getIntent().getExtras().getString("ExamModels");
         if (title.equalsIgnoreCase("Flagged Questions")) {
             loadFlaggedQuestions();
         } else if (title.equalsIgnoreCase("Exercise Test")) {
             loadExerciseTest();
         } else if (title.equalsIgnoreCase("Mock Test")) {
-            loadMockTest();
+            if(isOffline){
+                MockTest model = new Gson().fromJson(testModels,MockTest.class);
+                loadOfflineMockTest(model);
+            }else {
+                loadMockTest();
+            }
         } else if (title.equalsIgnoreCase("Schedule Test")) {
-            loadScheduledTest();
+            if(isOffline){
+                ScheduledTest model = new Gson().fromJson(testModels,ScheduledTest.class);
+                loadOfflineScheduledTest(model);
+            }else {
+                loadScheduledTest();
+            }
         } else if (title.equalsIgnoreCase("View Answers")) {
             loadViewAnswers();
         } else {
@@ -540,7 +558,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         if (localExamModelList != null && localExamModelList.size() > 0) {
             loadQuestion(position);
         }
-        if (!localExamModelList.get(position).sectionName.equals(selectedSection)) {
+        if (localExamModelList != null && localExamModelList.get(position).sectionName != null &&!localExamModelList.get(position).sectionName.equals(selectedSection)) {
             selectSection(localExamModelList.get(position).sectionName);
         }
     }
@@ -1452,5 +1470,59 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         bundle.putString(Constants.SELECTED_TOPIC, topic);
         fullQuestionDialog.setArguments(bundle);
         fullQuestionDialog.show(getFragmentManager(), "fullQuestionDialog");
+    }
+
+    private void loadOfflineMockTest(MockTest model){
+        DbManager.getInstance(this).getAllExamModels(model, new ApiCallback<List<ExamModel>>(this) {
+            @Override
+            public void success(List<ExamModel> examModels, Response response) {
+                super.success(examModels, response);
+                headerProgress.setVisibility(View.GONE);
+                localExamModelList = examModels;
+                if (localExamModelList != null) {
+                    if (localExamModelList.size() > 1) {
+                        webFooter.setVisibility(View.VISIBLE);
+                    } else {
+                        webFooter.setVisibility(View.GONE);
+                    }
+                    renderQuestionLayout();
+                    examDurationInSeconds = getExamDurationInSeconds(localExamModelList);
+                    //dummy timer.. need to fetch time and interval from service
+                    tv_timer.setText(TimeUtils.getSecondsInTimeFormat(examDurationInSeconds));
+                    final CounterClass timer = new CounterClass(examDurationInSeconds * 1000, 1000);
+                    timer.start();
+                } else {
+                    headerProgress.setVisibility(View.GONE);
+                    tvEmptyLayout.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+    }
+
+    private void loadOfflineScheduledTest(ScheduledTest model){
+        DbManager.getInstance(this).getAllExamModels(model, new ApiCallback<List<ExamModel>>(this) {
+            @Override
+            public void success(List<ExamModel> examModels, Response response) {
+                super.success(examModels, response);
+                headerProgress.setVisibility(View.GONE);
+                localExamModelList = examModels;
+                if (localExamModelList != null) {
+                    if (localExamModelList.size() > 1) {
+                        webFooter.setVisibility(View.VISIBLE);
+                    } else {
+                        webFooter.setVisibility(View.GONE);
+                    }
+                    renderQuestionLayout();
+                    examDurationInSeconds = getExamDurationInSeconds(localExamModelList);
+                    //dummy timer.. need to fetch time and interval from service
+                    tv_timer.setText(TimeUtils.getSecondsInTimeFormat(examDurationInSeconds));
+                    final CounterClass timer = new CounterClass(examDurationInSeconds * 1000, 1000);
+                    timer.start();
+                } else {
+                    headerProgress.setVisibility(View.GONE);
+                    tvEmptyLayout.setVisibility(View.VISIBLE);
+                }
+            }
+        });
     }
 }

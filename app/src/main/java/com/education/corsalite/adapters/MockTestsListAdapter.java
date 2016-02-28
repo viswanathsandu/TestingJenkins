@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
@@ -42,10 +43,12 @@ public class MockTestsListAdapter extends AbstractRecycleViewAdapter {
     public class MockTestDataHolder extends RecyclerView.ViewHolder {
 
         private TextView tvName;
+        private ImageView ivDownload;
 
         public MockTestDataHolder(View view) {
             super(view);
             tvName = (TextView) view.findViewById(R.id.mock_test_txt);
+            ivDownload = (ImageView) view.findViewById(R.id.download_test);
         }
 
         public void bindData(final int position, final MockTest mockTest) {
@@ -58,10 +61,19 @@ public class MockTestsListAdapter extends AbstractRecycleViewAdapter {
                     }
                 }
             });
+            ivDownload.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (mListener != null) {
+                        mListener.onMockTestDownload(position);
+                    }
+                }
+            });
         }
     }
 
     public interface IMockTestSelectedListener {
         void onMockTestSelected(int position);
+        void onMockTestDownload(int position);
     }
 }

@@ -112,6 +112,7 @@
             android:theme="@style/UserProfileTheme" />
 
         <service android:name=".services.VideoDownloadService" />
+        <service android:name=".services.TestDownloadService" />
 
         <receiver
             android:name="com.localytics.android.ReferralReceiver"
