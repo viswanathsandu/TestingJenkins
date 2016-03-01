@@ -131,5 +131,8 @@ public class OfflineContentActivity extends AbstractBaseActivity {
 
     }
 
+    public interface IOfflineTestEventListener{
+        void onDeleteOfflineTest(int position,String tag);
+    }
 
 }
