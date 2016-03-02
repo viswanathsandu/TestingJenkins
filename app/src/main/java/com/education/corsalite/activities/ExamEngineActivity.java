@@ -259,7 +259,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         String testModels = getIntent().getExtras().getString("ExamModels");
         if (title.equalsIgnoreCase("Flagged Questions")) {
             loadFlaggedQuestions();
-        } else if (title.equalsIgnoreCase("Exercise Test")) {
+        } else if (title.equalsIgnoreCase("Exercises")) {
+            L.info("Vissu : loading exercise test");
             loadExerciseTest();
         } else if (title.equalsIgnoreCase("Mock Test")) {
             if(isOffline){
