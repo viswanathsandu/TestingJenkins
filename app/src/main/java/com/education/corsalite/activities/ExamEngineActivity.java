@@ -54,6 +54,7 @@ import com.education.corsalite.event.ExerciseAnsEvent;
 import com.education.corsalite.fragments.FullQuestionDialog;
 import com.education.corsalite.models.MockTest;
 import com.education.corsalite.models.OfflineMockTestModel;
+import com.education.corsalite.models.ScheduledTestList;
 import com.education.corsalite.models.requestmodels.ExamTemplateChapter;
 import com.education.corsalite.models.requestmodels.ExamTemplateConfig;
 import com.education.corsalite.models.requestmodels.FlaggedQuestionModel;
@@ -269,7 +270,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             }
         } else if (title.equalsIgnoreCase("Schedule Test")) {
             if(isOffline){
-                ScheduledTest model = new Gson().fromJson(testModels,ScheduledTest.class);
+                ScheduledTestList.ScheduledTestsArray model = new Gson().fromJson(testModels,ScheduledTestList.ScheduledTestsArray.class);
                 loadOfflineScheduledTest(model);
             }else {
                 loadScheduledTest();
@@ -1499,9 +1500,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         });
     }
 
-    private void loadOfflineScheduledTest(ScheduledTest model){
-        // TOO : commented this to make sure that app works fine
-        /*DbManager.getInstance(this).getAllExamModels(model, new ApiCallback<List<ExamModel>>(this) {
+    private void loadOfflineScheduledTest(ScheduledTestList.ScheduledTestsArray model){
+        DbManager.getInstance(this).getAllExamModels(model, new ApiCallback<List<ExamModel>>(this) {
             @Override
             public void success(List<ExamModel> examModels, Response response) {
                 super.success(examModels, response);
@@ -1524,6 +1524,6 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     tvEmptyLayout.setVisibility(View.VISIBLE);
                 }
             }
-        });*/
+        });
     }
 }
