@@ -75,7 +75,8 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
             holder.textView.setText(label);
             holder.timeSpent.setText(getDateFromMillis(chapter.timeSpent));
             holder.level.setText(studyCentreActivity.getResources().getString(R.string.level_text) + " " + (chapter.passedComplexity + 1));
-            holder.gridLayout.setBackground(getColorDrawable(holder, chapter));
+            holder.gridLayout.setBackgroundDrawable(getColorDrawable(holder, chapter));
+            holder.rootGridLayout.setBackgroundDrawable(getColorDrawable(holder, chapter));
             int totalTopics = Data.getInt(chapter.totalTopics);
             int completedTopics = Data.getInt(chapter.completedTopics);
             int percentage = (completedTopics != 0)
@@ -95,7 +96,8 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         } else {
             holder.gridLayoutGray.setVisibility(View.VISIBLE);
             holder.gridLayout.setVisibility(View.GONE);
-            holder.gridLayoutGray.setBackground(studyCentreActivity.getResources().getDrawable(R.drawable.grayshape));
+            holder.gridLayoutGray.setBackgroundDrawable(studyCentreActivity.getResources().getDrawable(R.drawable.grayshape));
+            holder.rootGridLayout.setBackgroundDrawable(studyCentreActivity.getResources().getDrawable(R.drawable.grayshape));
             holder.textViewGray.setText(label);
             holder.timeSpentGray.setText(getDateFromMillis(chapter.timeSpent));
             holder.levelGray.setText(studyCentreActivity.getResources().getString(R.string.level_text) + " " + (chapter.passedComplexity + 1));

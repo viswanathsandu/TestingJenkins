@@ -39,7 +39,6 @@
             android:layout_height="wrap_content"
             android:hint="Email"
             android:singleLine="true"
-            android:text="demo01@corsalite.com"
             android:textColor="@android:color/black"
             app:met_primaryColor="@color/green" />
 
@@ -52,7 +51,6 @@
             android:hint="Password"
             android:inputType="textPassword"
             android:singleLine="true"
-            android:text="core@tech"
             android:textColor="@android:color/black"
             app:met_primaryColor="@color/green" />
 
