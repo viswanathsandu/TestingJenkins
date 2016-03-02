@@ -41,12 +41,7 @@ public class CheckedItemViewHolder extends TreeNode.BaseNodeViewHolder<String> {
         nodeSelector.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                node.setSelected(isChecked);
-                for (TreeNode n : node.getChildren()) {
-                    getTreeView().selectNode(n, isChecked);
-                }
-                TreeNode pnode = node.getParent();
-                pnode.setSelected(isChecked);
+                refreshNodes(node, isChecked);
             }
         });
         nodeSelector.setChecked(node.isSelected());
@@ -61,6 +56,23 @@ public class CheckedItemViewHolder extends TreeNode.BaseNodeViewHolder<String> {
         return view;
     }
 
+    private void refreshNodes(TreeNode node, boolean isChecked) {
+        getTreeView().selectNode(node, isChecked);
+        // child level
+        for (TreeNode n : node.getChildren()) {
+            getTreeView().selectNode(n, isChecked);
+        }
+        // parent level
+        if(node.getParent() != null) {
+            for (TreeNode n : node.getParent().getChildren()) {
+                if(n.isSelected()) {
+                    node.getParent().setSelected(true);
+                    return;
+                }
+            }
+            getTreeView().selectNode(node.getParent(), false);
+        }
+    }
 
     @Override
     public void toggleSelectionMode(boolean editModeEnabled) {

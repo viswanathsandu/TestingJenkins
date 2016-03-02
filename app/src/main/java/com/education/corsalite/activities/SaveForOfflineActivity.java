@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -126,21 +125,24 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
             int topicCount = 0;
             for (TreeNode innerNode : n.getChildren()) {
                 TopicModel topicModel = topicModelList.get(topicCount);
-                if (((CheckBox) innerNode.getViewHolder().getNodeView().findViewById(R.id.node_selector)).isChecked()) {
+                if (innerNode.isSelected()) {
                     String contentText = "";
                     int contentCount = 0;
                     for (TreeNode innerMostNode : innerNode.getChildren()) {
                         ContentModel contentModel = topicModel.contentMap.get(contentCount);
-                        if (((CheckBox) innerMostNode.getViewHolder().getNodeView().findViewById(R.id.node_selector)).isChecked()) {
+                        if (innerMostNode.isSelected()) {
                             contentText += "\t\t" + innerMostNode.getValue().toString() + "\n";
                             if (contentModel.type.equals(Constants.VIDEO_FILE)) {
                                 videoContentId += contentModel.idContent + ",";
                             } else {
                                 htmlContentId += contentModel.idContent + ",";
                             }
-                            OfflineContent offlineContent = new OfflineContent(mCourseId,mCourseName,mSubjectId,mSubjectName,
-                                    mChapterId,mChapterName,topicModel.idTopic,topicModel.topicName,
-                                    contentModel.idContent,contentModel.contentName,contentModel.contentName + "." + contentModel.type);
+                            OfflineContent offlineContent = new OfflineContent(mCourseId,mCourseName,
+                                                                                mSubjectId,mSubjectName,
+                                                                                mChapterId,mChapterName,
+                                                                                topicModel.idTopic,topicModel.topicName,
+                                                                                contentModel.idContent,contentModel.contentName,
+                                                                                contentModel.contentName + "." + contentModel.type);
                             offlineContents.add(offlineContent);
                         }
                         contentCount++;
