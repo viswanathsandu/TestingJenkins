@@ -3,13 +3,19 @@ package com.education.corsalite.db;
 import android.content.Context;
 
 import com.education.corsalite.api.ApiCallback;
+import com.education.corsalite.models.MockTest;
+import com.education.corsalite.models.OfflineMockTestModel;
+import com.education.corsalite.models.ScheduledTestList;
 import com.education.corsalite.models.db.ContentIndexResponse;
 import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.models.db.reqres.ReqRes;
+import com.education.corsalite.models.responsemodels.ExamModel;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 
 import java.util.List;
+
+import retrofit.client.Response;
 
 /**
  * Created by vissu on 9/16/15.
@@ -140,4 +146,40 @@ public class DbManager {
         new GetDataFromDbAsync(dbService, callback).execute();
     }
 
+    public void saveOfflineMockTest(OfflineMockTestModel model){
+        dbService.Save(model);
+    }
+    public void deleteOfflineMockTest(OfflineMockTestModel model){
+        dbService.Delete(OfflineMockTestModel.class, model);
+    }
+
+    public void getAllOfflineMockTests(ApiCallback<List<OfflineMockTestModel>> callback){
+        new GetOfflineTestFromDb(dbService, callback).execute();
+    }
+
+    public void getAllExamModels(final MockTest mockTest, final ApiCallback<List<ExamModel>> callback){
+        new GetOfflineTestFromDb(dbService, new ApiCallback<List<OfflineMockTestModel>>(context){
+            public void success(List<OfflineMockTestModel> offlineMockTestModels, Response response) {
+                super.success(offlineMockTestModels, response);
+                for (OfflineMockTestModel model:offlineMockTestModels) {
+                    if(model.mockTest.examTemplateId.equalsIgnoreCase(mockTest.examTemplateId)){
+                        callback.success(model.examModels,response);
+                    }
+                }
+            }
+        }).execute();
+    }
+
+    public void getAllExamModels(final ScheduledTestList.ScheduledTestsArray scheduledTest, final ApiCallback<List<ExamModel>> callback){
+        new GetOfflineTestFromDb(dbService, new ApiCallback<List<OfflineMockTestModel>>(context){
+            public void success(List<OfflineMockTestModel> offlineMockTestModels, Response response) {
+                super.success(offlineMockTestModels, response);
+                for (OfflineMockTestModel model:offlineMockTestModels) {
+                    if(model.scheduledTest.testQuestionPaperId.equalsIgnoreCase(scheduledTest.testQuestionPaperId)){
+                        callback.success(model.examModels,response);
+                    }
+                }
+            }
+        }).execute();
+    }
 }

@@ -29,10 +29,12 @@ import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.ScheduledTestList;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
+import com.education.corsalite.services.TestDownloadService;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.Data;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.NotifyReceiver;
+import com.google.gson.Gson;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -146,6 +148,16 @@ public class ScheduledTestDialog extends DialogFragment implements ScheduledTest
             L.error(e.getMessage(), e);
         }
         Toast.makeText(getActivity(), "Please access the test during scheduled time", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onSchedledDownload(int position) {
+        ScheduledTestList.ScheduledTestsArray exam = mScheduledTestList.MockTest.get(position);
+        Intent intent = new Intent(getActivity(), TestDownloadService.class);
+        intent.putExtra("testQuestionPaperId",exam.testQuestionPaperId);
+        String scheduleTestStr = new Gson().toJson(exam);
+        intent.putExtra("selectedScheduledTest",scheduleTestStr);
+        getActivity().startService(intent);
     }
 
     private void loadScheduledTests() {

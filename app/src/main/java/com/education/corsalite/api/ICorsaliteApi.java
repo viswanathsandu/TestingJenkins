@@ -35,6 +35,7 @@ import com.education.corsalite.models.responsemodels.UserEventsResponse;
 import com.education.corsalite.models.responsemodels.UserProfileResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencyBalanceResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencySummaryResponse;
+import com.education.corsalite.models.responsemodels.WelcomeDetails;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -195,4 +196,7 @@ public interface ICorsaliteApi {
 
     @GET("/TestPaperIndex")
     void getTestPaperIndex(@Query("idTestQuestionPaper")String questionPaperId,@Query("idTestAnswerPaper") String answerPaperId,@Query("doGetAllStage") String allStage ,ApiCallback<TestPaperIndex> callback);
+
+    @GET("/Welcome")
+    void getWelcomeDetails(@Query("idStudent")String idStudent,ApiCallback<WelcomeDetails> callback);
 }

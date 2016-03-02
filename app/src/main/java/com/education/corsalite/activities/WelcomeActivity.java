@@ -5,12 +5,23 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.education.corsalite.R;
+import com.education.corsalite.api.ApiCallback;
+import com.education.corsalite.api.ApiManager;
+import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.models.responsemodels.WelcomeDetails;
+import com.education.corsalite.services.ApiClientService;
+
+import org.w3c.dom.Text;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import retrofit.client.Response;
 
 public class WelcomeActivity extends AbstractBaseActivity implements View.OnClickListener {
 
@@ -19,6 +30,12 @@ public class WelcomeActivity extends AbstractBaseActivity implements View.OnClic
     @Bind(R.id.messages_btn) Button messagesBtn;
     @Bind(R.id.scheduled_tests_btn) Button scheduledTestsBtn;
     @Bind(R.id.recommended_reading_btn) Button recommendedReadingBtn;
+    @Bind(R.id.name_txt)TextView fullName;
+    @Bind(R.id.lastvisit_date)TextView lastVisitDate;
+    @Bind(R.id.lastvisit_time)TextView lastVisitTime;
+    @Bind(R.id.profile_pic)ImageView profilePic;
+    @Bind(R.id.vc_totalcount)TextView vcTotal;
+    @Bind(R.id.vc_lastsessioncount)TextView vcLastSession;
 
     private boolean closeApp = false;
 
@@ -31,6 +48,25 @@ public class WelcomeActivity extends AbstractBaseActivity implements View.OnClic
         ButterKnife.bind(this);
         setToolbarForWelcomeScreen();
         setListeners();
+        getWelcomeDetails();
+    }
+
+    private void getWelcomeDetails() {
+        ApiManager.getInstance(this).getWelcomeDetails(LoginUserCache.getInstance().loginResponse.studentId, new ApiCallback<WelcomeDetails>(WelcomeActivity.this) {
+            @Override
+            public void success(WelcomeDetails welcomeDetails, Response response) {
+                super.success(welcomeDetails, response);
+                if(welcomeDetails != null){
+                    Glide.with(WelcomeActivity.this).load(ApiClientService.getBaseUrl() + welcomeDetails.photoUrl.replaceFirst("./", "")).into(profilePic);
+                    fullName.setText(welcomeDetails.firstName+" "+welcomeDetails.lastName);
+                    String[] dateStr = welcomeDetails.userLastLoginDate.split(" ");
+                    lastVisitDate.setText(dateStr[0]);
+                    lastVisitTime.setText(dateStr[1]);
+                    vcTotal.setText(welcomeDetails.vcCount);
+                    vcLastSession.setText(welcomeDetails.vcInLastSession);
+                }
+            }
+        });
     }
 
     private void setListeners() {

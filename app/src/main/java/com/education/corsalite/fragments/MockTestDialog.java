@@ -29,6 +29,7 @@ import com.education.corsalite.models.requestmodels.PostQuestionPaperRequest;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.PostQuestionPaper;
 import com.education.corsalite.models.responsemodels.TestPaperIndex;
+import com.education.corsalite.services.TestDownloadService;
 import com.google.gson.Gson;
 
 import java.util.List;
@@ -47,6 +48,7 @@ public class MockTestDialog extends DialogFragment implements MockTestsListAdapt
     private Dialog dialog;
     private List<MockTest> mMockTestList;
     private String testQuestionPaperId;
+    private MockTest selectedMockTest;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -75,7 +77,14 @@ public class MockTestDialog extends DialogFragment implements MockTestsListAdapt
     @Override
     public void onMockTestSelected(int position) {
         postQuestionPaper(LoginUserCache.getInstance().loginResponse.entitiyId,
-                mMockTestList.get(position).examTemplateId, LoginUserCache.getInstance().loginResponse.studentId);
+                mMockTestList.get(position).examTemplateId, LoginUserCache.getInstance().loginResponse.studentId,0);
+    }
+
+    @Override
+    public void onMockTestDownload(int position) {
+        selectedMockTest = mMockTestList.get(position);
+        postQuestionPaper(LoginUserCache.getInstance().loginResponse.entitiyId,
+                mMockTestList.get(position).examTemplateId, LoginUserCache.getInstance().loginResponse.studentId,1);
     }
 
     private void loadMockTests() {
@@ -101,7 +110,7 @@ public class MockTestDialog extends DialogFragment implements MockTestsListAdapt
                 });
     }
 
-    private void postQuestionPaper(String entityId, String examTemplateId, String studentId) {
+    private void postQuestionPaper(String entityId, String examTemplateId, String studentId, final int condtion) {
         PostQuestionPaperRequest postQuestionPaper = new PostQuestionPaperRequest();
         postQuestionPaper.idCollegeBatch = "";
         postQuestionPaper.idEntity = entityId;
@@ -116,7 +125,16 @@ public class MockTestDialog extends DialogFragment implements MockTestsListAdapt
                     super.success(postQuestionPaper, response);
                     if (postQuestionPaper != null && !TextUtils.isEmpty(postQuestionPaper.idTestQuestionPaper)) {
                         testQuestionPaperId = postQuestionPaper.idTestQuestionPaper;
-                        getIndex(postQuestionPaper.idTestQuestionPaper, null, "N");
+                        if(condtion == 0) {
+                            getIndex(postQuestionPaper.idTestQuestionPaper, null, "N");
+                        }else {
+                            dialog.dismiss();
+                            Intent intent = new Intent(getActivity(), TestDownloadService.class);
+                            intent.putExtra("testQuestionPaperId",testQuestionPaperId);
+                            String mockTestStr = new Gson().toJson(selectedMockTest);
+                            intent.putExtra("selectedMockTest",mockTestStr);
+                            getActivity().startService(intent);
+                        }
                     } else {
                         dialog.dismiss();
                     }
