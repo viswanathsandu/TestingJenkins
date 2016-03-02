@@ -2,6 +2,7 @@ package com.education.corsalite.adapters;
 
 import android.content.Context;
 import android.graphics.Paint;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,7 +66,7 @@ public class ExamEngineGridAdapter extends BaseAdapter {
         } else {
             btnCounter.setText(String.valueOf(position + 1));
         }
-        if(!mModelList.get(position).sectionName.equals(selectedSectionName)) {
+        if(!TextUtils.isEmpty(mModelList.get(position).sectionName) && !mModelList.get(position).sectionName.equals(selectedSectionName)) {
             btnCounter.setEnabled(false);
             btnCounter.setClickable(false);
             btnCounter.setBackgroundResource(R.drawable.rounded_corners_gray);
