@@ -1500,7 +1500,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void loadOfflineScheduledTest(ScheduledTest model){
-        DbManager.getInstance(this).getAllExamModels(model, new ApiCallback<List<ExamModel>>(this) {
+        // TOO : commented this to make sure that app works fine
+        /*DbManager.getInstance(this).getAllExamModels(model, new ApiCallback<List<ExamModel>>(this) {
             @Override
             public void success(List<ExamModel> examModels, Response response) {
                 super.success(examModels, response);
@@ -1523,6 +1524,6 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     tvEmptyLayout.setVisibility(View.VISIBLE);
                 }
             }
-        });
+        });*/
     }
 }
