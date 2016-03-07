@@ -40,6 +40,7 @@ import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.education.corsalite.R;
@@ -134,6 +135,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     TextView tvClearAnswer;
     @Bind(R.id.btn_submit)
     Button btnSubmit;
+    @Bind(R.id.btn_suspend)
+    Button btnSuspend;
     @Bind(R.id.txtAnswerCount)
     TextView txtAnswerCount;
     @Bind(R.id.txtAnswerExp)
@@ -268,17 +271,17 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             L.info("Vissu : loading exercise test");
             loadExerciseTest();
         } else if (title.equalsIgnoreCase("Mock Test")) {
-            if(isOffline){
-                MockTest model = new Gson().fromJson(testModels,MockTest.class);
+            if (isOffline) {
+                MockTest model = new Gson().fromJson(testModels, MockTest.class);
                 loadOfflineMockTest(model);
-            }else {
+            } else {
                 loadMockTest();
             }
         } else if (title.equalsIgnoreCase("Schedule Test")) {
-            if(isOffline){
-                ScheduledTestList.ScheduledTestsArray model = new Gson().fromJson(testModels,ScheduledTestList.ScheduledTestsArray.class);
+            if (isOffline) {
+                ScheduledTestList.ScheduledTestsArray model = new Gson().fromJson(testModels, ScheduledTestList.ScheduledTestsArray.class);
                 loadOfflineScheduledTest(model);
-            }else {
+            } else {
                 loadScheduledTest();
             }
         } else if (title.equalsIgnoreCase("View Answers")) {
@@ -418,6 +421,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         testNavLayout.setOnClickListener(mClickListener);
         btnViewFullQuestion.setOnClickListener(mClickListener);
         btnSubmit.setOnClickListener(mClickListener);
+        btnSuspend.setOnClickListener(mClickListener);
         imvFlag.setOnClickListener(mClickListener);
     }
 
@@ -565,7 +569,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         if (localExamModelList != null && localExamModelList.size() > 0) {
             loadQuestion(position);
         }
-        if (localExamModelList != null && localExamModelList.get(position).sectionName != null &&!localExamModelList.get(position).sectionName.equals(selectedSection)) {
+        if (localExamModelList != null && localExamModelList.get(position).sectionName != null && !localExamModelList.get(position).sectionName.equals(selectedSection)) {
             selectSection(localExamModelList.get(position).sectionName);
         }
     }
@@ -615,12 +619,61 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 case R.id.btn_submit:
                     showSubmitTestAlert();
                     break;
+                case R.id.btn_suspend:
+                    showSuspendDialog();
+                    break;
                 case R.id.imv_flag:
                     postFlaggedQuestion();
                     break;
             }
         }
     };
+
+    private void showSuspendDialog() {
+        final AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("Confirm");
+        alert.setMessage("Do you want to stop the exam?");
+        alert.setPositiveButton("Stop Exam", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                testanswerPaper.status = "Suspended";
+
+                //TODO : remove the unattended items. This has to be removed when API is fixed
+                /* ****************************************** */
+                Iterator<TestAnswer> i = testanswerPaper.testAnswers.iterator();
+                while (i.hasNext()) {
+                    TestAnswer answer = i.next();
+                    if (answer.status.equalsIgnoreCase("Unattended")) {
+                        i.remove();
+                    }
+                }
+                /* ****************************************** */
+
+                ApiManager.getInstance(ExamEngineActivity.this).submitTestAnswerPaper(testanswerPaper, new ApiCallback<TestAnswerPaperResponse>(ExamEngineActivity.this) {
+                    @Override
+                    public void failure(CorsaliteError error) {
+                        super.failure(error);
+                        showToast(error.message);
+                        finish();
+                    }
+
+                    @Override
+                    public void success(TestAnswerPaperResponse testAnswerPaperResponse, Response response) {
+                        super.success(testAnswerPaperResponse, response);
+                        showToast("Exam has been suspended");
+                        finish();
+                    }
+                });
+            }
+        });
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alert.show();
+    }
 
     private void verifyAnswer() {
         postAnswer(localExamModelList.get(selectedPosition));
@@ -669,28 +722,37 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 }
             }
             postExerciseAnsEvent();
-            if(SystemUtils.isNetworkConnected(this)) {
+            if (SystemUtils.isNetworkConnected(this)) {
 
                 //TODO : remove the unattended items. This has to be removed when API is fixed
+                /* ****************************************** */
                 Iterator<TestAnswer> i = testanswerPaper.testAnswers.iterator();
                 while (i.hasNext()) {
                     TestAnswer answer = i.next();
-                    if(answer.status.equalsIgnoreCase("Unattended")) {
+                    if (answer.status.equalsIgnoreCase("Unattended")) {
                         i.remove();
                     }
                 }
+                /* ****************************************** */
 
+                headerProgress.setVisibility(View.VISIBLE);
+                mViewSwitcher.showNext();
+                testanswerPaper.status = "Completed";
                 ApiManager.getInstance(this).submitTestAnswerPaper(testanswerPaper, new ApiCallback<TestAnswerPaperResponse>(this) {
                     @Override
                     public void failure(CorsaliteError error) {
                         super.failure(error);
                         showToast(error.message);
+                        headerProgress.setVisibility(View.GONE);
+                        mViewSwitcher.showNext();
                     }
 
                     @Override
                     public void success(TestAnswerPaperResponse testAnswerPaperResponse, Response response) {
                         super.success(testAnswerPaperResponse, response);
-                        if(testAnswerPaperResponse != null && !TextUtils.isEmpty(testAnswerPaperResponse.testAnswerPaperId)) {
+                        headerProgress.setVisibility(View.GONE);
+                        mViewSwitcher.showNext();
+                        if (testAnswerPaperResponse != null && !TextUtils.isEmpty(testAnswerPaperResponse.testAnswerPaperId)) {
                             openAdvancedExamResultSummary(testAnswerPaperResponse.testAnswerPaperId);
                             finish();
                         }
@@ -704,8 +766,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
     private void openAdvancedExamResultSummary(String answerPaperId) {
         Intent intent = new Intent(this, WebviewActivity.class);
-        L.info("URL : "+Constants.EXAM_RESULTS_SUMMARY_URL+answerPaperId);
-        intent.putExtra(LoginActivity.URL, Constants.EXAM_RESULTS_SUMMARY_URL+answerPaperId);
+        L.info("URL : " + Constants.EXAM_RESULTS_SUMMARY_URL + answerPaperId);
+        intent.putExtra(LoginActivity.URL, Constants.EXAM_RESULTS_SUMMARY_URL + answerPaperId);
         intent.putExtra(LoginActivity.TITLE, getString(R.string.results));
         startActivity(intent);
     }
@@ -930,9 +992,12 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             }
             answerTxt.addTextChangedListener(new TextWatcher() {
                 @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+
                 @Override
-                public void afterTextChanged(Editable s) {}
+                public void afterTextChanged(Editable s) {
+                }
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -1035,7 +1100,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                                         testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = answerChoiceModel.idAnswerKey;
                                     } else {
                                         localExamModelList.get(selectedPosition).selectedAnswers += "," + x;
-                                        testanswerPaper.testAnswers.get(selectedPosition).answerKeyId += ","+answerChoiceModel.idAnswerKey;
+                                        testanswerPaper.testAnswers.get(selectedPosition).answerKeyId += "," + answerChoiceModel.idAnswerKey;
                                     }
                                 }
                             }
@@ -1049,7 +1114,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                                         testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = answerChoiceModel.idAnswerKey;
                                     } else {
                                         localExamModelList.get(selectedPosition).selectedAnswers += "," + x;
-                                        testanswerPaper.testAnswers.get(selectedPosition).answerKeyId += ","+answerChoiceModel.idAnswerKey;
+                                        testanswerPaper.testAnswers.get(selectedPosition).answerKeyId += "," + answerChoiceModel.idAnswerKey;
                                     }
                                     isCheckedAtLeastOnce = true;
                                     break;
@@ -1503,12 +1568,12 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         testanswerPaper.testQuestionPaperId = testQuestionPaperId;
         testanswerPaper.startTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
         examDurationInSeconds = getExamDurationInSeconds(localExamModelList);
-        testanswerPaper.endTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(System.currentTimeMillis()+examDurationInSeconds));
+        testanswerPaper.endTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(System.currentTimeMillis() + examDurationInSeconds));
         testanswerPaper.entityId = LoginUserCache.getInstance().loginResponse.entitiyId;
         testanswerPaper.status = "Started"; // Started | Suspended | Completed
         testanswerPaper.testAnswers = new ArrayList<>();
 
-        for(ExamModel question : questions) {
+        for (ExamModel question : questions) {
             TestAnswer answer = new TestAnswer();
             answer.testQuestionId = question.idTestQuestion;
             answer.answerKeyId = null;
@@ -1552,7 +1617,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         fullQuestionDialog.show(getFragmentManager(), "fullQuestionDialog");
     }
 
-    private void loadOfflineMockTest(MockTest model){
+    private void loadOfflineMockTest(MockTest model) {
         DbManager.getInstance(this).getAllExamModels(model, new ApiCallback<List<ExamModel>>(this) {
             @Override
             public void success(List<ExamModel> examModels, Response response) {
@@ -1578,7 +1643,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         });
     }
 
-    private void loadOfflineScheduledTest(ScheduledTestList.ScheduledTestsArray model){
+    private void loadOfflineScheduledTest(ScheduledTestList.ScheduledTestsArray model) {
         DbManager.getInstance(this).getAllExamModels(model, new ApiCallback<List<ExamModel>>(this) {
             @Override
             public void success(List<ExamModel> examModels, Response response) {
@@ -1602,5 +1667,11 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        showToast("Click on Suspend button to stop the exam");
     }
 }
