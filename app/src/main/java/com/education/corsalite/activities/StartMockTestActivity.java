@@ -62,6 +62,7 @@ public class StartMockTestActivity extends AbstractBaseActivity {
                 intent.putExtra("Test_Instructions", new Gson().toJson(testPaperIndex));
                 intent.putExtra("exam_template_id", testPaperIndex.examDetails.get(0).examTemplateId);
                 startActivity(intent);
+                finish();
             }
         });
     }

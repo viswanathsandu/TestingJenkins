@@ -583,8 +583,10 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     public void onEvent(ExerciseAnsEvent event){
-        L.debug("ExerciseAnsEvent id", event.id);
-        new UpdateUserEvents().postExerciseAns(this, event);
+        if(event != null && event.id != null) {
+            L.debug("ExerciseAnsEvent id", event.id+"");
+            new UpdateUserEvents().postExerciseAns(this, event);
+        }
     }
 
     public void onEvent(TakingTestEvent event){

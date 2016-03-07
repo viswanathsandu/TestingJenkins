@@ -149,6 +149,7 @@ public class DbManager {
     public void saveOfflineMockTest(OfflineMockTestModel model){
         dbService.Save(model);
     }
+
     public void deleteOfflineMockTest(OfflineMockTestModel model){
         dbService.Delete(OfflineMockTestModel.class, model);
     }

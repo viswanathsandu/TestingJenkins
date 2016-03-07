@@ -71,6 +71,9 @@ import com.education.corsalite.models.responsemodels.PostFlaggedQuestions;
 import com.education.corsalite.models.responsemodels.PostQuestionPaper;
 import com.education.corsalite.models.responsemodels.QuestionPaperIndex;
 import com.education.corsalite.models.responsemodels.ScheduledTest;
+import com.education.corsalite.models.responsemodels.TestAnswer;
+import com.education.corsalite.models.responsemodels.TestAnswerPaper;
+import com.education.corsalite.models.responsemodels.TestAnswerPaperResponse;
 import com.education.corsalite.models.responsemodels.TestPaperIndex;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.Constants;
@@ -86,6 +89,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -214,6 +218,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private long examDurationTakenInSeconds = 0;
     private String testQuestionPaperId = null;
     private boolean isOffline;
+    private TestAnswerPaper testanswerPaper = new TestAnswerPaper();
 
     public static Intent getMyIntent(Context context, @Nullable Bundle extras) {
         Intent intent = new Intent(context, ExamEngineActivity.class);
@@ -665,16 +670,42 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             }
             postExerciseAnsEvent();
             if(SystemUtils.isNetworkConnected(this)) {
-                openAdvancedExamResultSummary();
+
+                //TODO : remove the unattended items. This has to be removed when API is fixed
+                Iterator<TestAnswer> i = testanswerPaper.testAnswers.iterator();
+                while (i.hasNext()) {
+                    TestAnswer answer = i.next();
+                    if(answer.status.equalsIgnoreCase("Unattended")) {
+                        i.remove();
+                    }
+                }
+
+                ApiManager.getInstance(this).submitTestAnswerPaper(testanswerPaper, new ApiCallback<TestAnswerPaperResponse>(this) {
+                    @Override
+                    public void failure(CorsaliteError error) {
+                        super.failure(error);
+                        showToast(error.message);
+                    }
+
+                    @Override
+                    public void success(TestAnswerPaperResponse testAnswerPaperResponse, Response response) {
+                        super.success(testAnswerPaperResponse, response);
+                        if(testAnswerPaperResponse != null && !TextUtils.isEmpty(testAnswerPaperResponse.testAnswerPaperId)) {
+                            openAdvancedExamResultSummary(testAnswerPaperResponse.testAnswerPaperId);
+                            finish();
+                        }
+                    }
+                });
             } else {
                 navigateToExamResultActivity(localExamModelList.size(), success, failure);
             }
         }
     }
 
-    private void openAdvancedExamResultSummary() {
+    private void openAdvancedExamResultSummary(String answerPaperId) {
         Intent intent = new Intent(this, WebviewActivity.class);
-        intent.putExtra(LoginActivity.URL, Constants.EXAM_RESULTS_SUMMARY_URL);
+        L.info("URL : "+Constants.EXAM_RESULTS_SUMMARY_URL+answerPaperId);
+        intent.putExtra(LoginActivity.URL, Constants.EXAM_RESULTS_SUMMARY_URL+answerPaperId);
         intent.putExtra(LoginActivity.TITLE, getString(R.string.results));
         startActivity(intent);
     }
@@ -906,6 +937,9 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     localExamModelList.get(selectedPosition).selectedAnswers = s.toString();
+                    testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.ANSWERED.toString();
+                    testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = localExamModelList.get(selectedPosition).answerChoice.get(0).idAnswerKey;
+                    testanswerPaper.testAnswers.get(selectedPosition).answerText = s.toString();
                     btnVerify.setEnabled(!s.toString().trim().isEmpty());
                 }
             });
@@ -997,8 +1031,11 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                                     selectedAnswerPosition = x + 1;
                                     if (TextUtils.isEmpty(localExamModelList.get(selectedPosition).selectedAnswers)) {
                                         localExamModelList.get(selectedPosition).selectedAnswers = String.valueOf(x);
+                                        testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.ANSWERED.toString();
+                                        testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = answerChoiceModel.idAnswerKey;
                                     } else {
-                                        localExamModelList.get(selectedPosition).selectedAnswers = localExamModelList.get(selectedPosition).selectedAnswers + "," + x;
+                                        localExamModelList.get(selectedPosition).selectedAnswers += "," + x;
+                                        testanswerPaper.testAnswers.get(selectedPosition).answerKeyId += ","+answerChoiceModel.idAnswerKey;
                                     }
                                 }
                             }
@@ -1008,8 +1045,11 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                                     selectedAnswerPosition = x + 1;
                                     if (TextUtils.isEmpty(localExamModelList.get(selectedPosition).selectedAnswers)) {
                                         localExamModelList.get(selectedPosition).selectedAnswers = String.valueOf(x);
+                                        testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.ANSWERED.toString();
+                                        testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = answerChoiceModel.idAnswerKey;
                                     } else {
-                                        localExamModelList.get(selectedPosition).selectedAnswers = localExamModelList.get(selectedPosition).selectedAnswers + "," + x;
+                                        localExamModelList.get(selectedPosition).selectedAnswers += "," + x;
+                                        testanswerPaper.testAnswers.get(selectedPosition).answerKeyId += ","+answerChoiceModel.idAnswerKey;
                                     }
                                     isCheckedAtLeastOnce = true;
                                     break;
@@ -1088,6 +1128,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                             if (optionRadioButtons[j].getId() == Integer.valueOf(answerChoiceModel.idAnswerKey)) {
                                 selectedAnswerPosition = j + 1;
                                 localExamModelList.get(selectedPosition).selectedAnswers = String.valueOf(j);
+                                testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = answerChoiceModel.idAnswerKey;
+                                testanswerPaper.testAnswers.get(selectedPosition).status = "Answered";
                             }
                         }
                         ((RadioButton) v).setChecked(true);
@@ -1118,6 +1160,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             ((CompoundButton) findViewById(Integer.valueOf(answerChoiceModels.get(i).idAnswerKey))).setChecked(false);
         }
         localExamModelList.get(selectedPosition).selectedAnswers = null;
+        testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = null;
+        testanswerPaper.testAnswers.get(selectedPosition).status = "Skipped";
         resetExplanation();
     }
 
@@ -1201,7 +1245,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     @Override
                     public void failure(CorsaliteError error) {
                         btnVerify.setEnabled(true);
-                        String message = "Unknown error occured.Please try again.";
+                        String message = "Unknown error occurred.Please try again.";
                         if (error != null && !TextUtils.isEmpty(error.message)) {
                             message = error.message;
                         }
@@ -1214,7 +1258,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     public void success(PostExercise postExercise, Response response) {
                         super.success(postExercise, response);
                         if (!postExercise.isSuccessful()) {
-                            String message = "Unknown error occured. Please try again.";
+                            String message = "Unknown error occurred. Please try again.";
                             if (postExercise != null && !TextUtils.isEmpty(postExercise.message)) {
                                 message = postExercise.message;
                             }
@@ -1229,19 +1273,21 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         if (testNavLayout.getVisibility() == View.GONE) {
             testNavLayout.setVisibility(View.VISIBLE);
             shadowView.setVisibility(View.VISIBLE);
-            slider.setBackground(getResources().getDrawable(R.drawable.btn_right_slider_white));
+            slider.setBackgroundResource(R.drawable.btn_right_slider_white);
         } else {
             testNavLayout.setVisibility(View.GONE);
             shadowView.setVisibility(View.GONE);
-            slider.setBackground(getResources().getDrawable(R.drawable.btn_right_slider));
+            slider.setBackgroundResource(R.drawable.btn_right_slider);
         }
     }
 
     private void setAnswerState() {
         if (selectedAnswerPosition != -1) {
             localExamModelList.get(previousQuestionPosition).answerColorSelection = Constants.AnswerState.ANSWERED;
+            testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.ANSWERED.toString();
         } else {
             localExamModelList.get(previousQuestionPosition).answerColorSelection = Constants.AnswerState.SKIPPED;
+            testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.SKIPPED.toString();
         }
     }
 
@@ -1425,6 +1471,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     public void success(List<ExamModel> examModels, Response response) {
                         super.success(examModels, response);
                         localExamModelList = examModels;
+                        initTestAnswerPaper(localExamModelList);
                         getFlaggedQuestion(false);
                         if (mockTestPaperIndex != null && mockTestPaperIndex.questionPaperIndecies != null) {
                             for (int i = 0; i < mockTestPaperIndex.questionPaperIndecies.size(); i++) {
@@ -1449,6 +1496,37 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                         }
                     }
                 });
+    }
+
+    private void initTestAnswerPaper(List<ExamModel> questions) {
+        testanswerPaper.studentId = LoginUserCache.getInstance().loginResponse.studentId;
+        testanswerPaper.testQuestionPaperId = testQuestionPaperId;
+        testanswerPaper.startTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        examDurationInSeconds = getExamDurationInSeconds(localExamModelList);
+        testanswerPaper.endTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(System.currentTimeMillis()+examDurationInSeconds));
+        testanswerPaper.entityId = LoginUserCache.getInstance().loginResponse.entitiyId;
+        testanswerPaper.status = "Started"; // Started | Suspended | Completed
+        testanswerPaper.testAnswers = new ArrayList<>();
+
+        for(ExamModel question : questions) {
+            TestAnswer answer = new TestAnswer();
+            answer.testQuestionId = question.idTestQuestion;
+            answer.answerKeyId = null;
+            answer.answerText = null;
+            answer.status = "Unattended"; //Unattended | Skipped | Answered | Skipped
+            answer.timeTaken = null;
+            testanswerPaper.testAnswers.add(answer);
+        }
+
+//        TestAnswer answer = new TestAnswer();
+//        answer.testQuestionId = localExamModelList.get(0).idTestQuestion;
+//        answer.answerKeyId = localExamModelList.get(0).answerChoice.get(0).idAnswerKey;
+//        answer.answerText = localExamModelList.get(0).answerChoice.get(0).answerKeyText;
+//        answer.status = "Answered";
+//        answer.timeTaken = "3";
+
+//        testanswerPaper.testAnswers.add(answer);
+//        testanswerPaper.testAnswers.add(answer);
     }
 
     private long getExamDurationInSeconds(List<ExamModel> models) {
@@ -1489,7 +1567,6 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     }
                     renderQuestionLayout();
                     examDurationInSeconds = getExamDurationInSeconds(localExamModelList);
-                    //dummy timer.. need to fetch time and interval from service
                     tv_timer.setText(TimeUtils.getSecondsInTimeFormat(examDurationInSeconds));
                     final CounterClass timer = new CounterClass(examDurationInSeconds * 1000, 1000);
                     timer.start();
@@ -1516,7 +1593,6 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     }
                     renderQuestionLayout();
                     examDurationInSeconds = getExamDurationInSeconds(localExamModelList);
-                    //dummy timer.. need to fetch time and interval from service
                     tv_timer.setText(TimeUtils.getSecondsInTimeFormat(examDurationInSeconds));
                     final CounterClass timer = new CounterClass(examDurationInSeconds * 1000, 1000);
                     timer.start();
