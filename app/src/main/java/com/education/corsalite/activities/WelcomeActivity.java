@@ -2,6 +2,7 @@ package com.education.corsalite.activities;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -16,8 +17,6 @@ import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.responsemodels.WelcomeDetails;
 import com.education.corsalite.services.ApiClientService;
-
-import org.w3c.dom.Text;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -57,7 +56,9 @@ public class WelcomeActivity extends AbstractBaseActivity implements View.OnClic
             public void success(WelcomeDetails welcomeDetails, Response response) {
                 super.success(welcomeDetails, response);
                 if(welcomeDetails != null){
-                    Glide.with(WelcomeActivity.this).load(ApiClientService.getBaseUrl() + welcomeDetails.photoUrl.replaceFirst("./", "")).into(profilePic);
+                    if(!TextUtils.isEmpty(welcomeDetails.photoUrl)) {
+                        Glide.with(WelcomeActivity.this).load(ApiClientService.getBaseUrl() + welcomeDetails.photoUrl.replaceFirst("./", "")).into(profilePic);
+                    }
                     fullName.setText(welcomeDetails.firstName+" "+welcomeDetails.lastName);
                     String[] dateStr = welcomeDetails.userLastLoginDate.split(" ");
                     lastVisitDate.setText(dateStr[0]);

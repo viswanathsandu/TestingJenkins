@@ -19,6 +19,8 @@ public class MockTest extends BaseModel implements Comparable<MockTest>, Seriali
     @SerializedName("subjectName")
     public String subjectName;
 
+    public MockTest() {}
+
     @Override
     public int compareTo(MockTest another) {
         try {

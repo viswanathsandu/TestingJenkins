@@ -70,7 +70,7 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
     }
 
     private void getContentIndexResponse(final Course course) {
-        DbManager.getInstance(getActivity()).getOfflineContentList(new ApiCallback<List<OfflineContent>>(getActivity()) {
+        DbManager.getInstance(getActivity().getApplicationContext()).getOfflineContentList(new ApiCallback<List<OfflineContent>>(getActivity()) {
             @Override
             public void failure(CorsaliteError error) {
                 super.failure(error);
@@ -286,7 +286,7 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
         new FileUtilities(getActivity()).delete(path);
 
         //Update database
-        DbManager.getInstance(getActivity()).deleteOfflineContent(removeList);
+        DbManager.getInstance(getActivity().getApplicationContext()).deleteOfflineContent(removeList);
 
         //Update treeview
         for(OfflineContent offlineContent :removeList){

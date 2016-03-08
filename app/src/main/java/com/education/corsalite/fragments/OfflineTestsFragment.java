@@ -44,7 +44,7 @@ public class OfflineTestsFragment  extends BaseFragment implements OfflineConten
     }
 
     private void loadOfflineTests() {
-        DbManager.getInstance(getActivity()).getAllOfflineMockTests(new ApiCallback<List<OfflineMockTestModel>>(getActivity()) {
+        DbManager.getInstance(getActivity().getApplicationContext()).getAllOfflineMockTests(new ApiCallback<List<OfflineMockTestModel>>(getActivity()) {
             @Override
             public void success(List<OfflineMockTestModel> offlineMockTestModels, Response response) {
                 super.success(offlineMockTestModels, response);
@@ -92,7 +92,7 @@ public class OfflineTestsFragment  extends BaseFragment implements OfflineConten
     @Override
     public void onDeleteOfflineTest(int position, String tag) {
             if(tag.equalsIgnoreCase("Mock Test")){
-               DbManager.getInstance(getActivity()).deleteOfflineMockTest(mockTestModels.get(position));
+               DbManager.getInstance(getActivity().getApplicationContext()).deleteOfflineMockTest(mockTestModels.get(position));
             }else  if(tag.equalsIgnoreCase("Scheduled Test")) {
 
             } else  if(tag.equalsIgnoreCase("Part Test")){

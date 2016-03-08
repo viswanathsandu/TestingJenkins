@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
@@ -84,7 +85,7 @@ public class MockTestDialog extends DialogFragment implements MockTestsListAdapt
     public void onMockTestDownload(int position) {
         selectedMockTest = mMockTestList.get(position);
         postQuestionPaper(LoginUserCache.getInstance().loginResponse.entitiyId,
-                mMockTestList.get(position).examTemplateId, LoginUserCache.getInstance().loginResponse.studentId,1);
+                mMockTestList.get(position).examTemplateId, LoginUserCache.getInstance().loginResponse.studentId, 1);
     }
 
     private void loadMockTests() {
@@ -106,6 +107,7 @@ public class MockTestDialog extends DialogFragment implements MockTestsListAdapt
                     public void failure(CorsaliteError error) {
                         super.failure(error);
                         ((AbstractBaseActivity) getActivity()).showToast("No mock tests available");
+                        dismiss();
                     }
                 });
     }
@@ -134,6 +136,7 @@ public class MockTestDialog extends DialogFragment implements MockTestsListAdapt
                             String mockTestStr = new Gson().toJson(selectedMockTest);
                             intent.putExtra("selectedMockTest",mockTestStr);
                             getActivity().startService(intent);
+                            Toast.makeText(getActivity(), "Downloading in background", Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         dialog.dismiss();

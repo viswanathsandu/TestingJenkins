@@ -276,7 +276,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     }
 
     private void getOfflineStudyCenterData(final List<StudyCenter> studyCenters) {
-        DbManager.getInstance(this).getOfflineContentList(new ApiCallback<List<OfflineContent>>(this) {
+        DbManager.getInstance(getApplicationContext()).getOfflineContentList(new ApiCallback<List<OfflineContent>>(this) {
             @Override
             public void failure(CorsaliteError error) {
                 super.failure(error);
@@ -499,7 +499,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                             if (key.equalsIgnoreCase(studyCenter.SubjectName)) {
                                 StudyCentreActivity.this.studyCenter = studyCenter;
                                 setUpStudyCentreData(studyCenter);
-                                DbManager.getInstance(StudyCentreActivity.this).getOfflineContentList(new ApiCallback<List<OfflineContent>>(StudyCentreActivity.this) {
+                                DbManager.getInstance(getApplicationContext()).getOfflineContentList(new ApiCallback<List<OfflineContent>>(StudyCentreActivity.this) {
                                     @Override
                                     public void failure(CorsaliteError error) {
                                         super.failure(error);

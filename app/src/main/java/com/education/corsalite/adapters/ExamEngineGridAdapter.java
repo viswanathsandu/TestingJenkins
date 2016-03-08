@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.education.corsalite.R;
 import com.education.corsalite.activities.ExamEngineActivity;
 import com.education.corsalite.models.responsemodels.ExamModel;
+import com.education.corsalite.utils.Constants;
 
 import java.util.List;
 
@@ -72,7 +73,7 @@ public class ExamEngineGridAdapter extends BaseAdapter {
             btnCounter.setBackgroundResource(R.drawable.rounded_corners_gray);
             btnCounter.setTextColor(mActivity.getResources().getColor(R.color.dark_gray));
         } else {
-            switch (mModelList.get(position).answerColorSelection) {
+            switch (Constants.AnswerState.getEnum(mModelList.get(position).answerColorSelection)) {
                 case ANSWERED:
                     btnCounter.setBackgroundResource(R.drawable.rounded_corners_green);
                     btnCounter.setTextColor(mActivity.getResources().getColor(R.color.white));

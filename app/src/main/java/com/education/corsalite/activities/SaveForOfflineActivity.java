@@ -263,7 +263,7 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
             saveFileToDisk(getHtmlText(content),content);
         }
         AppPref.getInstance(SaveForOfflineActivity.this).save("DATA_IN_PROGRESS", null);
-        DbManager.getInstance(this).saveOfflineContent(offlineContents);
+        DbManager.getInstance(getApplicationContext()).saveOfflineContent(offlineContents);
 
     }
 

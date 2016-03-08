@@ -22,6 +22,8 @@ public class ScheduledTestList extends BaseModel implements Serializable {
     @SerializedName("Message")
     public String Message;
 
+    public ScheduledTestList() {}
+
     public class ScheduledTestsArray extends BaseModel implements Serializable {
         @SerializedName("ScheduledDueDate")
         public String dueDate;
@@ -31,6 +33,8 @@ public class ScheduledTestList extends BaseModel implements Serializable {
         public String startTime;
         @SerializedName("idTestQuestionPaper")
         public String testQuestionPaperId;
+
+        public ScheduledTestsArray() {}
     }
 
 }

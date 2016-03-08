@@ -23,7 +23,7 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        dbManager = DbManager.getInstance(getActivity());
+        dbManager = DbManager.getInstance(getActivity().getApplicationContext());
     }
 
     public void showToast(String message) {

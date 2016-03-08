@@ -19,7 +19,7 @@ import retrofit.client.Response;
 /**
  * Created by madhuri on 2/27/16.
  */
-public class TestDownloadService extends IntentService{
+public class TestDownloadService extends IntentService {
 
     public TestDownloadService() {
         super("TestDownloadService");
@@ -32,17 +32,16 @@ public class TestDownloadService extends IntentService{
         String testAnswerPaperId = intent.getStringExtra("testAnswerPaperId");
         String mockTestStr = intent.getStringExtra("selectedMockTest");
         String scheduledTestStr = intent.getStringExtra("selectedScheduledTest");
-        if(mockTestStr != null){
-        MockTest mockTest = new Gson().fromJson(mockTestStr,MockTest.class);
-        getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId,mockTest,null);
-        }else if(scheduledTestStr != null){
-            ScheduledTestList.ScheduledTestsArray scheduledTest = new Gson().fromJson(mockTestStr,ScheduledTestList.ScheduledTestsArray.class);
-            getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId,null,scheduledTest);
+        if (mockTestStr != null) {
+            MockTest mockTest = new Gson().fromJson(mockTestStr, MockTest.class);
+            getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, mockTest, null);
+        } else if (scheduledTestStr != null) {
+            ScheduledTestList.ScheduledTestsArray scheduledTest = new Gson().fromJson(mockTestStr, ScheduledTestList.ScheduledTestsArray.class);
+            getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, null, scheduledTest);
         }
-
     }
 
-    private void getTestQuestionPaper(String testQuestionPaperId,String testAnswerPaperId,
+    private void getTestQuestionPaper(String testQuestionPaperId, String testAnswerPaperId,
                                       final MockTest mockTest, final ScheduledTestList.ScheduledTestsArray scheduledTestsArray) {
         ApiManager.getInstance(this).getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId,
                 new ApiCallback<List<ExamModel>>(this) {
@@ -51,12 +50,12 @@ public class TestDownloadService extends IntentService{
                         super.success(examModels, response);
                         OfflineMockTestModel model = new OfflineMockTestModel();
                         model.examModels = examModels;
-                        if(mockTest != null) {
+                        if (mockTest != null) {
                             model.mockTest = mockTest;
-                        }else {
+                        } else {
                             model.scheduledTest = scheduledTestsArray;
                         }
-                        DbManager.getInstance(TestDownloadService.this).saveOfflineMockTest(model);
+                        DbManager.getInstance(getApplicationContext()).saveOfflineMockTest(model);
                     }
                 });
     }

@@ -146,8 +146,16 @@ public class DbManager {
         new GetDataFromDbAsync(dbService, callback).execute();
     }
 
-    public void saveOfflineMockTest(OfflineMockTestModel model){
-        dbService.Save(model);
+    public void saveOfflineMockTest(final OfflineMockTestModel model){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                synchronized (this) {
+                    List<OfflineMockTestModel> offlineMockTestList = dbService.Get(OfflineMockTestModel.class);
+                    dbService.Save(model);
+                }
+            }
+        }).start();
     }
 
     public void deleteOfflineMockTest(OfflineMockTestModel model){

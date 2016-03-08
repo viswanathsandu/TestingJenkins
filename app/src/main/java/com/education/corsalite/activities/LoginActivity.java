@@ -113,7 +113,7 @@ public class LoginActivity extends AbstractBaseActivity {
             if(!fetchLocal) {
                 showToast(getResources().getString(R.string.login_successful));
             }
-            startActivity(new Intent(LoginActivity.this, StudyCentreActivity.class));
+            startActivity(new Intent(LoginActivity.this, WelcomeActivity.class));
             finish();
         } else {
             showToast(getResources().getString(R.string.login_failed));

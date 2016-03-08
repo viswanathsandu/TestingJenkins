@@ -41,8 +41,34 @@ public class Constants {
     public static final String TEST_COVERAGE_LIST_GSON = "testCoverageListGson";
     public static final String IS_OFFLINE = "IS_OFFLINE";
 
-    public static enum AnswerState {
-        UNATTEMPTED, ANSWERED, SKIPPED, FLAGGED
+    public enum AnswerState {
+        UNATTEMPTED("Unattended"),
+        ANSWERED("Answered"),
+        SKIPPED("Skipped"),
+        FLAGGED("Flagged");
+
+        private String value;
+
+        AnswerState(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public static AnswerState getEnum(String val) {
+            if(val.equalsIgnoreCase(UNATTEMPTED.getValue())) {
+                return UNATTEMPTED;
+            } else if(val.equalsIgnoreCase(ANSWERED.getValue())) {
+                return ANSWERED;
+            } else if(val.equalsIgnoreCase(SKIPPED.getValue())) {
+                return SKIPPED;
+            } else if(val.equalsIgnoreCase(FLAGGED.getValue())) {
+                return FLAGGED;
+            }
+            return UNATTEMPTED;
+        }
     }
 }
 

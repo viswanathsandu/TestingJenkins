@@ -48,8 +48,10 @@ public class ExamModel extends BaseModel implements Serializable, Comparable {
     // To be used by app only. This is not a part of response
     public String sectionName;
 
-    public Constants.AnswerState answerColorSelection = Constants.AnswerState.UNATTEMPTED;
+    public String answerColorSelection = Constants.AnswerState.UNATTEMPTED.getValue();
     public String selectedAnswers;
+
+    public ExamModel() {}
 
     @Override
     public String toString() {

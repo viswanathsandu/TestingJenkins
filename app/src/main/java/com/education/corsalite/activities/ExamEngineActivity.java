@@ -86,6 +86,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.Serializable;
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -264,22 +265,22 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         chapterId = getIntent().getExtras().getString(Constants.SELECTED_CHAPTERID);
         topicIds = getIntent().getExtras().getString(Constants.SELECTED_TOPICID);
         isOffline = getIntent().getExtras().getBoolean(Constants.IS_OFFLINE, false);
-        String testModels = getIntent().getExtras().getString("ExamModels");
         if (title.equalsIgnoreCase("Flagged Questions")) {
             loadFlaggedQuestions();
         } else if (title.equalsIgnoreCase("Exercises")) {
-            L.info("Vissu : loading exercise test");
             loadExerciseTest();
         } else if (title.equalsIgnoreCase("Mock Test")) {
             if (isOffline) {
-                MockTest model = new Gson().fromJson(testModels, MockTest.class);
-                loadOfflineMockTest(model);
+                String mockTestJson = getIntent().getExtras().getString("mock_test_data_json");
+                MockTest mock = new Gson().fromJson(mockTestJson, MockTest.class);
+                loadMockTest(mock);
             } else {
-                loadMockTest();
+                loadMockTest(null);
             }
         } else if (title.equalsIgnoreCase("Schedule Test")) {
             if (isOffline) {
-                ScheduledTestList.ScheduledTestsArray model = new Gson().fromJson(testModels, ScheduledTestList.ScheduledTestsArray.class);
+                String testJson = getIntent().getExtras().getString("mock_test_data_json");
+                ScheduledTestList.ScheduledTestsArray model = new Gson().fromJson(testJson, ScheduledTestList.ScheduledTestsArray.class);
                 loadOfflineScheduledTest(model);
             } else {
                 loadScheduledTest();
@@ -326,11 +327,15 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         btnVerify.setVisibility(View.GONE);
     }
 
-    private void loadMockTest() {
+    private void loadMockTest(MockTest mockTest) {
         imvFlag.setVisibility(View.VISIBLE);
         String testInstructions = getIntent().getStringExtra("Test_Instructions");
         testQuestionPaperId = getIntent().getStringExtra("test_question_papaer_id");
-        getTestQuestionPaper(null);
+        if(mockTest == null) {
+            getTestQuestionPaper(null);
+        } else {
+            loadOfflineMockTest(mockTest);
+        }
         if (!TextUtils.isEmpty(testInstructions)) {
             mockTestPaperIndex = new Gson().fromJson(testInstructions, TestPaperIndex.class);
             fetchSections(mockTestPaperIndex);
@@ -1348,11 +1353,11 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
     private void setAnswerState() {
         if (selectedAnswerPosition != -1) {
-            localExamModelList.get(previousQuestionPosition).answerColorSelection = Constants.AnswerState.ANSWERED;
-            testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.ANSWERED.toString();
+            localExamModelList.get(previousQuestionPosition).answerColorSelection = Constants.AnswerState.ANSWERED.getValue();
+            testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.ANSWERED.getValue();
         } else {
-            localExamModelList.get(previousQuestionPosition).answerColorSelection = Constants.AnswerState.SKIPPED;
-            testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.SKIPPED.toString();
+            localExamModelList.get(previousQuestionPosition).answerColorSelection = Constants.AnswerState.SKIPPED.getValue();
+            testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.SKIPPED.getValue();
         }
     }
 
@@ -1535,32 +1540,36 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     @Override
                     public void success(List<ExamModel> examModels, Response response) {
                         super.success(examModels, response);
-                        localExamModelList = examModels;
-                        initTestAnswerPaper(localExamModelList);
-                        getFlaggedQuestion(false);
-                        if (mockTestPaperIndex != null && mockTestPaperIndex.questionPaperIndecies != null) {
-                            for (int i = 0; i < mockTestPaperIndex.questionPaperIndecies.size(); i++) {
-                                localExamModelList.get(i).sectionName = mockTestPaperIndex.questionPaperIndecies.get(i).sectionName;
-                            }
-                        }
-                        if (localExamModelList != null) {
-                            if (localExamModelList.size() > 1) {
-                                webFooter.setVisibility(View.VISIBLE);
-                            } else {
-                                webFooter.setVisibility(View.GONE);
-                            }
-                            renderQuestionLayout();
-                            examDurationInSeconds = getExamDurationInSeconds(examModels);
-                            //dummy timer.. need to fetch time and interval from service
-                            tv_timer.setText(TimeUtils.getSecondsInTimeFormat(examDurationInSeconds));
-                            final CounterClass timer = new CounterClass(examDurationInSeconds * 1000, 1000);
-                            timer.start();
-                        } else {
-                            headerProgress.setVisibility(View.GONE);
-                            tvEmptyLayout.setVisibility(View.VISIBLE);
-                        }
+                        showQuestionPaper(examModels);
                     }
                 });
+    }
+
+    private void showQuestionPaper(List<ExamModel> examModels) {
+        localExamModelList = examModels;
+        initTestAnswerPaper(localExamModelList);
+        getFlaggedQuestion(false);
+        if (mockTestPaperIndex != null && mockTestPaperIndex.questionPaperIndecies != null) {
+            for (int i = 0; i < mockTestPaperIndex.questionPaperIndecies.size(); i++) {
+                localExamModelList.get(i).sectionName = mockTestPaperIndex.questionPaperIndecies.get(i).sectionName;
+            }
+        }
+        if (localExamModelList != null) {
+            if (localExamModelList.size() > 1) {
+                webFooter.setVisibility(View.VISIBLE);
+            } else {
+                webFooter.setVisibility(View.GONE);
+            }
+            renderQuestionLayout();
+            examDurationInSeconds = getExamDurationInSeconds(examModels);
+            //dummy timer.. need to fetch time and interval from service
+            tv_timer.setText(TimeUtils.getSecondsInTimeFormat(examDurationInSeconds));
+            final CounterClass timer = new CounterClass(examDurationInSeconds * 1000, 1000);
+            timer.start();
+        } else {
+            headerProgress.setVisibility(View.GONE);
+            tvEmptyLayout.setVisibility(View.VISIBLE);
+        }
     }
 
     private void initTestAnswerPaper(List<ExamModel> questions) {
@@ -1618,33 +1627,17 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void loadOfflineMockTest(MockTest model) {
-        DbManager.getInstance(this).getAllExamModels(model, new ApiCallback<List<ExamModel>>(this) {
+        DbManager.getInstance(getApplicationContext()).getAllExamModels(model, new ApiCallback<List<ExamModel>>(this) {
             @Override
             public void success(List<ExamModel> examModels, Response response) {
                 super.success(examModels, response);
-                headerProgress.setVisibility(View.GONE);
-                localExamModelList = examModels;
-                if (localExamModelList != null) {
-                    if (localExamModelList.size() > 1) {
-                        webFooter.setVisibility(View.VISIBLE);
-                    } else {
-                        webFooter.setVisibility(View.GONE);
-                    }
-                    renderQuestionLayout();
-                    examDurationInSeconds = getExamDurationInSeconds(localExamModelList);
-                    tv_timer.setText(TimeUtils.getSecondsInTimeFormat(examDurationInSeconds));
-                    final CounterClass timer = new CounterClass(examDurationInSeconds * 1000, 1000);
-                    timer.start();
-                } else {
-                    headerProgress.setVisibility(View.GONE);
-                    tvEmptyLayout.setVisibility(View.VISIBLE);
-                }
+                showQuestionPaper(examModels);
             }
         });
     }
 
     private void loadOfflineScheduledTest(ScheduledTestList.ScheduledTestsArray model) {
-        DbManager.getInstance(this).getAllExamModels(model, new ApiCallback<List<ExamModel>>(this) {
+        DbManager.getInstance(getApplicationContext()).getAllExamModels(model, new ApiCallback<List<ExamModel>>(this) {
             @Override
             public void success(List<ExamModel> examModels, Response response) {
                 super.success(examModels, response);
@@ -1671,7 +1664,6 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         showToast("Click on Suspend button to stop the exam");
     }
 }

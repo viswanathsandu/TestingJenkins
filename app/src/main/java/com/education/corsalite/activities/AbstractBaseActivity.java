@@ -92,7 +92,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     private void initActivity() {
         DbAdapter.context = this;
-        dbManager = DbManager.getInstance(this);
+        dbManager = DbManager.getInstance(getApplicationContext());
         appPref = AppPref.getInstance(this);
     }
 
