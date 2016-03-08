@@ -136,7 +136,7 @@ public class MockTestDialog extends DialogFragment implements MockTestsListAdapt
                             String mockTestStr = new Gson().toJson(selectedMockTest);
                             intent.putExtra("selectedMockTest",mockTestStr);
                             getActivity().startService(intent);
-                            Toast.makeText(getActivity(), "Downloading in background", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "Downloading Mock test paper in background", Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         dialog.dismiss();
@@ -164,7 +164,6 @@ public class MockTestDialog extends DialogFragment implements MockTestsListAdapt
     }
 
     public void showProgress(){
-
         ProgressBar pbar = new ProgressBar(getActivity());
         pbar.setBackgroundColor(getResources().getColor(android.R.color.transparent));
         dialog = new Dialog(getActivity());

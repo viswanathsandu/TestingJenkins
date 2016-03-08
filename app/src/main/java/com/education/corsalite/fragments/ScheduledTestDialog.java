@@ -7,6 +7,8 @@ import android.app.DialogFragment;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -17,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +56,7 @@ public class ScheduledTestDialog extends DialogFragment implements ScheduledTest
     @Bind(R.id.mocktests_recyclerview)RecyclerView rvMockTestList;
 
     private ScheduledTestList mScheduledTestList;
+    private Dialog dialog;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -133,14 +137,17 @@ public class ScheduledTestDialog extends DialogFragment implements ScheduledTest
     @Override
     public void onScheduledTestSelected(int position) {
         dismiss();
+        startScheduleTest(mScheduledTestList.MockTest.get(position));
+    }
+
+    private void startScheduleTest(ScheduledTestList.ScheduledTestsArray exam) {
         try {
-            ScheduledTestList.ScheduledTestsArray exam = mScheduledTestList.MockTest.get(position);
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             long startTimeInMillis = df.parse(exam.startTime).getTime();
             if (startTimeInMillis < System.currentTimeMillis() + 1000*60) {
                 Intent intent = new Intent(getActivity(), ExamEngineActivity.class);
                 intent.putExtra(Constants.TEST_TITLE, "Scheduled Test");
-                intent.putExtra("test_question_paper_id", mScheduledTestList.MockTest.get(position).testQuestionPaperId);
+                intent.putExtra("test_question_paper_id", exam.testQuestionPaperId);
                 startActivity(intent);
                 return;
             }
@@ -158,9 +165,11 @@ public class ScheduledTestDialog extends DialogFragment implements ScheduledTest
         String scheduleTestStr = new Gson().toJson(exam);
         intent.putExtra("selectedScheduledTest",scheduleTestStr);
         getActivity().startService(intent);
+        Toast.makeText(getActivity(), "Downloading Scheduled test paper in background", Toast.LENGTH_SHORT).show();
     }
 
     private void loadScheduledTests() {
+        showProgress();
         ApiManager.getInstance(getActivity()).getScheduledTestsList(
                 LoginUserCache.getInstance().loginResponse.studentId,
                 new ApiCallback<ScheduledTestList>(getActivity()) {
@@ -168,6 +177,7 @@ public class ScheduledTestDialog extends DialogFragment implements ScheduledTest
                     @Override
                     public void success(ScheduledTestList scheduledTests, Response response) {
                         super.success(scheduledTests, response);
+                        dialog.dismiss();
                         if (scheduledTests != null && scheduledTests.MockTest != null && !scheduledTests.MockTest.isEmpty()) {
                             mScheduledTestList = scheduledTests;
                             showScheduledTests();
@@ -178,8 +188,20 @@ public class ScheduledTestDialog extends DialogFragment implements ScheduledTest
                     public void failure(CorsaliteError error) {
                         super.failure(error);
                         ((AbstractBaseActivity) getActivity()).showToast("No scheduled tests available");
+                        dialog.dismiss();
                         dismiss();
                     }
                 });
+    }
+
+    public void showProgress(){
+        ProgressBar pbar = new ProgressBar(getActivity());
+        pbar.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+        dialog = new Dialog(getActivity());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(pbar);
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
     }
 }

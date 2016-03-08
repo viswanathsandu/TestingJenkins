@@ -76,15 +76,15 @@ public class OfflineTestsFragment  extends BaseFragment implements OfflineConten
     private ArrayList<String>  loadAllTests()
     {
         ArrayList<String> alltests = new ArrayList<>();
-        alltests.add("Exercise Test");
-        alltests.add("Part Test");
+        // TODO : uncomment it while merging practice and aprt test for offline
+//        alltests.add("Exercise Test");
+//        alltests.add("Part Test");
         alltests.add("Scheduled Test");
         alltests.add("Mock Test");
         return alltests;
     }
 
     private void initNodes(){
-
         ExpandableListAdapter adapter = new ExpandableListAdapter(getActivity(),allTests,offlineTests);
         rvOfflineTests.setAdapter(adapter);
     }

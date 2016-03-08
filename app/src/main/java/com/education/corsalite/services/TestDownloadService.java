@@ -36,7 +36,7 @@ public class TestDownloadService extends IntentService {
             MockTest mockTest = new Gson().fromJson(mockTestStr, MockTest.class);
             getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, mockTest, null);
         } else if (scheduledTestStr != null) {
-            ScheduledTestList.ScheduledTestsArray scheduledTest = new Gson().fromJson(mockTestStr, ScheduledTestList.ScheduledTestsArray.class);
+            ScheduledTestList.ScheduledTestsArray scheduledTest = new Gson().fromJson(scheduledTestStr, ScheduledTestList.ScheduledTestsArray.class);
             getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, null, scheduledTest);
         }
     }

@@ -9,14 +9,20 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.activities.ExamEngineActivity;
+import com.education.corsalite.models.MockTest;
 import com.education.corsalite.models.OfflineMockTestModel;
+import com.education.corsalite.models.ScheduledTestList;
 import com.education.corsalite.utils.Constants;
+import com.education.corsalite.utils.L;
 import com.google.gson.Gson;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 
@@ -56,7 +62,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         final String childText = (String) getChild(groupPosition, childPosition);
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.mocktest_spinner_item, null);
+            convertView = infalInflater.inflate(R.layout.offline_test_child_item, null);
         }
         TextView txtListChild = (TextView) convertView.findViewById(R.id.mock_test_txt);
         ImageView ivDownload = (ImageView) convertView.findViewById(R.id.download_test);
@@ -65,25 +71,59 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         txtListChild.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent exerciseIntent = new Intent(context, ExamEngineActivity.class);
-                exerciseIntent.putExtra(Constants.TEST_TITLE, "Mock Test");
-                exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
-                exerciseIntent.putExtra(Constants.IS_OFFLINE, true);
-                exerciseIntent.putExtra("mock_test_data_json", new Gson().toJson(_listDataChild.get(_listDataHeader.get(groupPosition)).get(childPosition).mockTest));
-                context.startActivity(exerciseIntent);
+                if(_listDataHeader.get(groupPosition).equals("Mock Test")) {
+                    startMockTest(_listDataChild.get(_listDataHeader.get(groupPosition)).get(childPosition).mockTest);
+                } else if(_listDataHeader.get(groupPosition).equals("Scheduled Test")) {
+                    startScheduleTest(_listDataChild.get(_listDataHeader.get(groupPosition)).get(childPosition).scheduledTest);
+                }
             }
         });
         return convertView;
     }
 
+    private void startMockTest(MockTest mockTest) {
+        Intent exerciseIntent = new Intent(context, ExamEngineActivity.class);
+        exerciseIntent.putExtra(Constants.TEST_TITLE, "Mock Test");
+        exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
+        exerciseIntent.putExtra(Constants.IS_OFFLINE, true);
+        exerciseIntent.putExtra("mock_test_data_json", new Gson().toJson(mockTest));
+        context.startActivity(exerciseIntent);
+    }
+
+    private void startScheduleTest(ScheduledTestList.ScheduledTestsArray exam) {
+        try {
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            long startTimeInMillis = df.parse(exam.startTime).getTime();
+            if (startTimeInMillis < System.currentTimeMillis() + 1000*60) {
+                Intent intent = new Intent(context, ExamEngineActivity.class);
+                intent.putExtra(Constants.TEST_TITLE, "Scheduled Test");
+                intent.putExtra("test_question_paper_id", exam.testQuestionPaperId);
+                context.startActivity(intent);
+                return;
+            }
+        } catch (ParseException e) {
+            L.error(e.getMessage(), e);
+        }
+        Toast.makeText(context, "Please access the test during scheduled time", Toast.LENGTH_SHORT).show();
+    }
+
+
     @Override
     public int getChildrenCount(int groupPosition) {
-        return this._listDataChild.get(this._listDataHeader.get(groupPosition)).size();
+        if(_listDataChild != null && !_listDataChild.isEmpty()) {
+            return this._listDataChild.get(this._listDataHeader.get(groupPosition)).size();
+        } else {
+            return 0;
+        }
     }
 
     @Override
     public Object getGroup(int groupPosition) {
-        return this._listDataHeader.get(groupPosition);
+        if(_listDataHeader != null && !_listDataHeader.isEmpty()) {
+            return this._listDataHeader.get(groupPosition);
+        } else {
+            return 0;
+        }
     }
 
     @Override
@@ -101,7 +141,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         String headerTitle = (String) getGroup(groupPosition);
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.mocktest_spinner_item, null);
+            convertView = infalInflater.inflate(R.layout.offline_test_child_item, null);
         }
         TextView lblListHeader = (TextView) convertView.findViewById(R.id.mock_test_txt);
         lblListHeader.setTypeface(null, Typeface.BOLD);
