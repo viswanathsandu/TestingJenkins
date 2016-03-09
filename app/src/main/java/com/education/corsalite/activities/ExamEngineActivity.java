@@ -40,7 +40,6 @@ import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.education.corsalite.R;
@@ -54,7 +53,6 @@ import com.education.corsalite.enums.QuestionType;
 import com.education.corsalite.event.ExerciseAnsEvent;
 import com.education.corsalite.fragments.FullQuestionDialog;
 import com.education.corsalite.models.MockTest;
-import com.education.corsalite.models.OfflineMockTestModel;
 import com.education.corsalite.models.ScheduledTestList;
 import com.education.corsalite.models.requestmodels.ExamTemplateChapter;
 import com.education.corsalite.models.requestmodels.ExamTemplateConfig;
@@ -71,7 +69,6 @@ import com.education.corsalite.models.responsemodels.PostExercise;
 import com.education.corsalite.models.responsemodels.PostFlaggedQuestions;
 import com.education.corsalite.models.responsemodels.PostQuestionPaper;
 import com.education.corsalite.models.responsemodels.QuestionPaperIndex;
-import com.education.corsalite.models.responsemodels.ScheduledTest;
 import com.education.corsalite.models.responsemodels.TestAnswer;
 import com.education.corsalite.models.responsemodels.TestAnswerPaper;
 import com.education.corsalite.models.responsemodels.TestAnswerPaperResponse;
@@ -83,10 +80,8 @@ import com.education.corsalite.utils.SystemUtils;
 import com.education.corsalite.utils.TimeUtils;
 import com.education.corsalite.views.GridViewInScrollView;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.io.Serializable;
-import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1007,9 +1002,11 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     localExamModelList.get(selectedPosition).selectedAnswers = s.toString();
-                    testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.ANSWERED.toString();
-                    testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = localExamModelList.get(selectedPosition).answerChoice.get(0).idAnswerKey;
-                    testanswerPaper.testAnswers.get(selectedPosition).answerText = s.toString();
+                    if(testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty()) {
+                        testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.ANSWERED.toString();
+                        testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = localExamModelList.get(selectedPosition).answerChoice.get(0).idAnswerKey;
+                        testanswerPaper.testAnswers.get(selectedPosition).answerText = s.toString();
+                    }
                     btnVerify.setEnabled(!s.toString().trim().isEmpty());
                 }
             });
@@ -1198,8 +1195,10 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                             if (optionRadioButtons[j].getId() == Integer.valueOf(answerChoiceModel.idAnswerKey)) {
                                 selectedAnswerPosition = j + 1;
                                 localExamModelList.get(selectedPosition).selectedAnswers = String.valueOf(j);
-                                testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = answerChoiceModel.idAnswerKey;
-                                testanswerPaper.testAnswers.get(selectedPosition).status = "Answered";
+                                if(testanswerPaper != null && testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty()) {
+                                    testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = answerChoiceModel.idAnswerKey;
+                                    testanswerPaper.testAnswers.get(selectedPosition).status = "Answered";
+                                }
                             }
                         }
                         ((RadioButton) v).setChecked(true);
@@ -1230,8 +1229,10 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             ((CompoundButton) findViewById(Integer.valueOf(answerChoiceModels.get(i).idAnswerKey))).setChecked(false);
         }
         localExamModelList.get(selectedPosition).selectedAnswers = null;
-        testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = null;
-        testanswerPaper.testAnswers.get(selectedPosition).status = "Skipped";
+        if(testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty()) {
+            testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = null;
+            testanswerPaper.testAnswers.get(selectedPosition).status = "Skipped";
+        }
         resetExplanation();
     }
 
@@ -1354,10 +1355,14 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private void setAnswerState() {
         if (selectedAnswerPosition != -1) {
             localExamModelList.get(previousQuestionPosition).answerColorSelection = Constants.AnswerState.ANSWERED.getValue();
-            testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.ANSWERED.getValue();
+            if(testanswerPaper != null && testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty()) {
+                testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.ANSWERED.getValue();
+            }
         } else {
             localExamModelList.get(previousQuestionPosition).answerColorSelection = Constants.AnswerState.SKIPPED.getValue();
-            testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.SKIPPED.getValue();
+            if(testanswerPaper != null && testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty()) {
+                testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.SKIPPED.getValue();
+            }
         }
     }
 
@@ -1591,16 +1596,6 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             answer.timeTaken = null;
             testanswerPaper.testAnswers.add(answer);
         }
-
-//        TestAnswer answer = new TestAnswer();
-//        answer.testQuestionId = localExamModelList.get(0).idTestQuestion;
-//        answer.answerKeyId = localExamModelList.get(0).answerChoice.get(0).idAnswerKey;
-//        answer.answerText = localExamModelList.get(0).answerChoice.get(0).answerKeyText;
-//        answer.status = "Answered";
-//        answer.timeTaken = "3";
-
-//        testanswerPaper.testAnswers.add(answer);
-//        testanswerPaper.testAnswers.add(answer);
     }
 
     private long getExamDurationInSeconds(List<ExamModel> models) {

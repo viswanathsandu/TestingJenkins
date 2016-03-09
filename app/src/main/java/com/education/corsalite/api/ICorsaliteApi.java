@@ -41,9 +41,12 @@ import com.education.corsalite.models.responsemodels.WelcomeDetails;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit.http.Body;
 import retrofit.http.GET;
+import retrofit.http.Headers;
 import retrofit.http.POST;
 import retrofit.http.Query;
+import retrofit.mime.TypedString;
 
 /**
  * Created by vissu on 9/11/15.
@@ -53,11 +56,13 @@ public interface ICorsaliteApi {
     @GET("/AuthToken")
     void login(@Query("LoginID") String loginId, @Query("PasswordHash") String passwordHash, ApiCallback<LoginResponse> callback);
 
+    @Headers("Content-Type:application/x-www-form-urlencoded")
     @POST("/AuthToken")
-    void logout(@Query("Update") String update, ApiCallback<LogoutResponse> callback);
+    void logout(@Body TypedString update, ApiCallback<LogoutResponse> callback);
 
+    @Headers("Content-Type:application/x-www-form-urlencoded")
     @POST("/ExerciseAnswer")
-    void postExerciseAnswer(@Query("Insert") String insert, ApiCallback<PostExercise> callback);
+    void postExerciseAnswer(@Body TypedString insert, ApiCallback<PostExercise> callback);
 
     @GET("/StudentCourseList")
     void getCourses(@Query("idStudent") String studentId, ApiCallback<List<Course>> callback);
@@ -135,38 +140,47 @@ public interface ICorsaliteApi {
     @GET("/TestQuestionPaper")
     void getTestQuestionPaper(@Query("idTestQuestionPaper") String idTestQuestionPaper, @Query("idTestAnswerPaper") String idTestAnswerPaper, ApiCallback<List<ExamModel>> callback);
 
+    @Headers("Content-Type:application/x-www-form-urlencoded")
     @POST("/TestAnswerPaper")
-    void submitTestAnswerPaper(@Query("Upsert") String update, ApiCallback<TestAnswerPaperResponse> callback);
+    void submitTestAnswerPaper(@Body TypedString testAnswerPaper, ApiCallback<TestAnswerPaperResponse> callback);
 
     @GET("/StandardExamsByCourse")
     void getStandardExamsByCourse(@Query("idCourse") String idCourse, @Query("idEntity") String idEntity, ApiCallback<List<ExamModels>> callback);
 
+    @Headers("Content-Type:application/x-www-form-urlencoded")
     @POST("/CustomExamTemplate")
-    void postCustomExamTemplate(@Query("Insert") String insert, ApiCallback<PostExamTemplate> callback);
+    void postCustomExamTemplate(@Body TypedString insert, ApiCallback<PostExamTemplate> callback);
 
+    @Headers("Content-Type:application/x-www-form-urlencoded")
     @POST("/QuestionPaper")
-    void postQuestionPaper(@Query("Insert") String insert, ApiCallback<PostQuestionPaper> callback);
+    void postQuestionPaper(@Body TypedString insert, ApiCallback<PostQuestionPaper> callback);
 
+    @Headers("Content-Type:application/x-www-form-urlencoded")
     @POST("/FlaggedQuestions")
-    void postFlaggedQuestions(@Query("Update") String update, ApiCallback<PostFlaggedQuestions> callback);
+    void postFlaggedQuestions(@Body TypedString update, ApiCallback<PostFlaggedQuestions> callback);
 
+    @Headers("Content-Type:application/x-www-form-urlencoded")
     @POST("/UserProfile")
-    void updateUserProfile(@Query("Update") String userProfile, ApiCallback<EditProfileModel> callback);
+    void updateUserProfile(@Body TypedString userProfile, ApiCallback<EditProfileModel> callback);
 
+    @Headers("Content-Type:application/x-www-form-urlencoded")
     @POST("/StudentCourseList")
-    void updateDefaultCourse(@Query("Update") String update, ApiCallback<DefaultCourseResponse> callback);
+    void updateDefaultCourse(@Body TypedString update, ApiCallback<DefaultCourseResponse> callback);
 
+    @Headers("Content-Type:application/x-www-form-urlencoded")
     @POST("/StudentExamDetails")
-    void updateExamDetails(@Query("Update") String update, ApiCallback<UpdateExamDetailsResponse> callback);
+    void updateExamDetails(@Body TypedString update, ApiCallback<UpdateExamDetailsResponse> callback);
 
     @GET("/Note")
     void getNotes(@Query("idStudent") String studentId, @Query("idSubject") String subjectId, @Query("idChapter") String chapterId, @Query("idTopic") String topicId, ApiCallback<List<Note>> callback);
 
+    @Headers("Content-Type:application/x-www-form-urlencoded")
     @POST("/Note")
-    void addNote(@Query("Insert") String insert, ApiCallback<DefaultNoteResponse> callback);
+    void addNote(@Body TypedString insert, ApiCallback<DefaultNoteResponse> callback);
 
+    @Headers("Content-Type:application/x-www-form-urlencoded")
     @POST("/Note")
-    void updateNote(@Query("Update") String insert, ApiCallback<DefaultNoteResponse> callback);
+    void updateNote(@Body TypedString update, ApiCallback<DefaultNoteResponse> callback);
 
     @GET("/ExamHistory")
     void getExamHistory(@Query("idStudent") String studentId, @Query("BeginRowNumber") String beginRowNum, @Query("RowCount") String rowCount, ApiCallback<List<ExamHistory>> callback);
@@ -183,17 +197,21 @@ public interface ICorsaliteApi {
     @GET("/Forums")
     void getForumPosts(@Query("idCourse") String courseID, @Query("idUser") String userID, @Query("type") String type, ApiCallback<ArrayList<ForumPost>> callback);
 
+    @Headers("Content-Type:application/x-www-form-urlencoded")
     @POST("/Forums")
-    void addForum(@Query("Update") String insert, ApiCallback<DefaultForumResponse> callback);
+    void addForum(@Body TypedString update, ApiCallback<DefaultForumResponse> callback);
 
+    @Headers("Content-Type:application/x-www-form-urlencoded")
     @POST("/UserEvents")
-    void postUserEvents(@Query("Insert") String insert, ApiCallback<UserEventsResponse> callback);
+    void postUserEvents(@Body TypedString insert, ApiCallback<UserEventsResponse> callback);
 
+    @Headers("Content-Type:application/x-www-form-urlencoded")
     @POST("/LikeForum")
-    void addForumLike(@Query("Insert") String forumLikeRequest, ApiCallback<CommonResponseModel> callback);
+    void addForumLike(@Body TypedString insert, ApiCallback<CommonResponseModel> callback);
 
+    @Headers("Content-Type:application/x-www-form-urlencoded")
     @POST("/ForumDelete")
-    void deleteForum(@Query("Delete") String forumDeleteRequest, ApiCallback<CommonResponseModel> callback);
+    void deleteForum(@Body TypedString delete, ApiCallback<CommonResponseModel> callback);
 
     @GET("/MockTest")
     void getMockTests(@Query("idCourse") String courseID, @Query("idStudent") String studentId, ApiCallback<List<MockTest>> callback);
