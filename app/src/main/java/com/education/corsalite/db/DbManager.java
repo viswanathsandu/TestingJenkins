@@ -1,6 +1,7 @@
 package com.education.corsalite.db;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.models.MockTest;
@@ -171,7 +172,7 @@ public class DbManager {
             public void success(List<OfflineMockTestModel> offlineMockTestModels, Response response) {
                 super.success(offlineMockTestModels, response);
                 for (OfflineMockTestModel model:offlineMockTestModels) {
-                    if(model.mockTest.examTemplateId.equalsIgnoreCase(mockTest.examTemplateId)){
+                    if(model.mockTest != null && !TextUtils.isEmpty(model.mockTest.examTemplateId) && model.mockTest.examTemplateId.equalsIgnoreCase(mockTest.examTemplateId)){
                         callback.success(model.examModels,response);
                     }
                 }
@@ -184,7 +185,7 @@ public class DbManager {
             public void success(List<OfflineMockTestModel> offlineMockTestModels, Response response) {
                 super.success(offlineMockTestModels, response);
                 for (OfflineMockTestModel model:offlineMockTestModels) {
-                    if(model.scheduledTest.testQuestionPaperId.equalsIgnoreCase(scheduledTest.testQuestionPaperId)){
+                    if(model.scheduledTest != null && !TextUtils.isEmpty(model.scheduledTest.testQuestionPaperId) && model.scheduledTest.testQuestionPaperId.equalsIgnoreCase(scheduledTest.testQuestionPaperId)){
                         callback.success(model.examModels,response);
                     }
                 }

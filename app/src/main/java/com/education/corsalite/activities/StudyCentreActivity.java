@@ -104,42 +104,52 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         redView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mAdapter.updateData(studyCenter.redListChapters, key);
-                mAdapter.notifyDataSetChanged();
-                updateSelected(redView);
+                if(studyCenter != null && studyCenter.redListChapters != null) {
+                    mAdapter.updateData(studyCenter.redListChapters, key);
+                    mAdapter.notifyDataSetChanged();
+                    updateSelected(redView);
+                }
             }
         });
         blueView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mAdapter.updateData(studyCenter.blueListChapters, key);
-                mAdapter.notifyDataSetChanged();
-                updateSelected(blueView);
+                if(studyCenter != null && studyCenter.blueListChapters != null) {
+                    mAdapter.updateData(studyCenter.blueListChapters, key);
+                    mAdapter.notifyDataSetChanged();
+                    updateSelected(blueView);
+                }
             }
         });
         yellowView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mAdapter.updateData(studyCenter.amberListChapters, key);
-                mAdapter.notifyDataSetChanged();
-                updateSelected(yellowView);
+                if(studyCenter != null && studyCenter.amberListChapters != null) {
+                    mAdapter.updateData(studyCenter.amberListChapters, key);
+                    mAdapter.notifyDataSetChanged();
+                    updateSelected(yellowView);
+                }
             }
         });
         greenView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mAdapter.updateData(studyCenter.greenListChapters, key);
-                mAdapter.notifyDataSetChanged();
-                updateSelected(greenView);
+                if(studyCenter != null && studyCenter.greenListChapters != null) {
+                    mAdapter.updateData(studyCenter.greenListChapters, key);
+                    mAdapter.notifyDataSetChanged();
+                    updateSelected(greenView);
+                }
             }
         });
 
         allColorLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mAdapter.updateData(studyCenter.Chapters, key);
-                mAdapter.notifyDataSetChanged();
-                updateSelected(allColorLayout);
+                if(studyCenter != null && studyCenter.Chapters != null) {
+                    mAdapter.updateData(studyCenter.Chapters, key);
+                    mAdapter.notifyDataSetChanged();
+                    updateSelected(allColorLayout);
+                }
             }
         });
     }

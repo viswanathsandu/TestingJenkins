@@ -561,7 +561,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     public void inflateUI(int position) {
-        if (previousQuestionPosition >= 0 && !title.equalsIgnoreCase("Exercise Test")) {
+        if (previousQuestionPosition >= 0 && !title.equalsIgnoreCase("Exerciss")) {
             setAnswerState();
         }
         selectedPosition = position;
@@ -972,7 +972,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         answerLayout.removeAllViews();
         List<AnswerChoiceModel> answerChoiceModels = localExamModelList.get(position).answerChoice;
         String previousAnswer = "";
-        if (!title.equalsIgnoreCase("Exercise Test") && !TextUtils.isEmpty(localExamModelList.get(selectedPosition).selectedAnswers)) {
+        if (!title.equalsIgnoreCase("Exercises") && !TextUtils.isEmpty(localExamModelList.get(selectedPosition).selectedAnswers)) {
             previousAnswer = localExamModelList.get(selectedPosition).selectedAnswers;
         }
         if (!answerChoiceModels.isEmpty()) {
@@ -1026,7 +1026,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         final LinearLayout[] rowLayout = new LinearLayout[size];
 
         String[] preselectedAnswers = null;
-        if (!title.equalsIgnoreCase("Exercise Test") &&
+        if (!title.equalsIgnoreCase("Exercises") &&
                 !TextUtils.isEmpty(localExamModelList.get(selectedPosition).selectedAnswers)) {
             preselectedAnswers = localExamModelList.get(selectedPosition).selectedAnswers.split(",");
         }
@@ -1154,7 +1154,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         final int size = answerChoiceModels.size();
         final RadioButton[] optionRadioButtons = new RadioButton[size];
         String preselectedAnswers = null;
-        if (!title.equalsIgnoreCase("Exercise Test") && !TextUtils.isEmpty(localExamModelList.get(selectedPosition).selectedAnswers)) {
+        if (!title.equalsIgnoreCase("Exercises") && !TextUtils.isEmpty(localExamModelList.get(selectedPosition).selectedAnswers)) {
             preselectedAnswers = localExamModelList.get(selectedPosition).selectedAnswers;
         }
         for (int i = 0; i < size; i++) {
@@ -1659,6 +1659,10 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
     @Override
     public void onBackPressed() {
-        showToast("Click on Suspend button to stop the exam");
+        if(!title.equalsIgnoreCase("Exercises")) {
+            showToast("Click on Suspend button to stop the exam");
+        } else {
+            super.onBackPressed();
+        }
     }
 }

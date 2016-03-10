@@ -166,9 +166,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
     }
 
     public void setForumPostList(List<ForumPost> forumPosts) {
-        mForumPostList.clear();
-        mForumPostList.addAll(forumPosts);
-        notifyDataSetChanged();
+        if(mForumPostList != null) {
+            mForumPostList.clear();
+            if(forumPosts != null) {
+                mForumPostList.addAll(forumPosts);
+            }
+            notifyDataSetChanged();
+        }
     }
 
     public void deleteForumPost(int position) {

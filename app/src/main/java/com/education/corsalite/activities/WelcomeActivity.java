@@ -60,11 +60,13 @@ public class WelcomeActivity extends AbstractBaseActivity implements View.OnClic
                         Glide.with(WelcomeActivity.this).load(ApiClientService.getBaseUrl() + welcomeDetails.photoUrl.replaceFirst("./", "")).into(profilePic);
                     }
                     fullName.setText(welcomeDetails.firstName+" "+welcomeDetails.lastName);
-                    String[] dateStr = welcomeDetails.userLastLoginDate.split(" ");
-                    lastVisitDate.setText(dateStr[0]);
-                    lastVisitTime.setText(dateStr[1]);
-                    vcTotal.setText(welcomeDetails.vcCount);
-                    vcLastSession.setText(welcomeDetails.vcInLastSession);
+                    if(!TextUtils.isEmpty(welcomeDetails.userLastLoginDate)) {
+                        String[] dateStr = welcomeDetails.userLastLoginDate.split(" ");
+                        lastVisitDate.setText(dateStr[0]);
+                        lastVisitTime.setText(dateStr[1]);
+                    }
+                    vcTotal.setText(welcomeDetails.vcCount+"");
+                    vcLastSession.setText(welcomeDetails.vcInLastSession+"");
                 }
             }
         });
