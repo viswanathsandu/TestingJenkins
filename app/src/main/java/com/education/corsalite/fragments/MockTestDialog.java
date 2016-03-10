@@ -68,11 +68,13 @@ public class MockTestDialog extends DialogFragment implements MockTestsListAdapt
     }
 
     private void showMockTests() {
-        final LinearLayoutManager layoutManager = new org.solovyev.android.views.llm.LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        rvMockTestList.setLayoutManager(layoutManager);
-        MockTestsListAdapter mockTestsListAdapter = new MockTestsListAdapter(mMockTestList, getActivity().getLayoutInflater());
-        mockTestsListAdapter.setMockTestSelectedListener(this);
-        rvMockTestList.setAdapter(mockTestsListAdapter);
+        if(getActivity() != null) {
+            final LinearLayoutManager layoutManager = new org.solovyev.android.views.llm.LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+            rvMockTestList.setLayoutManager(layoutManager);
+            MockTestsListAdapter mockTestsListAdapter = new MockTestsListAdapter(mMockTestList, getActivity().getLayoutInflater());
+            mockTestsListAdapter.setMockTestSelectedListener(this);
+            rvMockTestList.setAdapter(mockTestsListAdapter);
+        }
     }
 
     @Override

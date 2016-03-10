@@ -114,6 +114,9 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
     private void loopCheckedViews() {
         String videoContentId = "";
         String htmlContentId = "";
+        if(d == null) {
+            d = getDisplayDialog();
+        }
         d.setTitle(getResources().getString(R.string.offline_dialog_title_text));
         LinearLayout subjectLayout = (LinearLayout) d.findViewById(R.id.subject_layout);
         subjectLayout.removeAllViews();
