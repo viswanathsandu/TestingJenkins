@@ -20,6 +20,7 @@ import com.education.corsalite.adapters.NotesAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.listener.OnRefreshNotesListener;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.CourseData;
@@ -34,7 +35,7 @@ import retrofit.client.Response;
 /**
  * Created by ayush on 27/10/15.
  */
-public class NotesActivity extends AbstractBaseActivity {
+public class NotesActivity extends AbstractBaseActivity implements OnRefreshNotesListener {
 
     private LinearLayout spinnerLayout;
     private RecyclerView recyclerView;
@@ -47,7 +48,7 @@ public class NotesActivity extends AbstractBaseActivity {
     private CourseData mCourseData;
     private ArrayList<String> subjects;
     private RelativeLayout relativeLayout;
-    Spinner courseSpinner;
+    private Spinner courseSpinner;
     private TextView selectedSubjectTxt;
     private String key;
     private LinearLayout notesLayout;
@@ -283,6 +284,11 @@ public class NotesActivity extends AbstractBaseActivity {
             this.type = type;
             this.tag = tag;
         }
+    }
+
+    @Override
+    public void refreshNotes() {
+        getNotesData(mSubjectId, mChapterId, mTopicId);
     }
 }
 

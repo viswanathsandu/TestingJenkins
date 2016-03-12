@@ -1,6 +1,6 @@
 package com.education.corsalite.adapters;
 
-import android.content.Context;
+import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -11,16 +11,26 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.activities.NotesActivity;
+import com.education.corsalite.api.ApiCallback;
+import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.fragments.EditorDialogFragment;
+import com.education.corsalite.listener.OnRefreshNotesListener;
+import com.education.corsalite.models.requestmodels.UpdateNoteRequest;
+import com.education.corsalite.models.responsemodels.CorsaliteError;
+import com.education.corsalite.models.responsemodels.DefaultNoteResponse;
 import com.education.corsalite.models.responsemodels.Note;
 import com.education.corsalite.services.ApiClientService;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit.client.Response;
 
 /**
  * Created by ayush on 12/09/15.
@@ -29,9 +39,9 @@ public class NotesAdapter extends AbstractRecycleViewAdapter {
 
     private List<NotesActivity.SubjectNameSection> notesList;
     private LayoutInflater inflater;
-    private Context context;
+    private Activity context;
 
-    public NotesAdapter(Context context, ArrayList<NotesActivity.SubjectNameSection> notesList, LayoutInflater inflater) {
+    public NotesAdapter(Activity context, ArrayList<NotesActivity.SubjectNameSection> notesList, LayoutInflater inflater) {
         this.context = context;
         this.notesList = notesList;
         this.inflater = inflater;
@@ -143,13 +153,9 @@ public class NotesAdapter extends AbstractRecycleViewAdapter {
                     if(note.tag instanceof Note) {
                         Note noteObj = (Note) note.tag;
                         EditorDialogFragment fragment = new EditorDialogFragment();
-                        fragment.setOnUpdateNoteListener(new OnUpdateNoteListener() {
-                            @Override
-                            public void onUpdateNote(String content) {
-                                ((Note)(notesList.get(position).tag)).noteHtml = content;
-                                notifyDataSetChanged();
-                            }
-                        });
+                        if(context instanceof OnRefreshNotesListener) {
+                            fragment.setRefreshNoteListener((OnRefreshNotesListener) context);
+                        }
                         Bundle bundle = new Bundle();
                         bundle.putString("type", "Note");
                         bundle.putString("operation", "Edit");
@@ -166,20 +172,29 @@ public class NotesAdapter extends AbstractRecycleViewAdapter {
             deleteBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    removeAt(position);
+                    deleteNote((Note) note.tag, (OnRefreshNotesListener) context);
                 }
             });
         }
-
-        private void removeAt(int itemPosition) {
-            if(notesList.size() > itemPosition) {
-                notesList.remove(itemPosition);
-                notifyItemRemoved(itemPosition);
-            }
-        }
     }
 
-    public interface OnUpdateNoteListener {
-        public void onUpdateNote(String content);
+    private void deleteNote(Note note, final OnRefreshNotesListener listener) {
+        UpdateNoteRequest request = new UpdateNoteRequest(note.studentId, note.idNotes, null);
+        ApiManager.getInstance(context).deleteNote(new Gson().toJson(request), new ApiCallback<DefaultNoteResponse>(context) {
+            @Override
+            public void failure(CorsaliteError error) {
+                super.failure(error);
+                Toast.makeText(context, "Failed to delete Note", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void success(DefaultNoteResponse defaultNoteResponse, Response response) {
+                super.success(defaultNoteResponse, response);
+                if(listener != null) {
+                    listener.refreshNotes();
+                }
+                Toast.makeText(context, "Deleted Note successfully", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

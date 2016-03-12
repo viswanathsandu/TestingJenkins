@@ -389,6 +389,12 @@ public class ApiManager {
         }
     }
 
+    public void deleteNote(String deleteNote, ApiCallback<DefaultNoteResponse> callback) {
+        if(isApiOnline()) {
+            ApiClientService.get().updateNote(new TypedString("Delete="+deleteNote), callback);
+        }
+    }
+
     public void updateUserProfile(String userProfile, ApiCallback<EditProfileModel> callback) {
         if (isApiOnline()) {
             ApiClientService.get().updateUserProfile(new TypedString("Update="+userProfile), callback);

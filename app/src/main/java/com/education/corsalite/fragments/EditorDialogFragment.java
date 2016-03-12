@@ -14,9 +14,9 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.education.corsalite.R;
-import com.education.corsalite.adapters.NotesAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
+import com.education.corsalite.listener.OnRefreshNotesListener;
 import com.education.corsalite.models.requestmodels.AddNoteRequest;
 import com.education.corsalite.models.requestmodels.Note;
 import com.education.corsalite.models.requestmodels.UpdateNoteRequest;
@@ -45,10 +45,10 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
     private String notesId;
     private String originalContent;
     private String updateContent;
-    private NotesAdapter.OnUpdateNoteListener onUpdateNoteListener;
+    private OnRefreshNotesListener onRefreshNotesListener;
 
-    public void setOnUpdateNoteListener(NotesAdapter.OnUpdateNoteListener onUpdateNoteListener) {
-        this.onUpdateNoteListener = onUpdateNoteListener;
+    public void setRefreshNoteListener(OnRefreshNotesListener onRefreshNotesListener) {
+        this.onRefreshNotesListener = onRefreshNotesListener;
     }
 
     @Override
@@ -183,8 +183,8 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
             public void success(DefaultNoteResponse defaultNoteResponse, Response response) {
                 super.success(defaultNoteResponse, response);
                 Toast.makeText(getActivity(), "Updated Note successfully", Toast.LENGTH_SHORT).show();
-                if(onUpdateNoteListener != null) {
-                    onUpdateNoteListener.onUpdateNote(updateContent);
+                if(onRefreshNotesListener != null) {
+                    onRefreshNotesListener.refreshNotes();
                 }
                 dismiss();
             }

@@ -182,6 +182,10 @@ public interface ICorsaliteApi {
     @POST("/Note")
     void updateNote(@Body TypedString update, ApiCallback<DefaultNoteResponse> callback);
 
+    @Headers("Content-Type:application/x-www-form-urlencoded")
+    @POST("/Note")
+    void deleteNote(@Body TypedString delete, ApiCallback<DefaultNoteResponse> callback);
+
     @GET("/ExamHistory")
     void getExamHistory(@Query("idStudent") String studentId, @Query("BeginRowNumber") String beginRowNum, @Query("RowCount") String rowCount, ApiCallback<List<ExamHistory>> callback);
 
