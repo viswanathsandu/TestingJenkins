@@ -206,6 +206,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
         webviewContentReading.setWebChromeClient(new WebChromeClient() {
             @Override
             public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
+                L.info("SELECTED NOTE : "+message);
                 selectedText = message;
                 addToNote(selectedText);
                 result.confirm();
@@ -248,7 +249,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
         if (htmlUrl.endsWith(Constants.HTML_FILE)) {
             webviewContentReading.loadUrl(htmlUrl);
         } else {
-            webviewContentReading.loadData(htmlUrl, "text/html; charset=UTF-8", null);
+            webviewContentReading.loadDataWithBaseURL("file:///android_asset/", htmlUrl, "text/html; charset=UTF-8", null, "");
         }
         navigateButtonEnabled();
     }
@@ -406,15 +407,10 @@ public class ContentReadingActivity extends AbstractBaseActivity {
                 if (contentList != null && contentList.size() > 0) {
                     for (Content content : contentList) {
                         if (content.idContent.equalsIgnoreCase(contentModelList.get(mContentIdPosition).idContent)) {
-
-                            String text = content.type.equalsIgnoreCase(Constants.VIDEO_FILE) ?
-                                    content.url :
-                                    "<script type='text/javascript'>" +
-                                            "function copy() {" +
-                                            "    var t = (document.all) ? document.selection.createRange().text : document.getSelection();" +
-                                            "    return t;" +
-                                            "}" +
-                                            "</script>" + content.contentHtml;
+                            String text = content.type.equalsIgnoreCase(Constants.VIDEO_FILE)
+                                    ? content.url
+                                    : getHtmlcontent(content.contentHtml);
+                            L.info(text);
                             loadWeb(text);
                             return;
                         }
@@ -426,6 +422,25 @@ public class ContentReadingActivity extends AbstractBaseActivity {
                 notAvailableForOfflineTxt.setVisibility(View.VISIBLE);
             }
         }
+    }
+
+    private String getHtmlcontent(String content) {
+       String htmlContent = "<!DOCTYPE html>" +
+                            "<html>" +
+                                "<head>" +
+                                    "<script type='text/javascript' src='file:///android_asset/jquery/jquery-latest.js'></script>" +
+                                    "<script type='text/javascript' src='file:///android_asset/jquery/jquery.selection.js'></script>" +
+                                    "<script>" +
+                                        "function copy() {" +
+                                            "return $.selection('html');" +
+                                        "}" +
+                                    "</script>" +
+                                "</head>" +
+                                "<body>"
+                                        + content +
+                                "</body>" +
+                            "</html>";
+        return htmlContent;
     }
 
     private void loadPrevious() {
@@ -459,13 +474,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
                 for (Content content : contentList) {
                     if (content.idContent.equalsIgnoreCase(contentModelList.get(mContentIdPosition).idContent)) {
                         String text = content.type.equalsIgnoreCase(Constants.VIDEO_FILE) ?
-                                content.url :
-                                "<script type='text/javascript'>" +
-                                        "function copy() {" +
-                                        "    var t = (document.all) ? document.selection.createRange().text : document.getSelection();" +
-                                        "    return t;" +
-                                        "}" +
-                                        "</script>" + content.contentHtml;
+                                content.url : getHtmlcontent(content.contentHtml);
                         loadWeb(text);
                         return;
                     }
@@ -502,13 +511,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
                 String contentId = mContentResponse.get(i).idContent;
                 String contentType = mContentResponse.get(i).type + "";
                 String text = contentType.equalsIgnoreCase(Constants.VIDEO_FILE) ?
-                        mContentResponse.get(i).url :
-                        "<script type='text/javascript'>" +
-                                "function copy() {" +
-                                "    var t = (document.all) ? document.selection.createRange().text : document.getSelection();" +
-                                "    return t;" +
-                                "}" +
-                                "</script>" + mContentResponse.get(i).contentHtml;
+                        mContentResponse.get(i).url :getHtmlcontent(mContentResponse.get(i).contentHtml);
                 if (mContentId.isEmpty()) {
                     if (!TextUtils.isEmpty(text) && count == 0) {
                         count = count + 1;

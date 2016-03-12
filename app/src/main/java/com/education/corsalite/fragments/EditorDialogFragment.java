@@ -23,10 +23,6 @@ import com.education.corsalite.models.responsemodels.DefaultNoteResponse;
 import com.education.corsalite.utils.L;
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
-
 import retrofit.client.Response;
 
 /**
@@ -103,8 +99,14 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
         });
         webview.addJavascriptInterface(new Object() {
             @JavascriptInterface
-            public void updateContent(String content) {
+            public void updateContent(String content, String operationType) {
                 updateContent = content;
+                L.info("UpdatedContent : " + updateContent);
+                if(operationType.equalsIgnoreCase("Add")) {
+                    addContent();
+                } else if(operationType.equalsIgnoreCase("Edit")) {
+                    editContent();
+                }
             }
 
         }, "Android");
@@ -119,10 +121,10 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.add_btn:
-                addContent();
+                webview.loadUrl("javascript:getUpdatedHtml('Add')");
                 break;
             case R.id.edit_btn:
-                editContent();
+                webview.loadUrl("javascript:getUpdatedHtml('Edit')");
                 break;
             case R.id.cancel_btn:
                 this.dismiss();
@@ -164,9 +166,7 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
 
     private void editNotes() {
         UpdateNoteRequest request = new UpdateNoteRequest(studentId, notesId, updateContent);
-        List<UpdateNoteRequest> requests = new ArrayList<>();
-        requests.add(request);
-        ApiManager.getInstance(getActivity()).updateNote(new Gson().toJson(requests), new ApiCallback<DefaultNoteResponse>(getActivity()) {
+        ApiManager.getInstance(getActivity()).updateNote(new Gson().toJson(request), new ApiCallback<DefaultNoteResponse>(getActivity()) {
             @Override
             public void failure(CorsaliteError error) {
                 super.failure(error);

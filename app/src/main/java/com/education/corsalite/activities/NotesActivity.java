@@ -71,14 +71,12 @@ public class NotesActivity extends AbstractBaseActivity {
         sendAnalytics(getString(R.string.screen_notes));
     }
 
-
     @Override
     public void onEvent(Course course) {
         super.onEvent(course);
         progressBar.setVisibility(View.VISIBLE);
         getStudyCentreData(course.courseId.toString());
     }
-
 
     private void hideList() {
         recyclerView.setVisibility(View.GONE);
