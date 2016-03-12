@@ -24,7 +24,7 @@ import retrofit.client.Response;
 
 public class WelcomeActivity extends AbstractBaseActivity implements View.OnClickListener {
 
-    @Bind(R.id.redeem_btn) Button redeemBtn;
+    @Bind(R.id.redeem_welcome_btn) Button redeemBtn;
     @Bind(R.id.studycenter_btn) Button studyCenterBtn;
     @Bind(R.id.messages_btn) Button messagesBtn;
     @Bind(R.id.scheduled_tests_btn) Button scheduledTestsBtn;
@@ -56,7 +56,7 @@ public class WelcomeActivity extends AbstractBaseActivity implements View.OnClic
             public void success(WelcomeDetails welcomeDetails, Response response) {
                 super.success(welcomeDetails, response);
                 if(welcomeDetails != null){
-                    if(!TextUtils.isEmpty(welcomeDetails.photoUrl)) {
+                    if(!isDestroyed() && !TextUtils.isEmpty(welcomeDetails.photoUrl)) {
                         Glide.with(WelcomeActivity.this).load(ApiClientService.getBaseUrl() + welcomeDetails.photoUrl.replaceFirst("./", "")).into(profilePic);
                     }
                     fullName.setText(welcomeDetails.firstName+" "+welcomeDetails.lastName);
@@ -83,7 +83,7 @@ public class WelcomeActivity extends AbstractBaseActivity implements View.OnClic
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.redeem_btn:
+            case R.id.redeem_welcome_btn:
                 redeem();
                 break;
             case R.id.studycenter_btn:

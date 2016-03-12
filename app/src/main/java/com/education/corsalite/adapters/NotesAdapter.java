@@ -10,11 +10,11 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
 import com.education.corsalite.activities.NotesActivity;
+import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.fragments.EditorDialogFragment;
 import com.education.corsalite.models.responsemodels.Note;
 import com.education.corsalite.services.ApiClientService;
@@ -146,7 +146,7 @@ public class NotesAdapter extends AbstractRecycleViewAdapter {
                         Bundle bundle = new Bundle();
                         bundle.putString("type", "Notes");
                         bundle.putString("operation", "Edit");
-                        bundle.putString("student_id", noteObj.studentId);
+                        bundle.putString("student_id", LoginUserCache.getInstance().loginResponse.studentId);
                         bundle.putString("topic_id", noteObj.topicId);
                         bundle.putString("content_id", noteObj.contentId);
                         bundle.putString("notes_id", noteObj.idNotes);

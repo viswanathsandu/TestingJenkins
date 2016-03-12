@@ -26,8 +26,8 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 </main>
 <script language="javascript">
 	initSample();
-    function getUpdatedHtml() {
-    	Android.updateContent(CKEDITOR.instances.editor.getData());
+    function getUpdatedHtml(operationType) {
+    	Android.updateContent(CKEDITOR.instances.editor.getSelectedHtml(), operationType);
     }
     
     function loadHtml(content) {

@@ -82,7 +82,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/redeem_btn"
+                android:id="@+id/redeem_welcome_btn"
                 style="@style/welcome_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
