@@ -9,6 +9,8 @@ import com.education.corsalite.db.DbManager;
 import com.education.corsalite.enums.NetworkMode;
 import com.education.corsalite.models.MockTest;
 import com.education.corsalite.models.ScheduledTestList;
+import com.education.corsalite.models.db.reqres.LoginReqRes;
+import com.education.corsalite.models.db.reqres.StudyCenterReqRes;
 import com.education.corsalite.models.requestmodels.ForumLikeRequest;
 import com.education.corsalite.models.responsemodels.CommonResponseModel;
 import com.education.corsalite.models.responsemodels.Content;
@@ -94,7 +96,9 @@ public class ApiManager {
     public void login(String loginId, String passwordHash, ApiCallback<LoginResponse> callback, boolean fetchFromDb) {
         apiCacheHolder.setLoginRequest(loginId, passwordHash);
         if(fetchFromDb || !isNetworkConnected()) {
-            DbManager.getInstance(context).getResponse(apiCacheHolder.login, callback);
+            LoginReqRes reqRes = new LoginReqRes();
+            reqRes.request = apiCacheHolder.loginRequest;
+            DbManager.getInstance(context).getResponse(reqRes, callback);
         } else if (isApiOnline() && isNetworkConnected()) {
             ApiClientService.get().login(loginId, passwordHash, callback);
         } else {
@@ -272,7 +276,9 @@ public class ApiManager {
         if (isApiOnline() && isNetworkConnected()) {
             ApiClientService.get().getCourseStudyCenterData(studentId, courseID, callback);
         } else if(!isNetworkConnected()) {
-            DbManager.getInstance(context).getResponse(apiCacheHolder.studyCenter, callback);
+            StudyCenterReqRes reqRes = new StudyCenterReqRes();
+            reqRes.request = apiCacheHolder.studyCenterRequest;
+            DbManager.getInstance(context).getResponse(reqRes, callback);
         } else {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/studycentre.json");
             System.out.print("Response for 'api/studycentre.json' is " + jsonResponse);

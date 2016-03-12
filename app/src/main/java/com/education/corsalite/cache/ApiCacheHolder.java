@@ -30,11 +30,11 @@ public class ApiCacheHolder {
 
     private static ApiCacheHolder instance;
 
-    private LoginRequest loginRequest = null;
+    public LoginRequest loginRequest = null;
     public LoginReqRes login;
     public UserProfileReqRes userProfile;
     public CoursesReqRes courses;
-    private StudyCenterRequest studyCenterRequest = null;
+    public StudyCenterRequest studyCenterRequest = null;
     public StudyCenterReqRes studyCenter;
     public ContentIndexReqRes contentIndex;
     public ContentReqRes contentReqIndex;
