@@ -25,6 +25,7 @@ import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.DefaultNoteResponse;
 import com.education.corsalite.models.responsemodels.Note;
 import com.education.corsalite.services.ApiClientService;
+import com.education.corsalite.utils.L;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -146,7 +147,11 @@ public class NotesAdapter extends AbstractRecycleViewAdapter {
         public void bindData(final NotesActivity.SubjectNameSection note, final int position) {
             String baseUrl = ApiClientService.getBaseUrl().replace("/v1", "");
             final String htmlContent = ((Note) note.tag).noteHtml.replace("\"", "");
-            notesContentWebview.loadDataWithBaseURL(baseUrl, htmlContent, "text/html", "UTF-8", null);
+            try {
+                notesContentWebview.loadDataWithBaseURL(baseUrl, htmlContent, "text/html", "UTF-8", null);
+            } catch(Exception e) {
+                L.error(e.getMessage(), e);
+            }
             editBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
