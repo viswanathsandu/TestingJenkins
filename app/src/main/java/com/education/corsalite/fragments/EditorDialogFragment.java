@@ -1,5 +1,6 @@
 package com.education.corsalite.fragments;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -79,6 +80,7 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
         initWebview(view);
     }
 
+    @SuppressLint("JavascriptInterface")
     private void initWebview(View view) {
         webview = (WebView)view.findViewById(R.id.editor_webview);
         webview.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
@@ -94,17 +96,16 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
 
             public void onPageFinished(WebView view, String url){
                 webview.loadUrl("javascript:loadHtml('"+originalContent+"')");
-                webview.loadUrl("javascript:getUpdatedHtml()");
             }
         });
         webview.addJavascriptInterface(new Object() {
             @JavascriptInterface
-            public void updateContent(String content, String operationType) {
+            public void updateContent(String content) {
                 updateContent = content;
                 L.info("UpdatedContent : " + updateContent);
-                if(operationType.equalsIgnoreCase("Add")) {
+                if(operation.equalsIgnoreCase("Add")) {
                     addContent();
-                } else if(operationType.equalsIgnoreCase("Edit")) {
+                } else if(operation.equalsIgnoreCase("Edit")) {
                     editContent();
                 }
             }
@@ -121,10 +122,9 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.add_btn:
-                webview.loadUrl("javascript:getUpdatedHtml('Add')");
-                break;
             case R.id.edit_btn:
-                webview.loadUrl("javascript:getUpdatedHtml('Edit')");
+                webview.loadUrl("javascript:getUpdatedHtml()");
+                webview.loadUrl("javascript:getUpdatedHtml()");
                 break;
             case R.id.cancel_btn:
                 this.dismiss();
@@ -135,13 +135,13 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
     }
 
     private void addContent() {
-        if(type.equalsIgnoreCase("Notes")) {
+        if(type.equalsIgnoreCase("Note")) {
             addNotes();
         }
     }
 
     private void editContent() {
-        if(type.equalsIgnoreCase("Notes")) {
+        if(type.equalsIgnoreCase("Note")) {
             editNotes();
         }
     }
