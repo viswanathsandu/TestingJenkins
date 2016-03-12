@@ -146,7 +146,7 @@ public class NotesAdapter extends AbstractRecycleViewAdapter {
 
         public void bindData(final NotesActivity.SubjectNameSection note, final int position) {
             String baseUrl = ApiClientService.getBaseUrl().replace("/v1", "");
-            final String htmlContent = ((Note) note.tag).noteHtml.replace("\"", "");
+            final String htmlContent = ((Note) note.tag).noteHtml;
             try {
                 notesContentWebview.loadDataWithBaseURL(baseUrl, htmlContent, "text/html", "UTF-8", null);
             } catch(Exception e) {

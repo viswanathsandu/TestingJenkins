@@ -152,23 +152,27 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
     }
 
     private void addNotes() {
-        AddNoteRequest request = new AddNoteRequest(studentId, new Note(topicId, contentId, updateContent));
-        ApiManager.getInstance(getActivity()).addNote(new Gson().toJson(request), new ApiCallback<DefaultNoteResponse>(getActivity()) {
-            @Override
-            public void failure(CorsaliteError error) {
-                super.failure(error);
-                Toast.makeText(getActivity(), "Failed to add Note", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void success(DefaultNoteResponse defaultNoteResponse, Response response) {
-                super.success(defaultNoteResponse, response);
-                if(getActivity() != null) {
-                    Toast.makeText(getActivity(), "Added Note successfully", Toast.LENGTH_SHORT).show();
+        try {
+            AddNoteRequest request = new AddNoteRequest(studentId, new Note(topicId, contentId, updateContent));
+            ApiManager.getInstance(getActivity()).addNote(new Gson().toJson(request), new ApiCallback<DefaultNoteResponse>(getActivity()) {
+                @Override
+                public void failure(CorsaliteError error) {
+                    super.failure(error);
+                    Toast.makeText(getActivity(), "Failed to add Note", Toast.LENGTH_SHORT).show();
                 }
-                dismiss();
-            }
-        });
+
+                @Override
+                public void success(DefaultNoteResponse defaultNoteResponse, Response response) {
+                    super.success(defaultNoteResponse, response);
+                    if (getActivity() != null) {
+                        Toast.makeText(getActivity(), "Added Note successfully", Toast.LENGTH_SHORT).show();
+                    }
+                    dismiss();
+                }
+            });
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
     }
 
     private void editNotes() {
