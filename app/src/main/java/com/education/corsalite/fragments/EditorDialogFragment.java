@@ -130,7 +130,6 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
             case R.id.add_btn:
             case R.id.edit_btn:
                 webview.loadUrl("javascript:getUpdatedHtml()");
-                webview.loadUrl("javascript:getUpdatedHtml()");
                 break;
             case R.id.cancel_btn:
                 this.dismiss();
