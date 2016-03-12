@@ -144,7 +144,7 @@ public class NotesAdapter extends AbstractRecycleViewAdapter {
                         Note noteObj = (Note) note.tag;
                         EditorDialogFragment fragment = new EditorDialogFragment();
                         Bundle bundle = new Bundle();
-                        bundle.putString("type", "Notes");
+                        bundle.putString("type", "Note");
                         bundle.putString("operation", "Edit");
                         bundle.putString("student_id", LoginUserCache.getInstance().loginResponse.studentId);
                         bundle.putString("topic_id", noteObj.topicId);
