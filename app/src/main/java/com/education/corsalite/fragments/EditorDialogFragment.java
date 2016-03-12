@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.education.corsalite.R;
+import com.education.corsalite.adapters.NotesAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.models.requestmodels.AddNoteRequest;
@@ -44,6 +45,11 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
     private String notesId;
     private String originalContent;
     private String updateContent;
+    private NotesAdapter.OnUpdateNoteListener onUpdateNoteListener;
+
+    public void setOnUpdateNoteListener(NotesAdapter.OnUpdateNoteListener onUpdateNoteListener) {
+        this.onUpdateNoteListener = onUpdateNoteListener;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -177,6 +183,9 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
             public void success(DefaultNoteResponse defaultNoteResponse, Response response) {
                 super.success(defaultNoteResponse, response);
                 Toast.makeText(getActivity(), "Updated Note successfully", Toast.LENGTH_SHORT).show();
+                if(onUpdateNoteListener != null) {
+                    onUpdateNoteListener.onUpdateNote(updateContent);
+                }
                 dismiss();
             }
         });

@@ -143,6 +143,13 @@ public class NotesAdapter extends AbstractRecycleViewAdapter {
                     if(note.tag instanceof Note) {
                         Note noteObj = (Note) note.tag;
                         EditorDialogFragment fragment = new EditorDialogFragment();
+                        fragment.setOnUpdateNoteListener(new OnUpdateNoteListener() {
+                            @Override
+                            public void onUpdateNote(String content) {
+                                ((Note)(notesList.get(position).tag)).noteHtml = content;
+                                notifyDataSetChanged();
+                            }
+                        });
                         Bundle bundle = new Bundle();
                         bundle.putString("type", "Note");
                         bundle.putString("operation", "Edit");
@@ -170,5 +177,9 @@ public class NotesAdapter extends AbstractRecycleViewAdapter {
                 notifyItemRemoved(itemPosition);
             }
         }
+    }
+
+    public interface OnUpdateNoteListener {
+        public void onUpdateNote(String content);
     }
 }
