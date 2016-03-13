@@ -5,305 +5,36 @@ package com.education.corsalite.models.responsemodels;
  */
 public class ForumPost {
 
-    private String idCourseSubject;
-
-    private String CourseName;
-
-    private String postLikes;
-
-    private String TopicName;
-
-    private String createrLastView;
-
-    private String ReferidUserPost;
-
-    private String idTopic;
-
-    private String Datetime;
-
-    private String idUserPost;
-
-    private String postReplies;
-
-    private String htmlText;
-
-    private String PostTags;
-
-    private String LockedDate;
-
-    private String idCourseSubjectChapter;
-
-    private String EditedDate;
-
-    private String PhotoUrl;
-
-    private String SearchPost;
-
-    private String LockedBy;
-
-    private String postViews;
-
-    private String PostSubject;
-
-    private String UserType;
-
-    private String bookmark;
-
-    private String ChapterName;
-
-    private String idCourse;
-
-    private String DisplayName;
-
-    private String SubjectName;
-
-    private String isAuthorOnly;
-
-    private String idUser;
-
-    private String EditedBy;
-
-    private String Locked;
-
-    public String getIdCourseSubject() {
-        return idCourseSubject;
-    }
-
-    public void setIdCourseSubject(String idCourseSubject) {
-        this.idCourseSubject = idCourseSubject;
-    }
-
-    public String getCourseName() {
-        return CourseName;
-    }
-
-    public void setCourseName(String courseName) {
-        CourseName = courseName;
-    }
-
-    public String getPostLikes() {
-        return postLikes;
-    }
-
-    public void setPostLikes(String postLikes) {
-        this.postLikes = postLikes;
-    }
-
-    public String getTopicName() {
-        return TopicName;
-    }
-
-    public void setTopicName(String topicName) {
-        TopicName = topicName;
-    }
-
-    public String getCreaterLastView() {
-        return createrLastView;
-    }
-
-    public void setCreaterLastView(String createrLastView) {
-        this.createrLastView = createrLastView;
-    }
-
-    public String getReferidUserPost() {
-        return ReferidUserPost;
-    }
-
-    public void setReferidUserPost(String referidUserPost) {
-        ReferidUserPost = referidUserPost;
-    }
-
-    public String getIdTopic() {
-        return idTopic;
-    }
-
-    public void setIdTopic(String idTopic) {
-        this.idTopic = idTopic;
-    }
-
-    public String getDatetime() {
-        return Datetime;
-    }
-
-    public void setDatetime(String datetime) {
-        Datetime = datetime;
-    }
-
-    public String getIdUserPost() {
-        return idUserPost;
-    }
-
-    public void setIdUserPost(String idUserPost) {
-        this.idUserPost = idUserPost;
-    }
-
-    public String getPostReplies() {
-        return postReplies;
-    }
-
-    public void setPostReplies(String postReplies) {
-        this.postReplies = postReplies;
-    }
-
-    public String getHtmlText() {
-        return htmlText;
-    }
-
-    public void setHtmlText(String htmlText) {
-        this.htmlText = htmlText;
-    }
-
-    public String getPostTags() {
-        return PostTags;
-    }
-
-    public void setPostTags(String postTags) {
-        PostTags = postTags;
-    }
-
-    public String getLockedDate() {
-        return LockedDate;
-    }
-
-    public void setLockedDate(String lockedDate) {
-        LockedDate = lockedDate;
-    }
-
-    public String getIdCourseSubjectChapter() {
-        return idCourseSubjectChapter;
-    }
-
-    public void setIdCourseSubjectChapter(String idCourseSubjectChapter) {
-        this.idCourseSubjectChapter = idCourseSubjectChapter;
-    }
-
-    public String getEditedDate() {
-        return EditedDate;
-    }
-
-    public void setEditedDate(String editedDate) {
-        EditedDate = editedDate;
-    }
-
-    public String getPhotoUrl() {
-        return PhotoUrl;
-    }
-
-    public void setPhotoUrl(String photoUrl) {
-        PhotoUrl = photoUrl;
-    }
-
-    public String getSearchPost() {
-        return SearchPost;
-    }
-
-    public void setSearchPost(String searchPost) {
-        SearchPost = searchPost;
-    }
-
-    public String getLockedBy() {
-        return LockedBy;
-    }
-
-    public void setLockedBy(String lockedBy) {
-        LockedBy = lockedBy;
-    }
-
-    public String getPostViews() {
-        return postViews;
-    }
-
-    public void setPostViews(String postViews) {
-        this.postViews = postViews;
-    }
-
-    public String getPostSubject() {
-        return PostSubject;
-    }
-
-    public void setPostSubject(String postSubject) {
-        PostSubject = postSubject;
-    }
-
-    public String getUserType() {
-        return UserType;
-    }
-
-    public void setUserType(String userType) {
-        UserType = userType;
-    }
-
-    public String getBookmark() {
-        return bookmark;
-    }
-
-    public void setBookmark(String bookmark) {
-        this.bookmark = bookmark;
-    }
-
-    public String getChapterName() {
-        return ChapterName;
-    }
-
-    public void setChapterName(String chapterName) {
-        ChapterName = chapterName;
-    }
-
-    public String getIdCourse() {
-        return idCourse;
-    }
-
-    public void setIdCourse(String idCourse) {
-        this.idCourse = idCourse;
-    }
-
-    public String getDisplayName() {
-        return DisplayName;
-    }
-
-    public void setDisplayName(String displayName) {
-        DisplayName = displayName;
-    }
-
-    public String getSubjectName() {
-        return SubjectName;
-    }
-
-    public void setSubjectName(String subjectName) {
-        SubjectName = subjectName;
-    }
-
-    public String getIsAuthorOnly() {
-        return isAuthorOnly;
-    }
-
-    public void setIsAuthorOnly(String isAuthorOnly) {
-        this.isAuthorOnly = isAuthorOnly;
-    }
-
-    public String getIdUser() {
-        return idUser;
-    }
-
-    public void setIdUser(String idUser) {
-        this.idUser = idUser;
-    }
-
-    public String getEditedBy() {
-        return EditedBy;
-    }
-
-    public void setEditedBy(String editedBy) {
-        EditedBy = editedBy;
-    }
-
-    public String getLocked() {
-        return Locked;
-    }
-
-    public void setLocked(String locked) {
-        Locked = locked;
-    }
+    public String idCourseSubject;
+    public String CourseName;
+    public String postLikes;
+    public String TopicName;
+    public String createrLastView;
+    public String ReferidUserPost;
+    public String idTopic;
+    public String Datetime;
+    public String idUserPost;
+    public String postReplies;
+    public String htmlText;
+    public String PostTags;
+    public String LockedDate;
+    public String idCourseSubjectChapter;
+    public String EditedDate;
+    public String PhotoUrl;
+    public String SearchPost;
+    public String LockedBy;
+    public String postViews;
+    public String PostSubject;
+    public String UserType;
+    public String bookmark;
+    public String ChapterName;
+    public String idCourse;
+    public String DisplayName;
+    public String SubjectName;
+    public String isAuthorOnly;
+    public String idUser;
+    public String EditedBy;
+    public String Locked;
 
     @Override
     public boolean equals(Object o) {

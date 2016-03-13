@@ -2,6 +2,7 @@ package com.education.corsalite.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,40 +67,40 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
 
         setupActionListener(holder, position);
 
-        holder.tvQuestion.setText(forumPost.getSearchPost());
-        holder.tvDate.setText(forumPost.getDatetime()+" by");
-        holder.tvUserName.setText(forumPost.getDisplayName());
-        holder.tvQuestionDesc.setText(Html.fromHtml(forumPost.getHtmlText()));
-        if(forumPost.getCourseName()==null || forumPost.getCourseName().isEmpty()){
+        holder.tvQuestion.setText(forumPost.SearchPost);
+        holder.tvDate.setText(forumPost.Datetime+" by");
+        holder.tvUserName.setText(forumPost.DisplayName);
+        holder.tvQuestionDesc.setText(Html.fromHtml(forumPost.htmlText));
+        if(TextUtils.isEmpty(forumPost.CourseName)){
             holder.tvCourseName.setVisibility(View.GONE);
         } else {
             holder.tvCourseName.setVisibility(View.VISIBLE);
-            holder.tvCourseName.setText(forumPost.getCourseName());
+            holder.tvCourseName.setText(forumPost.CourseName);
         }
-        if(forumPost.getSubjectName()==null || forumPost.getSubjectName().isEmpty()){
+        if(TextUtils.isEmpty(forumPost.SubjectName)) {
             holder.tvSubjectName.setVisibility(View.GONE);
         } else {
             holder.tvSubjectName.setVisibility(View.VISIBLE);
-            holder.tvSubjectName.setText(forumPost.getSubjectName());
+            holder.tvSubjectName.setText(forumPost.SubjectName);
         }
-        if(forumPost.getChapterName()==null || forumPost.getChapterName().isEmpty()){
+        if(TextUtils.isEmpty(forumPost.ChapterName)){
             holder.tvChapterName.setVisibility(View.GONE);
         } else {
             holder.tvChapterName.setVisibility(View.VISIBLE);
-            holder.tvChapterName.setText(forumPost.getChapterName());
+            holder.tvChapterName.setText(forumPost.ChapterName);
         }
-        if(forumPost.getTopicName()==null || forumPost.getTopicName().isEmpty()){
+        if(TextUtils.isEmpty(forumPost.TopicName)){
             holder.tvTopicName.setVisibility(View.GONE);
         } else {
             holder.tvTopicName.setVisibility(View.VISIBLE);
-            holder.tvTopicName.setText(forumPost.getTopicName());
+            holder.tvTopicName.setText(forumPost.TopicName);
         }
-        holder.tvComments.setText(forumPost.getPostReplies()+" Comments");
-        holder.tvLikes.setText(forumPost.getPostLikes()+" Likes");
-        holder.tvViews.setText(forumPost.getPostViews()+" Views");
+        holder.tvComments.setText(forumPost.postReplies+" Comments");
+        holder.tvLikes.setText(forumPost.postLikes+" Likes");
+        holder.tvViews.setText(forumPost.postViews+" Views");
 
         try {
-            URL url = new URL(new URL(ApiClientService.getBaseUrl()), forumPost.getPhotoUrl());
+            URL url = new URL(new URL(ApiClientService.getBaseUrl()), forumPost.PhotoUrl);
             Glide.with(holder.ivUserPic.getContext())
                     .load(url.toString())
                     .centerCrop()

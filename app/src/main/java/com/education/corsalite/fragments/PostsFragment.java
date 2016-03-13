@@ -129,12 +129,13 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener 
     public void onLikeClicked(final int position) {
         final ForumPost forumPost=mPostAdapter.getItem(position);
 
-        ApiManager.getInstance(getActivity()).addForumLike(new ForumLikeRequest(forumPost.getIdUser(), forumPost.getIdUserPost()), new ApiCallback<CommonResponseModel>(getActivity()) {
+        ApiManager.getInstance(getActivity()).addForumLike(new ForumLikeRequest(forumPost.idUser, forumPost.idUserPost),
+                            new ApiCallback<CommonResponseModel>(getActivity()) {
             @Override
             public void success(CommonResponseModel baseResponseModel, Response response) {
                 super.success(baseResponseModel, response);
                 if(baseResponseModel.isSuccessful()){
-                   forumPost.setPostLikes(Integer.parseInt(forumPost.getPostLikes()) + 1 + "");
+                   forumPost.postLikes = Integer.parseInt(forumPost.postLikes) + 1 + "";
                     mPostAdapter.updateCurrentItem(position);
                 }
             }
@@ -143,29 +144,26 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener 
 
     @Override
     public void onCommentClicked(int position) {
-
     }
 
     @Override
     public void onBookmarkClicked(int position) {
-
     }
 
     @Override
     public void onEditClicked(int position) {
-
     }
 
     @Override
     public void onLockClicked(int position) {
-
     }
 
     @Override
     public void onDeleteClicked(final int position) {
         final ForumPost forumPost = mPostAdapter.getItem(position);
 
-        ApiManager.getInstance(getActivity()).deleteForum(new ForumLikeRequest(forumPost.getIdUser(), forumPost.getIdUserPost()), new ApiCallback<CommonResponseModel>(getActivity()) {
+        ApiManager.getInstance(getActivity()).deleteForum(new ForumLikeRequest(forumPost.idUser, forumPost.idUserPost),
+                                    new ApiCallback<CommonResponseModel>(getActivity()) {
             @Override
             public void success(CommonResponseModel baseResponseModel, Response response) {
                 super.success(baseResponseModel, response);

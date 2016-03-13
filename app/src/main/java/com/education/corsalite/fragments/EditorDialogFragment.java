@@ -22,6 +22,7 @@ import com.education.corsalite.models.requestmodels.Note;
 import com.education.corsalite.models.requestmodels.UpdateNoteRequest;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.DefaultNoteResponse;
+import com.education.corsalite.models.responsemodels.ForumPost;
 import com.education.corsalite.utils.L;
 import com.google.gson.Gson;
 
@@ -142,12 +143,45 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
     private void addContent() {
         if(type.equalsIgnoreCase("Note")) {
             addNotes();
+        } else if(type.equalsIgnoreCase("Forum")) {
+            addEditPostToForum(null);
         }
     }
 
     private void editContent() {
         if(type.equalsIgnoreCase("Note")) {
             editNotes();
+        } else if(type.equalsIgnoreCase("Forum")) {
+            addEditPostToForum(null);
+        }
+    }
+
+    private ForumPost getForumPost() {
+        ForumPost post = new ForumPost();
+        return null;
+    }
+
+    private void addEditPostToForum(ForumPost post) {
+        try {
+            AddNoteRequest request = new AddNoteRequest(studentId, new Note(topicId, contentId, updateContent));
+            ApiManager.getInstance(getActivity()).addNote(new Gson().toJson(request), new ApiCallback<DefaultNoteResponse>(getActivity()) {
+                @Override
+                public void failure(CorsaliteError error) {
+                    super.failure(error);
+                    Toast.makeText(getActivity(), "Failed to add Note", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void success(DefaultNoteResponse defaultNoteResponse, Response response) {
+                    super.success(defaultNoteResponse, response);
+                    if (getActivity() != null) {
+                        Toast.makeText(getActivity(), "Added Note successfully", Toast.LENGTH_SHORT).show();
+                    }
+                    dismiss();
+                }
+            });
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
         }
     }
 

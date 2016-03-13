@@ -241,6 +241,19 @@ public class ContentReadingActivity extends AbstractBaseActivity {
         fragment.show(getSupportFragmentManager(), "NotesEditorDialog");
     }
 
+    private void addToForum(String htmlText) {
+        EditorDialogFragment fragment = new EditorDialogFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("type", "Forum");
+        bundle.putString("operation", "Add");
+        bundle.putString("student_id", LoginUserCache.getInstance().getLongResponse().studentId);
+        bundle.putString("topic_id", topicModelList.get(spTopic.getSelectedItemPosition()).idTopic);
+        bundle.putString("content_id", contentModelList.get(mContentIdPosition).idContent);
+        bundle.putString("content", htmlText);
+        fragment.setArguments(bundle);
+        fragment.show(getSupportFragmentManager(), "ForumEditorDialog");
+    }
+
     private void loadWeb(String htmlUrl) {
         // Initialize the WebView
         mContentId = "";

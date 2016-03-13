@@ -206,16 +206,16 @@ public interface ICorsaliteApi {
     void addForum(@Body TypedString update, ApiCallback<DefaultForumResponse> callback);
 
     @Headers("Content-Type:application/x-www-form-urlencoded")
+    @POST("/ForumDelete")
+    void deleteForum(@Body TypedString delete, ApiCallback<CommonResponseModel> callback);
+
+    @Headers("Content-Type:application/x-www-form-urlencoded")
     @POST("/UserEvents")
     void postUserEvents(@Body TypedString insert, ApiCallback<UserEventsResponse> callback);
 
     @Headers("Content-Type:application/x-www-form-urlencoded")
     @POST("/LikeForum")
     void addForumLike(@Body TypedString insert, ApiCallback<CommonResponseModel> callback);
-
-    @Headers("Content-Type:application/x-www-form-urlencoded")
-    @POST("/ForumDelete")
-    void deleteForum(@Body TypedString delete, ApiCallback<CommonResponseModel> callback);
 
     @GET("/MockTest")
     void getMockTests(@Query("idCourse") String courseID, @Query("idStudent") String studentId, ApiCallback<List<MockTest>> callback);
