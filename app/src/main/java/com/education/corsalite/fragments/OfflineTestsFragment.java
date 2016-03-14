@@ -29,6 +29,7 @@ public class OfflineTestsFragment  extends BaseFragment implements OfflineConten
     @Bind(R.id.expandableList)ExpandableListView rvOfflineTests;
     private List<OfflineMockTestModel> mockTestModels;
     private List<OfflineMockTestModel> scheduledTestModels;
+    private List<OfflineMockTestModel> chaptersList;
     private ArrayList<String> allTests;
     private HashMap<String, List<OfflineMockTestModel>> offlineTests;
 
@@ -52,6 +53,7 @@ public class OfflineTestsFragment  extends BaseFragment implements OfflineConten
                     separateTestModel(offlineMockTestModels);
                     offlineTests.put("Mock Test", mockTestModels);
                     offlineTests.put("Scheduled Test", scheduledTestModels);
+                    offlineTests.put("Take Test",chaptersList);
                     initNodes();
                 } else {
                     Toast.makeText(getActivity(), "No offline test available ", Toast.LENGTH_SHORT).show();
@@ -64,11 +66,14 @@ public class OfflineTestsFragment  extends BaseFragment implements OfflineConten
         List<OfflineMockTestModel> list = new ArrayList<>();
         mockTestModels = new ArrayList<>();
         scheduledTestModels = new ArrayList<>();
+        chaptersList = new ArrayList<>();
         for (OfflineMockTestModel model: offlineMockTestModels) {
             if(model.mockTest != null){
                 mockTestModels.add(model);
             }else if(model.scheduledTest != null){
                 scheduledTestModels.add(model);
+            }else if(model.chapter != null){
+               chaptersList.add(model);
             }
         }
     }
@@ -76,11 +81,12 @@ public class OfflineTestsFragment  extends BaseFragment implements OfflineConten
     private ArrayList<String>  loadAllTests()
     {
         ArrayList<String> alltests = new ArrayList<>();
-        // TODO : uncomment it while merging practice and aprt test for offline
+        // TODO : uncomment it while merging practice and part test for offline
 //        alltests.add("Exercise Test");
 //        alltests.add("Part Test");
         alltests.add("Scheduled Test");
         alltests.add("Mock Test");
+        alltests.add("Take Test");
         return alltests;
     }
 

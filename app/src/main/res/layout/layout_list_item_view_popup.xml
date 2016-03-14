@@ -96,6 +96,14 @@
             android:layout_height="wrap_content"
             android:background="@drawable/option_item_selector"
             android:text="@string/menu_take_test" />
+        <ImageView
+            android:id="@+id/download_test"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@color/black"
+            android:scaleType="centerInside"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/download_icon" />
     </RelativeLayout>
 
     <RelativeLayout style="@style/tiles_menu_item_rl">
