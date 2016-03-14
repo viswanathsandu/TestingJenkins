@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,18 +12,24 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.education.corsalite.R;
+import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
+import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.listener.OnRefreshNotesListener;
 import com.education.corsalite.models.requestmodels.AddNoteRequest;
+import com.education.corsalite.models.requestmodels.ForumModel;
 import com.education.corsalite.models.requestmodels.Note;
 import com.education.corsalite.models.requestmodels.UpdateNoteRequest;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
+import com.education.corsalite.models.responsemodels.DefaultForumResponse;
 import com.education.corsalite.models.responsemodels.DefaultNoteResponse;
-import com.education.corsalite.models.responsemodels.ForumPost;
 import com.education.corsalite.utils.L;
 import com.google.gson.Gson;
 
@@ -34,6 +41,9 @@ import retrofit.client.Response;
 public class EditorDialogFragment extends DialogFragment implements View.OnClickListener {
 
     private WebView webview;
+    private RelativeLayout forumHeaderLayout;
+    private EditText titleTxt;
+    private CheckBox isAuthorOnlyCkb;
     private Button addBtn;
     private Button editBtn;
     private Button cancelBtn;
@@ -41,9 +51,14 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
     private String type;
     private String operation;
     private String studentId;
+    private String subjectId;
+    private String chapterId;
     private String topicId;
     private String contentId;
     private String notesId;
+    private String postId;
+    private String postsubject;
+    private String isAuthorOnly;
     private String originalContent;
     private String updateContent;
     private OnRefreshNotesListener onRefreshNotesListener;
@@ -61,11 +76,15 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
         type = getArguments().getString("type", "Note");
         operation = getArguments().getString("operation", "Add");
         studentId = getArguments().getString("student_id", "");
+        subjectId = getArguments().getString("subject_id", "");
+        chapterId = getArguments().getString("chapter_id", "");
         topicId = getArguments().getString("topic_id", "");
         contentId = getArguments().getString("content_id", "");
         notesId = getArguments().getString("notes_id", "");
+        postId = getArguments().getString("post_id", "");
         originalContent = getArguments().getString("content", "");
-
+        isAuthorOnly = getArguments().getString("is_author_only", "");
+        postsubject = getArguments().getString("post_subject", "");
         getDialog().setTitle(operation+" "+type);
         initUi(rootView);
         loadWebview();
@@ -73,17 +92,33 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
     }
 
     private void initUi(View view) {
-        addBtn = (Button) view.findViewById(R.id.add_btn);
-        addBtn.setOnClickListener(this);
-        editBtn = (Button) view.findViewById(R.id.edit_btn);
-        editBtn.setOnClickListener(this);
-        cancelBtn = (Button) view.findViewById(R.id.cancel_btn);
-        cancelBtn.setOnClickListener(this);
-        if(operation.equalsIgnoreCase("Add")) {
+        forumHeaderLayout = (RelativeLayout) view.findViewById(R.id.forum_header_layout);
+        if(type.equals("Note")) {
+            forumHeaderLayout.setVisibility(View.GONE);
+        } else if(type.equals("Forum")) {
+            forumHeaderLayout.setVisibility(View.VISIBLE);
+        }
+        isAuthorOnlyCkb = (CheckBox)view.findViewById(R.id.is_author_only_ckb);
+        if(isAuthorOnly.equals("Y")) {
+            isAuthorOnlyCkb.setChecked(true);
+        } else if(isAuthorOnly.equals("N")) {
+            isAuthorOnlyCkb.setChecked(false);
+        }
+        titleTxt = (EditText) view.findViewById(R.id.title_txt);
+        if(!TextUtils.isEmpty(postsubject)) {
+            titleTxt.setText(postsubject);
+        }
+        if(operation.equals("Add")) {
+            addBtn = (Button) view.findViewById(R.id.add_btn);
+            addBtn.setOnClickListener(this);
             addBtn.setVisibility(View.VISIBLE);
-        } else if(operation.equalsIgnoreCase("Edit")) {
+        } else if(operation.equals("Edit")) {
+            editBtn = (Button) view.findViewById(R.id.edit_btn);
+            editBtn.setOnClickListener(this);
             editBtn.setVisibility(View.VISIBLE);
         }
+        cancelBtn = (Button) view.findViewById(R.id.cancel_btn);
+        cancelBtn.setOnClickListener(this);
         initWebview(view);
     }
 
@@ -144,7 +179,7 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
         if(type.equalsIgnoreCase("Note")) {
             addNotes();
         } else if(type.equalsIgnoreCase("Forum")) {
-            addEditPostToForum(null);
+            addEditPostToForum(getForumPost());
         }
     }
 
@@ -152,30 +187,42 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
         if(type.equalsIgnoreCase("Note")) {
             editNotes();
         } else if(type.equalsIgnoreCase("Forum")) {
-            addEditPostToForum(null);
+            addEditPostToForum(getForumPost());
         }
     }
 
-    private ForumPost getForumPost() {
-        ForumPost post = new ForumPost();
-        return null;
+    private ForumModel getForumPost() {
+        ForumModel post = new ForumModel();
+        if(!TextUtils.isEmpty(postId)) {
+            post.idUserPost = postId;
+        }
+        post.studentId = studentId;
+        post.userId = LoginUserCache.getInstance().loginResponse.userId;
+        post.courseId = AbstractBaseActivity.selectedCourse.courseId.toString();
+        post.idCourseSubject = subjectId;
+        post.idCourseSubjectChapter = chapterId;
+        post.topicId = topicId;
+        post.postContent = updateContent;
+        post.referIdUserPost = "";
+        post.postSubject = titleTxt.getText().toString();
+        post.isAuthorOnly = isAuthorOnlyCkb.isChecked() ? "Y" : "N";
+        return post;
     }
 
-    private void addEditPostToForum(ForumPost post) {
+    private void addEditPostToForum(ForumModel post) {
         try {
-            AddNoteRequest request = new AddNoteRequest(studentId, new Note(topicId, contentId, updateContent));
-            ApiManager.getInstance(getActivity()).addNote(new Gson().toJson(request), new ApiCallback<DefaultNoteResponse>(getActivity()) {
+            ApiManager.getInstance(getActivity()).addEditForumPost(post, new ApiCallback<DefaultForumResponse>(getActivity()) {
                 @Override
                 public void failure(CorsaliteError error) {
                     super.failure(error);
-                    Toast.makeText(getActivity(), "Failed to add Note", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Failed to add post on Forum", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
-                public void success(DefaultNoteResponse defaultNoteResponse, Response response) {
+                public void success(DefaultForumResponse defaultNoteResponse, Response response) {
                     super.success(defaultNoteResponse, response);
                     if (getActivity() != null) {
-                        Toast.makeText(getActivity(), "Added Note successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Added post successfully", Toast.LENGTH_SHORT).show();
                     }
                     dismiss();
                 }

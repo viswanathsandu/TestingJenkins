@@ -1,5 +1,6 @@
 package com.education.corsalite.adapters;
 
+import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
@@ -32,11 +33,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
     private List<ForumPost> mForumPostList;
     private SocialEventsListener mSocialEventsListener;
     private int mPage;
+    private Activity mActivity;
 
-    public PostAdapter(SocialEventsListener listener, int page) {
+    public PostAdapter(Activity activity, SocialEventsListener listener, int page) {
         mForumPostList = new ArrayList<>();
         mSocialEventsListener = listener;
         mPage = page;
+        this.mActivity = activity;
     }
 
     @Override
@@ -48,7 +51,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
 
     @Override
     public void onBindViewHolder(PostHolder holder, int position) {
-        ForumPost forumPost = mForumPostList.get(position);
+        final ForumPost forumPost = mForumPostList.get(position);
         if(mPage==0){
             holder.tvActionLike.setVisibility(View.VISIBLE);
             holder.tvActionComment.setVisibility(View.VISIBLE);
@@ -56,6 +59,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
             holder.tvActionDelete.setVisibility(View.GONE);
             holder.tvActionLock.setVisibility(View.GONE);
             holder.tvActionComment.setText("Comment");
+            holder.tvActionComment.setVisibility(View.GONE);
         } else if(mPage==1) {
             holder.tvActionLike.setVisibility(View.GONE);
             holder.tvActionComment.setVisibility(View.VISIBLE);
