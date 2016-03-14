@@ -12,6 +12,7 @@ import com.education.corsalite.models.ScheduledTestList;
 import com.education.corsalite.models.db.reqres.LoginReqRes;
 import com.education.corsalite.models.db.reqres.StudyCenterReqRes;
 import com.education.corsalite.models.requestmodels.ForumLikeRequest;
+import com.education.corsalite.models.requestmodels.ForumModel;
 import com.education.corsalite.models.responsemodels.CommonResponseModel;
 import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ContentIndex;
@@ -19,6 +20,7 @@ import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.CourseAnalysis;
 import com.education.corsalite.models.responsemodels.CourseAnalysisPercentile;
 import com.education.corsalite.models.responsemodels.DefaultCourseResponse;
+import com.education.corsalite.models.responsemodels.DefaultForumResponse;
 import com.education.corsalite.models.responsemodels.DefaultNoteResponse;
 import com.education.corsalite.models.responsemodels.EditProfileModel;
 import com.education.corsalite.models.responsemodels.ExamHistory;
@@ -467,9 +469,9 @@ public class ApiManager {
         }
     }
 
-    public void addEditForumPost(ForumPost forumPost, ApiCallback<CommonResponseModel> callback){
+    public void addEditForumPost(ForumModel forumPost, ApiCallback<DefaultForumResponse> callback){
         if(isApiOnline()){
-            ApiClientService.get().addForumLike(new TypedString("Insert="+new Gson().toJson(forumPost)), callback);
+            ApiClientService.get().addPostToForum(new TypedString("Update="+new Gson().toJson(forumPost)), callback);
         }
     }
 

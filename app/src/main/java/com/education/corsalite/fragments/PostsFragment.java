@@ -9,9 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.education.corsalite.R;
+import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.adapters.PostAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
+import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.listener.SocialEventsListener;
 import com.education.corsalite.models.requestmodels.ForumLikeRequest;
 import com.education.corsalite.models.responsemodels.CommonResponseModel;
@@ -67,7 +69,7 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener 
     private void setUI() {
         mLayoutManager = new LinearLayoutManager(mRecyclerView.getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mPostAdapter = new PostAdapter(this, mPage);
+        mPostAdapter = new PostAdapter(getActivity(), this, mPage);
         mRecyclerView.setAdapter(mPostAdapter);
         switch (mPage){
             case 0:
@@ -85,8 +87,7 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener 
     }
 
     private void loadForumMyComments() {
-        // http://staging.corsalite.com/v1/webservices/Forums?idCourse=17&idUser=69&type=MyComments
-        ApiManager.getInstance(getActivity()).getMyComments("17", "69", "MyComments",
+        ApiManager.getInstance(getActivity()).getMyComments(AbstractBaseActivity.selectedCourse.courseId+"", LoginUserCache.getInstance().loginResponse.userId, "MyComments",
                 new ApiCallback<ArrayList<ForumPost>>(getActivity()) {
                     @Override
                     public void success(ArrayList<ForumPost> forumPosts, Response response) {
@@ -97,9 +98,7 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener 
     }
 
     private void loadForumPosts() {
-        // // http://staging.corsalite.com/v1/webservices/Forums?idCourse=13&idUser=11391&type=AllPosts&BeginRowNumber=10&RowCount=3
-        // TODO: sridhar. Pass dynamic parameters respectively.
-        ApiManager.getInstance(getActivity()).getAllPosts("13", "1139", "AllPosts", "10", "3",
+        ApiManager.getInstance(getActivity()).getAllPosts(AbstractBaseActivity.selectedCourse.courseId+"", LoginUserCache.getInstance().loginResponse.userId, "AllPosts", "", "",
                 new ApiCallback<ArrayList<ForumPost>>(getActivity()) {
                     @Override
                     public void success(ArrayList<ForumPost> forumPosts, Response response) {
@@ -152,6 +151,21 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener 
 
     @Override
     public void onEditClicked(int position) {
+        ForumPost forumPost = mPostAdapter.getItem(position);
+        EditorDialogFragment fragment = new EditorDialogFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("type", "Forum");
+        bundle.putString("operation", "Edit");
+        bundle.putString("post_id", forumPost.idUserPost);
+        bundle.putString("student_id", LoginUserCache.getInstance().getLongResponse().studentId);
+        bundle.putString("subject_id", forumPost.idCourseSubject);
+        bundle.putString("chapter_id", forumPost.idCourseSubjectChapter);
+        bundle.putString("topic_id", forumPost.idTopic);
+        bundle.putString("post_subject", forumPost.PostSubject);
+        bundle.putString("content", forumPost.htmlText);
+        bundle.putString("is_author_only", forumPost.isAuthorOnly);
+        fragment.setArguments(bundle);
+        fragment.show(getActivity().getSupportFragmentManager(), "ForumEditorDialog");
     }
 
     @Override

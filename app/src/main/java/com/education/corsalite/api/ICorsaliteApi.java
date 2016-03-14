@@ -203,7 +203,7 @@ public interface ICorsaliteApi {
 
     @Headers("Content-Type:application/x-www-form-urlencoded")
     @POST("/Forums")
-    void addForum(@Body TypedString update, ApiCallback<DefaultForumResponse> callback);
+    void addPostToForum(@Body TypedString update, ApiCallback<DefaultForumResponse> callback);
 
     @Headers("Content-Type:application/x-www-form-urlencoded")
     @POST("/ForumDelete")

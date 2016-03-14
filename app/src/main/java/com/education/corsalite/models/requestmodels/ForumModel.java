@@ -21,6 +21,7 @@ public class ForumModel {
     public String postSubject;
     @SerializedName("ReferidUserPost")
     public String referIdUserPost;
+    public String isAuthorOnly;
     @SerializedName("PostContent")
     public String postContent;
 }
