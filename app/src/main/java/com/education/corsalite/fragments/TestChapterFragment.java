@@ -165,9 +165,12 @@ public class TestChapterFragment extends BaseFragment {
             @Override
             public void success(List<TestCoverage> testCoverages, Response response) {
                 super.success(testCoverages, response);
+                if (getActivity() != null && getActivity().isFinishing() || getActivity().isDestroyed() || !isResumed()) {
+                    return;
+                }
                 TestChapterFragment.this.testCoverages = testCoverages;
                 setData(testCoverages);
-               // mProgressBar.setVisibility(View.GONE);
+                mProgressBar.setVisibility(View.GONE);
                 mContainerLayout.setVisibility(View.VISIBLE);
             }
         });
@@ -179,7 +182,7 @@ public class TestChapterFragment extends BaseFragment {
                 mChapterNameTxtView.setText(chapterName);
                 mNoteTxtView.setText(getNote(levelCrossed, coverage.attendedQCount, coverage.attendedCorrectQCount));
                 mTestBarChart.setData(generateBarData(testCoverages));
-                //mTestBarChart.invalidate();
+                mTestBarChart.invalidate();
                 break;
             }
         }
