@@ -10,7 +10,9 @@ import com.education.corsalite.models.ScheduledTestList;
 import com.education.corsalite.models.db.ContentIndexResponse;
 import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.models.db.reqres.ReqRes;
+import com.education.corsalite.models.responsemodels.Chapters;
 import com.education.corsalite.models.responsemodels.ExamModel;
+import com.education.corsalite.models.responsemodels.TestCoverage;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 
@@ -152,11 +154,23 @@ public class DbManager {
             @Override
             public void run() {
                 synchronized (this) {
-                    List<OfflineMockTestModel> offlineMockTestList = dbService.Get(OfflineMockTestModel.class);
                     dbService.Save(model);
                 }
             }
         }).start();
+    }
+
+    public void getAllOfflineTakeTests(final Chapters chapter,final ApiCallback<List<TestCoverage>> callback){
+        new GetOfflineTestFromDb(dbService, new ApiCallback<List<OfflineMockTestModel>>(context){
+            public void success(List<OfflineMockTestModel> offlineMockTestModels, Response response) {
+                super.success(offlineMockTestModels, response);
+                for (OfflineMockTestModel model:offlineMockTestModels) {
+                    if(model.chapter.idCourseSubjectchapter != null && !TextUtils.isEmpty(model.chapter.idCourseSubjectchapter) && model.chapter.idCourseSubjectchapter.equalsIgnoreCase(chapter.idCourseSubjectchapter)){
+                        callback.success(model.testCoverages,response);
+                    }
+                }
+            }
+        }).execute();
     }
 
     public void deleteOfflineMockTest(OfflineMockTestModel model){

@@ -16,6 +16,8 @@ import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.db.DbManager;
+import com.education.corsalite.models.responsemodels.Chapters;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.TestCoverage;
 import com.education.corsalite.utils.Constants;
@@ -63,6 +65,8 @@ public class TestChapterFragment extends BaseFragment {
     private String chapterID, chapterName, subjectId;
     private int levelCrossed;
     private List<TestCoverage> testCoverages;
+    private boolean isOffline;
+    private Chapters chapter;
 
     public static TestChapterFragment newInstance(Bundle bundle) {
         TestChapterFragment fragment = new TestChapterFragment();
@@ -87,7 +91,11 @@ public class TestChapterFragment extends BaseFragment {
         ButterKnife.bind(this, rootView);
         initializeGraph();
         loadDataFromIntent();
-        fetchDataFromServer();
+        if(isOffline){
+            fetchDataFromDb();
+        }else {
+            fetchDataFromServer();
+        }
         return rootView;
     }
 
@@ -114,6 +122,10 @@ public class TestChapterFragment extends BaseFragment {
             //In case data is missing finish this activity,
             getActivity().finish();
         }
+        isOffline = mExtras.getBoolean(Constants.IS_OFFLINE, false);
+        String chapterStr = mExtras.getString("chapter");
+        if(chapterStr != null)
+           chapter = new Gson().fromJson(chapterStr,Chapters.class);
     }
 
     private void fetchDataFromServer() {
@@ -141,10 +153,33 @@ public class TestChapterFragment extends BaseFragment {
                 });
     }
 
+    private void fetchDataFromDb(){
+        DbManager.getInstance(getActivity()).getAllOfflineTakeTests(chapter,new ApiCallback<List<TestCoverage>>(getActivity()) {
+            @Override
+            public void failure(CorsaliteError error) {
+                super.failure(error);
+                mProgressBar.setVisibility(View.GONE);
+                mFailureTextView.setText("Sorry, couldn't fetch data");
+            }
+
+            @Override
+            public void success(List<TestCoverage> testCoverages, Response response) {
+                super.success(testCoverages, response);
+                if (getActivity() != null && getActivity().isFinishing() || getActivity().isDestroyed() || !isResumed()) {
+                    return;
+                }
+                TestChapterFragment.this.testCoverages = testCoverages;
+                setData(testCoverages);
+                mProgressBar.setVisibility(View.GONE);
+                mContainerLayout.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
     private void setData(List<TestCoverage> testCoverages) {
         for (TestCoverage coverage : testCoverages) {
             if(coverage.idCourseSubjectChapter.equalsIgnoreCase(chapterID)) {
-                mChapterNameTxtView.setText(getString(R.string.value_test_chapter_name, chapterName));
+                mChapterNameTxtView.setText(chapterName);
                 mNoteTxtView.setText(getNote(levelCrossed, coverage.attendedQCount, coverage.attendedCorrectQCount));
                 mTestBarChart.setData(generateBarData(testCoverages));
                 mTestBarChart.invalidate();
@@ -206,8 +241,8 @@ public class TestChapterFragment extends BaseFragment {
 
     private CharSequence getNote(int levelCrossed, String questionsAttempted, String questionCorrect) {
         double accuracyPercentage = Double.valueOf(questionCorrect) / Double.valueOf(questionsAttempted) * 100;
-        String noteValue = getString(R.string.value_test_note, levelCrossed+"", ((int)accuracyPercentage)+"", questionCorrect, questionsAttempted);
-        return TextUtils.concat(Data.getBoldString(getString(R.string.label_note)), noteValue);
+        String noteValue = getActivity().getResources().getString(R.string.value_test_note, levelCrossed+"", ((int)accuracyPercentage)+"", questionCorrect, questionsAttempted);
+        return TextUtils.concat(Data.getBoldString(getActivity().getResources().getString(R.string.label_note)), noteValue);
     }
 
     private void setupTest() {
