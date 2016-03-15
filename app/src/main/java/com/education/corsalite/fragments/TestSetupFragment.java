@@ -62,7 +62,7 @@ public class TestSetupFragment extends BaseFragment {
         // Required empty public constructor
     }
 
-    public static TestSetupFragment newInstance(ChallengeActivity.TestSetupCallback mTestSetupCallback, ArrayList<FriendsData.Friends> selectedFriends) {
+    public static TestSetupFragment newInstance(ChallengeActivity.TestSetupCallback mTestSetupCallback, ArrayList<FriendsData.Friend> selectedFriends) {
         TestSetupFragment fragment = new TestSetupFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_CALLBACK, mTestSetupCallback);

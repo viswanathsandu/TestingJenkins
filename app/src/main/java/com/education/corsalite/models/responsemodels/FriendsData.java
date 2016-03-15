@@ -11,11 +11,11 @@ import java.util.ArrayList;
 public class FriendsData extends BaseModel implements Serializable{
 
     @SerializedName("friendsList")
-    public ArrayList<Friends> friendsList;
+    public ArrayList<Friend> friendsList;
     @SerializedName("maxVCForChallenge")
     public String maxVCForChallenge;
 
-    public class Friends extends BaseModel implements Serializable{
+    public class Friend extends BaseModel implements Serializable{
         @SerializedName("studentVC")
         public String studentVC;
         @SerializedName("idUser")

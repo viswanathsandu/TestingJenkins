@@ -121,7 +121,7 @@ public class FriendsListFragment extends BaseFragment  implements SearchView.OnQ
     }
 
     private void showFriendsList() {
-        mAdapter = new FriendsAdapter(getActivity(), friendsData, getActivity().getLayoutInflater());
+        mAdapter = new FriendsAdapter(getActivity(), friendsData, mFriendsListCallback);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), R.drawable.horizontal_line, true, true));
         mRecyclerView.setAdapter(mAdapter);
     }
@@ -142,17 +142,17 @@ public class FriendsListFragment extends BaseFragment  implements SearchView.OnQ
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        final List<FriendsData.Friends> filteredModelList = filter(newText);
-        mAdapter.setFilter((ArrayList<FriendsData.Friends>) filteredModelList);
+        final List<FriendsData.Friend> filteredModelList = filter(newText);
+        mAdapter.setFilter((ArrayList<FriendsData.Friend>) filteredModelList);
         return true;
     }
 
-    private List<FriendsData.Friends> filter(String query) {
+    private List<FriendsData.Friend> filter(String query) {
         query = query.toLowerCase();
 
-        final List<FriendsData.Friends> filteredModelList = new ArrayList<>();
+        final List<FriendsData.Friend> filteredModelList = new ArrayList<>();
         if (friendsData != null && friendsData.friendsList != null && friendsData.friendsList.size() > 0) {
-            for (FriendsData.Friends model : friendsData.friendsList) {
+            for (FriendsData.Friend model : friendsData.friendsList) {
                 final String text = model.displayName.toLowerCase();
                 if (text.contains(query)) {
                     filteredModelList.add(model);

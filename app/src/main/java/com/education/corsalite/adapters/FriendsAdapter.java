@@ -8,9 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.education.corsalite.R;
+import com.education.corsalite.activities.ChallengeActivity;
 import com.education.corsalite.models.responsemodels.FriendsData;
 import com.education.corsalite.services.ApiClientService;
 
@@ -24,14 +26,16 @@ import butterknife.ButterKnife;
  */
 public class FriendsAdapter extends AbstractRecycleViewAdapter {
 
-    public ArrayList<FriendsData.Friends> selectedFriends;
+    public ArrayList<FriendsData.Friend> selectedFriends;
     private LayoutInflater inflater;
     private Activity mActivity;
+    ChallengeActivity.FriendsListCallback mFriendsListCallback;
 
-    public FriendsAdapter(Activity activity, FriendsData friendsData, LayoutInflater inflater) {
+    public FriendsAdapter(Activity activity, FriendsData friendsData, ChallengeActivity.FriendsListCallback friendsListCallback) {
         this(friendsData);
         this.mActivity = activity;
-        this.inflater = inflater;
+        this.inflater = activity.getLayoutInflater();
+        this.mFriendsListCallback = friendsListCallback;
         selectedFriends = new ArrayList<>();
     }
 
@@ -48,10 +52,10 @@ public class FriendsAdapter extends AbstractRecycleViewAdapter {
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, final int position) {
-        ((FriendViewHolder) viewHolder).bindData(position, (FriendsData.Friends) getItem(position));
+        ((FriendViewHolder) viewHolder).bindData(position, (FriendsData.Friend) getItem(position));
     }
 
-    public void setFilter(ArrayList<FriendsData.Friends> filterList) {
+    public void setFilter(ArrayList<FriendsData.Friend> filterList) {
         removeAll();
         addAll(filterList);
         notifyDataSetChanged();
@@ -74,7 +78,7 @@ public class FriendsAdapter extends AbstractRecycleViewAdapter {
             this.parent = itemView;
         }
 
-        public void bindData(final int position, final FriendsData.Friends clickedFriend) {
+        public void bindData(final int position, final FriendsData.Friend clickedFriend) {
             tvName.setText(clickedFriend.displayName);
             tvEmail.setText(clickedFriend.emailID);
             if (selectedFriends.contains(clickedFriend)) {
@@ -82,31 +86,34 @@ public class FriendsAdapter extends AbstractRecycleViewAdapter {
             } else {
                 ivActionBtn.setImageResource(android.R.drawable.ic_input_add);
             }
-            if(!TextUtils.isEmpty(clickedFriend.photoUrl)) {
+            if (!TextUtils.isEmpty(clickedFriend.photoUrl)) {
                 Glide.with(mActivity).load(ApiClientService.getBaseUrl() + clickedFriend.photoUrl.replaceFirst("./", "")).into(ivProfilePic);
             }
             parent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                ivActionBtn.setImageResource(android.R.drawable.ic_delete);
-                if (selectedFriends != null && selectedFriends.size() > 0) {
                     if (selectedFriends.contains(clickedFriend)) {
                         ivActionBtn.setImageResource(android.R.drawable.ic_input_add);
                         selectedFriends.remove(clickedFriend);
-                    } else {
+                        if (mFriendsListCallback != null) {
+                            mFriendsListCallback.onFriendRemoved(clickedFriend);
+                        }
+                    } else if (selectedFriends.size() < 4) {
+                        ivActionBtn.setImageResource(android.R.drawable.ic_delete);
                         selectedFriends.add(clickedFriend);
+                        if (mFriendsListCallback != null) {
+                            mFriendsListCallback.onFriendAdded(clickedFriend);
+                        }
+                    } else {
+                        Toast.makeText(mActivity, "Only 4 members can be selected", Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    selectedFriends = new ArrayList<FriendsData.Friends>();
-                    selectedFriends.add(clickedFriend);
-                }
                 }
             });
         }
 
     }
 
-    public ArrayList<FriendsData.Friends> getSelectedFriends(){
+    public ArrayList<FriendsData.Friend> getSelectedFriends() {
         return selectedFriends;
     }
 }
