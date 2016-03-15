@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
@@ -38,7 +37,7 @@ public class FriendsListFragment extends BaseFragment  implements SearchView.OnQ
     private RecyclerView.LayoutManager mLayoutManager;
     private TextView mTextViewCancel;
     private TextView mTextViewNext;
-    ChallengeActivity.FriendsListCallback mFriendsListCallback;
+    private ChallengeActivity.FriendsListCallback mFriendsListCallback;
 
     public FriendsListFragment(){}
 
@@ -122,10 +121,9 @@ public class FriendsListFragment extends BaseFragment  implements SearchView.OnQ
     }
 
     private void showFriendsList() {
-        mAdapter = new FriendsAdapter(friendsData, getActivity().getLayoutInflater());
-        mRecyclerView.setAdapter(mAdapter);
-        //TODO: Sridhar, Need to fix horizontal devider
+        mAdapter = new FriendsAdapter(getActivity(), friendsData, getActivity().getLayoutInflater());
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), R.drawable.horizontal_line, true, true));
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     FriendsData friendsData;

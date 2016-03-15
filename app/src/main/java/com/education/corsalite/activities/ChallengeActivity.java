@@ -1,16 +1,10 @@
 package com.education.corsalite.activities;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.education.corsalite.R;
 import com.education.corsalite.fragments.FriendsListFragment;
 import com.education.corsalite.fragments.TestSetupFragment;
@@ -18,19 +12,31 @@ import com.education.corsalite.models.responsemodels.FriendsData;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 public class ChallengeActivity extends AbstractBaseActivity {
+
+    @Bind(R.id.left_player) ImageView leftPlayerImg;
+    @Bind(R.id.right_player1) ImageView rightPlayer1Img;
+    @Bind(R.id.right_player2) ImageView rightPlayer2Img;
+    @Bind(R.id.right_player3) ImageView rightPlayer3Img;
+    @Bind(R.id.right_player4) ImageView rightPlayer4Img;
+
+
     private FriendsListCallback mFriendsListCallback;
     private TestSetupCallback mTestSetupCallback;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        RelativeLayout myView = (RelativeLayout) inflater.inflate(R.layout.activity_challenge, null);
-        frameLayout.addView(myView);
+        setContentView(R.layout.activity_challenge);
+        ButterKnife.bind(this);
         initListeners();
+        loadPlayers();
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container, FriendsListFragment.newInstance(mFriendsListCallback), "FriendsList").addToBackStack(null).commit();
     }
@@ -59,5 +65,18 @@ public class ChallengeActivity extends AbstractBaseActivity {
 
     public interface TestSetupCallback extends Serializable {
         void popUpFriendsListFragment();
+    }
+
+    private void loadPlayers() {
+        loadGif(leftPlayerImg, R.raw.character_anim_left);
+        loadGif(rightPlayer1Img, R.raw.character_anim_right);
+        loadGif(rightPlayer2Img, R.raw.character_anim_right);
+        loadGif(rightPlayer3Img, R.raw.character_anim_right);
+        loadGif(rightPlayer4Img, R.raw.character_anim_right);
+    }
+
+    private void loadGif(ImageView imageView, int rawGifId) {
+        GlideDrawableImageViewTarget imageViewTarget = new GlideDrawableImageViewTarget(imageView);
+        Glide.with(this).load(rawGifId).into(imageViewTarget);
     }
 }

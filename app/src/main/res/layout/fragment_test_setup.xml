@@ -1,10 +1,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@android:color/white"
-                android:padding="5dp"
-                tools:context="com.education.corsalite.fragments.TestSetupFragment">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="550dp"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:padding="5dp"
+    tools:context="com.education.corsalite.fragments.TestSetupFragment">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -20,21 +20,21 @@
 
             <TextView
                 android:id="@+id/tv_title"
-                fontPath="@string/roboto_medium"
+                fontPath="@string/roboto_regular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
                 android:text="Course Name"
-                android:textColor="#6A000000"
-                android:textSize="22sp"/>
+                android:textColor="@color/text_gray"
+                android:textSize="22sp"
+                android:gravity="center_horizontal"/>
 
             <Spinner
                 android:id="@+id/selectSubjectSpinner"
                 style="@android:style/Widget.Holo.Light.Spinner"
-                fontPath="@string/roboto_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"></Spinner>
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tv_selectSubjError"
@@ -42,22 +42,16 @@
                 fontPath="@string/roboto_light"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Virtual Currecny"
+                android:text="Virtual Currency"
                 android:textColor="@color/red"
-                android:visibility="gone"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="#E1E1E1"/>
+                android:visibility="gone" />
 
             <Spinner
                 android:id="@+id/selectChapterSpinner"
                 style="@android:style/Widget.Holo.Light.Spinner"
-                fontPath="@string/roboto_medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"></Spinner>
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tv_selectChapError"
@@ -65,14 +59,9 @@
                 fontPath="@string/roboto_light"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Virtual Currecny"
+                android:text="Virtual Currency"
                 android:textColor="@color/red"
-                android:visibility="gone"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="#E1E1E1"/>
+                android:visibility="gone" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -80,18 +69,18 @@
 
                 <TextView
                     android:id="@+id/tv_noOfQues"
-                    fontPath="@string/roboto_medium"
+                    fontPath="@string/roboto_regular"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:text="No., of questions"
                     android:textColor="@color/text_black"
-                    android:textSize="18sp"/>
+                    android:textSize="16sp" />
 
                 <EditText
                     android:id="@+id/et_noOfQues"
-                    fontPath="@string/roboto_medium"
+                    fontPath="@string/roboto_regular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -103,7 +92,7 @@
                     android:singleLine="true"
                     android:textColor="@color/text_black"
                     android:textColorHint="#46000000"
-                    android:textSize="18sp"/>
+                    android:textSize="16sp" />
             </RelativeLayout>
 
             <TextView
@@ -112,14 +101,14 @@
                 fontPath="@string/roboto_light"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Virtual Currecny"
+                android:text="Virtual Currency"
                 android:textColor="@color/red"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="#E1E1E1"/>
+                android:layout_height="1dp"
+                android:background="#E1E1E1" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -127,18 +116,18 @@
 
                 <TextView
                     android:id="@+id/tv_timeinMins"
-                    fontPath="@string/roboto_medium"
+                    fontPath="@string/roboto_regular"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:text="Time in mins"
                     android:textColor="@color/text_black"
-                    android:textSize="18sp"/>
+                    android:textSize="16sp" />
 
                 <EditText
                     android:id="@+id/et_timeInMins"
-                    fontPath="@string/roboto_medium"
+                    fontPath="@string/roboto_regular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -150,7 +139,7 @@
                     android:singleLine="true"
                     android:textColor="@color/text_black"
                     android:textColorHint="#46000000"
-                    android:textSize="18sp"/>
+                    android:textSize="16sp" />
             </RelativeLayout>
 
             <TextView
@@ -159,14 +148,14 @@
                 fontPath="@string/roboto_light"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Virtual Currecny"
+                android:text="Virtual Currency"
                 android:textColor="@color/red"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="#E1E1E1"/>
+                android:layout_height="1dp"
+                android:background="#E1E1E1" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -174,18 +163,18 @@
 
                 <TextView
                     android:id="@+id/tv_virCurrency"
-                    fontPath="@string/roboto_medium"
+                    fontPath="@string/roboto_regular"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
-                    android:text="Virtual Currecny"
+                    android:text="Virtual Currency"
                     android:textColor="@color/text_black"
-                    android:textSize="18sp"/>
+                    android:textSize="16sp" />
 
                 <EditText
                     android:id="@+id/et_virCurrency"
-                    fontPath="@string/roboto_medium"
+                    fontPath="@string/roboto_regular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -198,7 +187,7 @@
                     android:singleLine="true"
                     android:textColor="@color/text_black"
                     android:textColorHint="#46000000"
-                    android:textSize="18sp"/>
+                    android:textSize="16sp" />
             </RelativeLayout>
 
             <TextView
@@ -207,21 +196,21 @@
                 fontPath="@string/roboto_light"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Virtual Currecny"
+                android:text="Virtual Currency"
                 android:textColor="@color/red"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="#E1E1E1"/>
+                android:layout_height="1dp"
+                android:background="#E1E1E1" />
         </LinearLayout>
     </ScrollView>
 
     <LinearLayout
         android:id="@+id/ll_action_buttons"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:gravity="center_vertical|right"
         android:paddingRight="10dp">
@@ -233,7 +222,7 @@
             android:layout_height="wrap_content"
             android:padding="15dp"
             android:text="Cancel"
-            android:textColor="@android:color/black"/>
+            android:textColor="@android:color/black" />
 
         <TextView
             android:id="@+id/tv_testsetup_next"
@@ -242,7 +231,7 @@
             android:layout_height="wrap_content"
             android:padding="15dp"
             android:text="Challenge"
-            android:textColor="@android:color/holo_green_dark"/>
+            android:textColor="@android:color/holo_green_dark" />
     </LinearLayout>
 
 </RelativeLayout>

@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mock_test_txt"
+    style="?android:attr/spinnerDropDownItemStyle"
+    fontPath="@string/roboto_regular"
     android:layout_width="match_parent"
-    android:layout_height="48dp">
-
-    <TextView
-        android:id="@+id/mock_test_txt"
-        style="?android:attr/spinnerDropDownItemStyle"
-        fontPath="@string/roboto_medium"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:gravity="left|center_vertical"
-        android:singleLine="true"
-        android:textColor="@color/text_black"
-        android:textSize="18sp" />
-</LinearLayout>
+    android:layout_height="40dp"
+    android:ellipsize="marquee"
+    android:singleLine="true"
+    android:textAlignment="inherit"
+    android:textColor="@color/text_black"
+    android:textSize="16sp"/>

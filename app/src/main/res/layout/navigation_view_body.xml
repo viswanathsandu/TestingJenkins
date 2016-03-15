@@ -55,7 +55,7 @@
             <TextView
                 android:id="@+id/navigation_challenge_your_friends"
                 android:text="@string/challenge_your_friends"
-                android:drawableLeft="@drawable/ico_sidemenu_invite_friend"
+                android:drawableLeft="@drawable/ico_challenge"
                 style="@style/navigation_drawer_element" />
 
             <TextView

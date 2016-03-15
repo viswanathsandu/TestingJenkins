@@ -1,14 +1,18 @@
 package com.education.corsalite.adapters;
 
+import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.education.corsalite.R;
 import com.education.corsalite.models.responsemodels.FriendsData;
+import com.education.corsalite.services.ApiClientService;
 
 import java.util.ArrayList;
 
@@ -21,10 +25,12 @@ import butterknife.ButterKnife;
 public class FriendsAdapter extends AbstractRecycleViewAdapter {
 
     public ArrayList<FriendsData.Friends> selectedFriends;
-    LayoutInflater inflater;
+    private LayoutInflater inflater;
+    private Activity mActivity;
 
-    public FriendsAdapter(FriendsData friendsData, LayoutInflater inflater) {
+    public FriendsAdapter(Activity activity, FriendsData friendsData, LayoutInflater inflater) {
         this(friendsData);
+        this.mActivity = activity;
         this.inflater = inflater;
         selectedFriends = new ArrayList<>();
     }
@@ -40,26 +46,8 @@ public class FriendsAdapter extends AbstractRecycleViewAdapter {
         addAll(friendsData.friendsList);
     }
 
-    /**
-     * Called by RecyclerView to display the data at the specified position. This method
-     * should update the contents of the {@link RecyclerView.ViewHolder#itemView} to reflect the item at
-     * the given position.
-     * <p/>
-     * Note that unlike {@link android.widget.ListView}, RecyclerView will not call this
-     * method again if the position of the item changes in the data set unless the item itself
-     * is invalidated or the new position cannot be determined. For this reason, you should only
-     * use the <code>position</code> parameter while acquiring the related data item inside this
-     * method and should not keep a copy of it. If you need the position of an item later on
-     * (e.g. in a click listener), use {@link RecyclerView.ViewHolder#getAdapterPosition()} which will have
-     * the updated adapter position.
-     *
-     * @param viewHolder   The ViewHolder which should be updated to represent the contents of the
-     *                 item at the given position in the data set.
-     * @param position The position of the item within the adapter's data set.
-     */
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, final int position) {
-        // TODO:Sridhar. Need to set profile pic to holder.
         ((FriendViewHolder) viewHolder).bindData(position, (FriendsData.Friends) getItem(position));
     }
 
@@ -94,21 +82,24 @@ public class FriendsAdapter extends AbstractRecycleViewAdapter {
             } else {
                 ivActionBtn.setImageResource(android.R.drawable.ic_input_add);
             }
+            if(!TextUtils.isEmpty(clickedFriend.photoUrl)) {
+                Glide.with(mActivity).load(ApiClientService.getBaseUrl() + clickedFriend.photoUrl.replaceFirst("./", "")).into(ivProfilePic);
+            }
             parent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ivActionBtn.setImageResource(android.R.drawable.ic_delete);
-                    if (selectedFriends != null && selectedFriends.size() > 0) {
-                        if (selectedFriends.contains(clickedFriend)) {
-                            ivActionBtn.setImageResource(android.R.drawable.ic_input_add);
-                            selectedFriends.remove(clickedFriend);
-                        } else {
-                            selectedFriends.add(clickedFriend);
-                        }
+                ivActionBtn.setImageResource(android.R.drawable.ic_delete);
+                if (selectedFriends != null && selectedFriends.size() > 0) {
+                    if (selectedFriends.contains(clickedFriend)) {
+                        ivActionBtn.setImageResource(android.R.drawable.ic_input_add);
+                        selectedFriends.remove(clickedFriend);
                     } else {
-                        selectedFriends = new ArrayList<FriendsData.Friends>();
                         selectedFriends.add(clickedFriend);
                     }
+                } else {
+                    selectedFriends = new ArrayList<FriendsData.Friends>();
+                    selectedFriends.add(clickedFriend);
+                }
                 }
             });
         }

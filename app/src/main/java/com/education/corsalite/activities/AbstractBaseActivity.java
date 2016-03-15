@@ -138,8 +138,9 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     protected void setToolbarForWelcomeScreen() {
-        toolbar.findViewById(R.id.spinner_layout).setVisibility(View.GONE);
+        toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
         setToolbarTitle("Corsalite");
+        loadCoursesList();
     }
 
     protected void setToolbarForTestIndexScreen() {
@@ -173,7 +174,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
         setToolbarTitle(getResources().getString(R.string.usage_analysis));
     }
-
 
     protected void setToolbarForVideo(List<ContentModel> videos, int position) {
         findViewById(R.id.toolbar_title).setVisibility(View.GONE);
