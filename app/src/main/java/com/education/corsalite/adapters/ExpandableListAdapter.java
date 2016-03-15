@@ -81,7 +81,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 } else if(_listDataHeader.get(groupPosition).equals("Scheduled Test")) {
                     startScheduleTest(_listDataChild.get(_listDataHeader.get(groupPosition)).get(childPosition).scheduledTest);
                 }else if(_listDataHeader.get(groupPosition).equals("Take Test")){
-                    startTakeTest(_listDataChild.get(_listDataHeader.get(groupPosition)).get(childPosition).chapter);
+                    startTakeTest(_listDataChild.get(_listDataHeader.get(groupPosition)).get(childPosition).chapter,
+                            _listDataChild.get(_listDataHeader.get(groupPosition)).get(childPosition).subjectId);
                 }
             }
         });
@@ -114,7 +115,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         Toast.makeText(context, "Please access the test during scheduled time", Toast.LENGTH_SHORT).show();
     }
 
-    private void startTakeTest(Chapters chapter){
+    private void startTakeTest(Chapters chapter,String subjectId){
 
         Intent exerciseIntent = new Intent(context, TestStartActivity.class);
         exerciseIntent.putExtra(TestStartActivity.KEY_TEST_TYPE, Tests.CHAPTER.getType());
@@ -123,6 +124,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         exerciseIntent.putExtra(Constants.SELECTED_CHAPTERID, chapter.idCourseSubjectchapter);
         exerciseIntent.putExtra(Constants.SELECTED_CHAPTER_NAME, chapter.chapterName);
         exerciseIntent.putExtra(Constants.LEVEL_CROSSED, chapter.passedComplexity);
+        exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID,subjectId);
         exerciseIntent.putExtra("chapter",new Gson().toJson(chapter));
         exerciseIntent.putExtra(Constants.IS_OFFLINE,true);
         context.startActivity(exerciseIntent);

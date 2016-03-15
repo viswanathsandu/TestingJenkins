@@ -72,7 +72,7 @@ public class TestDownloadService extends IntentService {
                 });
     }
 
-    private void fetchTestCoverageFromServer(final Chapters chapter,String subjectId,String chapterID) {
+    private void fetchTestCoverageFromServer(final Chapters chapter, final String subjectId,String chapterID) {
         ApiManager.getInstance(this).getTestCoverage(LoginUserCache.getInstance().loginResponse.studentId, AbstractBaseActivity.selectedCourse.courseId.toString(), subjectId, chapterID,
                 new ApiCallback<List<TestCoverage>>(this) {
                     @Override
@@ -87,6 +87,7 @@ public class TestDownloadService extends IntentService {
                         OfflineMockTestModel model = new OfflineMockTestModel();
                         model.testCoverages = testCoverages;
                         model.chapter = chapter;
+                        model.subjectId = subjectId;
                         DbManager.getInstance(getApplicationContext()).saveOfflineMockTest(model);
                     }
                 });

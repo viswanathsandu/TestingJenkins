@@ -16,6 +16,7 @@ public class OfflineMockTestModel extends BaseModel {
     public List<ExamModel> examModels;
     public ScheduledTestList.ScheduledTestsArray scheduledTest;
     public Chapters chapter;
+    public String subjectId;
     public List<TestCoverage> testCoverages;
 
 }
