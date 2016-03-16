@@ -158,7 +158,7 @@ public class MockTestDialog extends DialogFragment implements MockTestsListAdapt
                 if (testPaperIndexes != null) {
                     Intent intent = new Intent(getActivity(), StartMockTestActivity.class);
                     intent.putExtra("Test_Instructions", new Gson().toJson(testPaperIndexes));
-                    intent.putExtra("test_question_papaer_id", testQuestionPaperId);
+                    intent.putExtra("test_question_paper_id", testQuestionPaperId);
                     startActivity(intent);
                 }
             }

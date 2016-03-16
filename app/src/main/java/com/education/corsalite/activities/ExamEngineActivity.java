@@ -341,7 +341,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private void loadMockTest(MockTest mockTest) {
         imvFlag.setVisibility(View.VISIBLE);
         String testInstructions = getIntent().getStringExtra("Test_Instructions");
-        testQuestionPaperId = getIntent().getStringExtra("test_question_papaer_id");
+        testQuestionPaperId = getIntent().getStringExtra("test_question_paper_id");
         if(mockTest == null) {
             getTestQuestionPaper(null);
         } else {
@@ -1019,7 +1019,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     localExamModelList.get(selectedPosition).selectedAnswers = s.toString();
                     if(testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty()) {
-                        testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.ANSWERED.toString();
+                        testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.ANSWERED.getValue();
                         testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = localExamModelList.get(selectedPosition).answerChoice.get(0).idAnswerKey;
                         testanswerPaper.testAnswers.get(selectedPosition).answerText = s.toString();
                     }
@@ -1114,7 +1114,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                                     selectedAnswerPosition = x + 1;
                                     if (TextUtils.isEmpty(localExamModelList.get(selectedPosition).selectedAnswers)) {
                                         localExamModelList.get(selectedPosition).selectedAnswers = String.valueOf(x);
-                                        testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.ANSWERED.toString();
+                                        testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.ANSWERED.getValue();
                                         testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = answerChoiceModel.idAnswerKey;
                                     } else {
                                         localExamModelList.get(selectedPosition).selectedAnswers += "," + x;
@@ -1128,7 +1128,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                                     selectedAnswerPosition = x + 1;
                                     if (TextUtils.isEmpty(localExamModelList.get(selectedPosition).selectedAnswers)) {
                                         localExamModelList.get(selectedPosition).selectedAnswers = String.valueOf(x);
-                                        testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.ANSWERED.toString();
+                                        testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.ANSWERED.getValue();
                                         testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = answerChoiceModel.idAnswerKey;
                                     } else {
                                         localExamModelList.get(selectedPosition).selectedAnswers += "," + x;
