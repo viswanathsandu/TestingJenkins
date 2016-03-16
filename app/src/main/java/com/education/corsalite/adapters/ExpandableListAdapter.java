@@ -14,9 +14,9 @@ import android.widget.Toast;
 import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.activities.ExamEngineActivity;
+import com.education.corsalite.activities.StartMockTestActivity;
 import com.education.corsalite.activities.TestStartActivity;
 import com.education.corsalite.enums.Tests;
-import com.education.corsalite.models.MockTest;
 import com.education.corsalite.models.OfflineMockTestModel;
 import com.education.corsalite.models.ScheduledTestList;
 import com.education.corsalite.models.responsemodels.Chapters;
@@ -77,7 +77,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(View view) {
                 if(_listDataHeader.get(groupPosition).equals("Mock Test")) {
-                    startMockTest(_listDataChild.get(_listDataHeader.get(groupPosition)).get(childPosition).mockTest);
+                    startMockTest(_listDataChild.get(_listDataHeader.get(groupPosition)).get(childPosition));
                 } else if(_listDataHeader.get(groupPosition).equals("Scheduled Test")) {
                     startScheduleTest(_listDataChild.get(_listDataHeader.get(groupPosition)).get(childPosition).scheduledTest);
                 }else if(_listDataHeader.get(groupPosition).equals("Take Test")){
@@ -89,13 +89,17 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         return convertView;
     }
 
-    private void startMockTest(MockTest mockTest) {
-        Intent exerciseIntent = new Intent(context, ExamEngineActivity.class);
-        exerciseIntent.putExtra(Constants.TEST_TITLE, "Mock Test");
-        exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
-        exerciseIntent.putExtra(Constants.IS_OFFLINE, true);
-        exerciseIntent.putExtra("mock_test_data_json", new Gson().toJson(mockTest));
-        context.startActivity(exerciseIntent);
+    private void startMockTest(OfflineMockTestModel model) {
+
+        Intent intent = new Intent(context, StartMockTestActivity.class);
+        intent.putExtra("Test_Instructions", new Gson().toJson(model.testPaperIndecies));
+        intent.putExtra("test_question_paper_id", model.testQuestionPaperId);
+        intent.putExtra(Constants.TEST_TITLE, "Mock Test");
+        intent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
+        intent.putExtra(Constants.IS_OFFLINE, true);
+        intent.putExtra("mock_test_data_json", new Gson().toJson(model.mockTest));
+        context.startActivity(intent);
+
     }
 
     private void startScheduleTest(ScheduledTestList.ScheduledTestsArray exam) {

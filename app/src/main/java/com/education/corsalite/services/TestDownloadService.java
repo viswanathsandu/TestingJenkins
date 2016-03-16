@@ -15,6 +15,7 @@ import com.education.corsalite.models.responsemodels.Chapters;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.ExamModel;
 import com.education.corsalite.models.responsemodels.TestCoverage;
+import com.education.corsalite.models.responsemodels.TestPaperIndex;
 import com.education.corsalite.utils.L;
 import com.google.gson.Gson;
 
@@ -33,7 +34,7 @@ public class TestDownloadService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-
+        TestPaperIndex testPaperIndicies = new Gson().fromJson(intent.getStringExtra("Test_Instructions"), TestPaperIndex.class);
         String testQuestionPaperId = intent.getStringExtra("testQuestionPaperId");
         String testAnswerPaperId = intent.getStringExtra("testAnswerPaperId");
         String mockTestStr = intent.getStringExtra("selectedMockTest");
@@ -43,10 +44,10 @@ public class TestDownloadService extends IntentService {
         String chapterId = intent.getStringExtra("chapterId");
         if (mockTestStr != null) {
             MockTest mockTest = new Gson().fromJson(mockTestStr, MockTest.class);
-            getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, mockTest, null);
+            getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, mockTest, testPaperIndicies, null);
         } else if (scheduledTestStr != null) {
             ScheduledTestList.ScheduledTestsArray scheduledTest = new Gson().fromJson(scheduledTestStr, ScheduledTestList.ScheduledTestsArray.class);
-            getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, null, scheduledTest);
+            getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, null, null, scheduledTest);
         }else if(takeTestStr != null){
             Chapters chapters = new Gson().fromJson(takeTestStr,Chapters.class);
             fetchTestCoverageFromServer(chapters,subjectId,chapterId);
@@ -54,7 +55,7 @@ public class TestDownloadService extends IntentService {
     }
 
     private void getTestQuestionPaper(final String testQuestionPaperId, final String testAnswerPaperId,
-                                      final MockTest mockTest, final ScheduledTestList.ScheduledTestsArray scheduledTestsArray) {
+                                      final MockTest mockTest, final TestPaperIndex testPAperIndecies, final ScheduledTestList.ScheduledTestsArray scheduledTestsArray) {
         ApiManager.getInstance(this).getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId,
                 new ApiCallback<List<ExamModel>>(this) {
                     @Override
@@ -67,6 +68,7 @@ public class TestDownloadService extends IntentService {
                         } else {
                             model.scheduledTest = scheduledTestsArray;
                         }
+                        model.testPaperIndecies = testPAperIndecies;
                         model.testQuestionPaperId = testQuestionPaperId;
                         model.testAnswerPaperId = testAnswerPaperId;
                         DbManager.getInstance(getApplicationContext()).saveOfflineMockTest(model);

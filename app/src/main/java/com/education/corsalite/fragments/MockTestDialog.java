@@ -80,14 +80,14 @@ public class MockTestDialog extends DialogFragment implements MockTestsListAdapt
     @Override
     public void onMockTestSelected(int position) {
         postQuestionPaper(LoginUserCache.getInstance().loginResponse.entitiyId,
-                mMockTestList.get(position).examTemplateId, LoginUserCache.getInstance().loginResponse.studentId,0);
+                mMockTestList.get(position).examTemplateId, LoginUserCache.getInstance().loginResponse.studentId, false);
     }
 
     @Override
     public void onMockTestDownload(int position) {
         selectedMockTest = mMockTestList.get(position);
         postQuestionPaper(LoginUserCache.getInstance().loginResponse.entitiyId,
-                mMockTestList.get(position).examTemplateId, LoginUserCache.getInstance().loginResponse.studentId, 1);
+                mMockTestList.get(position).examTemplateId, LoginUserCache.getInstance().loginResponse.studentId, true);
     }
 
     private void loadMockTests() {
@@ -114,7 +114,7 @@ public class MockTestDialog extends DialogFragment implements MockTestsListAdapt
                 });
     }
 
-    private void postQuestionPaper(String entityId, String examTemplateId, String studentId, final int condtion) {
+    private void postQuestionPaper(String entityId, String examTemplateId, String studentId, final boolean download) {
         PostQuestionPaperRequest postQuestionPaper = new PostQuestionPaperRequest();
         postQuestionPaper.idCollegeBatch = "";
         postQuestionPaper.idEntity = entityId;
@@ -129,17 +129,7 @@ public class MockTestDialog extends DialogFragment implements MockTestsListAdapt
                     super.success(postQuestionPaper, response);
                     if (postQuestionPaper != null && !TextUtils.isEmpty(postQuestionPaper.idTestQuestionPaper)) {
                         testQuestionPaperId = postQuestionPaper.idTestQuestionPaper;
-                        if(condtion == 0) {
-                            getIndex(postQuestionPaper.idTestQuestionPaper, null, "N");
-                        }else {
-                            dialog.dismiss();
-                            Intent intent = new Intent(getActivity(), TestDownloadService.class);
-                            intent.putExtra("testQuestionPaperId",testQuestionPaperId);
-                            String mockTestStr = new Gson().toJson(selectedMockTest);
-                            intent.putExtra("selectedMockTest",mockTestStr);
-                            getActivity().startService(intent);
-                            Toast.makeText(getActivity(), "Downloading Mock test paper in background", Toast.LENGTH_SHORT).show();
-                        }
+                        getIndex(postQuestionPaper.idTestQuestionPaper, null, "N", download);
                     } else {
                         dialog.dismiss();
                     }
@@ -148,18 +138,28 @@ public class MockTestDialog extends DialogFragment implements MockTestsListAdapt
     }
 
 
-    private void getIndex(String qId,String aID,String all){
-        ApiManager.getInstance(getActivity()).getTestPaperIndex(qId, aID, all, new ApiCallback<TestPaperIndex>(getActivity()) {
+    private void getIndex(String questionPaperId, String answerPaperId, String all, final boolean download){
+        ApiManager.getInstance(getActivity()).getTestPaperIndex(questionPaperId, answerPaperId, all, new ApiCallback<TestPaperIndex>(getActivity()) {
             @Override
             public void success(TestPaperIndex testPaperIndexes, Response response) {
                 super.success(testPaperIndexes, response);
                 dialog.dismiss();
                 dismiss();
                 if (testPaperIndexes != null) {
-                    Intent intent = new Intent(getActivity(), StartMockTestActivity.class);
-                    intent.putExtra("Test_Instructions", new Gson().toJson(testPaperIndexes));
-                    intent.putExtra("test_question_paper_id", testQuestionPaperId);
-                    startActivity(intent);
+                    if(!download) {
+                        Intent intent = new Intent(getActivity(), StartMockTestActivity.class);
+                        intent.putExtra("Test_Instructions", new Gson().toJson(testPaperIndexes));
+                        intent.putExtra("test_question_paper_id", testQuestionPaperId);
+                        startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(getActivity(), TestDownloadService.class);
+                        intent.putExtra("testQuestionPaperId",testQuestionPaperId);
+                        intent.putExtra("Test_Instructions", new Gson().toJson(testPaperIndexes));
+                        String mockTestStr = new Gson().toJson(selectedMockTest);
+                        intent.putExtra("selectedMockTest",mockTestStr);
+                        getActivity().startService(intent);
+                        Toast.makeText(getActivity(), "Downloading Mock test paper in background", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
