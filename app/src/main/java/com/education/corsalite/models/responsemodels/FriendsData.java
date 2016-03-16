@@ -2,20 +2,19 @@ package com.education.corsalite.models.responsemodels;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by Phani on 20/02/16.
  */
-public class FriendsData extends BaseModel implements Serializable{
+public class FriendsData extends BaseModel {
 
     @SerializedName("friendsList")
     public ArrayList<Friend> friendsList;
     @SerializedName("maxVCForChallenge")
     public String maxVCForChallenge;
 
-    public class Friend extends BaseModel implements Serializable{
+    public class Friend extends BaseModel {
         @SerializedName("studentVC")
         public String studentVC;
         @SerializedName("idUser")

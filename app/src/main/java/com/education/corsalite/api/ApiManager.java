@@ -11,6 +11,7 @@ import com.education.corsalite.models.MockTest;
 import com.education.corsalite.models.ScheduledTestList;
 import com.education.corsalite.models.db.reqres.LoginReqRes;
 import com.education.corsalite.models.db.reqres.StudyCenterReqRes;
+import com.education.corsalite.models.requestmodels.CreateChallengeRequest;
 import com.education.corsalite.models.requestmodels.ForumLikeRequest;
 import com.education.corsalite.models.requestmodels.ForumModel;
 import com.education.corsalite.models.responsemodels.CommonResponseModel;
@@ -19,6 +20,7 @@ import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.CourseAnalysis;
 import com.education.corsalite.models.responsemodels.CourseAnalysisPercentile;
+import com.education.corsalite.models.responsemodels.CreateChallengeResponseModel;
 import com.education.corsalite.models.responsemodels.DefaultCourseResponse;
 import com.education.corsalite.models.responsemodels.DefaultForumResponse;
 import com.education.corsalite.models.responsemodels.DefaultNoteResponse;
@@ -502,6 +504,12 @@ public class ApiManager {
     public void getWelcomeDetails(String idStudent,ApiCallback<WelcomeDetails> callback){
         if(isApiOnline()){
             ApiClientService.get().getWelcomeDetails(idStudent,callback);
+        }
+    }
+
+    public void createChallenge(CreateChallengeRequest insert, ApiCallback<CreateChallengeResponseModel> callback){
+        if(isApiOnline()){
+            ApiClientService.get().createChallenge(new TypedString("Insert="+new Gson().toJson(insert)), callback);
         }
     }
 }

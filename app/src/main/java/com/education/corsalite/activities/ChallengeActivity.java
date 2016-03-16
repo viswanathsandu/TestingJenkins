@@ -13,7 +13,6 @@ import com.education.corsalite.fragments.FriendsListFragment;
 import com.education.corsalite.fragments.TestSetupFragment;
 import com.education.corsalite.models.responsemodels.FriendsData;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,13 +82,13 @@ public class ChallengeActivity extends AbstractBaseActivity {
         }
     };
 
-    public interface FriendsListCallback extends Serializable {
+    public interface FriendsListCallback {
         void onNextClick(ArrayList<FriendsData.Friend> selectedFriends);
         void onFriendAdded(FriendsData.Friend friend);
         void onFriendRemoved(FriendsData.Friend friend);
     }
 
-    public interface TestSetupCallback extends Serializable {
+    public interface TestSetupCallback {
         void popUpFriendsListFragment();
     }
 

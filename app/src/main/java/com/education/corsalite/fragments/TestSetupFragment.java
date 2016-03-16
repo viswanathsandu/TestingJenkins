@@ -1,5 +1,6 @@
 package com.education.corsalite.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,18 +10,24 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.activities.ChallengeActivity;
+import com.education.corsalite.activities.ExamEngineActivity;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.ChapterModel;
 import com.education.corsalite.models.SubjectModel;
+import com.education.corsalite.models.requestmodels.ChallengeFriend;
+import com.education.corsalite.models.requestmodels.CreateChallengeRequest;
 import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
+import com.education.corsalite.models.responsemodels.CreateChallengeResponseModel;
 import com.education.corsalite.models.responsemodels.FriendsData;
+import com.education.corsalite.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +72,7 @@ public class TestSetupFragment extends BaseFragment {
     public static TestSetupFragment newInstance(ChallengeActivity.TestSetupCallback mTestSetupCallback, ArrayList<FriendsData.Friend> selectedFriends) {
         TestSetupFragment fragment = new TestSetupFragment();
         Bundle args = new Bundle();
-        args.putSerializable(ARG_CALLBACK, mTestSetupCallback);
+        fragment.mTestSetupCallback = mTestSetupCallback;
         fragment.setArguments(args);
         return fragment;
     }
@@ -136,7 +143,38 @@ public class TestSetupFragment extends BaseFragment {
     }
 
     private void challengeTest() {
+        CreateChallengeRequest request = new CreateChallengeRequest();
+        request.subjectId = subjectList.get(selectSubjSpinner.getSelectedItemPosition() - 1).idSubject;
+        request.chapterId = chapterList.get(selectChapSpinner.getSelectedItemPosition() - 1).idChapter;
+        request.courseId = AbstractBaseActivity.selectedCourse.courseId+"";
+        request.durationInMins = timeInMinsEdit.getText().toString();
+        request.questionCount = noOfQuesEdit.getText().toString();
+        request.virtualCurrencyChallenged = virtCurrencyEdit.getText().toString();
+        request.examId = "8"; // TODO : remove it after testing
+        request.studentId = LoginUserCache.getInstance().loginResponse.studentId;
+        ChallengeFriend friend = new ChallengeFriend();
+        friend.friend1 = "1157"; // TODO : remove it after testing
+        request.challengedFriendsId = friend;
+        ApiManager.getInstance(getActivity()).createChallenge(request, new ApiCallback<CreateChallengeResponseModel>(getActivity()) {
+            @Override
+            public void failure(CorsaliteError error) {
+                super.failure(error);
+                Toast.makeText(getActivity(), "Failed to create test", Toast.LENGTH_SHORT).show();
+            }
 
+            @Override
+            public void success(CreateChallengeResponseModel createChallengeResponseModel, Response response) {
+                super.success(createChallengeResponseModel, response);
+                Toast.makeText(getActivity(), "Created Test", Toast.LENGTH_SHORT).show();
+                if(createChallengeResponseModel != null && createChallengeResponseModel.testQuestionPaperId != null) {
+                    Intent intent = new Intent(getActivity(), ExamEngineActivity.class);
+                    intent.putExtra(Constants.TEST_TITLE, "Challenge Test");
+                    intent.putExtra("test_question_paper_id", createChallengeResponseModel.testQuestionPaperId);
+                    startActivity(intent);
+                    getActivity().finish();
+                }
+            }
+        });
     }
 
     private boolean isValidNoQues(String noOfQuestions) {
@@ -201,15 +239,18 @@ public class TestSetupFragment extends BaseFragment {
                 });
     }
 
+    private List<SubjectModel> subjectList;
+    private List<ChapterModel> chapterList;
+
+
     private void showSubjects(final List<ContentIndex> contentIndexList) {
-        List<SubjectModel> subjectsList = new ArrayList<>();
         for (int i = 0; i < contentIndexList.size(); i++) {
             if (contentIndexList.get(i).idCourse.equalsIgnoreCase(AbstractBaseActivity.selectedCourse.courseId.toString())) {
-                subjectsList = contentIndexList.get(i).subjectModelList;
+                subjectList = contentIndexList.get(i).subjectModelList;
             }
         }
-        selectSubjSpinner.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.challenge_spinner_item, R.id.mock_test_txt, getSubjects(subjectsList)));
-        final List<SubjectModel> finalSubjectsList = subjectsList;
+        selectSubjSpinner.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.challenge_spinner_item, R.id.mock_test_txt, getSubjects(subjectList)));
+        final List<SubjectModel> finalSubjectsList = subjectList;
         selectSubjSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
@@ -219,8 +260,8 @@ public class TestSetupFragment extends BaseFragment {
                     selectSubjError.setVisibility(View.GONE);
                     for (int i = 0; i < finalSubjectsList.size(); i++) {
                         if (finalSubjectsList.get(i).subjectName.equalsIgnoreCase(adapterView.getItemAtPosition(position).toString())) {
-                            List<ChapterModel> chaptersList = finalSubjectsList.get(i).chapters;
-                            selectChapSpinner.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.challenge_spinner_item, R.id.mock_test_txt, getChapters(chaptersList)));
+                            chapterList = finalSubjectsList.get(i).chapters;
+                            selectChapSpinner.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.challenge_spinner_item, R.id.mock_test_txt, getChapters(chapterList)));
                         }
 
                     }

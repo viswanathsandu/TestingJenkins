@@ -280,6 +280,12 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             } else {
                 loadScheduledTest();
             }
+        } else if (title.equalsIgnoreCase("Challenge Test")) {
+            if (!isOffline) {
+                loadChallengeTest();
+            } else {
+                showToast("Challenge Test works in online mode");
+            }
         } else if (title.equalsIgnoreCase("View Answers")) {
             loadViewAnswers();
         } else {
@@ -313,6 +319,16 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void loadScheduledTest() {
+        imvFlag.setVisibility(View.VISIBLE);
+        testQuestionPaperId = getIntent().getExtras().getString("test_question_paper_id");
+        getTestQuestionPaper(null);
+        imvRefresh.setVisibility(View.VISIBLE);
+        timerLayout.setVisibility(View.VISIBLE);
+        testNavFooter.setVisibility(View.VISIBLE);
+        btnVerify.setVisibility(View.GONE);
+    }
+
+    private void loadChallengeTest() {
         imvFlag.setVisibility(View.VISIBLE);
         testQuestionPaperId = getIntent().getExtras().getString("test_question_paper_id");
         getTestQuestionPaper(null);

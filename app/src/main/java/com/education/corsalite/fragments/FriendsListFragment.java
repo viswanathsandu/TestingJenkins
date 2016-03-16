@@ -45,7 +45,7 @@ public class FriendsListFragment extends BaseFragment  implements SearchView.OnQ
     public static FriendsListFragment newInstance(ChallengeActivity.FriendsListCallback mFriendsListCallback) {
         FriendsListFragment fragment = new FriendsListFragment();
         Bundle args = new Bundle();
-        args.putSerializable(ARG_CALLBACK, mFriendsListCallback);
+        fragment.mFriendsListCallback = mFriendsListCallback;
         fragment.setArguments(args);
         return fragment;
     }
@@ -53,9 +53,6 @@ public class FriendsListFragment extends BaseFragment  implements SearchView.OnQ
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mFriendsListCallback = (ChallengeActivity.FriendsListCallback) getArguments().getSerializable(ARG_CALLBACK);
-        }
     }
 
     @Override

@@ -8,6 +8,7 @@ import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.CourseAnalysis;
 import com.education.corsalite.models.responsemodels.CourseAnalysisPercentile;
+import com.education.corsalite.models.responsemodels.CreateChallengeResponseModel;
 import com.education.corsalite.models.responsemodels.DefaultCourseResponse;
 import com.education.corsalite.models.responsemodels.DefaultForumResponse;
 import com.education.corsalite.models.responsemodels.DefaultNoteResponse;
@@ -225,4 +226,8 @@ public interface ICorsaliteApi {
 
     @GET("/Welcome")
     void getWelcomeDetails(@Query("idStudent")String idStudent,ApiCallback<WelcomeDetails> callback);
+
+    @Headers("Content-Type:application/x-www-form-urlencoded")
+    @POST("/CreateChallenge")
+    void createChallenge(@Body TypedString insert, ApiCallback<CreateChallengeResponseModel> callback);
 }
