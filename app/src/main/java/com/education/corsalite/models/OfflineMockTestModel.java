@@ -18,5 +18,7 @@ public class OfflineMockTestModel extends BaseModel {
     public Chapters chapter;
     public String subjectId;
     public List<TestCoverage> testCoverages;
+    public String testQuestionPaperId;
+    public String testAnswerPaperId;
 
 }

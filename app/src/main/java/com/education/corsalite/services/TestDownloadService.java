@@ -53,7 +53,7 @@ public class TestDownloadService extends IntentService {
         }
     }
 
-    private void getTestQuestionPaper(String testQuestionPaperId, String testAnswerPaperId,
+    private void getTestQuestionPaper(final String testQuestionPaperId, final String testAnswerPaperId,
                                       final MockTest mockTest, final ScheduledTestList.ScheduledTestsArray scheduledTestsArray) {
         ApiManager.getInstance(this).getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId,
                 new ApiCallback<List<ExamModel>>(this) {
@@ -67,6 +67,8 @@ public class TestDownloadService extends IntentService {
                         } else {
                             model.scheduledTest = scheduledTestsArray;
                         }
+                        model.testQuestionPaperId = testQuestionPaperId;
+                        model.testAnswerPaperId = testAnswerPaperId;
                         DbManager.getInstance(getApplicationContext()).saveOfflineMockTest(model);
                     }
                 });

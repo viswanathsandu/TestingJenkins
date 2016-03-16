@@ -53,6 +53,7 @@ import com.education.corsalite.enums.QuestionType;
 import com.education.corsalite.event.ExerciseAnsEvent;
 import com.education.corsalite.fragments.FullQuestionDialog;
 import com.education.corsalite.models.MockTest;
+import com.education.corsalite.models.OfflineMockTestModel;
 import com.education.corsalite.models.ScheduledTestList;
 import com.education.corsalite.models.requestmodels.ExamTemplateChapter;
 import com.education.corsalite.models.requestmodels.ExamTemplateConfig;
@@ -80,6 +81,7 @@ import com.education.corsalite.utils.SystemUtils;
 import com.education.corsalite.utils.TimeUtils;
 import com.education.corsalite.views.GridViewInScrollView;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -309,7 +311,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private void loadViewAnswers() {
         selectedPosition = 0;
         headerLayout.setVisibility(View.GONE);
-        localExamModelList = (ArrayList<ExamModel>) getIntent().getExtras().get("ExamModels");
+        localExamModelList = AbstractBaseActivity.getSharedExamModels();
         webFooter.setVisibility(localExamModelList.isEmpty() ? View.GONE : View.VISIBLE);
         btnVerify.setVisibility(View.GONE);
         tvClearAnswer.setVisibility(View.GONE);
@@ -796,6 +798,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void navigateToExamResultActivity(int totalQuestions, int correct, int wrong) {
+        AbstractBaseActivity.setSharedExamModels(localExamModelList);
         Intent intent = new Intent(this, ExamResultActivity.class);
         intent.putExtra("exam", "Chapter");
         intent.putExtra("type", "Custom");
@@ -804,7 +807,6 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         intent.putExtra("total_questions", totalQuestions);
         intent.putExtra("correct", correct);
         intent.putExtra("wrong", wrong);
-        intent.putExtra("ExamModels", (Serializable) localExamModelList);
         startActivity(intent);
         finish();
     }
@@ -1638,11 +1640,13 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void loadOfflineMockTest(MockTest model) {
-        DbManager.getInstance(getApplicationContext()).getAllExamModels(model, new ApiCallback<List<ExamModel>>(this) {
+        DbManager.getInstance(getApplicationContext()).getAllExamModels(model, new ApiCallback<OfflineMockTestModel>(this) {
             @Override
-            public void success(List<ExamModel> examModels, Response response) {
-                super.success(examModels, response);
-                showQuestionPaper(examModels);
+            public void success(OfflineMockTestModel offlineModel, Response response) {
+                super.success(offlineModel, response);
+                testQuestionPaperId = offlineModel.testQuestionPaperId;
+                testanswerPaper.testQuestionPaperId = testQuestionPaperId;
+                showQuestionPaper(offlineModel.examModels);
             }
         });
     }

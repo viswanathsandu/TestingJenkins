@@ -181,13 +181,13 @@ public class DbManager {
         new GetOfflineTestFromDb(dbService, callback).execute();
     }
 
-    public void getAllExamModels(final MockTest mockTest, final ApiCallback<List<ExamModel>> callback){
+    public void getAllExamModels(final MockTest mockTest, final ApiCallback<OfflineMockTestModel> callback){
         new GetOfflineTestFromDb(dbService, new ApiCallback<List<OfflineMockTestModel>>(context){
             public void success(List<OfflineMockTestModel> offlineMockTestModels, Response response) {
                 super.success(offlineMockTestModels, response);
-                for (OfflineMockTestModel model:offlineMockTestModels) {
+                for (OfflineMockTestModel model : offlineMockTestModels) {
                     if(model.mockTest != null && !TextUtils.isEmpty(model.mockTest.examTemplateId) && model.mockTest.examTemplateId.equalsIgnoreCase(mockTest.examTemplateId)){
-                        callback.success(model.examModels,response);
+                        callback.success(model, response);
                     }
                 }
             }

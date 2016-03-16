@@ -42,6 +42,7 @@ import com.education.corsalite.models.ContentModel;
 import com.education.corsalite.models.requestmodels.LogoutModel;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
+import com.education.corsalite.models.responsemodels.ExamModel;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.AppConfig;
@@ -76,6 +77,15 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     public Dialog dialog;
     protected DbManager dbManager;
     protected AppPref appPref;
+    private static List<ExamModel> sharedExamModels;
+
+    public static void setSharedExamModels(List<ExamModel> examModels) {
+        sharedExamModels = examModels;
+    }
+
+    public static List<ExamModel> getSharedExamModels() {
+        return sharedExamModels;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
