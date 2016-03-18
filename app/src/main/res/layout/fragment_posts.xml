@@ -1,6 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/rcv_posts"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingTop="20dp" />
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rcv_posts"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="20dp" />
+
+    <LinearLayout
+        android:id="@+id/empty_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="There are no posts"
+            android:textColor="@color/text_black"
+            android:textSize="24sp"
+            fontPath="@string/roboto_regular"
+            android:padding="15dp"/>
+
+        <Button
+            android:id="@+id/new_post_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create New Post"
+            android:textAllCaps="false"
+            android:background="@drawable/login_button_bg"
+            fontPath="@string/roboto_regular"
+            android:textSize="20sp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:layout_marginBottom="20dp"/>
+
+    </LinearLayout>
+
+</RelativeLayout>
