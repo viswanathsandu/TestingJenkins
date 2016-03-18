@@ -2,7 +2,6 @@ package com.education.corsalite.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -99,6 +98,59 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         return convertView;
     }
 
+    @Override
+    public int getChildrenCount(int groupPosition) {
+        if(childs != null && !childs.isEmpty()) {
+            return this.childs.get(this.headers.get(groupPosition)).size();
+        } else {
+            return 0;
+        }
+    }
+
+    @Override
+    public Object getGroup(int groupPosition) {
+        if(headers != null && !headers.isEmpty()) {
+            return this.headers.get(groupPosition);
+        } else {
+            return 0;
+        }
+    }
+
+    @Override
+    public int getGroupCount() {
+        return this.headers.size();
+    }
+
+    @Override
+    public long getGroupId(int groupPosition) {
+        return groupPosition;
+    }
+
+    @Override
+    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+        String headerTitle = (String) getGroup(groupPosition);
+        if (convertView == null) {
+            LayoutInflater infalInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = infalInflater.inflate(R.layout.offline_test_header_item, null);
+        }
+        TextView lblListHeader = (TextView) convertView.findViewById(R.id.title_txt);
+        lblListHeader.setText(headerTitle);
+        ImageView ivDownload = (ImageView) convertView.findViewById(R.id.download_test);
+        ivDownload.setImageResource(isExpanded ? R.drawable.ico_offline_arrow_down_black : R.drawable.ico_offline_arrow_black);
+
+        return convertView;
+    }
+
+    @Override
+    public boolean hasStableIds() {
+        return false;
+    }
+
+    @Override
+    public boolean isChildSelectable(int groupPosition, int childPosition) {
+        return true;
+    }
+
     private void startMockTest(OfflineTestModel model) {
 
         Intent intent = new Intent(context, StartMockTestActivity.class);
@@ -152,61 +204,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         exerciseIntent.putExtra(Constants.SELECTED_TOPIC, subjectName);
         exerciseIntent.putExtra(Constants.IS_OFFLINE,true);
         context.startActivity(exerciseIntent);
-    }
-
-    @Override
-    public int getChildrenCount(int groupPosition) {
-        if(childs != null && !childs.isEmpty()) {
-            return this.childs.get(this.headers.get(groupPosition)).size();
-        } else {
-            return 0;
-        }
-    }
-
-    @Override
-    public Object getGroup(int groupPosition) {
-        if(headers != null && !headers.isEmpty()) {
-            return this.headers.get(groupPosition);
-        } else {
-            return 0;
-        }
-    }
-
-    @Override
-    public int getGroupCount() {
-        return this.headers.size();
-    }
-
-    @Override
-    public long getGroupId(int groupPosition) {
-        return groupPosition;
-    }
-
-    @Override
-    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-        String headerTitle = (String) getGroup(groupPosition);
-        if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.offline_test_child_item, null);
-        }
-        TextView lblListHeader = (TextView) convertView.findViewById(R.id.mock_test_txt);
-        lblListHeader.setTypeface(null, Typeface.BOLD);
-        lblListHeader.setText(headerTitle);
-        ImageView ivDownload = (ImageView) convertView.findViewById(R.id.download_test);
-        ivDownload.setImageResource(isExpanded ? R.drawable.ico_offline_arrow_down_white : R.drawable.ico_offline_arrow_white);
-        ivDownload.setBackgroundColor(context.getResources().getColor(R.color.white));
-
-        return convertView;
-    }
-
-    @Override
-    public boolean hasStableIds() {
-        return false;
-    }
-
-    @Override
-    public boolean isChildSelectable(int groupPosition, int childPosition) {
-        return true;
     }
 }
 
