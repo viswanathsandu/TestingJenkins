@@ -554,7 +554,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     public void showProgress(){
-
         ProgressBar pbar = new ProgressBar(this);
         pbar.setBackgroundColor(getResources().getColor(android.R.color.transparent));
         dialog = new Dialog(this);
