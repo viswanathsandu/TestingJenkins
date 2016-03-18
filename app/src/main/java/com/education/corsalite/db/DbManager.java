@@ -5,7 +5,7 @@ import android.text.TextUtils;
 
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.models.MockTest;
-import com.education.corsalite.models.OfflineMockTestModel;
+import com.education.corsalite.models.OfflineTestModel;
 import com.education.corsalite.models.ScheduledTestList;
 import com.education.corsalite.models.db.ContentIndexResponse;
 import com.education.corsalite.models.db.OfflineContent;
@@ -150,7 +150,7 @@ public class DbManager {
         new GetDataFromDbAsync(dbService, callback).execute();
     }
 
-    public void saveOfflineMockTest(final OfflineMockTestModel model){
+    public void saveOfflineTest(final OfflineTestModel model){
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -162,10 +162,10 @@ public class DbManager {
     }
 
     public void getAllOfflineTakeTests(final Chapters chapter,final ApiCallback<List<TestCoverage>> callback){
-        new GetOfflineTestFromDb(dbService, new ApiCallback<List<OfflineMockTestModel>>(context){
-            public void success(List<OfflineMockTestModel> offlineMockTestModels, Response response) {
-                super.success(offlineMockTestModels, response);
-                for (OfflineMockTestModel model:offlineMockTestModels) {
+        new GetOfflineTestFromDb(dbService, new ApiCallback<List<OfflineTestModel>>(context){
+            public void success(List<OfflineTestModel> offlineTestModels, Response response) {
+                super.success(offlineTestModels, response);
+                for (OfflineTestModel model: offlineTestModels) {
                     if(model.baseTest.chapter.idCourseSubjectchapter != null && !TextUtils.isEmpty(model.baseTest.chapter.idCourseSubjectchapter) && model.baseTest.chapter.idCourseSubjectchapter.equalsIgnoreCase(chapter.idCourseSubjectchapter)){
                         callback.success(model.baseTest.testCoverages,response);
                     }
@@ -175,10 +175,10 @@ public class DbManager {
     }
 
     public void getAllExamModels(final String subjectId, final ApiCallback<BaseTest> callback){
-        new GetOfflineTestFromDb(dbService, new ApiCallback<List<OfflineMockTestModel>>(context){
-            public void success(List<OfflineMockTestModel> offlineMockTestModels, Response response) {
-                super.success(offlineMockTestModels, response);
-                for (OfflineMockTestModel model : offlineMockTestModels) {
+        new GetOfflineTestFromDb(dbService, new ApiCallback<List<OfflineTestModel>>(context){
+            public void success(List<OfflineTestModel> offlineTestModels, Response response) {
+                super.success(offlineTestModels, response);
+                for (OfflineTestModel model : offlineTestModels) {
                     if(model.baseTest.subjectId.equalsIgnoreCase(subjectId)){
                         callback.success(model.baseTest,response);
                     }
@@ -187,19 +187,19 @@ public class DbManager {
         }).execute();
     }
 
-    public void deleteOfflineMockTest(OfflineMockTestModel model){
-        dbService.Delete(OfflineMockTestModel.class, model);
+    public void deleteOfflineMockTest(OfflineTestModel model){
+        dbService.Delete(OfflineTestModel.class, model);
     }
 
-    public void getAllOfflineMockTests(ApiCallback<List<OfflineMockTestModel>> callback){
+    public void getAllOfflineMockTests(ApiCallback<List<OfflineTestModel>> callback){
         new GetOfflineTestFromDb(dbService, callback).execute();
     }
 
-    public void getAllExamModels(final MockTest mockTest, final ApiCallback<OfflineMockTestModel> callback){
-        new GetOfflineTestFromDb(dbService, new ApiCallback<List<OfflineMockTestModel>>(context){
-            public void success(List<OfflineMockTestModel> offlineMockTestModels, Response response) {
-                super.success(offlineMockTestModels, response);
-                for (OfflineMockTestModel model : offlineMockTestModels) {
+    public void getAllExamModels(final MockTest mockTest, final ApiCallback<OfflineTestModel> callback){
+        new GetOfflineTestFromDb(dbService, new ApiCallback<List<OfflineTestModel>>(context){
+            public void success(List<OfflineTestModel> offlineTestModels, Response response) {
+                super.success(offlineTestModels, response);
+                for (OfflineTestModel model : offlineTestModels) {
                     if(model.mockTest != null && !TextUtils.isEmpty(model.mockTest.examTemplateId) && model.mockTest.examTemplateId.equalsIgnoreCase(mockTest.examTemplateId)){
                         callback.success(model, response);
                     }
@@ -209,10 +209,10 @@ public class DbManager {
     }
 
     public void getAllExamModels(final ScheduledTestList.ScheduledTestsArray scheduledTest, final ApiCallback<List<ExamModel>> callback){
-        new GetOfflineTestFromDb(dbService, new ApiCallback<List<OfflineMockTestModel>>(context){
-            public void success(List<OfflineMockTestModel> offlineMockTestModels, Response response) {
-                super.success(offlineMockTestModels, response);
-                for (OfflineMockTestModel model:offlineMockTestModels) {
+        new GetOfflineTestFromDb(dbService, new ApiCallback<List<OfflineTestModel>>(context){
+            public void success(List<OfflineTestModel> offlineTestModels, Response response) {
+                super.success(offlineTestModels, response);
+                for (OfflineTestModel model: offlineTestModels) {
                     if(model.scheduledTest != null && !TextUtils.isEmpty(model.scheduledTest.testQuestionPaperId) && model.scheduledTest.testQuestionPaperId.equalsIgnoreCase(scheduledTest.testQuestionPaperId)){
                         callback.success(model.examModels,response);
                     }

@@ -12,7 +12,7 @@ import com.education.corsalite.activities.OfflineContentActivity;
 import com.education.corsalite.adapters.ExpandableListAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.db.DbManager;
-import com.education.corsalite.models.OfflineMockTestModel;
+import com.education.corsalite.models.OfflineTestModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,12 +27,12 @@ import retrofit.client.Response;
  */
 public class OfflineTestsFragment  extends BaseFragment implements OfflineContentActivity.IOfflineTestEventListener {
     @Bind(R.id.expandableList)ExpandableListView rvOfflineTests;
-    private List<OfflineMockTestModel> mockTestModels;
-    private List<OfflineMockTestModel> scheduledTestModels;
-    private List<OfflineMockTestModel> chaptersList;
-    private List<OfflineMockTestModel> partTestList;
+    private List<OfflineTestModel> mockTestModels;
+    private List<OfflineTestModel> scheduledTestModels;
+    private List<OfflineTestModel> chaptersList;
+    private List<OfflineTestModel> partTestList;
     private ArrayList<String> allTests;
-    private HashMap<String, List<OfflineMockTestModel>> offlineTests;
+    private HashMap<String, List<OfflineTestModel>> offlineTests;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -46,12 +46,12 @@ public class OfflineTestsFragment  extends BaseFragment implements OfflineConten
     }
 
     private void loadOfflineTests() {
-        DbManager.getInstance(getActivity().getApplicationContext()).getAllOfflineMockTests(new ApiCallback<List<OfflineMockTestModel>>(getActivity()) {
+        DbManager.getInstance(getActivity().getApplicationContext()).getAllOfflineMockTests(new ApiCallback<List<OfflineTestModel>>(getActivity()) {
             @Override
-            public void success(List<OfflineMockTestModel> offlineMockTestModels, Response response) {
-                super.success(offlineMockTestModels, response);
-                if (offlineMockTestModels != null && !offlineMockTestModels.isEmpty()) {
-                    separateTestModel(offlineMockTestModels);
+            public void success(List<OfflineTestModel> offlineTestModels, Response response) {
+                super.success(offlineTestModels, response);
+                if (offlineTestModels != null && !offlineTestModels.isEmpty()) {
+                    separateTestModel(offlineTestModels);
                     offlineTests.put("Mock Test", mockTestModels);
                     offlineTests.put("Scheduled Test", scheduledTestModels);
                     offlineTests.put("Take Test", chaptersList);
@@ -64,34 +64,31 @@ public class OfflineTestsFragment  extends BaseFragment implements OfflineConten
         });
     }
 
-    private void separateTestModel(List<OfflineMockTestModel> offlineMockTestModels){
+    private void separateTestModel(List<OfflineTestModel> offlineTestModels){
         mockTestModels = new ArrayList<>();
         scheduledTestModels = new ArrayList<>();
         chaptersList = new ArrayList<>();
         partTestList = new ArrayList<>();
-        for (OfflineMockTestModel model: offlineMockTestModels) {
+        for (OfflineTestModel model: offlineTestModels) {
             if(model.mockTest != null){
                 mockTestModels.add(model);
             }else if(model.scheduledTest != null){
                 scheduledTestModels.add(model);
             }else if(model.baseTest.testCoverages != null){
-               chaptersList.add(model);
+                chaptersList.add(model);
             }else if(model.baseTest.subjectName != null){
                 partTestList.add(model);
             }
         }
     }
 
-    private ArrayList<String>  loadAllTests()
-    {
+    private ArrayList<String>  loadAllTests() {
         ArrayList<String> alltests = new ArrayList<>();
-        // TODO : uncomment it while merging practice and part test for offline
-//        alltests.add("Exercise Test");
-//        alltests.add("Part Test");
-        alltests.add("Scheduled Test");
-        alltests.add("Mock Test");
+        // alltests.add("Exercise Test");
         alltests.add("Take Test");
         alltests.add("Part Test");
+        alltests.add("Scheduled Test");
+        alltests.add("Mock Test");
         return alltests;
     }
 

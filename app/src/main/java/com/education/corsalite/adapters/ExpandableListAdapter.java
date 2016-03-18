@@ -17,7 +17,7 @@ import com.education.corsalite.activities.ExamEngineActivity;
 import com.education.corsalite.activities.StartMockTestActivity;
 import com.education.corsalite.activities.TestStartActivity;
 import com.education.corsalite.enums.Tests;
-import com.education.corsalite.models.OfflineMockTestModel;
+import com.education.corsalite.models.OfflineTestModel;
 import com.education.corsalite.models.ScheduledTestList;
 import com.education.corsalite.models.responsemodels.Chapters;
 import com.education.corsalite.utils.Constants;
@@ -35,27 +35,32 @@ import java.util.List;
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     private Context context;
-    private List<String> _listDataHeader; // header titles
+    private List<String> headers; // header titles
     // child data in format of header title, child title
-    private HashMap<String, List<OfflineMockTestModel>> _listDataChild;
+    private HashMap<String, List<OfflineTestModel>> childs;
 
     public ExpandableListAdapter(Context context, List<String> listDataHeader,
-                                 HashMap<String, List<OfflineMockTestModel>> listChildData) {
+                                 HashMap<String, List<OfflineTestModel>> listChildData) {
         this.context = context;
-        this._listDataHeader = listDataHeader;
-        this._listDataChild = listChildData;
+        this.headers = listDataHeader;
+        this.childs = listChildData;
     }
 
     @Override
     public Object getChild(int groupPosition, int childPosititon) {
-        if (_listDataHeader.get(groupPosition).equalsIgnoreCase("Mock Test")) {
-            return this._listDataChild.get(this._listDataHeader.get(groupPosition)).get(childPosititon).mockTest.examName;
-        } else if(_listDataHeader.get(groupPosition).equalsIgnoreCase("Schedule Test")){
-            return this._listDataChild.get(this._listDataHeader.get(groupPosition)).get(childPosititon).scheduledTest.examName;
-        }else if(_listDataHeader.get(groupPosition).equalsIgnoreCase("Take Test")){
-            return this._listDataChild.get(this._listDataHeader.get(groupPosition)).get(childPosititon).baseTest.chapter.chapterName;
-        }else {
-            return this._listDataChild.get(this._listDataHeader.get(groupPosition)).get(childPosititon).baseTest.subjectName;
+        try {
+            if (headers.get(groupPosition).equalsIgnoreCase("Mock Test")) {
+                return this.childs.get(this.headers.get(groupPosition)).get(childPosititon).mockTest.examName;
+            } else if (headers.get(groupPosition).equalsIgnoreCase("Schedule Test")) {
+                return this.childs.get(this.headers.get(groupPosition)).get(childPosititon).scheduledTest.examName;
+            } else if (headers.get(groupPosition).equalsIgnoreCase("Take Test")) {
+                return this.childs.get(this.headers.get(groupPosition)).get(childPosititon).baseTest.chapter.chapterName;
+            } else {
+                return this.childs.get(this.headers.get(groupPosition)).get(childPosititon).baseTest.subjectName;
+            }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+            return null;
         }
     }
 
@@ -78,23 +83,23 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         txtListChild.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(_listDataHeader.get(groupPosition).equals("Mock Test")) {
-                    startMockTest(_listDataChild.get(_listDataHeader.get(groupPosition)).get(childPosition));
-                } else if(_listDataHeader.get(groupPosition).equals("Scheduled Test")) {
-                    startScheduleTest(_listDataChild.get(_listDataHeader.get(groupPosition)).get(childPosition).scheduledTest);
-                }else if(_listDataHeader.get(groupPosition).equals("Take Test")){
-                    startTakeTest(_listDataChild.get(_listDataHeader.get(groupPosition)).get(childPosition).baseTest.chapter,
-                            _listDataChild.get(_listDataHeader.get(groupPosition)).get(childPosition).baseTest.subjectId);
-                }else if(_listDataHeader.get(groupPosition).equals("Part Test")){
-                    startPartTest(_listDataChild.get(_listDataHeader.get(groupPosition)).get(childPosition).baseTest.subjectName,
-                            _listDataChild.get(_listDataHeader.get(groupPosition)).get(childPosition).baseTest.subjectId);
+                if(headers.get(groupPosition).equals("Mock Test")) {
+                    startMockTest(childs.get(headers.get(groupPosition)).get(childPosition));
+                } else if(headers.get(groupPosition).equals("Scheduled Test")) {
+                    startScheduleTest(childs.get(headers.get(groupPosition)).get(childPosition).scheduledTest);
+                }else if(headers.get(groupPosition).equals("Take Test")){
+                    startTakeTest(childs.get(headers.get(groupPosition)).get(childPosition).baseTest.chapter,
+                            childs.get(headers.get(groupPosition)).get(childPosition).baseTest.subjectId);
+                }else if(headers.get(groupPosition).equals("Part Test")){
+                    startPartTest(childs.get(headers.get(groupPosition)).get(childPosition).baseTest.subjectName,
+                            childs.get(headers.get(groupPosition)).get(childPosition).baseTest.subjectId);
                 }
             }
         });
         return convertView;
     }
 
-    private void startMockTest(OfflineMockTestModel model) {
+    private void startMockTest(OfflineTestModel model) {
 
         Intent intent = new Intent(context, StartMockTestActivity.class);
         intent.putExtra("Test_Instructions", new Gson().toJson(model.testPaperIndecies));
@@ -125,7 +130,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     private void startTakeTest(Chapters chapter,String subjectId){
-
         Intent exerciseIntent = new Intent(context, TestStartActivity.class);
         exerciseIntent.putExtra(TestStartActivity.KEY_TEST_TYPE, Tests.CHAPTER.getType());
         exerciseIntent.putExtra(Constants.TEST_TITLE, chapter.chapterName);
@@ -141,17 +145,19 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     private void startPartTest(String subjectName,String subjectId){
         Intent exerciseIntent = new Intent(context, ExamEngineActivity.class);
+        exerciseIntent.putExtra(TestStartActivity.KEY_TEST_TYPE, Tests.PART.getType());
         exerciseIntent.putExtra(Constants.TEST_TITLE, subjectName);
         exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
         exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, subjectId);
         exerciseIntent.putExtra(Constants.SELECTED_TOPIC, subjectName);
+        exerciseIntent.putExtra(Constants.IS_OFFLINE,true);
         context.startActivity(exerciseIntent);
     }
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        if(_listDataChild != null && !_listDataChild.isEmpty()) {
-            return this._listDataChild.get(this._listDataHeader.get(groupPosition)).size();
+        if(childs != null && !childs.isEmpty()) {
+            return this.childs.get(this.headers.get(groupPosition)).size();
         } else {
             return 0;
         }
@@ -159,8 +165,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getGroup(int groupPosition) {
-        if(_listDataHeader != null && !_listDataHeader.isEmpty()) {
-            return this._listDataHeader.get(groupPosition);
+        if(headers != null && !headers.isEmpty()) {
+            return this.headers.get(groupPosition);
         } else {
             return 0;
         }
@@ -168,7 +174,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getGroupCount() {
-        return this._listDataHeader.size();
+        return this.headers.size();
     }
 
     @Override

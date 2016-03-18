@@ -480,7 +480,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         Intent intent = new Intent(this, TestDownloadService.class);
         intent.putExtra("selectedPartTest",new Gson().toJson(studyCenter));
         intent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
-        intent.putExtra(Constants.SELECTED_SUBJECTID, studyCenter.idCourseSubject + "");
+        intent.putExtra("subjectId", studyCenter.idCourseSubject + "");
         startService(intent);
         Toast.makeText(this, "Downloading test paper in background", Toast.LENGTH_SHORT).show();
     }
