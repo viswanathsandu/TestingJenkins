@@ -52,8 +52,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             return this._listDataChild.get(this._listDataHeader.get(groupPosition)).get(childPosititon).mockTest.examName;
         } else if(_listDataHeader.get(groupPosition).equalsIgnoreCase("Schedule Test")){
             return this._listDataChild.get(this._listDataHeader.get(groupPosition)).get(childPosititon).scheduledTest.examName;
-        }else {
+        }else if(_listDataHeader.get(groupPosition).equalsIgnoreCase("Take Test")){
             return this._listDataChild.get(this._listDataHeader.get(groupPosition)).get(childPosititon).baseTest.chapter.chapterName;
+        }else {
+            return this._listDataChild.get(this._listDataHeader.get(groupPosition)).get(childPosititon).baseTest.subjectName;
         }
     }
 
@@ -82,6 +84,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                     startScheduleTest(_listDataChild.get(_listDataHeader.get(groupPosition)).get(childPosition).scheduledTest);
                 }else if(_listDataHeader.get(groupPosition).equals("Take Test")){
                     startTakeTest(_listDataChild.get(_listDataHeader.get(groupPosition)).get(childPosition).baseTest.chapter,
+                            _listDataChild.get(_listDataHeader.get(groupPosition)).get(childPosition).baseTest.subjectId);
+                }else if(_listDataHeader.get(groupPosition).equals("Part Test")){
+                    startPartTest(_listDataChild.get(_listDataHeader.get(groupPosition)).get(childPosition).baseTest.subjectName,
                             _listDataChild.get(_listDataHeader.get(groupPosition)).get(childPosition).baseTest.subjectId);
                 }
             }
@@ -134,6 +139,14 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         context.startActivity(exerciseIntent);
     }
 
+    private void startPartTest(String subjectName,String subjectId){
+        Intent exerciseIntent = new Intent(context, ExamEngineActivity.class);
+        exerciseIntent.putExtra(Constants.TEST_TITLE, subjectName);
+        exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
+        exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, subjectId);
+        exerciseIntent.putExtra(Constants.SELECTED_TOPIC, subjectName);
+        context.startActivity(exerciseIntent);
+    }
 
     @Override
     public int getChildrenCount(int groupPosition) {

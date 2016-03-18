@@ -17,6 +17,7 @@ import com.education.corsalite.models.examengine.BaseTest;
 import com.education.corsalite.models.responsemodels.Chapters;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.ExamModel;
+import com.education.corsalite.models.responsemodels.StudyCenter;
 import com.education.corsalite.models.responsemodels.TestCoverage;
 import com.education.corsalite.models.responsemodels.TestPaperIndex;
 import com.education.corsalite.utils.L;
@@ -43,6 +44,7 @@ public class TestDownloadService extends IntentService {
         String mockTestStr = intent.getStringExtra("selectedMockTest");
         String scheduledTestStr = intent.getStringExtra("selectedScheduledTest");
         String takeTestStr = intent.getStringExtra("selectedTakeTest");
+        String partTestStr = intent.getStringExtra("selectedPartTest");
         String subjectId = intent.getStringExtra("subjectId");
         String chapterId = intent.getStringExtra("chapterId");
         String entityId = intent.getStringExtra("entityId");
@@ -56,6 +58,10 @@ public class TestDownloadService extends IntentService {
         }else if(takeTestStr != null){
             Chapters chapters = new Gson().fromJson(takeTestStr,Chapters.class);
             fetchTestCoverageFromServer(chapters,subjectId,chapterId,courseId,entityId);
+        }else if(partTestStr != null){
+            StudyCenter studyCenter = new Gson().fromJson(partTestStr,StudyCenter.class);
+            OfflineMockTestModel model = new OfflineMockTestModel();
+            loadPartTest(null,studyCenter.SubjectName,subjectId,model,null);
         }
     }
 
@@ -94,18 +100,18 @@ public class TestDownloadService extends IntentService {
                     public void success(List<TestCoverage> testCoverages, Response response) {
                         super.success(testCoverages, response);
                         OfflineMockTestModel model = new OfflineMockTestModel();
-                        loadPartTest(chapter,subjectId,model,testCoverages);
+                        loadPartTest(chapter,null,subjectId,model,testCoverages);
                     }
                 });
     }
 
-    private void loadPartTest(Chapters chapter,String subjectId, final OfflineMockTestModel model, final List<TestCoverage> testCoverages){
+    private void loadPartTest(Chapters chapter,String subjectName,String subjectId, final OfflineMockTestModel model, final List<TestCoverage> testCoverages){
         ExamEngineHelper helper = new ExamEngineHelper(this);
-        helper.loadPartTest(chapter,subjectId, new OnExamLoadCallback() {
+        helper.loadPartTest(chapter,subjectName,subjectId, new OnExamLoadCallback() {
             @Override
             public void onSuccess(BaseTest test) {
                 test.testCoverages = testCoverages;
-             model.baseTest = test;
+                model.baseTest = test;
                 DbManager.getInstance(TestDownloadService.this).saveOfflineMockTest(model);
             }
 

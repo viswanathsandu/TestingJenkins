@@ -42,15 +42,19 @@ public class ExamEngineHelper {
         this.mActivity = activity;
     }
 
-    public void loadPartTest(Chapters chapter,String subjectId, OnExamLoadCallback callback) {
+    public void loadPartTest(Chapters chapter,String subjectName,String subjectId, OnExamLoadCallback callback) {
         if(callback == null) {
             L.error("No callback registered");
             return;
         }
+        if(chapter != null)
+        examType = ExamType.TAKE_TEST;
+        else
         examType = ExamType.PART_TEST;
         test = new PartTest();
         test.subjectId = subjectId;
         test.chapter = chapter;
+        test.subjectName = subjectName;
         test.courseId = AbstractBaseActivity.selectedCourse.courseId.toString();
         getStandardExamByCourse(callback);
     }
