@@ -26,6 +26,7 @@ import com.education.corsalite.activities.NotesActivity;
 import com.education.corsalite.activities.SaveForOfflineActivity;
 import com.education.corsalite.activities.StudyCentreActivity;
 import com.education.corsalite.activities.TestStartActivity;
+import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.enums.Tests;
 import com.education.corsalite.models.responsemodels.Chapters;
 import com.education.corsalite.services.TestDownloadService;
@@ -231,6 +232,8 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         exerciseIntent.putExtra("subjectId", studyCentreActivity.getSelectedSubjectId());
         exerciseIntent.putExtra("chapterId", chapter.idCourseSubjectchapter);
         exerciseIntent.putExtra("selectedTakeTest",new Gson().toJson(chapter));
+        exerciseIntent.putExtra("courseId",AbstractBaseActivity.selectedCourse.courseId.toString());
+        exerciseIntent.putExtra("entityId", LoginUserCache.getInstance().loginResponse.entitiyId);
         studyCentreActivity.startService(exerciseIntent);
         Toast.makeText(studyCentreActivity, "Downloading test paper in background", Toast.LENGTH_SHORT).show();
 

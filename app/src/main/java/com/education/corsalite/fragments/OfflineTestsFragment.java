@@ -63,7 +63,6 @@ public class OfflineTestsFragment  extends BaseFragment implements OfflineConten
     }
 
     private void separateTestModel(List<OfflineMockTestModel> offlineMockTestModels){
-        List<OfflineMockTestModel> list = new ArrayList<>();
         mockTestModels = new ArrayList<>();
         scheduledTestModels = new ArrayList<>();
         chaptersList = new ArrayList<>();
@@ -72,7 +71,7 @@ public class OfflineTestsFragment  extends BaseFragment implements OfflineConten
                 mockTestModels.add(model);
             }else if(model.scheduledTest != null){
                 scheduledTestModels.add(model);
-            }else if(model.chapter != null){
+            }else if(model.baseTest != null){
                chaptersList.add(model);
             }
         }

@@ -1,5 +1,6 @@
 package com.education.corsalite.helpers;
 
+import android.content.Context;
 import android.text.TextUtils;
 
 import com.education.corsalite.activities.AbstractBaseActivity;
@@ -15,6 +16,7 @@ import com.education.corsalite.models.requestmodels.ExamTemplateChapter;
 import com.education.corsalite.models.requestmodels.ExamTemplateConfig;
 import com.education.corsalite.models.requestmodels.PostCustomExamTemplate;
 import com.education.corsalite.models.requestmodels.PostQuestionPaperRequest;
+import com.education.corsalite.models.responsemodels.Chapters;
 import com.education.corsalite.models.responsemodels.Exam;
 import com.education.corsalite.models.responsemodels.ExamModel;
 import com.education.corsalite.models.responsemodels.PostExamTemplate;
@@ -32,15 +34,15 @@ import retrofit.client.Response;
  */
 public class ExamEngineHelper {
 
-    private AbstractBaseActivity mActivity;
+    private Context mActivity;
     private ExamType examType;
     private BaseTest test;
 
-    public ExamEngineHelper(AbstractBaseActivity activity) {
+    public ExamEngineHelper(Context activity) {
         this.mActivity = activity;
     }
 
-    public void loadPartTest(String subjectId, OnExamLoadCallback callback) {
+    public void loadPartTest(Chapters chapter,String subjectId, OnExamLoadCallback callback) {
         if(callback == null) {
             L.error("No callback registered");
             return;
@@ -48,6 +50,7 @@ public class ExamEngineHelper {
         examType = ExamType.PART_TEST;
         test = new PartTest();
         test.subjectId = subjectId;
+        test.chapter = chapter;
         test.courseId = AbstractBaseActivity.selectedCourse.courseId.toString();
         getStandardExamByCourse(callback);
     }

@@ -55,6 +55,7 @@ import com.education.corsalite.fragments.FullQuestionDialog;
 import com.education.corsalite.models.MockTest;
 import com.education.corsalite.models.OfflineMockTestModel;
 import com.education.corsalite.models.ScheduledTestList;
+import com.education.corsalite.models.examengine.BaseTest;
 import com.education.corsalite.models.requestmodels.ExamTemplateChapter;
 import com.education.corsalite.models.requestmodels.ExamTemplateConfig;
 import com.education.corsalite.models.requestmodels.FlaggedQuestionModel;
@@ -272,7 +273,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             loadChallengeTest();
         } else if (title.equalsIgnoreCase("View Answers")) {
             loadViewAnswers();
-        } else { // Part test
+        }  else {
             loadDefaultExam();
         }
     }
@@ -283,7 +284,11 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             topic = getIntent().getExtras().getString(Constants.SELECTED_SUBJECT);
             tvPageTitle.setText(topic);
         }
-        getStandardExamByCourse();
+        if(isOffline){
+            loadOfflineDefaultExam();
+        }else {
+            getStandardExamByCourse();
+        }
         imvRefresh.setVisibility(View.VISIBLE);
         timerLayout.setVisibility(View.VISIBLE);
         testNavFooter.setVisibility(View.VISIBLE);
@@ -1641,6 +1646,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             @Override
             public void success(OfflineMockTestModel offlineModel, Response response) {
                 super.success(offlineModel, response);
+                headerProgress.setVisibility(View.GONE);
                 testQuestionPaperId = offlineModel.testQuestionPaperId;
                 testanswerPaper.testQuestionPaperId = testQuestionPaperId;
                 showQuestionPaper(offlineModel.examModels);
@@ -1674,6 +1680,18 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         });
     }
 
+    private void loadOfflineDefaultExam(){
+        DbManager.getInstance(this).getAllExamModels(subjectId, new ApiCallback<BaseTest>(this) {
+            @Override
+            public void success(BaseTest baseTest, Response response) {
+                super.success(baseTest, response);
+                headerProgress.setVisibility(View.GONE);
+                testQuestionPaperId = baseTest.testQuestionPaperId;
+                testanswerPaper.testQuestionPaperId = testQuestionPaperId;
+                showQuestionPaper(baseTest.questions);
+            }
+        });
+    }
     @Override
     public void onBackPressed() {
         if(!title.equalsIgnoreCase("Exercises")) {
