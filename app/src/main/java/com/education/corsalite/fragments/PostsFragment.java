@@ -18,6 +18,7 @@ import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.listener.SocialEventsListener;
 import com.education.corsalite.models.requestmodels.ForumLikeRequest;
 import com.education.corsalite.models.responsemodels.CommonResponseModel;
+import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.ForumPost;
 
 import java.util.ArrayList;
@@ -78,12 +79,15 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
         mRecyclerView.setAdapter(mPostAdapter);
         switch (mPage){
             case 0:
+                showProgress();
                 loadForumPosts();
                 break;
             case 1:
+                showProgress();
                 loadForumMyPosts();
                 break;
             case 2:
+                showProgress();
                 loadForumMyComments();
                 break;
             default:
@@ -97,12 +101,19 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
                     @Override
                     public void success(ArrayList<ForumPost> forumPosts, Response response) {
                         super.success(forumPosts, response);
+                        closeProgress();
                         if(forumPosts != null && !forumPosts.isEmpty()) {
                             setForumPosts(forumPosts);
                         } else {
                             emptyLayout.setVisibility(View.VISIBLE);
                         }
+                    }
 
+                    @Override
+                    public void failure(CorsaliteError error) {
+                        super.failure(error);
+                        closeProgress();
+                        emptyLayout.setVisibility(View.VISIBLE);
                     }
                 });
     }
@@ -113,11 +124,19 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
                     @Override
                     public void success(ArrayList<ForumPost> forumPosts, Response response) {
                         super.success(forumPosts, response);
+                        closeProgress();
                         if(forumPosts != null && !forumPosts.isEmpty()) {
                             setForumPosts(forumPosts);
                         } else {
                             emptyLayout.setVisibility(View.VISIBLE);
                         }
+                    }
+
+                    @Override
+                    public void failure(CorsaliteError error) {
+                        super.failure(error);
+                        closeProgress();
+                        emptyLayout.setVisibility(View.VISIBLE);
                     }
                 });
     }
@@ -128,11 +147,19 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
                     @Override
                     public void success(ArrayList<ForumPost> forumPosts, Response response) {
                         super.success(forumPosts, response);
+                        closeProgress();
                         if(forumPosts != null && !forumPosts.isEmpty()) {
                             setForumPosts(forumPosts);
                         } else {
                             emptyLayout.setVisibility(View.VISIBLE);
                         }
+                    }
+
+                    @Override
+                    public void failure(CorsaliteError error) {
+                        super.failure(error);
+                        closeProgress();
+                        emptyLayout.setVisibility(View.VISIBLE);
                     }
                 });
     }
