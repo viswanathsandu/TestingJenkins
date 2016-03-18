@@ -36,6 +36,7 @@ import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.CourseData;
 import com.education.corsalite.models.responsemodels.StudyCenter;
+import com.education.corsalite.services.TestDownloadService;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.Data;
 
@@ -455,6 +456,12 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                 startPartTest(studyCenter);
             }
         });
+        dialogView.findViewById(R.id.download_test).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                downloadPartTest(studyCenter);
+            }
+        });
 
     }
 
@@ -465,6 +472,15 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, studyCenter.idCourseSubject + "");
         exerciseIntent.putExtra(Constants.SELECTED_TOPIC, studyCenter.SubjectName);
         startActivity(exerciseIntent);
+    }
+
+    private void downloadPartTest(StudyCenter studyCenter){
+        Intent intent = new Intent(this, TestDownloadService.class);
+        intent.putExtra(Constants.TEST_TITLE, studyCenter.SubjectName);
+        intent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
+        intent.putExtra(Constants.SELECTED_SUBJECTID, studyCenter.idCourseSubject + "");
+        intent.putExtra(Constants.SELECTED_TOPIC, studyCenter.SubjectName);
+        startService(intent);
     }
 
     private void showMockTestsDialog() {

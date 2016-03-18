@@ -15,7 +15,7 @@ import com.education.corsalite.models.responsemodels.DefaultNoteResponse;
 import com.education.corsalite.models.responsemodels.EditProfileModel;
 import com.education.corsalite.models.responsemodels.ExamHistory;
 import com.education.corsalite.models.responsemodels.ExamModel;
-import com.education.corsalite.models.responsemodels.ExamModels;
+import com.education.corsalite.models.responsemodels.Exam;
 import com.education.corsalite.models.responsemodels.ForumPost;
 import com.education.corsalite.models.responsemodels.FriendsData;
 import com.education.corsalite.models.responsemodels.LoginResponse;
@@ -146,7 +146,7 @@ public interface ICorsaliteApi {
     void submitTestAnswerPaper(@Body TypedString testAnswerPaper, ApiCallback<TestAnswerPaperResponse> callback);
 
     @GET("/StandardExamsByCourse")
-    void getStandardExamsByCourse(@Query("idCourse") String idCourse, @Query("idEntity") String idEntity, ApiCallback<List<ExamModels>> callback);
+    void getStandardExamsByCourse(@Query("idCourse") String idCourse, @Query("idEntity") String idEntity, ApiCallback<List<Exam>> callback);
 
     @Headers("Content-Type:application/x-www-form-urlencoded")
     @POST("/CustomExamTemplate")

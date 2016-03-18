@@ -27,7 +27,7 @@ import com.education.corsalite.models.responsemodels.DefaultNoteResponse;
 import com.education.corsalite.models.responsemodels.EditProfileModel;
 import com.education.corsalite.models.responsemodels.ExamHistory;
 import com.education.corsalite.models.responsemodels.ExamModel;
-import com.education.corsalite.models.responsemodels.ExamModels;
+import com.education.corsalite.models.responsemodels.Exam;
 import com.education.corsalite.models.responsemodels.ForumPost;
 import com.education.corsalite.models.responsemodels.FriendsData;
 import com.education.corsalite.models.responsemodels.LoginResponse;
@@ -368,7 +368,7 @@ public class ApiManager {
         }
     }
 
-    public void getStandardExamsByCourse(String courseId, String entityId, ApiCallback<List<ExamModels>> callback) {
+    public void getStandardExamsByCourse(String courseId, String entityId, ApiCallback<List<Exam>> callback) {
         if(isApiOnline()) {
             ApiClientService.get().getStandardExamsByCourse(courseId, entityId, callback);
         }

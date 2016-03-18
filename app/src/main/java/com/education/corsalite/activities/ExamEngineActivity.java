@@ -64,7 +64,7 @@ import com.education.corsalite.models.requestmodels.PostQuestionPaperRequest;
 import com.education.corsalite.models.responsemodels.AnswerChoiceModel;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.ExamModel;
-import com.education.corsalite.models.responsemodels.ExamModels;
+import com.education.corsalite.models.responsemodels.Exam;
 import com.education.corsalite.models.responsemodels.PostExamTemplate;
 import com.education.corsalite.models.responsemodels.PostExercise;
 import com.education.corsalite.models.responsemodels.PostFlaggedQuestions;
@@ -81,9 +81,7 @@ import com.education.corsalite.utils.SystemUtils;
 import com.education.corsalite.utils.TimeUtils;
 import com.education.corsalite.views.GridViewInScrollView;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -267,30 +265,14 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         } else if (title.equalsIgnoreCase("Exercises")) {
             loadExerciseTest();
         } else if (title.equalsIgnoreCase("Mock Test")) {
-            if (isOffline) {
-                String mockTestJson = getIntent().getExtras().getString("mock_test_data_json");
-                MockTest mock = new Gson().fromJson(mockTestJson, MockTest.class);
-                loadMockTest(mock);
-            } else {
-                loadMockTest(null);
-            }
+            loadMockTest();
         } else if (title.equalsIgnoreCase("Schedule Test")) {
-            if (isOffline) {
-                String testJson = getIntent().getExtras().getString("mock_test_data_json");
-                ScheduledTestList.ScheduledTestsArray model = new Gson().fromJson(testJson, ScheduledTestList.ScheduledTestsArray.class);
-                loadOfflineScheduledTest(model);
-            } else {
-                loadScheduledTest();
-            }
+            loadScheduledTest();
         } else if (title.equalsIgnoreCase("Challenge Test")) {
-            if (!isOffline) {
-                loadChallengeTest();
-            } else {
-                showToast("Challenge Test works in online mode");
-            }
+            loadChallengeTest();
         } else if (title.equalsIgnoreCase("View Answers")) {
             loadViewAnswers();
-        } else {
+        } else { // Part test
             loadDefaultExam();
         }
     }
@@ -321,16 +303,26 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void loadScheduledTest() {
-        imvFlag.setVisibility(View.VISIBLE);
-        testQuestionPaperId = getIntent().getExtras().getString("test_question_paper_id");
-        getTestQuestionPaper(null);
-        imvRefresh.setVisibility(View.VISIBLE);
-        timerLayout.setVisibility(View.VISIBLE);
-        testNavFooter.setVisibility(View.VISIBLE);
-        btnVerify.setVisibility(View.GONE);
+        if(isOffline) {
+            String testJson = getIntent().getExtras().getString("mock_test_data_json");
+            ScheduledTestList.ScheduledTestsArray model = new Gson().fromJson(testJson, ScheduledTestList.ScheduledTestsArray.class);
+            loadOfflineScheduledTest(model);
+        } else {
+            imvFlag.setVisibility(View.VISIBLE);
+            testQuestionPaperId = getIntent().getExtras().getString("test_question_paper_id");
+            getTestQuestionPaper(null);
+            imvRefresh.setVisibility(View.VISIBLE);
+            timerLayout.setVisibility(View.VISIBLE);
+            testNavFooter.setVisibility(View.VISIBLE);
+            btnVerify.setVisibility(View.GONE);
+        }
     }
 
     private void loadChallengeTest() {
+        if(!isOffline) {
+            showToast("Challenge Test works in online mode");
+            return;
+        }
         imvFlag.setVisibility(View.VISIBLE);
         testQuestionPaperId = getIntent().getExtras().getString("test_question_paper_id");
         getTestQuestionPaper(null);
@@ -340,7 +332,12 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         btnVerify.setVisibility(View.GONE);
     }
 
-    private void loadMockTest(MockTest mockTest) {
+    private void loadMockTest() {
+        MockTest mockTest = null;
+        if(isOffline) {
+            String mockTestJson = getIntent().getExtras().getString("mock_test_data_json");
+            mockTest = new Gson().fromJson(mockTestJson, MockTest.class);
+        }
         imvFlag.setVisibility(View.VISIBLE);
         String testInstructions = getIntent().getStringExtra("Test_Instructions");
         testQuestionPaperId = getIntent().getStringExtra("test_question_paper_id");
@@ -1460,9 +1457,9 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             selectedCourseId = selectedCourse.courseId.toString();
         }
         ApiManager.getInstance(this).getStandardExamsByCourse(selectedCourseId, entityId,
-                new ApiCallback<List<ExamModels>>(this) {
+                new ApiCallback<List<Exam>>(this) {
                     @Override
-                    public void success(List<ExamModels> examModelses, Response response) {
+                    public void success(List<Exam> examModelses, Response response) {
                         super.success(examModelses, response);
                         if (examModelses != null && !examModelses.isEmpty()) {
                             postCustomExamTemplate(examModelses);
@@ -1475,11 +1472,11 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 });
     }
 
-    private void postCustomExamTemplate(List<ExamModels> examModelsList) {
+    private void postCustomExamTemplate(List<Exam> examsList) {
 
         PostCustomExamTemplate postCustomExamTemplate = new PostCustomExamTemplate();
-        postCustomExamTemplate.examId = examModelsList.get(0).examId;
-        postCustomExamTemplate.examName = examModelsList.get(0).examName;
+        postCustomExamTemplate.examId = examsList.get(0).examId;
+        postCustomExamTemplate.examName = examsList.get(0).examName;
         postCustomExamTemplate.examTemplateConfig = new ArrayList<>();
 
         ExamTemplateConfig examTemplateConfig = new ExamTemplateConfig();

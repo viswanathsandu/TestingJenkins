@@ -78,22 +78,22 @@ public class TestDownloadService extends IntentService {
 
     private void fetchTestCoverageFromServer(final Chapters chapter, final String subjectId,String chapterID) {
         ApiManager.getInstance(this).getTestCoverage(LoginUserCache.getInstance().loginResponse.studentId, AbstractBaseActivity.selectedCourse.courseId.toString(), subjectId, chapterID,
-                new ApiCallback<List<TestCoverage>>(this) {
-                    @Override
-                    public void failure(CorsaliteError error) {
-                        super.failure(error);
-                        L.error(error.message);
-                    }
+            new ApiCallback<List<TestCoverage>>(this) {
+                @Override
+                public void failure(CorsaliteError error) {
+                    super.failure(error);
+                    L.error(error.message);
+                }
 
-                    @Override
-                    public void success(List<TestCoverage> testCoverages, Response response) {
-                        super.success(testCoverages, response);
-                        OfflineMockTestModel model = new OfflineMockTestModel();
-                        model.testCoverages = testCoverages;
-                        model.chapter = chapter;
-                        model.subjectId = subjectId;
-                        DbManager.getInstance(getApplicationContext()).saveOfflineMockTest(model);
-                    }
-                });
+                @Override
+                public void success(List<TestCoverage> testCoverages, Response response) {
+                    super.success(testCoverages, response);
+                    OfflineMockTestModel model = new OfflineMockTestModel();
+                    model.testCoverages = testCoverages;
+                    model.chapter = chapter;
+                    model.subjectId = subjectId;
+                    DbManager.getInstance(getApplicationContext()).saveOfflineMockTest(model);
+                }
+            });
     }
 }
