@@ -1,7 +1,6 @@
 package com.education.corsalite.adapters;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -37,7 +36,4 @@ public class PostPagerAdapter extends FragmentPagerAdapter{
         return titles[position];
     }
 
-    public String getFragmentTag(int viewPagerId, int fragmentPosition) {
-        return "android:switcher:" + viewPagerId + ":" + fragmentPosition;
-    }
 }

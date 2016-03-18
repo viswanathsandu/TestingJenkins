@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
@@ -17,6 +18,7 @@ import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.listener.SocialEventsListener;
 import com.education.corsalite.models.requestmodels.ForumLikeRequest;
 import com.education.corsalite.models.responsemodels.CommonResponseModel;
+import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.ForumPost;
 
 import java.util.ArrayList;
@@ -29,12 +31,14 @@ import retrofit.client.Response;
 /**
  * Created by sridharnalam on 1/8/16.
  */
-public class PostsFragment extends BaseFragment implements SocialEventsListener {
+public class PostsFragment extends BaseFragment implements SocialEventsListener, View.OnClickListener {
     public static final String MEAL_TYPE_ARG = "MEAL_TYPE_ARG";
 
     private int mPage;
-    @Bind(R.id.rcv_posts)
-    RecyclerView mRecyclerView;
+    @Bind(R.id.rcv_posts) RecyclerView mRecyclerView;
+    @Bind(R.id.empty_layout) View emptyLayout;
+    @Bind(R.id.new_post_btn) Button newPostBtn;
+
     private LinearLayoutManager mLayoutManager;
     private PostAdapter mPostAdapter;
 
@@ -57,6 +61,7 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener 
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_posts, container, false);
         ButterKnife.bind(this, view);
+
         return view;
     }
 
@@ -67,18 +72,22 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener 
     }
 
     private void setUI() {
+        newPostBtn.setOnClickListener(this);
         mLayoutManager = new LinearLayoutManager(mRecyclerView.getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mPostAdapter = new PostAdapter(getActivity(), this, mPage);
         mRecyclerView.setAdapter(mPostAdapter);
         switch (mPage){
             case 0:
+                showProgress();
                 loadForumPosts();
                 break;
             case 1:
+                showProgress();
                 loadForumMyPosts();
                 break;
             case 2:
+                showProgress();
                 loadForumMyComments();
                 break;
             default:
@@ -92,7 +101,19 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener 
                     @Override
                     public void success(ArrayList<ForumPost> forumPosts, Response response) {
                         super.success(forumPosts, response);
-                        setForumPosts(forumPosts);
+                        closeProgress();
+                        if(forumPosts != null && !forumPosts.isEmpty()) {
+                            setForumPosts(forumPosts);
+                        } else {
+                            emptyLayout.setVisibility(View.VISIBLE);
+                        }
+                    }
+
+                    @Override
+                    public void failure(CorsaliteError error) {
+                        super.failure(error);
+                        closeProgress();
+                        emptyLayout.setVisibility(View.VISIBLE);
                     }
                 });
     }
@@ -103,19 +124,42 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener 
                     @Override
                     public void success(ArrayList<ForumPost> forumPosts, Response response) {
                         super.success(forumPosts, response);
-                        setForumPosts(forumPosts);
+                        closeProgress();
+                        if(forumPosts != null && !forumPosts.isEmpty()) {
+                            setForumPosts(forumPosts);
+                        } else {
+                            emptyLayout.setVisibility(View.VISIBLE);
+                        }
+                    }
+
+                    @Override
+                    public void failure(CorsaliteError error) {
+                        super.failure(error);
+                        closeProgress();
+                        emptyLayout.setVisibility(View.VISIBLE);
                     }
                 });
     }
 
     private void loadForumMyPosts() {
-        // http://staging.corsalite.com/v1/webservices/Forums?idCourse=17&idUser=69
-        ApiManager.getInstance(getActivity()).getMyPosts("17", "69",
+        ApiManager.getInstance(getActivity()).getMyPosts(AbstractBaseActivity.selectedCourse.courseId+"", LoginUserCache.getInstance().loginResponse.userId,
                 new ApiCallback<ArrayList<ForumPost>>(getActivity()) {
                     @Override
                     public void success(ArrayList<ForumPost> forumPosts, Response response) {
                         super.success(forumPosts, response);
-                        setForumPosts(forumPosts);
+                        closeProgress();
+                        if(forumPosts != null && !forumPosts.isEmpty()) {
+                            setForumPosts(forumPosts);
+                        } else {
+                            emptyLayout.setVisibility(View.VISIBLE);
+                        }
+                    }
+
+                    @Override
+                    public void failure(CorsaliteError error) {
+                        super.failure(error);
+                        closeProgress();
+                        emptyLayout.setVisibility(View.VISIBLE);
                     }
                 });
     }
@@ -186,5 +230,16 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener 
                 }
             }
         });
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(v.getId() == R.id.new_post_btn) {
+            createNewPost();
+        }
+    }
+
+    private void createNewPost() {
+        showToast("Create new post");
     }
 }

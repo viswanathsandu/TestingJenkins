@@ -39,7 +39,7 @@
                 android:id="@+id/vc_lastsessioncount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="16"
+                android:text="----"
                 android:textColor="@color/text_white"
                 android:textSize="40sp" />
 
@@ -81,7 +81,7 @@
                 android:id="@+id/vc_totalcount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="16"
+                android:text="----"
                 android:textColor="@color/text_white"
                 android:textSize="40sp" />
 

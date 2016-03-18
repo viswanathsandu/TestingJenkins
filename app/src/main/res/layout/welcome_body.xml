@@ -33,7 +33,7 @@
             fontPath="@string/roboto_medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="First Name Last Name"
+            android:text="----- ----- ----- -----"
             android:textAllCaps="true"
             android:textColor="@color/text_white"
             android:textSize="26sp" />
@@ -59,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:text="22/11/2015"
+                android:text="--/--/----"
                 android:textColor="@color/text_white"
                 android:textSize="18sp" />
 
@@ -69,7 +69,7 @@
                 fontPath="@string/roboto_regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="02:37 pm"
+                android:text="--:-- --"
                 android:textColor="@color/text_white"
                 android:textSize="18sp" />
 
