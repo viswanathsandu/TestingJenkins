@@ -2,7 +2,6 @@ package com.education.corsalite.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,7 @@ import com.education.corsalite.activities.ExamEngineActivity;
 import com.education.corsalite.activities.StartMockTestActivity;
 import com.education.corsalite.activities.TestStartActivity;
 import com.education.corsalite.enums.Tests;
-import com.education.corsalite.models.OfflineMockTestModel;
+import com.education.corsalite.models.OfflineTestModel;
 import com.education.corsalite.models.ScheduledTestList;
 import com.education.corsalite.models.responsemodels.Chapters;
 import com.education.corsalite.utils.Constants;
@@ -35,25 +34,32 @@ import java.util.List;
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     private Context context;
-    private List<String> _listDataHeader; // header titles
+    private List<String> headers; // header titles
     // child data in format of header title, child title
-    private HashMap<String, List<OfflineMockTestModel>> _listDataChild;
+    private HashMap<String, List<OfflineTestModel>> childs;
 
     public ExpandableListAdapter(Context context, List<String> listDataHeader,
-                                 HashMap<String, List<OfflineMockTestModel>> listChildData) {
+                                 HashMap<String, List<OfflineTestModel>> listChildData) {
         this.context = context;
-        this._listDataHeader = listDataHeader;
-        this._listDataChild = listChildData;
+        this.headers = listDataHeader;
+        this.childs = listChildData;
     }
 
     @Override
     public Object getChild(int groupPosition, int childPosititon) {
-        if (_listDataHeader.get(groupPosition).equalsIgnoreCase("Mock Test")) {
-            return this._listDataChild.get(this._listDataHeader.get(groupPosition)).get(childPosititon).mockTest.examName;
-        } else if(_listDataHeader.get(groupPosition).equalsIgnoreCase("Schedule Test")){
-            return this._listDataChild.get(this._listDataHeader.get(groupPosition)).get(childPosititon).scheduledTest.examName;
-        }else {
-            return this._listDataChild.get(this._listDataHeader.get(groupPosition)).get(childPosititon).baseTest.chapter.chapterName;
+        try {
+            if (headers.get(groupPosition).equalsIgnoreCase("Mock Test")) {
+                return this.childs.get(this.headers.get(groupPosition)).get(childPosititon).mockTest.examName;
+            } else if (headers.get(groupPosition).equalsIgnoreCase("Schedule Test")) {
+                return this.childs.get(this.headers.get(groupPosition)).get(childPosititon).scheduledTest.examName;
+            } else if (headers.get(groupPosition).equalsIgnoreCase("Take Test")) {
+                return this.childs.get(this.headers.get(groupPosition)).get(childPosititon).baseTest.chapter.chapterName;
+            } else {
+                return this.childs.get(this.headers.get(groupPosition)).get(childPosititon).baseTest.subjectName;
+            }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+            return null;
         }
     }
 
@@ -76,20 +82,76 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         txtListChild.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(_listDataHeader.get(groupPosition).equals("Mock Test")) {
-                    startMockTest(_listDataChild.get(_listDataHeader.get(groupPosition)).get(childPosition));
-                } else if(_listDataHeader.get(groupPosition).equals("Scheduled Test")) {
-                    startScheduleTest(_listDataChild.get(_listDataHeader.get(groupPosition)).get(childPosition).scheduledTest);
-                }else if(_listDataHeader.get(groupPosition).equals("Take Test")){
-                    startTakeTest(_listDataChild.get(_listDataHeader.get(groupPosition)).get(childPosition).baseTest.chapter,
-                            _listDataChild.get(_listDataHeader.get(groupPosition)).get(childPosition).baseTest.subjectId);
+                if(headers.get(groupPosition).equals("Mock Test")) {
+                    startMockTest(childs.get(headers.get(groupPosition)).get(childPosition));
+                } else if(headers.get(groupPosition).equals("Scheduled Test")) {
+                    startScheduleTest(childs.get(headers.get(groupPosition)).get(childPosition).scheduledTest);
+                }else if(headers.get(groupPosition).equals("Take Test")){
+                    startTakeTest(childs.get(headers.get(groupPosition)).get(childPosition).baseTest.chapter,
+                            childs.get(headers.get(groupPosition)).get(childPosition).baseTest.subjectId);
+                }else if(headers.get(groupPosition).equals("Part Test")){
+                    startPartTest(childs.get(headers.get(groupPosition)).get(childPosition).baseTest.subjectName,
+                            childs.get(headers.get(groupPosition)).get(childPosition).baseTest.subjectId);
                 }
             }
         });
         return convertView;
     }
 
-    private void startMockTest(OfflineMockTestModel model) {
+    @Override
+    public int getChildrenCount(int groupPosition) {
+        if(childs != null && !childs.isEmpty()) {
+            return this.childs.get(this.headers.get(groupPosition)).size();
+        } else {
+            return 0;
+        }
+    }
+
+    @Override
+    public Object getGroup(int groupPosition) {
+        if(headers != null && !headers.isEmpty()) {
+            return this.headers.get(groupPosition);
+        } else {
+            return 0;
+        }
+    }
+
+    @Override
+    public int getGroupCount() {
+        return this.headers.size();
+    }
+
+    @Override
+    public long getGroupId(int groupPosition) {
+        return groupPosition;
+    }
+
+    @Override
+    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+        String headerTitle = (String) getGroup(groupPosition);
+        if (convertView == null) {
+            LayoutInflater infalInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = infalInflater.inflate(R.layout.offline_test_header_item, null);
+        }
+        TextView lblListHeader = (TextView) convertView.findViewById(R.id.title_txt);
+        lblListHeader.setText(headerTitle);
+        ImageView ivDownload = (ImageView) convertView.findViewById(R.id.download_test);
+        ivDownload.setImageResource(isExpanded ? R.drawable.ico_offline_arrow_down_black : R.drawable.ico_offline_arrow_black);
+
+        return convertView;
+    }
+
+    @Override
+    public boolean hasStableIds() {
+        return false;
+    }
+
+    @Override
+    public boolean isChildSelectable(int groupPosition, int childPosition) {
+        return true;
+    }
+
+    private void startMockTest(OfflineTestModel model) {
 
         Intent intent = new Intent(context, StartMockTestActivity.class);
         intent.putExtra("Test_Instructions", new Gson().toJson(model.testPaperIndecies));
@@ -120,7 +182,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     private void startTakeTest(Chapters chapter,String subjectId){
-
         Intent exerciseIntent = new Intent(context, TestStartActivity.class);
         exerciseIntent.putExtra(TestStartActivity.KEY_TEST_TYPE, Tests.CHAPTER.getType());
         exerciseIntent.putExtra(Constants.TEST_TITLE, chapter.chapterName);
@@ -134,60 +195,15 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         context.startActivity(exerciseIntent);
     }
 
-
-    @Override
-    public int getChildrenCount(int groupPosition) {
-        if(_listDataChild != null && !_listDataChild.isEmpty()) {
-            return this._listDataChild.get(this._listDataHeader.get(groupPosition)).size();
-        } else {
-            return 0;
-        }
-    }
-
-    @Override
-    public Object getGroup(int groupPosition) {
-        if(_listDataHeader != null && !_listDataHeader.isEmpty()) {
-            return this._listDataHeader.get(groupPosition);
-        } else {
-            return 0;
-        }
-    }
-
-    @Override
-    public int getGroupCount() {
-        return this._listDataHeader.size();
-    }
-
-    @Override
-    public long getGroupId(int groupPosition) {
-        return groupPosition;
-    }
-
-    @Override
-    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-        String headerTitle = (String) getGroup(groupPosition);
-        if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.offline_test_child_item, null);
-        }
-        TextView lblListHeader = (TextView) convertView.findViewById(R.id.mock_test_txt);
-        lblListHeader.setTypeface(null, Typeface.BOLD);
-        lblListHeader.setText(headerTitle);
-        ImageView ivDownload = (ImageView) convertView.findViewById(R.id.download_test);
-        ivDownload.setImageResource(isExpanded ? R.drawable.ico_offline_arrow_down_white : R.drawable.ico_offline_arrow_white);
-        ivDownload.setBackgroundColor(context.getResources().getColor(R.color.white));
-
-        return convertView;
-    }
-
-    @Override
-    public boolean hasStableIds() {
-        return false;
-    }
-
-    @Override
-    public boolean isChildSelectable(int groupPosition, int childPosition) {
-        return true;
+    private void startPartTest(String subjectName,String subjectId){
+        Intent exerciseIntent = new Intent(context, ExamEngineActivity.class);
+        exerciseIntent.putExtra(TestStartActivity.KEY_TEST_TYPE, Tests.PART.getType());
+        exerciseIntent.putExtra(Constants.TEST_TITLE, subjectName);
+        exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
+        exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, subjectId);
+        exerciseIntent.putExtra(Constants.SELECTED_TOPIC, subjectName);
+        exerciseIntent.putExtra(Constants.IS_OFFLINE,true);
+        context.startActivity(exerciseIntent);
     }
 }
 

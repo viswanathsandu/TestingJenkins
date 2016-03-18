@@ -53,7 +53,7 @@ import com.education.corsalite.enums.QuestionType;
 import com.education.corsalite.event.ExerciseAnsEvent;
 import com.education.corsalite.fragments.FullQuestionDialog;
 import com.education.corsalite.models.MockTest;
-import com.education.corsalite.models.OfflineMockTestModel;
+import com.education.corsalite.models.OfflineTestModel;
 import com.education.corsalite.models.ScheduledTestList;
 import com.education.corsalite.models.examengine.BaseTest;
 import com.education.corsalite.models.requestmodels.ExamTemplateChapter;
@@ -273,7 +273,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             loadChallengeTest();
         } else if (title.equalsIgnoreCase("View Answers")) {
             loadViewAnswers();
-        }  else {
+        }  else { // TakeTest or PartTest
             loadDefaultExam();
         }
     }
@@ -1642,9 +1642,9 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void loadOfflineMockTest(MockTest model) {
-        DbManager.getInstance(getApplicationContext()).getAllExamModels(model, new ApiCallback<OfflineMockTestModel>(this) {
+        DbManager.getInstance(getApplicationContext()).getAllExamModels(model, new ApiCallback<OfflineTestModel>(this) {
             @Override
-            public void success(OfflineMockTestModel offlineModel, Response response) {
+            public void success(OfflineTestModel offlineModel, Response response) {
                 super.success(offlineModel, response);
                 headerProgress.setVisibility(View.GONE);
                 testQuestionPaperId = offlineModel.testQuestionPaperId;
@@ -1692,9 +1692,10 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             }
         });
     }
+
     @Override
     public void onBackPressed() {
-        if(!title.equalsIgnoreCase("Exercises")) {
+        if(!title.equalsIgnoreCase("Exercises") && !title.equalsIgnoreCase("Flagged Questions") && !title.equalsIgnoreCase("View Answers")) {
             showToast("Click on Suspend button to stop the exam");
         } else {
             super.onBackPressed();

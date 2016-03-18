@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.GridRecyclerAdapter;
@@ -39,6 +40,7 @@ import com.education.corsalite.models.responsemodels.StudyCenter;
 import com.education.corsalite.services.TestDownloadService;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.Data;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -476,11 +478,11 @@ public class StudyCentreActivity extends AbstractBaseActivity {
 
     private void downloadPartTest(StudyCenter studyCenter){
         Intent intent = new Intent(this, TestDownloadService.class);
-        intent.putExtra(Constants.TEST_TITLE, studyCenter.SubjectName);
+        intent.putExtra("selectedPartTest",new Gson().toJson(studyCenter));
         intent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
-        intent.putExtra(Constants.SELECTED_SUBJECTID, studyCenter.idCourseSubject + "");
-        intent.putExtra(Constants.SELECTED_TOPIC, studyCenter.SubjectName);
+        intent.putExtra("subjectId", studyCenter.idCourseSubject + "");
         startService(intent);
+        Toast.makeText(this, "Downloading test paper in background", Toast.LENGTH_SHORT).show();
     }
 
     private void showMockTestsDialog() {

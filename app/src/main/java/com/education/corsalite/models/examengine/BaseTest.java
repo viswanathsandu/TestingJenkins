@@ -14,6 +14,7 @@ public class BaseTest extends BaseModel {
 
     public String courseId;
     public String subjectId;
+    public String subjectName;
     public String testQuestionPaperId;
     public String testAnswerPaperId;
     public Chapters chapter;

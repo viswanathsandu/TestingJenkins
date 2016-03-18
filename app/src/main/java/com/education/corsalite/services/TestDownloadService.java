@@ -11,12 +11,13 @@ import com.education.corsalite.db.DbManager;
 import com.education.corsalite.helpers.ExamEngineHelper;
 import com.education.corsalite.listener.OnExamLoadCallback;
 import com.education.corsalite.models.MockTest;
-import com.education.corsalite.models.OfflineMockTestModel;
+import com.education.corsalite.models.OfflineTestModel;
 import com.education.corsalite.models.ScheduledTestList;
 import com.education.corsalite.models.examengine.BaseTest;
 import com.education.corsalite.models.responsemodels.Chapters;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.ExamModel;
+import com.education.corsalite.models.responsemodels.StudyCenter;
 import com.education.corsalite.models.responsemodels.TestCoverage;
 import com.education.corsalite.models.responsemodels.TestPaperIndex;
 import com.education.corsalite.utils.L;
@@ -43,6 +44,7 @@ public class TestDownloadService extends IntentService {
         String mockTestStr = intent.getStringExtra("selectedMockTest");
         String scheduledTestStr = intent.getStringExtra("selectedScheduledTest");
         String takeTestStr = intent.getStringExtra("selectedTakeTest");
+        String partTestStr = intent.getStringExtra("selectedPartTest");
         String subjectId = intent.getStringExtra("subjectId");
         String chapterId = intent.getStringExtra("chapterId");
         String entityId = intent.getStringExtra("entityId");
@@ -56,6 +58,10 @@ public class TestDownloadService extends IntentService {
         }else if(takeTestStr != null){
             Chapters chapters = new Gson().fromJson(takeTestStr,Chapters.class);
             fetchTestCoverageFromServer(chapters,subjectId,chapterId,courseId,entityId);
+        }else if(partTestStr != null){
+            StudyCenter studyCenter = new Gson().fromJson(partTestStr,StudyCenter.class);
+            OfflineTestModel model = new OfflineTestModel();
+            loadPartTest(studyCenter.SubjectName, subjectId, model);
         }
     }
 
@@ -66,7 +72,7 @@ public class TestDownloadService extends IntentService {
                     @Override
                     public void success(List<ExamModel> examModels, Response response) {
                         super.success(examModels, response);
-                        OfflineMockTestModel model = new OfflineMockTestModel();
+                        OfflineTestModel model = new OfflineTestModel();
                         model.examModels = examModels;
                         if (mockTest != null) {
                             model.mockTest = mockTest;
@@ -76,42 +82,56 @@ public class TestDownloadService extends IntentService {
                         model.testPaperIndecies = testPAperIndecies;
                         model.testQuestionPaperId = testQuestionPaperId;
                         model.testAnswerPaperId = testAnswerPaperId;
-                        DbManager.getInstance(getApplicationContext()).saveOfflineMockTest(model);
+                        DbManager.getInstance(getApplicationContext()).saveOfflineTest(model);
                     }
                 });
     }
 
     private void fetchTestCoverageFromServer(final Chapters chapter, final String subjectId,String chapterID, final String courseId, final String entityId) {
         ApiManager.getInstance(this).getTestCoverage(LoginUserCache.getInstance().loginResponse.studentId, AbstractBaseActivity.selectedCourse.courseId.toString(), subjectId, chapterID,
-                new ApiCallback<List<TestCoverage>>(this) {
-                    @Override
-                    public void failure(CorsaliteError error) {
-                        super.failure(error);
-                        L.error(error.message);
-                    }
+            new ApiCallback<List<TestCoverage>>(this) {
+                @Override
+                public void failure(CorsaliteError error) {
+                    super.failure(error);
+                    L.error(error.message);
+                }
 
-                    @Override
-                    public void success(List<TestCoverage> testCoverages, Response response) {
-                        super.success(testCoverages, response);
-                        OfflineMockTestModel model = new OfflineMockTestModel();
-                        loadPartTest(chapter,subjectId,model,testCoverages);
-                    }
-                });
+                @Override
+                public void success(List<TestCoverage> testCoverages, Response response) {
+                    super.success(testCoverages, response);
+                    OfflineTestModel model = new OfflineTestModel();
+                    loadTakeTest(chapter, null, subjectId, model, testCoverages);
+                }
+            });
     }
 
-    private void loadPartTest(Chapters chapter,String subjectId, final OfflineMockTestModel model, final List<TestCoverage> testCoverages){
+    private void loadTakeTest(Chapters chapter, String subjectName, String subjectId, final OfflineTestModel model, final List<TestCoverage> testCoverages){
         ExamEngineHelper helper = new ExamEngineHelper(this);
-        helper.loadPartTest(chapter,subjectId, new OnExamLoadCallback() {
+        helper.loadTakeTest(chapter, subjectName, subjectId, new OnExamLoadCallback() {
             @Override
             public void onSuccess(BaseTest test) {
                 test.testCoverages = testCoverages;
-             model.baseTest = test;
-                DbManager.getInstance(TestDownloadService.this).saveOfflineMockTest(model);
+                model.baseTest = test;
+                DbManager.getInstance(TestDownloadService.this).saveOfflineTest(model);
             }
 
             @Override
             public void OnFailure(String message) {
+            }
+        });
+    }
 
+    private void loadPartTest(String subjectName, String subjectId, final OfflineTestModel model){
+        ExamEngineHelper helper = new ExamEngineHelper(this);
+        helper.loadPartTest(subjectName,subjectId, new OnExamLoadCallback() {
+            @Override
+            public void onSuccess(BaseTest test) {
+                model.baseTest = test;
+                DbManager.getInstance(TestDownloadService.this).saveOfflineTest(model);
+            }
+
+            @Override
+            public void OnFailure(String message) {
             }
         });
     }
