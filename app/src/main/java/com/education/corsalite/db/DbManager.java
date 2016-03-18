@@ -10,6 +10,7 @@ import com.education.corsalite.models.ScheduledTestList;
 import com.education.corsalite.models.db.ContentIndexResponse;
 import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.models.db.reqres.ReqRes;
+import com.education.corsalite.models.examengine.BaseTest;
 import com.education.corsalite.models.responsemodels.Chapters;
 import com.education.corsalite.models.responsemodels.ExamModel;
 import com.education.corsalite.models.responsemodels.TestCoverage;
@@ -165,8 +166,21 @@ public class DbManager {
             public void success(List<OfflineMockTestModel> offlineMockTestModels, Response response) {
                 super.success(offlineMockTestModels, response);
                 for (OfflineMockTestModel model:offlineMockTestModels) {
-                    if(model.chapter.idCourseSubjectchapter != null && !TextUtils.isEmpty(model.chapter.idCourseSubjectchapter) && model.chapter.idCourseSubjectchapter.equalsIgnoreCase(chapter.idCourseSubjectchapter)){
-                        callback.success(model.testCoverages,response);
+                    if(model.baseTest.chapter.idCourseSubjectchapter != null && !TextUtils.isEmpty(model.baseTest.chapter.idCourseSubjectchapter) && model.baseTest.chapter.idCourseSubjectchapter.equalsIgnoreCase(chapter.idCourseSubjectchapter)){
+                        callback.success(model.baseTest.testCoverages,response);
+                    }
+                }
+            }
+        }).execute();
+    }
+
+    public void getAllExamModels(final String subjectId, final ApiCallback<BaseTest> callback){
+        new GetOfflineTestFromDb(dbService, new ApiCallback<List<OfflineMockTestModel>>(context){
+            public void success(List<OfflineMockTestModel> offlineMockTestModels, Response response) {
+                super.success(offlineMockTestModels, response);
+                for (OfflineMockTestModel model : offlineMockTestModels) {
+                    if(model.baseTest.subjectId.equalsIgnoreCase(subjectId)){
+                        callback.success(model.baseTest,response);
                     }
                 }
             }

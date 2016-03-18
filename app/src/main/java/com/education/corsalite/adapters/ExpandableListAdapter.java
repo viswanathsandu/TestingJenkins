@@ -53,7 +53,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         } else if(_listDataHeader.get(groupPosition).equalsIgnoreCase("Schedule Test")){
             return this._listDataChild.get(this._listDataHeader.get(groupPosition)).get(childPosititon).scheduledTest.examName;
         }else {
-            return this._listDataChild.get(this._listDataHeader.get(groupPosition)).get(childPosititon).chapter.chapterName;
+            return this._listDataChild.get(this._listDataHeader.get(groupPosition)).get(childPosititon).baseTest.chapter.chapterName;
         }
     }
 
@@ -81,8 +81,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 } else if(_listDataHeader.get(groupPosition).equals("Scheduled Test")) {
                     startScheduleTest(_listDataChild.get(_listDataHeader.get(groupPosition)).get(childPosition).scheduledTest);
                 }else if(_listDataHeader.get(groupPosition).equals("Take Test")){
-                    startTakeTest(_listDataChild.get(_listDataHeader.get(groupPosition)).get(childPosition).chapter,
-                            _listDataChild.get(_listDataHeader.get(groupPosition)).get(childPosition).subjectId);
+                    startTakeTest(_listDataChild.get(_listDataHeader.get(groupPosition)).get(childPosition).baseTest.chapter,
+                            _listDataChild.get(_listDataHeader.get(groupPosition)).get(childPosition).baseTest.subjectId);
                 }
             }
         });
