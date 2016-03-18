@@ -7,14 +7,13 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
-import com.education.corsalite.activities.OfflineContentActivity;
 import com.education.corsalite.activities.ContentReadingActivity;
+import com.education.corsalite.activities.OfflineContentActivity;
 import com.education.corsalite.activities.VideoActivity;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.db.DbManager;
@@ -45,7 +44,8 @@ import retrofit.client.Response;
 public class OfflineContentFragment extends BaseFragment  implements OfflineContentActivity.IOfflineEventListener{
 
     @Bind(R.id.main_node_content) RelativeLayout mainNodeLayout;
-    @Bind(R.id.headerProgress)ProgressBar mProgressBar;
+    @Bind(R.id.no_content_txt) View emptyContentView;
+
     private AndroidTreeView tView;
     List<OfflineContent> offlineContentList ;
     String selectedCourse;
@@ -70,6 +70,8 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
     }
 
     private void getContentIndexResponse(final Course course) {
+        showProgress();
+        emptyContentView.setVisibility(View.GONE);
         DbManager.getInstance(getActivity().getApplicationContext()).getOfflineContentList(new ApiCallback<List<OfflineContent>>(getActivity()) {
             @Override
             public void failure(CorsaliteError error) {
@@ -95,9 +97,9 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
                 if(offlineContentList != null && !offlineContentList.isEmpty()){
                     initNodes();
                 }else{
-                    mProgressBar.setVisibility(View.GONE);
+                    closeProgress();
                     mainNodeLayout.removeAllViews();
-                    Toast.makeText(getActivity(), "No offline content available " + course.name, Toast.LENGTH_SHORT).show();
+                    emptyContentView.setVisibility(View.VISIBLE);
                 }
             }
         });
