@@ -76,10 +76,12 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
             @Override
             public void failure(CorsaliteError error) {
                 super.failure(error);
+                closeProgress();
             }
 
             @Override
             public void success(List<OfflineContent> offlineContentsList, Response response) {
+                closeProgress();
                 ArrayList<OfflineContent> offlineContents = new ArrayList<>(offlineContentsList);
                 String savedData = AppPref.getInstance(getActivity()).getValue("DATA_IN_PROGRESS");
                 ArrayList<OfflineContent> contents = new Gson().fromJson(savedData, new TypeToken<ArrayList<OfflineContent>>() {
@@ -97,7 +99,6 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
                 if(offlineContentList != null && !offlineContentList.isEmpty()){
                     initNodes();
                 }else{
-                    closeProgress();
                     mainNodeLayout.removeAllViews();
                     emptyContentView.setVisibility(View.VISIBLE);
                 }

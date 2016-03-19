@@ -159,7 +159,6 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
         webview.loadUrl("file:///android_asset/ckeditor/samples/index.html");
     }
 
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -196,14 +195,14 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
         if(!TextUtils.isEmpty(postId)) {
             post.idUserPost = postId;
         }
-        post.studentId = studentId;
+        post.studentId = LoginUserCache.getInstance().loginResponse.studentId;
         post.userId = LoginUserCache.getInstance().loginResponse.userId;
         post.courseId = AbstractBaseActivity.selectedCourse.courseId.toString();
-        post.idCourseSubject = subjectId;
-        post.idCourseSubjectChapter = chapterId;
-        post.topicId = topicId;
+        post.idCourseSubject = "44";//subjectId;
+        post.idCourseSubjectChapter = "1179";//chapterId;
+        post.topicId = "114";//topicId;
         post.postContent = updateContent;
-        post.referIdUserPost = "";
+        post.referIdUserPost = operation.equalsIgnoreCase("Add") ? null : "";
         post.postSubject = titleTxt.getText().toString();
         post.isAuthorOnly = isAuthorOnlyCkb.isChecked() ? "Y" : "N";
         return post;

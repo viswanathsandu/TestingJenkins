@@ -108,7 +108,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
             Glide.with(holder.ivUserPic.getContext())
                     .load(url.toString())
                     .centerCrop()
-                    .placeholder(R.drawable.ico_time_selected)
+                    .placeholder(R.drawable.profile_pic)
                     .crossFade()
                     .into(holder.ivUserPic);
         } catch (MalformedURLException e) {

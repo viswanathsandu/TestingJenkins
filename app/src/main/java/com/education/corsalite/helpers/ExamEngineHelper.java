@@ -48,7 +48,7 @@ public class ExamEngineHelper {
             return;
         }
         examType = ExamType.TAKE_TEST;
-        test = new PartTest();
+        test = new TakeTest();
         test.subjectId = subjectId;
         test.chapter = chapter;
         test.subjectName = subjectName;

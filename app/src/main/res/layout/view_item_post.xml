@@ -19,7 +19,7 @@
             android:layout_height="100dp"
             android:padding="10dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/ico_time_selected" />
+            android:src="@drawable/profile_pic" />
 
         <LinearLayout
             android:layout_width="match_parent"

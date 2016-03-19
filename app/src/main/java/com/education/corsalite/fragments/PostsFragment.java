@@ -212,6 +212,15 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
         fragment.show(getActivity().getSupportFragmentManager(), "ForumEditorDialog");
     }
 
+    public void onNewPostClicked() {
+        EditorDialogFragment fragment = new EditorDialogFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("type", "Forum");
+        bundle.putString("operation", "Add");
+        fragment.setArguments(bundle);
+        fragment.show(getActivity().getSupportFragmentManager(), "ForumEditorDialog");
+    }
+
     @Override
     public void onLockClicked(int position) {
     }
@@ -235,7 +244,7 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.new_post_btn) {
-            createNewPost();
+            onNewPostClicked();
         }
     }
 
