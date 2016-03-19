@@ -167,10 +167,17 @@ public class DbManager {
         new GetOfflineTestFromDb(dbService, new ApiCallback<List<OfflineTestModel>>(context){
             public void success(List<OfflineTestModel> offlineTestModels, Response response) {
                 super.success(offlineTestModels, response);
-                for (OfflineTestModel model: offlineTestModels) {
-                    if(model.baseTest.chapter.idCourseSubjectchapter != null && !TextUtils.isEmpty(model.baseTest.chapter.idCourseSubjectchapter) && model.baseTest.chapter.idCourseSubjectchapter.equalsIgnoreCase(chapter.idCourseSubjectchapter)){
-                        callback.success(model.baseTest.testCoverages,response);
+                try {
+                    for (OfflineTestModel model: offlineTestModels) {
+                        if(model.baseTest.chapter.idCourseSubjectchapter != null && !TextUtils.isEmpty(model.baseTest.chapter.idCourseSubjectchapter) && model.baseTest.chapter.idCourseSubjectchapter.equalsIgnoreCase(chapter.idCourseSubjectchapter)){
+                            callback.success(model.baseTest.testCoverages,response);
+                        }
                     }
+                } catch (Exception e) {
+                    CorsaliteError error = new CorsaliteError();
+                    error.message = "No data found";
+                    callback.failure(error);
+                    L.error(e.getMessage(), e);
                 }
             }
         }).execute();
