@@ -182,7 +182,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     private void startTakeTest(Chapters chapter,String subjectId){
-        Intent exerciseIntent = new Intent(context, TestStartActivity.class);
+        Intent exerciseIntent = new Intent(context, ExamEngineActivity.class);
         exerciseIntent.putExtra(TestStartActivity.KEY_TEST_TYPE, Tests.CHAPTER.getType());
         exerciseIntent.putExtra(Constants.TEST_TITLE, chapter.chapterName);
         exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
@@ -190,7 +190,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         exerciseIntent.putExtra(Constants.SELECTED_CHAPTER_NAME, chapter.chapterName);
         exerciseIntent.putExtra(Constants.LEVEL_CROSSED, chapter.passedComplexity);
         exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID,subjectId);
-        exerciseIntent.putExtra("chapter",new Gson().toJson(chapter));
         exerciseIntent.putExtra(Constants.IS_OFFLINE,true);
         context.startActivity(exerciseIntent);
     }

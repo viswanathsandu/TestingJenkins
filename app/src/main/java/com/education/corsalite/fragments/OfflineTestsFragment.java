@@ -74,7 +74,7 @@ public class OfflineTestsFragment  extends BaseFragment implements OfflineConten
                 mockTestModels.add(model);
             }else if(model.scheduledTest != null){
                 scheduledTestModels.add(model);
-            }else if(model.baseTest.testCoverages != null){
+            }else if(model.baseTest.chapter != null){
                 chaptersList.add(model);
             }else if(model.baseTest.subjectName != null){
                 partTestList.add(model);

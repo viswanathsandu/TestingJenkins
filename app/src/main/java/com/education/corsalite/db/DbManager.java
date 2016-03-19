@@ -11,10 +11,8 @@ import com.education.corsalite.models.db.ContentIndexResponse;
 import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.models.db.reqres.ReqRes;
 import com.education.corsalite.models.examengine.BaseTest;
-import com.education.corsalite.models.responsemodels.Chapters;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.ExamModel;
-import com.education.corsalite.models.responsemodels.TestCoverage;
 import com.education.corsalite.utils.L;
 import com.orm.query.Condition;
 import com.orm.query.Select;
@@ -161,19 +159,6 @@ public class DbManager {
                 }
             }
         }).start();
-    }
-
-    public void getAllOfflineTakeTests(final Chapters chapter,final ApiCallback<List<TestCoverage>> callback){
-        new GetOfflineTestFromDb(dbService, new ApiCallback<List<OfflineTestModel>>(context){
-            public void success(List<OfflineTestModel> offlineTestModels, Response response) {
-                super.success(offlineTestModels, response);
-                for (OfflineTestModel model: offlineTestModels) {
-                    if(model.baseTest.chapter.idCourseSubjectchapter != null && !TextUtils.isEmpty(model.baseTest.chapter.idCourseSubjectchapter) && model.baseTest.chapter.idCourseSubjectchapter.equalsIgnoreCase(chapter.idCourseSubjectchapter)){
-                        callback.success(model.baseTest.testCoverages,response);
-                    }
-                }
-            }
-        }).execute();
     }
 
     public void getAllExamModels(final String subjectId, final ApiCallback<BaseTest> callback){

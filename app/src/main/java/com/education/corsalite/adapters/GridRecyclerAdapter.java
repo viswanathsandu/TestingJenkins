@@ -166,12 +166,6 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
                 startTakeTest(chapter);
             }
         });
-        dialogView.findViewById(R.id.download_test).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                downloadTakeTest(chapter);
-            }
-        });
         dialogView.findViewById(R.id.start_reading).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -223,22 +217,10 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         exerciseIntent.putExtra(Constants.SELECTED_CHAPTERID, chapter.idCourseSubjectchapter);
         exerciseIntent.putExtra(Constants.SELECTED_CHAPTER_NAME, chapter.chapterName);
         exerciseIntent.putExtra(Constants.LEVEL_CROSSED, chapter.passedComplexity);
+        exerciseIntent.putExtra("chapter",new Gson().toJson(chapter));
         studyCentreActivity.startActivity(exerciseIntent);
 
     }
-
-    private void downloadTakeTest(Chapters chapter) {
-        Intent exerciseIntent = new Intent(studyCentreActivity, TestDownloadService.class);
-        exerciseIntent.putExtra("subjectId", studyCentreActivity.getSelectedSubjectId());
-        exerciseIntent.putExtra("chapterId", chapter.idCourseSubjectchapter);
-        exerciseIntent.putExtra("selectedTakeTest",new Gson().toJson(chapter));
-        exerciseIntent.putExtra("courseId",AbstractBaseActivity.selectedCourse.courseId.toString());
-        exerciseIntent.putExtra("entityId", LoginUserCache.getInstance().loginResponse.entitiyId);
-        studyCentreActivity.startService(exerciseIntent);
-        Toast.makeText(studyCentreActivity, "Downloading test paper in background", Toast.LENGTH_SHORT).show();
-
-    }
-
 
     private void startNotesActivity(Chapters chapter) {
         Intent intent = new Intent(studyCentreActivity, NotesActivity.class);
