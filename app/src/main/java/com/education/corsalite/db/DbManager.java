@@ -12,8 +12,10 @@ import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.models.db.reqres.ReqRes;
 import com.education.corsalite.models.examengine.BaseTest;
 import com.education.corsalite.models.responsemodels.Chapters;
+import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.ExamModel;
 import com.education.corsalite.models.responsemodels.TestCoverage;
+import com.education.corsalite.utils.L;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 
@@ -179,8 +181,15 @@ public class DbManager {
             public void success(List<OfflineTestModel> offlineTestModels, Response response) {
                 super.success(offlineTestModels, response);
                 for (OfflineTestModel model : offlineTestModels) {
-                    if(model.baseTest.subjectId.equalsIgnoreCase(subjectId)){
-                        callback.success(model.baseTest,response);
+                    try {
+                        if (model.baseTest.subjectId.equalsIgnoreCase(subjectId)) {
+                            callback.success(model.baseTest, response);
+                        }
+                    } catch (Exception e) {
+                        CorsaliteError error = new CorsaliteError();
+                        error.message = "No data found";
+                        callback.failure(error);
+                        L.error(e.getMessage(), e);
                     }
                 }
             }

@@ -417,12 +417,16 @@ public class ContentReadingActivity extends AbstractBaseActivity {
             }
         } else {
             // check if local file exists
-            if (loadwebifFileExists(contentModelList.get(mContentIdPosition).contentName + "." +
-                    contentModelList.get(mContentIdPosition).type)) {
-                if (mViewSwitcher.getNextView() instanceof RelativeLayout) {
-                    mViewSwitcher.showNext();
+            try {
+                if (loadwebifFileExists(contentModelList.get(mContentIdPosition).contentName + "." +
+                        contentModelList.get(mContentIdPosition).type)) {
+                    if (mViewSwitcher.getNextView() instanceof RelativeLayout) {
+                        mViewSwitcher.showNext();
+                    }
+                    return;
                 }
-                return;
+            } catch (Exception e) {
+                L.error(e.getMessage(), e);
             }
             if (SystemUtils.isNetworkConnected(this)) {
                 // check if exists in content list
@@ -484,12 +488,16 @@ public class ContentReadingActivity extends AbstractBaseActivity {
                 spTopic.setSelection(previousTopicPosition);
             }
         } else {
-            if (loadwebifFileExists(contentModelList.get(mContentIdPosition).contentName + "." +
-                    contentModelList.get(mContentIdPosition).type)) {
-                if (mViewSwitcher.getNextView() instanceof RelativeLayout) {
-                    mViewSwitcher.showNext();
+            try {
+                if (loadwebifFileExists(contentModelList.get(mContentIdPosition).contentName + "." +
+                        contentModelList.get(mContentIdPosition).type)) {
+                    if (mViewSwitcher.getNextView() instanceof RelativeLayout) {
+                        mViewSwitcher.showNext();
+                    }
+                    return;
                 }
-                return;
+            } catch (Exception e) {
+                L.error(e.getMessage(), e);
             }
             // check if exists in content list
             if (contentList != null && contentList.size() > 0) {

@@ -50,6 +50,7 @@ import com.education.corsalite.utils.AppPref;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.CookieUtils;
 import com.education.corsalite.utils.L;
+import com.education.corsalite.utils.SystemUtils;
 import com.google.gson.Gson;
 import com.localytics.android.Localytics;
 
@@ -350,8 +351,12 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_forum).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Localytics.tagEvent(getString(R.string.forum));
-                startActivity(new Intent(AbstractBaseActivity.this, ForumActivity.class));
+                if(SystemUtils.isNetworkConnected(AbstractBaseActivity.this)) {
+                    Localytics.tagEvent(getString(R.string.forum));
+                    startActivity(new Intent(AbstractBaseActivity.this, ForumActivity.class));
+                } else {
+                    showToast("Forum requires network connection");
+                }
             }
         });
 

@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.education.corsalite.R;
@@ -27,11 +28,14 @@ import com.education.corsalite.models.requestmodels.AddNoteRequest;
 import com.education.corsalite.models.requestmodels.ForumModel;
 import com.education.corsalite.models.requestmodels.Note;
 import com.education.corsalite.models.requestmodels.UpdateNoteRequest;
+import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.DefaultForumResponse;
 import com.education.corsalite.models.responsemodels.DefaultNoteResponse;
 import com.education.corsalite.utils.L;
 import com.google.gson.Gson;
+
+import java.util.List;
 
 import retrofit.client.Response;
 
@@ -47,6 +51,9 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
     private Button addBtn;
     private Button editBtn;
     private Button cancelBtn;
+    private Spinner subjectSpinner;
+    private Spinner chapterSpinner;
+    private Spinner topicSpinner;
 
     private String type;
     private String operation;
@@ -62,6 +69,8 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
     private String originalContent;
     private String updateContent;
     private OnRefreshNotesListener onRefreshNotesListener;
+
+    private List<ContentIndex> mContentIndexList;
 
     public void setRefreshNoteListener(OnRefreshNotesListener onRefreshNotesListener) {
         this.onRefreshNotesListener = onRefreshNotesListener;
@@ -275,4 +284,61 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
             }
         });
     }
+
+    private void getContentIndex(String courseId, String studentId) {
+
+        ApiManager.getInstance(getActivity()).getContentIndex(courseId, studentId,
+                new ApiCallback<List<ContentIndex>>(getActivity()) {
+                    @Override
+                    public void failure(CorsaliteError error) {
+                        super.failure(error);
+                        if (error != null && !TextUtils.isEmpty(error.message)) {
+                            ((AbstractBaseActivity)getActivity()).showToast(error.message);
+                        }
+                    }
+
+                    @Override
+                    public void success(List<ContentIndex> contentIndexs, Response response) {
+                        super.success(contentIndexs, response);
+                        if (contentIndexs != null) {
+                            mContentIndexList = contentIndexs;
+//                            showSubject();
+                        }
+                    }
+                });
+    }
+
+//    private void showSubject() {
+//
+//        ContentIndex mContentIndex = mContentIndexList.get(0);
+//        subjectModelList = new ArrayList<>(mContentIndex.subjectModelList);
+//        final SubjectAdapter subjectAdapter = new SubjectAdapter(subjectModelList, this);
+//        spSubject.setAdapter(subjectAdapter);
+//
+//        int listSize = subjectModelList.size();
+//        if (!mSubjectId.isEmpty()) {
+//            for (int i = 0; i < listSize; i++) {
+//                if (subjectModelList.get(i).idSubject.equalsIgnoreCase(mSubjectId)) {
+//                    spSubject.setSelection(i);
+//                    mSubjectId = "";
+//                    break;
+//                }
+//            }
+//        }
+//
+//        spSubject.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                showChapter(position);
+//                mChapterId = "";
+//                subjectAdapter.setSelectedPosition(position);
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//
+//            }
+//        });
+//    }
+
 }
