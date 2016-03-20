@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    android:orientation="vertical"
     tools:context=".activities.ExamEngineActivity">
 
     <ViewSwitcher
@@ -55,23 +54,24 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1">
-                <TextView
-                    android:id="@+id/tv_pagetitle"
-                    style="@style/exercise_title_text"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical" />
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/sections_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:layout_marginRight="20dp"
-                    />
+                    <TextView
+                        android:id="@+id/tv_pagetitle"
+                        style="@style/exercise_title_text"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/sections_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="20dp"
+                        android:visibility="gone" />
 
                 </RelativeLayout>
+
                 <LinearLayout
                     android:id="@+id/layout_timer"
                     android:layout_width="wrap_content"
@@ -145,40 +145,16 @@
 
             </LinearLayout>
 
-            <RelativeLayout
-                android:id="@+id/footer_layout"
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@id/layout_header"
-                android:layout_marginRight="40dp"
-                android:layout_marginTop="10dp"
-                android:visibility="gone">
-
-                <Button
-                    android:id="@+id/btn_previous"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_alignParentLeft="true"
-                    android:background="@drawable/rounded_corner_navigation_left" />
-
-                <Button
-                    android:id="@+id/btn_next"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_alignParentRight="true"
-                    android:background="@drawable/rounded_corner_navigation_right" />
-            </RelativeLayout>
 
             <TextView
                 android:id="@+id/tv_clearanswer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:layout_below="@id/layout_header"
-                android:layout_marginRight="20dp"
                 android:layout_marginBottom="5dp"
+                android:layout_marginRight="20dp"
                 android:layout_marginTop="10dp"
-                android:layout_toLeftOf="@id/footer_layout"
                 android:background="@drawable/shape_rounded_corners_black"
                 android:drawablePadding="5dp"
                 android:paddingBottom="5dp"
@@ -206,11 +182,11 @@
                 android:layout_below="@id/tv_level"
                 android:layout_marginLeft="40dp"
                 android:layout_toLeftOf="@+id/tv_clearanswer"
-                android:singleLine="false"
-                android:textColor="@color/black"
-                android:maxLines="2"
                 android:ellipsize="end"
-                android:gravity="center_vertical"/>
+                android:gravity="center_vertical"
+                android:maxLines="2"
+                android:singleLine="false"
+                android:textColor="@color/black" />
 
 
             <ScrollView
@@ -233,7 +209,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:layout_weight = "1"/>
+                        android:layout_weight="1" />
 
                     <ImageView
                         android:id="@+id/imv_flag"
@@ -351,6 +327,20 @@
 
             </ScrollView>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="35dp">
+
+                <include
+                    android:id="@+id/footer_layout"
+                    layout="@layout/webview_footer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+
             <include
                 layout="@layout/test_navigator"
                 android:layout_width="match_parent"
@@ -362,4 +352,4 @@
 
     </ViewSwitcher>
 
-</LinearLayout>
+</RelativeLayout>

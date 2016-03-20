@@ -232,7 +232,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        LinearLayout myView = (LinearLayout) inflater.inflate(R.layout.activity_exercise, null);
+        RelativeLayout myView = (RelativeLayout) inflater.inflate(R.layout.activity_exercise, null);
         frameLayout.addView(myView);
         ButterKnife.bind(this);
         toggleSlider();
