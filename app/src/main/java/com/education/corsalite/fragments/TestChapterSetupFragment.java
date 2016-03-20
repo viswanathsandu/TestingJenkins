@@ -115,7 +115,7 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
 
     }
 
-    @OnClick({R.id.btn_cancel, R.id.btn_next})
+    @OnClick({R.id.btn_cancel, R.id.btn_download, R.id.btn_next})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_cancel:
@@ -123,6 +123,7 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
                 break;
             case R.id.btn_download:
                 downloadTakeTest(chapter);
+                getActivity().finish();
                 break;
             case R.id.btn_next:
                 requestQuestionPaperDetails();
@@ -165,6 +166,10 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
         exerciseIntent.putExtra("chapterId", chapter.idCourseSubjectchapter);
         exerciseIntent.putExtra("selectedTakeTest", new Gson().toJson(chapter));
         exerciseIntent.putExtra("courseId", AbstractBaseActivity.selectedCourse.courseId.toString());
+        String noOfQuestions = mNoOfQuestionsEditTxt.getText().toString();
+        if (!TextUtils.isEmpty(noOfQuestions) && TextUtils.isDigitsOnly(noOfQuestions)) {
+            exerciseIntent.putExtra("questions_count", noOfQuestions);
+        }
         exerciseIntent.putExtra("entityId", LoginUserCache.getInstance().loginResponse.entitiyId);
         getActivity().startService(exerciseIntent);
         Toast.makeText(getActivity(), "Downloading test paper in background", Toast.LENGTH_SHORT).show();

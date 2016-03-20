@@ -41,6 +41,7 @@ public class TestDownloadService extends IntentService {
         String takeTestStr = intent.getStringExtra("selectedTakeTest");
         String partTestStr = intent.getStringExtra("selectedPartTest");
         String subjectId = intent.getStringExtra("subjectId");
+        String questionsCount = intent.getStringExtra("questions_count");
         if (mockTestStr != null) {
             MockTest mockTest = new Gson().fromJson(mockTestStr, MockTest.class);
             getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, mockTest, testPaperIndicies, null);
@@ -49,7 +50,7 @@ public class TestDownloadService extends IntentService {
             getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, null, null, scheduledTest);
         }else if(takeTestStr != null){
             Chapter chapter = new Gson().fromJson(takeTestStr,Chapter.class);
-            loadTakeTest(chapter,null,subjectId);
+            loadTakeTest(chapter,null, questionsCount, subjectId);
         }else if(partTestStr != null){
             StudyCenter studyCenter = new Gson().fromJson(partTestStr,StudyCenter.class);
             OfflineTestModel model = new OfflineTestModel();
@@ -79,9 +80,9 @@ public class TestDownloadService extends IntentService {
                 });
     }
 
-    private void loadTakeTest(Chapter chapter, String subjectName, String subjectId){
+    private void loadTakeTest(Chapter chapter, String subjectName, String questionsCount, String subjectId){
         ExamEngineHelper helper = new ExamEngineHelper(this);
-        helper.loadTakeTest(chapter, subjectName, subjectId, new OnExamLoadCallback() {
+        helper.loadTakeTest(chapter, subjectName, subjectId, questionsCount, new OnExamLoadCallback() {
             @Override
             public void onSuccess(BaseTest test) {
                 OfflineTestModel model = new OfflineTestModel();

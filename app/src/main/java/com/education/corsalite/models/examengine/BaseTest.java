@@ -17,5 +17,6 @@ public class BaseTest extends BaseModel {
     public String testQuestionPaperId;
     public String testAnswerPaperId;
     public Chapter chapter;
+    public String questionsCount;
     public List<ExamModel> questions;
 }
