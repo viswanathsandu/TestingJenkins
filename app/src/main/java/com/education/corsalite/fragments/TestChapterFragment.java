@@ -1,6 +1,5 @@
 package com.education.corsalite.fragments;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,17 +10,15 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.models.responsemodels.Chapters;
+import com.education.corsalite.models.responsemodels.Chapter;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.TestCoverage;
-import com.education.corsalite.services.TestDownloadService;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.Data;
 import com.education.corsalite.utils.L;
@@ -67,7 +64,7 @@ public class TestChapterFragment extends BaseFragment {
     private String chapterID, chapterName, subjectId;
     private int levelCrossed;
     private List<TestCoverage> testCoverages;
-    private Chapters chapters;
+    private Chapter chapter;
 
     public static TestChapterFragment newInstance(Bundle bundle) {
         TestChapterFragment fragment = new TestChapterFragment();
@@ -96,7 +93,7 @@ public class TestChapterFragment extends BaseFragment {
         return rootView;
     }
 
-    @OnClick({R.id.btn_header_test_cancel, R.id.btn_header_test_next,R.id.btn_header_test_offline})
+    @OnClick({R.id.btn_header_test_cancel, R.id.btn_header_test_next})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_header_test_cancel : {
@@ -105,10 +102,6 @@ public class TestChapterFragment extends BaseFragment {
             }
             case R.id.btn_header_test_next : {
                 setupTest();
-                break;
-            }
-            case R.id.btn_header_test_offline:{
-                downloadTakeTest(chapters);
                 break;
             }
         }
@@ -121,7 +114,7 @@ public class TestChapterFragment extends BaseFragment {
         levelCrossed = mExtras.getInt(Constants.LEVEL_CROSSED, 0) + 1;
         String chapterStr = mExtras.getString("chapter");
         if(chapterStr != null){
-            chapters = new Gson().fromJson(chapterStr,Chapters.class);
+            chapter = new Gson().fromJson(chapterStr,Chapter.class);
         }
         if (TextUtils.isEmpty(chapterID) || TextUtils.isEmpty(chapterName) || TextUtils.isEmpty(subjectId)) {
             //In case data is missing finish this activity,
@@ -131,27 +124,27 @@ public class TestChapterFragment extends BaseFragment {
 
     private void fetchDataFromServer() {
         ApiManager.getInstance(getActivity()).getTestCoverage(LoginUserCache.getInstance().loginResponse.studentId, AbstractBaseActivity.selectedCourse.courseId.toString(), subjectId, chapterID,
-                new ApiCallback<List<TestCoverage>>(getActivity()) {
-                    @Override
-                    public void failure(CorsaliteError error) {
-                        super.failure(error);
-                        L.error(error.message);
-                        mProgressBar.setVisibility(View.GONE);
-                        mFailureTextView.setText("Sorry, couldn't fetch data");
-                    }
+            new ApiCallback<List<TestCoverage>>(getActivity()) {
+                @Override
+                public void failure(CorsaliteError error) {
+                    super.failure(error);
+                    L.error(error.message);
+                    mProgressBar.setVisibility(View.GONE);
+                    mFailureTextView.setText("Sorry, couldn't fetch data");
+                }
 
-                    @Override
-                    public void success(List<TestCoverage> testCoverages, Response response) {
-                        super.success(testCoverages, response);
-                        if (getActivity() != null && getActivity().isFinishing() || getActivity().isDestroyed() || !isResumed()) {
-                            return;
-                        }
-                        TestChapterFragment.this.testCoverages = testCoverages;
-                        setData(testCoverages);
-                        mProgressBar.setVisibility(View.GONE);
-                        mContainerLayout.setVisibility(View.VISIBLE);
+                @Override
+                public void success(List<TestCoverage> testCoverages, Response response) {
+                    super.success(testCoverages, response);
+                    if (getActivity() != null && getActivity().isFinishing() || getActivity().isDestroyed() || !isResumed()) {
+                        return;
                     }
-                });
+                    TestChapterFragment.this.testCoverages = testCoverages;
+                    setData(testCoverages);
+                    mProgressBar.setVisibility(View.GONE);
+                    mContainerLayout.setVisibility(View.VISIBLE);
+                }
+            });
     }
 
     private void setData(List<TestCoverage> testCoverages) {
@@ -230,16 +223,5 @@ public class TestChapterFragment extends BaseFragment {
         }
         TestChapterSetupFragment fragment = TestChapterSetupFragment.newInstance(mExtras);
         fragment.show(getFragmentManager(), TestChapterSetupFragment.getMyTag());
-    }
-
-    private void downloadTakeTest(Chapters chapter) {
-        Intent exerciseIntent = new Intent(getActivity(), TestDownloadService.class);
-        exerciseIntent.putExtra("subjectId", subjectId);
-        exerciseIntent.putExtra("chapterId", chapter.idCourseSubjectchapter);
-        exerciseIntent.putExtra("selectedTakeTest", new Gson().toJson(chapter));
-        exerciseIntent.putExtra("courseId", AbstractBaseActivity.selectedCourse.courseId.toString());
-        exerciseIntent.putExtra("entityId", LoginUserCache.getInstance().loginResponse.entitiyId);
-        getActivity().startService(exerciseIntent);
-        Toast.makeText(getActivity(), "Downloading test paper in background", Toast.LENGTH_SHORT).show();
     }
 }

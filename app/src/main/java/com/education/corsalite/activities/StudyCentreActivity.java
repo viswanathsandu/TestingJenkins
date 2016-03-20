@@ -32,7 +32,7 @@ import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.db.DbManager;
 import com.education.corsalite.fragments.MockTestDialog;
 import com.education.corsalite.models.db.OfflineContent;
-import com.education.corsalite.models.responsemodels.Chapters;
+import com.education.corsalite.models.responsemodels.Chapter;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.CourseData;
@@ -40,6 +40,7 @@ import com.education.corsalite.models.responsemodels.StudyCenter;
 import com.education.corsalite.services.TestDownloadService;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.Data;
+import com.education.corsalite.utils.L;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -59,7 +60,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     private CourseData mCourseData;
     private LinearLayout linearLayout;
     private ArrayList<String> subjects;
-    private List<Chapters> allChapters = new ArrayList<>();
+    private List<Chapter> allChapters = new ArrayList<>();
     private View redView;
     private View blueView;
     private View yellowView;
@@ -148,8 +149,8 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         allColorLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(studyCenter != null && studyCenter.Chapters != null) {
-                    mAdapter.updateData(studyCenter.Chapters, key);
+                if(studyCenter != null && studyCenter.chapters != null) {
+                    mAdapter.updateData(studyCenter.chapters, key);
                     mAdapter.notifyDataSetChanged();
                     updateSelected(allColorLayout);
                 }
@@ -173,10 +174,10 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         recyclerView.setAdapter(mAdapter);
     }
 
-    private List<Chapters> getChaptersForSubject() {
+    private List<Chapter> getChaptersForSubject() {
         for (StudyCenter studyCenter : mCourseData.StudyCenter) {
             if (studyCenter.SubjectName.equals(key)) {
-                return studyCenter.Chapters;
+                return studyCenter.chapters;
             }
         }
         return null;
@@ -302,7 +303,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                 key = mCourseData.StudyCenter.get(getIndex(studyCenters)).SubjectName;
                 studyCenter = mCourseData.StudyCenter.get(getIndex(studyCenters));
                 setupSubjects(mCourseData);
-                for (Chapters chapter : studyCenter.Chapters) {
+                for (Chapter chapter : studyCenter.chapters) {
                     boolean idMatchFound = false;
                     for (OfflineContent offlineContent : offlineContents) {
                         if (chapter.idCourseSubjectchapter.equals(offlineContent.chapterId)) {
@@ -355,28 +356,32 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     }
 
     private void setUpStudyCentreData(StudyCenter studyCenter) {
-        resetColorsVisibility();
-        studyCenter.resetColoredLists();
-        if (key.equalsIgnoreCase(studyCenter.SubjectName)) {
-            for (Chapters chapter : studyCenter.Chapters) {
-                double totalMarks = Data.getDoubleWithTwoDecimals(chapter.totalTestedMarks);
-                double earnedMarks = Data.getDoubleWithTwoDecimals(chapter.earnedMarks);
-                double scoreRedPercentage = Data.getInt(chapter.scoreRed) * totalMarks / 100;
-                double scoreAmberPercentage = Data.getInt(chapter.scoreAmber) * totalMarks / 100;
-                if (earnedMarks == 0 && totalMarks == 0) {
-                    studyCenter.blueListChapters.add(chapter);
-                    blueView.setVisibility(View.VISIBLE);
-                } else if (earnedMarks < scoreRedPercentage) {
-                    studyCenter.redListChapters.add(chapter);
-                    redView.setVisibility(View.VISIBLE);
-                } else if (earnedMarks < scoreAmberPercentage) {
-                    studyCenter.amberListChapters.add(chapter);
-                    yellowView.setVisibility(View.VISIBLE);
-                } else {
-                    studyCenter.greenListChapters.add(chapter);
-                    greenView.setVisibility(View.VISIBLE);
+        try {
+            resetColorsVisibility();
+            studyCenter.resetColoredLists();
+            if (key.equalsIgnoreCase(studyCenter.SubjectName)) {
+                for (Chapter chapter : studyCenter.chapters) {
+                    double totalMarks = Data.getDoubleWithTwoDecimals(chapter.totalTestedMarks);
+                    double earnedMarks = Data.getDoubleWithTwoDecimals(chapter.earnedMarks);
+                    double scoreRedPercentage = Data.getInt(chapter.scoreRed) * totalMarks / 100;
+                    double scoreAmberPercentage = Data.getInt(chapter.scoreAmber) * totalMarks / 100;
+                    if (earnedMarks == 0 && totalMarks == 0) {
+                        studyCenter.blueListChapters.add(chapter);
+                        blueView.setVisibility(View.VISIBLE);
+                    } else if (earnedMarks < scoreRedPercentage) {
+                        studyCenter.redListChapters.add(chapter);
+                        redView.setVisibility(View.VISIBLE);
+                    } else if (earnedMarks < scoreAmberPercentage) {
+                        studyCenter.amberListChapters.add(chapter);
+                        yellowView.setVisibility(View.VISIBLE);
+                    } else {
+                        studyCenter.greenListChapters.add(chapter);
+                        greenView.setVisibility(View.VISIBLE);
+                    }
                 }
             }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
         }
     }
 
@@ -535,7 +540,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
 
                                     @Override
                                     public void success(List<OfflineContent> offlineContents, Response response) {
-                                        for (Chapters chapter : getChaptersForSubject()) {
+                                        for (Chapter chapter : getChaptersForSubject()) {
                                             boolean idMatchFound = false;
                                             for (OfflineContent offlineContent : offlineContents) {
                                                 if (chapter.idCourseSubjectchapter.equals(offlineContent.chapterId)) {

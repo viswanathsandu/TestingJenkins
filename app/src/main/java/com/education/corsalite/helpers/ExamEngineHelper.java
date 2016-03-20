@@ -16,7 +16,7 @@ import com.education.corsalite.models.requestmodels.ExamTemplateChapter;
 import com.education.corsalite.models.requestmodels.ExamTemplateConfig;
 import com.education.corsalite.models.requestmodels.PostCustomExamTemplate;
 import com.education.corsalite.models.requestmodels.PostQuestionPaperRequest;
-import com.education.corsalite.models.responsemodels.Chapters;
+import com.education.corsalite.models.responsemodels.Chapter;
 import com.education.corsalite.models.responsemodels.Exam;
 import com.education.corsalite.models.responsemodels.ExamModel;
 import com.education.corsalite.models.responsemodels.PostExamTemplate;
@@ -42,7 +42,7 @@ public class ExamEngineHelper {
         this.mActivity = activity;
     }
 
-    public void loadTakeTest(Chapters chapter, String subjectName, String subjectId, OnExamLoadCallback callback) {
+    public void loadTakeTest(Chapter chapter, String subjectName, String subjectId, OnExamLoadCallback callback) {
         if (callback == null) {
             L.error("No callback registered");
             return;

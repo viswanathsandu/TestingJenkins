@@ -12,7 +12,7 @@ import com.education.corsalite.models.MockTest;
 import com.education.corsalite.models.OfflineTestModel;
 import com.education.corsalite.models.ScheduledTestList;
 import com.education.corsalite.models.examengine.BaseTest;
-import com.education.corsalite.models.responsemodels.Chapters;
+import com.education.corsalite.models.responsemodels.Chapter;
 import com.education.corsalite.models.responsemodels.ExamModel;
 import com.education.corsalite.models.responsemodels.StudyCenter;
 import com.education.corsalite.models.responsemodels.TestPaperIndex;
@@ -48,8 +48,8 @@ public class TestDownloadService extends IntentService {
             ScheduledTestList.ScheduledTestsArray scheduledTest = new Gson().fromJson(scheduledTestStr, ScheduledTestList.ScheduledTestsArray.class);
             getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, null, null, scheduledTest);
         }else if(takeTestStr != null){
-            Chapters chapters = new Gson().fromJson(takeTestStr,Chapters.class);
-            loadTakeTest(chapters,null,subjectId);
+            Chapter chapter = new Gson().fromJson(takeTestStr,Chapter.class);
+            loadTakeTest(chapter,null,subjectId);
         }else if(partTestStr != null){
             StudyCenter studyCenter = new Gson().fromJson(partTestStr,StudyCenter.class);
             OfflineTestModel model = new OfflineTestModel();
@@ -79,7 +79,7 @@ public class TestDownloadService extends IntentService {
                 });
     }
 
-    private void loadTakeTest(Chapters chapter, String subjectName, String subjectId){
+    private void loadTakeTest(Chapter chapter, String subjectName, String subjectId){
         ExamEngineHelper helper = new ExamEngineHelper(this);
         helper.loadTakeTest(chapter, subjectName, subjectId, new OnExamLoadCallback() {
             @Override
