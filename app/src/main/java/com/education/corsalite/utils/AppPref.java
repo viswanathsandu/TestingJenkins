@@ -30,15 +30,25 @@ public class AppPref {
     }
 
     public void saveObj(String id, OfflineContent content) {
-        Gson gson = new Gson();
-        String json = gson.toJson(content);
-        SharedPreferences settings = context.getSharedPreferences(OFFLINE_PREFS_NAME, Context.MODE_PRIVATE);
-        settings.edit().putString(id, json).commit();
+        try {
+            Gson gson = new Gson();
+            String json = gson.toJson(content);
+            SharedPreferences settings = context.getSharedPreferences(OFFLINE_PREFS_NAME, Context.MODE_PRIVATE);
+            settings.edit().putString(id, json).commit();
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
     }
 
     public String getValue(String key) {
-        SharedPreferences settings = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        return settings.getString(key, null);
+        try {
+            SharedPreferences settings = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+            return settings.getString(key, null);
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+            return null;
+        }
+
     }
 
     public void remove(String key) {

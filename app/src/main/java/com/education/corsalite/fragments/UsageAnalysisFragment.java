@@ -79,20 +79,21 @@ public class UsageAnalysisFragment extends Fragment {
                         mProgressBar.setVisibility(View.GONE);
                         mLinearLayout.setVisibility(View.VISIBLE);
 
-                        initializeGraph(mChart1);
-                        initializeGraph(mChart2);
-                        CombinedData data1 = new CombinedData(usageAnalysis.pagesName);
-                        data1.setData(generateLineData(usageAnalysis.pageUsagePercentageList));
-                        data1.setData(generateBarData(usageAnalysis.userAuditList, "Student Audit", getResources().getColor(R.color.green)));
-                        mChart1.setData(data1);
-                        mChart1.invalidate();
+                        if(usageAnalysis != null) {
+                            initializeGraph(mChart1);
+                            initializeGraph(mChart2);
+                            CombinedData data1 = new CombinedData(usageAnalysis.pagesName);
+                            data1.setData(generateLineData(usageAnalysis.pageUsagePercentageList));
+                            data1.setData(generateBarData(usageAnalysis.userAuditList, "Student Audit", getResources().getColor(R.color.green)));
+                            mChart1.setData(data1);
+                            mChart1.invalidate();
 
-                        CombinedData data2 = new CombinedData(usageAnalysis.pagesName);
-                        data2.setData(generateLineData(usageAnalysis.pageUsagePercentageList));
-                        data2.setData(generateBarData(usageAnalysis.allUserAuditList, " All Students Audit",getResources().getColor(R.color.cyan)));
-                        mChart2.setData(data2);
-                        mChart2.invalidate();
-
+                            CombinedData data2 = new CombinedData(usageAnalysis.pagesName);
+                            data2.setData(generateLineData(usageAnalysis.pageUsagePercentageList));
+                            data2.setData(generateBarData(usageAnalysis.allUserAuditList, " All Students Audit", getResources().getColor(R.color.cyan)));
+                            mChart2.setData(data2);
+                            mChart2.invalidate();
+                        }
                     }
                 });
     }
