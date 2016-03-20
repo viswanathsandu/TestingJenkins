@@ -7,8 +7,10 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
@@ -17,6 +19,7 @@ import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.LoginResponse;
+import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.Encryption;
 import com.education.corsalite.utils.SystemUtils;
@@ -34,7 +37,7 @@ public class LoginActivity extends AbstractBaseActivity {
     @Bind(R.id.tv_forgot_password) TextView forgotPasswordTxt;
     @Bind(R.id.username_txt) EditText usernameTxt;
     @Bind(R.id.password_txt) EditText passwordTxt;
-
+    @Bind(R.id.build_type_toggle) ToggleButton buildTypeToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,16 @@ public class LoginActivity extends AbstractBaseActivity {
     }
 
     private void setListeners() {
+        buildTypeToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked) {
+                    ApiClientService.enableProduction();
+                } else {
+                    ApiClientService.enableStaging();
+                }
+            }
+        });
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -76,4 +76,14 @@
             android:textColor="@color/red" />
 
     </LinearLayout>
+
+
+    <ToggleButton
+        android:id="@+id/build_type_toggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textOn="Production"
+        android:textOff="Stage"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"/>
 </RelativeLayout>

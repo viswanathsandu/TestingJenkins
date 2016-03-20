@@ -19,14 +19,24 @@ public class ApiClientService {
 
     private static ICorsaliteApi client;
     private static final String PROD = "http://app.corsalite.com/v1/webservices/";
-    private static  String STAGING = "http://staging.corsalite.com/v1/webservices/";
+    private static  final String STAGING = "http://staging.corsalite.com/v1/webservices/";
 
     private static String ROOT = STAGING;
 
     private static String setCookie;
 
     public static String getBaseUrl() {
-        return ROOT.replace("webservices/", "");
+        return ROOT == null ? "" : ROOT.replace("webservices/", "");
+    }
+
+    public static void enableStaging() {
+        ROOT = STAGING;
+        setupRestClient();
+    }
+
+    public static void enableProduction() {
+        ROOT = PROD;
+        setupRestClient();
     }
 
     public static void setSetCookie(String cookie) {
@@ -46,7 +56,7 @@ public class ApiClientService {
     }
 
     public static void setBaseUrl(String url){
-        STAGING = url;
+        ROOT = url;
     }
 
     private static void setupRestClient() {
