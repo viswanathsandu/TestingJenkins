@@ -50,8 +50,6 @@ public class TestChapterFragment extends BaseFragment {
     BarChart mTestBarChart;
     @Bind(R.id.ll_container)
     LinearLayout mContainerLayout;
-    @Bind(R.id.progress_bar)
-    ProgressBar mProgressBar;
     @Bind(R.id.txt_view_test_start_chapter_name)
     TextView mChapterNameTxtView;
     @Bind(R.id.tv_failure_text)
@@ -123,13 +121,14 @@ public class TestChapterFragment extends BaseFragment {
     }
 
     private void fetchDataFromServer() {
+        showProgress();
         ApiManager.getInstance(getActivity()).getTestCoverage(LoginUserCache.getInstance().loginResponse.studentId, AbstractBaseActivity.selectedCourse.courseId.toString(), subjectId, chapterID,
             new ApiCallback<List<TestCoverage>>(getActivity()) {
                 @Override
                 public void failure(CorsaliteError error) {
                     super.failure(error);
+                    closeProgress();
                     L.error(error.message);
-                    mProgressBar.setVisibility(View.GONE);
                     mFailureTextView.setText("Sorry, couldn't fetch data");
                 }
 
@@ -139,9 +138,9 @@ public class TestChapterFragment extends BaseFragment {
                     if (getActivity() != null && getActivity().isFinishing() || getActivity().isDestroyed() || !isResumed()) {
                         return;
                     }
+                    closeProgress();
                     TestChapterFragment.this.testCoverages = testCoverages;
                     setData(testCoverages);
-                    mProgressBar.setVisibility(View.GONE);
                     mContainerLayout.setVisibility(View.VISIBLE);
                 }
             });
