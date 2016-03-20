@@ -16,7 +16,7 @@ import com.education.corsalite.models.requestmodels.ExamTemplateChapter;
 import com.education.corsalite.models.requestmodels.ExamTemplateConfig;
 import com.education.corsalite.models.requestmodels.PostCustomExamTemplate;
 import com.education.corsalite.models.requestmodels.PostQuestionPaperRequest;
-import com.education.corsalite.models.responsemodels.Chapters;
+import com.education.corsalite.models.responsemodels.Chapter;
 import com.education.corsalite.models.responsemodels.Exam;
 import com.education.corsalite.models.responsemodels.ExamModel;
 import com.education.corsalite.models.responsemodels.PostExamTemplate;
@@ -42,7 +42,7 @@ public class ExamEngineHelper {
         this.mActivity = activity;
     }
 
-    public void loadTakeTest(Chapters chapter, String subjectName, String subjectId, OnExamLoadCallback callback) {
+    public void loadTakeTest(Chapter chapter, String subjectName, String subjectId, String questionsCount, OnExamLoadCallback callback) {
         if (callback == null) {
             L.error("No callback registered");
             return;
@@ -53,6 +53,7 @@ public class ExamEngineHelper {
         test.chapter = chapter;
         test.subjectName = subjectName;
         test.courseId = AbstractBaseActivity.selectedCourse.courseId.toString();
+        test.questionsCount = questionsCount;
         getStandardExamByCourse(callback);
     }
 
@@ -87,7 +88,7 @@ public class ExamEngineHelper {
                                     TakeTest takeTest = ((TakeTest) ExamEngineHelper.this.test);
                                     takeTest.exams = exams;
                                     // Load params from respective method
-                                    postCustomExamTemplate(null, null, null, exams, callback);
+                                    postCustomExamTemplate(null, null, takeTest.questionsCount, exams, callback);
                                     break;
                                 case PART_TEST:
                                     PartTest partTest = ((PartTest) test);
@@ -110,11 +111,13 @@ public class ExamEngineHelper {
 
         ExamTemplateConfig examTemplateConfig = new ExamTemplateConfig();
         examTemplateConfig.subjectId = test.subjectId;
+        examTemplateConfig.questionCount = questionsCount == null ? "" : questionsCount;
         examTemplateConfig.examTemplateChapter = new ArrayList<>();
         ExamTemplateChapter examTemplateChapter = new ExamTemplateChapter();
         examTemplateChapter.chapterID = chapterId;
         examTemplateChapter.topicIDs = topicIds;
-        examTemplateChapter.questionCount = questionsCount == null ? "" : questionsCount;
+        // TODO : for part test, it has to be updated
+        examTemplateChapter.questionCount = "";
         examTemplateConfig.examTemplateChapter.add(examTemplateChapter);
         postCustomExamTemplate.examTemplateConfig.add(examTemplateConfig);
         ApiManager.getInstance(mActivity).postCustomExamTemplate(new Gson().toJson(postCustomExamTemplate),

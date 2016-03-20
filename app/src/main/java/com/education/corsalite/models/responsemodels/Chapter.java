@@ -2,7 +2,7 @@ package com.education.corsalite.models.responsemodels;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Chapters {
+public class Chapter {
     @SerializedName("ChapterName")
     public String chapterName;
     @SerializedName("TotalTopics")

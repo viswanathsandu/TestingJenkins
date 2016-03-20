@@ -1,5 +1,6 @@
 package com.education.corsalite.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -16,8 +17,12 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.education.corsalite.R;
+import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.activities.ExamEngineActivity;
+import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.models.responsemodels.Chapter;
 import com.education.corsalite.models.responsemodels.TestCoverage;
+import com.education.corsalite.services.TestDownloadService;
 import com.education.corsalite.utils.Constants;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -49,6 +54,8 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
     private boolean mIsAdaptiveLearningEnabled;
     private ArrayList<String> mChapterLevels;
     private List<TestCoverage> testCoverages;
+    private Chapter chapter;
+    private String subjectId;
 
     public static TestChapterSetupFragment newInstance(Bundle bundle) {
         TestChapterSetupFragment fragment = new TestChapterSetupFragment();
@@ -66,9 +73,15 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
 
         mExtras = getArguments();
         mChapterLevels = mExtras.getStringArrayList(EXTRAS_CHAPTER_LEVELS);
+        subjectId = mExtras.getString(Constants.SELECTED_SUBJECTID, "");
+        String chapterStr = mExtras.getString("chapter");
+        if (chapterStr != null) {
+            chapter = new Gson().fromJson(chapterStr, Chapter.class);
+        }
         String testCoveragesGson = mExtras.getString(Constants.TEST_COVERAGE_LIST_GSON);
         if (!TextUtils.isEmpty(testCoveragesGson)) {
-            testCoverages = new Gson().fromJson(testCoveragesGson, new TypeToken<List<TestCoverage>>(){}.getType());
+            testCoverages = new Gson().fromJson(testCoveragesGson, new TypeToken<List<TestCoverage>>() {
+            }.getType());
         }
     }
 
@@ -92,8 +105,8 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
 
     private void loadLevels() {
         List<String> formattedChapterLevels = new ArrayList<>();
-        for(String level : mChapterLevels) {
-            formattedChapterLevels.add("Level "+level);
+        for (String level : mChapterLevels) {
+            formattedChapterLevels.add("Level " + level);
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, formattedChapterLevels);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -102,17 +115,19 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
 
     }
 
-    @OnClick({R.id.btn_cancel, R.id.btn_next})
+    @OnClick({R.id.btn_cancel, R.id.btn_download, R.id.btn_next})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.btn_cancel: {
+            case R.id.btn_cancel:
                 getDialog().dismiss();
                 break;
-            }
-            case R.id.btn_next: {
+            case R.id.btn_download:
+                downloadTakeTest(chapter);
+                getActivity().finish();
+                break;
+            case R.id.btn_next:
                 requestQuestionPaperDetails();
                 break;
-            }
         }
     }
 
@@ -121,7 +136,7 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
         String chapterLevel = mChapterLevels.get(position);
         if (testCoverages != null) {
             for (TestCoverage coverage : testCoverages) {
-                if(coverage.level.equalsIgnoreCase(chapterLevel+"")) {
+                if (coverage.level.equalsIgnoreCase(chapterLevel + "")) {
                     mNoOfQuestionsEditTxt.setText(coverage.questionCount);
                     break;
                 }
@@ -143,6 +158,21 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
         } else {
             Toast.makeText(getActivity(), "Please select the number of questions", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void downloadTakeTest(Chapter chapter) {
+        Intent exerciseIntent = new Intent(getActivity(), TestDownloadService.class);
+        exerciseIntent.putExtra("subjectId", subjectId);
+        exerciseIntent.putExtra("chapterId", chapter.idCourseSubjectchapter);
+        exerciseIntent.putExtra("selectedTakeTest", new Gson().toJson(chapter));
+        exerciseIntent.putExtra("courseId", AbstractBaseActivity.selectedCourse.courseId.toString());
+        String noOfQuestions = mNoOfQuestionsEditTxt.getText().toString();
+        if (!TextUtils.isEmpty(noOfQuestions) && TextUtils.isDigitsOnly(noOfQuestions)) {
+            exerciseIntent.putExtra("questions_count", noOfQuestions);
+        }
+        exerciseIntent.putExtra("entityId", LoginUserCache.getInstance().loginResponse.entitiyId);
+        getActivity().startService(exerciseIntent);
+        Toast.makeText(getActivity(), "Downloading test paper in background", Toast.LENGTH_SHORT).show();
     }
 }
 

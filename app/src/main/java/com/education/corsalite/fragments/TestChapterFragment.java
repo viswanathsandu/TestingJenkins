@@ -16,8 +16,7 @@ import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.db.DbManager;
-import com.education.corsalite.models.responsemodels.Chapters;
+import com.education.corsalite.models.responsemodels.Chapter;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.TestCoverage;
 import com.education.corsalite.utils.Constants;
@@ -65,8 +64,7 @@ public class TestChapterFragment extends BaseFragment {
     private String chapterID, chapterName, subjectId;
     private int levelCrossed;
     private List<TestCoverage> testCoverages;
-    private boolean isOffline;
-    private Chapters chapter;
+    private Chapter chapter;
 
     public static TestChapterFragment newInstance(Bundle bundle) {
         TestChapterFragment fragment = new TestChapterFragment();
@@ -91,11 +89,7 @@ public class TestChapterFragment extends BaseFragment {
         ButterKnife.bind(this, rootView);
         initializeGraph();
         loadDataFromIntent();
-        if(isOffline){
-            fetchDataFromDb();
-        }else {
-            fetchDataFromServer();
-        }
+        fetchDataFromServer();
         return rootView;
     }
 
@@ -118,62 +112,39 @@ public class TestChapterFragment extends BaseFragment {
         chapterName = mExtras.getString(Constants.SELECTED_CHAPTER_NAME, "");
         subjectId = mExtras.getString(Constants.SELECTED_SUBJECTID, "");
         levelCrossed = mExtras.getInt(Constants.LEVEL_CROSSED, 0) + 1;
+        String chapterStr = mExtras.getString("chapter");
+        if(chapterStr != null){
+            chapter = new Gson().fromJson(chapterStr,Chapter.class);
+        }
         if (TextUtils.isEmpty(chapterID) || TextUtils.isEmpty(chapterName) || TextUtils.isEmpty(subjectId)) {
             //In case data is missing finish this activity,
             getActivity().finish();
         }
-        isOffline = mExtras.getBoolean(Constants.IS_OFFLINE, false);
-        String chapterStr = mExtras.getString("chapter");
-        if(chapterStr != null)
-           chapter = new Gson().fromJson(chapterStr,Chapters.class);
     }
 
     private void fetchDataFromServer() {
         ApiManager.getInstance(getActivity()).getTestCoverage(LoginUserCache.getInstance().loginResponse.studentId, AbstractBaseActivity.selectedCourse.courseId.toString(), subjectId, chapterID,
-                new ApiCallback<List<TestCoverage>>(getActivity()) {
-                    @Override
-                    public void failure(CorsaliteError error) {
-                        super.failure(error);
-                        L.error(error.message);
-                        mProgressBar.setVisibility(View.GONE);
-                        mFailureTextView.setText("Sorry, couldn't fetch data");
-                    }
-
-                    @Override
-                    public void success(List<TestCoverage> testCoverages, Response response) {
-                        super.success(testCoverages, response);
-                        if (getActivity() != null && getActivity().isFinishing() || getActivity().isDestroyed() || !isResumed()) {
-                            return;
-                        }
-                        TestChapterFragment.this.testCoverages = testCoverages;
-                        setData(testCoverages);
-                        mProgressBar.setVisibility(View.GONE);
-                        mContainerLayout.setVisibility(View.VISIBLE);
-                    }
-                });
-    }
-
-    private void fetchDataFromDb(){
-        DbManager.getInstance(getActivity()).getAllOfflineTakeTests(chapter,new ApiCallback<List<TestCoverage>>(getActivity()) {
-            @Override
-            public void failure(CorsaliteError error) {
-                super.failure(error);
-                mProgressBar.setVisibility(View.GONE);
-                mFailureTextView.setText("Sorry, couldn't fetch data");
-            }
-
-            @Override
-            public void success(List<TestCoverage> testCoverages, Response response) {
-                super.success(testCoverages, response);
-                if (getActivity() != null && getActivity().isFinishing() || getActivity().isDestroyed() || !isResumed()) {
-                    return;
+            new ApiCallback<List<TestCoverage>>(getActivity()) {
+                @Override
+                public void failure(CorsaliteError error) {
+                    super.failure(error);
+                    L.error(error.message);
+                    mProgressBar.setVisibility(View.GONE);
+                    mFailureTextView.setText("Sorry, couldn't fetch data");
                 }
-                TestChapterFragment.this.testCoverages = testCoverages;
-                setData(testCoverages);
-                mProgressBar.setVisibility(View.GONE);
-                mContainerLayout.setVisibility(View.VISIBLE);
-            }
-        });
+
+                @Override
+                public void success(List<TestCoverage> testCoverages, Response response) {
+                    super.success(testCoverages, response);
+                    if (getActivity() != null && getActivity().isFinishing() || getActivity().isDestroyed() || !isResumed()) {
+                        return;
+                    }
+                    TestChapterFragment.this.testCoverages = testCoverages;
+                    setData(testCoverages);
+                    mProgressBar.setVisibility(View.GONE);
+                    mContainerLayout.setVisibility(View.VISIBLE);
+                }
+            });
     }
 
     private void setData(List<TestCoverage> testCoverages) {

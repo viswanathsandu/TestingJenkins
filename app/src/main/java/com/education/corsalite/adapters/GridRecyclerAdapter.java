@@ -26,10 +26,8 @@ import com.education.corsalite.activities.NotesActivity;
 import com.education.corsalite.activities.SaveForOfflineActivity;
 import com.education.corsalite.activities.StudyCentreActivity;
 import com.education.corsalite.activities.TestStartActivity;
-import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.enums.Tests;
-import com.education.corsalite.models.responsemodels.Chapters;
-import com.education.corsalite.services.TestDownloadService;
+import com.education.corsalite.models.responsemodels.Chapter;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.Data;
 import com.github.lzyzsd.circleprogress.DonutProgress;
@@ -44,11 +42,11 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
     public static final String CHAPTER_ID = "chapterId";
     public static final String TOPIC_ID = "topicId";
     public static final String SUBJECT = "subject";
-    private List<Chapters> chapters;
+    private List<Chapter> chapters;
     private String key;
     private StudyCentreActivity studyCentreActivity;
 
-    public GridRecyclerAdapter(List<Chapters> chapters, StudyCentreActivity studyCentreActivity, String key) {
+    public GridRecyclerAdapter(List<Chapter> chapters, StudyCentreActivity studyCentreActivity, String key) {
         this.chapters = chapters;
         this.studyCentreActivity = studyCentreActivity;
         this.key = key;
@@ -63,7 +61,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
     @Override
     public void onBindViewHolder(final StudyCenterSubjectViewHolder holder, final int position) {
         Resources r = studyCentreActivity.getResources();
-        final Chapters chapter = chapters.get(position);
+        final Chapter chapter = chapters.get(position);
         String label = chapter.chapterName;
         if (chapter.isChapterOffline) {
             holder.rootGridLayout.setOnClickListener(new View.OnClickListener() {
@@ -128,12 +126,12 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         }
     }
 
-    public void updateData(List<Chapters> chapters, String key) {
+    public void updateData(List<Chapter> chapters, String key) {
         this.chapters = chapters;
         this.key = key;
     }
 
-    private void getAlertDialog(View v, StudyCenterSubjectViewHolder holder, Chapters chapter) {
+    private void getAlertDialog(View v, StudyCenterSubjectViewHolder holder, Chapter chapter) {
         AlertDialog.Builder builder = new AlertDialog.Builder(holder.gridLayout.getContext());
         LayoutInflater li = (LayoutInflater) studyCentreActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View dialogView = li.inflate(R.layout.layout_list_item_view_popup, null);
@@ -150,7 +148,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         dialog.getWindow().setLayout(300, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 
-    private void setDataForAlert(final AlertDialog dialog, View dialogView, StudyCenterSubjectViewHolder holder, final Chapters chapter) {
+    private void setDataForAlert(final AlertDialog dialog, View dialogView, StudyCenterSubjectViewHolder holder, final Chapter chapter) {
         TextView score = (TextView) dialogView.findViewById(R.id.score);
         score.setText(holder.star.getText().toString());
         score.setBackground(holder.gridLayout.getBackground());
@@ -164,12 +162,6 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
                 dialog.cancel();
                 // startExerciseActivity(chapter);
                 startTakeTest(chapter);
-            }
-        });
-        dialogView.findViewById(R.id.download_test).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                downloadTakeTest(chapter);
             }
         });
         dialogView.findViewById(R.id.start_reading).setOnClickListener(new View.OnClickListener() {
@@ -202,7 +194,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         });
     }
 
-    private void startFlaggedQuestionView(Chapters chapter) {
+    private void startFlaggedQuestionView(Chapter chapter) {
         Intent exerciseIntent = new Intent(studyCentreActivity, ExamEngineActivity.class);
 
         exerciseIntent.putExtra(Constants.TEST_TITLE, "Flagged Questions");
@@ -213,7 +205,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         studyCentreActivity.startActivity(exerciseIntent);
     }
 
-    private void startTakeTest(Chapters chapter) {
+    private void startTakeTest(Chapter chapter) {
         Intent exerciseIntent = new Intent(studyCentreActivity, TestStartActivity.class);
         exerciseIntent.putExtra(TestStartActivity.KEY_TEST_TYPE, Tests.CHAPTER.getType());
         exerciseIntent.putExtra(Constants.TEST_TITLE, key);
@@ -223,30 +215,18 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         exerciseIntent.putExtra(Constants.SELECTED_CHAPTERID, chapter.idCourseSubjectchapter);
         exerciseIntent.putExtra(Constants.SELECTED_CHAPTER_NAME, chapter.chapterName);
         exerciseIntent.putExtra(Constants.LEVEL_CROSSED, chapter.passedComplexity);
+        exerciseIntent.putExtra("chapter",new Gson().toJson(chapter));
         studyCentreActivity.startActivity(exerciseIntent);
 
     }
 
-    private void downloadTakeTest(Chapters chapter) {
-        Intent exerciseIntent = new Intent(studyCentreActivity, TestDownloadService.class);
-        exerciseIntent.putExtra("subjectId", studyCentreActivity.getSelectedSubjectId());
-        exerciseIntent.putExtra("chapterId", chapter.idCourseSubjectchapter);
-        exerciseIntent.putExtra("selectedTakeTest",new Gson().toJson(chapter));
-        exerciseIntent.putExtra("courseId",AbstractBaseActivity.selectedCourse.courseId.toString());
-        exerciseIntent.putExtra("entityId", LoginUserCache.getInstance().loginResponse.entitiyId);
-        studyCentreActivity.startService(exerciseIntent);
-        Toast.makeText(studyCentreActivity, "Downloading test paper in background", Toast.LENGTH_SHORT).show();
-
-    }
-
-
-    private void startNotesActivity(Chapters chapter) {
+    private void startNotesActivity(Chapter chapter) {
         Intent intent = new Intent(studyCentreActivity, NotesActivity.class);
         putIntentExtras(chapter, intent, COURSE_ID, SUBJECT_ID, CHAPTER_ID);
         studyCentreActivity.startActivity(intent);
     }
 
-    private void startOfflineActivity(Chapters chapter) {
+    private void startOfflineActivity(Chapter chapter) {
         Intent intent = new Intent(studyCentreActivity, SaveForOfflineActivity.class);
         putIntentExtras(chapter, intent, COURSE_ID, SUBJECT_ID, CHAPTER_ID);
         intent.putExtra("chapterName", chapter.chapterName);
@@ -255,26 +235,26 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         studyCentreActivity.startActivity(intent);
     }
 
-    private void startContentActivity(Chapters chapter) {
+    private void startContentActivity(Chapter chapter) {
         Intent intent = new Intent(studyCentreActivity, ContentReadingActivity.class);
         putIntentExtras(chapter, intent, COURSE_ID, SUBJECT_ID, CHAPTER_ID);
         studyCentreActivity.startActivity(intent);
     }
 
-    private void putIntentExtras(Chapters chapter, Intent intent, String courseId, String subjectId, String chapterId) {
+    private void putIntentExtras(Chapter chapter, Intent intent, String courseId, String subjectId, String chapterId) {
         intent.putExtra(courseId, AbstractBaseActivity.selectedCourse.courseId.toString());
         intent.putExtra(subjectId, studyCentreActivity.getSelectedSubjectId());
         intent.putExtra(chapterId, chapter.idCourseSubjectchapter);
     }
 
-    private double getCompletedTopicsPercentage(Chapters chapter) {
+    private double getCompletedTopicsPercentage(Chapter chapter) {
         int totalTopics = Integer.parseInt(TextUtils.isEmpty(chapter.totalTopics) ? "0" : chapter.totalTopics);
         int completedTopics = Integer.parseInt(TextUtils.isEmpty(chapter.completedTopics) ? "0" : chapter.completedTopics);
         double completedPercentage = (double) completedTopics / (double) totalTopics * 100;
         return Math.round(completedPercentage * 100.0) / 100.0;
     }
 
-    private Drawable getColorDrawable(StudyCenterSubjectViewHolder holder, Chapters chapter) {
+    private Drawable getColorDrawable(StudyCenterSubjectViewHolder holder, Chapter chapter) {
         double totalMarks = Data.getDoubleWithTwoDecimals(chapter.totalTestedMarks);
         double earnedMarks = Data.getDoubleWithTwoDecimals(chapter.earnedMarks);
         double scoreRedPercentage = Data.getInt(chapter.scoreRed) * totalMarks / 100;

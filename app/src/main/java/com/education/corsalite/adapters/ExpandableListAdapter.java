@@ -18,7 +18,7 @@ import com.education.corsalite.activities.TestStartActivity;
 import com.education.corsalite.enums.Tests;
 import com.education.corsalite.models.OfflineTestModel;
 import com.education.corsalite.models.ScheduledTestList;
-import com.education.corsalite.models.responsemodels.Chapters;
+import com.education.corsalite.models.responsemodels.Chapter;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.L;
 import com.google.gson.Gson;
@@ -181,8 +181,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         Toast.makeText(context, "Please access the test during scheduled time", Toast.LENGTH_SHORT).show();
     }
 
-    private void startTakeTest(Chapters chapter,String subjectId){
-        Intent exerciseIntent = new Intent(context, TestStartActivity.class);
+    private void startTakeTest(Chapter chapter, String subjectId){
+        Intent exerciseIntent = new Intent(context, ExamEngineActivity.class);
         exerciseIntent.putExtra(TestStartActivity.KEY_TEST_TYPE, Tests.CHAPTER.getType());
         exerciseIntent.putExtra(Constants.TEST_TITLE, chapter.chapterName);
         exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
@@ -190,7 +190,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         exerciseIntent.putExtra(Constants.SELECTED_CHAPTER_NAME, chapter.chapterName);
         exerciseIntent.putExtra(Constants.LEVEL_CROSSED, chapter.passedComplexity);
         exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID,subjectId);
-        exerciseIntent.putExtra("chapter",new Gson().toJson(chapter));
         exerciseIntent.putExtra(Constants.IS_OFFLINE,true);
         context.startActivity(exerciseIntent);
     }
