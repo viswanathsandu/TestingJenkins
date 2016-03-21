@@ -284,7 +284,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             topic = getIntent().getExtras().getString(Constants.SELECTED_SUBJECT);
             tvPageTitle.setText(topic);
         }
-        if(isOffline){
+        if(isOffline) {
             loadOfflineDefaultExam();
         }else {
             getStandardExamByCourse();

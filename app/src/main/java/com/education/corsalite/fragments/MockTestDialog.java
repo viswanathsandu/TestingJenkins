@@ -79,15 +79,16 @@ public class MockTestDialog extends DialogFragment implements MockTestsListAdapt
 
     @Override
     public void onMockTestSelected(int position) {
+        MockTest test = mMockTestList.get(position);
         postQuestionPaper(LoginUserCache.getInstance().loginResponse.entitiyId,
-                mMockTestList.get(position).examTemplateId, LoginUserCache.getInstance().loginResponse.studentId, false);
+                test.examTemplateId, LoginUserCache.getInstance().loginResponse.studentId, test.subjectId, false);
     }
 
     @Override
     public void onMockTestDownload(int position) {
         selectedMockTest = mMockTestList.get(position);
         postQuestionPaper(LoginUserCache.getInstance().loginResponse.entitiyId,
-                mMockTestList.get(position).examTemplateId, LoginUserCache.getInstance().loginResponse.studentId, true);
+                selectedMockTest.examTemplateId, LoginUserCache.getInstance().loginResponse.studentId, selectedMockTest.subjectId, true);
     }
 
     private void loadMockTests() {
@@ -114,12 +115,12 @@ public class MockTestDialog extends DialogFragment implements MockTestsListAdapt
                 });
     }
 
-    private void postQuestionPaper(String entityId, String examTemplateId, String studentId, final boolean download) {
+    private void postQuestionPaper(String entityId, String examTemplateId, String studentId, String subjectId, final boolean download) {
         PostQuestionPaperRequest postQuestionPaper = new PostQuestionPaperRequest();
         postQuestionPaper.idCollegeBatch = "";
         postQuestionPaper.idEntity = entityId;
         postQuestionPaper.idExamTemplate = examTemplateId;
-        postQuestionPaper.idSubject = "";
+        postQuestionPaper.idSubject = subjectId;
         postQuestionPaper.idStudent = studentId;
         showProgress();
         ApiManager.getInstance(getActivity()).postQuestionPaper(new Gson().toJson(postQuestionPaper),
