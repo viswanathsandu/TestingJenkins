@@ -197,6 +197,11 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         setToolbarTitle(getResources().getString(R.string.offline_content));
     }
 
+    protected void setToolbarForForum() {
+        toolbar.findViewById(R.id.new_post).setVisibility(View.VISIBLE);
+        setToolbarTitle(getResources().getString(R.string.forum));
+    }
+
     protected void setToolbarForExercise(String title) {
         setToolbarTitle(title);
     }

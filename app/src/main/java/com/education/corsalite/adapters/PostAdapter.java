@@ -71,7 +71,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
 
         setupActionListener(holder, position);
 
-        holder.tvQuestion.setText(forumPost.SearchPost);
+        holder.tvQuestion.setText(forumPost.PostSubject);
         holder.tvDate.setText(forumPost.Datetime+" by");
         holder.tvUserName.setText(forumPost.DisplayName);
         holder.tvQuestionDesc.setText(Html.fromHtml(forumPost.htmlText));

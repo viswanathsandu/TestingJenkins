@@ -6,14 +6,15 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.PostPagerAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.fragments.EditorDialogFragment;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.CourseData;
@@ -30,11 +31,8 @@ import retrofit.client.Response;
  */
 public class ForumActivity extends AbstractBaseActivity {
 
-    @Bind(R.id.tabLayout)
-    TabLayout mTabLayout;
-
-    @Bind(R.id.viewPager)
-    ViewPager mViewPager;
+    @Bind(R.id.tabLayout) TabLayout mTabLayout;
+    @Bind(R.id.viewPager) ViewPager mViewPager;
 
     private LayoutInflater inflater;
     private CourseData mCourseData;
@@ -46,7 +44,13 @@ public class ForumActivity extends AbstractBaseActivity {
         LinearLayout myView = (LinearLayout) inflater.inflate(R.layout.activity_forum, null);
         frameLayout.addView(myView);
         ButterKnife.bind(this, myView);
-
+        setToolbarForForum();
+        toolbar.findViewById(R.id.new_post_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onNewPostClicked();
+            }
+        });
         //set adapter to your ViewPager
         mViewPager.setAdapter(new PostPagerAdapter(getSupportFragmentManager(), this));
         mTabLayout.setupWithViewPager(mViewPager);
@@ -80,5 +84,13 @@ public class ForumActivity extends AbstractBaseActivity {
                 });
     }
 
+    public void onNewPostClicked() {
+        EditorDialogFragment fragment = new EditorDialogFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("type", "Forum");
+        bundle.putString("operation", "Add");
+        fragment.setArguments(bundle);
+        fragment.show(getSupportFragmentManager(), "ForumEditorDialog");
+    }
 }
 

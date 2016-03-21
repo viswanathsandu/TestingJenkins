@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -20,10 +21,16 @@ import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
+import com.education.corsalite.adapters.ChapterAdapter;
+import com.education.corsalite.adapters.SubjectAdapter;
+import com.education.corsalite.adapters.TopicAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.listener.OnRefreshNotesListener;
+import com.education.corsalite.models.ChapterModel;
+import com.education.corsalite.models.SubjectModel;
+import com.education.corsalite.models.TopicModel;
 import com.education.corsalite.models.requestmodels.AddNoteRequest;
 import com.education.corsalite.models.requestmodels.ForumModel;
 import com.education.corsalite.models.requestmodels.Note;
@@ -35,6 +42,8 @@ import com.education.corsalite.models.responsemodels.DefaultNoteResponse;
 import com.education.corsalite.utils.L;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import retrofit.client.Response;
@@ -46,14 +55,15 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
 
     private WebView webview;
     private RelativeLayout forumHeaderLayout;
+    private Spinner subjectSpinner;
+    private Spinner chapterSpinner;
+    private Spinner topicSpinner;
     private EditText titleTxt;
     private CheckBox isAuthorOnlyCkb;
     private Button addBtn;
     private Button editBtn;
     private Button cancelBtn;
-    private Spinner subjectSpinner;
-    private Spinner chapterSpinner;
-    private Spinner topicSpinner;
+    private View progress;
 
     private String type;
     private String operation;
@@ -71,6 +81,10 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
     private OnRefreshNotesListener onRefreshNotesListener;
 
     private List<ContentIndex> mContentIndexList;
+    private List<SubjectModel> mSubjectModelList;
+    private List<ChapterModel> mChapterModelList;
+    private List<TopicModel> mTopicModelList;
+
 
     public void setRefreshNoteListener(OnRefreshNotesListener onRefreshNotesListener) {
         this.onRefreshNotesListener = onRefreshNotesListener;
@@ -102,10 +116,15 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
 
     private void initUi(View view) {
         forumHeaderLayout = (RelativeLayout) view.findViewById(R.id.forum_header_layout);
+        subjectSpinner = (Spinner) view.findViewById(R.id.subject_spinner);
+        chapterSpinner = (Spinner) view.findViewById(R.id.chapter_spinner);
+        topicSpinner = (Spinner) view.findViewById(R.id.topic_spinner);
+        progress = view.findViewById(R.id.progress);
         if(type.equals("Note")) {
             forumHeaderLayout.setVisibility(View.GONE);
         } else if(type.equals("Forum")) {
             forumHeaderLayout.setVisibility(View.VISIBLE);
+            getContentIndex(AbstractBaseActivity.selectedCourse.courseId+"", LoginUserCache.getInstance().loginResponse.studentId);
         }
         isAuthorOnlyCkb = (CheckBox)view.findViewById(R.id.is_author_only_ckb);
         if(isAuthorOnly.equals("Y")) {
@@ -207,9 +226,9 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
         post.studentId = LoginUserCache.getInstance().loginResponse.studentId;
         post.userId = LoginUserCache.getInstance().loginResponse.userId;
         post.courseId = AbstractBaseActivity.selectedCourse.courseId.toString();
-        post.idCourseSubject = "44";//subjectId;
-        post.idCourseSubjectChapter = "1179";//chapterId;
-        post.topicId = "114";//topicId;
+        post.idCourseSubject = mSubjectModelList.get(subjectSpinner.getSelectedItemPosition()).idSubject;
+        post.idCourseSubjectChapter = mChapterModelList.get(chapterSpinner.getSelectedItemPosition()).idChapter;
+        post.topicId = mTopicModelList.get(topicSpinner.getSelectedItemPosition()).idTopic;
         post.postContent = updateContent;
         post.referIdUserPost = operation.equalsIgnoreCase("Add") ? null : "";
         post.postSubject = titleTxt.getText().toString();
@@ -219,10 +238,12 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
 
     private void addEditPostToForum(ForumModel post) {
         try {
+            showProgress();
             ApiManager.getInstance(getActivity()).addEditForumPost(post, new ApiCallback<DefaultForumResponse>(getActivity()) {
                 @Override
                 public void failure(CorsaliteError error) {
                     super.failure(error);
+                    closeProgress();
                     Toast.makeText(getActivity(), "Failed to add post on Forum", Toast.LENGTH_SHORT).show();
                 }
 
@@ -230,6 +251,7 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
                 public void success(DefaultForumResponse defaultNoteResponse, Response response) {
                     super.success(defaultNoteResponse, response);
                     if (getActivity() != null) {
+                        closeProgress();
                         Toast.makeText(getActivity(), "Added post successfully", Toast.LENGTH_SHORT).show();
                     }
                     dismiss();
@@ -242,11 +264,13 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
 
     private void addNotes() {
         try {
+            showProgress();
             AddNoteRequest request = new AddNoteRequest(studentId, new Note(topicId, contentId, updateContent));
             ApiManager.getInstance(getActivity()).addNote(new Gson().toJson(request), new ApiCallback<DefaultNoteResponse>(getActivity()) {
                 @Override
                 public void failure(CorsaliteError error) {
                     super.failure(error);
+                    closeProgress();
                     Toast.makeText(getActivity(), "Failed to add Note", Toast.LENGTH_SHORT).show();
                 }
 
@@ -254,6 +278,7 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
                 public void success(DefaultNoteResponse defaultNoteResponse, Response response) {
                     super.success(defaultNoteResponse, response);
                     if (getActivity() != null) {
+                        closeProgress();
                         Toast.makeText(getActivity(), "Added Note successfully", Toast.LENGTH_SHORT).show();
                     }
                     dismiss();
@@ -266,10 +291,12 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
 
     private void editNotes() {
         UpdateNoteRequest request = new UpdateNoteRequest(studentId, notesId, updateContent);
+        showProgress();
         ApiManager.getInstance(getActivity()).updateNote(new Gson().toJson(request), new ApiCallback<DefaultNoteResponse>(getActivity()) {
             @Override
             public void failure(CorsaliteError error) {
                 super.failure(error);
+                closeProgress();
                 Toast.makeText(getActivity(), "Failed to update Note", Toast.LENGTH_SHORT).show();
             }
 
@@ -277,6 +304,7 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
             public void success(DefaultNoteResponse defaultNoteResponse, Response response) {
                 super.success(defaultNoteResponse, response);
                 Toast.makeText(getActivity(), "Updated Note successfully", Toast.LENGTH_SHORT).show();
+                closeProgress();
                 if(onRefreshNotesListener != null) {
                     onRefreshNotesListener.refreshNotes();
                 }
@@ -286,12 +314,13 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
     }
 
     private void getContentIndex(String courseId, String studentId) {
-
+        showProgress();
         ApiManager.getInstance(getActivity()).getContentIndex(courseId, studentId,
                 new ApiCallback<List<ContentIndex>>(getActivity()) {
                     @Override
                     public void failure(CorsaliteError error) {
                         super.failure(error);
+                        closeProgress();
                         if (error != null && !TextUtils.isEmpty(error.message)) {
                             ((AbstractBaseActivity)getActivity()).showToast(error.message);
                         }
@@ -300,45 +329,114 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
                     @Override
                     public void success(List<ContentIndex> contentIndexs, Response response) {
                         super.success(contentIndexs, response);
+                        closeProgress();
                         if (contentIndexs != null) {
                             mContentIndexList = contentIndexs;
-//                            showSubject();
+                            showSubject();
                         }
                     }
                 });
     }
 
-//    private void showSubject() {
-//
-//        ContentIndex mContentIndex = mContentIndexList.get(0);
-//        subjectModelList = new ArrayList<>(mContentIndex.subjectModelList);
-//        final SubjectAdapter subjectAdapter = new SubjectAdapter(subjectModelList, this);
-//        spSubject.setAdapter(subjectAdapter);
-//
-//        int listSize = subjectModelList.size();
-//        if (!mSubjectId.isEmpty()) {
-//            for (int i = 0; i < listSize; i++) {
-//                if (subjectModelList.get(i).idSubject.equalsIgnoreCase(mSubjectId)) {
-//                    spSubject.setSelection(i);
-//                    mSubjectId = "";
-//                    break;
-//                }
-//            }
-//        }
-//
-//        spSubject.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                showChapter(position);
-//                mChapterId = "";
-//                subjectAdapter.setSelectedPosition(position);
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
-//    }
+    private void showSubject() {
+        ContentIndex mContentIndex = mContentIndexList.get(0);
+        mSubjectModelList = new ArrayList<>(mContentIndex.subjectModelList);
+        final SubjectAdapter subjectAdapter = new SubjectAdapter(mSubjectModelList, getActivity());
+        subjectSpinner.setAdapter(subjectAdapter);
+
+        int listSize = mSubjectModelList.size();
+        if (!subjectId.isEmpty()) {
+            for (int i = 0; i < listSize; i++) {
+                if (mSubjectModelList.get(i).idSubject.equalsIgnoreCase(subjectId)) {
+                    subjectSpinner.setSelection(i);
+                    subjectId = "";
+                    break;
+                }
+            }
+        }
+
+        subjectSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                showChapter(position);
+                subjectAdapter.setSelectedPosition(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+    }
+
+    private void showChapter(int subjectPosition) {
+
+        mChapterModelList = new ArrayList<>(mSubjectModelList.get(subjectPosition).chapters);
+        Collections.sort(mChapterModelList); // sort the chapters based on the chapterSortOrder
+        final ChapterAdapter chapterAdapter = new ChapterAdapter(mChapterModelList, getActivity());
+        chapterSpinner.setAdapter(chapterAdapter);
+
+        if (!chapterId.isEmpty()) {
+            int listSize = mChapterModelList.size();
+            for (int i = 0; i < listSize; i++) {
+                if (mChapterModelList.get(i).idChapter.equalsIgnoreCase(chapterId)) {
+                    chapterSpinner.setSelection(i);
+                    chapterId = "";
+                    break;
+                }
+            }
+        }
+
+        chapterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                showTopic(position);
+                chapterAdapter.setSelectedPosition(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+    }
+
+    private void showTopic(final int chapterPosition) {
+        mTopicModelList = new ArrayList<>(mChapterModelList.get(chapterPosition).topicMap);
+        Collections.sort(mTopicModelList);
+        if (mTopicModelList != null) {
+            final TopicAdapter topicAdapter = new TopicAdapter(mTopicModelList, getActivity());
+            topicSpinner.setAdapter(topicAdapter);
+
+            if (!topicId.isEmpty()) {
+                int listSize = mTopicModelList.size();
+                for (int i = 0; i < listSize; i++) {
+                    if (mTopicModelList.get(i).idTopic.equalsIgnoreCase(topicId)) {
+                        topicSpinner.setSelection(i);
+                        topicId = "";
+                        break;
+                    }
+                }
+            }
+
+            topicSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    topicAdapter.setSelectedPosition(position);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+        }
+    }
+
+    private void showProgress() {
+        progress.setVisibility(View.VISIBLE);
+    }
+
+    private void closeProgress() {
+        progress.setVisibility(View.GONE);
+    }
 
 }

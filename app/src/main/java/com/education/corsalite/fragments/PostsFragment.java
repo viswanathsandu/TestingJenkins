@@ -11,6 +11,7 @@ import android.widget.Button;
 
 import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
+import com.education.corsalite.activities.ForumActivity;
 import com.education.corsalite.adapters.PostAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
@@ -79,15 +80,12 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
         mRecyclerView.setAdapter(mPostAdapter);
         switch (mPage){
             case 0:
-                showProgress();
                 loadForumPosts();
                 break;
             case 1:
-                showProgress();
                 loadForumMyPosts();
                 break;
             case 2:
-                showProgress();
                 loadForumMyComments();
                 break;
             default:
@@ -96,6 +94,7 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
     }
 
     private void loadForumMyComments() {
+        showProgress();
         ApiManager.getInstance(getActivity()).getMyComments(AbstractBaseActivity.selectedCourse.courseId+"", LoginUserCache.getInstance().loginResponse.userId, "MyComments",
                 new ApiCallback<ArrayList<ForumPost>>(getActivity()) {
                     @Override
@@ -119,6 +118,7 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
     }
 
     private void loadForumPosts() {
+        showProgress();
         ApiManager.getInstance(getActivity()).getAllPosts(AbstractBaseActivity.selectedCourse.courseId+"", LoginUserCache.getInstance().loginResponse.userId, "AllPosts", "", "",
                 new ApiCallback<ArrayList<ForumPost>>(getActivity()) {
                     @Override
@@ -142,6 +142,7 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
     }
 
     private void loadForumMyPosts() {
+        showProgress();
         ApiManager.getInstance(getActivity()).getMyPosts(AbstractBaseActivity.selectedCourse.courseId+"", LoginUserCache.getInstance().loginResponse.userId,
                 new ApiCallback<ArrayList<ForumPost>>(getActivity()) {
                     @Override
@@ -212,15 +213,6 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
         fragment.show(getActivity().getSupportFragmentManager(), "ForumEditorDialog");
     }
 
-    public void onNewPostClicked() {
-        EditorDialogFragment fragment = new EditorDialogFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString("type", "Forum");
-        bundle.putString("operation", "Add");
-        fragment.setArguments(bundle);
-        fragment.show(getActivity().getSupportFragmentManager(), "ForumEditorDialog");
-    }
-
     @Override
     public void onLockClicked(int position) {
     }
@@ -244,11 +236,10 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.new_post_btn) {
-            onNewPostClicked();
+            if(getActivity() instanceof ForumActivity) {
+                ((ForumActivity)getActivity()).onNewPostClicked();
+            }
         }
     }
 
-    private void createNewPost() {
-        showToast("Create new post");
-    }
 }
