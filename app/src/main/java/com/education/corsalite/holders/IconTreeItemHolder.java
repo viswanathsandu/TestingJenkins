@@ -99,6 +99,7 @@ public class IconTreeItemHolder extends TreeNode.BaseNodeViewHolder<IconTreeItem
         public String id;
         public String tag;
         public boolean showProgress;
+        public Object data;
 
         public IconTreeItem(int icon, String text,String id,String tag,boolean showProgress) {
             this.icon = icon;
@@ -106,6 +107,10 @@ public class IconTreeItemHolder extends TreeNode.BaseNodeViewHolder<IconTreeItem
             this.id = id;
             this.tag = tag;
             this.showProgress = showProgress;
+        }
+
+        public void setData(Object object) {
+            data = object;
         }
     }
 

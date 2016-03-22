@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.education.corsalite.api.ApiCallback;
+import com.education.corsalite.models.ExerciseOfflineModel;
 import com.education.corsalite.models.MockTest;
 import com.education.corsalite.models.OfflineTestModel;
 import com.education.corsalite.models.ScheduledTestList;
@@ -17,6 +18,7 @@ import com.education.corsalite.utils.L;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit.client.Response;
@@ -159,6 +161,47 @@ public class DbManager {
                 }
             }
         }).start();
+    }
+
+    public void saveOfflineExerciseTest(final ExerciseOfflineModel exercise){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                synchronized (this) {
+                    List<ExerciseOfflineModel> models = dbService.Get(ExerciseOfflineModel.class);
+                    for (ExerciseOfflineModel model : models) {
+                        if (model.equals(exercise)) {
+                            model.questions = exercise.questions;
+                            dbService.Save(model);
+                            return;
+                        }
+                    }
+                    dbService.Save(exercise);
+                }
+            }
+        }).start();
+    }
+
+    public void getOfflineExerciseModels(final String courseId, final ApiCallback<List<ExerciseOfflineModel>> callback){
+        new GetOfflineExerciseFromDb(dbService, new ApiCallback<List<ExerciseOfflineModel>>(context){
+            public void success(List<ExerciseOfflineModel> offlineTestModels, Response response) {
+                super.success(offlineTestModels, response);
+                List<ExerciseOfflineModel> offlineExercises = new ArrayList<ExerciseOfflineModel>();
+                for (ExerciseOfflineModel model : offlineTestModels) {
+                    try {
+                        if(model.courseId.equals(courseId)) {
+                            offlineExercises.add(model);
+                        }
+                    } catch (Exception e) {
+                        CorsaliteError error = new CorsaliteError();
+                        error.message = "No data found";
+                        callback.failure(error);
+                        L.error(e.getMessage(), e);
+                    }
+                }
+                callback.success(offlineExercises, response);
+            }
+        }).execute();
     }
 
     public void getAllExamModels(final String subjectId, final ApiCallback<BaseTest> callback){

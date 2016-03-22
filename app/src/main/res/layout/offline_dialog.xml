@@ -26,27 +26,46 @@
             android:orientation="vertical"
             android:paddingLeft="16dp" />
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:padding="24dp"
-            android:gravity="center_horizontal">
+            android:padding="24dp">
+
+            <CheckBox
+                android:id="@+id/exercises_ckb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Exercises"
+                android:textColor="@color/text_black"
+                android:textSize="18sp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                fontPath="@string/roboto_regular"/>
 
             <Button
                 android:id="@+id/ok"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="OK" />
+                android:layout_height="40dp"
+                android:text="Download"
+                android:textAllCaps="false"
+                android:layout_alignParentRight="true"
+                android:background="@color/transparent"
+                android:textColor="@color/green"
+                fontPath="@string/roboto_regular"/>
 
             <Button
                 android:id="@+id/cancel"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:text="CANCEL" />
-        </LinearLayout>
+                android:layout_height="40dp"
+                android:text="Cancel"
+                android:textAllCaps="false"
+                android:layout_toLeftOf="@+id/ok"
+                android:background="@color/transparent"
+                android:textColor="@color/text_black"
+                fontPath="@string/roboto_regular"/>
+        </RelativeLayout>
 
     </LinearLayout>
 

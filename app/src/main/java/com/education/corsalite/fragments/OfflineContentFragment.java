@@ -13,11 +13,13 @@ import android.widget.Toast;
 import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.activities.ContentReadingActivity;
+import com.education.corsalite.activities.ExamEngineActivity;
 import com.education.corsalite.activities.OfflineContentActivity;
 import com.education.corsalite.activities.VideoActivity;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.db.DbManager;
 import com.education.corsalite.holders.IconTreeItemHolder;
+import com.education.corsalite.models.ExerciseOfflineModel;
 import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
@@ -47,16 +49,17 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
     @Bind(R.id.no_content_txt) View emptyContentView;
 
     private AndroidTreeView tView;
-    List<OfflineContent> offlineContentList ;
-    String selectedCourse;
-    String subjectId = "";
-    String chapterId = "";
-    String topicId = "";
-    ArrayList<String> contentIds;
-    Course course;
-    String subjectName;
-    String chapterName;
-    String topicName;
+    private List<OfflineContent> offlineContentList ;
+    private List<ExerciseOfflineModel> offlineExercises;
+    private String selectedCourse;
+    private String subjectId = "";
+    private String chapterId = "";
+    private String topicId = "";
+    private ArrayList<String> contentIds;
+    private Course course;
+    private String subjectName;
+    private String chapterName;
+    private String topicName;
 
     @Nullable
     @Override
@@ -67,6 +70,29 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
             ((OfflineContentActivity) getActivity()).setOfflineListener(this);
         }
         return view;
+    }
+
+    private void getExercises(final Course course) {
+        showProgress();
+        emptyContentView.setVisibility(View.GONE);
+        DbManager.getInstance(getActivity().getApplicationContext()).getOfflineExerciseModels(course.courseId+"",
+                new ApiCallback<List<ExerciseOfflineModel>>(getActivity()) {
+                    @Override
+                    public void success(List<ExerciseOfflineModel> exerciseOfflineModels, Response response) {
+                        super.success(exerciseOfflineModels, response);
+                        offlineExercises = exerciseOfflineModels;
+                        closeProgress();
+                        getContentIndexResponse(course);
+                    }
+
+                    @Override
+                    public void failure(CorsaliteError error) {
+                        super.failure(error);
+                        closeProgress();
+                        offlineExercises = null;
+                        getContentIndexResponse(course);
+                    }
+                });
     }
 
     private void getContentIndexResponse(final Course course) {
@@ -129,7 +155,7 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
     }
     @Override
     public void onCourseIdSelected(Course course) {
-        getContentIndexResponse(course);
+        getExercises(course);
         this.selectedCourse = course.courseId.toString();
         this.course = course;
     }
@@ -180,6 +206,18 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
                 showProgress = contentIds != null && contentIds.contains(offlineContent.contentId);
                 topicRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_chapter, offlineContent.topicName,offlineContent.topicId,"topic",showProgress));
                 chapterRoot.addChild(topicRoot);
+
+                // Add exercise as the first item in topic
+                List<ExerciseOfflineModel> addedList = new ArrayList<>();
+                for(ExerciseOfflineModel exercise : offlineExercises) {
+                    if(exercise.topicId.equals(offlineContent.topicId)) {
+                        IconTreeItemHolder.IconTreeItem item = new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_topics, "Exercise - " + exercise.topicId, exercise.topicId+"-"+exercise.courseId, "Exercise", false);
+                        item.setData(exercise);
+                        addedList.add(exercise);
+                        topicRoot.addChild(new TreeNode(item));
+                    }
+                }
+                offlineExercises.removeAll(addedList);
             }
 
             TreeNode contentRoot =null;
@@ -210,23 +248,19 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
         @Override
         public void onClick(TreeNode node, Object value) {
             IconTreeItemHolder.IconTreeItem item = (IconTreeItemHolder.IconTreeItem) value;
-            if(item.tag.equalsIgnoreCase("subject")){
+            if(item.tag.equalsIgnoreCase("subject")
+                    || item.tag.equalsIgnoreCase("chapter")
+                    || item.tag.equalsIgnoreCase("topic")){
                 subjectId = item.id;
                 subjectName = item.text;
-            }
-            if(item.tag.equalsIgnoreCase("chapter")){
-                chapterId = item.id;
-                chapterName = item.text;
-            }
-            if(item.tag.equalsIgnoreCase("topic")){
-                topicId = item.id;
-                topicName = item.text;
-            }
-            if(item.tag.equalsIgnoreCase("content")) {
+            } else if(item.tag.equalsIgnoreCase("content")) {
                 if(item.text.endsWith("html"))
                     startContentActivity(topicId, chapterId,subjectId,item.id,item.text);
                 else
                     startVideoActivity(course.name,subjectName,chapterName,topicName,item.text);
+            } else {
+                startExerciseTest(item.data instanceof ExerciseOfflineModel ? (ExerciseOfflineModel) item.data : null);
+
             }
 
 
@@ -236,15 +270,9 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
     private TreeNode.TreeNodeLongClickListener nodeLongClickListener = new TreeNode.TreeNodeLongClickListener() {
         @Override
         public boolean onLongClick(TreeNode node, Object value) {
-            IconTreeItemHolder.IconTreeItem item = (IconTreeItemHolder.IconTreeItem) value;
             return true;
         }
     };
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
 
     @Override
     public void onDeleteOfflineData(String id,String tag){
@@ -303,6 +331,14 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
         }
     }
 
+
+    private void startExerciseTest(ExerciseOfflineModel model) {
+        ContentReadingActivity.examModelList = model.questions;
+        Intent intent = new Intent(getActivity(), ExamEngineActivity.class);
+        intent.putExtra(Constants.TEST_TITLE, "Exercises");
+        intent.putExtra(Constants.SELECTED_POSITION, 0);
+        startActivity(intent);
+    }
 
     private void startContentActivity(String topicId, String chapterId,String subjectId,String contentId,String contentName) {
         Intent intent = new Intent(getActivity(), ContentReadingActivity.class);

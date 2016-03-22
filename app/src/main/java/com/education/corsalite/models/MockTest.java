@@ -10,6 +10,8 @@ import java.io.Serializable;
  */
 public class MockTest extends BaseModel implements Comparable<MockTest>, Serializable{
 
+    @SerializedName("DisplayTestName")
+    public String displayName;
     @SerializedName("ExamName")
     public String examName;
     @SerializedName("idExamTemplate")

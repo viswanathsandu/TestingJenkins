@@ -411,10 +411,23 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     };
 
     private void selectSection(String section) {
-        selectedSection = section;
-        sectionsAdapter.setSelectedItem(section);
-        gridAdapter.setSelectedSectionName(section);
-        gridAdapter.notifyDataSetChanged();
+        try {
+            selectedSection = section;
+            sectionsAdapter.setSelectedItem(section);
+            gridAdapter.setSelectedSectionName(section);
+            gridAdapter.notifyDataSetChanged();
+            if (mockTestPaperIndex != null) {
+                for (int i = 0; i < mockTestPaperIndex.questionPaperIndecies.size(); i++) {
+                    if (!TextUtils.isEmpty(section) && mockTestPaperIndex.questionPaperIndecies.get(i).sectionName.equalsIgnoreCase(section)) {
+                        // TODO : implement select the item in grid
+                        gvTest.setItemChecked(i, true);
+                        break;
+                    }
+                }
+            }
+        }catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
     }
 
     private void renderQuestionLayout() {

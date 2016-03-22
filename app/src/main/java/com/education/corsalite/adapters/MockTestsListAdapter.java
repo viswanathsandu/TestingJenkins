@@ -1,7 +1,6 @@
 package com.education.corsalite.adapters;
 
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,11 +52,7 @@ public class MockTestsListAdapter extends AbstractRecycleViewAdapter {
         }
 
         public void bindData(final int position, final MockTest mockTest) {
-            String testTitle = mockTest.examName;
-            if(!TextUtils.isEmpty(mockTest.subjectId)) {
-                testTitle += " - " + mockTest.subjectName;
-            }
-            tvName.setText(testTitle);
+            tvName.setText(mockTest.displayName+"");
             tvName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

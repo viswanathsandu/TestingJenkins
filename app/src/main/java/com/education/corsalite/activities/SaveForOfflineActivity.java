@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -26,6 +27,7 @@ import com.education.corsalite.holders.CheckedItemViewHolder;
 import com.education.corsalite.holders.IconTreeItemHolder;
 import com.education.corsalite.models.ChapterModel;
 import com.education.corsalite.models.ContentModel;
+import com.education.corsalite.models.ExerciseOfflineModel;
 import com.education.corsalite.models.SubjectModel;
 import com.education.corsalite.models.TopicModel;
 import com.education.corsalite.models.db.OfflineContent;
@@ -33,6 +35,7 @@ import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.services.ApiClientService;
+import com.education.corsalite.services.TestDownloadService;
 import com.education.corsalite.services.VideoDownloadService;
 import com.education.corsalite.utils.AppPref;
 import com.education.corsalite.utils.Constants;
@@ -82,12 +85,13 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
     private HashMap<String,TopicModel> topicModelHashMap = new HashMap<String, TopicModel>();
     private LinearLayout downloadImage;
     private ProgressBar headerProgress;
-    Bundle savedInstanceState;
+    private Bundle savedInstanceState;
     private int chapterIndex = 0;
-    private Dialog d;
-    List<View> topicList = new ArrayList<View>();
-    List<View> contentList = new ArrayList<View>();
-    List<View> allViews = new ArrayList<View>();
+    private Dialog dialog;
+    private List<View> topicList = new ArrayList<View>();
+    private List<View> contentList = new ArrayList<View>();
+    private List<View> allViews = new ArrayList<View>();
+    private List<ExerciseOfflineModel> offlineExerciseModels = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,14 +118,14 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
     private void loopCheckedViews() {
         String videoContentId = "";
         String htmlContentId = "";
-        if(d == null) {
-            d = getDisplayDialog();
+        if(dialog == null) {
+            dialog = getDisplayDialog();
         }
-        d.setTitle(getResources().getString(R.string.offline_dialog_title_text));
-        LinearLayout subjectLayout = (LinearLayout) d.findViewById(R.id.subject_layout);
+        dialog.setTitle(getResources().getString(R.string.offline_dialog_title_text));
+        LinearLayout subjectLayout = (LinearLayout) dialog.findViewById(R.id.subject_layout);
         subjectLayout.removeAllViews();
         subjectLayout.addView(getTextView(root.getChildren().get(0).getValue().toString()));
-        LinearLayout topicLayout = (LinearLayout) d.findViewById(R.id.topic_layout);
+        LinearLayout topicLayout = (LinearLayout) dialog.findViewById(R.id.topic_layout);
         topicLayout.removeAllViews();
         List<OfflineContent> offlineContents = new ArrayList<>();
         for (TreeNode n : root.getChildren()) {
@@ -146,6 +150,11 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
                                                                                 topicModel.idTopic,topicModel.topicName,
                                                                                 contentModel.idContent,contentModel.contentName,
                                                                                 contentModel.contentName + "." + contentModel.type);
+                            ExerciseOfflineModel model = new ExerciseOfflineModel(
+                                            AbstractBaseActivity.selectedCourse.courseId+"", topicModel.idTopic);
+                            if(!offlineExerciseModels.contains(model)) {
+                                offlineExerciseModels.add(model);
+                            }
                             offlineContents.add(offlineContent);
                         }
                         contentCount++;
@@ -160,39 +169,51 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
         setUpDialogLogic(method(htmlContentId), method(videoContentId));
     }
 
-    private void setUpDialogLogic(String htmlContentId, String videoContentID) {
-        d.show();
-        Button okButton = (Button) d.findViewById(R.id.ok);
-        Button okCancel = (Button) d.findViewById(R.id.cancel);
-
-        final String finalHtmlContentId = htmlContentId.trim();
-        final String finalVideoContentId = videoContentID.trim();
-        okButton.setOnClickListener(new View.OnClickListener() {
+    private void setUpDialogLogic(final String htmlContentId, final String videoContentID) {
+        dialog.show();
+        Button downloadBtn = (Button) dialog.findViewById(R.id.ok);
+        Button cancelBtn = (Button) dialog.findViewById(R.id.cancel);
+        final CheckBox exercisesCheckBox = (CheckBox) dialog.findViewById(R.id.exercises_ckb);
+        downloadBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String finalContentIds = "";
-                if (!finalHtmlContentId.isEmpty()) {
-                    finalContentIds += finalHtmlContentId;
-                }
-                if (!finalVideoContentId.isEmpty()) {
-                    finalContentIds += COMMA_STRING + finalVideoContentId;
-                }
-                if (finalContentIds.isEmpty()) {
-                    Toast.makeText(SaveForOfflineActivity.this, getResources().getString(R.string.select_content_toast), Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(SaveForOfflineActivity.this, getResources().getString(R.string.content_downloaded_toast), Toast.LENGTH_SHORT).show();
-                    getContent(finalContentIds);
-                    finish();
-                }
+                startDownload(htmlContentId.trim(), videoContentID.trim(), exercisesCheckBox.isChecked());
             }
         });
 
-        okCancel.setOnClickListener(new View.OnClickListener() {
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                d.dismiss();
+                dialog.dismiss();
             }
         });
+    }
+
+    private void startDownload(String htmlContentId, String videoContentId, boolean downloadExercises) {
+        String finalContentIds = "";
+        if (!htmlContentId.isEmpty()) {
+            finalContentIds += htmlContentId;
+        }
+        if (!videoContentId.isEmpty()) {
+            finalContentIds += COMMA_STRING + videoContentId;
+        }
+        if(downloadExercises) {
+            downloadExercises();
+        }
+        if (finalContentIds.isEmpty()) {
+            Toast.makeText(SaveForOfflineActivity.this, getResources().getString(R.string.select_content_toast), Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(SaveForOfflineActivity.this, getResources().getString(R.string.content_downloaded_toast), Toast.LENGTH_SHORT).show();
+            getContent(finalContentIds);
+            dialog.dismiss();
+            finish();
+        }
+    }
+
+    private void downloadExercises() {
+        Intent intent = new Intent(this, TestDownloadService.class);
+        intent.putExtra("exercise_data", new Gson().toJson(offlineExerciseModels));
+        startService(intent);
     }
 
     public String method(String str) {
@@ -395,13 +416,13 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
     }
 
     private void setChapterNameAndChildren(ChapterModel chapters, int pos) {
-        d = getDisplayDialog();
+        dialog = getDisplayDialog();
         headerProgress.setVisibility(View.GONE);
         TreeNode subjectName = new TreeNode(chapters.chapterName).setViewHolder(new CheckedItemViewHolder(this, false));
         topicModelList = (ArrayList<TopicModel>) chapters.topicMap;
         Collections.sort(topicModelList);
         for (int i = 0; i < chapters.topicMap.size(); i++) {
-            addTopic(chapters.topicMap.get(i), subjectName, d);
+            addTopic(chapters.topicMap.get(i), subjectName, dialog);
         }
         root.addChild(subjectName);
     }

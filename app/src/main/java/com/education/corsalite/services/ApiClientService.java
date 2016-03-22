@@ -1,5 +1,7 @@
 package com.education.corsalite.services;
 
+import android.text.TextUtils;
+
 import com.education.corsalite.api.ICorsaliteApi;
 import com.education.corsalite.deserializer.ExerciseModelResponseDeserializer;
 import com.education.corsalite.interceptors.SessionRequestInterceptor;
@@ -48,6 +50,7 @@ public class ApiClientService {
     }
 
     static {
+        ROOT = STAGING;
         setupRestClient();
     }
 
@@ -56,7 +59,9 @@ public class ApiClientService {
     }
 
     public static void setBaseUrl(String url){
-        ROOT = url;
+        if(!TextUtils.isEmpty(url)) {
+            ROOT = url;
+        }
     }
 
     private static void setupRestClient() {
