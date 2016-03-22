@@ -35,11 +35,13 @@ import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.db.DbManager;
 import com.education.corsalite.event.ContentReadingEvent;
 import com.education.corsalite.fragments.EditorDialogFragment;
 import com.education.corsalite.fragments.VideoListDialog;
 import com.education.corsalite.models.ChapterModel;
 import com.education.corsalite.models.ContentModel;
+import com.education.corsalite.models.ExerciseOfflineModel;
 import com.education.corsalite.models.SubjectModel;
 import com.education.corsalite.models.TopicModel;
 import com.education.corsalite.models.responsemodels.Content;
@@ -111,6 +113,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
     private List<ContentModel> videoModelList;
     private List<Content> contentList;
     public static List<ExamModel> examModelList;
+    private List<ExerciseOfflineModel> offlineExercises;
 
     private String mSubjectId = "";
     private String mChapterId = "";
@@ -163,6 +166,21 @@ public class ContentReadingActivity extends AbstractBaseActivity {
         }
         eventStartTime = System.currentTimeMillis();
         setListeners();
+
+    }
+
+    private void loadOfflineExercises() {
+        DbManager.getInstance(this).getOfflineExerciseModels(AbstractBaseActivity.selectedCourse.courseId + "",
+                new ApiCallback<List<ExerciseOfflineModel>>(this) {
+                    @Override
+                    public void success(List<ExerciseOfflineModel> exerciseOfflineModels, Response response) {
+                        super.success(exerciseOfflineModels, response);
+                        if(exerciseOfflineModels != null && !exerciseOfflineModels.isEmpty()) {
+                            offlineExercises = exerciseOfflineModels;
+                            showExercise();
+                        }
+                    }
+                });
     }
 
     @Override
@@ -603,24 +621,35 @@ public class ContentReadingActivity extends AbstractBaseActivity {
             exerciseButtoncontainer.setVisibility(View.VISIBLE);
             tvExercise.setEnabled(false);
             pbExercise.setVisibility(View.VISIBLE);
-            ApiManager.getInstance(this).getExercise(topicModelList.get(topicPosition).idTopic, selectedCourse.courseId.toString(),
-                    studentId, "", new ApiCallback<List<ExamModel>>(this) {
-                        @Override
-                        public void success(List<ExamModel> examModels, Response response) {
-                            super.success(examModels, response);
-                            examModelList = examModels;
-                            showExercise();
-                        }
+            String topicId = topicModelList.get(topicPosition).idTopic;
+            if(offlineExercises != null && !offlineExercises.isEmpty() && offlineExercises.contains(new ExerciseOfflineModel(selectedCourse.courseId+"", topicId))) {
+                for(ExerciseOfflineModel model : offlineExercises) {
+                    if(model.topicId.equals(topicId) && model.courseId.equals(selectedCourse.courseId+"")) {
+                        examModelList = model.questions;
+                        showExercise();
+                    }
+                }
+            } else {
+                ApiManager.getInstance(this).getExercise(topicModelList.get(topicPosition).idTopic, selectedCourse.courseId.toString(),
+                        studentId, "", new ApiCallback<List<ExamModel>>(this) {
+                            @Override
+                            public void success(List<ExamModel> examModels, Response response) {
+                                super.success(examModels, response);
+                                examModelList = examModels;
+                                showExercise();
+                            }
 
-                        @Override
-                        public void failure(CorsaliteError error) {
-                            super.failure(error);
-                            showExercise();
-                        }
-                    });
+                            @Override
+                            public void failure(CorsaliteError error) {
+                                super.failure(error);
+                                showExercise();
+                            }
+                        });
+            }
         } else {
             exerciseButtoncontainer.setVisibility(View.GONE);
         }
+
     }
 
     /**
@@ -914,6 +943,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     getExercise(position);
+                    loadOfflineExercises();
                     getContentData(position);
                     topicAdapter.setSelectedPosition(position);
                 }
