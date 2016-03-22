@@ -24,10 +24,19 @@ public class ExerciseOfflineModel extends BaseModel {
     @Override
     public boolean equals(Object o) {
         try {
-            return (this.topicId.equals(topicId) && this.courseId.equals(courseId));
+            ExerciseOfflineModel exercise = (ExerciseOfflineModel)o;
+            return (this.topicId.equals(exercise.topicId) && this.courseId.equals(exercise.courseId));
         } catch (NullPointerException e) {
             L.error(e.getMessage(), e);
             return false;
         }
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 17 * hash + (this.topicId != null ? this.topicId.hashCode() : 0)
+                  +  (this.courseId != null ? this.courseId.hashCode() : 0);
+        return hash;
     }
 }

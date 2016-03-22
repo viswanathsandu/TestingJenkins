@@ -52,6 +52,7 @@ import com.education.corsalite.db.DbManager;
 import com.education.corsalite.enums.QuestionType;
 import com.education.corsalite.event.ExerciseAnsEvent;
 import com.education.corsalite.fragments.FullQuestionDialog;
+import com.education.corsalite.models.ExerciseOfflineModel;
 import com.education.corsalite.models.MockTest;
 import com.education.corsalite.models.OfflineTestModel;
 import com.education.corsalite.models.ScheduledTestList;
