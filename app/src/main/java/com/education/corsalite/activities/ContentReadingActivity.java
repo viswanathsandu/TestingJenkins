@@ -104,7 +104,6 @@ public class ContentReadingActivity extends AbstractBaseActivity {
     @Bind(R.id.not_available_offline_txt)
     TextView notAvailableForOfflineTxt;
 
-
     private List<ContentIndex> contentIndexList;
     private List<SubjectModel> subjectModelList;
     private List<ChapterModel> chapterModelList;
@@ -112,7 +111,6 @@ public class ContentReadingActivity extends AbstractBaseActivity {
     private List<ContentModel> contentModelList;
     private List<ContentModel> videoModelList;
     private List<Content> contentList;
-    public static List<ExamModel> examModelList;
     private List<ExerciseOfflineModel> offlineExercises;
 
     private String mSubjectId = "";
@@ -625,7 +623,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
             if(offlineExercises != null && !offlineExercises.isEmpty() && offlineExercises.contains(new ExerciseOfflineModel(selectedCourse.courseId+"", topicId))) {
                 for(ExerciseOfflineModel model : offlineExercises) {
                     if(model.topicId.equals(topicId) && model.courseId.equals(selectedCourse.courseId+"")) {
-                        examModelList = model.questions;
+                        AbstractBaseActivity.setSharedExamModels(model.questions);
                         showExercise();
                     }
                 }
@@ -635,7 +633,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
                             @Override
                             public void success(List<ExamModel> examModels, Response response) {
                                 super.success(examModels, response);
-                                examModelList = examModels;
+                                AbstractBaseActivity.setSharedExamModels(examModels);
                                 showExercise();
                             }
 
@@ -914,7 +912,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
     }
 
     private void showExercise() {
-        if (examModelList != null && examModelList.size() > 0) {
+        if (AbstractBaseActivity.getSharedExamModels() != null && !AbstractBaseActivity.getSharedExamModels().isEmpty()) {
             tvExercise.setEnabled(true);
             pbExercise.setVisibility(View.GONE);
         } else {

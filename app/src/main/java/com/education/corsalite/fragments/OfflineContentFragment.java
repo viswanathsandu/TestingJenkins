@@ -333,7 +333,7 @@ public class OfflineContentFragment extends BaseFragment  implements OfflineCont
 
 
     private void startExerciseTest(ExerciseOfflineModel model) {
-        ContentReadingActivity.examModelList = model.questions;
+        AbstractBaseActivity.setSharedExamModels(model.questions);
         Intent intent = new Intent(getActivity(), ExamEngineActivity.class);
         intent.putExtra(Constants.TEST_TITLE, "Exercises");
         intent.putExtra(Constants.SELECTED_POSITION, 0);

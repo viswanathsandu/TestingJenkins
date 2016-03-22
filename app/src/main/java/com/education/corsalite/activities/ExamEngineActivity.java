@@ -364,7 +364,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
     private void loadExerciseTest() {
         imvFlag.setVisibility(View.INVISIBLE);
-        localExamModelList = (ArrayList<ExamModel>) ContentReadingActivity.examModelList;
+        localExamModelList = AbstractBaseActivity.getSharedExamModels();
         webFooter.setVisibility(localExamModelList.isEmpty() ? View.GONE : View.VISIBLE);
         btnVerify.setVisibility(View.VISIBLE);
         imvRefresh.setVisibility(View.GONE);
