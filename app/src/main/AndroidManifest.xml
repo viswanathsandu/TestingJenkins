@@ -47,7 +47,6 @@
             </intent-filter>
         </receiver>
 
-
         <activity
             android:name=".activities.SplashActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
@@ -75,70 +74,59 @@
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label=""
             android:theme="@style/UserProfileTheme" />
-
         <activity
             android:name=".activities.VideoActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:hardwareAccelerated="true"
             android:label=""
             android:theme="@style/UserProfileTheme" />
-
         <activity
             android:name=".activities.VirtualCurrencyActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="@string/title_activity_currency"
             android:theme="@style/UserProfileTheme" />
-
         <activity
             android:name=".activities.StudyCentreActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="Study Center"
             android:theme="@style/UserProfileTheme" />
-
         <activity
             android:name=".activities.AnalyticsActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="Analytics"
             android:screenOrientation="sensorLandscape"
             android:theme="@style/UserProfileTheme" />
-
         <activity
             android:name=".activities.OfflineContentActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="Offline Content"
             android:theme="@style/UserProfileTheme" />
-
         <activity
             android:name=".activities.NotesActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="Notes"
             android:theme="@style/UserProfileTheme" />
-
         <activity
             android:name=".activities.ExamHistoryActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="ExamHistory" />
-
         <activity
             android:name=".activities.ExamEngineActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:hardwareAccelerated="true"
             android:label=""
             android:theme="@style/UserProfileTheme" />
-
         <activity
             android:name=".activities.UsageAnalysisActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:hardwareAccelerated="true"
             android:label="Usage Analysis"
             android:theme="@style/UserProfileTheme" />
-
         <activity
             android:name=".activities.SaveForOfflineActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="Notes"
             android:theme="@style/UserProfileTheme" />
-
         <activity
             android:name=".activities.ChallengeActivity"
             android:label="@string/title_activity_challenge">
@@ -146,29 +134,24 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-
         <activity
             android:name=".activities.ExamResultActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:theme="@style/AppTheme" />
-
         <activity
             android:name=".activities.TestStartActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:screenOrientation="sensorLandscape"
             android:theme="@style/UserProfileTheme" />
-
         <activity
             android:name=".activities.ForumActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:theme="@style/UserProfileTheme" />
-
         <activity
             android:name=".activities.StartMockTestActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:theme="@style/AppTheme" />
-
-        <activity android:name=".activities.WelcomeActivity"></activity>
+        <activity android:name=".activities.WelcomeActivity" />
     </application>
 
 </manifest>

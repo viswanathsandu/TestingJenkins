@@ -1,9 +1,11 @@
 package com.education.corsalite.app;
 
 import android.content.Context;
+import android.content.Intent;
 
 import com.crashlytics.android.Crashlytics;
 import com.education.corsalite.R;
+import com.education.corsalite.activities.WelcomeActivity;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.localytics.android.LocalyticsActivityLifecycleCallbacks;
@@ -29,6 +31,21 @@ public class CorsaliteApplication extends com.orm.SugarApp{
         Fabric.with(this, new Crashlytics());
         registerActivityLifecycleCallbacks(
                 new LocalyticsActivityLifecycleCallbacks(this));
+        registerForCrashes();
+    }
+
+    private void registerForCrashes() {
+        Thread.setDefaultUncaughtExceptionHandler (new Thread.UncaughtExceptionHandler() {
+            @Override
+            public void uncaughtException (Thread thread, Throwable e) {
+                handleUncaughtException (thread, e);
+            }
+        });
+    }
+
+    private void handleUncaughtException (Thread thread, Throwable e) {
+        Intent intent = new Intent (getApplicationContext(), WelcomeActivity.class);
+        startActivity(intent);
     }
 
     @Override

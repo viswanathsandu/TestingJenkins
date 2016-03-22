@@ -204,6 +204,8 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     protected void setToolbarForExercise(String title) {
         setToolbarTitle(title);
+        setDrawerIconInvisible();
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
     }
 
     protected void setToolbarForWebActivity(String title) {
@@ -211,7 +213,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     protected void setDrawerIconInvisible(){
-
         actionBarDrawerToggle.setDrawerIndicatorEnabled(false);
     }
 
