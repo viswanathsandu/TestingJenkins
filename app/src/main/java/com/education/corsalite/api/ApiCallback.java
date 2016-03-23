@@ -46,9 +46,9 @@ public abstract class ApiCallback<T> implements Callback<T> {
         CorsaliteError restError = (CorsaliteError) error.getBodyAs(CorsaliteError.class);
         if (restError != null) {
             failure(restError);
-        } else {
+        } else if(error.getResponse().getStatus() == 401){ // Unauthentication
             CorsaliteError corsaliteError = new CorsaliteError();
-            corsaliteError.message = error.getMessage();
+            corsaliteError.message = "Unathorized session.";
             failure(corsaliteError);
         }
     }
