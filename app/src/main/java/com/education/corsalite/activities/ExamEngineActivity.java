@@ -417,11 +417,15 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             sectionsAdapter.setSelectedItem(section);
             gridAdapter.setSelectedSectionName(section);
             gridAdapter.notifyDataSetChanged();
+
+
             if (mockTestPaperIndex != null) {
                 for (int i = 0; i < mockTestPaperIndex.questionPaperIndecies.size(); i++) {
                     if (!TextUtils.isEmpty(section) && mockTestPaperIndex.questionPaperIndecies.get(i).sectionName.equalsIgnoreCase(section)) {
                         // TODO : implement select the item in grid
+                        gvTest.setSelection(i);
                         gvTest.setItemChecked(i, true);
+                        inflateUI(i);
                         break;
                     }
                 }
@@ -1589,7 +1593,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         initTestAnswerPaper(localExamModelList);
         getFlaggedQuestion(false);
         if (mockTestPaperIndex != null && mockTestPaperIndex.questionPaperIndecies != null) {
-            for (int i = 0; i < mockTestPaperIndex.questionPaperIndecies.size(); i++) {
+            for (int i = 0; i < mockTestPaperIndex.questionPaperIndecies.size() && i<localExamModelList.size(); i++) {
                 localExamModelList.get(i).sectionName = mockTestPaperIndex.questionPaperIndecies.get(i).sectionName;
             }
         }

@@ -2,6 +2,7 @@ package com.education.corsalite.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.education.corsalite.activities.ExamEngineActivity;
 import com.education.corsalite.activities.StartMockTestActivity;
 import com.education.corsalite.activities.TestStartActivity;
 import com.education.corsalite.enums.Tests;
+import com.education.corsalite.models.MockTest;
 import com.education.corsalite.models.OfflineTestModel;
 import com.education.corsalite.models.ScheduledTestList;
 import com.education.corsalite.models.responsemodels.Chapter;
@@ -49,7 +51,12 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     public Object getChild(int groupPosition, int childPosititon) {
         try {
             if (headers.get(groupPosition).equalsIgnoreCase("Mock Test")) {
-                return this.childs.get(this.headers.get(groupPosition)).get(childPosititon).mockTest.examName;
+                MockTest test = this.childs.get(this.headers.get(groupPosition)).get(childPosititon).mockTest;
+                if(TextUtils.isEmpty(test.subjectId)) {
+                    return test.displayName;
+                } else {
+                    return test.examName+" ( "+test.subjectName+" ) ";
+                }
             } else if (headers.get(groupPosition).equalsIgnoreCase("Schedule Test")) {
                 return this.childs.get(this.headers.get(groupPosition)).get(childPosititon).scheduledTest.examName;
             } else if (headers.get(groupPosition).equalsIgnoreCase("Take Test")) {
