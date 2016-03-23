@@ -432,7 +432,9 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
     }
 
     private void showProgress() {
-        progress.setVisibility(View.VISIBLE);
+        if(progress != null && getActivity() != null) {
+            progress.setVisibility(View.VISIBLE);
+        }
     }
 
     private void closeProgress() {

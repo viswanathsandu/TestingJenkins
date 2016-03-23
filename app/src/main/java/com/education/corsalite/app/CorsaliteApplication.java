@@ -2,10 +2,11 @@ package com.education.corsalite.app;
 
 import android.content.Context;
 import android.content.Intent;
+import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.education.corsalite.R;
-import com.education.corsalite.activities.WelcomeActivity;
+import com.education.corsalite.activities.SplashActivity;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.localytics.android.LocalyticsActivityLifecycleCallbacks;
@@ -18,20 +19,19 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 /**
  * Created by vissu on 9/18/15.
  */
-public class CorsaliteApplication extends com.orm.SugarApp{
+public class CorsaliteApplication extends com.orm.SugarApp {
 
     public CorsaliteApplication(){
         super();
     }
 
     @Override
-    public void onCreate()
-    {
+    public void onCreate() {
         super.onCreate();
         Fabric.with(this, new Crashlytics());
         registerActivityLifecycleCallbacks(
                 new LocalyticsActivityLifecycleCallbacks(this));
-        registerForCrashes();
+//        registerForCrashes();
     }
 
     private void registerForCrashes() {
@@ -44,8 +44,12 @@ public class CorsaliteApplication extends com.orm.SugarApp{
     }
 
     private void handleUncaughtException (Thread thread, Throwable e) {
-        Intent intent = new Intent (getApplicationContext(), WelcomeActivity.class);
-        startActivity(intent);
+        Crashlytics.logException(e);
+        Toast.makeText(getApplicationContext(), "Some thing went wrong", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getApplicationContext(), SplashActivity.class);
+        intent.setFlags (Intent.FLAG_ACTIVITY_NEW_TASK); // required when starting from Application
+        startActivity (intent);
+        System.exit(1);
     }
 
     @Override

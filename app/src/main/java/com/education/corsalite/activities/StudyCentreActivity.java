@@ -463,13 +463,6 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                 startPartTest(studyCenter);
             }
         });
-        dialogView.findViewById(R.id.download_test).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                downloadPartTest(studyCenter);
-            }
-        });
-
     }
 
     private void startPartTest(StudyCenter studyCenter){

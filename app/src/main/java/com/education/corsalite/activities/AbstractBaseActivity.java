@@ -480,6 +480,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     public void showVideoInToolbar(final List<ContentModel> videos, int selectedPosition) {
         Spinner videoSpinner = (Spinner) toolbar.findViewById(R.id.spinner_video);
         if (videoSpinner == null) return;
+        videoSpinner.setBackgroundColor(Color.WHITE);
         ArrayAdapter<ContentModel> dataAdapter = new ArrayAdapter<>(this, R.layout.spinner_title_textview, videos);
         dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         videoSpinner.setAdapter(dataAdapter);

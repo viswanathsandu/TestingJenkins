@@ -10,6 +10,7 @@
         android:id="@+id/btnNumber"
         android:layout_width="30dp"
         android:layout_height="30dp"
+        fontPath="@string/roboto_regular"
         android:background="@drawable/rounded_corners_gray" />
 
 </LinearLayout>
