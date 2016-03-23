@@ -29,7 +29,6 @@ import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.models.db.CourseList;
 import com.education.corsalite.models.requestmodels.Defaultcourserequest;
 import com.education.corsalite.models.requestmodels.UserProfileModel;
 import com.education.corsalite.models.responsemodels.BasicProfile;
@@ -46,7 +45,6 @@ import com.google.gson.Gson;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.Bind;
@@ -129,7 +127,7 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
     }
 
     public void loadCourses() {
-        mCourses = ((AbstractBaseActivity)getActivity()).getcourses();
+        mCourses = ((AbstractBaseActivity)getActivity()).getCourses();
     }
 
     private void setListeners() {
@@ -260,21 +258,13 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
                             dbManager.saveReqRes(ApiCacheHolder.getInstance().userProfile);
                             user = userProfileResponse;
                             showProfileData(userProfileResponse.basicProfile);
-                            loadCoursesData(userProfileResponse.basicProfile);
+//                            loadCoursesData(userProfileResponse.basicProfile);
                             if (updateExamData != null) {
                                 updateExamData.getExamData(userProfileResponse.examDetails);
                             }
                         }
                     }
                 });
-    }
-
-    private void loadCoursesData(BasicProfile profile) {
-        if(profile != null && profile.enrolledCourses != null) {
-            String [] coursesArr = profile.enrolledCourses.split(",");
-            CourseList courseList = new CourseList(Arrays.asList(coursesArr)) ;
-            courseList.defaultCourseIndex = defaultcourseIndex;
-        }
     }
 
     private void showCourses(List<Course> courses) {
@@ -333,6 +323,9 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
         String courses = "";
         for(Course course : mCourses) {
             courses += TextUtils.isEmpty(courses) ? course.name : ", "+course.name;
+            if(course.isDefault()) {
+                defaultcourseIndex = mCourses.indexOf(course);
+            }
         }
         enrolledCoursesTxt.setText(Html.fromHtml(COURSES_ENROLLED_HTML + courses));
     }

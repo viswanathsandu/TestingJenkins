@@ -119,6 +119,10 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         super.onStop();
     }
 
+    public List<Course> getCourses() {
+        return courses;
+    }
+
     protected void setToolbarForVirtualCurrency() {
         toolbar.findViewById(R.id.redeem_layout).setVisibility(View.VISIBLE);
         setToolbarTitle(getResources().getString(R.string.virtual_currency));
@@ -531,10 +535,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-    }
-
-    public List<Course> getcourses() {
-        return courses;
     }
 
     protected EventBus getEventbus() {
