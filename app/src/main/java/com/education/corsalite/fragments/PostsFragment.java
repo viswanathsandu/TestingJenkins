@@ -1,7 +1,9 @@
 package com.education.corsalite.fragments;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -220,17 +222,35 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
     @Override
     public void onDeleteClicked(final int position) {
         final ForumPost forumPost = mPostAdapter.getItem(position);
-
-        ApiManager.getInstance(getActivity()).deleteForum(new ForumLikeRequest(forumPost.idUser, forumPost.idUserPost),
-                                    new ApiCallback<CommonResponseModel>(getActivity()) {
+        AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+        alert.setTitle("Confirm");
+        alert.setMessage("Do you want to delete the post?");
+        alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
-            public void success(CommonResponseModel baseResponseModel, Response response) {
-                super.success(baseResponseModel, response);
-                if (baseResponseModel.isSuccessful()) {
-                    mPostAdapter.deleteForumPost(position);
-                }
+            public void onClick(DialogInterface dialog, int which) {
+                deletePost(forumPost, position);
             }
         });
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alert.show();
+    }
+
+    private void deletePost(ForumPost forumPost, final int position) {
+        ApiManager.getInstance(getActivity()).deleteForum(new ForumLikeRequest(forumPost.idUser, forumPost.idUserPost),
+                new ApiCallback<CommonResponseModel>(getActivity()) {
+                    @Override
+                    public void success(CommonResponseModel baseResponseModel, Response response) {
+                        super.success(baseResponseModel, response);
+                        if (baseResponseModel.isSuccessful()) {
+                            mPostAdapter.deleteForumPost(position);
+                        }
+                    }
+                });
     }
 
     @Override
