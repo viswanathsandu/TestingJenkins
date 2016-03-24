@@ -185,7 +185,7 @@ public class TestCoverageTabFragment extends Fragment {
             tableLayout.addView(tableRow);
         }
         }catch (Exception e){
-            e.printStackTrace();
+            L.error(e.getMessage(), e);
         }
     }
 
