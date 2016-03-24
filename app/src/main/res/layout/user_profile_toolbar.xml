@@ -9,113 +9,154 @@
 
     <TextView
         android:id="@+id/toolbar_title"
+        style="@style/title_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:paddingLeft="16dp"
-        style="@style/title_style"
-        android:text="@string/app_name"
-        android:singleLine="true" />
+        android:singleLine="true"
+        android:text="@string/app_name" />
 
     <LinearLayout
         android:id="@+id/spinner_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="right|center_vertical"
-        android:visibility="gone">
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:id="@+id/currency_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ico_currency_profile" />
+
+            <TextView
+                android:id="@+id/tv_virtual_currency"
+                fontPath="@string/roboto_bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingBottom="5dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="5dp"
+                android:singleLine="true"
+                android:text="10"
+                android:textColor="@color/text_white"
+                android:textSize="20sp" />
+
+            <ProgressBar
+                android:id="@+id/ProgressBar"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center" />
+        </LinearLayout>
 
         <Spinner
             android:id="@+id/spinner_courses"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="right"/>
+            android:gravity="right"
+            android:paddingLeft="16dp" />
     </LinearLayout>
 
 
     <LinearLayout
+        android:id="@+id/redeem_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="right|center_vertical"
-        android:id="@+id/redeem_layout"
         android:padding="10dp"
         android:visibility="gone">
+
         <Button
             android:id="@+id/redeem_btn"
+            fontPath="@string/roboto_medium"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
+            android:background="@drawable/yellowshape_selector"
             android:text="REDEEM"
-            fontPath="@string/roboto_medium"
-            android:textColor="@color/black"
-            android:background="@drawable/yellowshape_selector"/>
+            android:textColor="@color/black" />
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/video_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="left|center_vertical"
-        android:id="@+id/video_layout"
         android:padding="10dp"
         android:visibility="gone">
+
         <Spinner
             android:id="@+id/spinner_video"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="left"/>
+            android:gravity="left" />
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/download"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="right|center_vertical"
-        android:id="@+id/download"
         android:padding="10dp"
         android:visibility="gone">
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="right"
-            android:src="@drawable/ico_actionbar_download"/>
+            android:src="@drawable/ico_actionbar_download" />
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/new_post"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="right|center_vertical"
-        android:id="@+id/new_post"
         android:padding="10dp"
         android:visibility="gone">
 
         <Button
             android:id="@+id/new_post_btn"
+            fontPath="@string/roboto_regular"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
+            android:background="@drawable/login_button_bg"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
             android:text="New Post"
             android:textAllCaps="false"
-            android:background="@drawable/login_button_bg"
-            fontPath="@string/roboto_regular"
             android:textColor="@color/text_white"
-            android:textSize="16sp"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"/>
+            android:textSize="16sp" />
 
 
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/start_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="right|center_vertical"
-        android:id="@+id/start_layout"
         android:padding="10dp"
         android:visibility="gone">
+
         <Button
             android:id="@+id/start_btn"
+            fontPath="@string/roboto_medium"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
+            android:background="@drawable/login_button_bg"
             android:text="Start"
-            fontPath="@string/roboto_medium"
-            android:textColor="@color/black"
-            android:background="@drawable/login_button_bg"/>
+            android:textColor="@color/black" />
     </LinearLayout>
 
 </android.support.v7.widget.Toolbar>
