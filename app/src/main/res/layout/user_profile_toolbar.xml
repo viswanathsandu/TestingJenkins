@@ -37,6 +37,8 @@
             android:ellipsize="end"
             android:paddingLeft="16dp"
             style="@style/title_style"
+            android:gravity="center_vertical"
+            android:drawableLeft="@drawable/ico_sidemenu_currency"
             android:text="Virtual Currency"
             android:singleLine="true" />
     </LinearLayout>

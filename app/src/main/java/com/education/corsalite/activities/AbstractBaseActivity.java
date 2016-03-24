@@ -44,6 +44,7 @@ import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.ExamModel;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
+import com.education.corsalite.models.responsemodels.VirtualCurrencyBalanceResponse;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.AppConfig;
 import com.education.corsalite.utils.AppPref;
@@ -131,35 +132,35 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     protected void setToolbarForProfile() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
         setToolbarTitle(getResources().getString(R.string.title_activity_user_profile));
-        gotoVirtualCurrency();
+        showVirtualCurrency();
         loadCoursesList();
     }
 
     protected void setToolbarForStudyCenter() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
         setToolbarTitle(getResources().getString(R.string.study_centre));
-        gotoVirtualCurrency();
+        showVirtualCurrency();
         loadCoursesList();
     }
 
     protected void setToolbarForAnalytics() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
         setToolbarTitle(getResources().getString(R.string.analytics));
-        gotoVirtualCurrency();
+        showVirtualCurrency();
         loadCoursesList();
     }
 
     protected void setToolbarForTestStartScreen() {
         toolbar.findViewById(R.id.start_layout).setVisibility(View.VISIBLE);
         setToolbarTitle("Chapter Test");
-        gotoVirtualCurrency();
+        showVirtualCurrency();
         loadCoursesList();
     }
 
     protected void setToolbarForWelcomeScreen() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
         setToolbarTitle("Corsalite");
-        gotoVirtualCurrency();
+        showVirtualCurrency();
         loadCoursesList();
     }
 
@@ -171,7 +172,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     protected void setToolbarForContentReading() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
         setToolbarTitle(getResources().getString(R.string.content));
-        gotoVirtualCurrency();
+        showVirtualCurrency();
         loadCoursesList();
     }
 
@@ -183,14 +184,14 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     protected void setToolbarForNotes() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
         setToolbarTitle(getString(R.string.notes));
-        gotoVirtualCurrency();
+        showVirtualCurrency();
         loadCoursesList();
     }
 
     protected void setToolbarForOfflineContent() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
         setToolbarTitle(getResources().getString(R.string.offline_content));
-        gotoVirtualCurrency();
+        showVirtualCurrency();
         loadCoursesList();
     }
 
@@ -418,12 +419,20 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         textView.setText(title);
     }
 
-    protected void gotoVirtualCurrency() {
-        (toolbar.findViewById(R.id.tv_virtual_currency)).setOnClickListener(new View.OnClickListener() {
+    protected void showVirtualCurrency() {
+        final TextView textView = (TextView)toolbar.findViewById(R.id.tv_virtual_currency);
+        ApiManager.getInstance(this).getVirtualCurrencyBalance(LoginUserCache.getInstance().loginResponse.studentId, new ApiCallback<VirtualCurrencyBalanceResponse>(this) {
+            @Override
+            public void success(VirtualCurrencyBalanceResponse virtualCurrencyBalanceResponse, Response response) {
+                super.success(virtualCurrencyBalanceResponse, response);
+                textView.setText(virtualCurrencyBalanceResponse.balance+"");
+            }
+        });
+        textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(AbstractBaseActivity.this, VirtualCurrencyActivity.class);
-                AbstractBaseActivity.this.startActivity(intent);
+                startActivity(intent);
             }
         });
     }
