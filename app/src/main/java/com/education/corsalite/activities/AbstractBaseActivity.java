@@ -421,11 +421,21 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     protected void showVirtualCurrency() {
         final TextView textView = (TextView)toolbar.findViewById(R.id.tv_virtual_currency);
+        final ProgressBar progressBar = (ProgressBar)toolbar.findViewById(R.id.ProgressBar);
+        progressBar.setVisibility(View.VISIBLE);
         ApiManager.getInstance(this).getVirtualCurrencyBalance(LoginUserCache.getInstance().loginResponse.studentId, new ApiCallback<VirtualCurrencyBalanceResponse>(this) {
             @Override
             public void success(VirtualCurrencyBalanceResponse virtualCurrencyBalanceResponse, Response response) {
                 super.success(virtualCurrencyBalanceResponse, response);
-                textView.setText(virtualCurrencyBalanceResponse.balance+"");
+                progressBar.setVisibility(View.GONE);
+                if(virtualCurrencyBalanceResponse != null && virtualCurrencyBalanceResponse.balance != null)
+                textView.setText(virtualCurrencyBalanceResponse.balance.intValue()+"");
+            }
+
+            @Override
+            public void failure(CorsaliteError error) {
+                super.failure(error);
+                progressBar.setVisibility(View.GONE);
             }
         });
         textView.setOnClickListener(new View.OnClickListener() {
