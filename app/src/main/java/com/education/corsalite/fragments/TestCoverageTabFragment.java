@@ -119,6 +119,7 @@ public class TestCoverageTabFragment extends Fragment {
     }
 
     private void buildTable(List<TestCoverage> testCoverageListBySubject,TableLayout tableLayout) {
+        try {
         //level on x-axis and chapter along y-axis and testpercentage  as value
         HashMap<String, String[]> tableDataMap = new HashMap<>();
         int maxLevel = -1;
@@ -131,7 +132,8 @@ public class TestCoverageTabFragment extends Fragment {
             }else {
                 rowData = tableDataMap.get(testCoverage.chapter);
             }
-            rowData[level]= testCoverage.testCoverage;
+            Double d = Double.valueOf(testCoverage.testCoverage);
+            rowData[level]= String.format("%.2f", d);
             tableDataMap.put(testCoverage.chapter, rowData);
             if (level > maxLevel) {
                 maxLevel = level;
@@ -181,6 +183,9 @@ public class TestCoverageTabFragment extends Fragment {
             }
 
             tableLayout.addView(tableRow);
+        }
+        }catch (Exception e){
+            L.error(e.getMessage(), e);
         }
     }
 
