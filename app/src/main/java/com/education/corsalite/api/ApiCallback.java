@@ -8,6 +8,7 @@ import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.activities.LoginActivity;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.utils.AppPref;
+import com.education.corsalite.utils.L;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -43,13 +44,17 @@ public abstract class ApiCallback<T> implements Callback<T> {
 
     @Override
     public void failure(RetrofitError error) {
-        CorsaliteError restError = (CorsaliteError) error.getBodyAs(CorsaliteError.class);
-        if (restError != null) {
-            failure(restError);
-        } else if(error.getResponse().getStatus() == 401){ // Unauthentication
-            CorsaliteError corsaliteError = new CorsaliteError();
-            corsaliteError.message = "Unathorized session.";
-            failure(corsaliteError);
+        try {
+            CorsaliteError restError = (CorsaliteError) error.getBodyAs(CorsaliteError.class);
+            if (restError != null) {
+                failure(restError);
+            } else if (error.getResponse().getStatus() == 401) { // Unauthentication
+                CorsaliteError corsaliteError = new CorsaliteError();
+                corsaliteError.message = "Unathorized session.";
+                failure(corsaliteError);
+            }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
         }
     }
 }
