@@ -131,7 +131,8 @@ public class TestCoverageTabFragment extends Fragment {
             }else {
                 rowData = tableDataMap.get(testCoverage.chapter);
             }
-            rowData[level]= testCoverage.testCoverage;
+            Double d = Double.valueOf(testCoverage.testCoverage);
+            rowData[level]= String.format("%.2f", d);
             tableDataMap.put(testCoverage.chapter, rowData);
             if (level > maxLevel) {
                 maxLevel = level;
