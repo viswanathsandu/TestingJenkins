@@ -252,7 +252,7 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
                     super.success(defaultNoteResponse, response);
                     if (getActivity() != null) {
                         closeProgress();
-                        Toast.makeText(getActivity(), "Added post successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Post added successfully", Toast.LENGTH_SHORT).show();
                     }
                     dismiss();
                 }
@@ -279,7 +279,7 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
                     super.success(defaultNoteResponse, response);
                     if (getActivity() != null) {
                         closeProgress();
-                        Toast.makeText(getActivity(), "Added Note successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Note added successfully", Toast.LENGTH_SHORT).show();
                     }
                     dismiss();
                 }

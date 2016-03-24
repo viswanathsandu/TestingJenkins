@@ -132,7 +132,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     protected void setToolbarForProfile() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
         setToolbarTitle(getResources().getString(R.string.title_activity_user_profile));
-        showVirtualCurrency();
         loadCoursesList();
     }
 
@@ -160,7 +159,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     protected void setToolbarForWelcomeScreen() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
         setToolbarTitle("Corsalite");
-        showVirtualCurrency();
         loadCoursesList();
     }
 
