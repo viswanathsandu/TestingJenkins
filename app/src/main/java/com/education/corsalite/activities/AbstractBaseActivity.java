@@ -131,30 +131,35 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     protected void setToolbarForProfile() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
         setToolbarTitle(getResources().getString(R.string.title_activity_user_profile));
+        gotoVirtualCurrency();
         loadCoursesList();
     }
 
     protected void setToolbarForStudyCenter() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
         setToolbarTitle(getResources().getString(R.string.study_centre));
+        gotoVirtualCurrency();
         loadCoursesList();
     }
 
     protected void setToolbarForAnalytics() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
         setToolbarTitle(getResources().getString(R.string.analytics));
+        gotoVirtualCurrency();
         loadCoursesList();
     }
 
     protected void setToolbarForTestStartScreen() {
         toolbar.findViewById(R.id.start_layout).setVisibility(View.VISIBLE);
         setToolbarTitle("Chapter Test");
+        gotoVirtualCurrency();
         loadCoursesList();
     }
 
     protected void setToolbarForWelcomeScreen() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
         setToolbarTitle("Corsalite");
+        gotoVirtualCurrency();
         loadCoursesList();
     }
 
@@ -166,10 +171,11 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     protected void setToolbarForContentReading() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
         setToolbarTitle(getResources().getString(R.string.content));
+        gotoVirtualCurrency();
         loadCoursesList();
     }
 
-    protected void setToolbarForExamHistory(){
+    protected void setToolbarForExamHistory() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
         setToolbarTitle(getResources().getString(R.string.exam_history));
     }
@@ -177,11 +183,14 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     protected void setToolbarForNotes() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
         setToolbarTitle(getString(R.string.notes));
+        gotoVirtualCurrency();
         loadCoursesList();
     }
+
     protected void setToolbarForOfflineContent() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
         setToolbarTitle(getResources().getString(R.string.offline_content));
+        gotoVirtualCurrency();
         loadCoursesList();
     }
 
@@ -216,7 +225,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         setToolbarTitle(title);
     }
 
-    protected void setDrawerIconInvisible(){
+    protected void setDrawerIconInvisible() {
         actionBarDrawerToggle.setDrawerIndicatorEnabled(false);
     }
 
@@ -260,35 +269,35 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     private void enableNavigationOptions() {
         AppConfig config = AppConfig.getInstance();
-        if(config == null) {
+        if (config == null) {
             return;
         }
 
         navigationView.findViewById(R.id.navigation_welcome).setVisibility(View.VISIBLE);
 
-        if(config.enableMyProfile != null && config.enableMyProfile) {
+        if (config.enableMyProfile != null && config.enableMyProfile) {
             navigationView.findViewById(R.id.navigation_profile).setVisibility(View.VISIBLE);
         }
-        if(config.enableStudyCenter != null && config.enableStudyCenter) {
+        if (config.enableStudyCenter != null && config.enableStudyCenter) {
             navigationView.findViewById(R.id.navigation_study_center).setVisibility(View.VISIBLE);
         }
-        if(config.enableSmartClass != null && config.enableSmartClass) {
+        if (config.enableSmartClass != null && config.enableSmartClass) {
             navigationView.findViewById(R.id.navigation_smart_class).setVisibility(View.VISIBLE);
         }
-        if(config.enableAnalytics != null && config.enableAnalytics) {
+        if (config.enableAnalytics != null && config.enableAnalytics) {
             navigationView.findViewById(R.id.navigation_analytics).setVisibility(View.VISIBLE);
         }
-        if(config.enableOffline != null && config.enableOffline) {
+        if (config.enableOffline != null && config.enableOffline) {
             navigationView.findViewById(R.id.navigation_offline).setVisibility(View.VISIBLE);
         }
-        if(config.enableChallangeTest != null && config.enableChallangeTest) {
+        if (config.enableChallangeTest != null && config.enableChallangeTest) {
             navigationView.findViewById(R.id.navigation_challenge_your_friends).setVisibility(View.VISIBLE);
         }
 
-        if(config.enableForum != null && config.enableForum) {
+        if (config.enableForum != null && config.enableForum) {
             navigationView.findViewById(R.id.navigation_forum).setVisibility(View.VISIBLE);
         }
-        if(config.enableLogout != null && config.enableLogout) {
+        if (config.enableLogout != null && config.enableLogout) {
             navigationView.findViewById(R.id.navigation_logout).setVisibility(View.VISIBLE);
         }
 
@@ -361,7 +370,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_forum).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(SystemUtils.isNetworkConnected(AbstractBaseActivity.this)) {
+                if (SystemUtils.isNetworkConnected(AbstractBaseActivity.this)) {
                     Localytics.tagEvent(getString(R.string.forum));
                     startActivity(new Intent(AbstractBaseActivity.this, ForumActivity.class));
                 } else {
@@ -407,6 +416,16 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     protected void setToolbarTitle(String title) {
         TextView textView = (TextView) toolbar.findViewById(R.id.toolbar_title);
         textView.setText(title);
+    }
+
+    protected void gotoVirtualCurrency() {
+        (toolbar.findViewById(R.id.tv_virtual_currency)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AbstractBaseActivity.this, VirtualCurrencyActivity.class);
+                AbstractBaseActivity.this.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -459,7 +478,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     private void loadCoursesList() {
-        if(LoginUserCache.getInstance().loginResponse == null || LoginUserCache.getInstance().loginResponse.studentId == null) {
+        if (LoginUserCache.getInstance().loginResponse == null || LoginUserCache.getInstance().loginResponse.studentId == null) {
             return;
         }
         ApiManager.getInstance(this).getCourses(LoginUserCache.getInstance().loginResponse.studentId, new ApiCallback<List<Course>>(this) {
@@ -565,7 +584,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         ApiClientService.setSetCookie(null);
     }
 
-    public void showProgress(){
+    public void showProgress() {
         ProgressBar pbar = new ProgressBar(this);
         pbar.setBackgroundColor(getResources().getColor(android.R.color.transparent));
         dialog = new Dialog(this);
@@ -576,41 +595,40 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    public void closeProgress(){
-        if(dialog != null && dialog.isShowing()){
+    public void closeProgress() {
+        if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
         }
     }
 
-    public void sendAnalytics(String screenName){
+    public void sendAnalytics(String screenName) {
         GoogleAnalyticsManager.sendOpenScreenEvent(this, this, screenName);
     }
 
     @Override
-    protected void onNewIntent(Intent intent)
-    {
+    protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
     }
 
-    public void onEvent(ContentReadingEvent event){
+    public void onEvent(ContentReadingEvent event) {
         L.debug("ContentReadingEvent id", event.id);
         new UpdateUserEvents().postContentReading(this, event);
     }
 
-    public void onEvent(ForumPostingEvent event){
+    public void onEvent(ForumPostingEvent event) {
         L.debug("ForumPostingEvent id", event.id);
         new UpdateUserEvents().postForumPosting(this, event);
     }
 
-    public void onEvent(ExerciseAnsEvent event){
-        if(event != null && event.id != null) {
-            L.debug("ExerciseAnsEvent id", event.id+"");
+    public void onEvent(ExerciseAnsEvent event) {
+        if (event != null && event.id != null) {
+            L.debug("ExerciseAnsEvent id", event.id + "");
             new UpdateUserEvents().postExerciseAns(this, event);
         }
     }
 
-    public void onEvent(TakingTestEvent event){
+    public void onEvent(TakingTestEvent event) {
         L.debug("TakingTestEvent id", event.id);
         new UpdateUserEvents().postTakingTest(this, event);
     }
