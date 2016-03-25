@@ -34,6 +34,7 @@ import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
 import com.education.corsalite.models.responsemodels.Message;
 import com.education.corsalite.models.responsemodels.Note;
+import com.education.corsalite.models.responsemodels.PartTestModel;
 import com.education.corsalite.models.responsemodels.PostExamTemplate;
 import com.education.corsalite.models.responsemodels.PostExercise;
 import com.education.corsalite.models.responsemodels.PostFlaggedQuestions;
@@ -114,7 +115,7 @@ public class ApiManager {
 
     public void logout(String update, ApiCallback<LogoutResponse> callback) {
         if (isApiOnline()) {
-            ApiClientService.get().logout(new TypedString("Update="+update), callback);
+            ApiClientService.get().logout(new TypedString("Update=" + update), callback);
         } else {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/logout.json");
             L.info("Response for 'api/logout.json' is " + jsonResponse);
@@ -364,7 +365,7 @@ public class ApiManager {
 
     public void submitTestAnswerPaper(TestAnswerPaper testAnswerPaper, ApiCallback<TestAnswerPaperResponse> callback) {
         if(isApiOnline()) {
-            ApiClientService.get().submitTestAnswerPaper(new TypedString("Upsert="+new Gson().toJson(testAnswerPaper)), callback);
+            ApiClientService.get().submitTestAnswerPaper(new TypedString("Upsert=" + new Gson().toJson(testAnswerPaper)), callback);
         }
     }
 
@@ -389,13 +390,13 @@ public class ApiManager {
 
     public void addNote(String insertNote, ApiCallback<DefaultNoteResponse> callback) {
         if(isApiOnline()) {
-            ApiClientService.get().addNote(new TypedString("Insert="+insertNote), callback);
+            ApiClientService.get().addNote(new TypedString("Insert=" + insertNote), callback);
         }
     }
 
     public void updateNote(String updateNote, ApiCallback<DefaultNoteResponse> callback) {
         if(isApiOnline()) {
-            ApiClientService.get().updateNote(new TypedString("Update="+updateNote), callback);
+            ApiClientService.get().updateNote(new TypedString("Update=" + updateNote), callback);
         }
     }
 
@@ -407,43 +408,43 @@ public class ApiManager {
 
     public void updateUserProfile(String userProfile, ApiCallback<EditProfileModel> callback) {
         if (isApiOnline()) {
-            ApiClientService.get().updateUserProfile(new TypedString("Update="+userProfile), callback);
+            ApiClientService.get().updateUserProfile(new TypedString("Update=" + userProfile), callback);
         }
     }
 
     public void updateDefaultCourse(String defaultCourse, ApiCallback<DefaultCourseResponse> callback) {
         if (isApiOnline()) {
-            ApiClientService.get().updateDefaultCourse(new TypedString("Update="+defaultCourse), callback);
+            ApiClientService.get().updateDefaultCourse(new TypedString("Update=" + defaultCourse), callback);
         }
     }
 
     public void updateExamDetails(String examDetails, ApiCallback<UpdateExamDetailsResponse> callback) {
         if (isApiOnline()) {
-            ApiClientService.get().updateExamDetails(new TypedString("Update="+examDetails), callback);
+            ApiClientService.get().updateExamDetails(new TypedString("Update=" + examDetails), callback);
         }
     }
 
     public void postExerciseAnswer(String insert, ApiCallback<PostExercise> callback) {
         if (isApiOnline()) {
-            ApiClientService.get().postExerciseAnswer(new TypedString("Insert="+insert), callback);
+            ApiClientService.get().postExerciseAnswer(new TypedString("Insert=" + insert), callback);
         }
     }
 
     public void postCustomExamTemplate(String insert, ApiCallback<PostExamTemplate> callback) {
         if (isApiOnline()) {
-            ApiClientService.get().postCustomExamTemplate(new TypedString("Insert="+insert), callback);
+            ApiClientService.get().postCustomExamTemplate(new TypedString("Insert=" + insert), callback);
         }
     }
 
     public void postQuestionPaper(String insert, ApiCallback<PostQuestionPaper> callback) {
         if (isApiOnline()) {
-            ApiClientService.get().postQuestionPaper(new TypedString("Insert="+insert), callback);
+            ApiClientService.get().postQuestionPaper(new TypedString("Insert=" + insert), callback);
         }
     }
 
     public void postFlaggedQuestions(String update, ApiCallback<PostFlaggedQuestions> callback) {
         if (isApiOnline()) {
-            ApiClientService.get().postFlaggedQuestions(new TypedString("Update="+update), callback);
+            ApiClientService.get().postFlaggedQuestions(new TypedString("Update=" + update), callback);
         }
     }
 
@@ -467,25 +468,25 @@ public class ApiManager {
 
     public void addForumLike(ForumLikeRequest forumLikeRequest, ApiCallback<CommonResponseModel> callback){
         if(isApiOnline()){
-            ApiClientService.get().addForumLike(new TypedString("Insert="+new Gson().toJson(forumLikeRequest)), callback);
+            ApiClientService.get().addForumLike(new TypedString("Insert=" + new Gson().toJson(forumLikeRequest)), callback);
         }
     }
 
     public void addEditForumPost(ForumModel forumPost, ApiCallback<DefaultForumResponse> callback){
         if(isApiOnline()){
-            ApiClientService.get().addPostToForum(new TypedString("Update="+new Gson().toJson(forumPost)), callback);
+            ApiClientService.get().addPostToForum(new TypedString("Update=" + new Gson().toJson(forumPost)), callback);
         }
     }
 
     public void deleteForum(ForumLikeRequest forumdeleteRequest, ApiCallback<CommonResponseModel> callback){
         if(isApiOnline()){
-            ApiClientService.get().deleteForum(new TypedString("Delete="+new Gson().toJson(forumdeleteRequest)), callback);
+            ApiClientService.get().deleteForum(new TypedString("Delete=" + new Gson().toJson(forumdeleteRequest)), callback);
         }
     }
 
     public void postUserEvents(String insert, ApiCallback<UserEventsResponse> callback){
         if(isApiOnline()){
-            ApiClientService.get().postUserEvents(new TypedString("Insert="+insert), callback);
+            ApiClientService.get().postUserEvents(new TypedString("Insert=" + insert), callback);
         }
     }
 
@@ -503,13 +504,19 @@ public class ApiManager {
 
     public void getWelcomeDetails(String idStudent,ApiCallback<WelcomeDetails> callback){
         if(isApiOnline()){
-            ApiClientService.get().getWelcomeDetails(idStudent,callback);
+            ApiClientService.get().getWelcomeDetails(idStudent, callback);
         }
     }
 
     public void createChallenge(CreateChallengeRequest insert, ApiCallback<CreateChallengeResponseModel> callback){
         if(isApiOnline()){
-            ApiClientService.get().createChallenge(new TypedString("Insert="+new Gson().toJson(insert)), callback);
+            ApiClientService.get().createChallenge(new TypedString("Insert=" + new Gson().toJson(insert)), callback);
+        }
+    }
+
+    public void getPartTestGrid(String studentId,String courseId,String subjectId,ApiCallback<PartTestModel> callback){
+        if (isApiOnline()){
+            ApiClientService.get().getPartTestGrid(studentId,courseId,subjectId,callback);
         }
     }
 }

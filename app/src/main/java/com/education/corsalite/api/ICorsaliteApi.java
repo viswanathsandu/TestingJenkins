@@ -13,15 +13,16 @@ import com.education.corsalite.models.responsemodels.DefaultCourseResponse;
 import com.education.corsalite.models.responsemodels.DefaultForumResponse;
 import com.education.corsalite.models.responsemodels.DefaultNoteResponse;
 import com.education.corsalite.models.responsemodels.EditProfileModel;
+import com.education.corsalite.models.responsemodels.Exam;
 import com.education.corsalite.models.responsemodels.ExamHistory;
 import com.education.corsalite.models.responsemodels.ExamModel;
-import com.education.corsalite.models.responsemodels.Exam;
 import com.education.corsalite.models.responsemodels.ForumPost;
 import com.education.corsalite.models.responsemodels.FriendsData;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
 import com.education.corsalite.models.responsemodels.Message;
 import com.education.corsalite.models.responsemodels.Note;
+import com.education.corsalite.models.responsemodels.PartTestModel;
 import com.education.corsalite.models.responsemodels.PostExamTemplate;
 import com.education.corsalite.models.responsemodels.PostExercise;
 import com.education.corsalite.models.responsemodels.PostFlaggedQuestions;
@@ -230,4 +231,7 @@ public interface ICorsaliteApi {
     @Headers("Content-Type:application/x-www-form-urlencoded")
     @POST("/CreateChallenge")
     void createChallenge(@Body TypedString insert, ApiCallback<CreateChallengeResponseModel> callback);
+
+    @GET("/PartTestGrid")
+    void getPartTestGrid(@Query("idStudent")String studentId,@Query("idCourse")String courseId,@Query("idSubject") String subjectId,ApiCallback<PartTestModel> callback);
 }

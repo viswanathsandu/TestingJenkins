@@ -36,6 +36,7 @@ import com.education.corsalite.models.responsemodels.Chapter;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.CourseData;
+import com.education.corsalite.models.responsemodels.PartTestModel;
 import com.education.corsalite.models.responsemodels.StudyCenter;
 import com.education.corsalite.services.TestDownloadService;
 import com.education.corsalite.utils.Constants;
@@ -149,7 +150,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         allColorLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(studyCenter != null && studyCenter.chapters != null) {
+                if (studyCenter != null && studyCenter.chapters != null) {
                     mAdapter.updateData(studyCenter.chapters, key);
                     mAdapter.notifyDataSetChanged();
                     updateSelected(allColorLayout);
@@ -460,9 +461,25 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                 if (dialog != null) {
                     dialog.cancel();
                 }
-                startPartTest(studyCenter);
+                //startPartTest(studyCenter);
+                showPartTestGrid();
             }
         });
+    }
+
+    private void showPartTestGrid(){
+        ApiManager.getInstance(this).getPartTestGrid(LoginUserCache.getInstance().loginResponse.studentId,
+                AbstractBaseActivity.selectedCourse.courseId.toString(), studyCenter.idCourseSubject+"", new ApiCallback<PartTestModel>(this) {
+                    @Override
+                    public void failure(CorsaliteError error) {
+                        super.failure(error);
+                    }
+
+                    @Override
+                    public void success(PartTestModel partTestModel, Response response) {
+                        super.success(partTestModel, response);
+                    }
+                });
     }
 
     private void startPartTest(StudyCenter studyCenter){
