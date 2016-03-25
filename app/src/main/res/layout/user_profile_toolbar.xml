@@ -23,14 +23,15 @@
         android:layout_height="wrap_content"
         android:gravity="right|center_vertical"
         android:orientation="horizontal"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <LinearLayout
             android:id="@+id/currency_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <ImageView
                 android:layout_width="30dp"
@@ -49,7 +50,7 @@
                 android:paddingLeft="5dp"
                 android:paddingTop="5dp"
                 android:singleLine="true"
-                android:text="10"
+                android:text=""
                 android:textColor="@color/text_white"
                 android:textSize="20sp" />
 

@@ -20,6 +20,8 @@ import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.services.ApiClientService;
+import com.education.corsalite.utils.AppConfig;
+import com.education.corsalite.utils.AppPref;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.Encryption;
 import com.education.corsalite.utils.SystemUtils;
@@ -49,14 +51,18 @@ public class LoginActivity extends AbstractBaseActivity {
     }
 
     private void setListeners() {
+        AppConfig config = AppConfig.getInstance();
+        String enableProduction = AppPref.getInstance(LoginActivity.this).getValue("enable_production");
+        if(!TextUtils.isEmpty(enableProduction)) {
+            buildTypeToggle.setChecked(enableProduction.equalsIgnoreCase("true"));
+        }
         buildTypeToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked) {
-                    ApiClientService.enableProduction();
-                } else {
-                    ApiClientService.enableStaging();
-                }
+                AppConfig config = AppConfig.getInstance();
+                config.enableProduction = isChecked;
+                AppPref.getInstance(LoginActivity.this).save("enable_production", config.enableProduction+"");
+                ApiClientService.setBaseUrl(isChecked ? config.productionUrl : config.stageUrl);
             }
         });
         loginBtn.setOnClickListener(new View.OnClickListener() {

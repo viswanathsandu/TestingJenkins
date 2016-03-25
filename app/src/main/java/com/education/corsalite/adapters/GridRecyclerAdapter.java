@@ -80,9 +80,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
             holder.rootGridLayout.setBackgroundDrawable(getColorDrawable(holder, chapter));
             int totalTopics = Data.getInt(chapter.totalTopics);
             int completedTopics = Data.getInt(chapter.completedTopics);
-            int percentage = (completedTopics != 0)
-                                ? completedTopics * 100 /totalTopics
-                                : 0;
+            int percentage = (completedTopics != 0) ? completedTopics * 100 /totalTopics : 0;
             holder.progressBar.setMax(100);
             holder.progressBar.setProgress(percentage);
             getLevelDrawable(holder, chapter.passedComplexity+1, holder.level);

@@ -422,6 +422,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             final TextView textView = (TextView) toolbar.findViewById(R.id.tv_virtual_currency);
             final ProgressBar progressBar = (ProgressBar) toolbar.findViewById(R.id.ProgressBar);
             progressBar.setVisibility(View.VISIBLE);
+            toolbar.findViewById(R.id.currency_layout).setVisibility(View.VISIBLE);
             toolbar.findViewById(R.id.currency_layout).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
