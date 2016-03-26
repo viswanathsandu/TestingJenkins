@@ -31,12 +31,12 @@ import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.db.DbManager;
 import com.education.corsalite.fragments.MockTestDialog;
+import com.education.corsalite.fragments.PartTestDialog;
 import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.models.responsemodels.Chapter;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.CourseData;
-import com.education.corsalite.models.responsemodels.PartTestModel;
 import com.education.corsalite.models.responsemodels.StudyCenter;
 import com.education.corsalite.services.TestDownloadService;
 import com.education.corsalite.utils.Constants;
@@ -468,18 +468,11 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     }
 
     private void showPartTestGrid(){
-        ApiManager.getInstance(this).getPartTestGrid(LoginUserCache.getInstance().loginResponse.studentId,
-                AbstractBaseActivity.selectedCourse.courseId.toString(), studyCenter.idCourseSubject+"", new ApiCallback<PartTestModel>(this) {
-                    @Override
-                    public void failure(CorsaliteError error) {
-                        super.failure(error);
-                    }
-
-                    @Override
-                    public void success(PartTestModel partTestModel, Response response) {
-                        super.success(partTestModel, response);
-                    }
-                });
+        PartTestDialog dialog = new PartTestDialog();
+        Bundle bundle = new Bundle();
+        bundle.putInt("idCourseSubject",studyCenter.idCourseSubject);
+        dialog.setArguments(bundle);
+        dialog.show(getFragmentManager(),"PartTestDialog");
     }
 
     private void startPartTest(StudyCenter studyCenter){

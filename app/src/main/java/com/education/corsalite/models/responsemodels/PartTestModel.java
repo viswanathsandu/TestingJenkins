@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class PartTestModel extends BaseModel {
     public int idExam;
-    @SerializedName("partTestGrid")
+    @SerializedName("PartTestGrid")
     public List<PartTestGridElement> partTestGrid;
 }
 
