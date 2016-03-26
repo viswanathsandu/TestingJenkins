@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
@@ -47,13 +46,6 @@ public class PartTestDialog extends DialogFragment {
     private List<PartTestGridElement> allList;
 
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Dialog dialog = super.onCreateDialog(savedInstanceState);
-        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-        return dialog;
-    }
-
-    @Override
     public void onStart()
     {
         super.onStart();
@@ -74,6 +66,8 @@ public class PartTestDialog extends DialogFragment {
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
+        getDialog().setTitle("Part Test");
+        getDialog().getWindow().setBackgroundDrawableResource(R.color.white);
         getIntentData();
         loadPartTest();
         return v;
@@ -102,8 +96,6 @@ public class PartTestDialog extends DialogFragment {
                             filterRecommended();
                             tvReceommended.setSelected(true);
                             tvAll.setSelected(false);
-                           // tvReceommended.setBackgroundColor(getResources().getColor(R.color.gray));
-                           // tvAll.setBackgroundColor(getResources().getColor(R.color.white));
                             loadRecommendedList();
                         }
 
@@ -134,18 +126,14 @@ public class PartTestDialog extends DialogFragment {
         }
     }
 
-    @OnClick({R.id.iv_cancel,R.id.tv_all,R.id.tv_cancel,R.id.tv_recommended,R.id.tv_CAT,R.id.tv_taketest})
+    @OnClick({R.id.tv_all,R.id.tv_cancel,R.id.tv_recommended,R.id.tv_taketest})
     public void onClick(View view){
         switch (view.getId()){
-            case R.id.iv_cancel:
             case R.id.tv_cancel:
                 dismiss();
                 break;
             case R.id.tv_recommended:
                 if(!tvReceommended.isSelected()){
-                   // tvReceommended.setBackgroundColor(getResources().getColor(R.color.gray));
-                   // tvReceommended.setBackgroundResource(R.drawable.ambershape);
-                    //tvAll.setBackgroundColor(getResources().getColor(R.color.white));
                     loadRecommendedList();
                     tvReceommended.setSelected(true);
                     tvAll.setSelected(false);
@@ -153,16 +141,12 @@ public class PartTestDialog extends DialogFragment {
                 break;
             case R.id.tv_all:
                 if(!tvAll.isSelected()){
-                   // tvReceommended.setBackgroundColor(getResources().getColor(R.color.white));
-                    //tvAll.setBackgroundColor(getResources().getColor(R.color.gray));
                     tvAll.setSelected(true);
                     tvReceommended.setSelected(false);
                     loadAllList();
                 }
                 break;
             case R.id.tv_taketest:
-                break;
-            case R.id.tv_CAT:
                 break;
             default:dismiss();
         }

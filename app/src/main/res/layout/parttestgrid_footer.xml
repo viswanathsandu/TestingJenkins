@@ -15,16 +15,6 @@
         android:textColor="@color/black" />
 
     <TextView
-        android:id="@+id/tv_CAT"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/border_lightblue"
-        android:padding="6dp"
-        android:layout_marginLeft="5dp"
-        android:text="Computer Adaptive Testing"
-        android:textColor="@color/white" />
-
-    <TextView
         android:id="@+id/tv_taketest"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

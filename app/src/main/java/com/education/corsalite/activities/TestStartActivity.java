@@ -14,7 +14,7 @@ import com.education.corsalite.fragments.TestScheduledFragment;
 
 import butterknife.ButterKnife;
 
-public class TestStartActivity extends AbstractBaseActivity {
+public class  TestStartActivity extends AbstractBaseActivity {
 
     public static final String KEY_TEST_TYPE = "key_test_type";
 
