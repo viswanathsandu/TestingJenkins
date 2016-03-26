@@ -35,7 +35,6 @@ public abstract class BaseFragment extends Fragment {
     }
 
     public void showProgress(){
-
         ProgressBar pbar = new ProgressBar(getActivity());
         pbar.setBackgroundColor(getResources().getColor(android.R.color.transparent));
         dialog = new Dialog(getActivity());
