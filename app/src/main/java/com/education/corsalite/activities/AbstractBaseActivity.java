@@ -44,6 +44,7 @@ import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.ExamModel;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
+import com.education.corsalite.models.responsemodels.VirtualCurrencyBalanceResponse;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.AppConfig;
 import com.education.corsalite.utils.AppPref;
@@ -137,18 +138,21 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     protected void setToolbarForStudyCenter() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
         setToolbarTitle(getResources().getString(R.string.study_centre));
+        showVirtualCurrency();
         loadCoursesList();
     }
 
     protected void setToolbarForAnalytics() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
         setToolbarTitle(getResources().getString(R.string.analytics));
+        showVirtualCurrency();
         loadCoursesList();
     }
 
     protected void setToolbarForTestStartScreen() {
         toolbar.findViewById(R.id.start_layout).setVisibility(View.VISIBLE);
         setToolbarTitle("Chapter Test");
+        showVirtualCurrency();
         loadCoursesList();
     }
 
@@ -166,10 +170,11 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     protected void setToolbarForContentReading() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
         setToolbarTitle(getResources().getString(R.string.content));
+        showVirtualCurrency();
         loadCoursesList();
     }
 
-    protected void setToolbarForExamHistory(){
+    protected void setToolbarForExamHistory() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
         setToolbarTitle(getResources().getString(R.string.exam_history));
     }
@@ -177,11 +182,14 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     protected void setToolbarForNotes() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
         setToolbarTitle(getString(R.string.notes));
+        showVirtualCurrency();
         loadCoursesList();
     }
+
     protected void setToolbarForOfflineContent() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
         setToolbarTitle(getResources().getString(R.string.offline_content));
+        showVirtualCurrency();
         loadCoursesList();
     }
 
@@ -216,7 +224,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         setToolbarTitle(title);
     }
 
-    protected void setDrawerIconInvisible(){
+    protected void setDrawerIconInvisible() {
         actionBarDrawerToggle.setDrawerIndicatorEnabled(false);
     }
 
@@ -260,35 +268,35 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     private void enableNavigationOptions() {
         AppConfig config = AppConfig.getInstance();
-        if(config == null) {
+        if (config == null) {
             return;
         }
 
         navigationView.findViewById(R.id.navigation_welcome).setVisibility(View.VISIBLE);
 
-        if(config.enableMyProfile != null && config.enableMyProfile) {
+        if (config.enableMyProfile != null && config.enableMyProfile) {
             navigationView.findViewById(R.id.navigation_profile).setVisibility(View.VISIBLE);
         }
-        if(config.enableStudyCenter != null && config.enableStudyCenter) {
+        if (config.enableStudyCenter != null && config.enableStudyCenter) {
             navigationView.findViewById(R.id.navigation_study_center).setVisibility(View.VISIBLE);
         }
-        if(config.enableSmartClass != null && config.enableSmartClass) {
+        if (config.enableSmartClass != null && config.enableSmartClass) {
             navigationView.findViewById(R.id.navigation_smart_class).setVisibility(View.VISIBLE);
         }
-        if(config.enableAnalytics != null && config.enableAnalytics) {
+        if (config.enableAnalytics != null && config.enableAnalytics) {
             navigationView.findViewById(R.id.navigation_analytics).setVisibility(View.VISIBLE);
         }
-        if(config.enableOffline != null && config.enableOffline) {
+        if (config.enableOffline != null && config.enableOffline) {
             navigationView.findViewById(R.id.navigation_offline).setVisibility(View.VISIBLE);
         }
-        if(config.enableChallangeTest != null && config.enableChallangeTest) {
+        if (config.enableChallangeTest != null && config.enableChallangeTest) {
             navigationView.findViewById(R.id.navigation_challenge_your_friends).setVisibility(View.VISIBLE);
         }
 
-        if(config.enableForum != null && config.enableForum) {
+        if (config.enableForum != null && config.enableForum) {
             navigationView.findViewById(R.id.navigation_forum).setVisibility(View.VISIBLE);
         }
-        if(config.enableLogout != null && config.enableLogout) {
+        if (config.enableLogout != null && config.enableLogout) {
             navigationView.findViewById(R.id.navigation_logout).setVisibility(View.VISIBLE);
         }
 
@@ -361,7 +369,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_forum).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(SystemUtils.isNetworkConnected(AbstractBaseActivity.this)) {
+                if (SystemUtils.isNetworkConnected(AbstractBaseActivity.this)) {
                     Localytics.tagEvent(getString(R.string.forum));
                     startActivity(new Intent(AbstractBaseActivity.this, ForumActivity.class));
                 } else {
@@ -407,6 +415,39 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     protected void setToolbarTitle(String title) {
         TextView textView = (TextView) toolbar.findViewById(R.id.toolbar_title);
         textView.setText(title);
+    }
+
+    protected void showVirtualCurrency() {
+        try {
+            final TextView textView = (TextView) toolbar.findViewById(R.id.tv_virtual_currency);
+            final ProgressBar progressBar = (ProgressBar) toolbar.findViewById(R.id.ProgressBar);
+            progressBar.setVisibility(View.VISIBLE);
+            toolbar.findViewById(R.id.currency_layout).setVisibility(View.VISIBLE);
+            toolbar.findViewById(R.id.currency_layout).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(AbstractBaseActivity.this, VirtualCurrencyActivity.class);
+                    startActivity(intent);
+                }
+            });
+            ApiManager.getInstance(this).getVirtualCurrencyBalance(LoginUserCache.getInstance().loginResponse.studentId, new ApiCallback<VirtualCurrencyBalanceResponse>(this) {
+                @Override
+                public void success(VirtualCurrencyBalanceResponse virtualCurrencyBalanceResponse, Response response) {
+                    super.success(virtualCurrencyBalanceResponse, response);
+                    progressBar.setVisibility(View.GONE);
+                    if (virtualCurrencyBalanceResponse != null && virtualCurrencyBalanceResponse.balance != null)
+                        textView.setText(virtualCurrencyBalanceResponse.balance.intValue() + "");
+                }
+
+                @Override
+                public void failure(CorsaliteError error) {
+                    super.failure(error);
+                    progressBar.setVisibility(View.GONE);
+                }
+            });
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
     }
 
     @Override
@@ -459,7 +500,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     private void loadCoursesList() {
-        if(LoginUserCache.getInstance().loginResponse == null || LoginUserCache.getInstance().loginResponse.studentId == null) {
+        if (LoginUserCache.getInstance().loginResponse == null || LoginUserCache.getInstance().loginResponse.studentId == null) {
             return;
         }
         ApiManager.getInstance(this).getCourses(LoginUserCache.getInstance().loginResponse.studentId, new ApiCallback<List<Course>>(this) {
@@ -565,7 +606,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         ApiClientService.setSetCookie(null);
     }
 
-    public void showProgress(){
+    public void showProgress() {
         ProgressBar pbar = new ProgressBar(this);
         pbar.setBackgroundColor(getResources().getColor(android.R.color.transparent));
         dialog = new Dialog(this);
@@ -576,41 +617,40 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    public void closeProgress(){
-        if(dialog != null && dialog.isShowing()){
+    public void closeProgress() {
+        if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
         }
     }
 
-    public void sendAnalytics(String screenName){
+    public void sendAnalytics(String screenName) {
         GoogleAnalyticsManager.sendOpenScreenEvent(this, this, screenName);
     }
 
     @Override
-    protected void onNewIntent(Intent intent)
-    {
+    protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
     }
 
-    public void onEvent(ContentReadingEvent event){
+    public void onEvent(ContentReadingEvent event) {
         L.debug("ContentReadingEvent id", event.id);
         new UpdateUserEvents().postContentReading(this, event);
     }
 
-    public void onEvent(ForumPostingEvent event){
+    public void onEvent(ForumPostingEvent event) {
         L.debug("ForumPostingEvent id", event.id);
         new UpdateUserEvents().postForumPosting(this, event);
     }
 
-    public void onEvent(ExerciseAnsEvent event){
-        if(event != null && event.id != null) {
-            L.debug("ExerciseAnsEvent id", event.id+"");
+    public void onEvent(ExerciseAnsEvent event) {
+        if (event != null && event.id != null) {
+            L.debug("ExerciseAnsEvent id", event.id + "");
             new UpdateUserEvents().postExerciseAns(this, event);
         }
     }
 
-    public void onEvent(TakingTestEvent event){
+    public void onEvent(TakingTestEvent event) {
         L.debug("TakingTestEvent id", event.id);
         new UpdateUserEvents().postTakingTest(this, event);
     }

@@ -1,5 +1,8 @@
 {
   "BaseUrl":"https://staging.corsalite.com/v1/webservices/",
+  "stageUrl":"http://staging.corsalite.com/v1/webservices/",
+  "productionUrl":"http://app.corsalite.com/ws/webservices/",
+  "enableProduction":false,
   "splashDuration":2000, // in milli seconds
   "enableStudyCenter": true,
   "enableAnalytics":true,

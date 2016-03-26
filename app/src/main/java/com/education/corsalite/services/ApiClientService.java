@@ -20,8 +20,8 @@ import retrofit.converter.GsonConverter;
 public class ApiClientService {
 
     private static ICorsaliteApi client;
-    private static final String PROD = "http://app.corsalite.com/ws/webservices/";
-    private static  final String STAGING = "http://staging.corsalite.com/v1/webservices/";
+    private static String PROD = "http://app.corsalite.com/ws/webservices/";
+    private static String STAGING = "http://staging.corsalite.com/v1/webservices/";
 
     private static String ROOT = STAGING;
 
@@ -29,16 +29,6 @@ public class ApiClientService {
 
     public static String getBaseUrl() {
         return ROOT == null ? "" : ROOT.replace("webservices/", "");
-    }
-
-    public static void enableStaging() {
-        ROOT = STAGING;
-        setupRestClient();
-    }
-
-    public static void enableProduction() {
-        ROOT = PROD;
-        setupRestClient();
     }
 
     public static void setSetCookie(String cookie) {
@@ -50,7 +40,6 @@ public class ApiClientService {
     }
 
     static {
-        ROOT = STAGING;
         setupRestClient();
     }
 
@@ -61,6 +50,7 @@ public class ApiClientService {
     public static void setBaseUrl(String url){
         if(!TextUtils.isEmpty(url)) {
             ROOT = url;
+            setupRestClient();
         }
     }
 
@@ -79,4 +69,5 @@ public class ApiClientService {
                 .build();
         client = restAdapter.create(ICorsaliteApi.class);
     }
+
 }

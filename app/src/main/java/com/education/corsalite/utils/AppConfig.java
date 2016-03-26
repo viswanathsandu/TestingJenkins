@@ -12,6 +12,9 @@ public class AppConfig {
     private static AppConfig instance;
 
     public String baseUrl;
+    public String stageUrl;
+    public String productionUrl;
+    public Boolean enableProduction;
     public Integer splashDuration;
     public Boolean enableStudyCenter;
     public Boolean enableAnalytics;
@@ -30,5 +33,13 @@ public class AppConfig {
 
     public static AppConfig getInstance() {
         return instance;
+    }
+
+    public void enableProduction() {
+        enableProduction = true;
+    }
+
+    public void disableProduction() {
+        enableProduction = false;
     }
 }

@@ -8,6 +8,7 @@ import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.activities.LoginActivity;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.utils.AppPref;
+import com.education.corsalite.utils.L;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -27,7 +28,7 @@ public abstract class ApiCallback<T> implements Callback<T> {
         if(error != null && error.message != null && error.message.equalsIgnoreCase("Unathorized session.")) {
             AppPref.getInstance(mContext).remove("loginId");
             AppPref.getInstance(mContext).remove("passwordHash");
-            Toast.makeText(mContext, "Session expired. \nPlease login to continue", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "Session expired. Please login to continue", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(mContext, LoginActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
             mContext.startActivity(intent);
@@ -43,12 +44,19 @@ public abstract class ApiCallback<T> implements Callback<T> {
 
     @Override
     public void failure(RetrofitError error) {
-        CorsaliteError restError = (CorsaliteError) error.getBodyAs(CorsaliteError.class);
-        if (restError != null) {
-            failure(restError);
-        } else if(error.getResponse().getStatus() == 401){ // Unauthentication
+        try {
+            CorsaliteError restError = (CorsaliteError) error.getBodyAs(CorsaliteError.class);
+            if (restError != null) {
+                failure(restError);
+            } else if (error.getResponse().getStatus() == 401) { // Unauthentication
+                CorsaliteError corsaliteError = new CorsaliteError();
+                corsaliteError.message = "Unathorized session.";
+                failure(corsaliteError);
+            }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
             CorsaliteError corsaliteError = new CorsaliteError();
-            corsaliteError.message = "Unathorized session.";
+            corsaliteError.message = "Unknown Exception.";
             failure(corsaliteError);
         }
     }
