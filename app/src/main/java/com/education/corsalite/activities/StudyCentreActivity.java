@@ -31,6 +31,7 @@ import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.db.DbManager;
 import com.education.corsalite.fragments.MockTestDialog;
+import com.education.corsalite.fragments.PartTestDialog;
 import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.models.responsemodels.Chapter;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
@@ -149,7 +150,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         allColorLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(studyCenter != null && studyCenter.chapters != null) {
+                if (studyCenter != null && studyCenter.chapters != null) {
                     mAdapter.updateData(studyCenter.chapters, key);
                     mAdapter.notifyDataSetChanged();
                     updateSelected(allColorLayout);
@@ -460,18 +461,18 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                 if (dialog != null) {
                     dialog.cancel();
                 }
-                startPartTest(studyCenter);
+                //startPartTest(studyCenter);
+                showPartTestGrid();
             }
         });
     }
 
-    private void startPartTest(StudyCenter studyCenter){
-        Intent exerciseIntent = new Intent(this, ExamEngineActivity.class);
-        exerciseIntent.putExtra(Constants.TEST_TITLE, studyCenter.SubjectName);
-        exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
-        exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, studyCenter.idCourseSubject + "");
-        exerciseIntent.putExtra(Constants.SELECTED_TOPIC, studyCenter.SubjectName);
-        startActivity(exerciseIntent);
+    private void showPartTestGrid(){
+        PartTestDialog dialog = new PartTestDialog();
+        Bundle bundle = new Bundle();
+        bundle.putInt("idCourseSubject",studyCenter.idCourseSubject);
+        dialog.setArguments(bundle);
+        dialog.show(getFragmentManager(),"PartTestDialog");
     }
 
     private void downloadPartTest(StudyCenter studyCenter){

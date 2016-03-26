@@ -40,6 +40,8 @@ public class Constants {
     public static final String QUESTIONS_COUNT = "questionsCount";
     public static final String TEST_COVERAGE_LIST_GSON = "testCoverageListGson";
     public static final String IS_OFFLINE = "IS_OFFLINE";
+    public static final String PARTTEST_GRIDMODELS = "partTestGridElements";
+
 
     public enum AnswerState {
         UNATTEMPTED("Unattended"),

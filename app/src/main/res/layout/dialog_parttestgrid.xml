@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/tv_recommended"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Recommended"
+            android:background="@drawable/part_test_selector"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            />
+        <TextView
+            android:id="@+id/tv_all"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="All"
+            android:padding="10dp"
+            android:background="@drawable/part_test_selector"
+            android:textColor="@color/black"
+            />
+    </LinearLayout>
+    <include layout="@layout/list_header_parttestgrid"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <android.support.v7.widget.RecyclerView
+        android:layout_above="@+id/view"
+        android:id="@+id/parttest_recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:padding="5dp"
+        android:scrollbars="vertical" />
+    <View
+        android:id="@+id/view"
+        android:layout_above="@+id/ll_cat"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/dark_gray"
+        android:layout_marginBottom="10dp"/>
+        <LinearLayout
+            android:id="@+id/ll_cat"
+            android:layout_above="@+id/include"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="?android:attr/listPreferredItemHeight"
+            android:gravity="center_vertical"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp">
+
+            <TextView
+                android:text="Computer Adaptive Test"
+                android:textColor="@color/black"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                style="?android:attr/spinnerItemStyle"/>
+
+            <CheckBox
+                android:id="@+id/checkbox_adaptive_learning"
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:enabled="true"/>
+
+        </LinearLayout>
+    <include
+        layout="@layout/parttestgrid_footer"
+        android:id="@+id/include"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_alignParentBottom="true"/>
+    </RelativeLayout>
+
+</LinearLayout>
