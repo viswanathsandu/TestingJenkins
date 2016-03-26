@@ -23,7 +23,8 @@
     <item
         android:id="@+id/action_challenge_your_friends"
         app:showAsAction="never"
-        android:title="@string/menu_challenge_your_friends" />
+        android:title="@string/menu_challenge_your_friends"
+        android:visible="false"/>
 
     <item
         android:id="@+id/action_exam_history"
@@ -33,10 +34,12 @@
     <item
         android:id="@+id/action_recommended_reading"
         app:showAsAction="never"
-        android:title="@string/menu_recommended_reading" />
+        android:title="@string/menu_recommended_reading"
+        android:visible="false"/>
 
     <item
         android:id="@+id/action_progress_Card"
         app:showAsAction="never"
-        android:title="@string/menu_progress_card" />
+        android:title="@string/menu_progress_card"
+        android:visible="false"/>
 </menu>

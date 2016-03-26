@@ -140,6 +140,7 @@ public class PartTestDialog extends DialogFragment {
                 break;
             case R.id.tv_taketest:
                 startPartTest();
+                dismiss();
                 break;
             default:dismiss();
         }
