@@ -475,15 +475,6 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         dialog.show(getFragmentManager(),"PartTestDialog");
     }
 
-    private void startPartTest(StudyCenter studyCenter){
-        Intent exerciseIntent = new Intent(this, ExamEngineActivity.class);
-        exerciseIntent.putExtra(Constants.TEST_TITLE, studyCenter.SubjectName);
-        exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
-        exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, studyCenter.idCourseSubject + "");
-        exerciseIntent.putExtra(Constants.SELECTED_TOPIC, studyCenter.SubjectName);
-        startActivity(exerciseIntent);
-    }
-
     private void downloadPartTest(StudyCenter studyCenter){
         Intent intent = new Intent(this, TestDownloadService.class);
         intent.putExtra("selectedPartTest",new Gson().toJson(studyCenter));

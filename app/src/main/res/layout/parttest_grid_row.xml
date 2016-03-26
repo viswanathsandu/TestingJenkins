@@ -19,6 +19,7 @@
         android:layout_weight="1"
         android:text="10"
         android:padding="10dp"
+        android:inputType="number"
         android:background="@drawable/tv_border_normal"
         android:textColor="@color/black"
         android:textSize="13sp"
