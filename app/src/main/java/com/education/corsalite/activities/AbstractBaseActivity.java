@@ -201,6 +201,8 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     protected void setToolbarForVideo(List<ContentModel> videos, int position) {
         findViewById(R.id.toolbar_title).setVisibility(View.GONE);
         toolbar.findViewById(R.id.video_layout).setVisibility(View.VISIBLE);
+        setDrawerIconInvisible();
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         showVideoInToolbar(videos, position);
     }
 

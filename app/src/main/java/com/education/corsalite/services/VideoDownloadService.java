@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Environment;
 
 import com.education.corsalite.utils.Constants;
+import com.education.corsalite.utils.L;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -28,6 +29,10 @@ public class VideoDownloadService extends IntentService {
         String download_file_path = intent.getStringExtra("download_file_path");
         String fileName = intent.getStringExtra("fileName");
         String folderStructure = intent.getStringExtra("folderStructure");
+        L.debug("Downloading video");
+        L.debug("file name : "+fileName);
+        L.debug("from : "+download_file_path);
+        L.debug("to : "+folderStructure);
         downloadFile(fileName,download_file_path,folderStructure);
     }
 
