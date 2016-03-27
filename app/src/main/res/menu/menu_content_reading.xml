@@ -12,7 +12,8 @@
     <item
         android:id="@+id/action_read_offline"
         app:showAsAction="never"
-        android:title="@string/menu_read_offline" />
+        android:title="@string/menu_read_offline"
+        android:visible="false"/>
     <item
         android:id="@+id/action_download_pdf"
         app:showAsAction="never"
