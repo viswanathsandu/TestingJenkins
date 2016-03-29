@@ -1,16 +1,10 @@
 package com.education.corsalite.api;
 
 import android.content.Context;
-import android.content.Intent;
 import android.widget.Toast;
 
 import com.education.corsalite.activities.AbstractBaseActivity;
-import com.education.corsalite.activities.LoginActivity;
-import com.education.corsalite.cache.ApiCacheHolder;
-import com.education.corsalite.db.DbManager;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
-import com.education.corsalite.models.responsemodels.LoginResponse;
-import com.education.corsalite.utils.AppPref;
 import com.education.corsalite.utils.L;
 
 import retrofit.Callback;
@@ -29,7 +23,8 @@ public abstract class ApiCallback<T> implements Callback<T> {
 
     public void failure(CorsaliteError error) {
         if(error != null && error.message != null && error.message.equalsIgnoreCase("Unathorized session.")) {
-            ApiManager.getInstance(mContext).login(ApiCacheHolder.getInstance().loginRequest.loginId, ApiCacheHolder.getInstance().loginRequest.passwordHash,
+           /*
+                ApiManager.getInstance(mContext).login(ApiCacheHolder.getInstance().loginRequest.loginId, ApiCacheHolder.getInstance().loginRequest.passwordHash,
                     new ApiCallback<LoginResponse>(mContext) {
                         @Override
                         public void success(LoginResponse loginResponse, Response response) {
@@ -54,6 +49,8 @@ public abstract class ApiCallback<T> implements Callback<T> {
                             mContext.startActivity(intent);
                         }
                     }, false);
+                    */
+            Toast.makeText(mContext, "Session expired. Please login to continue", Toast.LENGTH_SHORT).show();
         }
     }
 
