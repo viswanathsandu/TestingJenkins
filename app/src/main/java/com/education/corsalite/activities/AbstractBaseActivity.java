@@ -11,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -458,7 +459,9 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     public void showToast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        if(!TextUtils.isEmpty(message)) {
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void showLongToast(String message) {
@@ -599,7 +602,16 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     public static void saveSessionCookie(Response response) {
         String cookie = CookieUtils.getCookieString(response);
-        if (cookie != null) {
+        if (response.getStatus() != 401 && cookie != null) {
+            L.info("Intercept : save session cookie : "+cookie);
+            ApiClientService.setSetCookie(cookie);
+        }
+    }
+
+    public static void saveSessionCookie(com.squareup.okhttp.Response response) {
+        String cookie = CookieUtils.getCookieString(response);
+        if (response.code() != 401 && cookie != null) {
+            L.info("Intercept : save session cookie : "+cookie);
             ApiClientService.setSetCookie(cookie);
         }
     }

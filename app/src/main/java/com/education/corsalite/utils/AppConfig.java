@@ -14,6 +14,8 @@ public class AppConfig {
     public String baseUrl;
     public String stageUrl;
     public String productionUrl;
+    public String stageSocketUrl;
+    public String productionSocketUrl;
     public Boolean enableProduction;
     public Integer splashDuration;
     public Boolean enableStudyCenter;

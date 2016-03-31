@@ -13,6 +13,7 @@ import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.services.ApiClientService;
+import com.education.corsalite.helpers.WebSocketHelper;
 import com.education.corsalite.utils.AppConfig;
 import com.education.corsalite.utils.AppPref;
 
@@ -33,6 +34,7 @@ public class SplashActivity extends AbstractBaseActivity {
         setContentView(R.layout.activity_splash);
         checkAutoLogin();
         AppConfig.loadAppconfig(SplashActivity.this);
+        startWebSocket();
         new CountDownTimer(AppConfig.getInstance().splashDuration, 100) {
             @Override
             public void onFinish() {
@@ -44,6 +46,7 @@ public class SplashActivity extends AbstractBaseActivity {
                     config.enableProduction = enableProduction.equalsIgnoreCase("true");
                 }
                 ApiClientService.setBaseUrl(config.enableProduction ? config.productionUrl : config.stageUrl);
+                ApiClientService.setSocketUrl(config.enableProduction ? config.productionSocketUrl : config.stageSocketUrl);
                 isTimerFinished = true;
                 navigateToNextScreen();
             }
@@ -51,6 +54,10 @@ public class SplashActivity extends AbstractBaseActivity {
             @Override
             public void onTick(long millisUntilFinished) {}
         }.start();
+    }
+
+    private void startWebSocket() {
+        WebSocketHelper.get().connectWebSocket();
     }
 
     private void checkAutoLogin() {
