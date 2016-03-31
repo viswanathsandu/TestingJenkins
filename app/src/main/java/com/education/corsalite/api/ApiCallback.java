@@ -1,7 +1,6 @@
 package com.education.corsalite.api;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
@@ -23,40 +22,14 @@ public abstract class ApiCallback<T> implements Callback<T> {
 
     public void failure(CorsaliteError error) {
         if(error != null && error.message != null && error.message.equalsIgnoreCase("Unathorized session.")) {
-           /*
-                ApiManager.getInstance(mContext).login(ApiCacheHolder.getInstance().loginRequest.loginId, ApiCacheHolder.getInstance().loginRequest.passwordHash,
-                    new ApiCallback<LoginResponse>(mContext) {
-                        @Override
-                        public void success(LoginResponse loginResponse, Response response) {
-                            super.success(loginResponse, response);
-                            ApiCacheHolder.getInstance().setLoginResponse(loginResponse);
-                            AbstractBaseActivity.saveSessionCookie(response);
-                            DbManager.getInstance(mContext).saveReqRes(ApiCacheHolder.getInstance().login);
-                            AppPref.getInstance(mContext).save("loginId", ApiCacheHolder.getInstance().loginRequest.loginId);
-                            AppPref.getInstance(mContext).save("passwordHash", ApiCacheHolder.getInstance().loginRequest.passwordHash);
-                            Toast.makeText(mContext, "Please try again", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-
-                        @Override
-                        public void failure(CorsaliteError error) {
-                            super.failure(error);
-                            AppPref.getInstance(mContext).remove("loginId");
-                            AppPref.getInstance(mContext).remove("passwordHash");
-                            Toast.makeText(mContext, "Session expired. Please login to continue", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(mContext, LoginActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-                            mContext.startActivity(intent);
-                        }
-                    }, false);
-                    */
-            Toast.makeText(mContext, "Session expired. Please login to continue", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(mContext, "Session expired. Please login to continue", Toast.LENGTH_SHORT).show();
+            error.message = "";
         }
     }
 
     @Override
     public void success(T t, Response response) {
-        if(response != null) {
+        if(response != null && response.getStatus() == 200) {
             AbstractBaseActivity.saveSessionCookie(response);
         }
     }
@@ -79,7 +52,6 @@ public abstract class ApiCallback<T> implements Callback<T> {
         } catch (Exception e) {
             L.error(e.getMessage(), e);
             CorsaliteError corsaliteError = new CorsaliteError();
-            corsaliteError.message = "Please try again";
             failure(corsaliteError);
         }
     }

@@ -63,6 +63,7 @@ public class LoginActivity extends AbstractBaseActivity {
                 config.enableProduction = isChecked;
                 AppPref.getInstance(LoginActivity.this).save("enable_production", config.enableProduction+"");
                 ApiClientService.setBaseUrl(isChecked ? config.productionUrl : config.stageUrl);
+                ApiClientService.setSocketUrl(isChecked ? config.productionSocketUrl : config.stageSocketUrl);
             }
         });
         loginBtn.setOnClickListener(new View.OnClickListener() {
