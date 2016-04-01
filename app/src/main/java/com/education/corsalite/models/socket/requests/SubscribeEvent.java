@@ -1,4 +1,4 @@
-package com.education.corsalite.models.socket;
+package com.education.corsalite.models.socket.requests;
 
 import com.education.corsalite.models.responsemodels.BaseModel;
 import com.google.gson.annotations.SerializedName;
