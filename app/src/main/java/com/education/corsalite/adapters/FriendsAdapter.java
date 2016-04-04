@@ -81,6 +81,7 @@ public class FriendsAdapter extends AbstractRecycleViewAdapter {
         public void bindData(final int position, final FriendsData.Friend clickedFriend) {
             tvName.setText(clickedFriend.displayName);
             tvEmail.setText(clickedFriend.emailID);
+            ivActionBtn.setVisibility(clickedFriend.isOnline ? View.VISIBLE : View.GONE);
             if (selectedFriends.contains(clickedFriend)) {
                 ivActionBtn.setImageResource(android.R.drawable.ic_delete);
             } else {
@@ -89,26 +90,28 @@ public class FriendsAdapter extends AbstractRecycleViewAdapter {
             if (!TextUtils.isEmpty(clickedFriend.photoUrl)) {
                 Glide.with(mActivity).load(ApiClientService.getBaseUrl() + clickedFriend.photoUrl.replaceFirst("./", "")).into(ivProfilePic);
             }
-            parent.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (selectedFriends.contains(clickedFriend)) {
-                        ivActionBtn.setImageResource(android.R.drawable.ic_input_add);
-                        selectedFriends.remove(clickedFriend);
-                        if (mFriendsListCallback != null) {
-                            mFriendsListCallback.onFriendRemoved(clickedFriend);
+            if(clickedFriend.isOnline) {
+                parent.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (selectedFriends.contains(clickedFriend)) {
+                            ivActionBtn.setImageResource(android.R.drawable.ic_input_add);
+                            selectedFriends.remove(clickedFriend);
+                            if (mFriendsListCallback != null) {
+                                mFriendsListCallback.onFriendRemoved(clickedFriend);
+                            }
+                        } else if (selectedFriends.size() < 4) {
+                            ivActionBtn.setImageResource(android.R.drawable.ic_delete);
+                            selectedFriends.add(clickedFriend);
+                            if (mFriendsListCallback != null) {
+                                mFriendsListCallback.onFriendAdded(clickedFriend);
+                            }
+                        } else {
+                            Toast.makeText(mActivity, "Only 4 members can be selected", Toast.LENGTH_SHORT).show();
                         }
-                    } else if (selectedFriends.size() < 4) {
-                        ivActionBtn.setImageResource(android.R.drawable.ic_delete);
-                        selectedFriends.add(clickedFriend);
-                        if (mFriendsListCallback != null) {
-                            mFriendsListCallback.onFriendAdded(clickedFriend);
-                        }
-                    } else {
-                        Toast.makeText(mActivity, "Only 4 members can be selected", Toast.LENGTH_SHORT).show();
                     }
-                }
-            });
+                });
+            }
         }
 
     }

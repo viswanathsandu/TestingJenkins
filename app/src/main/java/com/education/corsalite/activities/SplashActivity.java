@@ -34,7 +34,6 @@ public class SplashActivity extends AbstractBaseActivity {
         setContentView(R.layout.activity_splash);
         checkAutoLogin();
         AppConfig.loadAppconfig(SplashActivity.this);
-        startWebSocket();
         new CountDownTimer(AppConfig.getInstance().splashDuration, 100) {
             @Override
             public void onFinish() {
@@ -95,6 +94,7 @@ public class SplashActivity extends AbstractBaseActivity {
                     dbManager.saveReqRes(ApiCacheHolder.getInstance().login);
                     appPref.save("loginId", username);
                     appPref.save("passwordHash", password);
+                    startWebSocket();
                 } else {
                     showToast(getResources().getString(R.string.login_failed));
                 }

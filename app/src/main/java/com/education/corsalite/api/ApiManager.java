@@ -14,6 +14,7 @@ import com.education.corsalite.models.db.reqres.StudyCenterReqRes;
 import com.education.corsalite.models.requestmodels.CreateChallengeRequest;
 import com.education.corsalite.models.requestmodels.ForumLikeRequest;
 import com.education.corsalite.models.requestmodels.ForumModel;
+import com.education.corsalite.models.responsemodels.ChallengeUserListResponse;
 import com.education.corsalite.models.responsemodels.CommonResponseModel;
 import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ContentIndex;
@@ -511,6 +512,12 @@ public class ApiManager {
     public void createChallenge(CreateChallengeRequest insert, ApiCallback<CreateChallengeResponseModel> callback){
         if(isApiOnline()){
             ApiClientService.get().createChallenge(new TypedString("Insert=" + new Gson().toJson(insert)), callback);
+        }
+    }
+
+    public void getChallengeTestDetails(String challengeTestId, ApiCallback<ChallengeUserListResponse> callback){
+        if(isApiOnline()){
+            ApiClientService.get().getchallengeTestDetails(challengeTestId, callback);
         }
     }
 

@@ -110,6 +110,18 @@
                 android:layout_height="1dp"
                 android:background="#E1E1E1" />
 
+            <Spinner
+                android:id="@+id/examsSpinner"
+                style="@android:style/Widget.Holo.Light.Spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#E1E1E1" />
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">

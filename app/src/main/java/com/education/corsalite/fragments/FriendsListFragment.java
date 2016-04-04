@@ -17,11 +17,17 @@ import com.education.corsalite.adapters.FriendsAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.helpers.WebSocketHelper;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.FriendsData;
+import com.education.corsalite.models.socket.response.ChallengeUserList;
+import com.education.corsalite.utils.L;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import retrofit.client.Response;
 
@@ -39,6 +45,9 @@ public class FriendsListFragment extends BaseFragment  implements SearchView.OnQ
     private TextView mTextViewNext;
     private ChallengeActivity.FriendsListCallback mFriendsListCallback;
 
+    private Set<String> challengeFriendsId = new HashSet<>();
+    private FriendsData friendsData;
+
     public FriendsListFragment(){}
 
 
@@ -48,11 +57,6 @@ public class FriendsListFragment extends BaseFragment  implements SearchView.OnQ
         fragment.mFriendsListCallback = mFriendsListCallback;
         fragment.setArguments(args);
         return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -94,6 +98,12 @@ public class FriendsListFragment extends BaseFragment  implements SearchView.OnQ
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        WebSocketHelper.get().sendGetUserListEvent();
+    }
+
     private void loadFriendsList() {
         ApiManager.getInstance(getActivity()).getFriendsList(
                 LoginUserCache.getInstance().loginResponse.userId,
@@ -106,6 +116,7 @@ public class FriendsListFragment extends BaseFragment  implements SearchView.OnQ
                         if (friendsData != null) {
                             FriendsListFragment.this.friendsData = friendsData;
                             showFriendsList();
+                            fetchDisplayName();
                         }
                     }
 
@@ -118,12 +129,11 @@ public class FriendsListFragment extends BaseFragment  implements SearchView.OnQ
     }
 
     private void showFriendsList() {
+        updateFriendsListStatus();
         mAdapter = new FriendsAdapter(getActivity(), friendsData, mFriendsListCallback);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), R.drawable.horizontal_line, true, true));
         mRecyclerView.setAdapter(mAdapter);
     }
-
-    FriendsData friendsData;
 
     @Override
     public boolean onClose() {
@@ -158,4 +168,28 @@ public class FriendsListFragment extends BaseFragment  implements SearchView.OnQ
         }
         return filteredModelList;
     }
+
+    private void updateFriendsListStatus() {
+        for(FriendsData.Friend friend : friendsData.friendsList) {
+            friend.isOnline = challengeFriendsId.contains(friend.idStudent);
+        }
+    }
+
+    public void onEventMainThread(ChallengeUserList event) {
+        showToast("User list event");
+        challengeFriendsId = event.users;
+        showFriendsList();
+        L.info("Websocket : "+new Gson().toJson(event.users));
+    }
+
+    private void fetchDisplayName() {
+        for (FriendsData.Friend friend : friendsData.friendsList) {
+            if(friend.idStudent.equals(LoginUserCache.getInstance().getLongResponse().studentId)) {
+                if(getActivity() instanceof ChallengeActivity) {
+                    ((ChallengeActivity)getActivity()).mDisplayName = friend.displayName;
+                }
+            }
+        }
+    }
+
 }

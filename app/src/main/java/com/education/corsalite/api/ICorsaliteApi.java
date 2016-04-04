@@ -2,6 +2,7 @@ package com.education.corsalite.api;
 
 import com.education.corsalite.models.MockTest;
 import com.education.corsalite.models.ScheduledTestList;
+import com.education.corsalite.models.responsemodels.ChallengeUserListResponse;
 import com.education.corsalite.models.responsemodels.CommonResponseModel;
 import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ContentIndex;
@@ -231,6 +232,10 @@ public interface ICorsaliteApi {
     @Headers("Content-Type:application/x-www-form-urlencoded")
     @POST("/CreateChallenge")
     void createChallenge(@Body TypedString insert, ApiCallback<CreateChallengeResponseModel> callback);
+
+
+    @GET("/challengeTestDetails")
+    void getchallengeTestDetails(@Query("idChallengeTest")String idChallengeTest, ApiCallback<ChallengeUserListResponse> callback);
 
     @GET("/PartTestGrid")
     void getPartTestGrid(@Query("idStudent")String studentId,@Query("idCourse")String courseId,@Query("idSubject") String subjectId,ApiCallback<PartTestModel> callback);

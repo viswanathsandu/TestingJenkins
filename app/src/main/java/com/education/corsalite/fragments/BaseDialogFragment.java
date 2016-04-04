@@ -1,45 +1,19 @@
 package com.education.corsalite.fragments;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.DialogFragment;
 import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.education.corsalite.db.DbManager;
-import com.education.corsalite.models.socket.response.ResponseEvent;
-
-import de.greenrobot.event.EventBus;
-
 /**
- * Created by vissu on 9/12/15.
+ * Created by vissu on 4/2/16.
  */
-public abstract class BaseFragment extends Fragment {
-    private Dialog dialog;
+public class BaseDialogFragment extends DialogFragment {
 
-    protected DbManager dbManager;
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        dbManager = DbManager.getInstance(getActivity().getApplicationContext());
-    }
+    Dialog dialog;
 
     public void showToast(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
@@ -64,10 +38,5 @@ public abstract class BaseFragment extends Fragment {
         if(dialog != null && dialog.isShowing()){
             dialog.dismiss();
         }
-    }
-
-    // Dummy event to avoid no subscriber issues
-    public void onEvent(ResponseEvent event) {
-
     }
 }

@@ -1,6 +1,7 @@
 package com.education.corsalite.cache;
 
 import com.education.corsalite.models.responsemodels.LoginResponse;
+import com.education.corsalite.models.responsemodels.WelcomeDetails;
 import com.squareup.okhttp.Request;
 
 /**
@@ -10,6 +11,7 @@ public class LoginUserCache {
 
     private static LoginUserCache instance;
     public LoginResponse loginResponse;
+    public WelcomeDetails welcomeDetails;
     // This will be used in okhttp interceptor
     public Request loginRequest;
 
@@ -28,8 +30,11 @@ public class LoginUserCache {
     }
 
     public void setLoginResponse(LoginResponse response) {
-
         this.loginResponse = response;
+    }
+
+    public void setWelcomeDetails(WelcomeDetails welcomeDetails) {
+        this.welcomeDetails = welcomeDetails;
     }
 
     public void clearCache() {

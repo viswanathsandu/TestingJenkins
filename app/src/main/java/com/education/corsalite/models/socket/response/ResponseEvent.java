@@ -7,6 +7,8 @@ import com.google.gson.annotations.SerializedName;
  */
 public class ResponseEvent {
     public String event;
+    @SerializedName("Users")
+    public String users; // seperated with comma(,)
     @SerializedName("ChallengeTestParentID")
     public String challengeTestParentId;
     @SerializedName("ChallengerName")

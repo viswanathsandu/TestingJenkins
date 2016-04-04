@@ -19,11 +19,15 @@ public class FriendsData extends BaseModel {
         public String studentVC;
         @SerializedName("idUser")
         public String idUser;
+        @SerializedName("idStudent")
+        public String idStudent;
         @SerializedName("PhotoUrl")
         public String photoUrl;
         @SerializedName("DisplayName")
         public String displayName;
         @SerializedName("EmailID")
         public String emailID;
+        public boolean isOnline = false;
+        public String status = "";
     }
 }

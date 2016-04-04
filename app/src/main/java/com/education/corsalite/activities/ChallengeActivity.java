@@ -11,13 +11,18 @@ import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.education.corsalite.R;
 import com.education.corsalite.fragments.FriendsListFragment;
 import com.education.corsalite.fragments.TestSetupFragment;
+import com.education.corsalite.helpers.WebSocketHelper;
+import com.education.corsalite.models.responsemodels.CreateChallengeResponseModel;
 import com.education.corsalite.models.responsemodels.FriendsData;
+import com.education.corsalite.models.socket.requests.NewChallengeTestRequestEvent;
+import com.education.corsalite.models.socket.response.ChallengeTestRequestEvent;
+import com.education.corsalite.models.socket.response.ChallengeTestStartEvent;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
 
 public class ChallengeActivity extends AbstractBaseActivity {
 
@@ -36,6 +41,9 @@ public class ChallengeActivity extends AbstractBaseActivity {
     @Bind(R.id.player4_txt) TextView player4_txt;
 
     private TestSetupCallback mTestSetupCallback;
+    public String mDisplayName = "";
+    public String mChallengeTestId = "";
+    public String mTestQuestionPaperId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +71,7 @@ public class ChallengeActivity extends AbstractBaseActivity {
         public void onNextClick(ArrayList<FriendsData.Friend> selectedFriends) {
             showToast(selectedFriends.size() + "");
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, TestSetupFragment.newInstance(mTestSetupCallback, selectedFriends)).addToBackStack(null).commit();
+                    .replace(R.id.fragment_container, TestSetupFragment.newInstance(mTestSetupCallback)).addToBackStack(null).commit();
         }
         @Override
         public void onFriendAdded(FriendsData.Friend friend) {
@@ -127,5 +135,29 @@ public class ChallengeActivity extends AbstractBaseActivity {
         Glide.with(this).load(rawGifId).into(imageViewTarget);
     }
 
-    private List<FriendsData.Friend> selectedFriends = new ArrayList<>();
+    public void onEventMainThread(CreateChallengeResponseModel model) {
+        mChallengeTestId = model.challengeTestId;
+        mTestQuestionPaperId = model.testQuestionPaperId;
+        postChallengeTestStartEvent();
+        showChallengeRequestDialog(mDisplayName, mChallengeTestId);
+    }
+
+    private void showChallengeRequestDialog(String challengerName, String chalengeTestParentId) {
+        ChallengeTestRequestEvent event = new ChallengeTestRequestEvent();
+        event.challengerName = challengerName;
+        event.challengeTestParentId = chalengeTestParentId;
+        EventBus.getDefault().post(event);
+    }
+
+    private void postChallengeTestStartEvent() {
+        NewChallengeTestRequestEvent event = new NewChallengeTestRequestEvent();
+        event.challengerName = mDisplayName;
+        event.challengeTestParentId = mChallengeTestId;
+        WebSocketHelper.get().sendChallengeTestEvent(event);
+    }
+
+    public void onEventMainThread(ChallengeTestStartEvent event) {
+        mTestQuestionPaperId = event.testQuestionPaperId;
+        startChallengeTest(mTestQuestionPaperId);
+    }
 }

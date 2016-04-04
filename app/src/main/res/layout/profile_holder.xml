@@ -25,7 +25,7 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/node_selector"
-        android:src="@drawable/ico_offline_topics" />
+        android:src="@drawable/ico_offline_exercise" />
 
     <LinearLayout
         android:id="@+id/buttonsContainer"
