@@ -8,6 +8,7 @@ import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.deserializer.ExerciseModelResponseDeserializer;
 import com.education.corsalite.interceptors.SessionRequestInterceptor;
 import com.education.corsalite.models.responsemodels.ExamModel;
+import com.education.corsalite.utils.CookieUtils;
 import com.education.corsalite.utils.L;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -116,9 +117,8 @@ public class ApiClientService {
                         while (!response.isSuccessful() && tryCount < 3) {
                             L.info("Intercept : Request is not successful - " + tryCount);
                             tryCount++;
-                            makeAuthCall(chain);
                             // retry the request with latest cookie
-                            String setcookie = getSetCookie();
+                            String setcookie = makeAuthCallAndGetcookie(chain);
                             if(setcookie != null && !setcookie.isEmpty()) {
                                 request = request.newBuilder().removeHeader("cookie").build();
                                 request = request.newBuilder().addHeader("cookie", setcookie).build();
@@ -135,7 +135,17 @@ public class ApiClientService {
                 return response;
             }
 
-            private void makeAuthCall(Chain chain) throws IOException {
+            public String getSessionCookie(com.squareup.okhttp.Response response) {
+                String cookie = CookieUtils.getCookieString(response);
+                if (response.code() != 401 && cookie != null) {
+                    L.info("Intercept : save session cookie : "+cookie);
+                    ApiClientService.setSetCookie(cookie);
+                    return cookie;
+                }
+                return "";
+            }
+
+            private String makeAuthCallAndGetcookie(Chain chain) throws IOException {
                 Request loginRequest = LoginUserCache.getInstance().loginRequest;
                 if(loginRequest != null) {
                     L.info("Intercept : Making auth call");
@@ -144,8 +154,10 @@ public class ApiClientService {
                     if(loginResponse != null && loginResponse.isSuccessful()) {
                         L.info("Intercept : Auth call saving session cookie");
                         AbstractBaseActivity.saveSessionCookie(loginResponse);
+                        return getSessionCookie(loginResponse);
                     }
                 }
+                return null;
             }
         });
         return client;
