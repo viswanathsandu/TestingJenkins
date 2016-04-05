@@ -2,8 +2,9 @@
     android:id="@+id/text1"
     style="?android:attr/spinnerItemStyle"
     android:singleLine="true"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:ellipsize="marquee"
+    android:ellipsize="end"
     android:textAlignment="inherit"
-    android:textColor="@color/white"/>
+    android:textColor="@color/white"
+    android:maxWidth="250dp"/>
