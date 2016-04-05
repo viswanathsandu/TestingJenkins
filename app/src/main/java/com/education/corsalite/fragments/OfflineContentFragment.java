@@ -234,9 +234,9 @@ public class OfflineContentFragment extends BaseFragment implements OfflineConte
             if (contentRoot == null) {
                 showProgress = contentIds != null && contentIds.contains(offlineContent.contentId);
                 if(offlineContent.fileName.endsWith(".mpg")) {
-                    contentRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_vid_play, offlineContent.fileName, offlineContent.contentId, "content", showProgress));
+                    contentRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_video, offlineContent.fileName, offlineContent.contentId, "content", showProgress));
                 } else if(offlineContent.fileName.endsWith(".html")) {
-                    contentRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_chapter, offlineContent.fileName, offlineContent.contentId, "content", showProgress));
+                    contentRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_topic, offlineContent.fileName, offlineContent.contentId, "content", showProgress));
                 }
                 topicRoot.addChild(contentRoot);
             }

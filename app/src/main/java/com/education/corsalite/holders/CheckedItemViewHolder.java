@@ -49,9 +49,9 @@ public class CheckedItemViewHolder extends TreeNode.BaseNodeViewHolder<String> {
             checkboxImage.setImageDrawable(view.getResources().getDrawable(R.drawable.ico_offline_chapter));
         }else{
             if(value.endsWith(".mpg")){
-                checkboxImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ico_offline_vid_play));
+                checkboxImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ico_offline_video));
             }else if (value.endsWith(".html")){
-                checkboxImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ico_offline_chapter));
+                checkboxImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ico_offline_topic));
             }
         }
         if (node.isLastChild()) {
