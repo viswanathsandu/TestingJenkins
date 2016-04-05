@@ -233,7 +233,11 @@ public class OfflineContentFragment extends BaseFragment implements OfflineConte
             }
             if (contentRoot == null) {
                 showProgress = contentIds != null && contentIds.contains(offlineContent.contentId);
-                contentRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_exercise, offlineContent.fileName, offlineContent.contentId, "content", showProgress));
+                if(offlineContent.fileName.endsWith(".mpg")) {
+                    contentRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_vid_play, offlineContent.fileName, offlineContent.contentId, "content", showProgress));
+                } else if(offlineContent.fileName.endsWith(".html")) {
+                    contentRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_chapter, offlineContent.fileName, offlineContent.contentId, "content", showProgress));
+                }
                 topicRoot.addChild(contentRoot);
             }
         }
