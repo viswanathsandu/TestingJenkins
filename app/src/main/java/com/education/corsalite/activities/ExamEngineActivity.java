@@ -325,7 +325,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void loadChallengeTest() {
-        if(!isOffline) {
+        if(isOffline) {
             showToast("Challenge Test works in online mode");
             return;
         }

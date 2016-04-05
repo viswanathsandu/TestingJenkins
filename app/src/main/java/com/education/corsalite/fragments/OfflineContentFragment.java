@@ -215,7 +215,7 @@ public class OfflineContentFragment extends BaseFragment implements OfflineConte
                 List<ExerciseOfflineModel> addedList = new ArrayList<>();
                 for (ExerciseOfflineModel exercise : offlineExercises) {
                     if (exercise.topicId.equals(offlineContent.topicId)) {
-                        IconTreeItemHolder.IconTreeItem item = new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_topics, "Exercise - " + exercise.topicId, exercise.topicId + "-" + exercise.courseId, "Exercise", false);
+                        IconTreeItemHolder.IconTreeItem item = new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_exercise, "Exercise - " + exercise.topicId, exercise.topicId + "-" + exercise.courseId, "Exercise", false);
                         item.setData(exercise);
                         addedList.add(exercise);
                         topicRoot.addChild(new TreeNode(item));
@@ -233,7 +233,7 @@ public class OfflineContentFragment extends BaseFragment implements OfflineConte
             }
             if (contentRoot == null) {
                 showProgress = contentIds != null && contentIds.contains(offlineContent.contentId);
-                contentRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_topics, offlineContent.fileName, offlineContent.contentId, "content", showProgress));
+                contentRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_exercise, offlineContent.fileName, offlineContent.contentId, "content", showProgress));
                 topicRoot.addChild(contentRoot);
             }
         }

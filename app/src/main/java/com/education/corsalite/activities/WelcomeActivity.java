@@ -56,6 +56,7 @@ public class WelcomeActivity extends AbstractBaseActivity implements View.OnClic
             public void success(WelcomeDetails welcomeDetails, Response response) {
                 super.success(welcomeDetails, response);
                 if(welcomeDetails != null){
+                    LoginUserCache.getInstance().setWelcomeDetails(welcomeDetails);
                     if(!isDestroyed() && !TextUtils.isEmpty(welcomeDetails.photoUrl)) {
                         Glide.with(WelcomeActivity.this).load(ApiClientService.getBaseUrl() + welcomeDetails.photoUrl.replaceFirst("./", "")).into(profilePic);
                     }

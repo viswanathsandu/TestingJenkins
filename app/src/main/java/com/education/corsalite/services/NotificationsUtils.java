@@ -8,9 +8,9 @@ import android.support.v7.app.NotificationCompat;
 
 import com.education.corsalite.R;
 
-public class NotifyScheduledTest  {
+public class NotificationsUtils {
 
-    private static final String TAG = NotifyScheduledTest.class.getSimpleName();
+    private static final String TAG = NotificationsUtils.class.getSimpleName();
 
     public static void NotifyUser(Context mContext, int id, String title, String content, PendingIntent intent) {
         NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -26,5 +26,4 @@ public class NotifyScheduledTest  {
 
         notificationManager.notify(id, notifyUser);
     }
-
 }

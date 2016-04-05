@@ -38,14 +38,19 @@ import com.education.corsalite.event.ForumPostingEvent;
 import com.education.corsalite.event.OfflineEventClass;
 import com.education.corsalite.event.TakingTestEvent;
 import com.education.corsalite.event.UpdateUserEvents;
+import com.education.corsalite.fragments.ChallengeTestRequestDialogFragment;
 import com.education.corsalite.fragments.ScheduledTestDialog;
 import com.education.corsalite.models.ContentModel;
 import com.education.corsalite.models.requestmodels.LogoutModel;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.ExamModel;
+import com.education.corsalite.models.responsemodels.FriendsData;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencyBalanceResponse;
+import com.education.corsalite.models.socket.response.ChallengeTestRequestEvent;
+import com.education.corsalite.models.socket.response.ChallengeTestStartEvent;
+import com.education.corsalite.models.socket.response.ChallengeTestUpdateEvent;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.AppConfig;
 import com.education.corsalite.utils.AppPref;
@@ -56,6 +61,7 @@ import com.education.corsalite.utils.SystemUtils;
 import com.google.gson.Gson;
 import com.localytics.android.Localytics;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
@@ -81,6 +87,10 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     protected DbManager dbManager;
     protected AppPref appPref;
     private static List<ExamModel> sharedExamModels;
+
+    public List<FriendsData.Friend> selectedFriends = new ArrayList<>();
+
+    ChallengeTestRequestDialogFragment challengeTestRequestDialogFragment;
 
     public static void setSharedExamModels(List<ExamModel> examModels) {
         sharedExamModels = examModels;
@@ -459,8 +469,12 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     public void showToast(String message) {
+        showToast(this, message);
+    }
+
+    public void showToast(Context context, String message) {
         if(!TextUtils.isEmpty(message)) {
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -674,5 +688,44 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         intent.putExtra(LoginActivity.TITLE, getString(R.string.redeem));
         intent.putExtra(LoginActivity.URL, Constants.REDEEM_URL);
         startActivity(intent);
+    }
+
+    // trigger challenge test request
+    public void onEventMainThread(ChallengeTestRequestEvent event) {
+        showChallengeTestRequestFragment(event);
+    }
+
+    public void onEventMainThread(ChallengeTestUpdateEvent event) {
+        if(challengeTestRequestDialogFragment == null || !challengeTestRequestDialogFragment.isVisible()) {
+            ChallengeTestRequestEvent requestEvent = new ChallengeTestRequestEvent();
+            requestEvent.challengeTestParentId = event.challengeTestParentId;
+            requestEvent.challengerName = event.challengerName;
+            showChallengeTestRequestFragment(requestEvent);
+        }
+    }
+
+    public void showChallengeTestRequestFragment(ChallengeTestRequestEvent event) {
+        if(challengeTestRequestDialogFragment != null && challengeTestRequestDialogFragment.isVisible()) {
+            challengeTestRequestDialogFragment.dismiss();
+        }
+        challengeTestRequestDialogFragment = ChallengeTestRequestDialogFragment.newInstance(event);
+        if (challengeTestRequestDialogFragment != null) {
+            challengeTestRequestDialogFragment.show(getSupportFragmentManager(), ChallengeTestRequestDialogFragment.class.getSimpleName());
+        }
+    }
+
+    public void onEventMainThread(ChallengeTestStartEvent event) {
+        Intent intent = new Intent(this, ExamEngineActivity.class);
+        intent.putExtra(Constants.TEST_TITLE, "Challenge Test");
+        intent.putExtra("test_question_paper_id", event.testQuestionPaperId);
+        startActivity(intent);
+    }
+
+    public void startChallengeTest(String testQuestionPaperId) {
+        Intent intent = new Intent(this, ExamEngineActivity.class);
+        intent.putExtra(Constants.TEST_TITLE, "Challenge Test");
+        intent.putExtra("test_question_paper_id", testQuestionPaperId);
+        startActivity(intent);
+        finish();
     }
 }

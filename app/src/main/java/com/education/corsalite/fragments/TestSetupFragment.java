@@ -1,6 +1,5 @@
 package com.education.corsalite.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +14,6 @@ import android.widget.Toast;
 import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.activities.ChallengeActivity;
-import com.education.corsalite.activities.ExamEngineActivity;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
@@ -26,8 +24,9 @@ import com.education.corsalite.models.requestmodels.CreateChallengeRequest;
 import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.CreateChallengeResponseModel;
+import com.education.corsalite.models.responsemodels.Exam;
 import com.education.corsalite.models.responsemodels.FriendsData;
-import com.education.corsalite.utils.Constants;
+import com.education.corsalite.utils.L;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +34,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 import retrofit.client.Response;
 
 
@@ -46,6 +46,8 @@ public class TestSetupFragment extends BaseFragment {
     public Spinner selectSubjSpinner;
     @Bind(R.id.selectChapterSpinner)
     public Spinner selectChapSpinner;
+    @Bind(R.id.examsSpinner)
+    public Spinner examsSpinner;
     @Bind(R.id.et_noOfQues)
     public EditText noOfQuesEdit;
     @Bind(R.id.et_timeInMins)
@@ -65,11 +67,15 @@ public class TestSetupFragment extends BaseFragment {
     @Bind(R.id.tv_virCurrencyError)
     public TextView virCurrencyError;
 
+    private List<SubjectModel> subjectList;
+    private List<ChapterModel> chapterList;
+    private List<Exam> examsList;
+
     public TestSetupFragment() {
         // Required empty public constructor
     }
 
-    public static TestSetupFragment newInstance(ChallengeActivity.TestSetupCallback mTestSetupCallback, ArrayList<FriendsData.Friend> selectedFriends) {
+    public static TestSetupFragment newInstance(ChallengeActivity.TestSetupCallback mTestSetupCallback) {
         TestSetupFragment fragment = new TestSetupFragment();
         Bundle args = new Bundle();
         fragment.mTestSetupCallback = mTestSetupCallback;
@@ -89,10 +95,9 @@ public class TestSetupFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_test_setup, container, false);
         ButterKnife.bind(this, view);
-
         loadContent();
+        loadExams();
         titleTv.setText(AbstractBaseActivity.selectedCourse.name.toString());
-
         return view;
     }
 
@@ -150,11 +155,30 @@ public class TestSetupFragment extends BaseFragment {
         request.durationInMins = timeInMinsEdit.getText().toString();
         request.questionCount = noOfQuesEdit.getText().toString();
         request.virtualCurrencyChallenged = virtCurrencyEdit.getText().toString();
-        request.examId = "8"; // TODO : remove it after testing
+        if(examsSpinner.getSelectedItemPosition() == 0) {
+            showToast("Please select the exam");
+            return;
+        }
+        request.examId = examsList.get(examsSpinner.getSelectedItemPosition() - 1).examId;
         request.studentId = LoginUserCache.getInstance().loginResponse.studentId;
         ChallengeFriend friend = new ChallengeFriend();
-        friend.friend1 = "1157"; // TODO : remove it after testing
+        List<FriendsData.Friend> selectedFriends = ((ChallengeActivity)getActivity()).selectedFriends;
+        if(selectedFriends != null) {
+            if(selectedFriends.size() > 0) {
+                friend.friend1 = selectedFriends.get(0).idStudent;
+            }
+            if(selectedFriends.size() > 1) {
+                friend.friend2 = selectedFriends.get(1).idStudent;
+            }
+            if(selectedFriends.size() > 2) {
+                friend.friend3 = selectedFriends.get(2).idStudent;
+            }
+            if(selectedFriends.size() > 3) {
+                friend.friend4 = selectedFriends.get(3).idStudent;
+            }
+        }
         request.challengedFriendsId = friend;
+
         ApiManager.getInstance(getActivity()).createChallenge(request, new ApiCallback<CreateChallengeResponseModel>(getActivity()) {
             @Override
             public void failure(CorsaliteError error) {
@@ -167,11 +191,7 @@ public class TestSetupFragment extends BaseFragment {
                 super.success(createChallengeResponseModel, response);
                 Toast.makeText(getActivity(), "Created Test", Toast.LENGTH_SHORT).show();
                 if(createChallengeResponseModel != null && createChallengeResponseModel.testQuestionPaperId != null) {
-                    Intent intent = new Intent(getActivity(), ExamEngineActivity.class);
-                    intent.putExtra(Constants.TEST_TITLE, "Challenge Test");
-                    intent.putExtra("test_question_paper_id", createChallengeResponseModel.testQuestionPaperId);
-                    startActivity(intent);
-                    getActivity().finish();
+                    EventBus.getDefault().post(createChallengeResponseModel);
                 }
             }
         });
@@ -239,8 +259,41 @@ public class TestSetupFragment extends BaseFragment {
                 });
     }
 
-    private List<SubjectModel> subjectList;
-    private List<ChapterModel> chapterList;
+    private void loadExams() {
+        ApiManager.getInstance(getActivity()).getStandardExamsByCourse(AbstractBaseActivity.selectedCourse.courseId+"", LoginUserCache.getInstance().loginResponse.entitiyId,
+                new ApiCallback<List<Exam>>(getActivity()) {
+                    @Override
+                    public void success(List<Exam> exams, Response response) {
+                        super.success(exams, response);
+                        if(exams != null) {
+                            examsList = exams;
+                            showExams();
+                        }
+                    }
+
+                    @Override
+                    public void failure(CorsaliteError error) {
+                        super.failure(error);
+                    }
+                });
+    }
+
+    private void showExams() {
+        examsSpinner.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.challenge_spinner_item, R.id.mock_test_txt, getExams(examsList)));
+        selectSubjSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                if(position > 0) {
+                    L.info("Selected exam : " + examsList.get(position - 1).examId+" - "+examsList.get(position - 1).examName);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
 
 
     private void showSubjects(final List<ContentIndex> contentIndexList) {
@@ -288,6 +341,17 @@ public class TestSetupFragment extends BaseFragment {
 
             }
         });
+    }
+
+    private List<String> getExams(List<Exam> exams) {
+        List<String> strings = new ArrayList<>();
+        strings.add("Select Exam");
+        if (exams != null && !exams.isEmpty()) {
+            for (int i = 0; i < exams.size(); i++) {
+                strings.add(exams.get(i).examName);
+            }
+        }
+        return strings;
     }
 
     private List<String> getSubjects(List<SubjectModel> subjectModelList) {
