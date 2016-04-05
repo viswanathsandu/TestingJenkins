@@ -29,8 +29,9 @@
             android:id="@+id/currency_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
+            android:gravity="center"
             android:orientation="horizontal"
+            android:layout_weight="1"
             android:visibility="gone">
 
             <ImageView
@@ -45,7 +46,6 @@
                 fontPath="@string/roboto_bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
                 android:paddingBottom="5dp"
                 android:paddingLeft="5dp"
                 android:paddingTop="5dp"
@@ -57,8 +57,7 @@
             <ProgressBar
                 android:id="@+id/ProgressBar"
                 android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center" />
+                android:layout_height="30dp" />
         </LinearLayout>
 
         <Spinner
@@ -74,7 +73,7 @@
         android:id="@+id/redeem_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="right|center_vertical"
+        android:gravity="center"
         android:padding="10dp"
         android:visibility="gone">
 
