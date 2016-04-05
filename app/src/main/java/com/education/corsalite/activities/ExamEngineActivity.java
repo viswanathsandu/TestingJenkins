@@ -94,6 +94,7 @@ import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import io.fabric.sdk.android.services.network.NetworkUtils;
 import retrofit.client.Response;
 
 /**
@@ -1349,33 +1350,35 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         explanationLayout.setVisibility(View.VISIBLE);
         layoutChoice.setVisibility(View.VISIBLE);
 
-        ApiManager.getInstance(this).postExerciseAnswer(new Gson().toJson(postExerciseRequestModel),
-                new ApiCallback<PostExercise>(this) {
-                    @Override
-                    public void failure(CorsaliteError error) {
-                        btnVerify.setEnabled(true);
-                        String message = "Unknown error occurred.Please try again.";
-                        if (error != null && !TextUtils.isEmpty(error.message)) {
-                            message = error.message;
-                        }
-                        explanationLayout.setVisibility(View.VISIBLE);
-                        layoutChoice.setVisibility(View.VISIBLE);
-                        showToast(message);
-                    }
-
-                    @Override
-                    public void success(PostExercise postExercise, Response response) {
-                        super.success(postExercise, response);
-                        if (!postExercise.isSuccessful()) {
-                            String message = "Unknown error occurred. Please try again.";
-                            if (postExercise != null && !TextUtils.isEmpty(postExercise.message)) {
-                                message = postExercise.message;
+        if(SystemUtils.isNetworkConnected(this)) {
+            ApiManager.getInstance(this).postExerciseAnswer(new Gson().toJson(postExerciseRequestModel),
+                    new ApiCallback<PostExercise>(this) {
+                        @Override
+                        public void failure(CorsaliteError error) {
+                            btnVerify.setEnabled(true);
+                            String message = "Unknown error occurred.Please try again.";
+                            if (error != null && !TextUtils.isEmpty(error.message)) {
+                                message = error.message;
                             }
-                            L.error(message);
+                            explanationLayout.setVisibility(View.VISIBLE);
+                            layoutChoice.setVisibility(View.VISIBLE);
+                            showToast(message);
                         }
 
-                    }
-                });
+                        @Override
+                        public void success(PostExercise postExercise, Response response) {
+                            super.success(postExercise, response);
+                            if (!postExercise.isSuccessful()) {
+                                String message = "Unknown error occurred. Please try again.";
+                                if (postExercise != null && !TextUtils.isEmpty(postExercise.message)) {
+                                    message = postExercise.message;
+                                }
+                                L.error(message);
+                            }
+
+                        }
+                    });
+        }
     }
 
     private void toggleSlider() {
