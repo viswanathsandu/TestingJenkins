@@ -575,7 +575,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
                 }
             }
         } catch (Exception e) {
-            Log.e("corsalite", e.toString());
+            L.error(e.getMessage(), e);
         }
         if (mViewSwitcher.getNextView() instanceof RelativeLayout) {
             mViewSwitcher.showNext();
@@ -650,6 +650,8 @@ public class ContentReadingActivity extends AbstractBaseActivity {
 
     }
 
+    private String contentIds = "";
+
     /**
      * called when sptopic is selected
      */
@@ -676,7 +678,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
             tvVideo.setVisibility(View.GONE);
         }
 
-        String contentIds = "";
+        contentIds = "";
         String contentNames = "";
         for (ContentModel contentModel : contentModelList) {
             if (contentIds.trim().length() > 0) {
@@ -701,10 +703,19 @@ public class ContentReadingActivity extends AbstractBaseActivity {
     }
 
     private void getContent(final String contentId, final boolean updatePosition) {
+        mContentId = contentId;
         ApiManager.getInstance(this).getContent(contentId, "", new ApiCallback<List<Content>>(this) {
             @Override
             public void failure(CorsaliteError error) {
                 super.failure(error);
+                try {
+                    if (TextUtils.isEmpty(mContentId) || !mContentId.equalsIgnoreCase(contentId)) {
+                        return;
+                    }
+                } catch (Exception e) {
+                    L.error(e.getMessage(), e);
+                    return;
+                }
                 showToast(error.message);
                 if (mViewSwitcher.getNextView() instanceof RelativeLayout) {
                     mViewSwitcher.showNext();
@@ -714,6 +725,14 @@ public class ContentReadingActivity extends AbstractBaseActivity {
             @Override
             public void success(List<Content> contents, Response response) {
                 super.success(contents, response);
+                try {
+                    if (TextUtils.isEmpty(mContentId) || !mContentId.equalsIgnoreCase(contents.get(0).idContent)) {
+                        return;
+                    }
+                } catch (Exception e) {
+                    L.error(e.getMessage(), e);
+                    return;
+                }
                 contentList = contents;
                 getWebData(contents, updatePosition);
                 String courseId = String.valueOf(selectedCourse.courseId);
