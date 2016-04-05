@@ -49,7 +49,6 @@ public class CheckedItemViewHolder extends TreeNode.BaseNodeViewHolder<String> {
 //            checkboxImage.setImageDrawable(view.getResources().getDrawable(R.drawable.ico_offline_chapter));
 //            checkboxImage.setBackgroundColor(context.getResources().getColor(R.color.red));
 //            checkboxImage.setBackgroundColor(view.getResources().getColor());
-            //edited by MadhuriK on 4-4-16
             checkboxImage.setImageDrawable(context.getResources().getDrawable(R.drawable.chapter_root_node));
         }else{
             if(value.endsWith(".mpg")){
@@ -67,9 +66,6 @@ public class CheckedItemViewHolder extends TreeNode.BaseNodeViewHolder<String> {
         if (node.isLastChild()) {
             view.findViewById(R.id.bot_line).setVisibility(View.INVISIBLE);
         }
-
-       // System.out.println("::::::::::::::::::: VALUE IS="+value);
-        //System.out.println("::::::::::::::::::: VALUE IS="+value);
 
         return view;
     }

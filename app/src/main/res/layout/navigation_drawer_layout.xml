@@ -14,7 +14,7 @@
 
         <include
             android:id="@+id/toolbar"
-            layout="@layout/study_circle_toolbar" />
+            layout="@layout/user_profile_toolbar" />
 
         <FrameLayout
             android:id="@+id/activity_layout_container"

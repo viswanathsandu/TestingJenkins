@@ -7,33 +7,30 @@
     android:background="@color/black"
     app:showAsAction="ifRoom">
 
-    <TextView
-        android:id="@+id/toolbar_title"
-        style="@style/title_style"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:paddingLeft="16dp"
-        android:singleLine="true"
-        android:text="@string/app_name" />
-
     <LinearLayout
-        android:id="@+id/spinner_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="right|center_vertical"
-        android:orientation="horizontal"
-        android:visibility="gone">
+        android:layout_height="match_parent"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_weight="0"
+            android:id="@+id/toolbar_title"
+            style="@style/title_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:paddingLeft="16dp"
+            android:singleLine="true"
+            android:text="@string/app_name" />
 
         <LinearLayout
+            android:layout_weight="1"
             android:id="@+id/currency_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="horizontal"
-            android:layout_weight="1"
             android:visibility="gone">
-
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
@@ -46,6 +43,7 @@
                 fontPath="@string/roboto_bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="center_vertical"
                 android:paddingBottom="5dp"
                 android:paddingLeft="5dp"
                 android:paddingTop="5dp"
@@ -57,18 +55,27 @@
             <ProgressBar
                 android:id="@+id/ProgressBar"
                 android:layout_width="30dp"
-                android:layout_height="30dp" />
+                android:layout_height="30dp"
+                android:layout_gravity="center" />
         </LinearLayout>
 
-        <Spinner
-            android:id="@+id/spinner_courses"
+        <LinearLayout
+            android:layout_weight="0"
+            android:id="@+id/spinner_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="right"
-            android:paddingLeft="16dp" />
+            android:gravity="end"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <Spinner
+                android:id="@+id/spinner_courses"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                />
+        </LinearLayout>
     </LinearLayout>
-
-
     <LinearLayout
         android:id="@+id/redeem_layout"
         android:layout_width="match_parent"
@@ -158,5 +165,4 @@
             android:text="Start"
             android:textColor="@color/black" />
     </LinearLayout>
-
 </android.support.v7.widget.Toolbar>
