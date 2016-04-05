@@ -18,7 +18,7 @@
         android:buttonTint="@color/black"
         android:visibility="gone" />
 
-    <ImageView
+   <ImageView
         android:id="@+id/node_selectors"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -26,6 +26,15 @@
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/node_selector"
         android:src="@drawable/ico_offline_topics" />
+
+    <!--<View-->
+        <!--android:id="@+id/node_selectors"-->
+        <!--android:layout_width="20dp"-->
+        <!--android:background="@drawable/chapter_root_node"-->
+        <!--android:layout_height="20dp"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:layout_toRightOf="@id/node_selector"/>-->
 
     <LinearLayout
         android:id="@+id/buttonsContainer"

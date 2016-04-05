@@ -46,9 +46,23 @@ public class CheckedItemViewHolder extends TreeNode.BaseNodeViewHolder<String> {
         });
         nodeSelector.setChecked(node.isSelected());
         if(!isFile){
-            checkboxImage.setImageDrawable(view.getResources().getDrawable(R.drawable.ico_offline_chapter));
-            nodeLayout.setBackgroundColor(view.getResources().getColor(R.color.gray));
+//            checkboxImage.setImageDrawable(view.getResources().getDrawable(R.drawable.ico_offline_chapter));
+//            checkboxImage.setBackgroundColor(context.getResources().getColor(R.color.red));
+//            checkboxImage.setBackgroundColor(view.getResources().getColor());
+            checkboxImage.setImageDrawable(context.getResources().getDrawable(R.drawable.chapter_root_node));
+        }else{
+            if(value.endsWith(".mpg")){
+                checkboxImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ico_offline_vid_play));
+            }else if (value.endsWith(".html")){
+                checkboxImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ico_offline_chapter));
+            }
         }
+
+
+
+
+
+
         if (node.isLastChild()) {
             view.findViewById(R.id.bot_line).setVisibility(View.INVISIBLE);
         }

@@ -9,8 +9,9 @@
     <fragment
         android:id="@+id/currencyFragment"
         android:name="com.education.corsalite.fragments.VirtualCurrencyFragment"
+        android:layout_gravity="center_horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true" />
+        />
 
 </LinearLayout>
