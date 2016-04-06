@@ -6,12 +6,17 @@
     android:background="@drawable/curve_shape"
     android:orientation="vertical"
     android:padding="10dp">
-    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <TextView
+        android:id="@+id/title_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Challenge"
         android:textColor="@color/text_white"
-        android:textSize="30dp"/>
+        android:textSize="30sp"
+        fontPath="@string/roboto_medium"
+        android:layout_marginBottom="30dp"
+        android:layout_centerHorizontal="true"/>
 
     <LinearLayout
         android:id="@+id/buttons_layout"
@@ -21,13 +26,6 @@
         android:gravity="center_horizontal"
         android:layout_marginTop="100dp"
         android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/start_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="50dp"
-            android:background="@drawable/ico_home"/>
 
         <Button
             android:id="@+id/refresh_btn"
@@ -46,6 +44,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/ico_accept"/>
+
+        <Button
+            android:id="@+id/start_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            android:background="@drawable/ico_home"/>
 
     </LinearLayout>
 
@@ -148,6 +153,7 @@
         android:layout_toLeftOf="@+id/board_layout"
         android:gravity="center_vertical"
         android:minHeight="300dp"
+        android:layout_below="@+id/title_txt"
         android:orientation="vertical">
 
         <LinearLayout
@@ -161,6 +167,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Course"
+                fontPath="@string/roboto_regular"
                 android:textColor="@color/text_white" />
 
             <TextView
@@ -169,6 +176,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:text="-"
+                fontPath="@string/roboto_regular"
                 android:textColor="@color/text_white" />
         </LinearLayout>
 
@@ -184,6 +192,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Subject"
+                fontPath="@string/roboto_regular"
                 android:textColor="@color/text_white" />
 
             <TextView
@@ -192,6 +201,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:text="-"
+                fontPath="@string/roboto_regular"
                 android:textColor="@color/text_white" />
         </LinearLayout>
 
@@ -206,6 +216,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Chapter"
+                fontPath="@string/roboto_regular"
                 android:textColor="@color/text_white" />
 
             <TextView
@@ -214,6 +225,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:text="-"
+                fontPath="@string/roboto_regular"
                 android:textColor="@color/text_white" />
         </LinearLayout>
 
@@ -228,6 +240,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Questions"
+                fontPath="@string/roboto_regular"
                 android:textColor="@color/text_white" />
 
             <TextView
@@ -236,6 +249,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:text="-"
+                fontPath="@string/roboto_regular"
                 android:textColor="@color/text_white" />
         </LinearLayout>
 
@@ -250,6 +264,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Time in Mins"
+                fontPath="@string/roboto_regular"
                 android:textColor="@color/text_white" />
 
             <TextView
@@ -258,6 +273,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:text="-"
+                fontPath="@string/roboto_regular"
                 android:textColor="@color/text_white" />
         </LinearLayout>
 
@@ -272,6 +288,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Virtual Currency"
+                fontPath="@string/roboto_regular"
                 android:textColor="@color/text_white" />
 
             <TextView
@@ -280,6 +297,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:text="-"
+                fontPath="@string/roboto_regular"
                 android:textColor="@color/text_white" />
         </LinearLayout>
 
@@ -296,6 +314,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Status"
+                fontPath="@string/roboto_regular"
                 android:textColor="@color/text_white" />
 
             <LinearLayout
@@ -313,6 +332,7 @@
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
                     android:text="Initiated"
+                    fontPath="@string/roboto_regular"
                     android:textColor="@color/text_white" />
             </LinearLayout>
         </LinearLayout>
