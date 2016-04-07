@@ -114,6 +114,7 @@ public class TestDownloadService extends IntentService {
                         model.testPaperIndecies = testPAperIndecies;
                         model.testQuestionPaperId = testQuestionPaperId;
                         model.testAnswerPaperId = testAnswerPaperId;
+                        model.dateTime = System.currentTimeMillis();
                         DbManager.getInstance(getApplicationContext()).saveOfflineTest(model);
                     }
                 });
@@ -126,6 +127,7 @@ public class TestDownloadService extends IntentService {
             public void onSuccess(BaseTest test) {
                 OfflineTestModel model = new OfflineTestModel();
                 model.baseTest = test;
+                model.dateTime = System.currentTimeMillis();
                 DbManager.getInstance(TestDownloadService.this).saveOfflineTest(model);
             }
 

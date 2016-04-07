@@ -52,7 +52,6 @@ import com.education.corsalite.db.DbManager;
 import com.education.corsalite.enums.QuestionType;
 import com.education.corsalite.event.ExerciseAnsEvent;
 import com.education.corsalite.fragments.FullQuestionDialog;
-import com.education.corsalite.models.ExerciseOfflineModel;
 import com.education.corsalite.models.MockTest;
 import com.education.corsalite.models.OfflineTestModel;
 import com.education.corsalite.models.ScheduledTestList;
@@ -65,8 +64,8 @@ import com.education.corsalite.models.requestmodels.PostExerciseRequestModel;
 import com.education.corsalite.models.requestmodels.PostQuestionPaperRequest;
 import com.education.corsalite.models.responsemodels.AnswerChoiceModel;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
-import com.education.corsalite.models.responsemodels.ExamModel;
 import com.education.corsalite.models.responsemodels.Exam;
+import com.education.corsalite.models.responsemodels.ExamModel;
 import com.education.corsalite.models.responsemodels.PostExamTemplate;
 import com.education.corsalite.models.responsemodels.PostExercise;
 import com.education.corsalite.models.responsemodels.PostFlaggedQuestions;
@@ -94,7 +93,6 @@ import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import io.fabric.sdk.android.services.network.NetworkUtils;
 import retrofit.client.Response;
 
 /**
@@ -221,6 +219,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private String testQuestionPaperId = null;
     private boolean isOffline;
     private TestAnswerPaper testanswerPaper = new TestAnswerPaper();
+    private long offlineModelDate;
 
     public static Intent getMyIntent(Context context, @Nullable Bundle extras) {
         Intent intent = new Intent(context, ExamEngineActivity.class);
@@ -263,6 +262,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         chapterId = getIntent().getExtras().getString(Constants.SELECTED_CHAPTERID);
         topicIds = getIntent().getExtras().getString(Constants.SELECTED_TOPICID);
         isOffline = getIntent().getExtras().getBoolean(Constants.IS_OFFLINE, false);
+        offlineModelDate = getIntent().getExtras().getLong("OfflineTestModel");
         if (title.equalsIgnoreCase("Flagged Questions")) {
             loadFlaggedQuestions();
         } else if (title.equalsIgnoreCase("Exercises")) {
@@ -700,6 +700,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     public void success(TestAnswerPaperResponse testAnswerPaperResponse, Response response) {
                         super.success(testAnswerPaperResponse, response);
                         showToast("Exam has been suspended");
+                        DbManager.getInstance(ExamEngineActivity.this).updateOfflineTestModel(offlineModelDate, Constants.STATUS_SUSPENDED);
                         finish();
                     }
                 });
@@ -795,6 +796,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                             openAdvancedExamResultSummary(testAnswerPaperResponse.testAnswerPaperId);
                             finish();
                         }
+                        DbManager.getInstance(ExamEngineActivity.this).updateOfflineTestModel(offlineModelDate, Constants.STATUS_COMPLETED);
                     }
                 });
             } else {

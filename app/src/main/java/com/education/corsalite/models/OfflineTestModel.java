@@ -4,6 +4,7 @@ import com.education.corsalite.models.examengine.BaseTest;
 import com.education.corsalite.models.responsemodels.BaseModel;
 import com.education.corsalite.models.responsemodels.ExamModel;
 import com.education.corsalite.models.responsemodels.TestPaperIndex;
+import com.education.corsalite.utils.Constants;
 
 import java.util.List;
 
@@ -20,5 +21,5 @@ public class OfflineTestModel extends BaseModel {
     public TestPaperIndex testPaperIndecies;
     public BaseTest baseTest;
     public long dateTime;
-    public int status;
+    public int status = Constants.STATUS_START;
 }
