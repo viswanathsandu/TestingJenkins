@@ -141,6 +141,7 @@ public class TestDownloadService extends IntentService {
             @Override
             public void onSuccess(BaseTest test) {
                 model.baseTest = test;
+                model.dateTime = System.currentTimeMillis();
                 DbManager.getInstance(TestDownloadService.this).saveOfflineTest(model);
             }
 

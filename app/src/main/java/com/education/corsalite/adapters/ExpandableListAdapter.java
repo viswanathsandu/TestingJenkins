@@ -84,6 +84,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         }
         TextView txtListChild = (TextView) convertView.findViewById(R.id.mock_test_txt);
         ImageView ivDownload = (ImageView) convertView.findViewById(R.id.download_test);
+        TextView textViewTime = (TextView)convertView.findViewById(R.id.mock_test_time_txt);
+        //textViewTime.setText(childs.get(this.headers.get(groupPosition)).get(childPosition).dateTime);
         ivDownload.setVisibility(View.GONE);
         txtListChild.setText(childText);
         txtListChild.setOnClickListener(new View.OnClickListener() {
@@ -141,6 +143,36 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             convertView = infalInflater.inflate(R.layout.offline_test_header_item, null);
         }
         TextView lblListHeader = (TextView) convertView.findViewById(R.id.title_txt);
+        ImageView ivNotStarted = (ImageView)convertView.findViewById(R.id.iv_yetttoattempt);
+        ImageView ivCompleted = (ImageView)convertView.findViewById(R.id.iv_correct);
+        ImageView ivRejected = (ImageView)convertView.findViewById(R.id.iv_notattended);
+        TextView tvNotStarted = (TextView)convertView.findViewById(R.id.count_notattended);
+        TextView tvCompleted = (TextView)convertView.findViewById(R.id.count_correct);
+        TextView tvRejected = (TextView)convertView.findViewById(R.id.count_notattended);
+        int statusRejected = getRejectedStatus(childs.get(headerTitle));
+        int statusCorrected = getRejectedStatus(childs.get(headerTitle));
+        int statusNotAttempted = getRejectedStatus(childs.get(headerTitle));
+        /*if(statusCorrected == 0){
+            ivCompleted.setVisibility(View.GONE);
+            tvCompleted.setVisibility(View.GONE);
+        }else {
+            ivCompleted.setVisibility(View.VISIBLE);
+            tvCompleted.setVisibility(View.VISIBLE);
+        }
+        if(statusNotAttempted == 0){
+            ivNotStarted.setVisibility(View.GONE);
+            tvNotStarted.setVisibility(View.GONE);
+        }else {
+            ivNotStarted.setVisibility(View.VISIBLE);
+            tvNotStarted.setVisibility(View.VISIBLE);
+        }
+        if(statusRejected == 0){
+            ivRejected.setVisibility(View.GONE);
+            tvRejected.setVisibility(View.GONE);
+        }else {
+            ivRejected.setVisibility(View.VISIBLE);
+            tvRejected.setVisibility(View.VISIBLE);
+        }*/
         lblListHeader.setText(headerTitle);
         ImageView ivDownload = (ImageView) convertView.findViewById(R.id.download_test);
         ivDownload.setImageResource(isExpanded ? R.drawable.ico_offline_arrow_down_black : R.drawable.ico_offline_arrow_black);
@@ -210,6 +242,20 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         exerciseIntent.putExtra(Constants.SELECTED_TOPIC, subjectName);
         exerciseIntent.putExtra(Constants.IS_OFFLINE,true);
         context.startActivity(exerciseIntent);
+    }
+
+    private int getRejectedStatus(List<OfflineTestModel> offlineTestModels){
+        int status = 0;
+        for (OfflineTestModel model : offlineTestModels) {
+           // status = status+model.statusNotattempted;
+        }
+        return status;
+    }
+
+    class Status {
+        int statusNotattempted;
+        int statusCorrect;
+        int statusNotStarted;
     }
 }
 

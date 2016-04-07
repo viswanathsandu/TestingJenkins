@@ -19,5 +19,6 @@ public class OfflineTestModel extends BaseModel {
     public String testAnswerPaperId;
     public TestPaperIndex testPaperIndecies;
     public BaseTest baseTest;
-
+    public long dateTime;
+    public int status;
 }
