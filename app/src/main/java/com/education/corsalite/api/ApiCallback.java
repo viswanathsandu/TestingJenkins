@@ -46,7 +46,7 @@ public abstract class ApiCallback<T> implements Callback<T> {
                 failure(corsaliteError);
             } else {
                 CorsaliteError corsaliteError = new CorsaliteError();
-                corsaliteError.message = "something went wrong";
+                corsaliteError.message = "";//"something went wrong";
                 failure(corsaliteError);
             }
         } catch (Exception e) {
