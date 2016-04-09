@@ -21,9 +21,11 @@ public class TimeUtils {
 
     public static String getDateTime(long millis){
        String dateTime = "";
-        SimpleDateFormat sdfmt2 = new SimpleDateFormat("MMM dd, yyyy HH:mm");
-        Date date = new Date(millis);
-        dateTime = sdfmt2.format(date);
+        if(millis != 0) {
+            SimpleDateFormat sdfmt2 = new SimpleDateFormat("MMM dd, yyyy HH:mm");
+            Date date = new Date(millis);
+            dateTime = sdfmt2.format(date);
+        }
         return dateTime;
 
     }
