@@ -84,10 +84,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             convertView = infalInflater.inflate(R.layout.offline_test_child_item, null);
         }
         TextView txtListChild = (TextView) convertView.findViewById(R.id.mock_test_txt);
-        ImageView ivDownload = (ImageView) convertView.findViewById(R.id.download_test);
         TextView textViewTime = (TextView)convertView.findViewById(R.id.mock_test_time_txt);
         textViewTime.setText(TimeUtils.getDateTime(childs.get(this.headers.get(groupPosition)).get(childPosition).dateTime));
-        ivDownload.setVisibility(View.GONE);
         txtListChild.setText(childText);
         txtListChild.setOnClickListener(new View.OnClickListener() {
             @Override
