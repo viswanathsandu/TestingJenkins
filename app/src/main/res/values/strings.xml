@@ -125,6 +125,14 @@
     <string name="file_save_failed">Unable to save file.</string>
     <string name="file_exists">File already exists.</string>
 
+
+<!--Challenge Screen -->
+
+    <string name="participant">One more participants are still battling it out</string>
+    <string name="check_result">Please wait to check result.</string>
+
+
+
     <!-- Screen names-->
 
     <string name="screen_examhistory">Exam History Screen</string>
