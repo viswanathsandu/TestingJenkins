@@ -33,6 +33,7 @@ public class OfflineTestsFragment  extends BaseFragment implements OfflineConten
     private List<OfflineTestModel> partTestList;
     private ArrayList<String> allTests;
     private HashMap<String, List<OfflineTestModel>> offlineTests;
+    private  ExpandableListAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -41,7 +42,7 @@ public class OfflineTestsFragment  extends BaseFragment implements OfflineConten
         rvOfflineTests.setGroupIndicator(null);
         offlineTests = new HashMap<>();
         allTests = loadAllTests();
-        loadOfflineTests();
+        //loadOfflineTests();
         return v;
     }
 
@@ -93,7 +94,7 @@ public class OfflineTestsFragment  extends BaseFragment implements OfflineConten
     }
 
     private void initNodes(){
-        ExpandableListAdapter adapter = new ExpandableListAdapter(getActivity(),allTests,offlineTests);
+        adapter = new ExpandableListAdapter(getActivity(),allTests,offlineTests);
         rvOfflineTests.setAdapter(adapter);
     }
 
@@ -109,5 +110,11 @@ public class OfflineTestsFragment  extends BaseFragment implements OfflineConten
 
             }
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+       loadOfflineTests();
     }
 }

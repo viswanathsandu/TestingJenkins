@@ -41,6 +41,11 @@ public class Constants {
     public static final String TEST_COVERAGE_LIST_GSON = "testCoverageListGson";
     public static final String IS_OFFLINE = "IS_OFFLINE";
     public static final String PARTTEST_GRIDMODELS = "partTestGridElements";
+    public static final int STATUS_SUSPENDED = 22;
+    public static final int STATUS_COMPLETED = 33;
+    public static final int STATUS_START = 44;
+
+
 
 
     public enum AnswerState {

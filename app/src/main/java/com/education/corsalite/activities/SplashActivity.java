@@ -32,13 +32,12 @@ public class SplashActivity extends AbstractBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        checkAutoLogin();
         AppConfig.loadAppconfig(SplashActivity.this);
+        final String enableProduction = AppPref.getInstance(SplashActivity.this).getValue("enable_production");
         new CountDownTimer(AppConfig.getInstance().splashDuration, 100) {
             @Override
             public void onFinish() {
                 AppConfig config = AppConfig.getInstance();
-                String enableProduction = AppPref.getInstance(SplashActivity.this).getValue("enable_production");
                 if(TextUtils.isEmpty(enableProduction)) {
                     AppPref.getInstance(SplashActivity.this).save("enable_production", config.enableProduction + "");
                 } else {
@@ -53,6 +52,7 @@ public class SplashActivity extends AbstractBaseActivity {
             @Override
             public void onTick(long millisUntilFinished) {}
         }.start();
+        checkAutoLogin();
     }
 
     private void startWebSocket() {

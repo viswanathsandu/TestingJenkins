@@ -1,5 +1,7 @@
 package com.education.corsalite.utils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -15,5 +17,16 @@ public class TimeUtils {
                 hours,
                 minutes,
                 seconds);
+    }
+
+    public static String getDateTime(long millis){
+       String dateTime = "";
+        if(millis != 0) {
+            SimpleDateFormat sdfmt2 = new SimpleDateFormat("MMM dd, yyyy HH:mm");
+            Date date = new Date(millis);
+            dateTime = sdfmt2.format(date);
+        }
+        return dateTime;
+
     }
 }
