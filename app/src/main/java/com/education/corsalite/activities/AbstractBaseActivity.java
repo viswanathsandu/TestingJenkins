@@ -414,8 +414,14 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     protected void showScheduledTestsDialog() {
-        ScheduledTestDialog dialog = new ScheduledTestDialog();
-        dialog.show(getFragmentManager(), "ScheduledTestsListDialog");
+        if (SystemUtils.isNetworkConnected(this)) {
+            ScheduledTestDialog dialog = new ScheduledTestDialog();
+            dialog.show(getFragmentManager(), "ScheduledTestsListDialog");
+        } else {
+            Intent exerciseIntent = new Intent(this, TestStartActivity.class);
+            exerciseIntent.putExtra("selection", 1);
+            startActivity(exerciseIntent);
+        }
     }
 
     private void loadSmartClass() {
@@ -473,7 +479,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     public void showToast(Context context, String message) {
-        if(!TextUtils.isEmpty(message)) {
+        if (!TextUtils.isEmpty(message)) {
             Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
         }
     }
@@ -617,7 +623,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     public static void saveSessionCookie(Response response) {
         String cookie = CookieUtils.getCookieString(response);
         if (response.getStatus() != 401 && cookie != null) {
-            L.info("Intercept : save session cookie : "+cookie);
+            L.info("Intercept : save session cookie : " + cookie);
             ApiClientService.setSetCookie(cookie);
         }
     }
@@ -625,7 +631,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     public static void saveSessionCookie(com.squareup.okhttp.Response response) {
         String cookie = CookieUtils.getCookieString(response);
         if (response.code() != 401 && cookie != null) {
-            L.info("Intercept : save session cookie : "+cookie);
+            L.info("Intercept : save session cookie : " + cookie);
             ApiClientService.setSetCookie(cookie);
         }
     }
@@ -696,7 +702,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     public void onEventMainThread(ChallengeTestUpdateEvent event) {
-        if(challengeTestRequestDialogFragment == null || !challengeTestRequestDialogFragment.isVisible()) {
+        if (challengeTestRequestDialogFragment == null || !challengeTestRequestDialogFragment.isVisible()) {
             ChallengeTestRequestEvent requestEvent = new ChallengeTestRequestEvent();
             requestEvent.challengeTestParentId = event.challengeTestParentId;
             requestEvent.challengerName = event.challengerName;
@@ -705,7 +711,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     public void showChallengeTestRequestFragment(ChallengeTestRequestEvent event) {
-        if(challengeTestRequestDialogFragment != null && challengeTestRequestDialogFragment.isVisible()) {
+        if (challengeTestRequestDialogFragment != null && challengeTestRequestDialogFragment.isVisible()) {
             challengeTestRequestDialogFragment.dismiss();
         }
         challengeTestRequestDialogFragment = ChallengeTestRequestDialogFragment.newInstance(event);

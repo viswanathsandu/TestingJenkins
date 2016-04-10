@@ -13,7 +13,15 @@
         android:padding="6dp"
         android:text="Cancel"
         android:textColor="@color/black" />
-
+    <TextView
+        android:id="@+id/tv_download"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border_lightblue"
+        android:padding="6dp"
+        android:text="Download"
+        android:layout_marginLeft="6dp"
+        android:textColor="@color/black" />
     <TextView
         android:id="@+id/tv_taketest"
         android:layout_width="wrap_content"

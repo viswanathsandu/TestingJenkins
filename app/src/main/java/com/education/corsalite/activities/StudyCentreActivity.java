@@ -21,7 +21,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.GridRecyclerAdapter;
@@ -38,11 +37,9 @@ import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.CourseData;
 import com.education.corsalite.models.responsemodels.StudyCenter;
-import com.education.corsalite.services.TestDownloadService;
-import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.Data;
 import com.education.corsalite.utils.L;
-import com.google.gson.Gson;
+import com.education.corsalite.utils.SystemUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -468,25 +465,29 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     }
 
     private void showPartTestGrid(){
-        PartTestDialog dialog = new PartTestDialog();
-        Bundle bundle = new Bundle();
-        bundle.putInt("idCourseSubject",studyCenter.idCourseSubject);
-        dialog.setArguments(bundle);
-        dialog.show(getFragmentManager(),"PartTestDialog");
-    }
-
-    private void downloadPartTest(StudyCenter studyCenter){
-        Intent intent = new Intent(this, TestDownloadService.class);
-        intent.putExtra("selectedPartTest",new Gson().toJson(studyCenter));
-        intent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
-        intent.putExtra("subjectId", studyCenter.idCourseSubject + "");
-        startService(intent);
-        Toast.makeText(this, "Downloading test paper in background", Toast.LENGTH_SHORT).show();
+        if(SystemUtils.isNetworkConnected(this)) {
+            PartTestDialog dialog = new PartTestDialog();
+            Bundle bundle = new Bundle();
+            bundle.putInt("idCourseSubject", studyCenter.idCourseSubject);
+            bundle.putString("SubjectName", studyCenter.SubjectName);
+            dialog.setArguments(bundle);
+            dialog.show(getFragmentManager(), "PartTestDialog");
+        }else {
+            Intent exerciseIntent = new Intent(this, TestStartActivity.class);
+            exerciseIntent.putExtra("selection", 1);
+            startActivity(exerciseIntent);
+        }
     }
 
     private void showMockTestsDialog() {
-        MockTestDialog dialog = new MockTestDialog();
-        dialog.show(getFragmentManager(), "MockTestsListDialog");
+        if(SystemUtils.isNetworkConnected(this)) {
+            MockTestDialog dialog = new MockTestDialog();
+            dialog.show(getFragmentManager(), "MockTestsListDialog");
+        }else {
+            Intent exerciseIntent = new Intent(this, TestStartActivity.class);
+            exerciseIntent.putExtra("selection", 1);
+            startActivity(exerciseIntent);
+        }
     }
 
     private void setListener(final TextView textView, final String text) {

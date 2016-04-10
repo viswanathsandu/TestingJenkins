@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
@@ -21,6 +22,7 @@ import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.PartTestGridElement;
 import com.education.corsalite.models.responsemodels.PartTestModel;
+import com.education.corsalite.services.TestDownloadService;
 import com.education.corsalite.utils.Constants;
 import com.google.gson.Gson;
 
@@ -68,6 +70,7 @@ public class PartTestDialog extends DialogFragment {
     private void getIntentData() {
         Bundle bundle = getArguments();
         idCourseSubject = bundle.getInt("idCourseSubject");
+        subjectName = bundle.getString("SubjectName");
     }
 
     private void loadPartTest() {
@@ -118,7 +121,7 @@ public class PartTestDialog extends DialogFragment {
         }
     }
 
-    @OnClick({R.id.tv_all,R.id.tv_cancel,R.id.tv_recommended,R.id.tv_taketest})
+    @OnClick({R.id.tv_all,R.id.tv_cancel,R.id.tv_recommended,R.id.tv_taketest,R.id.tv_download})
     public void onClick(View view){
         switch (view.getId()){
             case R.id.tv_cancel:
@@ -142,6 +145,9 @@ public class PartTestDialog extends DialogFragment {
                 startPartTest();
                 dismiss();
                 break;
+            case R.id.tv_download:
+                downloadPartTest();
+                dismiss();
             default:dismiss();
         }
     }
@@ -160,5 +166,14 @@ public class PartTestDialog extends DialogFragment {
             exerciseIntent.putExtra(Constants.PARTTEST_GRIDMODELS,new Gson().toJson(list));
         }
         startActivity(exerciseIntent);
+    }
+
+    private void downloadPartTest(){
+        Intent intent = new Intent(getActivity(), TestDownloadService.class);
+        intent.putExtra("selectedPartTest",subjectName);
+        intent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
+        intent.putExtra("subjectId", idCourseSubject + "");
+        getActivity().startService(intent);
+        Toast.makeText(getActivity(), "Downloading test paper in background", Toast.LENGTH_SHORT).show();
     }
 }
