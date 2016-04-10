@@ -14,8 +14,10 @@ import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.helpers.WebSocketHelper;
+import com.education.corsalite.models.requestmodels.ChallengeStatusRequest;
 import com.education.corsalite.models.responsemodels.ChallengeUser;
 import com.education.corsalite.models.responsemodels.ChallengeUserListResponse;
+import com.education.corsalite.models.responsemodels.CommonResponseModel;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.socket.requests.ChallengeTestUpdateRequestEvent;
 import com.education.corsalite.models.socket.response.ChallengeTestRequestEvent;
@@ -76,7 +78,6 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
         return v;
     }
 
-    // 8008573228
     @Override
     public void onResume() {
         super.onResume();
@@ -124,22 +125,41 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
         }
     }
 
-    @OnClick(R.id.accept_btn)
-    public void acceptTest() {
+    private void updateChallengeStatus(final boolean accepted) {
+        ChallengeStatusRequest request = new ChallengeStatusRequest(LoginUserCache.getInstance().loginResponse.studentId,
+                mChallengeTestRequestEvent.challengeTestParentId, accepted);
+        ApiManager.getInstance(getActivity()).postChallengeStatus(new Gson().toJson(request),
+                new ApiCallback<CommonResponseModel>(getActivity()) {
+                    @Override
+                    public void success(CommonResponseModel commonResponseModel, Response response) {
+                        super.success(commonResponseModel, response);
+                        postStatusEvent(accepted);
+                    }
+
+                    @Override
+                    public void failure(CorsaliteError error) {
+                        super.failure(error);
+                        showToast(error.message);
+                    }
+                });
+    }
+
+    private void postStatusEvent(boolean accepted) {
         ChallengeTestUpdateRequestEvent event = new ChallengeTestUpdateRequestEvent();
         event.setChallengeTestRequestEvent(mChallengeTestRequestEvent);
         event.challengerName = displayName;
-        event.challengerStatus = "Accepted";
+        event.challengerStatus = accepted ? "Accepted" : "Declined";
         WebSocketHelper.get().sendChallengeUpdateEvent(event);
+    }
+
+    @OnClick(R.id.accept_btn)
+    public void acceptTest() {
+        updateChallengeStatus(true);
     }
 
     @OnClick(R.id.reject_btn)
     public void rejectTest() {
-        ChallengeTestUpdateRequestEvent event = new ChallengeTestUpdateRequestEvent();
-        event.setChallengeTestRequestEvent(mChallengeTestRequestEvent);
-        event.challengerName = displayName;
-        event.challengerStatus = "Declined";
-        WebSocketHelper.get().sendChallengeUpdateEvent(event);
+        updateChallengeStatus(false);
     }
 
     @OnClick(R.id.refresh_btn)

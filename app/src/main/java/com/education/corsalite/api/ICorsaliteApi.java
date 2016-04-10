@@ -237,8 +237,9 @@ public interface ICorsaliteApi {
     @GET("/challengeTestDetails")
     void getchallengeTestDetails(@Query("idChallengeTest")String idChallengeTest, ApiCallback<ChallengeUserListResponse> callback);
 
+    @Headers("Content-Type:application/x-www-form-urlencoded")
     @POST("/ChallengeStatus")
-    void updateChallengEStatus(@Body TypedString update, ApiCallback<CommonResponseModel> callback);
+    void updateChallengStatus(@Body TypedString update, ApiCallback<CommonResponseModel> callback);
 
     @GET("/PartTestGrid")
     void getPartTestGrid(@Query("idStudent")String studentId,@Query("idCourse")String courseId,@Query("idSubject") String subjectId,ApiCallback<PartTestModel> callback);

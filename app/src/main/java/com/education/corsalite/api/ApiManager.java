@@ -521,6 +521,12 @@ public class ApiManager {
         }
     }
 
+    public void postChallengeStatus(String update, ApiCallback<CommonResponseModel> callback){
+        if(isApiOnline()){
+            ApiClientService.get().updateChallengStatus(new TypedString("Update=" + update), callback);
+        }
+    }
+
     public void getPartTestGrid(String studentId,String courseId,String subjectId,ApiCallback<PartTestModel> callback){
         if (isApiOnline()){
             ApiClientService.get().getPartTestGrid(studentId,courseId,subjectId,callback);
