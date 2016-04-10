@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -70,8 +71,8 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_challenge_test_request, container, false);
         ButterKnife.bind(this, v);
+        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         mChallengeTestRequestEvent = new Gson().fromJson(getArguments().getString("message"), ChallengeTestRequestEvent.class);
-        getDialog().setTitle("Challenge");
         return v;
     }
 
