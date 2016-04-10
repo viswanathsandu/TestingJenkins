@@ -46,6 +46,7 @@ public class TestDownloadService extends IntentService {
         String mockTestStr = intent.getStringExtra("selectedMockTest");
         String scheduledTestStr = intent.getStringExtra("selectedScheduledTest");
         String takeTestStr = intent.getStringExtra("selectedTakeTest");
+        String partTestStr = intent.getStringExtra("selectedPartTest");
         String subjectName = intent.getStringExtra("SubjectName");
         String subjectId = intent.getStringExtra("subjectId");
         String questionsCount = intent.getStringExtra("questions_count");
@@ -62,10 +63,10 @@ public class TestDownloadService extends IntentService {
         } else if (scheduledTestStr != null) {
             ScheduledTestList.ScheduledTestsArray scheduledTest = new Gson().fromJson(scheduledTestStr, ScheduledTestList.ScheduledTestsArray.class);
             getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, null, null, scheduledTest);
-        }else if(takeTestStr != null){
+        } else if(takeTestStr != null){
             Chapter chapter = new Gson().fromJson(takeTestStr,Chapter.class);
             loadTakeTest(chapter,null, questionsCount, subjectId);
-        }else if(subjectName != null){
+        } else if(partTestStr != null){
             OfflineTestModel model = new OfflineTestModel();
             loadPartTest(subjectName, subjectId, model);
         } else if(exerciseModelsList != null) {
