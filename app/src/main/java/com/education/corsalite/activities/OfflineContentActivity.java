@@ -24,6 +24,7 @@ public class OfflineContentActivity extends AbstractBaseActivity {
     TabLayout tabLayout;
     ViewPager mViewPager;
     IOfflineEventListener offlineEventListener;
+    private int selection;
 
 
     @Override
@@ -34,6 +35,7 @@ public class OfflineContentActivity extends AbstractBaseActivity {
         frameLayout.addView(myView);
         tabLayout = (TabLayout)findViewById(R.id.tl_offline);
         mViewPager = (ViewPager)findViewById(R.id.pager);
+        getIntentData();
         setToolbarForOfflineContent();
         setTabView();
         sendAnalytics(getString(R.string.screen_offlineContent));
@@ -42,7 +44,12 @@ public class OfflineContentActivity extends AbstractBaseActivity {
     private void setTabView() {
         mViewPager.setOffscreenPageLimit(2);
         mViewPager.setAdapter(new OfflineBaseTabAdapter(getSupportFragmentManager()));
+        mViewPager.setCurrentItem(selection);
         tabLayout.setupWithViewPager(mViewPager);
+    }
+
+    private void getIntentData(){
+        selection = getIntent().getIntExtra("selection", 0);
     }
 
     public void setOfflineListener(IOfflineEventListener offlineEventListener){

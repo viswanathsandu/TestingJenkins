@@ -30,6 +30,7 @@ import com.education.corsalite.enums.Tests;
 import com.education.corsalite.models.responsemodels.Chapter;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.Data;
+import com.education.corsalite.utils.SystemUtils;
 import com.github.lzyzsd.circleprogress.DonutProgress;
 import com.google.gson.Gson;
 import com.localytics.android.Localytics;
@@ -204,17 +205,23 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
     }
 
     private void startTakeTest(Chapter chapter) {
-        Intent exerciseIntent = new Intent(studyCentreActivity, TestStartActivity.class);
-        exerciseIntent.putExtra(TestStartActivity.KEY_TEST_TYPE, Tests.CHAPTER.getType());
-        exerciseIntent.putExtra(Constants.TEST_TITLE, key);
-        exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
-        exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, studyCentreActivity.getSelectedSubjectId());
-        exerciseIntent.putExtra(Constants.SELECTED_SUBJECT, key);
-        exerciseIntent.putExtra(Constants.SELECTED_CHAPTERID, chapter.idCourseSubjectchapter);
-        exerciseIntent.putExtra(Constants.SELECTED_CHAPTER_NAME, chapter.chapterName);
-        exerciseIntent.putExtra(Constants.LEVEL_CROSSED, chapter.passedComplexity);
-        exerciseIntent.putExtra("chapter",new Gson().toJson(chapter));
-        studyCentreActivity.startActivity(exerciseIntent);
+        if(SystemUtils.isNetworkConnected(studyCentreActivity)) {
+            Intent exerciseIntent = new Intent(studyCentreActivity, TestStartActivity.class);
+            exerciseIntent.putExtra(TestStartActivity.KEY_TEST_TYPE, Tests.CHAPTER.getType());
+            exerciseIntent.putExtra(Constants.TEST_TITLE, key);
+            exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
+            exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, studyCentreActivity.getSelectedSubjectId());
+            exerciseIntent.putExtra(Constants.SELECTED_SUBJECT, key);
+            exerciseIntent.putExtra(Constants.SELECTED_CHAPTERID, chapter.idCourseSubjectchapter);
+            exerciseIntent.putExtra(Constants.SELECTED_CHAPTER_NAME, chapter.chapterName);
+            exerciseIntent.putExtra(Constants.LEVEL_CROSSED, chapter.passedComplexity);
+            exerciseIntent.putExtra("chapter", new Gson().toJson(chapter));
+            studyCentreActivity.startActivity(exerciseIntent);
+        }else {
+            Intent exerciseIntent = new Intent(studyCentreActivity, TestStartActivity.class);
+            exerciseIntent.putExtra("selection", 1);
+            studyCentreActivity.startActivity(exerciseIntent);
+        }
 
     }
 

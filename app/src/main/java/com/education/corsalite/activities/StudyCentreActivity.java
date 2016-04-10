@@ -42,6 +42,7 @@ import com.education.corsalite.services.TestDownloadService;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.Data;
 import com.education.corsalite.utils.L;
+import com.education.corsalite.utils.SystemUtils;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -468,11 +469,17 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     }
 
     private void showPartTestGrid(){
-        PartTestDialog dialog = new PartTestDialog();
-        Bundle bundle = new Bundle();
-        bundle.putInt("idCourseSubject",studyCenter.idCourseSubject);
-        dialog.setArguments(bundle);
-        dialog.show(getFragmentManager(),"PartTestDialog");
+        if(SystemUtils.isNetworkConnected(this)) {
+            PartTestDialog dialog = new PartTestDialog();
+            Bundle bundle = new Bundle();
+            bundle.putInt("idCourseSubject", studyCenter.idCourseSubject);
+            dialog.setArguments(bundle);
+            dialog.show(getFragmentManager(), "PartTestDialog");
+        }else {
+            Intent exerciseIntent = new Intent(this, TestStartActivity.class);
+            exerciseIntent.putExtra("selection", 1);
+            startActivity(exerciseIntent);
+        }
     }
 
     private void downloadPartTest(StudyCenter studyCenter){
@@ -485,8 +492,14 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     }
 
     private void showMockTestsDialog() {
-        MockTestDialog dialog = new MockTestDialog();
-        dialog.show(getFragmentManager(), "MockTestsListDialog");
+        if(SystemUtils.isNetworkConnected(this)) {
+            MockTestDialog dialog = new MockTestDialog();
+            dialog.show(getFragmentManager(), "MockTestsListDialog");
+        }else {
+            Intent exerciseIntent = new Intent(this, TestStartActivity.class);
+            exerciseIntent.putExtra("selection", 1);
+            startActivity(exerciseIntent);
+        }
     }
 
     private void setListener(final TextView textView, final String text) {
