@@ -115,8 +115,6 @@ public class WebSocketHelper {
                     EventBus.getDefault().post(event);
                 } else if (message.contains("AutoDeclinedUsers")) {
 
-                } else if (message.contains("ChallengeTestUpdate")) {
-
                 }
             }
         } catch (Exception e) {

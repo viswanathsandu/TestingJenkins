@@ -57,6 +57,7 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
     private ChallengeTestRequestEvent mChallengeTestRequestEvent;
     private String displayName = "";
     private String mTestQuestionPaperId = "";
+    private ChallengeUser mCurrentUser;
 
     public static ChallengeTestRequestDialogFragment newInstance(ChallengeTestRequestEvent event) {
         ChallengeTestRequestDialogFragment fragment = null;
@@ -114,7 +115,7 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
     private void fillData() {
         for (ChallengeUser user : mChallengeUsers) {
             if(user.idStudent.equals(LoginUserCache.getInstance().getLongResponse().studentId)) {
-                displayName = user.displayName;
+                mCurrentUser = user;
                 courseTxt.setText(user.course);
                 subjectTxt.setText(user.subject);
                 chapterTxt.setText(user.chapter);
@@ -181,8 +182,9 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
         int accepted = 0;
         int declined = 0;
         int initiated = 0;
+        boolean isAuthor = false;
         for(ChallengeUser friend : mChallengeUsers) {
-            if(friend.idStudent.equals(LoginUserCache.getInstance().getLongResponse().studentId)) {
+            if(friend.idStudent.equals(mCurrentUser.idStudent)) {
                 if(friend.status.equalsIgnoreCase("Accepted")) {
                     statusTxt.setText("Accepted");
                     statusTxt.setBackgroundColor(getResources().getColor(R.color.green));
@@ -209,9 +211,14 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
         acceptedTxt.setText(String.valueOf(accepted));
         declinedTxt.setText(String.valueOf(declined));
         initiatedTxt.setText(String.valueOf(initiated));
+        startBtn.setVisibility(mCurrentUser.role.equalsIgnoreCase("Challenger") ? View.VISIBLE : View.GONE);
+        startBtn.setClickable(accepted+declined == mChallengeUsers.size());
+
     }
 
-    public void onEvent(ChallengeTestUpdateEvent event) {
+    public void onEventMainThread(ChallengeTestUpdateEvent event) {
+        showToast("On Event : "+event.challengerName +"\t"+event.challengerStatus);
+        L.info("On Event : "+event.challengerName +"\t"+event.challengerStatus);
         for(ChallengeUser user : mChallengeUsers) {
             if(user.displayName.equals(event.challengerName)) {
                 user.status = event.challengerStatus;
