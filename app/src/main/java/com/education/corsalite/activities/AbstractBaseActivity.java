@@ -728,10 +728,11 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void startChallengeTest(String testQuestionPaperId) {
+    public void startChallengeTest(String testQuestionPaperId, String challngeTestId) {
         Intent intent = new Intent(this, ExamEngineActivity.class);
         intent.putExtra(Constants.TEST_TITLE, "Challenge Test");
         intent.putExtra("test_question_paper_id", testQuestionPaperId);
+        intent.putExtra("challenge_test_id", challngeTestId);
         startActivity(intent);
         finish();
     }

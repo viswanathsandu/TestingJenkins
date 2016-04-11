@@ -158,6 +158,6 @@ public class ChallengeActivity extends AbstractBaseActivity {
 
     public void onEventMainThread(ChallengeTestStartEvent event) {
         mTestQuestionPaperId = event.testQuestionPaperId;
-        startChallengeTest(mTestQuestionPaperId);
+        startChallengeTest(mTestQuestionPaperId, event.challengeTestParentId);
     }
 }

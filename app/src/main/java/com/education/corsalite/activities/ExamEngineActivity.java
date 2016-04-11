@@ -63,6 +63,7 @@ import com.education.corsalite.models.requestmodels.PostCustomExamTemplate;
 import com.education.corsalite.models.requestmodels.PostExerciseRequestModel;
 import com.education.corsalite.models.requestmodels.PostQuestionPaperRequest;
 import com.education.corsalite.models.responsemodels.AnswerChoiceModel;
+import com.education.corsalite.models.responsemodels.ChallengeCompleteResponseModel;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Exam;
 import com.education.corsalite.models.responsemodels.ExamModel;
@@ -221,6 +222,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private boolean isOffline;
     private TestAnswerPaper testanswerPaper = new TestAnswerPaper();
     private long offlineModelDate;
+    private String challengeTestId;
 
     public static Intent getMyIntent(Context context, @Nullable Bundle extras) {
         Intent intent = new Intent(context, ExamEngineActivity.class);
@@ -264,6 +266,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         topicIds = getIntent().getExtras().getString(Constants.SELECTED_TOPICID);
         isOffline = getIntent().getExtras().getBoolean(Constants.IS_OFFLINE, false);
         offlineModelDate = getIntent().getExtras().getLong("OfflineTestModel");
+        challengeTestId = getIntent().getStringExtra("challenge_test_id");
         if (title.equalsIgnoreCase("Flagged Questions")) {
             loadFlaggedQuestions();
         } else if (title.equalsIgnoreCase("Exercises")) {
@@ -272,13 +275,17 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             loadMockTest();
         } else if (title.equalsIgnoreCase("Schedule Test")) {
             loadScheduledTest();
-        } else if (title.equalsIgnoreCase("Challenge Test")) {
+        } else if (ischallengeTest()) {
             loadChallengeTest();
         } else if (title.equalsIgnoreCase("View Answers")) {
             loadViewAnswers();
         }  else { // TakeTest or PartTest
             loadDefaultExam();
         }
+    }
+
+    private boolean ischallengeTest() {
+        return title.equalsIgnoreCase("Challenge Test");
     }
 
     private void loadDefaultExam() {
@@ -793,7 +800,9 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                         super.success(testAnswerPaperResponse, response);
                         headerProgress.setVisibility(View.GONE);
                         mViewSwitcher.showNext();
-                        if (testAnswerPaperResponse != null && !TextUtils.isEmpty(testAnswerPaperResponse.testAnswerPaperId)) {
+                        if(ischallengeTest()) {
+                            openChallengeTestResults();
+                        } else if (testAnswerPaperResponse != null && !TextUtils.isEmpty(testAnswerPaperResponse.testAnswerPaperId)) {
                             openAdvancedExamResultSummary(testAnswerPaperResponse.testAnswerPaperId);
                             finish();
                         }
@@ -804,6 +813,14 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 navigateToExamResultActivity(localExamModelList.size(), success, failure);
             }
         }
+    }
+
+    private void openChallengeTestResults() {
+        Intent intent = new Intent(ExamEngineActivity.this, ChallengeResultActivity.class);
+        intent.putExtra("challenge_test_id", challengeTestId);
+        intent.putExtra("tesst_question_paper_id", testQuestionPaperId);
+        startActivity(intent);
+        finish();
     }
 
     private void openAdvancedExamResultSummary(String answerPaperId) {

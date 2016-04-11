@@ -37,9 +37,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import retrofit.client.Response;
 
-/**
- * Created by Aastha on 20/09/15.
- */
 public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
 
     @Bind(R.id.start_btn) Button startBtn;
@@ -155,7 +152,7 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
     private void postStatusEvent(boolean accepted) {
         ChallengeTestUpdateRequestEvent event = new ChallengeTestUpdateRequestEvent();
         event.setChallengeTestRequestEvent(mChallengeTestRequestEvent);
-        event.challengerName = displayName;
+        event.challengerName = mCurrentUser.displayName;
         event.challengerStatus = accepted ? "Accepted" : "Declined";
         WebSocketHelper.get().sendChallengeUpdateEvent(event);
     }
@@ -193,9 +190,11 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
                             mTestQuestionPaperId = mCurrentUser.idTestQuestionPaper;
                             ChallengeTestUpdateRequestEvent event = new ChallengeTestUpdateRequestEvent();
                             event.setChallengeTestRequestEvent(mChallengeTestRequestEvent);
+                            event.challengerName = mCurrentUser.displayName;
+                            event.challengerStatus = "Started";
                             WebSocketHelper.get().sendChallengeUpdateEvent(event);
                             sendChallengeStartRequestEvent();
-                            ((AbstractBaseActivity) getActivity()).startChallengeTest(mTestQuestionPaperId);
+                            ((AbstractBaseActivity) getActivity()).startChallengeTest(mTestQuestionPaperId, mCurrentUser.challengeTestParentId);
                         } else {
                             showToast("could not start exam");
                         }
@@ -211,7 +210,8 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
     private void sendChallengeStartRequestEvent() {
         ChallengeTestStartRequestEvent event = new ChallengeTestStartRequestEvent();
         event.challengerName = mCurrentUser.displayName;
-        event.challengerStatus = mCurrentUser.status;
+        event.challengeStatus = "Accepted";
+        event.challengerStatus = "Started";
         event.challengeTestParentId = mCurrentUser.challengeTestParentId;
         event.testQuestionPaperId = mCurrentUser.idTestQuestionPaper;
         WebSocketHelper.get().sendChallengeStartEvent(event);
@@ -266,7 +266,8 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
 
     public void onEventMainThread(ChallengeTestStartEvent event) {
         mTestQuestionPaperId = event.testQuestionPaperId;
-        ((AbstractBaseActivity)getActivity()).startChallengeTest(mTestQuestionPaperId);
+        sendChallengeStartRequestEvent();
+        ((AbstractBaseActivity)getActivity()).startChallengeTest(mTestQuestionPaperId, event.challengeTestParentId);
     }
 
 }

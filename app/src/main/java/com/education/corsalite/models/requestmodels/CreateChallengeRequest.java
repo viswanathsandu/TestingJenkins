@@ -12,7 +12,7 @@ public class CreateChallengeRequest {
     @SerializedName("QuestionCount")
     public String questionCount;
     @SerializedName("Duration")
-    public String durationInMins;
+    public String durationInSeconds;
     @SerializedName("VCChallenged")
     public String virtualCurrencyChallenged;
     @SerializedName("idSubject")

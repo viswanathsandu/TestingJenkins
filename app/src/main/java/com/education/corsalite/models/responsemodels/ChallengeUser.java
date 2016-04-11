@@ -1,5 +1,7 @@
 package com.education.corsalite.models.responsemodels;
 
+import android.text.TextUtils;
+
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -14,7 +16,7 @@ public class ChallengeUser extends BaseModel {
     @SerializedName("idTestAnswerPaper")
     public String testAnswerPaperId;
     @SerializedName("isChallengeExam")
-    public String challengeExamId;
+    public String isCchallengeExam;
     @SerializedName("Status")
     public String status;
     @SerializedName("StartedDateTime")
@@ -30,7 +32,7 @@ public class ChallengeUser extends BaseModel {
     @SerializedName("idStudent")
     public String idStudent;
     @SerializedName("VirtualCurrencyWon")
-    public String VirtualCurrencyWon;
+    public String virtualCurrencyWon;
     @SerializedName("InitiatedDateTime")
     public String initiatedDateTime;
     @SerializedName("QuestionCount")
@@ -47,4 +49,14 @@ public class ChallengeUser extends BaseModel {
     public String score;
     @SerializedName("VirtualCurrencyChallenged")
     public String virtualCurrencyChallenged;
+
+    public String getChallengeStatus() {
+        if(TextUtils.isEmpty(virtualCurrencyWon) || virtualCurrencyWon.equals("0")) {
+            return "TIE";
+        } else if(virtualCurrencyWon.contains("-")) {
+            return "LOST";
+        } else {
+            return "WON";
+        }
+    }
 }

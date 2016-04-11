@@ -152,7 +152,13 @@ public class TestSetupFragment extends BaseFragment {
         request.subjectId = subjectList.get(selectSubjSpinner.getSelectedItemPosition() - 1).idSubject;
         request.chapterId = chapterList.get(selectChapSpinner.getSelectedItemPosition() - 1).idChapter;
         request.courseId = AbstractBaseActivity.selectedCourse.courseId+"";
-        request.durationInMins = timeInMinsEdit.getText().toString();
+        int durationInMins = 0;
+        try {
+            durationInMins = Integer.parseInt(timeInMinsEdit.getText().toString());
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+        request.durationInSeconds = String.valueOf(durationInMins * 60);
         request.questionCount = noOfQuesEdit.getText().toString();
         request.virtualCurrencyChallenged = virtCurrencyEdit.getText().toString();
         if(examsSpinner.getSelectedItemPosition() == 0) {

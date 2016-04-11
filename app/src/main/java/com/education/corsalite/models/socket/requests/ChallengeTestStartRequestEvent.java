@@ -14,6 +14,8 @@ public class ChallengeTestStartRequestEvent {
     public String challengerName;
     @SerializedName("ChallengerStatus")
     public String challengerStatus;
+    @SerializedName("ChallengeStatus")
+    public String challengeStatus;
     @SerializedName("TestQuestionPaperId")
     public String testQuestionPaperId;
 

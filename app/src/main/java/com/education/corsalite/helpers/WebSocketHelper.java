@@ -8,6 +8,7 @@ import com.education.corsalite.models.socket.requests.ChallengeTestUpdateRequest
 import com.education.corsalite.models.socket.requests.NewChallengeTestRequestEvent;
 import com.education.corsalite.models.socket.requests.SubscribeEvent;
 import com.education.corsalite.models.socket.requests.UserListEvent;
+import com.education.corsalite.models.socket.response.ChallengeTestCompletedEvent;
 import com.education.corsalite.models.socket.response.ChallengeTestRequestEvent;
 import com.education.corsalite.models.socket.response.ChallengeTestStartEvent;
 import com.education.corsalite.models.socket.response.ChallengeTestUpdateEvent;
@@ -107,7 +108,8 @@ public class WebSocketHelper {
                 } else if (message.contains("UpdateLeaderBoard")) {
 
                 } else if (message.contains("ChallengeTestComplete")) {
-
+                    ChallengeTestCompletedEvent event = new Gson().fromJson(message, ChallengeTestCompletedEvent.class);
+                    EventBus.getDefault().post(event);
                 } else if (message.contains("ChallengeTestUpdate")) {
                     ChallengeTestUpdateEvent event = new Gson().fromJson(message, ChallengeTestUpdateEvent.class);
                     EventBus.getDefault().post(event);
