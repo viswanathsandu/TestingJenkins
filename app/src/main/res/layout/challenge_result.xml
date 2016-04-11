@@ -7,27 +7,25 @@
     android:padding="10dp">
 
 
-
-
-<RelativeLayout
-    android:id="@+id/Challenge_result_won_layout"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:visibility="gone">
-
-    <ImageView
-        android:id="@+id/trophy"
+    <RelativeLayout
+        android:id="@+id/Challenge_result_won_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/ico_challenge_cup"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="74dp"
-        android:layout_marginStart="74dp" />
+        android:orientation="vertical"
+        android:visibility="gone">
 
-</RelativeLayout>
+        <ImageView
+            android:id="@+id/trophy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="74dp"
+            android:layout_marginStart="74dp"
+            android:background="@drawable/ico_challenge_cup" />
+
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/Challenge_result_but_layout"
@@ -36,47 +34,46 @@
         android:layout_alignParentBottom="true"
         android:gravity="center_horizontal"
         android:orientation="horizontal">
+
         <Button
             android:id="@+id/chlnge_hist_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Challenge history"
-            android:textAllCaps="false"
-            android:textAlignment="center"
             android:layout_marginBottom="30dp"
+            android:background="@drawable/button_selector"
+            android:backgroundTint="@color/skyblue"
             android:paddingLeft="5dip"
             android:paddingRight="5dip"
-            android:background="@drawable/button_selector"
-            android:backgroundTint="@color/skyblue"/>
+            android:text="Challenge history"
+            android:textAlignment="center"
+            android:textAllCaps="false" />
 
         <Button
             android:id="@+id/exam_summ_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Exam Summary"
-            android:textAllCaps="false"
-            android:textAlignment="center"
             android:layout_marginLeft="10dp"
+            android:background="@drawable/button_selector"
+            android:backgroundTint="@color/skyblue"
             android:paddingLeft="5dip"
             android:paddingRight="5dip"
-            android:background="@drawable/button_selector"
-            android:backgroundTint="@color/skyblue"/>
+            android:text="Exam Summary"
+            android:textAlignment="center"
+            android:textAllCaps="false" />
 
         <Button
             android:id="@+id/chlnge_again_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Challenge Again"
-            android:textAllCaps="false"
-            android:textAlignment="center"
             android:layout_marginLeft="10dp"
+            android:background="@drawable/button_selector"
+            android:backgroundTint="@color/green"
             android:paddingLeft="5dip"
             android:paddingRight="5dip"
-            android:background="@drawable/button_selector"
-            android:backgroundTint="@color/green"/>
+            android:text="Challenge Again"
+            android:textAlignment="center"
+            android:textAllCaps="false" />
     </LinearLayout>
-
-
 
 
     <LinearLayout
@@ -90,13 +87,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
             android:text="HURRAY!"
             android:textAllCaps="true"
-            android:textStyle="bold"
             android:textColor="@color/text_white"
-            />
+            android:textStyle="bold" />
 
 
         <TextView
@@ -107,14 +103,13 @@
             android:layout_marginTop="40dp"
             android:text="@string/participant"
             android:textAllCaps="false"
-            android:textColor="@color/text_white"
-            />
+            android:textColor="@color/text_white" />
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
-            android:background="@drawable/but_refresh"/>
+            android:background="@drawable/but_refresh" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -124,10 +119,8 @@
             android:layout_marginTop="25dp"
             android:text="@string/check_result"
             android:textAllCaps="false"
-            android:textColor="@color/text_white"
-            />
+            android:textColor="@color/text_white" />
     </LinearLayout>
-
 
 
 </RelativeLayout>

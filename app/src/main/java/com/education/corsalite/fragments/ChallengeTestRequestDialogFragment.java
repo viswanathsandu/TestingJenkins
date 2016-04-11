@@ -19,6 +19,7 @@ import com.education.corsalite.models.responsemodels.ChallengeUser;
 import com.education.corsalite.models.responsemodels.ChallengeUserListResponse;
 import com.education.corsalite.models.responsemodels.CommonResponseModel;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
+import com.education.corsalite.models.socket.requests.ChallengeTestStartRequestEvent;
 import com.education.corsalite.models.socket.requests.ChallengeTestUpdateRequestEvent;
 import com.education.corsalite.models.socket.response.ChallengeTestRequestEvent;
 import com.education.corsalite.models.socket.response.ChallengeTestStartEvent;
@@ -172,10 +173,48 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
 
     @OnClick(R.id.start_btn)
     public void startTest() {
+        startChallenge();
+    }
+
+    private void startChallenge() {
+        mTestQuestionPaperId = mCurrentUser.idTestQuestionPaper;
         ChallengeTestUpdateRequestEvent event = new ChallengeTestUpdateRequestEvent();
         event.setChallengeTestRequestEvent(mChallengeTestRequestEvent);
         WebSocketHelper.get().sendChallengeUpdateEvent(event);
-        ((AbstractBaseActivity)getActivity()).startChallengeTest(mTestQuestionPaperId);
+        sendChallengeStartRequestEvent();
+        ((AbstractBaseActivity) getActivity()).startChallengeTest(mTestQuestionPaperId);
+        /*ChallengestartRequest request = new ChallengestartRequest(mCurrentUser.challengeTestParentId, mCurrentUser.challengeExamId);
+        ApiManager.getInstance(getActivity()).postChallengeStart(new Gson().toJson(request),
+                new ApiCallback<ChallengeStartResponseModel>(getActivity()) {
+                    @Override
+                    public void success(ChallengeStartResponseModel challengeStartResponseModel, Response response) {
+                        super.success(challengeStartResponseModel, response);
+                        if(challengeStartResponseModel != null && !TextUtils.isEmpty(challengeStartResponseModel.testQuestionPaperId)) {
+                            mTestQuestionPaperId = challengeStartResponseModel.testQuestionPaperId;
+                            ChallengeTestUpdateRequestEvent event = new ChallengeTestUpdateRequestEvent();
+                            event.setChallengeTestRequestEvent(mChallengeTestRequestEvent);
+                            WebSocketHelper.get().sendChallengeUpdateEvent(event);
+                            ((AbstractBaseActivity) getActivity()).startChallengeTest(mTestQuestionPaperId);
+                        } else {
+                            showToast("could not start exam");
+                        }
+                    }
+
+                    @Override
+                    public void failure(CorsaliteError error) {
+                        super.failure(error);
+                    }
+                });
+                */
+    }
+
+    private void sendChallengeStartRequestEvent() {
+        ChallengeTestStartRequestEvent event = new ChallengeTestStartRequestEvent();
+        event.challengerName = mCurrentUser.displayName;
+        event.challengerStatus = mCurrentUser.status;
+        event.challengeTestParentId = mCurrentUser.challengeTestParentId;
+        event.testQuestionPaperId = mCurrentUser.idTestQuestionPaper;
+        WebSocketHelper.get().sendChallengeStartEvent(event);
     }
 
     public void updateUI() {
@@ -217,8 +256,6 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
     }
 
     public void onEventMainThread(ChallengeTestUpdateEvent event) {
-        showToast("On Event : "+event.challengerName +"\t"+event.challengerStatus);
-        L.info("On Event : "+event.challengerName +"\t"+event.challengerStatus);
         for(ChallengeUser user : mChallengeUsers) {
             if(user.displayName.equals(event.challengerName)) {
                 user.status = event.challengerStatus;
