@@ -80,6 +80,7 @@ import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.SystemUtils;
 import com.education.corsalite.utils.TimeUtils;
+import com.education.corsalite.utils.WebUrls;
 import com.education.corsalite.views.GridViewInScrollView;
 import com.google.gson.Gson;
 
@@ -807,8 +808,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
     private void openAdvancedExamResultSummary(String answerPaperId) {
         Intent intent = new Intent(this, WebviewActivity.class);
-        L.info("URL : " + Constants.EXAM_RESULTS_SUMMARY_URL + answerPaperId);
-        intent.putExtra(LoginActivity.URL, Constants.EXAM_RESULTS_SUMMARY_URL + answerPaperId);
+        L.info("URL : " + WebUrls.getExamResultsSummaryUrl() + answerPaperId);
+        intent.putExtra(LoginActivity.URL, WebUrls.getExamResultsSummaryUrl() + answerPaperId);
         intent.putExtra(LoginActivity.TITLE, getString(R.string.results));
         startActivity(intent);
     }

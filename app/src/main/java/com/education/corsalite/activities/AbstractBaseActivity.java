@@ -58,6 +58,7 @@ import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.CookieUtils;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.SystemUtils;
+import com.education.corsalite.utils.WebUrls;
 import com.google.gson.Gson;
 import com.localytics.android.Localytics;
 
@@ -427,7 +428,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     private void loadSmartClass() {
         Intent intent = new Intent(this, WebviewActivity.class);
         intent.putExtra(LoginActivity.TITLE, "Smart Class");
-        intent.putExtra(LoginActivity.URL, Constants.SMART_CLASS_URL);
+        intent.putExtra(LoginActivity.URL, WebUrls.getSmartClassUrl());
         startActivity(intent);
     }
 
@@ -692,7 +693,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     protected void redeem() {
         Intent intent = new Intent(this, WebviewActivity.class);
         intent.putExtra(LoginActivity.TITLE, getString(R.string.redeem));
-        intent.putExtra(LoginActivity.URL, Constants.REDEEM_URL);
+        intent.putExtra(LoginActivity.URL, WebUrls.getRedeemUrl());
         startActivity(intent);
     }
 

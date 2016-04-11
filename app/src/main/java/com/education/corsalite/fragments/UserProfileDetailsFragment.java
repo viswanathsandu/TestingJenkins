@@ -39,8 +39,8 @@ import com.education.corsalite.models.responsemodels.ExamDetail;
 import com.education.corsalite.models.responsemodels.UserProfileResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencyBalanceResponse;
 import com.education.corsalite.services.ApiClientService;
-import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.L;
+import com.education.corsalite.utils.WebUrls;
 import com.google.gson.Gson;
 
 import java.net.MalformedURLException;
@@ -223,7 +223,7 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
     private void redeem() {
         Intent intent = new Intent(getActivity(), WebviewActivity.class);
         intent.putExtra(LoginActivity.TITLE, getString(R.string.redeem));
-        intent.putExtra(LoginActivity.URL, Constants.REDEEM_URL);
+        intent.putExtra(LoginActivity.URL, WebUrls.getRedeemUrl());
         startActivity(intent);
     }
 

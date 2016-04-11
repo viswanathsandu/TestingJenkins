@@ -16,7 +16,7 @@ import com.education.corsalite.adapters.UserTabBaseAdapter;
 import com.education.corsalite.fragments.UserProfileDetailsFragment;
 import com.education.corsalite.models.responsemodels.ExamDetail;
 import com.education.corsalite.models.responsemodels.VirtualCurrencyTransaction;
-import com.education.corsalite.utils.Constants;
+import com.education.corsalite.utils.WebUrls;
 
 import java.util.List;
 
@@ -78,14 +78,14 @@ public class UserProfileActivity extends AbstractBaseActivity implements UserPro
     private void addGuardian() {
         Intent intent = new Intent(this, WebviewActivity.class);
         intent.putExtra(LoginActivity.TITLE, getString(R.string.add_guardian));
-        intent.putExtra(LoginActivity.URL, Constants.ADD_GUARDIAN_URL);
+        intent.putExtra(LoginActivity.URL, WebUrls.getAddGuardianUrl());
         startActivity(intent);
     }
 
     private void addCourses() {
         Intent intent = new Intent(this, WebviewActivity.class);
         intent.putExtra(LoginActivity.TITLE, getString(R.string.add_course));
-        intent.putExtra(LoginActivity.URL, Constants.ADD_COURSES_URL);
+        intent.putExtra(LoginActivity.URL, WebUrls.getAddCoursesUrl());
         startActivity(intent);
     }
 
