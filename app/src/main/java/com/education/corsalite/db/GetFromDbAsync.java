@@ -30,7 +30,7 @@ public class GetFromDbAsync<T> extends AsyncTask<String, Void, Object> {
             List<? extends ReqRes> reqResList = dbService.Get(reqres.getClass());
             if (reqResList != null && !reqResList.isEmpty()) {
                 for (ReqRes reqresItem : reqResList) {
-                    if (reqresItem.isRequestSame(reqres)) {
+                    if (reqresItem.isRequestSame(reqres) && reqresItem.isCurrentUser()) {
                         return reqresItem.response;
                     }
                 }

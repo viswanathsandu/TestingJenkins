@@ -84,6 +84,7 @@ public class DbManager {
                     if (reqResList != null && !reqResList.isEmpty()) {
                         for (ReqRes reqresItem : reqResList) {
                             if (reqresItem.isRequestSame(reqres)) {
+                                reqresItem.setUserId();
                                 reqresItem.response = reqres.response;
                                 dbService.Save(reqresItem);
                                 return;
@@ -109,6 +110,7 @@ public class DbManager {
                         List<OfflineContent> offlinecontentList = dbService.Get(OfflineContent.class);
                         for (OfflineContent savedOfflineContent : offlinecontentList) {
                             if (offlineContent.equals(savedOfflineContent)) {
+                                savedOfflineContent.setUserId();
                                 savedOfflineContent.timeStamp = offlineContent.timeStamp;
                                 dbService.Save(savedOfflineContent);
                                 return;
@@ -174,6 +176,7 @@ public class DbManager {
             @Override
             public void run() {
                 synchronized (this) {
+                    model.setUserId();
                     dbService.Save(model);
                 }
             }
@@ -188,6 +191,7 @@ public class DbManager {
                     List<ExerciseOfflineModel> models = dbService.Get(ExerciseOfflineModel.class);
                     for (ExerciseOfflineModel model : models) {
                         if (model.equals(exercise)) {
+                            model.setUserId();
                             model.questions = exercise.questions;
                             dbService.Save(model);
                             return;
@@ -206,7 +210,7 @@ public class DbManager {
                 List<ExerciseOfflineModel> offlineExercises = new ArrayList<ExerciseOfflineModel>();
                 for (ExerciseOfflineModel model : offlineTestModels) {
                     try {
-                        if (model.courseId.equals(courseId)) {
+                        if (model.courseId.equals(courseId) && model.isCurrentUser()) {
                             offlineExercises.add(model);
                         }
                     } catch (Exception e) {
@@ -227,7 +231,7 @@ public class DbManager {
                 super.success(offlineTestModels, response);
                 for (OfflineTestModel model : offlineTestModels) {
                     try {
-                        if (model.baseTest.subjectId.equalsIgnoreCase(subjectId)) {
+                        if (model.baseTest.subjectId.equalsIgnoreCase(subjectId) && model.isCurrentUser()) {
                             callback.success(model.baseTest, response);
                         }
                     } catch (Exception e) {
@@ -254,7 +258,9 @@ public class DbManager {
             public void success(List<OfflineTestModel> offlineTestModels, Response response) {
                 super.success(offlineTestModels, response);
                 for (OfflineTestModel model : offlineTestModels) {
-                    if (model.mockTest != null && !TextUtils.isEmpty(model.mockTest.examTemplateId) && model.mockTest.examTemplateId.equalsIgnoreCase(mockTest.examTemplateId)) {
+                    if (model.mockTest != null && !TextUtils.isEmpty(model.mockTest.examTemplateId)
+                            && model.mockTest.examTemplateId.equalsIgnoreCase(mockTest.examTemplateId)
+                            && model.isCurrentUser()) {
                         callback.success(model, response);
                     }
                 }
@@ -267,7 +273,9 @@ public class DbManager {
             public void success(List<OfflineTestModel> offlineTestModels, Response response) {
                 super.success(offlineTestModels, response);
                 for (OfflineTestModel model : offlineTestModels) {
-                    if (model.scheduledTest != null && !TextUtils.isEmpty(model.scheduledTest.testQuestionPaperId) && model.scheduledTest.testQuestionPaperId.equalsIgnoreCase(scheduledTest.testQuestionPaperId)) {
+                    if (model.scheduledTest != null && !TextUtils.isEmpty(model.scheduledTest.testQuestionPaperId)
+                            && model.scheduledTest.testQuestionPaperId.equalsIgnoreCase(scheduledTest.testQuestionPaperId)
+                            && model.isCurrentUser()) {
                         callback.success(model.examModels, response);
                     }
                 }

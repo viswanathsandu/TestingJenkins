@@ -6,6 +6,7 @@ import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.utils.MockUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,7 +25,17 @@ public class GetDataFromDbAsync extends AsyncTask<String, Void, List<OfflineCont
     @Override
     protected List<OfflineContent> doInBackground(String... params) {
         List<OfflineContent> responseList = dbService.Get(OfflineContent.class);
-        return responseList;
+        try {
+            List<OfflineContent> currentUserResults = new ArrayList<>();
+            for (OfflineContent content : responseList) {
+                if (content.isCurrentUser()) {
+                    currentUserResults.add(content);
+                }
+            }
+            return currentUserResults;
+        } catch (Exception e) {
+            return responseList;
+        }
     }
 
     @Override
