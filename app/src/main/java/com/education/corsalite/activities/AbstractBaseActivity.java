@@ -418,7 +418,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             ScheduledTestDialog dialog = new ScheduledTestDialog();
             dialog.show(getFragmentManager(), "ScheduledTestsListDialog");
         } else {
-            Intent exerciseIntent = new Intent(this, TestStartActivity.class);
+            Intent exerciseIntent = new Intent(this, OfflineContentActivity.class);
             exerciseIntent.putExtra("selection", 1);
             startActivity(exerciseIntent);
         }

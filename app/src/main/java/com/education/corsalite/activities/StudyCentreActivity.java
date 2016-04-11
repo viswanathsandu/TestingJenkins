@@ -473,7 +473,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
             dialog.setArguments(bundle);
             dialog.show(getFragmentManager(), "PartTestDialog");
         }else {
-            Intent exerciseIntent = new Intent(this, TestStartActivity.class);
+            Intent exerciseIntent = new Intent(this, OfflineContentActivity.class);
             exerciseIntent.putExtra("selection", 1);
             startActivity(exerciseIntent);
         }
@@ -484,7 +484,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
             MockTestDialog dialog = new MockTestDialog();
             dialog.show(getFragmentManager(), "MockTestsListDialog");
         }else {
-            Intent exerciseIntent = new Intent(this, TestStartActivity.class);
+            Intent exerciseIntent = new Intent(this, OfflineContentActivity.class);
             exerciseIntent.putExtra("selection", 1);
             startActivity(exerciseIntent);
         }
