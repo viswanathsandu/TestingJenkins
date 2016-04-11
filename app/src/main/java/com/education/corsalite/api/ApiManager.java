@@ -516,9 +516,9 @@ public class ApiManager {
         }
     }
 
-    public void getChallengeTestDetails(String challengeTestId, ApiCallback<ChallengeUserListResponse> callback){
+    public void getChallengeTestDetails(String challengeTestId, String courseId, ApiCallback<ChallengeUserListResponse> callback){
         if(isApiOnline()){
-            ApiClientService.get().getchallengeTestDetails(challengeTestId, callback);
+            ApiClientService.get().getchallengeTestDetails(challengeTestId, courseId, callback);
         }
     }
 

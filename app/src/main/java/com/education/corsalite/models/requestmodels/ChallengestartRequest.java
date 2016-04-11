@@ -12,7 +12,7 @@ public class ChallengestartRequest extends BaseModel {
     @SerializedName("idExam")
     public String examId;
 
-    public ChallengestartRequest(String challengeTestId, String idExam) {
+    public ChallengestartRequest(String challengeTestId, String examId) {
         this.challengeTestId = challengeTestId;
         this.examId = examId;
     }

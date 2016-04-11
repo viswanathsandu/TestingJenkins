@@ -1,6 +1,7 @@
 package com.education.corsalite.fragments;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,8 @@ import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.helpers.WebSocketHelper;
 import com.education.corsalite.models.requestmodels.ChallengeStatusRequest;
+import com.education.corsalite.models.requestmodels.ChallengestartRequest;
+import com.education.corsalite.models.responsemodels.ChallengeStartResponseModel;
 import com.education.corsalite.models.responsemodels.ChallengeUser;
 import com.education.corsalite.models.responsemodels.ChallengeUserListResponse;
 import com.education.corsalite.models.responsemodels.CommonResponseModel;
@@ -57,6 +60,7 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
     private List<ChallengeUser> mChallengeUsers;
     private ChallengeTestRequestEvent mChallengeTestRequestEvent;
     private String displayName = "";
+    private String examId;
     private String mTestQuestionPaperId = "";
     private ChallengeUser mCurrentUser;
 
@@ -88,7 +92,8 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
 
     private void loadChallengeTestDetails() {
         showProgress();
-        ApiManager.getInstance(getActivity()).getChallengeTestDetails(mChallengeTestRequestEvent.challengeTestParentId,
+        ApiManager.getInstance(getActivity()).getChallengeTestDetails(
+                mChallengeTestRequestEvent.challengeTestParentId, AbstractBaseActivity.selectedCourse.courseId+"",
             new ApiCallback<ChallengeUserListResponse>(getActivity()) {
                 @Override
                 public void success(ChallengeUserListResponse challengeUserListResponse, Response response) {
@@ -96,6 +101,7 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
                     closeProgress();
                     if(challengeUserListResponse != null && challengeUserListResponse.challengeUsersList != null) {
                         mChallengeUsers = challengeUserListResponse.challengeUsersList;
+                        examId = challengeUserListResponse.examId;
                         fillData();
                         updateUI();
                         L.info("Challenge Users : "+new Gson().toJson(mChallengeUsers));
@@ -177,23 +183,18 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
     }
 
     private void startChallenge() {
-        mTestQuestionPaperId = mCurrentUser.idTestQuestionPaper;
-        ChallengeTestUpdateRequestEvent event = new ChallengeTestUpdateRequestEvent();
-        event.setChallengeTestRequestEvent(mChallengeTestRequestEvent);
-        WebSocketHelper.get().sendChallengeUpdateEvent(event);
-        sendChallengeStartRequestEvent();
-        ((AbstractBaseActivity) getActivity()).startChallengeTest(mTestQuestionPaperId);
-        /*ChallengestartRequest request = new ChallengestartRequest(mCurrentUser.challengeTestParentId, mCurrentUser.challengeExamId);
+        ChallengestartRequest request = new ChallengestartRequest(mCurrentUser.challengeTestParentId, examId);
         ApiManager.getInstance(getActivity()).postChallengeStart(new Gson().toJson(request),
                 new ApiCallback<ChallengeStartResponseModel>(getActivity()) {
                     @Override
                     public void success(ChallengeStartResponseModel challengeStartResponseModel, Response response) {
                         super.success(challengeStartResponseModel, response);
                         if(challengeStartResponseModel != null && !TextUtils.isEmpty(challengeStartResponseModel.testQuestionPaperId)) {
-                            mTestQuestionPaperId = challengeStartResponseModel.testQuestionPaperId;
+                            mTestQuestionPaperId = mCurrentUser.idTestQuestionPaper;
                             ChallengeTestUpdateRequestEvent event = new ChallengeTestUpdateRequestEvent();
                             event.setChallengeTestRequestEvent(mChallengeTestRequestEvent);
                             WebSocketHelper.get().sendChallengeUpdateEvent(event);
+                            sendChallengeStartRequestEvent();
                             ((AbstractBaseActivity) getActivity()).startChallengeTest(mTestQuestionPaperId);
                         } else {
                             showToast("could not start exam");
@@ -205,7 +206,6 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
                         super.failure(error);
                     }
                 });
-                */
     }
 
     private void sendChallengeStartRequestEvent() {
