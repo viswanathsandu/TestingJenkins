@@ -32,7 +32,7 @@
 
 
 
-                <Spinner
+            <Spinner
                 android:id="@+id/selectSubjectSpinner"
                 style="@android:style/Widget.Holo.Light.Spinner"
                 android:layout_width="match_parent"
