@@ -35,6 +35,7 @@
             <Spinner
                 android:id="@+id/selectSubjectSpinner"
                 style="@android:style/Widget.Holo.Light.Spinner"
+                android:paddingStart="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="16sp" />
@@ -45,6 +46,7 @@
                 fontPath="@string/roboto_light"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingStart="10dp"
                 android:text="Virtual Currency"
                 android:textColor="@color/red"
                 android:visibility="gone" />
@@ -52,6 +54,7 @@
             <Spinner
                 android:id="@+id/selectChapterSpinner"
                 style="@android:style/Widget.Holo.Light.Spinner"
+                android:paddingStart="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="16sp" />
@@ -63,6 +66,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Virtual Currency"
+                android:paddingStart="10dp"
                 android:textColor="@color/red"
                 android:visibility="gone" />
 
@@ -70,13 +74,15 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:padding="8dp">
 
                 <android.support.design.widget.TextInputLayout
 
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:paddingStart="10dp"
                     android:visibility="visible" >
 
 
@@ -102,6 +108,7 @@
                 android:id="@+id/tv_noOfQuesError"
                 style="@android:style/TextAppearance.Small"
                 fontPath="@string/roboto_light"
+                android:paddingStart="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Virtual Currency"
@@ -116,6 +123,7 @@
             <Spinner
                 android:id="@+id/examsSpinner"
                 style="@android:style/Widget.Holo.Light.Spinner"
+                android:paddingStart="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="16sp" />
@@ -127,13 +135,15 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:padding="8dp">
 
                 <android.support.design.widget.TextInputLayout
 
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:paddingStart="10dp"
                     android:visibility="visible" >
 
                     <EditText
@@ -170,13 +180,15 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:padding="8dp">
 
                 <android.support.design.widget.TextInputLayout
 
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:paddingStart="10dp"
                     android:visibility="visible" >
 
                     <EditText
@@ -186,7 +198,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:ems="5"
+                        android:ems="2"
                         android:hint="@string/vc_hint"
                         android:inputType="number"
                         android:singleLine="true"
