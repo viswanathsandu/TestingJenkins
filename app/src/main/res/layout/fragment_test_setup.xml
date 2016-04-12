@@ -29,7 +29,10 @@
                 android:textSize="22sp"
                 android:gravity="center_horizontal"/>
 
-            <Spinner
+
+
+
+                <Spinner
                 android:id="@+id/selectSubjectSpinner"
                 style="@android:style/Widget.Holo.Light.Spinner"
                 android:layout_width="match_parent"
@@ -63,36 +66,36 @@
                 android:textColor="@color/red"
                 android:visibility="gone" />
 
+
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/tv_noOfQues"
-                    fontPath="@string/roboto_regular"
+                <android.support.design.widget.TextInputLayout
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:text="No., of questions"
-                    android:textColor="@color/text_black"
-                    android:textSize="16sp" />
+                    android:layout_marginTop="8dp"
+                    android:visibility="visible" >
+
+                </android.support.design.widget.TextInputLayout>
 
                 <EditText
                     android:id="@+id/et_noOfQues"
                     fontPath="@string/roboto_regular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
                     android:ems="2"
                     android:gravity="center"
-                    android:hint="00"
+                    android:hint="@string/ques_hint"
                     android:inputType="number"
                     android:singleLine="true"
                     android:textColor="@color/text_black"
                     android:textColorHint="#46000000"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentStart="true" />
             </RelativeLayout>
 
             <TextView
@@ -126,32 +129,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/tv_timeinMins"
-                    fontPath="@string/roboto_regular"
+                <android.support.design.widget.TextInputLayout
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:text="Time in mins"
-                    android:textColor="@color/text_black"
-                    android:textSize="16sp" />
+                    android:layout_marginTop="8dp"
+                    android:visibility="visible" >
 
-                <EditText
-                    android:id="@+id/et_timeInMins"
-                    fontPath="@string/roboto_regular"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:ems="2"
-                    android:gravity="center"
-                    android:hint="00"
-                    android:inputType="number"
-                    android:singleLine="true"
-                    android:textColor="@color/text_black"
-                    android:textColorHint="#46000000"
-                    android:textSize="16sp" />
+                    <EditText
+                        android:id="@+id/et_timeInMins"
+                        fontPath="@string/roboto_regular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:ems="2"
+                        android:gravity="center"
+                        android:hint="@string/time_hint"
+                        android:inputType="number"
+                        android:singleLine="true"
+                        android:textColor="@color/text_black"
+                        android:textColorHint="#46000000"
+                        android:textSize="16sp" />
+                </android.support.design.widget.TextInputLayout>
             </RelativeLayout>
 
             <TextView
@@ -173,33 +173,30 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/tv_virCurrency"
-                    fontPath="@string/roboto_regular"
+                <android.support.design.widget.TextInputLayout
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:text="Virtual Currency"
-                    android:textColor="@color/text_black"
-                    android:textSize="16sp" />
+                    android:layout_marginTop="8dp"
+                    android:visibility="visible" >
 
-                <EditText
-                    android:id="@+id/et_virCurrency"
-                    fontPath="@string/roboto_regular"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:ems="5"
-                    android:gravity="end"
-                    android:hint="00"
-                    android:inputType="number"
-                    android:paddingRight="12dp"
-                    android:singleLine="true"
-                    android:textColor="@color/text_black"
-                    android:textColorHint="#46000000"
-                    android:textSize="16sp" />
+                    <EditText
+                        android:id="@+id/et_virCurrency"
+                        fontPath="@string/roboto_regular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:ems="5"
+                        android:gravity="end"
+                        android:hint="@string/vc_hint"
+                        android:inputType="number"
+                        android:paddingRight="12dp"
+                        android:singleLine="true"
+                        android:textColor="@color/text_black"
+                        android:textColorHint="#46000000"
+                        android:textSize="16sp" />
+                </android.support.design.widget.TextInputLayout>
             </RelativeLayout>
 
             <TextView
@@ -244,6 +241,7 @@
             android:padding="15dp"
             android:text="Challenge"
             android:textColor="@android:color/holo_green_dark" />
+
     </LinearLayout>
 
 </RelativeLayout>
