@@ -276,7 +276,7 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
         Intent intent = new Intent(this, VideoDownloadService.class);
         intent.putExtra("fileName",fileName);
         intent.putExtra("download_file_path",download_file_path);
-        intent.putExtra("folderStructure",folderStructure);
+        intent.putExtra("folderStructure", folderStructure);
         startService(intent);
     }
 
