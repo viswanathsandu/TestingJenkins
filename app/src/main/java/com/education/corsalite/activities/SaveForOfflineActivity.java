@@ -483,13 +483,11 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
             }
         }
         Collections.sort(videoContents,
-                new Comparator<ContentModel>() {                                                                 //Class AnalyticsModel
-                    public int compare(ContentModel content1,
-                                       ContentModel content2) {
-                        return content1.contentName.compareToIgnoreCase(content2.contentName);
-
-                    }
-                });
+            new Comparator<ContentModel>() {
+                public int compare(ContentModel content1, ContentModel content2) {
+                    return content1.contentName.compareToIgnoreCase(content2.contentName);
+                }
+            });
         contents.clear();
         contents.addAll(htmlContents);
         contents.addAll(videoContents);
