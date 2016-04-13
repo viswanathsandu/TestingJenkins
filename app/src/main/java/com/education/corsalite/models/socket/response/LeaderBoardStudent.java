@@ -7,9 +7,11 @@ public class LeaderBoardStudent {
 
     public String title;
     public String imageUrl;
+    public String questionsAnswered;
 
-    public LeaderBoardStudent(String title, String imageUrl) {
+    public LeaderBoardStudent(String title, String imageUrl, String questionsAnswered) {
         this.title = title;
         this.imageUrl = imageUrl;
+        this.questionsAnswered = questionsAnswered;
     }
 }

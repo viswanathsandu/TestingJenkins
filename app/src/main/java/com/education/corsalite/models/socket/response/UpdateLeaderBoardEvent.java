@@ -2,6 +2,8 @@ package com.education.corsalite.models.socket.response;
 
 import android.text.TextUtils;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,24 +12,27 @@ import java.util.List;
  */
 public class UpdateLeaderBoardEvent {
     public String event;
+    @SerializedName("TestQuestionPaperId")
     public String testQuestionPaperId;
-    public List<LeaderBoardStudent> students;
+    @SerializedName("LeaderBoardTxt")
+    public String leaderBoardTxt;
+    private List<LeaderBoardStudent> students;
 
     public UpdateLeaderBoardEvent(String event, String testQuestionPaperId, String leaderBoardText) {
         this.event = event;
         this.testQuestionPaperId = testQuestionPaperId;
-        students = getStudents(leaderBoardText);
+        students = getStudents();
     }
 
-    private List<LeaderBoardStudent> getStudents(String leaderBoardText) {
+    public List<LeaderBoardStudent> getStudents() {
         List<LeaderBoardStudent> students = new ArrayList<>();
-        if(!TextUtils.isEmpty(leaderBoardText)) {
-            String[] studentsArray = leaderBoardText.split(",");
+        if(!TextUtils.isEmpty(leaderBoardTxt)) {
+            String[] studentsArray = leaderBoardTxt.split(",");
             for (int i = 0; i < studentsArray.length; i++) {
                 if (!TextUtils.isEmpty(studentsArray[i].trim())) {
                     String[] studentData = studentsArray[i].trim().split(":");
-                    if (studentData.length >= 2) {
-                        students.add(new LeaderBoardStudent(studentData[0], studentData[1]));
+                    if (studentData.length >= 3) {
+                        students.add(new LeaderBoardStudent(studentData[0], studentData[1], studentData[2]));
                     }
                 }
             }

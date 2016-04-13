@@ -13,6 +13,7 @@ import com.education.corsalite.models.socket.response.ChallengeTestRequestEvent;
 import com.education.corsalite.models.socket.response.ChallengeTestStartEvent;
 import com.education.corsalite.models.socket.response.ChallengeTestUpdateEvent;
 import com.education.corsalite.models.socket.response.ChallengeUserList;
+import com.education.corsalite.models.socket.response.UpdateLeaderBoardEvent;
 import com.education.corsalite.models.socket.response.UserListResponseEvent;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.L;
@@ -106,7 +107,8 @@ public class WebSocketHelper {
                     ChallengeTestRequestEvent event = new Gson().fromJson(message, ChallengeTestRequestEvent.class);
                     EventBus.getDefault().post(event);
                 } else if (message.contains("UpdateLeaderBoard")) {
-
+                    UpdateLeaderBoardEvent event = new Gson().fromJson(message, UpdateLeaderBoardEvent.class);
+                    EventBus.getDefault().post(event);
                 } else if (message.contains("ChallengeTestComplete")) {
                     ChallengeTestCompletedEvent event = new Gson().fromJson(message, ChallengeTestCompletedEvent.class);
                     EventBus.getDefault().post(event);
