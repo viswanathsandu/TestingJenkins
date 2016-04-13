@@ -251,9 +251,6 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         initSuggestionWebView();
         setListener();
         getIntentData();
-        // load leader board for testing purpose
-        loadLeaderBoard();
-
         sendAnalytics(getString(R.string.screen_exercise));
     }
 
@@ -352,6 +349,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             showToast("Challenge Test works in online mode");
             return;
         }
+        // load leader board for testing purpose
+        loadLeaderBoard();
         imvFlag.setVisibility(View.VISIBLE);
         testQuestionPaperId = getIntent().getExtras().getString("test_question_paper_id");
         getTestQuestionPaper(null);
