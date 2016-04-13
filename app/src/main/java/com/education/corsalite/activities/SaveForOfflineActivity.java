@@ -456,18 +456,7 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
         int size = topicModel.contentMap.size();
         TreeNode file1 = null;
 
-        List<ContentModel> contentModelArrayList = topicModel.contentMap;
-
-        Collections.sort(contentModelArrayList,
-                new Comparator<ContentModel>() {
-                    public int compare(ContentModel ord1,
-                                       ContentModel ord2) {
-
-                        return ord1.contentName.compareToIgnoreCase(ord2.contentName);
-
-                    }
-                });
-
+        List<ContentModel> contentModelArrayList = getSortedList(topicModel.contentMap);
         for (ContentModel contentModel : contentModelArrayList) {
             contentList.add(getTextView(contentModel.contentName + "." + contentModel.type));
             topicModelHashMap.put(contentModel.idContent,topicModel);
@@ -478,6 +467,33 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
 
 
         subjectName.addChild(topicName);
+    }
+
+    private List<ContentModel> getSortedList(List<ContentModel> contents) {
+        List<ContentModel> exercises = new ArrayList<>();
+        List<ContentModel> htmlContents = new ArrayList<>();
+        List<ContentModel> videoContents = new ArrayList<>();
+        for(ContentModel content : contents) {
+            if(content.type.toLowerCase().endsWith("mpg")) {
+                videoContents.add(content);
+            } else if(content.type.toLowerCase().endsWith("html")) {
+                htmlContents.add(content);
+            } else {
+                exercises.add(content);
+            }
+        }
+        Collections.sort(videoContents,
+                new Comparator<ContentModel>() {                                                                 //Class AnalyticsModel
+                    public int compare(ContentModel content1,
+                                       ContentModel content2) {
+                        return content1.contentName.compareToIgnoreCase(content2.contentName);
+
+                    }
+                });
+        contents.clear();
+        contents.addAll(htmlContents);
+        contents.addAll(videoContents);
+        return contents;
     }
 
     private void initNodes() {

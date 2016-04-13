@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
-import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.activities.OfflineContentActivity;
@@ -59,7 +58,8 @@ public class OfflineTestsFragment  extends BaseFragment implements OfflineConten
                     offlineTests.put("Part Test", partTestList);
                     initNodes();
                 } else {
-                    Toast.makeText(getActivity(), "No offline test available ", Toast.LENGTH_SHORT).show();
+                    // Show no tests layout
+//                    Toast.makeText(getActivity(), "No offline test available ", Toast.LENGTH_SHORT).show();
                 }
             }
         });
