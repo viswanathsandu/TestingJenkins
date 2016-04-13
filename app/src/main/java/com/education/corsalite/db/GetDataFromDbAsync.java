@@ -28,7 +28,7 @@ public class GetDataFromDbAsync extends AsyncTask<String, Void, List<OfflineCont
         try {
             List<OfflineContent> currentUserResults = new ArrayList<>();
             for (OfflineContent content : responseList) {
-                if (content.isCurrentUser()) {
+                if (content != null && content.isCurrentUser()) {
                     currentUserResults.add(content);
                 }
             }

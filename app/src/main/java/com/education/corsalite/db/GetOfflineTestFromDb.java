@@ -28,7 +28,7 @@ public class GetOfflineTestFromDb extends AsyncTask<String, Void, List<OfflineTe
         try {
             List<OfflineTestModel> currentUserResults = new ArrayList<>();
             for (OfflineTestModel test : responseList) {
-                if (test.isCurrentUser()) {
+                if (test != null && test.isCurrentUser()) {
                     currentUserResults.add(test);
                 }
             }

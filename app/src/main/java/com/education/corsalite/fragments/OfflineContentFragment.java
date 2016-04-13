@@ -34,6 +34,8 @@ import com.unnamed.b.atv.view.AndroidTreeView;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -125,6 +127,7 @@ public class OfflineContentFragment extends BaseFragment implements OfflineConte
                         offlineContentList.add(offlineContent);
                     }
                 }
+                offlineContentList = getSortedList(offlineContents);
                 if (offlineContentList != null && !offlineContentList.isEmpty()) {
                     initNodes();
                 } else {
@@ -133,6 +136,33 @@ public class OfflineContentFragment extends BaseFragment implements OfflineConte
                 }
             }
         });
+    }
+
+    private List<OfflineContent> getSortedList(List<OfflineContent> contents) {
+        List<OfflineContent> exercises = new ArrayList<>();
+        List<OfflineContent> htmlContents = new ArrayList<>();
+        List<OfflineContent> videoContents = new ArrayList<>();
+        for(OfflineContent content : contents) {
+            if(content.fileName.toLowerCase().endsWith(".mpg")) {
+                videoContents.add(content);
+            } else if(content.fileName.toLowerCase().endsWith(".html")) {
+                htmlContents.add(content);
+            } else {
+                exercises.add(content);
+            }
+        }
+        Collections.sort(videoContents,
+                new Comparator<OfflineContent>() {                                                                 //Class AnalyticsModel
+                    public int compare(OfflineContent content1,
+                                       OfflineContent content2) {
+                        return content1.fileName.compareToIgnoreCase(content2.fileName);
+
+                    }
+                });
+        contents.clear();
+        contents.addAll(htmlContents);
+        contents.addAll(videoContents);
+        return contents;
     }
 
     private void getTopicIds(ArrayList<OfflineContent> contents) {

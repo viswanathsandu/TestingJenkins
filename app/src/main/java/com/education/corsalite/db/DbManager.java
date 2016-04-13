@@ -91,6 +91,7 @@ public class DbManager {
                             }
                         }
                     }
+                    reqres.setUserId();
                     dbService.Save(reqres);
                 }
             }
@@ -116,6 +117,7 @@ public class DbManager {
                                 return;
                             }
                         }
+                        offlineContent.setUserId();
                         dbService.Save(offlineContent);
                     }
                 }
@@ -197,6 +199,7 @@ public class DbManager {
                             return;
                         }
                     }
+                    exercise.setUserId();
                     dbService.Save(exercise);
                 }
             }
@@ -231,7 +234,7 @@ public class DbManager {
                 super.success(offlineTestModels, response);
                 for (OfflineTestModel model : offlineTestModels) {
                     try {
-                        if (model.baseTest.subjectId.equalsIgnoreCase(subjectId) && model.isCurrentUser()) {
+                        if (model != null && model.baseTest.subjectId.equalsIgnoreCase(subjectId) && model.isCurrentUser()) {
                             callback.success(model.baseTest, response);
                         }
                     } catch (Exception e) {
@@ -258,7 +261,7 @@ public class DbManager {
             public void success(List<OfflineTestModel> offlineTestModels, Response response) {
                 super.success(offlineTestModels, response);
                 for (OfflineTestModel model : offlineTestModels) {
-                    if (model.mockTest != null && !TextUtils.isEmpty(model.mockTest.examTemplateId)
+                    if (model != null && model.mockTest != null && !TextUtils.isEmpty(model.mockTest.examTemplateId)
                             && model.mockTest.examTemplateId.equalsIgnoreCase(mockTest.examTemplateId)
                             && model.isCurrentUser()) {
                         callback.success(model, response);
@@ -273,7 +276,7 @@ public class DbManager {
             public void success(List<OfflineTestModel> offlineTestModels, Response response) {
                 super.success(offlineTestModels, response);
                 for (OfflineTestModel model : offlineTestModels) {
-                    if (model.scheduledTest != null && !TextUtils.isEmpty(model.scheduledTest.testQuestionPaperId)
+                    if (model != null && model.scheduledTest != null && !TextUtils.isEmpty(model.scheduledTest.testQuestionPaperId)
                             && model.scheduledTest.testQuestionPaperId.equalsIgnoreCase(scheduledTest.testQuestionPaperId)
                             && model.isCurrentUser()) {
                         callback.success(model.examModels, response);
