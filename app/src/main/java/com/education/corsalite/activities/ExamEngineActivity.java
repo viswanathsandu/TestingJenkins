@@ -8,6 +8,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -52,6 +54,7 @@ import com.education.corsalite.db.DbManager;
 import com.education.corsalite.enums.QuestionType;
 import com.education.corsalite.event.ExerciseAnsEvent;
 import com.education.corsalite.fragments.FullQuestionDialog;
+import com.education.corsalite.fragments.LeaderBoardFragment;
 import com.education.corsalite.models.MockTest;
 import com.education.corsalite.models.OfflineTestModel;
 import com.education.corsalite.models.ScheduledTestList;
@@ -170,6 +173,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     TextView tvEmptyLayout;
     @Bind(R.id.sections_list)
     RecyclerView sectionsRecyclerView;
+    @Bind(R.id.leader_board_fragment_container)
+    RelativeLayout leaderBoardContainer;
 
     //Flagged Answer View ID
     @Bind(R.id.flagged_explanation)
@@ -246,7 +251,16 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         initSuggestionWebView();
         setListener();
         getIntentData();
+        // load leader board for testing purpose
+        loadLeaderBoard();
+
         sendAnalytics(getString(R.string.screen_exercise));
+    }
+
+    private void loadLeaderBoard() {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.leader_board_fragment_container, new LeaderBoardFragment());
+        transaction.commit();
     }
 
     public List<ExamModel> getLocalExamModelList() {

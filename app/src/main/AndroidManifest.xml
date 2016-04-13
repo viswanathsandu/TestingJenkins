@@ -130,7 +130,8 @@
         <activity
             android:name=".activities.ChallengeActivity"
             android:label="@string/title_activity_challenge"
-            android:screenOrientation="sensorLandscape">
+            android:screenOrientation="sensorLandscape"
+            android:windowSoftInputMode="stateHidden">
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />

@@ -116,7 +116,6 @@
     </style>
 
     <style name="UserProfileCustomTabLayout" parent="Widget.Design.TabLayout">
-        <item name="tabMaxWidth">@dimen/tab_max_width</item>
         <item name="tabIndicatorColor">@color/dark_blue</item>
         <item name="tabIndicatorHeight">2dp</item>
         <item name="tabBackground">?attr/selectableItemBackground</item>
@@ -125,7 +124,6 @@
     </style>
 
     <style name="OfflineCustomTabLayout" parent="Widget.Design.TabLayout">
-        <item name="tabMaxWidth">@dimen/tab_max_width</item>
         <item name="tabIndicatorColor">@color/dark_blue</item>
         <item name="tabIndicatorHeight">2dp</item>
         <item name="tabBackground">@color/gray</item>
