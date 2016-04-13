@@ -47,6 +47,7 @@ import com.unnamed.b.atv.view.AndroidTreeView;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -145,13 +146,13 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
                                 htmlContentId += contentModel.idContent + ",";
                             }
                             OfflineContent offlineContent = new OfflineContent(mCourseId,mCourseName,
-                                                                                mSubjectId,mSubjectName,
-                                                                                mChapterId,mChapterName,
-                                                                                topicModel.idTopic,topicModel.topicName,
-                                                                                contentModel.idContent,contentModel.contentName,
-                                                                                contentModel.contentName + "." + contentModel.type);
+                                    mSubjectId,mSubjectName,
+                                    mChapterId,mChapterName,
+                                    topicModel.idTopic,topicModel.topicName,
+                                    contentModel.idContent,contentModel.contentName,
+                                    contentModel.contentName + "." + contentModel.type);
                             ExerciseOfflineModel model = new ExerciseOfflineModel(
-                                            AbstractBaseActivity.selectedCourse.courseId+"", topicModel.idTopic);
+                                    AbstractBaseActivity.selectedCourse.courseId+"", topicModel.idTopic);
                             if(!offlineExerciseModels.contains(model)) {
                                 offlineExerciseModels.add(model);
                             }
@@ -165,6 +166,17 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
                 topicCount++;
             }
         }
+
+        Collections.sort(offlineContents,                                     //List name ex: ArrayList<AnalyticsModel>
+                new Comparator<OfflineContent>() {                                                                 //Class AnalyticsModel
+                    public int compare(OfflineContent ord1,
+                                       OfflineContent ord2) {
+
+                        return ord1.chapterName.compareToIgnoreCase(ord2.chapterName);
+
+                    }
+                });
+
         AppPref.getInstance(this).save("DATA_IN_PROGRESS", new Gson().toJson(offlineContents));
         setUpDialogLogic(method(htmlContentId), method(videoContentId));
     }
@@ -264,7 +276,7 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
         Intent intent = new Intent(this, VideoDownloadService.class);
         intent.putExtra("fileName",fileName);
         intent.putExtra("download_file_path",download_file_path);
-        intent.putExtra("folderStructure",folderStructure);
+        intent.putExtra("folderStructure", folderStructure);
         startService(intent);
     }
 
@@ -420,7 +432,19 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
         headerProgress.setVisibility(View.GONE);
         TreeNode subjectName = new TreeNode(chapters.chapterName).setViewHolder(new CheckedItemViewHolder(this, false));
         topicModelList = (ArrayList<TopicModel>) chapters.topicMap;
-        Collections.sort(topicModelList);
+//        Collections.sort(topicModelList);
+
+        Collections.sort(topicModelList,                                     //List name ex: ArrayList<AnalyticsModel>
+                new Comparator<TopicModel>() {                                                                 //Class AnalyticsModel
+                    public int compare(TopicModel ord1,
+                                       TopicModel ord2) {
+
+                        return ord1.topicName.compareToIgnoreCase(ord2.topicName);
+
+                    }
+                });
+
+
         for (int i = 0; i < chapters.topicMap.size(); i++) {
             addTopic(chapters.topicMap.get(i), subjectName, dialog);
         }
@@ -431,13 +455,28 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
         TreeNode topicName = new TreeNode(topicModel.topicName).setViewHolder(new CheckedItemViewHolder(this, false));
         int size = topicModel.contentMap.size();
         TreeNode file1 = null;
-        for (ContentModel contentModel : topicModel.contentMap) {
+
+        List<ContentModel> contentModelArrayList = topicModel.contentMap;
+
+        Collections.sort(contentModelArrayList,
+                new Comparator<ContentModel>() {
+                    public int compare(ContentModel ord1,
+                                       ContentModel ord2) {
+
+                        return ord1.contentName.compareToIgnoreCase(ord2.contentName);
+
+                    }
+                });
+
+        for (ContentModel contentModel : contentModelArrayList) {
             contentList.add(getTextView(contentModel.contentName + "." + contentModel.type));
             topicModelHashMap.put(contentModel.idContent,topicModel);
             file1 = new TreeNode(contentModel.contentName + "." + contentModel.type).setViewHolder(new CheckedItemViewHolder(this, true));
             topicName.addChildren(file1);
         }
         topicList.add(getTextView(topicModel.topicName));
+
+
         subjectName.addChild(topicName);
     }
 

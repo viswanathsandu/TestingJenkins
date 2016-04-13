@@ -66,7 +66,6 @@ public class TestSetupFragment extends BaseFragment {
     public TextView timeInMinsError;
     @Bind(R.id.tv_virCurrencyError)
     public TextView virCurrencyError;
-
     private List<SubjectModel> subjectList;
     private List<ChapterModel> chapterList;
     private List<Exam> examsList;

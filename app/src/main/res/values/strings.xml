@@ -130,6 +130,9 @@
 
     <string name="participant">One more participants are still battling it out</string>
     <string name="check_result">Please wait to check result.</string>
+    <string name="vc_hint"><font size="15">Virtual Currency</font></string>
+    <string name="ques_hint"><font size="15">No of Questions</font></string>
+    <string name="time_hint"><font size="15">Time in Mins</font></string>
 
 
 

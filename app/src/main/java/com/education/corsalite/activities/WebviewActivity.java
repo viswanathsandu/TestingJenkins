@@ -106,7 +106,7 @@ public class WebviewActivity extends AbstractBaseActivity {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            if (url.contains("staging.corsalite.com")) {
+            if (url.contains(ApiClientService.getBaseUrl())) {
                 if(!url.contains("?") || !url.contains("Header=0&Footer=0")) {
                     view.loadUrl(getUrlWithNoHeadersAndFooters(url));
                 }
