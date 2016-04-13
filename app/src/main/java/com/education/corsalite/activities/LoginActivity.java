@@ -22,9 +22,9 @@ import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.AppConfig;
 import com.education.corsalite.utils.AppPref;
-import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.Encryption;
 import com.education.corsalite.utils.SystemUtils;
+import com.education.corsalite.utils.WebUrls;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -77,7 +77,7 @@ public class LoginActivity extends AbstractBaseActivity {
             public void onClick(View v) {
                 if(SystemUtils.isNetworkConnected(LoginActivity.this)) {
                     Intent intent = new Intent(LoginActivity.this, WebviewActivity.class);
-                    intent.putExtra(URL, Constants.FORGOT_PASSWORD_URL);
+                    intent.putExtra(URL, WebUrls.getForgotPasswordUrl());
                     intent.putExtra(TITLE, getString(R.string.forgot_password));
                     intent.putExtra("clear_cookies", true);
                     startActivity(intent);

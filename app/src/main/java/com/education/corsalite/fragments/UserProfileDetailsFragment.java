@@ -39,8 +39,8 @@ import com.education.corsalite.models.responsemodels.ExamDetail;
 import com.education.corsalite.models.responsemodels.UserProfileResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencyBalanceResponse;
 import com.education.corsalite.services.ApiClientService;
-import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.L;
+import com.education.corsalite.utils.WebUrls;
 import com.google.gson.Gson;
 
 import java.net.MalformedURLException;
@@ -49,7 +49,6 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import de.greenrobot.event.EventBus;
 import retrofit.client.Response;
 
 public class UserProfileDetailsFragment extends BaseFragment implements EditProfilePicDialogFragment.IUpdateProfilePicListener,
@@ -97,7 +96,6 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user_profile_details, container, false);
         ButterKnife.bind(this, view);
-        EventBus.getDefault().register(this);
         setListeners();
         return view;
     }
@@ -107,12 +105,6 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
         super.onResume();
         fetchUserProfileData();
         fetchVirtualCurrencyBalance();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
     }
 
     private void showEnrolledcourses(String enrolledCourses) {
@@ -231,7 +223,7 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
     private void redeem() {
         Intent intent = new Intent(getActivity(), WebviewActivity.class);
         intent.putExtra(LoginActivity.TITLE, getString(R.string.redeem));
-        intent.putExtra(LoginActivity.URL, Constants.REDEEM_URL);
+        intent.putExtra(LoginActivity.URL, WebUrls.getRedeemUrl());
         startActivity(intent);
     }
 
@@ -313,7 +305,7 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
                 });
     }
 
-    public void onEvent(Course course) {
+    public void onEventMainThread(Course course) {
         loadCourses();
         setEnrolledCourses();
         showCourses(mCourses);

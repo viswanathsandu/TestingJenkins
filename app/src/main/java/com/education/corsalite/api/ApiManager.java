@@ -14,6 +14,9 @@ import com.education.corsalite.models.db.reqres.StudyCenterReqRes;
 import com.education.corsalite.models.requestmodels.CreateChallengeRequest;
 import com.education.corsalite.models.requestmodels.ForumLikeRequest;
 import com.education.corsalite.models.requestmodels.ForumModel;
+import com.education.corsalite.models.responsemodels.ChallengeCompleteResponseModel;
+import com.education.corsalite.models.responsemodels.ChallengeStartResponseModel;
+import com.education.corsalite.models.responsemodels.ChallengeUser;
 import com.education.corsalite.models.responsemodels.ChallengeUserListResponse;
 import com.education.corsalite.models.responsemodels.CommonResponseModel;
 import com.education.corsalite.models.responsemodels.Content;
@@ -515,9 +518,33 @@ public class ApiManager {
         }
     }
 
-    public void getChallengeTestDetails(String challengeTestId, ApiCallback<ChallengeUserListResponse> callback){
+    public void getChallengeTestDetails(String challengeTestId, String courseId, ApiCallback<ChallengeUserListResponse> callback){
         if(isApiOnline()){
-            ApiClientService.get().getchallengeTestDetails(challengeTestId, callback);
+            ApiClientService.get().getchallengeTestDetails(challengeTestId, courseId, callback);
+        }
+    }
+
+    public void postChallengeStatus(String update, ApiCallback<CommonResponseModel> callback){
+        if(isApiOnline()){
+            ApiClientService.get().updateChallengStatus(new TypedString("Update=" + update), callback);
+        }
+    }
+
+    public void postChallengeStart(String update, ApiCallback<ChallengeStartResponseModel> callback){
+        if(isApiOnline()){
+            ApiClientService.get().startChallenge(new TypedString("Update=" + update), callback);
+        }
+    }
+
+    public void completeChallengeTest(String challengeTestId, String testQuestionPaperId, String studentId, ApiCallback<ChallengeCompleteResponseModel> callback){
+        if(isApiOnline()){
+            ApiClientService.get().completeChallenge(challengeTestId, testQuestionPaperId, studentId, callback);
+        }
+    }
+
+    public void getChallengeResults(String challengeTestId, ApiCallback<List<ChallengeUser>> callback){
+        if(isApiOnline()){
+            ApiClientService.get().getChallengeResults(challengeTestId, callback);
         }
     }
 

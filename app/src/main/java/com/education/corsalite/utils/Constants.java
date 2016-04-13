@@ -4,12 +4,6 @@ package com.education.corsalite.utils;
  * Created by ayush on 15/09/15.
  */
 public class Constants {
-    public final static String FORGOT_PASSWORD_URL = "http://staging.corsalite.com/v1/login/forgotPassword";
-    public final static String ADD_GUARDIAN_URL = "http://staging.corsalite.com/v1/profile/guardianInfo";
-    public final static String ADD_COURSES_URL = "http://staging.corsalite.com/v1/profile/courseInfo";
-    public final static String REDEEM_URL = "http://staging.corsalite.com/v1/redeem";
-    public final static String SMART_CLASS_URL = "http://staging.corsalite.com/v1/smartclass/index";
-    public final static String EXAM_RESULTS_SUMMARY_URL = "http://staging.corsalite.com/v1/examination/examResultSummary/";
 
     public final static String PARENT_FOLDER = "Corsalite";
     public final static String HTML_FOLDER = "Html";
@@ -41,6 +35,11 @@ public class Constants {
     public static final String TEST_COVERAGE_LIST_GSON = "testCoverageListGson";
     public static final String IS_OFFLINE = "IS_OFFLINE";
     public static final String PARTTEST_GRIDMODELS = "partTestGridElements";
+    public static final int STATUS_SUSPENDED = 22;
+    public static final int STATUS_COMPLETED = 33;
+    public static final int STATUS_START = 44;
+
+
 
 
     public enum AnswerState {

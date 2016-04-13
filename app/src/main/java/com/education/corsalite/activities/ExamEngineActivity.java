@@ -52,7 +52,6 @@ import com.education.corsalite.db.DbManager;
 import com.education.corsalite.enums.QuestionType;
 import com.education.corsalite.event.ExerciseAnsEvent;
 import com.education.corsalite.fragments.FullQuestionDialog;
-import com.education.corsalite.models.ExerciseOfflineModel;
 import com.education.corsalite.models.MockTest;
 import com.education.corsalite.models.OfflineTestModel;
 import com.education.corsalite.models.ScheduledTestList;
@@ -64,9 +63,10 @@ import com.education.corsalite.models.requestmodels.PostCustomExamTemplate;
 import com.education.corsalite.models.requestmodels.PostExerciseRequestModel;
 import com.education.corsalite.models.requestmodels.PostQuestionPaperRequest;
 import com.education.corsalite.models.responsemodels.AnswerChoiceModel;
+import com.education.corsalite.models.responsemodels.ChallengeCompleteResponseModel;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
-import com.education.corsalite.models.responsemodels.ExamModel;
 import com.education.corsalite.models.responsemodels.Exam;
+import com.education.corsalite.models.responsemodels.ExamModel;
 import com.education.corsalite.models.responsemodels.PostExamTemplate;
 import com.education.corsalite.models.responsemodels.PostExercise;
 import com.education.corsalite.models.responsemodels.PostFlaggedQuestions;
@@ -81,6 +81,7 @@ import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.SystemUtils;
 import com.education.corsalite.utils.TimeUtils;
+import com.education.corsalite.utils.WebUrls;
 import com.education.corsalite.views.GridViewInScrollView;
 import com.google.gson.Gson;
 
@@ -94,7 +95,6 @@ import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import io.fabric.sdk.android.services.network.NetworkUtils;
 import retrofit.client.Response;
 
 /**
@@ -221,6 +221,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private String testQuestionPaperId = null;
     private boolean isOffline;
     private TestAnswerPaper testanswerPaper = new TestAnswerPaper();
+    private long offlineModelDate;
+    private String challengeTestId;
 
     public static Intent getMyIntent(Context context, @Nullable Bundle extras) {
         Intent intent = new Intent(context, ExamEngineActivity.class);
@@ -263,6 +265,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         chapterId = getIntent().getExtras().getString(Constants.SELECTED_CHAPTERID);
         topicIds = getIntent().getExtras().getString(Constants.SELECTED_TOPICID);
         isOffline = getIntent().getExtras().getBoolean(Constants.IS_OFFLINE, false);
+        offlineModelDate = getIntent().getExtras().getLong("OfflineTestModel");
+        challengeTestId = getIntent().getStringExtra("challenge_test_id");
         if (title.equalsIgnoreCase("Flagged Questions")) {
             loadFlaggedQuestions();
         } else if (title.equalsIgnoreCase("Exercises")) {
@@ -271,13 +275,17 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             loadMockTest();
         } else if (title.equalsIgnoreCase("Schedule Test")) {
             loadScheduledTest();
-        } else if (title.equalsIgnoreCase("Challenge Test")) {
+        } else if (ischallengeTest()) {
             loadChallengeTest();
         } else if (title.equalsIgnoreCase("View Answers")) {
             loadViewAnswers();
         }  else { // TakeTest or PartTest
             loadDefaultExam();
         }
+    }
+
+    private boolean ischallengeTest() {
+        return title.equalsIgnoreCase("Challenge Test");
     }
 
     private void loadDefaultExam() {
@@ -700,6 +708,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     public void success(TestAnswerPaperResponse testAnswerPaperResponse, Response response) {
                         super.success(testAnswerPaperResponse, response);
                         showToast("Exam has been suspended");
+                        DbManager.getInstance(ExamEngineActivity.this).updateOfflineTestModel(offlineModelDate, Constants.STATUS_SUSPENDED);
                         finish();
                     }
                 });
@@ -791,10 +800,13 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                         super.success(testAnswerPaperResponse, response);
                         headerProgress.setVisibility(View.GONE);
                         mViewSwitcher.showNext();
-                        if (testAnswerPaperResponse != null && !TextUtils.isEmpty(testAnswerPaperResponse.testAnswerPaperId)) {
+                        if(ischallengeTest()) {
+                            openChallengeTestResults();
+                        } else if (testAnswerPaperResponse != null && !TextUtils.isEmpty(testAnswerPaperResponse.testAnswerPaperId)) {
                             openAdvancedExamResultSummary(testAnswerPaperResponse.testAnswerPaperId);
                             finish();
                         }
+                        DbManager.getInstance(ExamEngineActivity.this).updateOfflineTestModel(offlineModelDate, Constants.STATUS_COMPLETED);
                     }
                 });
             } else {
@@ -803,10 +815,18 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         }
     }
 
+    private void openChallengeTestResults() {
+        Intent intent = new Intent(ExamEngineActivity.this, ChallengeResultActivity.class);
+        intent.putExtra("challenge_test_id", challengeTestId);
+        intent.putExtra("tesst_question_paper_id", testQuestionPaperId);
+        startActivity(intent);
+        finish();
+    }
+
     private void openAdvancedExamResultSummary(String answerPaperId) {
         Intent intent = new Intent(this, WebviewActivity.class);
-        L.info("URL : " + Constants.EXAM_RESULTS_SUMMARY_URL + answerPaperId);
-        intent.putExtra(LoginActivity.URL, Constants.EXAM_RESULTS_SUMMARY_URL + answerPaperId);
+        L.info("URL : " + WebUrls.getExamResultsSummaryUrl() + answerPaperId);
+        intent.putExtra(LoginActivity.URL, WebUrls.getExamResultsSummaryUrl() + answerPaperId);
         intent.putExtra(LoginActivity.TITLE, getString(R.string.results));
         startActivity(intent);
     }

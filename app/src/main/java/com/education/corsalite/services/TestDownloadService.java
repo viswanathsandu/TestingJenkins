@@ -18,7 +18,6 @@ import com.education.corsalite.models.examengine.BaseTest;
 import com.education.corsalite.models.responsemodels.Chapter;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.ExamModel;
-import com.education.corsalite.models.responsemodels.StudyCenter;
 import com.education.corsalite.models.responsemodels.TestPaperIndex;
 import com.education.corsalite.utils.L;
 import com.google.gson.Gson;
@@ -48,6 +47,7 @@ public class TestDownloadService extends IntentService {
         String scheduledTestStr = intent.getStringExtra("selectedScheduledTest");
         String takeTestStr = intent.getStringExtra("selectedTakeTest");
         String partTestStr = intent.getStringExtra("selectedPartTest");
+        String subjectName = intent.getStringExtra("SubjectName");
         String subjectId = intent.getStringExtra("subjectId");
         String questionsCount = intent.getStringExtra("questions_count");
         String exerciseQuestionsListJson = intent.getStringExtra("exercise_data");
@@ -63,13 +63,12 @@ public class TestDownloadService extends IntentService {
         } else if (scheduledTestStr != null) {
             ScheduledTestList.ScheduledTestsArray scheduledTest = new Gson().fromJson(scheduledTestStr, ScheduledTestList.ScheduledTestsArray.class);
             getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, null, null, scheduledTest);
-        }else if(takeTestStr != null){
+        } else if(takeTestStr != null){
             Chapter chapter = new Gson().fromJson(takeTestStr,Chapter.class);
             loadTakeTest(chapter,null, questionsCount, subjectId);
-        }else if(partTestStr != null){
-            StudyCenter studyCenter = new Gson().fromJson(partTestStr,StudyCenter.class);
+        } else if(partTestStr != null){
             OfflineTestModel model = new OfflineTestModel();
-            loadPartTest(studyCenter.SubjectName, subjectId, model);
+            loadPartTest(subjectName, subjectId, model);
         } else if(exerciseModelsList != null) {
             downloadExercises(exerciseModelsList);
         }
@@ -114,6 +113,7 @@ public class TestDownloadService extends IntentService {
                         model.testPaperIndecies = testPAperIndecies;
                         model.testQuestionPaperId = testQuestionPaperId;
                         model.testAnswerPaperId = testAnswerPaperId;
+                        model.dateTime = System.currentTimeMillis();
                         DbManager.getInstance(getApplicationContext()).saveOfflineTest(model);
                     }
                 });
@@ -126,6 +126,7 @@ public class TestDownloadService extends IntentService {
             public void onSuccess(BaseTest test) {
                 OfflineTestModel model = new OfflineTestModel();
                 model.baseTest = test;
+                model.dateTime = System.currentTimeMillis();
                 DbManager.getInstance(TestDownloadService.this).saveOfflineTest(model);
             }
 
@@ -141,6 +142,7 @@ public class TestDownloadService extends IntentService {
             @Override
             public void onSuccess(BaseTest test) {
                 model.baseTest = test;
+                model.dateTime = System.currentTimeMillis();
                 DbManager.getInstance(TestDownloadService.this).saveOfflineTest(model);
             }
 

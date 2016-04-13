@@ -3,10 +3,12 @@ package com.education.corsalite.helpers;
 import android.text.TextUtils;
 
 import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.models.socket.requests.ChallengeTestStartRequestEvent;
 import com.education.corsalite.models.socket.requests.ChallengeTestUpdateRequestEvent;
 import com.education.corsalite.models.socket.requests.NewChallengeTestRequestEvent;
 import com.education.corsalite.models.socket.requests.SubscribeEvent;
 import com.education.corsalite.models.socket.requests.UserListEvent;
+import com.education.corsalite.models.socket.response.ChallengeTestCompletedEvent;
 import com.education.corsalite.models.socket.response.ChallengeTestRequestEvent;
 import com.education.corsalite.models.socket.response.ChallengeTestStartEvent;
 import com.education.corsalite.models.socket.response.ChallengeTestUpdateEvent;
@@ -106,7 +108,8 @@ public class WebSocketHelper {
                 } else if (message.contains("UpdateLeaderBoard")) {
 
                 } else if (message.contains("ChallengeTestComplete")) {
-
+                    ChallengeTestCompletedEvent event = new Gson().fromJson(message, ChallengeTestCompletedEvent.class);
+                    EventBus.getDefault().post(event);
                 } else if (message.contains("ChallengeTestUpdate")) {
                     ChallengeTestUpdateEvent event = new Gson().fromJson(message, ChallengeTestUpdateEvent.class);
                     EventBus.getDefault().post(event);
@@ -114,8 +117,6 @@ public class WebSocketHelper {
                     ChallengeTestStartEvent event = new Gson().fromJson(message, ChallengeTestStartEvent.class);
                     EventBus.getDefault().post(event);
                 } else if (message.contains("AutoDeclinedUsers")) {
-
-                } else if (message.contains("ChallengeTestUpdate")) {
 
                 }
             }
@@ -143,6 +144,11 @@ public class WebSocketHelper {
 
     // send('{"event":"ChallengeTestUpdate", "ChallengeTestParentID":"1", "ChallengerName":"test name", "ChallengerStatus":"accepted"}');
     public void sendChallengeUpdateEvent(ChallengeTestUpdateRequestEvent event) {
+        sendEvent(new Gson().toJson(event));
+    }
+
+    // send('{"event":"ChallengeTestStart", "ChallengeTestParentID":"1", "ChallengerName":"test name", "ChallengerStatus":"accepted","TestQuestionPaperId":"32125" }');
+    public void sendChallengeStartEvent(ChallengeTestStartRequestEvent event) {
         sendEvent(new Gson().toJson(event));
     }
 

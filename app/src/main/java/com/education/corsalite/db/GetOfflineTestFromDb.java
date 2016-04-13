@@ -6,6 +6,7 @@ import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.models.OfflineTestModel;
 import com.education.corsalite.utils.MockUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,7 +25,17 @@ public class GetOfflineTestFromDb extends AsyncTask<String, Void, List<OfflineTe
     @Override
     protected List<OfflineTestModel> doInBackground(String... params) {
         List<OfflineTestModel> responseList = dbService.Get(OfflineTestModel.class);
-        return responseList;
+        try {
+            List<OfflineTestModel> currentUserResults = new ArrayList<>();
+            for (OfflineTestModel test : responseList) {
+                if (test.isCurrentUser()) {
+                    currentUserResults.add(test);
+                }
+            }
+            return currentUserResults;
+        } catch (Exception e) {
+            return responseList;
+        }
     }
 
     @Override

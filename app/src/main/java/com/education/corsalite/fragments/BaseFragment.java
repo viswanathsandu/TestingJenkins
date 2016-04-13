@@ -68,6 +68,5 @@ public abstract class BaseFragment extends Fragment {
 
     // Dummy event to avoid no subscriber issues
     public void onEvent(ResponseEvent event) {
-
     }
 }

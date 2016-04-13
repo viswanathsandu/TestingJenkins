@@ -8,12 +8,32 @@ import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.education.corsalite.models.socket.response.ResponseEvent;
+
+import de.greenrobot.event.EventBus;
+
 /**
  * Created by vissu on 4/2/16.
  */
 public class BaseDialogFragment extends DialogFragment {
 
     Dialog dialog;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    // Dummy event to avoid no subscriber issues
+    public void onEvent(ResponseEvent event) {
+    }
 
     public void showToast(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();

@@ -58,6 +58,7 @@ import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.CookieUtils;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.SystemUtils;
+import com.education.corsalite.utils.WebUrls;
 import com.google.gson.Gson;
 import com.localytics.android.Localytics;
 
@@ -414,14 +415,20 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     protected void showScheduledTestsDialog() {
-        ScheduledTestDialog dialog = new ScheduledTestDialog();
-        dialog.show(getFragmentManager(), "ScheduledTestsListDialog");
+        if (SystemUtils.isNetworkConnected(this)) {
+            ScheduledTestDialog dialog = new ScheduledTestDialog();
+            dialog.show(getFragmentManager(), "ScheduledTestsListDialog");
+        } else {
+            Intent exerciseIntent = new Intent(this, OfflineContentActivity.class);
+            exerciseIntent.putExtra("selection", 1);
+            startActivity(exerciseIntent);
+        }
     }
 
     private void loadSmartClass() {
         Intent intent = new Intent(this, WebviewActivity.class);
         intent.putExtra(LoginActivity.TITLE, "Smart Class");
-        intent.putExtra(LoginActivity.URL, Constants.SMART_CLASS_URL);
+        intent.putExtra(LoginActivity.URL, WebUrls.getSmartClassUrl());
         startActivity(intent);
     }
 
@@ -473,7 +480,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     public void showToast(Context context, String message) {
-        if(!TextUtils.isEmpty(message)) {
+        if (!TextUtils.isEmpty(message)) {
             Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
         }
     }
@@ -617,7 +624,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     public static void saveSessionCookie(Response response) {
         String cookie = CookieUtils.getCookieString(response);
         if (response.getStatus() != 401 && cookie != null) {
-            L.info("Intercept : save session cookie : "+cookie);
+            L.info("Intercept : save session cookie : " + cookie);
             ApiClientService.setSetCookie(cookie);
         }
     }
@@ -625,7 +632,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     public static void saveSessionCookie(com.squareup.okhttp.Response response) {
         String cookie = CookieUtils.getCookieString(response);
         if (response.code() != 401 && cookie != null) {
-            L.info("Intercept : save session cookie : "+cookie);
+            L.info("Intercept : save session cookie : " + cookie);
             ApiClientService.setSetCookie(cookie);
         }
     }
@@ -686,7 +693,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     protected void redeem() {
         Intent intent = new Intent(this, WebviewActivity.class);
         intent.putExtra(LoginActivity.TITLE, getString(R.string.redeem));
-        intent.putExtra(LoginActivity.URL, Constants.REDEEM_URL);
+        intent.putExtra(LoginActivity.URL, WebUrls.getRedeemUrl());
         startActivity(intent);
     }
 
@@ -696,7 +703,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     public void onEventMainThread(ChallengeTestUpdateEvent event) {
-        if(challengeTestRequestDialogFragment == null || !challengeTestRequestDialogFragment.isVisible()) {
+        if (challengeTestRequestDialogFragment == null || !challengeTestRequestDialogFragment.isVisible()) {
             ChallengeTestRequestEvent requestEvent = new ChallengeTestRequestEvent();
             requestEvent.challengeTestParentId = event.challengeTestParentId;
             requestEvent.challengerName = event.challengerName;
@@ -705,7 +712,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     public void showChallengeTestRequestFragment(ChallengeTestRequestEvent event) {
-        if(challengeTestRequestDialogFragment != null && challengeTestRequestDialogFragment.isVisible()) {
+        if (challengeTestRequestDialogFragment != null && challengeTestRequestDialogFragment.isVisible()) {
             challengeTestRequestDialogFragment.dismiss();
         }
         challengeTestRequestDialogFragment = ChallengeTestRequestDialogFragment.newInstance(event);
@@ -721,10 +728,11 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void startChallengeTest(String testQuestionPaperId) {
+    public void startChallengeTest(String testQuestionPaperId, String challngeTestId) {
         Intent intent = new Intent(this, ExamEngineActivity.class);
         intent.putExtra(Constants.TEST_TITLE, "Challenge Test");
         intent.putExtra("test_question_paper_id", testQuestionPaperId);
+        intent.putExtra("challenge_test_id", challngeTestId);
         startActivity(intent);
         finish();
     }

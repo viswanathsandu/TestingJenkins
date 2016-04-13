@@ -2,6 +2,9 @@ package com.education.corsalite.api;
 
 import com.education.corsalite.models.MockTest;
 import com.education.corsalite.models.ScheduledTestList;
+import com.education.corsalite.models.responsemodels.ChallengeCompleteResponseModel;
+import com.education.corsalite.models.responsemodels.ChallengeStartResponseModel;
+import com.education.corsalite.models.responsemodels.ChallengeUser;
 import com.education.corsalite.models.responsemodels.ChallengeUserListResponse;
 import com.education.corsalite.models.responsemodels.CommonResponseModel;
 import com.education.corsalite.models.responsemodels.Content;
@@ -235,7 +238,21 @@ public interface ICorsaliteApi {
 
 
     @GET("/challengeTestDetails")
-    void getchallengeTestDetails(@Query("idChallengeTest")String idChallengeTest, ApiCallback<ChallengeUserListResponse> callback);
+    void getchallengeTestDetails(@Query("idChallengeTest")String idChallengeTest, @Query("idCourse") String courseId, ApiCallback<ChallengeUserListResponse> callback);
+
+    @Headers("Content-Type:application/x-www-form-urlencoded")
+    @POST("/ChallengeStatus")
+    void updateChallengStatus(@Body TypedString update, ApiCallback<CommonResponseModel> callback);
+
+    @Headers("Content-Type:application/x-www-form-urlencoded")
+    @POST("/challengeStart")
+    void startChallenge(@Body TypedString update, ApiCallback<ChallengeStartResponseModel> callback);
+
+    @GET("/challengeComplete")
+    void completeChallenge(@Query("idChallengeTest")String idChallengeTest, @Query("idTestQuestionPaper") String testQuestionPaperId, @Query("idStudent") String studentId, ApiCallback<ChallengeCompleteResponseModel> callback);
+
+    @GET("/challengeResults")
+    void getChallengeResults(@Query("idChallengeTest")String idChallengeTest, ApiCallback<List<ChallengeUser>> callback);
 
     @GET("/PartTestGrid")
     void getPartTestGrid(@Query("idStudent")String studentId,@Query("idCourse")String courseId,@Query("idSubject") String subjectId,ApiCallback<PartTestModel> callback);

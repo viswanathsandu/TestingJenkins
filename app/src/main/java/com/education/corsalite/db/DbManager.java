@@ -73,7 +73,7 @@ public class DbManager {
      * User Profile Db stuff
      */
     public <T> void saveReqRes(final ReqRes<T> reqres) {
-        if(reqres == null) {
+        if (reqres == null) {
             return;
         }
         new Thread(new Runnable() {
@@ -84,6 +84,7 @@ public class DbManager {
                     if (reqResList != null && !reqResList.isEmpty()) {
                         for (ReqRes reqresItem : reqResList) {
                             if (reqresItem.isRequestSame(reqres)) {
+                                reqresItem.setUserId();
                                 reqresItem.response = reqres.response;
                                 dbService.Save(reqresItem);
                                 return;
@@ -109,6 +110,7 @@ public class DbManager {
                         List<OfflineContent> offlinecontentList = dbService.Get(OfflineContent.class);
                         for (OfflineContent savedOfflineContent : offlinecontentList) {
                             if (offlineContent.equals(savedOfflineContent)) {
+                                savedOfflineContent.setUserId();
                                 savedOfflineContent.timeStamp = offlineContent.timeStamp;
                                 dbService.Save(savedOfflineContent);
                                 return;
@@ -122,48 +124,66 @@ public class DbManager {
     }
 
     public void deleteOfflineContent(final List<OfflineContent> offlineContents) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    synchronized (this) {
-                        for (OfflineContent offlineContent : offlineContents) {
-                            dbService.Delete(OfflineContent.class, offlineContent);
-                        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                synchronized (this) {
+                    for (OfflineContent offlineContent : offlineContents) {
+                        dbService.Delete(OfflineContent.class, offlineContent);
                     }
                 }
-            }).start();
+            }
+        }).start();
     }
 
     public void deleteAllOfflineContent() {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    synchronized (this) {
-                        List<OfflineContent> offlinecontentList = dbService.Get(OfflineContent.class);
-                        for (OfflineContent savedOfflineContent : offlinecontentList) {
-                            dbService.Delete(OfflineContent.class, savedOfflineContent);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                synchronized (this) {
+                    List<OfflineContent> offlinecontentList = dbService.Get(OfflineContent.class);
+                    for (OfflineContent savedOfflineContent : offlinecontentList) {
+                        dbService.Delete(OfflineContent.class, savedOfflineContent);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    public void updateOfflineTestModel(final long date, final int status) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                synchronized (this) {
+                    List<OfflineTestModel> offlinecontentList = dbService.Get(OfflineTestModel.class);
+                    for (OfflineTestModel savedOfflineContent : offlinecontentList) {
+                        if (date == savedOfflineContent.dateTime) {
+                            savedOfflineContent.status = status;
+                            dbService.Update(OfflineTestModel.class, savedOfflineContent);
                         }
                     }
                 }
-            }).start();
+            }
+        }).start();
     }
 
     public <T> void getOfflineContentList(ApiCallback<List<OfflineContent>> callback) {
         new GetDataFromDbAsync(dbService, callback).execute();
     }
 
-    public void saveOfflineTest(final OfflineTestModel model){
+    public void saveOfflineTest(final OfflineTestModel model) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 synchronized (this) {
+                    model.setUserId();
                     dbService.Save(model);
                 }
             }
         }).start();
     }
 
-    public void saveOfflineExerciseTest(final ExerciseOfflineModel exercise){
+    public void saveOfflineExerciseTest(final ExerciseOfflineModel exercise) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -171,6 +191,7 @@ public class DbManager {
                     List<ExerciseOfflineModel> models = dbService.Get(ExerciseOfflineModel.class);
                     for (ExerciseOfflineModel model : models) {
                         if (model.equals(exercise)) {
+                            model.setUserId();
                             model.questions = exercise.questions;
                             dbService.Save(model);
                             return;
@@ -182,14 +203,14 @@ public class DbManager {
         }).start();
     }
 
-    public void getOfflineExerciseModels(final String courseId, final ApiCallback<List<ExerciseOfflineModel>> callback){
-        new GetOfflineExerciseFromDb(dbService, new ApiCallback<List<ExerciseOfflineModel>>(context){
+    public void getOfflineExerciseModels(final String courseId, final ApiCallback<List<ExerciseOfflineModel>> callback) {
+        new GetOfflineExerciseFromDb(dbService, new ApiCallback<List<ExerciseOfflineModel>>(context) {
             public void success(List<ExerciseOfflineModel> offlineTestModels, Response response) {
                 super.success(offlineTestModels, response);
                 List<ExerciseOfflineModel> offlineExercises = new ArrayList<ExerciseOfflineModel>();
                 for (ExerciseOfflineModel model : offlineTestModels) {
                     try {
-                        if(model.courseId.equals(courseId)) {
+                        if (model.courseId.equals(courseId) && model.isCurrentUser()) {
                             offlineExercises.add(model);
                         }
                     } catch (Exception e) {
@@ -204,13 +225,13 @@ public class DbManager {
         }).execute();
     }
 
-    public void getAllExamModels(final String subjectId, final ApiCallback<BaseTest> callback){
-        new GetOfflineTestFromDb(dbService, new ApiCallback<List<OfflineTestModel>>(context){
+    public void getAllExamModels(final String subjectId, final ApiCallback<BaseTest> callback) {
+        new GetOfflineTestFromDb(dbService, new ApiCallback<List<OfflineTestModel>>(context) {
             public void success(List<OfflineTestModel> offlineTestModels, Response response) {
                 super.success(offlineTestModels, response);
                 for (OfflineTestModel model : offlineTestModels) {
                     try {
-                        if (model.baseTest.subjectId.equalsIgnoreCase(subjectId)) {
+                        if (model.baseTest.subjectId.equalsIgnoreCase(subjectId) && model.isCurrentUser()) {
                             callback.success(model.baseTest, response);
                         }
                     } catch (Exception e) {
@@ -224,20 +245,22 @@ public class DbManager {
         }).execute();
     }
 
-    public void deleteOfflineMockTest(OfflineTestModel model){
+    public void deleteOfflineMockTest(OfflineTestModel model) {
         dbService.Delete(OfflineTestModel.class, model);
     }
 
-    public void getAllOfflineMockTests(ApiCallback<List<OfflineTestModel>> callback){
+    public void getAllOfflineMockTests(ApiCallback<List<OfflineTestModel>> callback) {
         new GetOfflineTestFromDb(dbService, callback).execute();
     }
 
-    public void getAllExamModels(final MockTest mockTest, final ApiCallback<OfflineTestModel> callback){
-        new GetOfflineTestFromDb(dbService, new ApiCallback<List<OfflineTestModel>>(context){
+    public void getAllExamModels(final MockTest mockTest, final ApiCallback<OfflineTestModel> callback) {
+        new GetOfflineTestFromDb(dbService, new ApiCallback<List<OfflineTestModel>>(context) {
             public void success(List<OfflineTestModel> offlineTestModels, Response response) {
                 super.success(offlineTestModels, response);
                 for (OfflineTestModel model : offlineTestModels) {
-                    if(model.mockTest != null && !TextUtils.isEmpty(model.mockTest.examTemplateId) && model.mockTest.examTemplateId.equalsIgnoreCase(mockTest.examTemplateId)){
+                    if (model.mockTest != null && !TextUtils.isEmpty(model.mockTest.examTemplateId)
+                            && model.mockTest.examTemplateId.equalsIgnoreCase(mockTest.examTemplateId)
+                            && model.isCurrentUser()) {
                         callback.success(model, response);
                     }
                 }
@@ -245,13 +268,15 @@ public class DbManager {
         }).execute();
     }
 
-    public void getAllExamModels(final ScheduledTestList.ScheduledTestsArray scheduledTest, final ApiCallback<List<ExamModel>> callback){
-        new GetOfflineTestFromDb(dbService, new ApiCallback<List<OfflineTestModel>>(context){
+    public void getAllExamModels(final ScheduledTestList.ScheduledTestsArray scheduledTest, final ApiCallback<List<ExamModel>> callback) {
+        new GetOfflineTestFromDb(dbService, new ApiCallback<List<OfflineTestModel>>(context) {
             public void success(List<OfflineTestModel> offlineTestModels, Response response) {
                 super.success(offlineTestModels, response);
-                for (OfflineTestModel model: offlineTestModels) {
-                    if(model.scheduledTest != null && !TextUtils.isEmpty(model.scheduledTest.testQuestionPaperId) && model.scheduledTest.testQuestionPaperId.equalsIgnoreCase(scheduledTest.testQuestionPaperId)){
-                        callback.success(model.examModels,response);
+                for (OfflineTestModel model : offlineTestModels) {
+                    if (model.scheduledTest != null && !TextUtils.isEmpty(model.scheduledTest.testQuestionPaperId)
+                            && model.scheduledTest.testQuestionPaperId.equalsIgnoreCase(scheduledTest.testQuestionPaperId)
+                            && model.isCurrentUser()) {
+                        callback.success(model.examModels, response);
                     }
                 }
             }
