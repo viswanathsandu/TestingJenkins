@@ -29,7 +29,7 @@ import retrofit.converter.GsonConverter;
 public class ApiClientService {
 
     private static ICorsaliteApi client;
-    private static String PROD = "http://app.corsalite.com/ws/webservices/";
+    private static String PROD = "http://app.corsalite.com/v1/webservices/";
     private static String STAGING = "http://staging.corsalite.com/v1/webservices/";
     private static String PROD_SOCKET = "ws://app.corsalite.com:9300";
     private static String STAGING_SOCKET = "ws://staging.corsalite.com:9300";

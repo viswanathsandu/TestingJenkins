@@ -85,7 +85,6 @@ public class WebviewActivity extends AbstractBaseActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         if (webview.canGoBack()) {
             webview.goBack();
         } else {
