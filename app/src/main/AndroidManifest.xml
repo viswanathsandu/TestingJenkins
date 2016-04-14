@@ -156,6 +156,11 @@
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:theme="@style/UserProfileTheme" />
         <activity
+            android:name=".activities.NewPostActivity"
+            android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
+            android:theme="@style/UserProfileTheme" />
+
+        <activity
             android:name=".activities.StartMockTestActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:theme="@style/AppTheme" />
