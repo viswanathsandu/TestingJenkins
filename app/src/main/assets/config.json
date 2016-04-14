@@ -1,7 +1,7 @@
 {
   "BaseUrl":"https://staging.corsalite.com/v1/webservices/",
   "stageUrl":"http://staging.corsalite.com/v1/webservices/",
-  "productionUrl":"http://app.corsalite.com/v1/webservices/",
+  "productionUrl":"http://app.corsalite.com/ws/webservices/",
   "stageSocketUrl":"ws://staging.corsalite.com:9300",
   "productionSocketUrl":"ws://app.corsalite.com:9300",
   "enableProduction":false,
