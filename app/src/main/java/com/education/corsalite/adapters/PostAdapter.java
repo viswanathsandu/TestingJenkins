@@ -103,6 +103,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
         holder.tvComments.setText(forumPost.postReplies+" Comments");
         holder.tvLikes.setText(forumPost.postLikes+" Likes");
         holder.tvViews.setText(forumPost.postViews+" Views");
+        if(!TextUtils.isEmpty(forumPost.IsLiked)) {
+            holder.tvActionLike.setClickable(!forumPost.IsLiked.equalsIgnoreCase("Y"));
+        }
 
         try {
             URL url = new URL(new URL(ApiClientService.getBaseUrl()), forumPost.PhotoUrl);

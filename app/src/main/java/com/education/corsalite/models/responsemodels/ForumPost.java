@@ -35,6 +35,7 @@ public class ForumPost {
     public String idUser;
     public String EditedBy;
     public String Locked;
+    public String IsLiked;
 
     @Override
     public boolean equals(Object o) {
@@ -173,6 +174,7 @@ public class ForumPost {
                 ", idUser='" + idUser + '\'' +
                 ", EditedBy='" + EditedBy + '\'' +
                 ", Locked='" + Locked + '\'' +
+                ", isLiked='" + IsLiked + '\'' +
                 '}';
     }
 }
