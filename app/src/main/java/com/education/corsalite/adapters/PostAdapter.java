@@ -2,11 +2,11 @@ package com.education.corsalite.adapters;
 
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -74,7 +74,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
         holder.tvQuestion.setText(forumPost.PostSubject);
         holder.tvDate.setText(forumPost.Datetime+" by");
         holder.tvUserName.setText(forumPost.DisplayName);
-        holder.tvQuestionDesc.setText(Html.fromHtml(forumPost.htmlText));
+        holder.postDescriptionWebview.getSettings().setJavaScriptEnabled(true);
+        holder.postDescriptionWebview.loadDataWithBaseURL("", forumPost.htmlText, "text/html", "UTF-8", "");
         if(TextUtils.isEmpty(forumPost.CourseName)){
             holder.tvCourseName.setVisibility(View.GONE);
         } else {
@@ -208,8 +209,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
         TextView tvDate;
         @Bind(R.id.tv_post_user_name)
         TextView tvUserName;
-        @Bind(R.id.tv_post_question_desc)
-        TextView tvQuestionDesc;
+        @Bind(R.id.post_desc_webview)
+        WebView postDescriptionWebview;
         @Bind(R.id.tv_post_response_comments)
         TextView tvComments;
         @Bind(R.id.tv_post_response_likes)
