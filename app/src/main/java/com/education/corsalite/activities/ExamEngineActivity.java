@@ -1530,6 +1530,9 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         PostCustomExamTemplate postCustomExamTemplate = new PostCustomExamTemplate();
         postCustomExamTemplate.examId = examsList.get(0).examId;
         postCustomExamTemplate.examName = examsList.get(0).examName;
+        if(mIsAdaptiveTest) {
+            postCustomExamTemplate.examDoTestBySlidingComplexity = "Y";
+        }
         postCustomExamTemplate.examTemplateConfig = new ArrayList<>();
 
         ExamTemplateConfig examTemplateConfig = new ExamTemplateConfig();
