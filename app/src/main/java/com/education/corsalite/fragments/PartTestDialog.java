@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +32,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import retrofit.client.Response;
 
@@ -45,12 +47,15 @@ public class PartTestDialog extends DialogFragment {
     TextView tvAll;
     @Bind(R.id.parttest_recyclerView)
     RecyclerView recyclerView;
+    @Bind(R.id.checkbox_adaptive_learning)
+    CheckBox catCheckBox;
 
     private int idCourseSubject;
     private String subjectName;
     private List<PartTestGridElement> recommendedList;
     private List<PartTestGridElement> allList;
     private PartTestGridAdapter adapter;
+    private boolean mIsAdaptiveTest;
 
     @Nullable
     @Override
@@ -157,15 +162,16 @@ public class PartTestDialog extends DialogFragment {
         if(adapter != null){
             list = adapter.getListData();
         }
-        Intent exerciseIntent = new Intent(getActivity(), ExamEngineActivity.class);
-        exerciseIntent.putExtra(Constants.TEST_TITLE, subjectName);
-        exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
-        exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, idCourseSubject + "");
-        exerciseIntent.putExtra(Constants.SELECTED_TOPIC, subjectName);
+        Intent intent = new Intent(getActivity(), ExamEngineActivity.class);
+        intent.putExtra(Constants.TEST_TITLE, subjectName);
+        intent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
+        intent.putExtra(Constants.SELECTED_SUBJECTID, idCourseSubject + "");
+        intent.putExtra(Constants.SELECTED_TOPIC, subjectName);
+        intent.putExtra(Constants.ADAPIVE_LEAERNING, mIsAdaptiveTest);
         if(list != null){
-            exerciseIntent.putExtra(Constants.PARTTEST_GRIDMODELS,new Gson().toJson(list));
+            intent.putExtra(Constants.PARTTEST_GRIDMODELS,new Gson().toJson(list));
         }
-        startActivity(exerciseIntent);
+        startActivity(intent);
     }
 
     private void downloadPartTest(){
@@ -175,5 +181,10 @@ public class PartTestDialog extends DialogFragment {
         intent.putExtra("subjectId", idCourseSubject + "");
         getActivity().startService(intent);
         Toast.makeText(getActivity(), "Downloading test paper in background", Toast.LENGTH_SHORT).show();
+    }
+
+    @OnCheckedChanged(R.id.checkbox_adaptive_learning)
+    public void onCatCheckChanged() {
+        mIsAdaptiveTest = catCheckBox.isChecked();
     }
 }
