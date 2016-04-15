@@ -54,7 +54,6 @@ public class WebSocketHelper {
             e.printStackTrace();
             return;
         }
-
         mWebSocketClient = new WebSocketClient(uri) {
             @Override
             public void onOpen(ServerHandshake serverHandshake) {
@@ -74,6 +73,7 @@ public class WebSocketHelper {
             public void onClose(int i, String s, boolean b) {
                 L.info("Websocket", "Closed " + s);
                 isWebsocketConnected = false;
+                reconnectWebSocket();
             }
 
             @Override
@@ -84,6 +84,25 @@ public class WebSocketHelper {
         };
         mWebSocketClient.connect();
     }
+
+    public void disconnectWebSocket() {
+        try {
+            mWebSocketClient.close();
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+    }
+
+    public void reconnectWebSocket() {
+        try {
+            if (LoginUserCache.getInstance().loginResponse != null) {
+                connectWebSocket();
+            }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+    }
+
 
     private void sendEvent(String message) {
         if(isWebsocketConnected) {
@@ -154,4 +173,7 @@ public class WebSocketHelper {
         sendEvent(new Gson().toJson(event));
     }
 
+    public void sendUpdateLeaderBoardEvent(com.education.corsalite.models.socket.requests.UpdateLeaderBoardEvent event) {
+        sendEvent(new Gson().toJson(event));
+    }
 }

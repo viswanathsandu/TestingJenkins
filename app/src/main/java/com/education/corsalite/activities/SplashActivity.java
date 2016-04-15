@@ -10,7 +10,6 @@ import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.helpers.WebSocketHelper;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.services.ApiClientService;
@@ -57,10 +56,6 @@ public class SplashActivity extends AbstractBaseActivity {
         }
         ApiClientService.setBaseUrl(config.enableProduction ? config.productionUrl : config.stageUrl);
         ApiClientService.setSocketUrl(config.enableProduction ? config.productionSocketUrl : config.stageSocketUrl);
-    }
-
-    private void startWebSocket() {
-        WebSocketHelper.get().connectWebSocket();
     }
 
     private void checkAutoLogin() {

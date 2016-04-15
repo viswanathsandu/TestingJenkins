@@ -170,8 +170,10 @@ public class FriendsListFragment extends BaseFragment  implements SearchView.OnQ
     }
 
     private void updateFriendsListStatus() {
-        for(FriendsData.Friend friend : friendsData.friendsList) {
-            friend.isOnline = challengeFriendsId.contains(friend.idStudent);
+        if(friendsData != null && friendsData.friendsList != null){
+            for (FriendsData.Friend friend : friendsData.friendsList) {
+                friend.isOnline = challengeFriendsId.contains(friend.idStudent);
+            }
         }
     }
 
