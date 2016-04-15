@@ -105,22 +105,14 @@ import retrofit.client.Response;
  */
 public class ExamEngineActivity extends AbstractBaseActivity {
 
-    @Bind(R.id.vs_container)
-    ViewSwitcher mViewSwitcher;
-    @Bind(R.id.footer_layout)
-    RelativeLayout webFooter;
-    @Bind(R.id.answer_layout)
-    LinearLayout answerLayout;
-    @Bind(R.id.btn_next)
-    Button btnNext;
-    @Bind(R.id.btn_previous)
-    Button btnPrevious;
-    @Bind(R.id.webview_question)
-    WebView webviewQuestion;
-    @Bind(R.id.webview_paragraph)
-    WebView webviewParagraph;
-    @Bind(R.id.tv_comment)
-    TextView tvComment;
+    @Bind(R.id.vs_container) ViewSwitcher mViewSwitcher;
+    @Bind(R.id.footer_layout) RelativeLayout webFooter;
+    @Bind(R.id.answer_layout) LinearLayout answerLayout;
+    @Bind(R.id.btn_next) Button btnNext;
+    @Bind(R.id.btn_previous) Button btnPrevious;
+    @Bind(R.id.webview_question) WebView webviewQuestion;
+    @Bind(R.id.webview_paragraph) WebView webviewParagraph;
+    @Bind(R.id.tv_comment) TextView tvComment;
     @Bind(R.id.tv_level)
     TextView tvLevel;
     @Bind(R.id.tv_nav_title)
@@ -228,6 +220,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private TestAnswerPaper testanswerPaper = new TestAnswerPaper();
     private long offlineModelDate;
     private String challengeTestId;
+    private boolean mIsAdaptiveTest;
 
     public static Intent getMyIntent(Context context, @Nullable Bundle extras) {
         Intent intent = new Intent(context, ExamEngineActivity.class);
@@ -278,6 +271,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         isOffline = getIntent().getExtras().getBoolean(Constants.IS_OFFLINE, false);
         offlineModelDate = getIntent().getExtras().getLong("OfflineTestModel");
         challengeTestId = getIntent().getStringExtra("challenge_test_id");
+        mIsAdaptiveTest = getIntent().getBooleanExtra(Constants.ADAPIVE_LEAERNING, false);
         if (title.equalsIgnoreCase("Flagged Questions")) {
             loadFlaggedQuestions();
         } else if (title.equalsIgnoreCase("Exercises")) {
@@ -1555,12 +1549,25 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     public void success(PostExamTemplate postExamTemplate, Response response) {
                         super.success(postExamTemplate, response);
                         if (postExamTemplate != null && !TextUtils.isEmpty(postExamTemplate.idExamTemplate)) {
-                            postQuestionPaper(LoginUserCache.getInstance().loginResponse.entitiyId,
-                                    postExamTemplate.idExamTemplate,
-                                    LoginUserCache.getInstance().loginResponse.studentId);
+                            if(mIsAdaptiveTest) {
+                                startComputerAdaptiveTest(postExamTemplate.idExamTemplate);
+                            } else {
+                                postQuestionPaper(LoginUserCache.getInstance().loginResponse.entitiyId,
+                                        postExamTemplate.idExamTemplate,
+                                        LoginUserCache.getInstance().loginResponse.studentId);
+                            }
                         }
                     }
                 });
+    }
+
+    private void startComputerAdaptiveTest(String idExamTemplate) {
+        Intent intent = new Intent(this, WebviewActivity.class);
+        intent.putExtra(LoginActivity.TITLE, getString(R.string.computer_adaptive_test));
+        intent.putExtra(Constants.EXAM_TEMPLATE_ID, idExamTemplate);
+        intent.putExtra("URL", WebUrls.getComputerAdaptiveTestUrl(idExamTemplate));
+        startActivity(intent);
+        finish();
     }
 
     private void postFlaggedQuestion() {
