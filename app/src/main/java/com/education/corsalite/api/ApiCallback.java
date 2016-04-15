@@ -14,7 +14,7 @@ import retrofit.client.Response;
  * Created by vissu on 9/11/15.
  */
 public abstract class ApiCallback<T> implements Callback<T> {
-    private Context mContext;
+    public Context mContext;
 
     public ApiCallback(Context context) {
         this.mContext = context;

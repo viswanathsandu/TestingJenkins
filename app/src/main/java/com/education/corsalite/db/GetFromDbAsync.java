@@ -3,6 +3,7 @@ package com.education.corsalite.db;
 import android.os.AsyncTask;
 
 import com.education.corsalite.api.ApiCallback;
+import com.education.corsalite.models.db.reqres.LoginReqRes;
 import com.education.corsalite.models.db.reqres.ReqRes;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.utils.MockUtils;
@@ -30,8 +31,10 @@ public class GetFromDbAsync<T> extends AsyncTask<String, Void, Object> {
             List<? extends ReqRes> reqResList = dbService.Get(reqres.getClass());
             if (reqResList != null && !reqResList.isEmpty()) {
                 for (ReqRes reqresItem : reqResList) {
-                    if (reqresItem != null && reqresItem.isRequestSame(reqres) && reqresItem.isCurrentUser()) {
-                        return reqresItem.response;
+                    if(reqresItem.isCurrentUser() || reqresItem instanceof LoginReqRes) {
+                        if (reqresItem != null && reqresItem.isRequestSame(reqres)) {
+                            return reqresItem.response;
+                        }
                     }
                 }
             } else {

@@ -31,8 +31,10 @@ import retrofit.client.Response;
  */
 public class ForumActivity extends AbstractBaseActivity {
 
-    @Bind(R.id.tabLayout) TabLayout mTabLayout;
-    @Bind(R.id.viewPager) ViewPager mViewPager;
+    @Bind(R.id.tabLayout)
+    TabLayout mTabLayout;
+    @Bind(R.id.viewPager)
+    ViewPager mViewPager;
 
     private LayoutInflater inflater;
     private CourseData mCourseData;
@@ -92,5 +94,6 @@ public class ForumActivity extends AbstractBaseActivity {
         fragment.setArguments(bundle);
         fragment.show(getSupportFragmentManager(), "ForumEditorDialog");
     }
+
 }
 
