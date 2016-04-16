@@ -3,7 +3,11 @@ package com.education.corsalite.activities;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
@@ -47,7 +51,7 @@ import retrofit.client.Response;
 /**
  * Created by Madhuri on 14-04-2016.
  */
-public class NewPostActivity extends AbstractBaseActivity implements View.OnClickListener{
+public class NewPostActivity extends AbstractBaseActivity{
     private WebView webview;
     private RelativeLayout forumHeaderLayout;
     private Spinner subjectSpinner;
@@ -82,13 +86,40 @@ public class NewPostActivity extends AbstractBaseActivity implements View.OnClic
 
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            onBackPressed();
+        }
+        else if(id==R.id.cancel_btn){
+
+        }else if (id==R.id.edit_btn){
+            webview.loadUrl("javascript:getUpdatedHtml()");
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.new_post_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.editor_dialog_layout);
+       Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        toolbar.setTitle("New Post");
+
         type = getIntent().getExtras().getString("type", "Note");
-		
-		Bundle data = getIntent().getExtras();
-		
+        Bundle data = getIntent().getExtras();
 		if(data!=null)
 		{
 		operation = data.getString("operation", "Add");
@@ -134,7 +165,7 @@ public class NewPostActivity extends AbstractBaseActivity implements View.OnClic
         if(!TextUtils.isEmpty(postsubject)) {
             titleTxt.setText(postsubject);
         }
-        if(operation.equals("Add")) {
+     /*   if(operation.equals("Add")) {
             addBtn = (Button) findViewById(R.id.add_btn);
             addBtn.setOnClickListener(this);
             addBtn.setVisibility(View.VISIBLE);
@@ -144,7 +175,7 @@ public class NewPostActivity extends AbstractBaseActivity implements View.OnClic
             editBtn.setVisibility(View.VISIBLE);
         }
         cancelBtn = (Button) findViewById(R.id.cancel_btn);
-        cancelBtn.setOnClickListener(this);
+        cancelBtn.setOnClickListener(this);*/
         initWebview();
     }
 
@@ -185,7 +216,7 @@ public class NewPostActivity extends AbstractBaseActivity implements View.OnClic
         webview.loadUrl("file:///android_asset/ckeditor/samples/index.html");
     }
 
-    @Override
+   /* @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.add_btn:
@@ -198,7 +229,7 @@ public class NewPostActivity extends AbstractBaseActivity implements View.OnClic
                 break;
         }
     }
-
+*/
     private void addContent() {
         if(type.equalsIgnoreCase("Note")) {
             addNotes();
