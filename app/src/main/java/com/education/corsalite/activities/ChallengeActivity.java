@@ -153,7 +153,7 @@ public class ChallengeActivity extends AbstractBaseActivity {
         NewChallengeTestRequestEvent event = new NewChallengeTestRequestEvent();
         event.challengerName = mDisplayName;
         event.challengeTestParentId = mChallengeTestId;
-        WebSocketHelper.get().sendChallengeTestEvent(event);
+        WebSocketHelper.get(this).sendChallengeTestEvent(event);
     }
 
     public void onEventMainThread(ChallengeTestStartEvent event) {

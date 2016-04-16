@@ -101,7 +101,7 @@ public class FriendsListFragment extends BaseFragment  implements SearchView.OnQ
     @Override
     public void onResume() {
         super.onResume();
-        WebSocketHelper.get().sendGetUserListEvent();
+        WebSocketHelper.get(getActivity()).sendGetUserListEvent();
     }
 
     private void loadFriendsList() {
@@ -170,8 +170,10 @@ public class FriendsListFragment extends BaseFragment  implements SearchView.OnQ
     }
 
     private void updateFriendsListStatus() {
-        for(FriendsData.Friend friend : friendsData.friendsList) {
-            friend.isOnline = challengeFriendsId.contains(friend.idStudent);
+        if(friendsData != null && friendsData.friendsList != null){
+            for (FriendsData.Friend friend : friendsData.friendsList) {
+                friend.isOnline = challengeFriendsId.contains(friend.idStudent);
+            }
         }
     }
 

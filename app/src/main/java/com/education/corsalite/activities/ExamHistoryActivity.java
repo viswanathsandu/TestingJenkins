@@ -1,6 +1,7 @@
 package com.education.corsalite.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +19,9 @@ import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.ExamHistory;
+import com.education.corsalite.utils.L;
+import com.education.corsalite.utils.SystemUtils;
+import com.education.corsalite.utils.WebUrls;
 
 import java.util.List;
 
@@ -28,18 +32,23 @@ import retrofit.client.Response;
 /**
  * Created by Aastha on 09/11/15.
  */
-public class ExamHistoryActivity extends AbstractBaseActivity {
+public class ExamHistoryActivity extends AbstractBaseActivity implements ExamHistoryAdapter.SetOnExamHistoryClick {
 
-    @Bind(R.id.rv_exam_history)RecyclerView recyclerView;
-    @Bind(R.id.progress_bar_tab)ProgressBar mProgressBar;
-    @Bind(R.id.tv_failure_text)TextView mTextView;
-    @Bind(R.id.headerLayout)LinearLayout mHeaderLayout;
+    @Bind(R.id.rv_exam_history)
+    RecyclerView recyclerView;
+    @Bind(R.id.progress_bar_tab)
+    ProgressBar mProgressBar;
+    @Bind(R.id.tv_failure_text)
+    TextView mTextView;
+    @Bind(R.id.headerLayout)
+    LinearLayout mHeaderLayout;
     LinearLayoutManager mLayoutManager;
     private static final int MAX_ROW_COUNT = 10;
     private boolean mLoading = true;
     private int currentPage = 0;
 
     ExamHistoryAdapter examHistoryAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,8 +85,7 @@ public class ExamHistoryActivity extends AbstractBaseActivity {
     }
 
 
-
-    private void getExamHistory(final int startIndex, final int endIndex){
+    private void getExamHistory(final int startIndex, final int endIndex) {
         ApiManager.getInstance(this).getExamHistory(LoginUserCache.getInstance().loginResponse.studentId, String.valueOf(startIndex), String.valueOf(endIndex), new ApiCallback<List<ExamHistory>>(this) {
             @Override
             public void failure(CorsaliteError error) {
@@ -89,7 +97,7 @@ public class ExamHistoryActivity extends AbstractBaseActivity {
 
             @Override
             public void success(List<ExamHistory> examHistories, Response response) {
-                if(examHistories == null){
+                if (examHistories == null) {
                     return;
                 }
                 mLoading = false;
@@ -98,10 +106,10 @@ public class ExamHistoryActivity extends AbstractBaseActivity {
                 mHeaderLayout.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.VISIBLE);
 
-                if(examHistoryAdapter == null){
-                    examHistoryAdapter = new ExamHistoryAdapter(examHistories, getLayoutInflater());
+                if (examHistoryAdapter == null) {
+                    examHistoryAdapter = new ExamHistoryAdapter(examHistories, getLayoutInflater(), ExamHistoryActivity.this);
                     recyclerView.setAdapter(examHistoryAdapter);
-                }else{
+                } else {
                     examHistoryAdapter.addAll(examHistories);
                     examHistoryAdapter.notifyDataSetChanged();
                 }
@@ -110,4 +118,15 @@ public class ExamHistoryActivity extends AbstractBaseActivity {
     }
 
 
+    @Override
+    public void onItemClick(int position) {
+        ExamHistory examHistory = (ExamHistory) examHistoryAdapter.getItem(position);
+        if (SystemUtils.isNetworkConnected(this)) {
+            Intent intent = new Intent(this, WebviewActivity.class);
+            L.info("URL : " + WebUrls.getExamResultsSummaryUrl() + examHistory.idTestAnswerPaper);
+            intent.putExtra(LoginActivity.URL, WebUrls.getExamResultsSummaryUrl() + examHistory.idTestAnswerPaper);
+            intent.putExtra(LoginActivity.TITLE, getString(R.string.results));
+            startActivity(intent);
+        }
+    }
 }

@@ -154,7 +154,7 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
         event.setChallengeTestRequestEvent(mChallengeTestRequestEvent);
         event.challengerName = mCurrentUser.displayName;
         event.challengerStatus = accepted ? "Accepted" : "Declined";
-        WebSocketHelper.get().sendChallengeUpdateEvent(event);
+        WebSocketHelper.get(getActivity()).sendChallengeUpdateEvent(event);
     }
 
     @OnClick(R.id.accept_btn)
@@ -171,7 +171,7 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
     public void refreshTest() {
         ChallengeTestUpdateRequestEvent event = new ChallengeTestUpdateRequestEvent();
         event.setChallengeTestRequestEvent(mChallengeTestRequestEvent);
-        WebSocketHelper.get().sendChallengeUpdateEvent(event);
+        WebSocketHelper.get(getActivity()).sendChallengeUpdateEvent(event);
     }
 
     @OnClick(R.id.start_btn)
@@ -192,7 +192,7 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
                             event.setChallengeTestRequestEvent(mChallengeTestRequestEvent);
                             event.challengerName = mCurrentUser.displayName;
                             event.challengerStatus = "Started";
-                            WebSocketHelper.get().sendChallengeUpdateEvent(event);
+                            WebSocketHelper.get(getActivity()).sendChallengeUpdateEvent(event);
                             sendChallengeStartRequestEvent();
                             ((AbstractBaseActivity) getActivity()).startChallengeTest(mTestQuestionPaperId, mCurrentUser.challengeTestParentId);
                         } else {
@@ -214,7 +214,7 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
         event.challengerStatus = "Started";
         event.challengeTestParentId = mCurrentUser.challengeTestParentId;
         event.testQuestionPaperId = mCurrentUser.idTestQuestionPaper;
-        WebSocketHelper.get().sendChallengeStartEvent(event);
+        WebSocketHelper.get(getActivity()).sendChallengeStartEvent(event);
     }
 
     public void updateUI() {

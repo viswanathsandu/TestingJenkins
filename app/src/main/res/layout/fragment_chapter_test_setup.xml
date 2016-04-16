@@ -88,8 +88,7 @@
                 android:id="@+id/checkbox_adaptive_learning"
                 android:textColor="@color/black"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:enabled="false"/>
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 

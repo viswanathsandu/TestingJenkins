@@ -13,6 +13,7 @@ public class WebUrls {
     private final static String REDEEM_URL = "redeem";
     private final static String SMART_CLASS_URL = "smartclass/index";
     private final static String EXAM_RESULTS_SUMMARY_URL = "examination/examResultSummary/";
+    private final static String COMPUTER_ADAPTIVE_TEST_URL = "examination/loadExam/0/0/%s";
 
     public static String getForgotPasswordUrl() {
         return ApiClientService.getBaseUrl()+FORGOT_PASSWORD_URL;
@@ -36,5 +37,9 @@ public class WebUrls {
 
     public static String getExamResultsSummaryUrl() {
         return ApiClientService.getBaseUrl()+EXAM_RESULTS_SUMMARY_URL;
+    }
+
+    public static String getComputerAdaptiveTestUrl(String examTemplateId) {
+        return ApiClientService.getBaseUrl()+String.format(COMPUTER_ADAPTIVE_TEST_URL, examTemplateId);
     }
 }

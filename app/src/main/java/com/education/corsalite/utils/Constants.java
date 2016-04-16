@@ -31,6 +31,8 @@ public class Constants {
     public static final String SELECTED_ENTITY =  "selectedEntity";
     public static final String SELECTED_EXAM_NAME = "selectedExamName";
     public static final String SELECTED_QUESTION_PAPER = "selectedQuestionPaper";
+    public static final String EXAM_TEMPLATE_ID = "examTemplateId";
+    public static final String ADAPIVE_LEAERNING = "adaptiveLearning";
     public static final String QUESTIONS_COUNT = "questionsCount";
     public static final String TEST_COVERAGE_LIST_GSON = "testCoverageListGson";
     public static final String IS_OFFLINE = "IS_OFFLINE";

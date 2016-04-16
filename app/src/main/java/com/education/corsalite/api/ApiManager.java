@@ -11,9 +11,11 @@ import com.education.corsalite.models.MockTest;
 import com.education.corsalite.models.ScheduledTestList;
 import com.education.corsalite.models.db.reqres.LoginReqRes;
 import com.education.corsalite.models.db.reqres.StudyCenterReqRes;
+import com.education.corsalite.models.requestmodels.Bookmark;
 import com.education.corsalite.models.requestmodels.CreateChallengeRequest;
 import com.education.corsalite.models.requestmodels.ForumLikeRequest;
 import com.education.corsalite.models.requestmodels.ForumModel;
+import com.education.corsalite.models.responsemodels.BookmarkResponse;
 import com.education.corsalite.models.responsemodels.ChallengeCompleteResponseModel;
 import com.education.corsalite.models.responsemodels.ChallengeStartResponseModel;
 import com.education.corsalite.models.responsemodels.ChallengeUser;
@@ -551,6 +553,12 @@ public class ApiManager {
     public void getPartTestGrid(String studentId,String courseId,String subjectId,ApiCallback<PartTestModel> callback){
         if (isApiOnline()){
             ApiClientService.get().getPartTestGrid(studentId,courseId,subjectId,callback);
+        }
+    }
+
+    public void postBookmark(Bookmark bookmark, ApiCallback<BookmarkResponse> callback){
+        if(isApiOnline()){
+            ApiClientService.get().addDeleteBookmark(new TypedString(("Update="+ new Gson().toJson(bookmark))), callback);
         }
     }
 }

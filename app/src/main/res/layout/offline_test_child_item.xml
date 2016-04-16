@@ -28,11 +28,35 @@
         fontPath="@string/roboto_light"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="0.4"
+        android:layout_weight="0.3"
         android:padding="5dp"
         android:singleLine="true"
         android:textColor="@color/text_black"
         android:textSize="12sp" />
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.1">
+    <ImageView
+        android:id="@+id/iv_status"
+        android:layout_marginRight="5dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+        android:scaleType="centerInside"
+        android:src="@drawable/ico_correct"/>
+    <TextView
+        android:layout_toRightOf="@+id/iv_status"
+        android:id="@+id/test_status"
+        style="?android:attr/spinnerDropDownItemStyle"
+        fontPath="@string/roboto_light"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:singleLine="true"
+        android:textColor="@color/text_black"
+        android:textSize="14sp" />
+    </RelativeLayout>
 
   <!--  <LinearLayout
         android:id="@+id/bgImage"

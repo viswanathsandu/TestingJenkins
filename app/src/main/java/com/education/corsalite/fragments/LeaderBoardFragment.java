@@ -50,7 +50,7 @@ public class LeaderBoardFragment extends BaseFragment {
 
     @OnClick(R.id.leader_board_btn)
     public void onLeaderBoardButtonClicked() {
-        if(mAdapter.getItemCount() > 0) {
+        if(mAdapter != null && mAdapter.getItemCount() > 0) {
             leaderBoardLayout.setVisibility(View.VISIBLE);
             leaderBoardBtn.setVisibility(View.GONE);
         }

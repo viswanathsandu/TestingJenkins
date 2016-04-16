@@ -1,5 +1,6 @@
 package com.education.corsalite.helpers;
 
+import android.content.Context;
 import android.text.TextUtils;
 
 import com.education.corsalite.cache.LoginUserCache;
@@ -17,6 +18,7 @@ import com.education.corsalite.models.socket.response.UpdateLeaderBoardEvent;
 import com.education.corsalite.models.socket.response.UserListResponseEvent;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.L;
+import com.education.corsalite.utils.SystemUtils;
 import com.google.gson.Gson;
 
 import org.java_websocket.client.WebSocketClient;
@@ -32,20 +34,25 @@ import de.greenrobot.event.EventBus;
  */
 public class WebSocketHelper {
 
+    private Context mContext;
     private static WebSocketHelper instance;
     private WebSocketClient mWebSocketClient;
     private boolean isWebsocketConnected = false;
 
     private WebSocketHelper() {}
 
-    public static WebSocketHelper get() {
+    public static WebSocketHelper get(Context context) {
         if(instance == null) {
             instance = new WebSocketHelper();
         }
+        instance.mContext = context;
         return instance;
     }
 
     public void connectWebSocket() {
+        if(mContext == null || !SystemUtils.isNetworkConnected(mContext)) {
+            return;
+        }
         URI uri;
         try {
             uri = new URI(ApiClientService.getSocketUrl());
@@ -54,7 +61,6 @@ public class WebSocketHelper {
             e.printStackTrace();
             return;
         }
-
         mWebSocketClient = new WebSocketClient(uri) {
             @Override
             public void onOpen(ServerHandshake serverHandshake) {
@@ -74,6 +80,7 @@ public class WebSocketHelper {
             public void onClose(int i, String s, boolean b) {
                 L.info("Websocket", "Closed " + s);
                 isWebsocketConnected = false;
+                reconnectWebSocket();
             }
 
             @Override
@@ -85,7 +92,35 @@ public class WebSocketHelper {
         mWebSocketClient.connect();
     }
 
+    public void disconnectWebSocket() {
+        try {
+            if(mContext == null || !SystemUtils.isNetworkConnected(mContext)) {
+                return;
+            }
+            mWebSocketClient.close();
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+    }
+
+    public void reconnectWebSocket() {
+        try {
+            if(mContext == null || !SystemUtils.isNetworkConnected(mContext)) {
+                return;
+            }
+            if (LoginUserCache.getInstance().loginResponse != null) {
+                connectWebSocket();
+            }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+    }
+
+
     private void sendEvent(String message) {
+        if(mContext == null || !SystemUtils.isNetworkConnected(mContext)) {
+            return;
+        }
         if(isWebsocketConnected) {
             L.info(String.format("Websocket send(%s)", message));
             mWebSocketClient.send(message);
@@ -154,4 +189,7 @@ public class WebSocketHelper {
         sendEvent(new Gson().toJson(event));
     }
 
+    public void sendUpdateLeaderBoardEvent(com.education.corsalite.models.socket.requests.UpdateLeaderBoardEvent event) {
+        sendEvent(new Gson().toJson(event));
+    }
 }

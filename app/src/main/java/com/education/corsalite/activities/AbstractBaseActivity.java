@@ -40,6 +40,7 @@ import com.education.corsalite.event.TakingTestEvent;
 import com.education.corsalite.event.UpdateUserEvents;
 import com.education.corsalite.fragments.ChallengeTestRequestDialogFragment;
 import com.education.corsalite.fragments.ScheduledTestDialog;
+import com.education.corsalite.helpers.WebSocketHelper;
 import com.education.corsalite.models.ContentModel;
 import com.education.corsalite.models.requestmodels.LogoutModel;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
@@ -505,6 +506,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     private void logout() {
+        WebSocketHelper.get(this).disconnectWebSocket();
         LogoutModel logout = new LogoutModel();
         logout.AuthToken = LoginUserCache.getInstance().getLongResponse().authtoken;
         appPref.remove("loginId");
@@ -741,5 +743,9 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         intent.putExtra("challenge_test_id", challngeTestId);
         startActivity(intent);
         finish();
+    }
+
+    protected void startWebSocket() {
+        WebSocketHelper.get(this).connectWebSocket();
     }
 }

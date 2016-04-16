@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -52,9 +51,11 @@ import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.db.DbManager;
 import com.education.corsalite.enums.QuestionType;
+import com.education.corsalite.enums.TestanswerPaperState;
 import com.education.corsalite.event.ExerciseAnsEvent;
 import com.education.corsalite.fragments.FullQuestionDialog;
 import com.education.corsalite.fragments.LeaderBoardFragment;
+import com.education.corsalite.helpers.WebSocketHelper;
 import com.education.corsalite.models.MockTest;
 import com.education.corsalite.models.OfflineTestModel;
 import com.education.corsalite.models.ScheduledTestList;
@@ -66,7 +67,6 @@ import com.education.corsalite.models.requestmodels.PostCustomExamTemplate;
 import com.education.corsalite.models.requestmodels.PostExerciseRequestModel;
 import com.education.corsalite.models.requestmodels.PostQuestionPaperRequest;
 import com.education.corsalite.models.responsemodels.AnswerChoiceModel;
-import com.education.corsalite.models.responsemodels.ChallengeCompleteResponseModel;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Exam;
 import com.education.corsalite.models.responsemodels.ExamModel;
@@ -79,6 +79,7 @@ import com.education.corsalite.models.responsemodels.TestAnswer;
 import com.education.corsalite.models.responsemodels.TestAnswerPaper;
 import com.education.corsalite.models.responsemodels.TestAnswerPaperResponse;
 import com.education.corsalite.models.responsemodels.TestPaperIndex;
+import com.education.corsalite.models.socket.requests.UpdateLeaderBoardEvent;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.L;
@@ -105,129 +106,83 @@ import retrofit.client.Response;
  */
 public class ExamEngineActivity extends AbstractBaseActivity {
 
-    @Bind(R.id.vs_container)
-    ViewSwitcher mViewSwitcher;
-    @Bind(R.id.footer_layout)
-    RelativeLayout webFooter;
-    @Bind(R.id.answer_layout)
-    LinearLayout answerLayout;
-    @Bind(R.id.btn_next)
-    Button btnNext;
-    @Bind(R.id.btn_previous)
-    Button btnPrevious;
-    @Bind(R.id.webview_question)
-    WebView webviewQuestion;
-    @Bind(R.id.webview_paragraph)
-    WebView webviewParagraph;
-    @Bind(R.id.tv_comment)
-    TextView tvComment;
-    @Bind(R.id.tv_level)
-    TextView tvLevel;
-    @Bind(R.id.tv_nav_title)
-    TextView tvNavTitle;
-    @Bind(R.id.tv_pagetitle)
-    TextView tvPageTitle;
-    @Bind(R.id.tv_timer)
-    TextView tv_timer;
-    @Bind(R.id.btn_view_full_question)
-    Button btnViewFullQuestion;
-    @Bind(R.id.btn_verify)
-    Button btnVerify;
-    @Bind(R.id.tv_clearanswer)
-    TextView tvClearAnswer;
-    @Bind(R.id.btn_submit)
-    Button btnSubmit;
-    @Bind(R.id.btn_suspend)
-    Button btnSuspend;
-    @Bind(R.id.txtAnswerCount)
-    TextView txtAnswerCount;
-    @Bind(R.id.txtAnswerExp)
-    WebView txtAnswerExp;
-    @Bind(R.id.tv_serial_no)
-    TextView tvSerialNo;
-    @Bind(R.id.layout_timer)
-    LinearLayout timerLayout;
-    @Bind(R.id.layout_header)
-    LinearLayout headerLayout;
-    @Bind(R.id.explanation_layout)
-    LinearLayout explanationLayout;
-    @Bind(R.id.layout_choice)
-    LinearLayout layoutChoice;
-    @Bind(R.id.imv_refresh)
-    ImageView imvRefresh;
-    @Bind(R.id.btn_slider_test)
-    Button slider;
-    @Bind(R.id.ll_test_navigator)
-    LinearLayout testNavLayout;
-    @Bind(R.id.shadow_view)
-    View shadowView;
-    @Bind(R.id.gv_test)
-    GridViewInScrollView gvTest;
-    @Bind(R.id.test_nav_footer)
-    LinearLayout testNavFooter;
-    @Bind(R.id.navigator_layout)
-    RelativeLayout navigatorLayout;
-    @Bind(R.id.header_progress)
-    ProgressBar headerProgress;
-    @Bind(R.id.tv_empty_layout)
-    TextView tvEmptyLayout;
-    @Bind(R.id.sections_list)
-    RecyclerView sectionsRecyclerView;
-    @Bind(R.id.leader_board_fragment_container)
-    RelativeLayout leaderBoardContainer;
+    @Bind(R.id.vs_container) ViewSwitcher mViewSwitcher;
+    @Bind(R.id.footer_layout) RelativeLayout webFooter;
+    @Bind(R.id.answer_layout) LinearLayout answerLayout;
+    @Bind(R.id.btn_next) Button btnNext;
+    @Bind(R.id.btn_previous) Button btnPrevious;
+    @Bind(R.id.webview_question) WebView webviewQuestion;
+    @Bind(R.id.webview_paragraph) WebView webviewParagraph;
+    @Bind(R.id.tv_comment) TextView tvComment;
+    @Bind(R.id.tv_level) TextView tvLevel;
+    @Bind(R.id.tv_nav_title) TextView tvNavTitle;
+    @Bind(R.id.tv_pagetitle) TextView tvPageTitle;
+    @Bind(R.id.tv_timer) TextView tv_timer;
+    @Bind(R.id.btn_view_full_question) Button btnViewFullQuestion;
+    @Bind(R.id.btn_verify) Button btnVerify;
+    @Bind(R.id.tv_clearanswer) TextView tvClearAnswer;
+    @Bind(R.id.btn_submit) Button btnSubmit;
+    @Bind(R.id.btn_suspend) Button btnSuspend;
+    @Bind(R.id.txtAnswerCount) TextView txtAnswerCount;
+    @Bind(R.id.txtAnswerExp) WebView txtAnswerExp;
+    @Bind(R.id.tv_serial_no) TextView tvSerialNo;
+    @Bind(R.id.layout_timer) LinearLayout timerLayout;
+    @Bind(R.id.layout_header) LinearLayout headerLayout;
+    @Bind(R.id.explanation_layout) LinearLayout explanationLayout;
+    @Bind(R.id.layout_choice) LinearLayout layoutChoice;
+    @Bind(R.id.imv_refresh) ImageView imvRefresh;
+    @Bind(R.id.btn_slider_test) Button slider;
+    @Bind(R.id.ll_test_navigator) LinearLayout testNavLayout;
+    @Bind(R.id.shadow_view) View shadowView;
+    @Bind(R.id.gv_test) GridViewInScrollView gvTest;
+    @Bind(R.id.test_nav_footer) LinearLayout testNavFooter;
+    @Bind(R.id.navigator_layout) RelativeLayout navigatorLayout;
+    @Bind(R.id.header_progress) ProgressBar headerProgress;
+    @Bind(R.id.tv_empty_layout) TextView tvEmptyLayout;
+    @Bind(R.id.sections_list) RecyclerView sectionsRecyclerView;
+    @Bind(R.id.leader_board_fragment_container) RelativeLayout leaderBoardContainer;
 
     //Flagged Answer View ID
-    @Bind(R.id.flagged_explanation)
-    LinearLayout flaggedLayout;
-    @Bind(R.id.flagged_answer)
-    WebView webViewFlaggedAnswer;
-    @Bind(R.id.tv_question_status)
-    TextView tvQuestionStatus;
-    @Bind(R.id.tv_recommended_time)
-    TextView tvRecommendedTime;
-    @Bind(R.id.tv_max_marks)
-    TextView tvMaxMarks;
-    @Bind(R.id.tv_time_taken)
-    TextView tvTimeTaken;
-    @Bind(R.id.tv_positive_max_marks)
-    TextView tvPositiveMaxMarks;
-    @Bind(R.id.tv_average_time)
-    TextView tvAverageTime;
-    @Bind(R.id.tv_negative_max_marks)
-    TextView tvNegativeMaxMarks;
-    @Bind(R.id.tv_peer_average)
-    TextView tvPeerAverage;
-    @Bind(R.id.tv_percentile)
-    TextView tvPercentile;
-    @Bind(R.id.imv_flag)
-    ImageView imvFlag;
+    @Bind(R.id.flagged_explanation) LinearLayout flaggedLayout;
+    @Bind(R.id.flagged_answer) WebView webViewFlaggedAnswer;
+    @Bind(R.id.tv_question_status) TextView tvQuestionStatus;
+    @Bind(R.id.tv_recommended_time) TextView tvRecommendedTime;
+    @Bind(R.id.tv_max_marks) TextView tvMaxMarks;
+    @Bind(R.id.tv_time_taken) TextView tvTimeTaken;
+    @Bind(R.id.tv_positive_max_marks) TextView tvPositiveMaxMarks;
+    @Bind(R.id.tv_average_time) TextView tvAverageTime;
+    @Bind(R.id.tv_negative_max_marks) TextView tvNegativeMaxMarks;
+    @Bind(R.id.tv_peer_average) TextView tvPeerAverage;
+    @Bind(R.id.tv_percentile) TextView tvPercentile;
+    @Bind(R.id.imv_flag) ImageView imvFlag;
 
     public int selectedPosition = 0;
     public int previousQuestionPosition = -1;
-    private String webQuestion = "";
     private int selectedAnswerPosition = -1;
+    private long examDurationInSeconds = 0;
+    private long examDurationTakenInSeconds = 0;
+    private long offlineModelDate;
+    private boolean isFlagged = false;
+    private boolean isOffline;
+    private boolean mIsAdaptiveTest;
+    private String webQuestion = "";
     private String enteredAnswer = ""; // for alphanumeric
     private String title = "";
     private String topic = "";
-    private ExamEngineGridAdapter gridAdapter;
-    private List<ExamModel> localExamModelList;
-    private List<ExamModel> flaggedQuestions;
     private String subjectId = null;
     private String chapterId = null;
     private String topicIds = null;
     private String questionsCount = null;
-    private TestPaperIndex mockTestPaperIndex;
-    private List<String> sections;
     private String selectedSection;
-    private MockSubjectsAdapter sectionsAdapter;
-    private boolean isFlagged = false;
-    private long examDurationInSeconds = 0;
-    private long examDurationTakenInSeconds = 0;
-    private String testQuestionPaperId = null;
-    private boolean isOffline;
-    private TestAnswerPaper testanswerPaper = new TestAnswerPaper();
-    private long offlineModelDate;
     private String challengeTestId;
+    private String testQuestionPaperId = null;
+    private ExamEngineGridAdapter gridAdapter;
+    private MockSubjectsAdapter sectionsAdapter;
+    private TestPaperIndex mockTestPaperIndex;
+    private List<ExamModel> localExamModelList;
+    private List<ExamModel> flaggedQuestions;
+    private List<String> sections;
+    private TestAnswerPaper testanswerPaper = new TestAnswerPaper();
 
     public static Intent getMyIntent(Context context, @Nullable Bundle extras) {
         Intent intent = new Intent(context, ExamEngineActivity.class);
@@ -278,6 +233,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         isOffline = getIntent().getExtras().getBoolean(Constants.IS_OFFLINE, false);
         offlineModelDate = getIntent().getExtras().getLong("OfflineTestModel");
         challengeTestId = getIntent().getStringExtra("challenge_test_id");
+        mIsAdaptiveTest = getIntent().getBooleanExtra(Constants.ADAPIVE_LEAERNING, false);
         if (title.equalsIgnoreCase("Flagged Questions")) {
             loadFlaggedQuestions();
         } else if (title.equalsIgnoreCase("Exercises")) {
@@ -353,11 +309,17 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         loadLeaderBoard();
         imvFlag.setVisibility(View.VISIBLE);
         testQuestionPaperId = getIntent().getExtras().getString("test_question_paper_id");
+        sendLederBoardRequestEvent();
         getTestQuestionPaper(null);
         imvRefresh.setVisibility(View.VISIBLE);
         timerLayout.setVisibility(View.VISIBLE);
         testNavFooter.setVisibility(View.VISIBLE);
         btnVerify.setVisibility(View.GONE);
+    }
+
+    private void sendLederBoardRequestEvent() {
+        UpdateLeaderBoardEvent event = new UpdateLeaderBoardEvent(testQuestionPaperId);
+        WebSocketHelper.get(this).sendUpdateLeaderBoardEvent(event);
     }
 
     private void loadMockTest() {
@@ -654,10 +616,12 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.btn_next:
+                    updateTestAnswerPaper(TestanswerPaperState.STARTED);
                     previousQuestionPosition = selectedPosition;
                     inflateUI(selectedPosition + 1);
                     break;
                 case R.id.btn_previous:
+                    updateTestAnswerPaper(TestanswerPaperState.STARTED);
                     previousQuestionPosition = selectedPosition;
                     inflateUI(selectedPosition - 1);
                     break;
@@ -689,6 +653,59 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         }
     };
 
+    private void updateTestAnswerPaper(final TestanswerPaperState state) {
+        testanswerPaper.status = state.toString();
+
+        //TODO : remove the unattended items. This has to be removed when API is fixed
+                /* ****************************************** */
+        Iterator<TestAnswer> i = testanswerPaper.testAnswers.iterator();
+        while (i.hasNext()) {
+            TestAnswer answer = i.next();
+            if (answer.status.equalsIgnoreCase("Unattended")) {
+                i.remove();
+            }
+        }
+                /* ****************************************** */
+
+        ApiManager.getInstance(ExamEngineActivity.this).submitTestAnswerPaper(testanswerPaper, new ApiCallback<TestAnswerPaperResponse>(ExamEngineActivity.this) {
+            @Override
+            public void failure(CorsaliteError error) {
+                super.failure(error);
+                showToast(error.message);
+                if(state == TestanswerPaperState.STARTED) {
+
+                } else if(state == TestanswerPaperState.SUSPENDED) {
+                    finish();
+                } else if(state == TestanswerPaperState.COMPLETED) {
+                    headerProgress.setVisibility(View.GONE);
+                    mViewSwitcher.showNext();
+                }
+            }
+
+            @Override
+            public void success(TestAnswerPaperResponse testAnswerPaperResponse, Response response) {
+                super.success(testAnswerPaperResponse, response);
+                if(state == TestanswerPaperState.STARTED) {
+
+                } else if(state == TestanswerPaperState.SUSPENDED) {
+                    showToast("Exam has been suspended");
+                    DbManager.getInstance(ExamEngineActivity.this).updateOfflineTestModel(offlineModelDate, Constants.STATUS_SUSPENDED, System.currentTimeMillis());
+                    finish();
+                } else if(state == TestanswerPaperState.COMPLETED) {
+                    headerProgress.setVisibility(View.GONE);
+                    mViewSwitcher.showNext();
+                    if(ischallengeTest()) {
+                        openChallengeTestResults();
+                    } else if (testAnswerPaperResponse != null && !TextUtils.isEmpty(testAnswerPaperResponse.testAnswerPaperId)) {
+                        openAdvancedExamResultSummary(testAnswerPaperResponse.testAnswerPaperId);
+                        finish();
+                    }
+                    DbManager.getInstance(ExamEngineActivity.this).updateOfflineTestModel(offlineModelDate, Constants.STATUS_COMPLETED, System.currentTimeMillis());
+                }
+            }
+        });
+    }
+
     private void showSuspendDialog() {
         final AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle("Confirm");
@@ -696,35 +713,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         alert.setPositiveButton("Stop Exam", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                testanswerPaper.status = "Suspended";
-
-                //TODO : remove the unattended items. This has to be removed when API is fixed
-                /* ****************************************** */
-                Iterator<TestAnswer> i = testanswerPaper.testAnswers.iterator();
-                while (i.hasNext()) {
-                    TestAnswer answer = i.next();
-                    if (answer.status.equalsIgnoreCase("Unattended")) {
-                        i.remove();
-                    }
-                }
-                /* ****************************************** */
-
-                ApiManager.getInstance(ExamEngineActivity.this).submitTestAnswerPaper(testanswerPaper, new ApiCallback<TestAnswerPaperResponse>(ExamEngineActivity.this) {
-                    @Override
-                    public void failure(CorsaliteError error) {
-                        super.failure(error);
-                        showToast(error.message);
-                        finish();
-                    }
-
-                    @Override
-                    public void success(TestAnswerPaperResponse testAnswerPaperResponse, Response response) {
-                        super.success(testAnswerPaperResponse, response);
-                        showToast("Exam has been suspended");
-                        DbManager.getInstance(ExamEngineActivity.this).updateOfflineTestModel(offlineModelDate, Constants.STATUS_SUSPENDED);
-                        finish();
-                    }
-                });
+              updateTestAnswerPaper(TestanswerPaperState.SUSPENDED);
             }
         });
         alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -784,44 +773,9 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             }
             postExerciseAnsEvent();
             if (SystemUtils.isNetworkConnected(this)) {
-
-                //TODO : remove the unattended items. This has to be removed when API is fixed
-                /* ****************************************** */
-                Iterator<TestAnswer> i = testanswerPaper.testAnswers.iterator();
-                while (i.hasNext()) {
-                    TestAnswer answer = i.next();
-                    if (answer.status.equalsIgnoreCase("Unattended")) {
-                        i.remove();
-                    }
-                }
-                /* ****************************************** */
-
                 headerProgress.setVisibility(View.VISIBLE);
                 mViewSwitcher.showNext();
-                testanswerPaper.status = "Completed";
-                ApiManager.getInstance(this).submitTestAnswerPaper(testanswerPaper, new ApiCallback<TestAnswerPaperResponse>(this) {
-                    @Override
-                    public void failure(CorsaliteError error) {
-                        super.failure(error);
-                        showToast(error.message);
-                        headerProgress.setVisibility(View.GONE);
-                        mViewSwitcher.showNext();
-                    }
-
-                    @Override
-                    public void success(TestAnswerPaperResponse testAnswerPaperResponse, Response response) {
-                        super.success(testAnswerPaperResponse, response);
-                        headerProgress.setVisibility(View.GONE);
-                        mViewSwitcher.showNext();
-                        if(ischallengeTest()) {
-                            openChallengeTestResults();
-                        } else if (testAnswerPaperResponse != null && !TextUtils.isEmpty(testAnswerPaperResponse.testAnswerPaperId)) {
-                            openAdvancedExamResultSummary(testAnswerPaperResponse.testAnswerPaperId);
-                            finish();
-                        }
-                        DbManager.getInstance(ExamEngineActivity.this).updateOfflineTestModel(offlineModelDate, Constants.STATUS_COMPLETED);
-                    }
-                });
+                updateTestAnswerPaper(TestanswerPaperState.COMPLETED);
             } else {
                 navigateToExamResultActivity(localExamModelList.size(), success, failure);
             }
@@ -1536,6 +1490,9 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         PostCustomExamTemplate postCustomExamTemplate = new PostCustomExamTemplate();
         postCustomExamTemplate.examId = examsList.get(0).examId;
         postCustomExamTemplate.examName = examsList.get(0).examName;
+        if(mIsAdaptiveTest) {
+            postCustomExamTemplate.examDoTestBySlidingComplexity = "Y";
+        }
         postCustomExamTemplate.examTemplateConfig = new ArrayList<>();
 
         ExamTemplateConfig examTemplateConfig = new ExamTemplateConfig();
@@ -1555,12 +1512,25 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     public void success(PostExamTemplate postExamTemplate, Response response) {
                         super.success(postExamTemplate, response);
                         if (postExamTemplate != null && !TextUtils.isEmpty(postExamTemplate.idExamTemplate)) {
-                            postQuestionPaper(LoginUserCache.getInstance().loginResponse.entitiyId,
-                                    postExamTemplate.idExamTemplate,
-                                    LoginUserCache.getInstance().loginResponse.studentId);
+                            if(mIsAdaptiveTest) {
+                                startComputerAdaptiveTest(postExamTemplate.idExamTemplate);
+                            } else {
+                                postQuestionPaper(LoginUserCache.getInstance().loginResponse.entitiyId,
+                                        postExamTemplate.idExamTemplate,
+                                        LoginUserCache.getInstance().loginResponse.studentId);
+                            }
                         }
                     }
                 });
+    }
+
+    private void startComputerAdaptiveTest(String idExamTemplate) {
+        Intent intent = new Intent(this, WebviewActivity.class);
+        intent.putExtra(LoginActivity.TITLE, getString(R.string.computer_adaptive_test));
+        intent.putExtra(Constants.EXAM_TEMPLATE_ID, idExamTemplate);
+        intent.putExtra("URL", WebUrls.getComputerAdaptiveTestUrl(idExamTemplate));
+        startActivity(intent);
+        finish();
     }
 
     private void postFlaggedQuestion() {
@@ -1649,6 +1619,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             headerProgress.setVisibility(View.GONE);
             tvEmptyLayout.setVisibility(View.VISIBLE);
         }
+        updateTestAnswerPaper(TestanswerPaperState.STARTED);
     }
 
     private void initTestAnswerPaper(List<ExamModel> questions) {

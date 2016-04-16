@@ -280,14 +280,15 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                             } else {
                                 hideRecyclerView();
                             }
+                            getOfflineStudyCenterData(studyCenters, true);
                         } else {
-                            getOfflineStudyCenterData(studyCenters);
+                            getOfflineStudyCenterData(studyCenters, false);
                         }
                     }
                 });
     }
 
-    private void getOfflineStudyCenterData(final List<StudyCenter> studyCenters) {
+    private void getOfflineStudyCenterData(final List<StudyCenter> studyCenters, final boolean saveForOffline) {
         DbManager.getInstance(getApplicationContext()).getOfflineContentList(new ApiCallback<List<OfflineContent>>(this) {
             @Override
             public void failure(CorsaliteError error) {
@@ -296,26 +297,35 @@ public class StudyCentreActivity extends AbstractBaseActivity {
 
             @Override
             public void success(List<OfflineContent> offlineContents, Response response) {
-                mCourseData = new CourseData();
-                mCourseData.StudyCenter = studyCenters;
-                key = mCourseData.StudyCenter.get(getIndex(studyCenters)).SubjectName;
-                studyCenter = mCourseData.StudyCenter.get(getIndex(studyCenters));
-                setupSubjects(mCourseData);
                 for (Chapter chapter : studyCenter.chapters) {
                     boolean idMatchFound = false;
                     for (OfflineContent offlineContent : offlineContents) {
                         if (chapter.idCourseSubjectchapter.equals(offlineContent.chapterId)) {
                             idMatchFound = true;
                         }
+                        offlineContent.earnedMarks = chapter.earnedMarks;
+                        offlineContent.totalTestedMarks = chapter.totalTestedMarks;
+                        offlineContent.scoreAmber = chapter.scoreAmber;
+                        offlineContent.scoreRed = chapter.scoreRed;
                     }
-                    if (idMatchFound) {
-                        chapter.isChapterOffline = true;
-                    } else {
-                        chapter.isChapterOffline = false;
+                    if(!saveForOffline) {
+                        if (idMatchFound) {
+                            chapter.isChapterOffline = true;
+                        } else {
+                            chapter.isChapterOffline = false;
+                        }
                     }
-                    idMatchFound = false;
                 }
-                initDataAdapter(subjects.get(getIndex(studyCenters)));
+                if(saveForOffline){
+                    DbManager.getInstance(getApplicationContext()).saveOfflineContent(offlineContents);
+                }else {
+                    mCourseData = new CourseData();
+                    mCourseData.StudyCenter = studyCenters;
+                    key = mCourseData.StudyCenter.get(getIndex(studyCenters)).SubjectName;
+                    studyCenter = mCourseData.StudyCenter.get(getIndex(studyCenters));
+                    setupSubjects(mCourseData);
+                    initDataAdapter(subjects.get(getIndex(studyCenters)));
+                }
             }
         });
     }

@@ -18,13 +18,20 @@ import butterknife.ButterKnife;
 /**
  * Created by Aastha on 01/10/15.
  */
-public class RecommendationsAdapter extends  AbstractRecycleViewAdapter {
+public class RecommendationsAdapter extends AbstractRecycleViewAdapter {
+    private SetOnRecommendationClickListener setOnRecommendationClickListener;
     LayoutInflater inflater;
 
-    public RecommendationsAdapter(List<CourseAnalysis> courseAnalysisList, LayoutInflater inflater) {
+    public interface SetOnRecommendationClickListener {
+        void onItemClick(int position);
+    }
+
+    public RecommendationsAdapter(List<CourseAnalysis> courseAnalysisList, LayoutInflater inflater, SetOnRecommendationClickListener setOnRecommendationClickListener) {
         this(courseAnalysisList);
         this.inflater = inflater;
+        this.setOnRecommendationClickListener = setOnRecommendationClickListener;
     }
+
     public RecommendationsAdapter(List<CourseAnalysis> courseAnalysisList) {
         addAll(courseAnalysisList);
     }
@@ -41,14 +48,22 @@ public class RecommendationsAdapter extends  AbstractRecycleViewAdapter {
 
     public class RecommendationsDataHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.tv_subject_name)TextView subject;
-        @Bind(R.id.tv_chapter)TextView chapter;
-        @Bind(R.id.tv_topic)TextView topic;
-        @Bind(R.id.tv_date)TextView dateTime;
-        @Bind(R.id.tv_marks)TextView marks;
-        @Bind(R.id.tv_accuracy)TextView accuracy;
-        @Bind(R.id.tv_speed)TextView speed;
-        @Bind(R.id.tv_time)TextView time;
+        @Bind(R.id.tv_subject_name)
+        TextView subject;
+        @Bind(R.id.tv_chapter)
+        TextView chapter;
+        @Bind(R.id.tv_topic)
+        TextView topic;
+        @Bind(R.id.tv_date)
+        TextView dateTime;
+        @Bind(R.id.tv_marks)
+        TextView marks;
+        @Bind(R.id.tv_accuracy)
+        TextView accuracy;
+        @Bind(R.id.tv_speed)
+        TextView speed;
+        @Bind(R.id.tv_time)
+        TextView time;
         View parent;
 
         public RecommendationsDataHolder(View view) {
@@ -58,9 +73,9 @@ public class RecommendationsAdapter extends  AbstractRecycleViewAdapter {
         }
 
         public void bindData(final int position, final CourseAnalysis course) {
-            if((position+1)% 2 == 0) {
+            if ((position + 1) % 2 == 0) {
                 parent.setBackgroundColor(inflater.getContext().getResources().getColor(R.color.tab_recycler_alternate_row));
-            }else{
+            } else {
                 parent.setBackgroundColor(inflater.getContext().getResources().getColor(R.color.white));
             }
             subject.setText(course.subjectName);
@@ -77,20 +92,27 @@ public class RecommendationsAdapter extends  AbstractRecycleViewAdapter {
 
 
             accuracy.setText(AnalyticsHelper.truncateString(course.accuracy));
-            if(accuracy.getText() != null && !accuracy.getText().toString().isEmpty()){
+            if (accuracy.getText() != null && !accuracy.getText().toString().isEmpty()) {
                 float accuracyF = Float.parseFloat(accuracy.getText().toString());
                 float scoreRed = Float.parseFloat(course.scoreRed);
                 float scoreAmber = Float.parseFloat(course.scoreAmber);
-                if(accuracyF <= scoreRed){
+                if (accuracyF <= scoreRed) {
                     accuracy.setTextColor(inflater.getContext().getResources().getColor(R.color.red));
-                }else if(accuracyF > scoreRed && accuracyF <= scoreAmber){
+                } else if (accuracyF > scoreRed && accuracyF <= scoreAmber) {
                     accuracy.setTextColor(inflater.getContext().getResources().getColor(R.color.amber));
-                }else {
+                } else {
                     accuracy.setTextColor(inflater.getContext().getResources().getColor(R.color.green));
                 }
             }
 
             speed.setText(AnalyticsHelper.truncateString(course.speed));
+
+            parent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    setOnRecommendationClickListener.onItemClick(position);
+                }
+            });
 
         }
     }
