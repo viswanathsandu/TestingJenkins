@@ -1635,10 +1635,6 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         for (ExamModel question : questions) {
             TestAnswer answer = new TestAnswer();
             answer.testQuestionId = question.idTestQuestion;
-            answer.answerKeyId = null;
-            answer.answerText = null;
-            answer.status = "Unattended"; //Unattended | Skipped | Answered | Skipped
-            answer.timeTaken = null;
             testanswerPaper.testAnswers.add(answer);
         }
     }
