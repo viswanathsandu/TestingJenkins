@@ -656,18 +656,20 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private void updateTestAnswerPaper(final TestanswerPaperState state) {
         testanswerPaper.status = state.toString();
 
+        // Clone the object
+        TestAnswerPaper paper = new Gson().fromJson(new Gson().toJson(testanswerPaper), TestAnswerPaper.class);
         //TODO : remove the unattended items. This has to be removed when API is fixed
                 /* ****************************************** */
-        Iterator<TestAnswer> i = testanswerPaper.testAnswers.iterator();
-        while (i.hasNext()) {
-            TestAnswer answer = i.next();
-            if (answer.status.equalsIgnoreCase("Unattended")) {
-                i.remove();
-            }
-        }
+//        Iterator<TestAnswer> i = paper.testAnswers.iterator();
+//        while (i.hasNext()) {
+//            TestAnswer answer = i.next();
+//            if (answer.status.equalsIgnoreCase("Unattended")) {
+//                i.remove();
+//            }
+//        }
                 /* ****************************************** */
 
-        ApiManager.getInstance(ExamEngineActivity.this).submitTestAnswerPaper(testanswerPaper, new ApiCallback<TestAnswerPaperResponse>(ExamEngineActivity.this) {
+        ApiManager.getInstance(ExamEngineActivity.this).submitTestAnswerPaper(paper, new ApiCallback<TestAnswerPaperResponse>(ExamEngineActivity.this) {
             @Override
             public void failure(CorsaliteError error) {
                 super.failure(error);

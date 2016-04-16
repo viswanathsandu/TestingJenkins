@@ -8,15 +8,15 @@ import com.google.gson.annotations.SerializedName;
 public class TestAnswer {
 
     @SerializedName("idTestQuestion")
-    public String testQuestionId;
+    public String testQuestionId = "";
     @SerializedName("idAnswerKey")
-    public String answerKeyId;
+    public String answerKeyId = "";
     @SerializedName("AnswerText")
-    public String answerText;
+    public String answerText = "";
     @SerializedName("Status")
-    public String status;
+    public String status = "";
     @SerializedName("sortOrder")
     public String sortOrder = "1";
     @SerializedName("TimeTaken")
-    public String timeTaken;
+    public String timeTaken = "0";
 }
