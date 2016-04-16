@@ -51,6 +51,7 @@ import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.db.DbManager;
 import com.education.corsalite.enums.QuestionType;
+import com.education.corsalite.enums.TestanswerPaperState;
 import com.education.corsalite.event.ExerciseAnsEvent;
 import com.education.corsalite.fragments.FullQuestionDialog;
 import com.education.corsalite.fragments.LeaderBoardFragment;
@@ -689,6 +690,59 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         }
     };
 
+    private void updateTestAnswerPaper(final TestanswerPaperState state) {
+        testanswerPaper.status = state.toString();
+
+        //TODO : remove the unattended items. This has to be removed when API is fixed
+                /* ****************************************** */
+        Iterator<TestAnswer> i = testanswerPaper.testAnswers.iterator();
+        while (i.hasNext()) {
+            TestAnswer answer = i.next();
+            if (answer.status.equalsIgnoreCase("Unattended")) {
+                i.remove();
+            }
+        }
+                /* ****************************************** */
+
+        ApiManager.getInstance(ExamEngineActivity.this).submitTestAnswerPaper(testanswerPaper, new ApiCallback<TestAnswerPaperResponse>(ExamEngineActivity.this) {
+            @Override
+            public void failure(CorsaliteError error) {
+                super.failure(error);
+                showToast(error.message);
+                if(state == TestanswerPaperState.STARTED) {
+
+                } else if(state == TestanswerPaperState.SUSPENDED) {
+                    finish();
+                } else if(state == TestanswerPaperState.COMPLETED) {
+                    headerProgress.setVisibility(View.GONE);
+                    mViewSwitcher.showNext();
+                }
+            }
+
+            @Override
+            public void success(TestAnswerPaperResponse testAnswerPaperResponse, Response response) {
+                super.success(testAnswerPaperResponse, response);
+                if(state == TestanswerPaperState.STARTED) {
+
+                } else if(state == TestanswerPaperState.SUSPENDED) {
+                    showToast("Exam has been suspended");
+                    DbManager.getInstance(ExamEngineActivity.this).updateOfflineTestModel(offlineModelDate, Constants.STATUS_SUSPENDED);
+                    finish();
+                } else if(state == TestanswerPaperState.COMPLETED) {
+                    headerProgress.setVisibility(View.GONE);
+                    mViewSwitcher.showNext();
+                    if(ischallengeTest()) {
+                        openChallengeTestResults();
+                    } else if (testAnswerPaperResponse != null && !TextUtils.isEmpty(testAnswerPaperResponse.testAnswerPaperId)) {
+                        openAdvancedExamResultSummary(testAnswerPaperResponse.testAnswerPaperId);
+                        finish();
+                    }
+                    DbManager.getInstance(ExamEngineActivity.this).updateOfflineTestModel(offlineModelDate, Constants.STATUS_COMPLETED);
+                }
+            }
+        });
+    }
+
     private void showSuspendDialog() {
         final AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle("Confirm");
@@ -696,35 +750,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         alert.setPositiveButton("Stop Exam", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                testanswerPaper.status = "Suspended";
-
-                //TODO : remove the unattended items. This has to be removed when API is fixed
-                /* ****************************************** */
-                Iterator<TestAnswer> i = testanswerPaper.testAnswers.iterator();
-                while (i.hasNext()) {
-                    TestAnswer answer = i.next();
-                    if (answer.status.equalsIgnoreCase("Unattended")) {
-                        i.remove();
-                    }
-                }
-                /* ****************************************** */
-
-                ApiManager.getInstance(ExamEngineActivity.this).submitTestAnswerPaper(testanswerPaper, new ApiCallback<TestAnswerPaperResponse>(ExamEngineActivity.this) {
-                    @Override
-                    public void failure(CorsaliteError error) {
-                        super.failure(error);
-                        showToast(error.message);
-                        finish();
-                    }
-
-                    @Override
-                    public void success(TestAnswerPaperResponse testAnswerPaperResponse, Response response) {
-                        super.success(testAnswerPaperResponse, response);
-                        showToast("Exam has been suspended");
-                        DbManager.getInstance(ExamEngineActivity.this).updateOfflineTestModel(offlineModelDate, Constants.STATUS_SUSPENDED);
-                        finish();
-                    }
-                });
+              updateTestAnswerPaper(TestanswerPaperState.SUSPENDED);
             }
         });
         alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -784,44 +810,9 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             }
             postExerciseAnsEvent();
             if (SystemUtils.isNetworkConnected(this)) {
-
-                //TODO : remove the unattended items. This has to be removed when API is fixed
-                /* ****************************************** */
-                Iterator<TestAnswer> i = testanswerPaper.testAnswers.iterator();
-                while (i.hasNext()) {
-                    TestAnswer answer = i.next();
-                    if (answer.status.equalsIgnoreCase("Unattended")) {
-                        i.remove();
-                    }
-                }
-                /* ****************************************** */
-
                 headerProgress.setVisibility(View.VISIBLE);
                 mViewSwitcher.showNext();
-                testanswerPaper.status = "Completed";
-                ApiManager.getInstance(this).submitTestAnswerPaper(testanswerPaper, new ApiCallback<TestAnswerPaperResponse>(this) {
-                    @Override
-                    public void failure(CorsaliteError error) {
-                        super.failure(error);
-                        showToast(error.message);
-                        headerProgress.setVisibility(View.GONE);
-                        mViewSwitcher.showNext();
-                    }
-
-                    @Override
-                    public void success(TestAnswerPaperResponse testAnswerPaperResponse, Response response) {
-                        super.success(testAnswerPaperResponse, response);
-                        headerProgress.setVisibility(View.GONE);
-                        mViewSwitcher.showNext();
-                        if(ischallengeTest()) {
-                            openChallengeTestResults();
-                        } else if (testAnswerPaperResponse != null && !TextUtils.isEmpty(testAnswerPaperResponse.testAnswerPaperId)) {
-                            openAdvancedExamResultSummary(testAnswerPaperResponse.testAnswerPaperId);
-                            finish();
-                        }
-                        DbManager.getInstance(ExamEngineActivity.this).updateOfflineTestModel(offlineModelDate, Constants.STATUS_COMPLETED);
-                    }
-                });
+                updateTestAnswerPaper(TestanswerPaperState.COMPLETED);
             } else {
                 navigateToExamResultActivity(localExamModelList.size(), success, failure);
             }
