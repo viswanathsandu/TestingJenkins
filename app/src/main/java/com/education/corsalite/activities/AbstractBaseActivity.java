@@ -500,7 +500,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     private void logout() {
-        WebSocketHelper.get().disconnectWebSocket();
+        WebSocketHelper.get(this).disconnectWebSocket();
         LogoutModel logout = new LogoutModel();
         logout.AuthToken = LoginUserCache.getInstance().getLongResponse().authtoken;
         appPref.remove("loginId");
@@ -740,6 +740,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     protected void startWebSocket() {
-        WebSocketHelper.get().connectWebSocket();
+        WebSocketHelper.get(this).connectWebSocket();
     }
 }
