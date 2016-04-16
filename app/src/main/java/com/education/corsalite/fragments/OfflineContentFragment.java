@@ -224,7 +224,7 @@ public class OfflineContentFragment extends BaseFragment implements OfflineConte
             }
             if (chapterRoot == null) {
                 boolean showProgress = contentIds != null && contentIds.contains(offlineContent.contentId);
-                chapterRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.chapter_root_node, offlineContent.chapterName, offlineContent.chapterId, "chapter", showProgress));
+                chapterRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(offlineContent.bgColor, offlineContent.chapterName, offlineContent.chapterId, "chapter", showProgress));
                 subjectRoot.addChild(chapterRoot);
             }
 
@@ -238,7 +238,7 @@ public class OfflineContentFragment extends BaseFragment implements OfflineConte
             }
             if (topicRoot == null) {
                 showProgress = contentIds != null && contentIds.contains(offlineContent.contentId);
-                topicRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.chapter_root_node, offlineContent.topicName, offlineContent.topicId, "topic", showProgress));
+                topicRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(offlineContent.bgColor, offlineContent.topicName, offlineContent.topicId, "topic", showProgress));
                 chapterRoot.addChild(topicRoot);
 
                 // Add exercise as the first item in topic

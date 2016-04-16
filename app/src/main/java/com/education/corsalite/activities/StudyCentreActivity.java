@@ -280,14 +280,15 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                             } else {
                                 hideRecyclerView();
                             }
+                            getOfflineStudyCenterData(studyCenters, true);
                         } else {
-                            getOfflineStudyCenterData(studyCenters);
+                            getOfflineStudyCenterData(studyCenters, false);
                         }
                     }
                 });
     }
 
-    private void getOfflineStudyCenterData(final List<StudyCenter> studyCenters) {
+    private void getOfflineStudyCenterData(final List<StudyCenter> studyCenters, final boolean saveForOffline) {
         DbManager.getInstance(getApplicationContext()).getOfflineContentList(new ApiCallback<List<OfflineContent>>(this) {
             @Override
             public void failure(CorsaliteError error) {
@@ -307,6 +308,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                         if (chapter.idCourseSubjectchapter.equals(offlineContent.chapterId)) {
                             idMatchFound = true;
                         }
+                        offlineContent.bgColor = getCorrespondingBGColor(chapter);
                     }
                     if (idMatchFound) {
                         chapter.isChapterOffline = true;
@@ -315,9 +317,29 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                     }
                     idMatchFound = false;
                 }
-                initDataAdapter(subjects.get(getIndex(studyCenters)));
+                if(saveForOffline){
+                    DbManager.getInstance(getApplicationContext()).saveOfflineContent(offlineContents);
+                }else {
+                    initDataAdapter(subjects.get(getIndex(studyCenters)));
+                }
             }
         });
+    }
+
+    private int getCorrespondingBGColor(Chapter chapter){
+        double totalMarks = Data.getDoubleWithTwoDecimals(chapter.totalTestedMarks);
+        double earnedMarks = Data.getDoubleWithTwoDecimals(chapter.earnedMarks);
+        double scoreRedPercentage = Data.getInt(chapter.scoreRed) * totalMarks / 100;
+        double scoreAmberPercentage = Data.getInt(chapter.scoreAmber) * totalMarks / 100;
+        if (earnedMarks == 0 && totalMarks == 0) {
+            return R.drawable.chapter_node_blue;
+        } else if (earnedMarks < scoreRedPercentage) {
+            return R.drawable.chapter_root_node;
+        } else if (earnedMarks < scoreAmberPercentage) {
+            return R.drawable.chapter_root_yellow;
+        } else {
+           return R.drawable.chapter_root_green;
+        }
     }
 
     private int getIndex(List<StudyCenter> studyCenters) {
