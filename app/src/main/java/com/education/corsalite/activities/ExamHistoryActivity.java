@@ -20,6 +20,7 @@ import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.ExamHistory;
 import com.education.corsalite.utils.L;
+import com.education.corsalite.utils.SystemUtils;
 import com.education.corsalite.utils.WebUrls;
 
 import java.util.List;
@@ -120,10 +121,12 @@ public class ExamHistoryActivity extends AbstractBaseActivity implements ExamHis
     @Override
     public void onItemClick(int position) {
         ExamHistory examHistory = (ExamHistory) examHistoryAdapter.getItem(position);
-        Intent intent = new Intent(this, WebviewActivity.class);
-        L.info("URL : " + WebUrls.getExamResultsSummaryUrl() + examHistory.idTestAnswerPaper);
-        intent.putExtra(LoginActivity.URL, WebUrls.getExamResultsSummaryUrl() + examHistory.idTestAnswerPaper);
-        intent.putExtra(LoginActivity.TITLE, getString(R.string.results));
-        startActivity(intent);
+        if (SystemUtils.isNetworkConnected(this)) {
+            Intent intent = new Intent(this, WebviewActivity.class);
+            L.info("URL : " + WebUrls.getExamResultsSummaryUrl() + examHistory.idTestAnswerPaper);
+            intent.putExtra(LoginActivity.URL, WebUrls.getExamResultsSummaryUrl() + examHistory.idTestAnswerPaper);
+            intent.putExtra(LoginActivity.TITLE, getString(R.string.results));
+            startActivity(intent);
+        }
     }
 }
