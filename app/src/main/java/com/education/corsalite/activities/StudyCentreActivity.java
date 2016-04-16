@@ -297,11 +297,6 @@ public class StudyCentreActivity extends AbstractBaseActivity {
 
             @Override
             public void success(List<OfflineContent> offlineContents, Response response) {
-                mCourseData = new CourseData();
-                mCourseData.StudyCenter = studyCenters;
-                key = mCourseData.StudyCenter.get(getIndex(studyCenters)).SubjectName;
-                studyCenter = mCourseData.StudyCenter.get(getIndex(studyCenters));
-                setupSubjects(mCourseData);
                 for (Chapter chapter : studyCenter.chapters) {
                     boolean idMatchFound = false;
                     for (OfflineContent offlineContent : offlineContents) {
@@ -313,15 +308,22 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                         offlineContent.scoreAmber = chapter.scoreAmber;
                         offlineContent.scoreRed = chapter.scoreRed;
                     }
-                    if (idMatchFound) {
-                        chapter.isChapterOffline = true;
-                    } else {
-                        chapter.isChapterOffline = false;
+                    if(!saveForOffline) {
+                        if (idMatchFound) {
+                            chapter.isChapterOffline = true;
+                        } else {
+                            chapter.isChapterOffline = false;
+                        }
                     }
                 }
                 if(saveForOffline){
                     DbManager.getInstance(getApplicationContext()).saveOfflineContent(offlineContents);
                 }else {
+                    mCourseData = new CourseData();
+                    mCourseData.StudyCenter = studyCenters;
+                    key = mCourseData.StudyCenter.get(getIndex(studyCenters)).SubjectName;
+                    studyCenter = mCourseData.StudyCenter.get(getIndex(studyCenters));
+                    setupSubjects(mCourseData);
                     initDataAdapter(subjects.get(getIndex(studyCenters)));
                 }
             }
