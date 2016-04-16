@@ -308,14 +308,16 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                         if (chapter.idCourseSubjectchapter.equals(offlineContent.chapterId)) {
                             idMatchFound = true;
                         }
-                        offlineContent.bgColor = getCorrespondingBGColor(chapter);
+                        offlineContent.earnedMarks = chapter.earnedMarks;
+                        offlineContent.totalTestedMarks = chapter.totalTestedMarks;
+                        offlineContent.scoreAmber = chapter.scoreAmber;
+                        offlineContent.scoreRed = chapter.scoreRed;
                     }
                     if (idMatchFound) {
                         chapter.isChapterOffline = true;
                     } else {
                         chapter.isChapterOffline = false;
                     }
-                    idMatchFound = false;
                 }
                 if(saveForOffline){
                     DbManager.getInstance(getApplicationContext()).saveOfflineContent(offlineContents);
@@ -324,22 +326,6 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                 }
             }
         });
-    }
-
-    private int getCorrespondingBGColor(Chapter chapter){
-        double totalMarks = Data.getDoubleWithTwoDecimals(chapter.totalTestedMarks);
-        double earnedMarks = Data.getDoubleWithTwoDecimals(chapter.earnedMarks);
-        double scoreRedPercentage = Data.getInt(chapter.scoreRed) * totalMarks / 100;
-        double scoreAmberPercentage = Data.getInt(chapter.scoreAmber) * totalMarks / 100;
-        if (earnedMarks == 0 && totalMarks == 0) {
-            return R.drawable.chapter_node_blue;
-        } else if (earnedMarks < scoreRedPercentage) {
-            return R.drawable.chapter_root_node;
-        } else if (earnedMarks < scoreAmberPercentage) {
-            return R.drawable.chapter_root_yellow;
-        } else {
-           return R.drawable.chapter_root_green;
-        }
     }
 
     private int getIndex(List<StudyCenter> studyCenters) {

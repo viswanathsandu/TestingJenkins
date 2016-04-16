@@ -25,6 +25,7 @@ import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.utils.AppPref;
 import com.education.corsalite.utils.Constants;
+import com.education.corsalite.utils.Data;
 import com.education.corsalite.utils.FileUtilities;
 import com.education.corsalite.utils.L;
 import com.google.gson.Gson;
@@ -224,7 +225,8 @@ public class OfflineContentFragment extends BaseFragment implements OfflineConte
             }
             if (chapterRoot == null) {
                 boolean showProgress = contentIds != null && contentIds.contains(offlineContent.contentId);
-                chapterRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(offlineContent.bgColor, offlineContent.chapterName, offlineContent.chapterId, "chapter", showProgress));
+                int icon = getCorrespondingBGColor(offlineContent);
+                chapterRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(icon, offlineContent.chapterName, offlineContent.chapterId, "chapter", showProgress));
                 subjectRoot.addChild(chapterRoot);
             }
 
@@ -238,7 +240,8 @@ public class OfflineContentFragment extends BaseFragment implements OfflineConte
             }
             if (topicRoot == null) {
                 showProgress = contentIds != null && contentIds.contains(offlineContent.contentId);
-                topicRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(offlineContent.bgColor, offlineContent.topicName, offlineContent.topicId, "topic", showProgress));
+                int icon = getCorrespondingBGColor(offlineContent);
+                topicRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(icon, offlineContent.topicName, offlineContent.topicId, "topic", showProgress));
                 chapterRoot.addChild(topicRoot);
 
                 // Add exercise as the first item in topic
@@ -372,6 +375,21 @@ public class OfflineContentFragment extends BaseFragment implements OfflineConte
         }
     }
 
+    private int getCorrespondingBGColor(OfflineContent chapter){
+        double totalMarks = Data.getDoubleWithTwoDecimals(chapter.totalTestedMarks);
+        double earnedMarks = Data.getDoubleWithTwoDecimals(chapter.earnedMarks);
+        double scoreRedPercentage = Data.getInt(chapter.scoreRed) * totalMarks / 100;
+        double scoreAmberPercentage = Data.getInt(chapter.scoreAmber) * totalMarks / 100;
+        if (earnedMarks == 0 && totalMarks == 0) {
+            return R.drawable.chapter_node_blue;
+        } else if (earnedMarks < scoreRedPercentage) {
+            return R.drawable.chapter_root_node;
+        } else if (earnedMarks < scoreAmberPercentage) {
+            return R.drawable.chapter_root_yellow;
+        } else {
+            return R.drawable.chapter_root_green;
+        }
+    }
 
     private void startExerciseTest(ExerciseOfflineModel model) {
         AbstractBaseActivity.setSharedExamModels(model.questions);
