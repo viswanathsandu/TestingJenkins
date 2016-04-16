@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
@@ -19,7 +20,9 @@ import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.listener.SocialEventsListener;
+import com.education.corsalite.models.requestmodels.Bookmark;
 import com.education.corsalite.models.requestmodels.ForumLikeRequest;
+import com.education.corsalite.models.responsemodels.BookmarkResponse;
 import com.education.corsalite.models.responsemodels.CommonResponseModel;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.ForumPost;
@@ -38,9 +41,12 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
     public static final String MEAL_TYPE_ARG = "MEAL_TYPE_ARG";
 
     private int mPage;
-    @Bind(R.id.rcv_posts) RecyclerView mRecyclerView;
-    @Bind(R.id.empty_layout) View emptyLayout;
-    @Bind(R.id.new_post_btn) Button newPostBtn;
+    @Bind(R.id.rcv_posts)
+    RecyclerView mRecyclerView;
+    @Bind(R.id.empty_layout)
+    View emptyLayout;
+    @Bind(R.id.new_post_btn)
+    Button newPostBtn;
 
     private LinearLayoutManager mLayoutManager;
     private PostAdapter mPostAdapter;
@@ -80,7 +86,7 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
         mRecyclerView.setLayoutManager(mLayoutManager);
         mPostAdapter = new PostAdapter(getActivity(), this, mPage);
         mRecyclerView.setAdapter(mPostAdapter);
-        switch (mPage){
+        switch (mPage) {
             case 0:
                 loadForumPosts();
                 break;
@@ -97,13 +103,13 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
 
     private void loadForumMyComments() {
         showProgress();
-        ApiManager.getInstance(getActivity()).getMyComments(AbstractBaseActivity.selectedCourse.courseId+"", LoginUserCache.getInstance().loginResponse.userId, "MyComments",
+        ApiManager.getInstance(getActivity()).getMyComments(AbstractBaseActivity.selectedCourse.courseId + "", LoginUserCache.getInstance().loginResponse.userId, "MyComments",
                 new ApiCallback<ArrayList<ForumPost>>(getActivity()) {
                     @Override
                     public void success(ArrayList<ForumPost> forumPosts, Response response) {
                         super.success(forumPosts, response);
                         closeProgress();
-                        if(forumPosts != null && !forumPosts.isEmpty()) {
+                        if (forumPosts != null && !forumPosts.isEmpty()) {
                             setForumPosts(forumPosts);
                         } else {
                             emptyLayout.setVisibility(View.VISIBLE);
@@ -121,13 +127,13 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
 
     private void loadForumPosts() {
         showProgress();
-        ApiManager.getInstance(getActivity()).getAllPosts(AbstractBaseActivity.selectedCourse.courseId+"", LoginUserCache.getInstance().loginResponse.userId, "AllPosts", "", "",
+        ApiManager.getInstance(getActivity()).getAllPosts(AbstractBaseActivity.selectedCourse.courseId + "", LoginUserCache.getInstance().loginResponse.userId, "AllPosts", "", "",
                 new ApiCallback<ArrayList<ForumPost>>(getActivity()) {
                     @Override
                     public void success(ArrayList<ForumPost> forumPosts, Response response) {
                         super.success(forumPosts, response);
                         closeProgress();
-                        if(forumPosts != null && !forumPosts.isEmpty()) {
+                        if (forumPosts != null && !forumPosts.isEmpty()) {
                             setForumPosts(forumPosts);
                         } else {
                             emptyLayout.setVisibility(View.VISIBLE);
@@ -145,13 +151,13 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
 
     private void loadForumMyPosts() {
         showProgress();
-        ApiManager.getInstance(getActivity()).getMyPosts(AbstractBaseActivity.selectedCourse.courseId+"", LoginUserCache.getInstance().loginResponse.userId,
+        ApiManager.getInstance(getActivity()).getMyPosts(AbstractBaseActivity.selectedCourse.courseId + "", LoginUserCache.getInstance().loginResponse.userId,
                 new ApiCallback<ArrayList<ForumPost>>(getActivity()) {
                     @Override
                     public void success(ArrayList<ForumPost> forumPosts, Response response) {
                         super.success(forumPosts, response);
                         closeProgress();
-                        if(forumPosts != null && !forumPosts.isEmpty()) {
+                        if (forumPosts != null && !forumPosts.isEmpty()) {
                             setForumPosts(forumPosts);
                         } else {
                             emptyLayout.setVisibility(View.VISIBLE);
@@ -173,20 +179,20 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
 
     @Override
     public void onLikeClicked(final int position) {
-        final ForumPost forumPost=mPostAdapter.getItem(position);
+        final ForumPost forumPost = mPostAdapter.getItem(position);
 
         ApiManager.getInstance(getActivity()).addForumLike(new ForumLikeRequest(forumPost.idUser, forumPost.idUserPost),
-                            new ApiCallback<CommonResponseModel>(getActivity()) {
-            @Override
-            public void success(CommonResponseModel baseResponseModel, Response response) {
-                super.success(baseResponseModel, response);
-                if(baseResponseModel.isSuccessful()){
-                    forumPost.postLikes = Integer.parseInt(forumPost.postLikes) + 1 + "";
-                    forumPost.IsLiked = "Y";
-                    mPostAdapter.updateCurrentItem(position);
-                }
-            }
-        });
+                new ApiCallback<CommonResponseModel>(getActivity()) {
+                    @Override
+                    public void success(CommonResponseModel baseResponseModel, Response response) {
+                        super.success(baseResponseModel, response);
+                        if (baseResponseModel.isSuccessful()) {
+                            forumPost.postLikes = Integer.parseInt(forumPost.postLikes) + 1 + "";
+                            forumPost.IsLiked = "Y";
+                            mPostAdapter.updateCurrentItem(position);
+                        }
+                    }
+                });
     }
 
     @Override
@@ -194,7 +200,31 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
     }
 
     @Override
-    public void onBookmarkClicked(int position) {
+    public void onBookmarkClicked(final int position) {
+        final ForumPost forumPost = mPostAdapter.getItem(position);
+        final Bookmark bookmark = new Bookmark();
+        if (forumPost.bookmark == null || (forumPost.bookmark != null && forumPost.bookmark.equalsIgnoreCase("N"))) {
+            bookmark.bookmarkdelete = "Y";
+        }else {
+            bookmark.bookmarkdelete = "N";
+        }
+        bookmark.idUserPost = forumPost.idUserPost;
+        bookmark.idUser = LoginUserCache.getInstance().loginResponse.userId;
+        ApiManager.getInstance(getActivity()).postBookmark(bookmark, new ApiCallback<BookmarkResponse>(getActivity()) {
+            @Override
+            public void success(BookmarkResponse bookmarkResponse, Response response) {
+                super.success(bookmarkResponse, response);
+                if(bookmarkResponse.isSuccessful()){
+                    forumPost.bookmark = bookmark.bookmarkdelete;
+                    if (bookmark.bookmarkdelete.equalsIgnoreCase("Y")) {
+                        Toast.makeText(getActivity(), "Post is successfully bookmarked.", Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(getActivity(), "Removed bookmark successfully.", Toast.LENGTH_SHORT).show();
+                    }
+                    mPostAdapter.updateCurrentItem(position);
+                }
+            }
+        });
     }
 
     @Override
@@ -256,9 +286,9 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
 
     @Override
     public void onClick(View v) {
-        if(v.getId() == R.id.new_post_btn) {
-            if(getActivity() instanceof ForumActivity) {
-                ((ForumActivity)getActivity()).onNewPostClicked();
+        if (v.getId() == R.id.new_post_btn) {
+            if (getActivity() instanceof ForumActivity) {
+                ((ForumActivity) getActivity()).onNewPostClicked();
             }
         }
     }
