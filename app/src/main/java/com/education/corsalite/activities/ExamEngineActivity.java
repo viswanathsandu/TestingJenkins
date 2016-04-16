@@ -689,7 +689,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
                 } else if(state == TestanswerPaperState.SUSPENDED) {
                     showToast("Exam has been suspended");
-                    DbManager.getInstance(ExamEngineActivity.this).updateOfflineTestModel(offlineModelDate, Constants.STATUS_SUSPENDED);
+                    DbManager.getInstance(ExamEngineActivity.this).updateOfflineTestModel(offlineModelDate, Constants.STATUS_SUSPENDED, System.currentTimeMillis());
                     finish();
                 } else if(state == TestanswerPaperState.COMPLETED) {
                     headerProgress.setVisibility(View.GONE);
@@ -700,7 +700,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                         openAdvancedExamResultSummary(testAnswerPaperResponse.testAnswerPaperId);
                         finish();
                     }
-                    DbManager.getInstance(ExamEngineActivity.this).updateOfflineTestModel(offlineModelDate, Constants.STATUS_COMPLETED);
+                    DbManager.getInstance(ExamEngineActivity.this).updateOfflineTestModel(offlineModelDate, Constants.STATUS_COMPLETED, System.currentTimeMillis());
                 }
             }
         });
