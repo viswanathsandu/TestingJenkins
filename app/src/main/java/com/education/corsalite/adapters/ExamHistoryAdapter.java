@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.models.responsemodels.ExamHistory;
@@ -18,11 +19,18 @@ import butterknife.ButterKnife;
  * Created by Aastha on 27/11/15.
  */
 public class ExamHistoryAdapter  extends AbstractRecycleViewAdapter{
+
+    private SetOnExamHistoryClick setOnExamHistoryClick;
+
+    public interface SetOnExamHistoryClick {
+        void onItemClick(int position);
+    }
     LayoutInflater inflater;
 
-    public ExamHistoryAdapter(List<ExamHistory> examHistoryList, LayoutInflater inflater) {
+    public ExamHistoryAdapter(List<ExamHistory> examHistoryList, LayoutInflater inflater, SetOnExamHistoryClick setOnExamHistoryClick) {
         this(examHistoryList);
         this.inflater = inflater;
+        this.setOnExamHistoryClick = setOnExamHistoryClick;
     }
 
     public ExamHistoryAdapter(List<ExamHistory> examHistoryList) {
@@ -74,7 +82,7 @@ public class ExamHistoryAdapter  extends AbstractRecycleViewAdapter{
             action.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    setOnExamHistoryClick.onItemClick(position);
                 }
             });
 
