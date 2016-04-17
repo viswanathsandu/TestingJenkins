@@ -213,6 +213,10 @@ public interface ICorsaliteApi {
     void addPostToForum(@Body TypedString update, ApiCallback<DefaultForumResponse> callback);
 
     @Headers("Content-Type:application/x-www-form-urlencoded")
+    @POST("/Forums")
+    void addComment(@Body TypedString update, ApiCallback<DefaultForumResponse> callback);
+
+    @Headers("Content-Type:application/x-www-form-urlencoded")
     @POST("/ForumDelete")
     void deleteForum(@Body TypedString delete, ApiCallback<CommonResponseModel> callback);
 

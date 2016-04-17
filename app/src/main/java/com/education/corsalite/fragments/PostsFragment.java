@@ -22,6 +22,7 @@ import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.listener.SocialEventsListener;
 import com.education.corsalite.models.requestmodels.Bookmark;
 import com.education.corsalite.models.requestmodels.ForumLikeRequest;
+import com.education.corsalite.models.requestmodels.LoginUser;
 import com.education.corsalite.models.responsemodels.BookmarkResponse;
 import com.education.corsalite.models.responsemodels.CommonResponseModel;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
@@ -197,6 +198,20 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
 
     @Override
     public void onCommentClicked(int position) {
+        EditorDialogFragment fragment = new EditorDialogFragment();
+        ForumPost item = mPostAdapter.getItem(position);
+        Bundle bundle = new Bundle();
+        bundle.putString("type", "Comment");
+        bundle.putString("operation", "Add");
+        bundle.putString("course_id",item.idCourse);
+        bundle.putString("subject_id",item.idCourseSubject);
+        bundle.putString("chapter_id", item.idCourseSubjectChapter);
+        bundle.putString("topic_id", item.idTopic);
+        bundle.putString("post_subject", item.PostSubject);
+        bundle.putString("post_id", item.idUserPost);
+        bundle.putString("is_author_only", item.isAuthorOnly);
+        fragment.setArguments(bundle);
+        fragment.show(getActivity().getSupportFragmentManager(), "AddCommentDialog");
     }
 
     @Override

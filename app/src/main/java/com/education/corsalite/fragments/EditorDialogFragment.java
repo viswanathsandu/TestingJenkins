@@ -39,6 +39,7 @@ import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.DefaultForumResponse;
 import com.education.corsalite.models.responsemodels.DefaultNoteResponse;
+import com.education.corsalite.models.responsemodels.ForumPost;
 import com.education.corsalite.utils.L;
 import com.google.gson.Gson;
 
@@ -66,6 +67,8 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
     private View progress;
 
     private String type;
+    private String userId;
+    private String locked;
     private String operation;
     private String studentId;
     private String subjectId;
@@ -74,6 +77,7 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
     private String contentId;
     private String notesId;
     private String postId;
+    private String courseId;
     private String postsubject;
     private String isAuthorOnly;
     private String originalContent;
@@ -97,6 +101,9 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
                 false);
 
         type = getArguments().getString("type", "Note");
+        courseId = getArguments().getString("course_id", "");
+        userId = getArguments().getString("user_id", "");
+        locked = getArguments().getString("locked", "");
         operation = getArguments().getString("operation", "Add");
         studentId = getArguments().getString("student_id", "");
         subjectId = getArguments().getString("subject_id", "");
@@ -131,7 +138,11 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
             isAuthorOnlyCkb.setChecked(true);
         } else if(isAuthorOnly.equals("N")) {
             isAuthorOnlyCkb.setChecked(false);
+        } else{
+            isAuthorOnlyCkb.setVisibility(View.GONE);
         }
+
+
         titleTxt = (EditText) view.findViewById(R.id.title_txt);
         if(!TextUtils.isEmpty(postsubject)) {
             titleTxt.setText(postsubject);
@@ -164,8 +175,8 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
                 return false;
             }
 
-            public void onPageFinished(WebView view, String url){
-                webview.loadUrl("javascript:loadHtml('"+originalContent+"')");
+            public void onPageFinished(WebView view, String url) {
+                webview.loadUrl("javascript:loadHtml('" + originalContent + "')");
             }
         });
         webview.addJavascriptInterface(new Object() {
@@ -173,9 +184,9 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
             public void updateContent(String content) {
                 updateContent = content;
                 L.info("UpdatedContent : " + updateContent);
-                if(operation.equalsIgnoreCase("Add")) {
+                if (operation.equalsIgnoreCase("Add")) {
                     addContent();
-                } else if(operation.equalsIgnoreCase("Edit")) {
+                } else if (operation.equalsIgnoreCase("Edit")) {
                     editContent();
                 }
             }
@@ -191,6 +202,7 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.add_btn:
+                addContent();
             case R.id.edit_btn:
                 webview.loadUrl("javascript:getUpdatedHtml()");
                 break;
@@ -207,6 +219,21 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
             addNotes();
         } else if(type.equalsIgnoreCase("Forum")) {
             addEditPostToForum(getForumPost());
+        }else if(type.equalsIgnoreCase("Comment")) {
+            ForumModel post = new ForumModel();
+            post.userId = LoginUserCache.getInstance().getLongResponse().userId;
+            post.studentId = LoginUserCache.getInstance().getLongResponse().studentId;
+            post.courseId = courseId;
+            post.idCourseSubject = subjectId;
+            post.idCourseSubjectChapter = chapterId;
+            post.topicId = topicId;
+            post.postSubject = postsubject;
+            post.referIdUserPost = operation.equalsIgnoreCase("Comment") ? null : "";
+            post.postContent = updateContent;
+            post.idUserPost = postId;
+            post.isAuthorOnly = isAuthorOnly;
+            post.locked="Y";
+            addComment(post);
         }
     }
 
@@ -217,6 +244,9 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
             addEditPostToForum(getForumPost());
         }
     }
+
+
+
 
     private ForumModel getForumPost() {
         ForumModel post = new ForumModel();
@@ -261,6 +291,56 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
             L.error(e.getMessage(), e);
         }
     }
+
+
+    private void addComment(ForumModel post) {
+        try {
+            showProgress();
+
+            ApiManager.getInstance(getActivity()).addComment(post,new ApiCallback<DefaultForumResponse>(getActivity()){
+                @Override
+                public void failure(CorsaliteError error) {
+                    super.failure(error);
+                    closeProgress();
+                    Toast.makeText(getActivity(), "Failed to add comment", Toast.LENGTH_SHORT).show();
+                }
+                @Override
+                public void success(DefaultForumResponse defaultForumResponse, Response response) {
+                    super.success(defaultForumResponse, response);
+                    if (getActivity() != null) {
+                        closeProgress();
+                        Toast.makeText(getActivity(), "Comment added successfully", Toast.LENGTH_SHORT).show();
+                    }
+                    dismiss();
+                }
+            });
+
+
+
+//            ApiManager.getInstance(getActivity()).addEditForumPost(post, new ApiCallback<DefaultForumResponse>(getActivity()) {
+//                @Override
+//                public void failure(CorsaliteError error) {
+//                    super.failure(error);
+//                    closeProgress();
+//                    Toast.makeText(getActivity(), "Failed to add post on Forum", Toast.LENGTH_SHORT).show();
+//                }
+//
+//                @Override
+//                public void success(DefaultForumResponse defaultNoteResponse, Response response) {
+//                    super.success(defaultNoteResponse, response);
+//                    if (getActivity() != null) {
+//                        closeProgress();
+//                        Toast.makeText(getActivity(), "Post added successfully", Toast.LENGTH_SHORT).show();
+//                    }
+//                    dismiss();
+//                }
+//            });
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+    }
+
+
 
     private void addNotes() {
         try {

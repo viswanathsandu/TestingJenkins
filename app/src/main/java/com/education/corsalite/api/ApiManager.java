@@ -484,6 +484,13 @@ public class ApiManager {
         }
     }
 
+
+    public void addComment(ForumModel forumPost,ApiCallback<DefaultForumResponse> callback){
+        if(isApiOnline()){
+            ApiClientService.get().addComment(new TypedString("Update=" + new Gson().toJson(forumPost)), callback);
+        }
+    }
+
     public void deleteForum(ForumLikeRequest forumdeleteRequest, ApiCallback<CommonResponseModel> callback){
         if(isApiOnline()){
             ApiClientService.get().deleteForum(new TypedString("Delete=" + new Gson().toJson(forumdeleteRequest)), callback);

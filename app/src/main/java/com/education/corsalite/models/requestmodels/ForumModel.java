@@ -24,4 +24,6 @@ public class ForumModel {
     public String isAuthorOnly;
     @SerializedName("PostContent")
     public String postContent;
+    @SerializedName("Locked")
+    public String locked;
 }
