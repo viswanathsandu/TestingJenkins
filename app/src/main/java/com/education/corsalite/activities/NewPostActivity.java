@@ -88,19 +88,19 @@ public class NewPostActivity extends AbstractBaseActivity {
         toolbar.setTitle("New Post");
 
         type = getIntent().getExtras().getString("type", "Note");
-        Bundle data = getIntent().getExtras();
-        if (data != null) {
-            operation = data.getString("operation", "Add");
-            studentId = data.getString("student_id", "");
-            subjectId = data.getString("subject_id", "");
-            chapterId = data.getString("chapter_id", "");
-            topicId = data.getString("topic_id", "");
-            contentId = data.getString("content_id", "");
-            notesId = data.getString("notes_id", "");
-            postId = data.getString("post_id", "");
-            originalContent = data.getString("content", "");
-            isAuthorOnly = data.getString("is_author_only", "");
-            postsubject = data.getString("post_subject", "");
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            operation = bundle.getString("operation", "Add");
+            studentId = bundle.getString("student_id", "");
+            subjectId = bundle.getString("subject_id", "");
+            chapterId = bundle.getString("chapter_id", "");
+            topicId = bundle.getString("topic_id", "");
+            contentId = bundle.getString("content_id", "");
+            notesId = bundle.getString("notes_id", "");
+            postId = bundle.getString("post_id", "");
+            originalContent = bundle.getString("content", "");
+            isAuthorOnly = bundle.getString("is_author_only", "");
+            postsubject = bundle.getString("post_subject", "");
         }
         initUi();
         loadWebview();
