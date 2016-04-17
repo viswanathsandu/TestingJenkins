@@ -162,7 +162,7 @@ public class RecommendedTabFragment extends Fragment implements RecommendationsA
         if (isSelected) {
             tv.setSelected(true);
             selectedSubjectTxt = tv;
-            loadCourses(subjectName);
+            loadCoursesAnalytics(subjectName);
         }
 
         tv.setOnClickListener(new View.OnClickListener() {
@@ -173,13 +173,13 @@ public class RecommendedTabFragment extends Fragment implements RecommendationsA
                 }
                 selectedSubjectTxt = tv;
                 selectedSubjectTxt.setSelected(true);
-                loadCourses(subjectName);
+                loadCoursesAnalytics(subjectName);
             }
         });
         return v;
     }
 
-    public void loadCourses(String subjectName) {
+    public void loadCoursesAnalytics(String subjectName) {
         mProgressBar.setVisibility(View.GONE);
         mRecyclerView.setVisibility(View.VISIBLE);
         linearLayout.setVisibility(View.VISIBLE);
