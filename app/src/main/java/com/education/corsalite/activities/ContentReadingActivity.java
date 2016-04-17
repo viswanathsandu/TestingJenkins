@@ -247,7 +247,6 @@ public class ContentReadingActivity extends AbstractBaseActivity {
     }
 
     private void addToNote(String htmlText) {
-        EditorDialogFragment fragment = new EditorDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putString("type", "Note");
         bundle.putString("operation", "Add");
@@ -255,8 +254,9 @@ public class ContentReadingActivity extends AbstractBaseActivity {
         bundle.putString("topic_id", topicModelList.get(spTopic.getSelectedItemPosition()).idTopic);
         bundle.putString("content_id", contentModelList.get(mContentIdPosition).idContent);
         bundle.putString("content", htmlText);
-        fragment.setArguments(bundle);
-        fragment.show(getSupportFragmentManager(), "NotesEditorDialog");
+        Intent intent = new Intent(this, NewPostActivity.class);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     private void addToForum(String htmlText) {
