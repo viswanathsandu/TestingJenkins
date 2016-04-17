@@ -1,6 +1,7 @@
 package com.education.corsalite.models.socket.requests;
 
 import com.education.corsalite.models.socket.response.ChallengeTestRequestEvent;
+import com.education.corsalite.utils.L;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -9,14 +10,23 @@ import com.google.gson.annotations.SerializedName;
 public class ChallengeTestUpdateRequestEvent {
     public String event = "ChallengeTestUpdate";
     @SerializedName("ChallengeTestParentID")
-    public String challengeTestParentId;
+    private Integer challengeTestParentId;
     @SerializedName("ChallengerName")
     public String challengerName;
     @SerializedName("ChallengerStatus")
     public String challengerStatus;
 
     public void setChallengeTestRequestEvent(ChallengeTestRequestEvent event) {
-        this.challengeTestParentId = event.challengeTestParentId;
+        setChallengeTestParentId(event.challengeTestParentId);
         this.challengerName = event.challengerName;
+    }
+
+    public void setChallengeTestParentId(String challengeId) {
+        try {
+            challengeTestParentId = Integer.valueOf(challengeId);
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+            challengeTestParentId = null;
+        }
     }
 }

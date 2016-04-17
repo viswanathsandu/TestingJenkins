@@ -192,4 +192,8 @@ public class WebSocketHelper {
     public void sendUpdateLeaderBoardEvent(com.education.corsalite.models.socket.requests.UpdateLeaderBoardEvent event) {
         sendEvent(new Gson().toJson(event));
     }
+
+    public void sendChallengeTestcompleteEvent(ChallengeTestCompletedEvent event) {
+        sendEvent(new Gson().toJson(event));
+    }
 }

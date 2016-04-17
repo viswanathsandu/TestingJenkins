@@ -655,21 +655,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
     private void updateTestAnswerPaper(final TestanswerPaperState state) {
         testanswerPaper.status = state.toString();
-
-        // Clone the object
-        TestAnswerPaper paper = new Gson().fromJson(new Gson().toJson(testanswerPaper), TestAnswerPaper.class);
-        //TODO : remove the unattended items. This has to be removed when API is fixed
-                /* ****************************************** */
-//        Iterator<TestAnswer> i = paper.testAnswers.iterator();
-//        while (i.hasNext()) {
-//            TestAnswer answer = i.next();
-//            if (answer.status.equalsIgnoreCase("Unattended")) {
-//                i.remove();
-//            }
-//        }
-                /* ****************************************** */
-
-        ApiManager.getInstance(ExamEngineActivity.this).submitTestAnswerPaper(paper, new ApiCallback<TestAnswerPaperResponse>(ExamEngineActivity.this) {
+        ApiManager.getInstance(ExamEngineActivity.this).submitTestAnswerPaper(testanswerPaper, new ApiCallback<TestAnswerPaperResponse>(ExamEngineActivity.this) {
             @Override
             public void failure(CorsaliteError error) {
                 super.failure(error);
@@ -687,6 +673,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             @Override
             public void success(TestAnswerPaperResponse testAnswerPaperResponse, Response response) {
                 super.success(testAnswerPaperResponse, response);
+                sendLederBoardRequestEvent();
                 if(state == TestanswerPaperState.STARTED) {
 
                 } else if(state == TestanswerPaperState.SUSPENDED) {
@@ -698,6 +685,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     mViewSwitcher.showNext();
                     if(ischallengeTest()) {
                         openChallengeTestResults();
+                        finish();
                     } else if (testAnswerPaperResponse != null && !TextUtils.isEmpty(testAnswerPaperResponse.testAnswerPaperId)) {
                         openAdvancedExamResultSummary(testAnswerPaperResponse.testAnswerPaperId);
                         finish();
@@ -787,9 +775,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private void openChallengeTestResults() {
         Intent intent = new Intent(ExamEngineActivity.this, ChallengeResultActivity.class);
         intent.putExtra("challenge_test_id", challengeTestId);
-        intent.putExtra("tesst_question_paper_id", testQuestionPaperId);
+        intent.putExtra("test_question_paper_id", testQuestionPaperId);
         startActivity(intent);
-        finish();
     }
 
     private void openAdvancedExamResultSummary(String answerPaperId) {
@@ -1415,6 +1402,9 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void getFlaggedQuestion(final boolean showFlaggedQuestions) {
+        if(TextUtils.isEmpty(subjectId) || TextUtils.isEmpty(chapterId)) {
+            return;
+        }
         ApiManager.getInstance(this).getFlaggedQuestions(LoginUserCache.getInstance().loginResponse.studentId,
                 subjectId,
                 chapterId, "", new ApiCallback<List<ExamModel>>(this) {
@@ -1637,10 +1627,6 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         for (ExamModel question : questions) {
             TestAnswer answer = new TestAnswer();
             answer.testQuestionId = question.idTestQuestion;
-            answer.answerKeyId = null;
-            answer.answerText = null;
-            answer.status = "Unattended"; //Unattended | Skipped | Answered | Skipped
-            answer.timeTaken = null;
             testanswerPaper.testAnswers.add(answer);
         }
     }

@@ -130,15 +130,15 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
         }
     }
 
-    private void updateChallengeStatus(final boolean accepted) {
+    private void updateChallengeStatus(final String status) {
         ChallengeStatusRequest request = new ChallengeStatusRequest(LoginUserCache.getInstance().loginResponse.studentId,
-                mChallengeTestRequestEvent.challengeTestParentId, accepted);
+                mChallengeTestRequestEvent.challengeTestParentId, status);
         ApiManager.getInstance(getActivity()).postChallengeStatus(new Gson().toJson(request),
                 new ApiCallback<CommonResponseModel>(getActivity()) {
                     @Override
                     public void success(CommonResponseModel commonResponseModel, Response response) {
                         super.success(commonResponseModel, response);
-                        postStatusEvent(accepted);
+                        postStatusEvent(status);
                     }
 
                     @Override
@@ -149,22 +149,22 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
                 });
     }
 
-    private void postStatusEvent(boolean accepted) {
+    private void postStatusEvent(String status) {
         ChallengeTestUpdateRequestEvent event = new ChallengeTestUpdateRequestEvent();
         event.setChallengeTestRequestEvent(mChallengeTestRequestEvent);
         event.challengerName = mCurrentUser.displayName;
-        event.challengerStatus = accepted ? "Accepted" : "Declined";
+        event.challengerStatus = status;
         WebSocketHelper.get(getActivity()).sendChallengeUpdateEvent(event);
     }
 
     @OnClick(R.id.accept_btn)
     public void acceptTest() {
-        updateChallengeStatus(true);
+        updateChallengeStatus("Accepted");
     }
 
     @OnClick(R.id.reject_btn)
     public void rejectTest() {
-        updateChallengeStatus(false);
+        updateChallengeStatus("Declined");
     }
 
     @OnClick(R.id.refresh_btn)
@@ -192,8 +192,9 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
                             event.setChallengeTestRequestEvent(mChallengeTestRequestEvent);
                             event.challengerName = mCurrentUser.displayName;
                             event.challengerStatus = "Started";
-                            WebSocketHelper.get(getActivity()).sendChallengeUpdateEvent(event);
                             sendChallengeStartRequestEvent();
+                            WebSocketHelper.get(getActivity()).sendChallengeUpdateEvent(event);
+                            updateChallengeStatus("In Test");
                             ((AbstractBaseActivity) getActivity()).startChallengeTest(mTestQuestionPaperId, mCurrentUser.challengeTestParentId);
                         } else {
                             showToast("could not start exam");
@@ -212,12 +213,15 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
         event.challengerName = mCurrentUser.displayName;
         event.challengeStatus = "Accepted";
         event.challengerStatus = "Started";
-        event.challengeTestParentId = mCurrentUser.challengeTestParentId;
+        event.setChallengeTestParentId(mCurrentUser.challengeTestParentId);
         event.testQuestionPaperId = mCurrentUser.idTestQuestionPaper;
         WebSocketHelper.get(getActivity()).sendChallengeStartEvent(event);
     }
 
     public void updateUI() {
+        if(getActivity() == null) {
+            return;
+        }
         int accepted = 0;
         int declined = 0;
         int initiated = 0;
