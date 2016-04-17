@@ -6,14 +6,12 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -27,7 +25,6 @@ import com.education.corsalite.adapters.TopicAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.listener.OnRefreshNotesListener;
 import com.education.corsalite.models.ChapterModel;
 import com.education.corsalite.models.SubjectModel;
 import com.education.corsalite.models.TopicModel;
@@ -51,7 +48,7 @@ import retrofit.client.Response;
 /**
  * Created by Madhuri on 14-04-2016.
  */
-public class NewPostActivity extends AbstractBaseActivity{
+public class NewPostActivity extends AbstractBaseActivity {
     private WebView webview;
     private RelativeLayout forumHeaderLayout;
     private Spinner subjectSpinner;
@@ -59,9 +56,6 @@ public class NewPostActivity extends AbstractBaseActivity{
     private Spinner topicSpinner;
     private EditText titleTxt;
     private CheckBox isAuthorOnlyCkb;
-    private Button addBtn;
-    private Button editBtn;
-    private Button cancelBtn;
     private View progress;
 
     private String type;
@@ -77,42 +71,17 @@ public class NewPostActivity extends AbstractBaseActivity{
     private String isAuthorOnly;
     private String originalContent;
     private String updateContent;
-    private OnRefreshNotesListener onRefreshNotesListener;
 
     private List<ContentIndex> mContentIndexList;
     private List<SubjectModel> mSubjectModelList;
     private List<ChapterModel> mChapterModelList;
     private List<TopicModel> mTopicModelList;
 
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
-            onBackPressed();
-        }
-        else if(id==R.id.cancel_btn){
-
-        }else if (id==R.id.edit_btn){
-            webview.loadUrl("javascript:getUpdatedHtml()");
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.new_post_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.editor_dialog_layout);
-       Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
@@ -120,68 +89,71 @@ public class NewPostActivity extends AbstractBaseActivity{
 
         type = getIntent().getExtras().getString("type", "Note");
         Bundle data = getIntent().getExtras();
-		if(data!=null)
-		{
-		operation = data.getString("operation", "Add");
-        studentId = data.getString("student_id", "");
-        subjectId = data.getString("subject_id", "");
-        chapterId = data.getString("chapter_id", "");
-        topicId = data.getString("topic_id", "");
-        contentId = data.getString("content_id", "");
-        notesId = data.getString("notes_id", "");
-        postId = data.getString("post_id", "");
-        originalContent = data.getString("content", "");
-        isAuthorOnly = data.getString("is_author_only", "");
-        postsubject = data.getString("post_subject", "");
-		initUi();
+        if (data != null) {
+            operation = data.getString("operation", "Add");
+            studentId = data.getString("student_id", "");
+            subjectId = data.getString("subject_id", "");
+            chapterId = data.getString("chapter_id", "");
+            topicId = data.getString("topic_id", "");
+            contentId = data.getString("content_id", "");
+            notesId = data.getString("notes_id", "");
+            postId = data.getString("post_id", "");
+            originalContent = data.getString("content", "");
+            isAuthorOnly = data.getString("is_author_only", "");
+            postsubject = data.getString("post_subject", "");
+        }
+        initUi();
         loadWebview();
-		}
-        
     }
 
-
-    public void setRefreshNoteListener(OnRefreshNotesListener onRefreshNotesListener) {
-        this.onRefreshNotesListener = onRefreshNotesListener;
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.new_post_menu, menu);
+        return super.onCreateOptionsMenu(menu);
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+            case R.id.cancel_btn:
+                finish();
+                break;
+            case R.id.edit_btn:
+                webview.loadUrl("javascript:getUpdatedHtml()");
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void initUi() {
         forumHeaderLayout = (RelativeLayout) findViewById(R.id.forum_header_layout);
         subjectSpinner = (Spinner) findViewById(R.id.subject_spinner);
         chapterSpinner = (Spinner) findViewById(R.id.chapter_spinner);
         topicSpinner = (Spinner) findViewById(R.id.topic_spinner);
         progress = findViewById(R.id.progress);
-        if(type.equals("Note")) {
+        if (type.equals("Note")) {
             forumHeaderLayout.setVisibility(View.GONE);
-        } else if(type.equals("Forum")) {
+        } else if (type.equals("Forum")) {
             forumHeaderLayout.setVisibility(View.VISIBLE);
-            getContentIndex(AbstractBaseActivity.selectedCourse.courseId+"", LoginUserCache.getInstance().loginResponse.studentId);
+            getContentIndex(AbstractBaseActivity.selectedCourse.courseId + "", LoginUserCache.getInstance().loginResponse.studentId);
         }
-        isAuthorOnlyCkb = (CheckBox)findViewById(R.id.is_author_only_ckb);
-        if(isAuthorOnly.equals("Y")) {
+        isAuthorOnlyCkb = (CheckBox) findViewById(R.id.is_author_only_ckb);
+        if (isAuthorOnly.equals("Y")) {
             isAuthorOnlyCkb.setChecked(true);
-        } else if(isAuthorOnly.equals("N")) {
+        } else if (isAuthorOnly.equals("N")) {
             isAuthorOnlyCkb.setChecked(false);
         }
-        titleTxt = (EditText)findViewById(R.id.title_txt);
-        if(!TextUtils.isEmpty(postsubject)) {
+        titleTxt = (EditText) findViewById(R.id.title_txt);
+        if (!TextUtils.isEmpty(postsubject)) {
             titleTxt.setText(postsubject);
         }
-     /*   if(operation.equals("Add")) {
-            addBtn = (Button) findViewById(R.id.add_btn);
-            addBtn.setOnClickListener(this);
-            addBtn.setVisibility(View.VISIBLE);
-        } else if(operation.equals("Edit")) {
-            editBtn = (Button) findViewById(R.id.edit_btn);
-            editBtn.setOnClickListener(this);
-            editBtn.setVisibility(View.VISIBLE);
-        }
-        cancelBtn = (Button) findViewById(R.id.cancel_btn);
-        cancelBtn.setOnClickListener(this);*/
         initWebview();
     }
 
     @SuppressLint("JavascriptInterface")
     private void initWebview() {
-        webview = (WebView)findViewById(R.id.editor_webview);
+        webview = (WebView) findViewById(R.id.editor_webview);
         webview.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
         webview.setScrollbarFadingEnabled(true);
         webview.getSettings().setLoadsImagesAutomatically(true);
@@ -193,22 +165,26 @@ public class NewPostActivity extends AbstractBaseActivity{
                 return false;
             }
 
-            public void onPageFinished(WebView view, String url){
-                webview.loadUrl("javascript:loadHtml('"+originalContent+"')");
+            public void onPageFinished(WebView view, String url) {
+                webview.loadUrl("javascript:loadHtml('" + originalContent + "')");
             }
         });
         webview.addJavascriptInterface(new Object() {
             @JavascriptInterface
             public void updateContent(String content) {
                 updateContent = content;
-                L.info("UpdatedContent : " + updateContent);
-                if(operation.equalsIgnoreCase("Add")) {
-                    addContent();
-                } else if(operation.equalsIgnoreCase("Edit")) {
-                    editContent();
-                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        L.info("UpdatedContent : " + updateContent);
+                        if (operation.equalsIgnoreCase("Add")) {
+                            addContent();
+                        } else if (operation.equalsIgnoreCase("Edit")) {
+                            editContent();
+                        }
+                    }
+                });
             }
-
         }, "Android");
     }
 
@@ -216,39 +192,25 @@ public class NewPostActivity extends AbstractBaseActivity{
         webview.loadUrl("file:///android_asset/ckeditor/samples/index.html");
     }
 
-   /* @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.add_btn:
-            case R.id.edit_btn:
-                webview.loadUrl("javascript:getUpdatedHtml()");
-                break;
-            case R.id.cancel_btn:
-                break;
-            default :
-                break;
-        }
-    }
-*/
     private void addContent() {
-        if(type.equalsIgnoreCase("Note")) {
+        if (type.equalsIgnoreCase("Note")) {
             addNotes();
-        } else if(type.equalsIgnoreCase("Forum")) {
+        } else if (type.equalsIgnoreCase("Forum")) {
             addEditPostToForum(getForumPost());
         }
     }
 
     private void editContent() {
-        if(type.equalsIgnoreCase("Note")) {
+        if (type.equalsIgnoreCase("Note")) {
             editNotes();
-        } else if(type.equalsIgnoreCase("Forum")) {
+        } else if (type.equalsIgnoreCase("Forum")) {
             addEditPostToForum(getForumPost());
         }
     }
 
     private ForumModel getForumPost() {
         ForumModel post = new ForumModel();
-        if(!TextUtils.isEmpty(postId)) {
+        if (!TextUtils.isEmpty(postId)) {
             post.idUserPost = postId;
         }
         post.studentId = LoginUserCache.getInstance().loginResponse.studentId;
@@ -278,10 +240,8 @@ public class NewPostActivity extends AbstractBaseActivity{
                 @Override
                 public void success(DefaultForumResponse defaultNoteResponse, Response response) {
                     super.success(defaultNoteResponse, response);
-                    if (NewPostActivity.this != null) {
-                        closeProgress();
-                        Toast.makeText(NewPostActivity.this, "Post added successfully", Toast.LENGTH_SHORT).show();
-                    }
+                    closeProgress();
+                    Toast.makeText(NewPostActivity.this, "Post added successfully", Toast.LENGTH_SHORT).show();
                     NewPostActivity.this.finish();
                 }
             });
@@ -305,10 +265,8 @@ public class NewPostActivity extends AbstractBaseActivity{
                 @Override
                 public void success(DefaultNoteResponse defaultNoteResponse, Response response) {
                     super.success(defaultNoteResponse, response);
-                    if (NewPostActivity.this != null) {
-                        closeProgress();
-                        Toast.makeText(NewPostActivity.this, "Note added successfully", Toast.LENGTH_SHORT).show();
-                    }
+                    closeProgress();
+                    Toast.makeText(NewPostActivity.this, "Note added successfully", Toast.LENGTH_SHORT).show();
                     NewPostActivity.this.finish();
                 }
             });
@@ -333,9 +291,6 @@ public class NewPostActivity extends AbstractBaseActivity{
                 super.success(defaultNoteResponse, response);
                 Toast.makeText(NewPostActivity.this, "Updated Note successfully", Toast.LENGTH_SHORT).show();
                 closeProgress();
-                if(onRefreshNotesListener != null) {
-                    onRefreshNotesListener.refreshNotes();
-                }
                 NewPostActivity.this.finish();
             }
         });
@@ -431,7 +386,7 @@ public class NewPostActivity extends AbstractBaseActivity{
         mTopicModelList = new ArrayList<>(mChapterModelList.get(chapterPosition).topicMap);
         Collections.sort(mTopicModelList);
         if (mTopicModelList != null) {
-            final TopicAdapter topicAdapter = new TopicAdapter(mTopicModelList,NewPostActivity.this);
+            final TopicAdapter topicAdapter = new TopicAdapter(mTopicModelList, NewPostActivity.this);
             topicSpinner.setAdapter(topicAdapter);
 
             if (!topicId.isEmpty()) {
@@ -453,14 +408,13 @@ public class NewPostActivity extends AbstractBaseActivity{
 
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
-
                 }
             });
         }
     }
 
     public void showProgress() {
-        if(progress != null &&NewPostActivity.this != null) {
+        if (progress != null) {
             progress.setVisibility(View.VISIBLE);
         }
     }
