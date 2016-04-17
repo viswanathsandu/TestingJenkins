@@ -1,6 +1,7 @@
 package com.education.corsalite.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -14,7 +15,6 @@ import com.education.corsalite.adapters.PostPagerAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.fragments.EditorDialogFragment;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.CourseData;
@@ -86,14 +86,14 @@ public class ForumActivity extends AbstractBaseActivity {
                 });
     }
 
+
     public void onNewPostClicked() {
-        EditorDialogFragment fragment = new EditorDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putString("type", "Forum");
         bundle.putString("operation", "Add");
-        fragment.setArguments(bundle);
-        fragment.show(getSupportFragmentManager(), "ForumEditorDialog");
+        Intent post = new Intent(this, NewPostActivity.class);
+        post.putExtras(bundle);
+        startActivity(post);
     }
-
 }
 

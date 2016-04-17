@@ -1,6 +1,7 @@
 package com.education.corsalite.fragments;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.activities.ForumActivity;
+import com.education.corsalite.activities.NewPostActivity;
 import com.education.corsalite.adapters.PostAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
@@ -245,7 +247,6 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
     @Override
     public void onEditClicked(int position) {
         ForumPost forumPost = mPostAdapter.getItem(position);
-        EditorDialogFragment fragment = new EditorDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putString("type", "Forum");
         bundle.putString("operation", "Edit");
@@ -257,8 +258,9 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
         bundle.putString("post_subject", forumPost.PostSubject);
         bundle.putString("content", forumPost.htmlText);
         bundle.putString("is_author_only", forumPost.isAuthorOnly);
-        fragment.setArguments(bundle);
-        fragment.show(getActivity().getSupportFragmentManager(), "ForumEditorDialog");
+        Intent intent = new Intent(getActivity(), NewPostActivity.class);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     @Override
