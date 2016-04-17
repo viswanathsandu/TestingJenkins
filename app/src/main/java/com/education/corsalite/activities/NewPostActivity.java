@@ -85,7 +85,7 @@ public class NewPostActivity extends AbstractBaseActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        toolbar.setTitle("New Post");
+        toolbar.setTitleTextColor(0xFFFFFFFF);
 
         type = getIntent().getExtras().getString("type", "Note");
         Bundle bundle = getIntent().getExtras();
@@ -102,6 +102,7 @@ public class NewPostActivity extends AbstractBaseActivity {
             isAuthorOnly = bundle.getString("is_author_only", "");
             postsubject = bundle.getString("post_subject", "");
         }
+        getSupportActionBar().setTitle(operation+" "+type);
         initUi();
         loadWebview();
     }
