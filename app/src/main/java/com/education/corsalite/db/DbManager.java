@@ -152,7 +152,7 @@ public class DbManager {
         }).start();
     }
 
-    public void updateOfflineTestModel(final long date, final int status) {
+    public void updateOfflineTestModel(final long date, final int status, final long examTakenTime) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -160,6 +160,7 @@ public class DbManager {
                     List<OfflineTestModel> offlinecontentList = dbService.Get(OfflineTestModel.class);
                     for (OfflineTestModel savedOfflineContent : offlinecontentList) {
                         if (date == savedOfflineContent.dateTime) {
+                            savedOfflineContent.dateTime = examTakenTime;
                             savedOfflineContent.status = status;
                             dbService.Update(OfflineTestModel.class, savedOfflineContent);
                         }

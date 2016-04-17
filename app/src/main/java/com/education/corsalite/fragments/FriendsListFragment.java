@@ -101,7 +101,7 @@ public class FriendsListFragment extends BaseFragment  implements SearchView.OnQ
     @Override
     public void onResume() {
         super.onResume();
-        WebSocketHelper.get().sendGetUserListEvent();
+        WebSocketHelper.get(getActivity()).sendGetUserListEvent();
     }
 
     private void loadFriendsList() {
