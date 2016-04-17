@@ -485,7 +485,7 @@ public class ApiManager {
     }
 
 
-    public void addComment(ForumModel forumPost,ApiCallback<DefaultForumResponse> callback){
+    public void addComment(ForumModel forumPost,ApiCallback<CommonResponseModel> callback){
         if(isApiOnline()){
             ApiClientService.get().addComment(new TypedString("Update=" + new Gson().toJson(forumPost)), callback);
         }
