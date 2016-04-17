@@ -19,6 +19,10 @@ public class OfflineContent extends BaseModel {
     public String contentName;
     public String fileName;
     public String timeStamp;
+    public String earnedMarks;
+    public String totalTestedMarks;
+    public String scoreAmber;
+    public String scoreRed;
 
     public OfflineContent(String courseId, String courseName, String subjectId, String subjectName,
                           String chapterId, String chapterName, String topicId, String topicName,

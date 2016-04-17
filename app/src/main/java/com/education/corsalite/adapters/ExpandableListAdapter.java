@@ -53,10 +53,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         try {
             if (headers.get(groupPosition).equalsIgnoreCase("Mock Test")) {
                 MockTest test = this.childs.get(this.headers.get(groupPosition)).get(childPosititon).mockTest;
-                if(TextUtils.isEmpty(test.subjectId)) {
+                if (TextUtils.isEmpty(test.subjectId)) {
                     return test.displayName;
                 } else {
-                    return test.examName+" ( "+test.subjectName+" ) ";
+                    return test.examName + " ( " + test.subjectName + " ) ";
                 }
             } else if (headers.get(groupPosition).equalsIgnoreCase("Schedule Test")) {
                 return this.childs.get(this.headers.get(groupPosition)).get(childPosititon).scheduledTest.examName;
@@ -83,20 +83,35 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             LayoutInflater infalInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.offline_test_child_item, null);
         }
+        OfflineTestModel model = childs.get(this.headers.get(groupPosition)).get(childPosition);
         TextView txtListChild = (TextView) convertView.findViewById(R.id.mock_test_txt);
-        TextView textViewTime = (TextView)convertView.findViewById(R.id.mock_test_time_txt);
+        TextView textViewTime = (TextView) convertView.findViewById(R.id.mock_test_time_txt);
+        TextView textViewStatus = (TextView) convertView.findViewById(R.id.test_status);
+        ImageView ivStatus = (ImageView) convertView.findViewById(R.id.iv_status);
+        if (model.status == Constants.STATUS_COMPLETED) {
+            textViewStatus.setText("Completed");
+            ivStatus.setImageResource(R.drawable.ico_correct);
+        }
+        else if (model.status == Constants.STATUS_START) {
+            textViewStatus.setText("Not Started");
+            ivStatus.setImageResource(R.drawable.ico_yettoattempt);
+        }
+        else if (model.status == Constants.STATUS_SUSPENDED) {
+            textViewStatus.setText("Suspended");
+            ivStatus.setImageResource(R.drawable.ico_notattended);
+        }
         textViewTime.setText(TimeUtils.getDateTime(childs.get(this.headers.get(groupPosition)).get(childPosition).dateTime));
         txtListChild.setText(childText);
         txtListChild.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(headers.get(groupPosition).equals("Mock Test")) {
+                if (headers.get(groupPosition).equals("Mock Test")) {
                     startMockTest(childs.get(headers.get(groupPosition)).get(childPosition));
-                } else if(headers.get(groupPosition).equals("Scheduled Test")) {
+                } else if (headers.get(groupPosition).equals("Scheduled Test")) {
                     startScheduleTest(childs.get(headers.get(groupPosition)).get(childPosition));
-                }else if(headers.get(groupPosition).equals("Take Test")){
+                } else if (headers.get(groupPosition).equals("Take Test")) {
                     startTakeTest(childs.get(headers.get(groupPosition)).get(childPosition));
-                }else if(headers.get(groupPosition).equals("Part Test")){
+                } else if (headers.get(groupPosition).equals("Part Test")) {
                     startPartTest(childs.get(headers.get(groupPosition)).get(childPosition));
                 }
             }
@@ -106,7 +121,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        if(childs != null && !childs.isEmpty()) {
+        if (childs != null && !childs.isEmpty()) {
             return this.childs.get(this.headers.get(groupPosition)).size();
         } else {
             return 0;
@@ -115,7 +130,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getGroup(int groupPosition) {
-        if(headers != null && !headers.isEmpty()) {
+        if (headers != null && !headers.isEmpty()) {
             return this.headers.get(groupPosition);
         } else {
             return 0;
@@ -140,36 +155,36 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             convertView = infalInflater.inflate(R.layout.offline_test_header_item, null);
         }
         TextView lblListHeader = (TextView) convertView.findViewById(R.id.title_txt);
-        ImageView ivNotStarted = (ImageView)convertView.findViewById(R.id.iv_yetttoattempt);
-        ImageView ivCompleted = (ImageView)convertView.findViewById(R.id.iv_correct);
-        ImageView ivRejected = (ImageView)convertView.findViewById(R.id.iv_notattended);
-        TextView tvNotStarted = (TextView)convertView.findViewById(R.id.count_yettoattempt);
-        TextView tvCompleted = (TextView)convertView.findViewById(R.id.count_correct);
-        TextView tvRejected = (TextView)convertView.findViewById(R.id.count_notattended);
+        ImageView ivNotStarted = (ImageView) convertView.findViewById(R.id.iv_yetttoattempt);
+        ImageView ivCompleted = (ImageView) convertView.findViewById(R.id.iv_correct);
+        ImageView ivRejected = (ImageView) convertView.findViewById(R.id.iv_notattended);
+        TextView tvNotStarted = (TextView) convertView.findViewById(R.id.count_yettoattempt);
+        TextView tvCompleted = (TextView) convertView.findViewById(R.id.count_correct);
+        TextView tvRejected = (TextView) convertView.findViewById(R.id.count_notattended);
         Status status = getRejectedStatus(childs.get(headerTitle));
-        if(status.statusCorrect == 0){
+        if (status.statusCorrect == 0) {
             ivCompleted.setVisibility(View.GONE);
             tvCompleted.setVisibility(View.GONE);
-        }else {
+        } else {
             ivCompleted.setVisibility(View.VISIBLE);
             tvCompleted.setVisibility(View.VISIBLE);
-            tvCompleted.setText(""+status.statusCorrect);
+            tvCompleted.setText("" + status.statusCorrect);
         }
-        if(status.statusNotattempted == 0){
+        if (status.statusNotattempted == 0) {
             ivNotStarted.setVisibility(View.GONE);
             tvNotStarted.setVisibility(View.GONE);
-        }else {
+        } else {
             ivNotStarted.setVisibility(View.VISIBLE);
             tvNotStarted.setVisibility(View.VISIBLE);
-            tvNotStarted.setText(""+status.statusNotattempted);
+            tvNotStarted.setText("" + status.statusNotattempted);
         }
-        if(status.statusRejected == 0){
+        if (status.statusRejected == 0) {
             ivRejected.setVisibility(View.GONE);
             tvRejected.setVisibility(View.GONE);
-        }else {
+        } else {
             ivRejected.setVisibility(View.VISIBLE);
             tvRejected.setVisibility(View.VISIBLE);
-            tvRejected.setText(""+status.statusRejected);
+            tvRejected.setText("" + status.statusRejected);
         }
         lblListHeader.setText(headerTitle);
         ImageView ivDownload = (ImageView) convertView.findViewById(R.id.download_test);
@@ -189,17 +204,19 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     private void startMockTest(OfflineTestModel model) {
-
-        Intent intent = new Intent(context, StartMockTestActivity.class);
-        intent.putExtra("Test_Instructions", new Gson().toJson(model.testPaperIndecies));
-        intent.putExtra("test_question_paper_id", model.testQuestionPaperId);
-        intent.putExtra(Constants.TEST_TITLE, "Mock Test");
-        intent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
-        intent.putExtra(Constants.IS_OFFLINE, true);
-        intent.putExtra("mock_test_data_json", new Gson().toJson(model.mockTest));
-        intent.putExtra("OfflineTestModel",model.dateTime);
-        context.startActivity(intent);
-
+        if (model.status != Constants.STATUS_COMPLETED) {
+            Intent intent = new Intent(context, StartMockTestActivity.class);
+            intent.putExtra("Test_Instructions", new Gson().toJson(model.testPaperIndecies));
+            intent.putExtra("test_question_paper_id", model.testQuestionPaperId);
+            intent.putExtra(Constants.TEST_TITLE, "Mock Test");
+            intent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
+            intent.putExtra(Constants.IS_OFFLINE, true);
+            intent.putExtra("mock_test_data_json", new Gson().toJson(model.mockTest));
+            intent.putExtra("OfflineTestModel", model.dateTime);
+            context.startActivity(intent);
+        } else {
+            Toast.makeText(context, "You have already taken the test.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void startScheduleTest(OfflineTestModel model) {
@@ -207,11 +224,11 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             ScheduledTestList.ScheduledTestsArray exam = model.scheduledTest;
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             long startTimeInMillis = df.parse(exam.startTime).getTime();
-            if (startTimeInMillis < System.currentTimeMillis() + 1000*60) {
+            if (startTimeInMillis < System.currentTimeMillis() + 1000 * 60) {
                 Intent intent = new Intent(context, ExamEngineActivity.class);
                 intent.putExtra(Constants.TEST_TITLE, "Scheduled Test");
                 intent.putExtra("test_question_paper_id", exam.testQuestionPaperId);
-                intent.putExtra("OfflineTestModel",model.dateTime);
+                intent.putExtra("OfflineTestModel", model.dateTime);
                 context.startActivity(intent);
                 return;
             }
@@ -221,7 +238,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         Toast.makeText(context, "Please access the test during scheduled time", Toast.LENGTH_SHORT).show();
     }
 
-    private void startTakeTest(OfflineTestModel model){
+    private void startTakeTest(OfflineTestModel model) {
         Chapter chapter = model.baseTest.chapter;
         String subjectId = model.baseTest.subjectId;
         Intent exerciseIntent = new Intent(context, ExamEngineActivity.class);
@@ -231,13 +248,13 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         exerciseIntent.putExtra(Constants.SELECTED_CHAPTERID, chapter.idCourseSubjectchapter);
         exerciseIntent.putExtra(Constants.SELECTED_CHAPTER_NAME, chapter.chapterName);
         exerciseIntent.putExtra(Constants.LEVEL_CROSSED, chapter.passedComplexity);
-        exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID,subjectId);
-        exerciseIntent.putExtra(Constants.IS_OFFLINE,true);
-        exerciseIntent.putExtra("OfflineTestModel",model.dateTime);
+        exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, subjectId);
+        exerciseIntent.putExtra(Constants.IS_OFFLINE, true);
+        exerciseIntent.putExtra("OfflineTestModel", model.dateTime);
         context.startActivity(exerciseIntent);
     }
 
-    private void startPartTest(OfflineTestModel model){
+    private void startPartTest(OfflineTestModel model) {
         String subjectName = model.baseTest.subjectName;
         String subjectId = model.baseTest.subjectId;
         Intent exerciseIntent = new Intent(context, ExamEngineActivity.class);
@@ -246,19 +263,19 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
         exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, subjectId);
         exerciseIntent.putExtra(Constants.SELECTED_TOPIC, subjectName);
-        exerciseIntent.putExtra(Constants.IS_OFFLINE,true);
-        exerciseIntent.putExtra("OfflineTestModel",model.dateTime);
+        exerciseIntent.putExtra(Constants.IS_OFFLINE, true);
+        exerciseIntent.putExtra("OfflineTestModel", model.dateTime);
         context.startActivity(exerciseIntent);
     }
 
-    private Status getRejectedStatus(List<OfflineTestModel> offlineTestModels){
+    private Status getRejectedStatus(List<OfflineTestModel> offlineTestModels) {
         Status status = new Status();
         for (OfflineTestModel model : offlineTestModels) {
-            if(model.status == Constants.STATUS_COMPLETED){
+            if (model.status == Constants.STATUS_COMPLETED) {
                 ++status.statusCorrect;
-            }else if(model.status == Constants.STATUS_START){
+            } else if (model.status == Constants.STATUS_START) {
                 ++status.statusNotattempted;
-            }else if(model.status == Constants.STATUS_SUSPENDED){
+            } else if (model.status == Constants.STATUS_SUSPENDED) {
                 ++status.statusRejected;
             }
         }

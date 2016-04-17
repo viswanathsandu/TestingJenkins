@@ -17,8 +17,6 @@ import com.education.corsalite.listener.SocialEventsListener;
 import com.education.corsalite.models.responsemodels.ForumPost;
 import com.education.corsalite.services.ApiClientService;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,7 +53,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
         if(mPage==0){
             holder.tvActionLike.setVisibility(View.VISIBLE);
             holder.tvActionComment.setVisibility(View.VISIBLE);
-            holder.tvActionBookmark.setVisibility(View.GONE);
             holder.tvActionDelete.setVisibility(View.GONE);
             holder.tvActionLock.setVisibility(View.GONE);
             holder.tvActionComment.setText("Comment");
@@ -63,7 +60,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
         } else if(mPage==1) {
             holder.tvActionLike.setVisibility(View.GONE);
             holder.tvActionComment.setVisibility(View.VISIBLE);
-            holder.tvActionBookmark.setVisibility(View.GONE);
             holder.tvActionDelete.setVisibility(View.VISIBLE);
             holder.tvActionLock.setVisibility(View.GONE);
             holder.tvActionComment.setText("Edit");
@@ -107,17 +103,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
             holder.tvActionLike.setClickable(!forumPost.IsLiked.equalsIgnoreCase("Y"));
         }
 
-        try {
-            URL url = new URL(new URL(ApiClientService.getBaseUrl()), forumPost.PhotoUrl);
-            Glide.with(holder.ivUserPic.getContext())
-                    .load(url.toString())
-                    .centerCrop()
-                    .placeholder(R.drawable.profile_pic)
-                    .crossFade()
-                    .into(holder.ivUserPic);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
+        Glide.with(holder.ivUserPic.getContext())
+            .load(ApiClientService.getBaseUrl() + forumPost.PhotoUrl)
+            .centerCrop()
+            .placeholder(R.drawable.profile_pic)
+            .crossFade()
+            .into(holder.ivUserPic);
+
     }
 
     private void setupActionListener(PostHolder holder, final int position) {
