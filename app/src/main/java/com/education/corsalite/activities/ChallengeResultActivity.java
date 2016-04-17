@@ -18,12 +18,17 @@ import com.education.corsalite.adapters.ChallengeResultsAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.helpers.WebSocketHelper;
+import com.education.corsalite.models.requestmodels.ChallengeStatusRequest;
 import com.education.corsalite.models.responsemodels.ChallengeCompleteResponseModel;
 import com.education.corsalite.models.responsemodels.ChallengeUser;
+import com.education.corsalite.models.responsemodels.CommonResponseModel;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
+import com.education.corsalite.models.socket.requests.ChallengeTestUpdateRequestEvent;
 import com.education.corsalite.models.socket.response.ChallengeTestCompletedEvent;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.WebUrls;
+import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -56,7 +61,7 @@ public class ChallengeResultActivity extends AbstractBaseActivity {
         frameLayout.addView(myView);
         ButterKnife.bind(this);
         challengeTestId = getIntent().getStringExtra("challenge_test_id");
-        testQuestionPaperId = getIntent().getStringExtra("tesst_question_paper_id");
+        testQuestionPaperId = getIntent().getStringExtra("test_question_paper_id");
         completeChallengeTest();
         resultsLayout.setVisibility(View.GONE);
         refreshLayout.setVisibility(View.VISIBLE);
@@ -76,9 +81,19 @@ public class ChallengeResultActivity extends AbstractBaseActivity {
                         super.success(challengeCompleteResponseModel, response);
                         if(challengeCompleteResponseModel.leaderBoardUsers != null) {
                             getChallengeResults();
+                            updateChallengeStatus("Completed");
                         }
                     }
                 });
+    }
+
+    private void sendChallengeTestCompleteEvent() {
+        try {
+            ChallengeTestCompletedEvent event = new ChallengeTestCompletedEvent(challengeTestId, mCurrentUser.displayName);
+            WebSocketHelper.get(this).sendChallengeTestcompleteEvent(event);
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
     }
 
     private void getChallengeResults() {
@@ -99,6 +114,35 @@ public class ChallengeResultActivity extends AbstractBaseActivity {
                     }
                 });
     }
+
+    private void updateChallengeStatus(final String status) {
+        ChallengeStatusRequest request = new ChallengeStatusRequest(LoginUserCache.getInstance().loginResponse.studentId,
+                challengeTestId, status);
+        ApiManager.getInstance(this).postChallengeStatus(new Gson().toJson(request),
+                new ApiCallback<CommonResponseModel>(this) {
+                    @Override
+                    public void success(CommonResponseModel commonResponseModel, Response response) {
+                        super.success(commonResponseModel, response);
+                        postStatusEvent(status);
+                        sendChallengeTestCompleteEvent();
+                    }
+
+                    @Override
+                    public void failure(CorsaliteError error) {
+                        super.failure(error);
+                        showToast(error.message);
+                    }
+                });
+    }
+
+    private void postStatusEvent(String status) {
+        ChallengeTestUpdateRequestEvent event = new ChallengeTestUpdateRequestEvent();
+        event.setChallengeTestParentId(challengeTestId);
+        event.challengerName = mCurrentUser.displayName;
+        event.challengerStatus = status;
+        WebSocketHelper.get(this).sendChallengeUpdateEvent(event);
+    }
+
 
     private void showResults() {
         int pendingUsers = 0;
@@ -160,6 +204,7 @@ public class ChallengeResultActivity extends AbstractBaseActivity {
     public void onChallengeHistoryClicked() {
         showToast("Under Development");
     }
+
     @OnClick(R.id.challenge_again_btn)
     public void onChallengeAgainClicked() {
         startActivity(new Intent(this, ChallengeActivity.class));

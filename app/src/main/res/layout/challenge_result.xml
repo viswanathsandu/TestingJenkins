@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/ico_challenge_cup" />
+            android:src="@drawable/ico_challenge_cup" />
 
         <LinearLayout
             android:id="@+id/results_header_layout"
