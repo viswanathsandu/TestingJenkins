@@ -288,8 +288,12 @@ public class TestSetupFragment extends BaseFragment {
         selectSubjSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                if(position > 0) {
-                    L.info("Selected exam : " + examsList.get(position - 1).examId+" - "+examsList.get(position - 1).examName);
+                try {
+                    if (position > 0) {
+                        L.info("Selected exam : " + examsList.get(position - 1).examId + " - " + examsList.get(position - 1).examName);
+                    }
+                } catch (Exception e) {
+                    L.error(e.getMessage(), e);
                 }
             }
 

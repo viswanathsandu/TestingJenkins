@@ -15,9 +15,9 @@ public class ChallengeStatusRequest extends BaseModel {
     @SerializedName("challengestatus")
     public String challengeStatus;
 
-    public ChallengeStatusRequest(String studentId, String challengeTestId, boolean accepted) {
+    public ChallengeStatusRequest(String studentId, String challengeTestId, String status) {
         this.studentId = studentId;
         this.challengeTestId = challengeTestId;
-        this.challengeStatus = accepted ? "Accepted" : "Declined";
+        this.challengeStatus = status;
     }
 }

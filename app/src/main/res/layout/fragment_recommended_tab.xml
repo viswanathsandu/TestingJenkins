@@ -3,12 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <include
+        android:id="@+id/top_layout"
+        layout="@layout/study_centre_subject_bar" />
+
     <LinearLayout
         android:id="@+id/headerLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/top_layout"
         android:background="@color/tab_recycler_header"
         android:visibility="gone">
+
         <include layout="@layout/row_recommended_header_list" />
 
     </LinearLayout>
@@ -19,7 +25,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/headerLayout"
         android:scrollbars="vertical"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <ProgressBar
         android:id="@+id/progress_bar_tab"
@@ -28,17 +34,17 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_gravity="center_horizontal"
-        android:visibility="visible"/>
+        android:visibility="visible" />
 
     <TextView
         android:id="@+id/tv_failure_text"
+        style="@style/analytics_text_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:drawableTop="@drawable/ico_info"
         android:gravity="center_horizontal"
-        android:visibility="gone"
-        style="@style/analytics_text_style"
-        android:text="No Analytics available for Recommended Reading"/>
+        android:text="No Analytics available for Recommended Reading"
+        android:visibility="gone" />
 </RelativeLayout>
