@@ -155,6 +155,7 @@ public class RecommendedTabFragment extends Fragment implements RecommendationsA
         tv.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), getString(R.string.roboto_regular)));
         tv.setText(subjectName);
         tv.setTag(subjectId);
+        tv.setPadding(8, 0, 8, 0);
 
         ImageView iv = (ImageView) v.findViewById(R.id.arrow_img);
         iv.setVisibility(View.GONE);
