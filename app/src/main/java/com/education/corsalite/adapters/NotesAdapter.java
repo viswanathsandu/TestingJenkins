@@ -20,7 +20,6 @@ import com.education.corsalite.activities.NotesActivity;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.listener.OnRefreshNotesListener;
 import com.education.corsalite.models.requestmodels.UpdateNoteRequest;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.DefaultNoteResponse;
@@ -176,13 +175,13 @@ public class NotesAdapter extends AbstractRecycleViewAdapter {
             deleteBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    deleteNote((Note) note.tag, (OnRefreshNotesListener) context);
+                    deleteNote((Note) note.tag);
                 }
             });
         }
     }
 
-    private void deleteNote(Note note, final OnRefreshNotesListener listener) {
+    private void deleteNote(Note note) {
         UpdateNoteRequest request = new UpdateNoteRequest(note.studentId, note.idNotes, null);
         ApiManager.getInstance(context).deleteNote(new Gson().toJson(request), new ApiCallback<DefaultNoteResponse>(context) {
             @Override
@@ -194,9 +193,6 @@ public class NotesAdapter extends AbstractRecycleViewAdapter {
             @Override
             public void success(DefaultNoteResponse defaultNoteResponse, Response response) {
                 super.success(defaultNoteResponse, response);
-                if (listener != null) {
-                    listener.refreshNotes();
-                }
                 Toast.makeText(context, "Deleted Note successfully", Toast.LENGTH_SHORT).show();
             }
         });

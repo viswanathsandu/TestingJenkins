@@ -27,7 +27,6 @@ import com.education.corsalite.adapters.TopicAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.listener.OnRefreshNotesListener;
 import com.education.corsalite.models.ChapterModel;
 import com.education.corsalite.models.SubjectModel;
 import com.education.corsalite.models.TopicModel;
@@ -85,17 +84,10 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
     private String isAuthorOnly;
     private String originalContent;
     private String updateContent;
-    private OnRefreshNotesListener onRefreshNotesListener;
-
     private List<ContentIndex> mContentIndexList;
     private List<SubjectModel> mSubjectModelList;
     private List<ChapterModel> mChapterModelList;
     private List<TopicModel> mTopicModelList;
-
-
-    public void setRefreshNoteListener(OnRefreshNotesListener onRefreshNotesListener) {
-        this.onRefreshNotesListener = onRefreshNotesListener;
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -371,9 +363,6 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
                 super.success(defaultNoteResponse, response);
                 Toast.makeText(getActivity(), "Updated Note successfully", Toast.LENGTH_SHORT).show();
                 closeProgress();
-                if(onRefreshNotesListener != null) {
-                    onRefreshNotesListener.refreshNotes();
-                }
                 dismiss();
             }
         });
