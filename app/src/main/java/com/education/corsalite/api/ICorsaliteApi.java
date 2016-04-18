@@ -213,6 +213,10 @@ public interface ICorsaliteApi {
     void addPostToForum(@Body TypedString update, ApiCallback<DefaultForumResponse> callback);
 
     @Headers("Content-Type:application/x-www-form-urlencoded")
+    @POST("/Forums")
+    void addComment(@Body TypedString update, ApiCallback<CommonResponseModel> callback);
+
+    @Headers("Content-Type:application/x-www-form-urlencoded")
     @POST("/ForumDelete")
     void deleteForum(@Body TypedString delete, ApiCallback<CommonResponseModel> callback);
 
@@ -240,7 +244,6 @@ public interface ICorsaliteApi {
     @Headers("Content-Type:application/x-www-form-urlencoded")
     @POST("/CreateChallenge")
     void createChallenge(@Body TypedString insert, ApiCallback<CreateChallengeResponseModel> callback);
-
 
     @GET("/challengeTestDetails")
     void getchallengeTestDetails(@Query("idChallengeTest")String idChallengeTest, @Query("idCourse") String courseId, ApiCallback<ChallengeUserListResponse> callback);

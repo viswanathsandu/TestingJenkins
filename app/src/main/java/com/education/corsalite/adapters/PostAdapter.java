@@ -56,7 +56,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
             holder.tvActionDelete.setVisibility(View.GONE);
             holder.tvActionLock.setVisibility(View.GONE);
             holder.tvActionComment.setText("Comment");
-            holder.tvActionComment.setVisibility(View.GONE);
         } else if(mPage==1) {
             holder.tvActionLike.setVisibility(View.GONE);
             holder.tvActionComment.setVisibility(View.VISIBLE);
@@ -64,6 +63,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
             holder.tvActionLock.setVisibility(View.GONE);
             holder.tvActionComment.setText("Edit");
         }
+
 
         setupActionListener(holder, position);
 
