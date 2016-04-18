@@ -1,12 +1,17 @@
 package com.education.corsalite.activities;
 
+
+import android.support.v4.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 
 import com.education.corsalite.R;
@@ -15,11 +20,13 @@ import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.fragments.EditorDialogFragment;
+import com.education.corsalite.models.responsemodels.Chapter;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.CourseData;
 import com.education.corsalite.models.responsemodels.StudyCenter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -29,15 +36,16 @@ import retrofit.client.Response;
 /**
  * Created by ayush on 27/10/15.
  */
-public class ForumActivity extends AbstractBaseActivity {
-
+public class ForumActivity extends AbstractBaseActivity{
     @Bind(R.id.tabLayout)
     TabLayout mTabLayout;
     @Bind(R.id.viewPager)
     ViewPager mViewPager;
-
+    private List<Chapter> allChapters = new ArrayList<>();
     private LayoutInflater inflater;
     private CourseData mCourseData;
+    private String key;
+    PostPagerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,36 +62,22 @@ public class ForumActivity extends AbstractBaseActivity {
             }
         });
         //set adapter to your ViewPager
-        mViewPager.setAdapter(new PostPagerAdapter(getSupportFragmentManager(), this));
+
+        adapter = new PostPagerAdapter(getSupportFragmentManager(), this);
+        mViewPager.setAdapter(adapter);
         mTabLayout.setupWithViewPager(mViewPager);
     }
 
-    @Override
-    public void onEvent(Course course) {
-        super.onEvent(course);
-        getStudyCentreData(course.courseId.toString());
+    public interface  RefreshForum{
+        void refresh();
     }
 
-    private void getStudyCentreData(String courseId) {
-        ApiManager.getInstance(this).getStudyCentreData(LoginUserCache.getInstance().loginResponse.studentId,
-                courseId, new ApiCallback<List<StudyCenter>>(this) {
-                    @Override
-                    public void failure(CorsaliteError error) {
-                        super.failure(error);
-                        if (error != null && !TextUtils.isEmpty(error.message)) {
-                            showToast(error.message);
-                        }
-                    }
 
-                    @Override
-                    public void success(List<StudyCenter> studyCenters, Response response) {
-                        super.success(studyCenters, response);
-                        if (studyCenters != null) {
-                            mCourseData = new CourseData();
-                            mCourseData.StudyCenter = studyCenters;
-                        }
-                    }
-                });
+   @Override
+    public void onEvent(Course course) {
+        super.onEvent(course);
+       adapter.notifyDataSetChanged();
+       mViewPager.invalidate();
     }
 
     public void onNewPostClicked() {
@@ -94,6 +88,9 @@ public class ForumActivity extends AbstractBaseActivity {
         fragment.setArguments(bundle);
         fragment.show(getSupportFragmentManager(), "ForumEditorDialog");
     }
+
+
+
 
 }
 

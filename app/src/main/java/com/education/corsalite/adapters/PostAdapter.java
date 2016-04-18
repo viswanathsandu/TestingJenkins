@@ -1,6 +1,7 @@
 package com.education.corsalite.adapters;
 
 import android.app.Activity;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.education.corsalite.R;
 import com.education.corsalite.listener.SocialEventsListener;
+import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.ForumPost;
 import com.education.corsalite.services.ApiClientService;
 
@@ -101,7 +103,18 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
         holder.tvLikes.setText(forumPost.postLikes+" Likes");
         holder.tvViews.setText(forumPost.postViews+" Views");
         if(!TextUtils.isEmpty(forumPost.IsLiked)) {
-            holder.tvActionLike.setClickable(!forumPost.IsLiked.equalsIgnoreCase("Y"));
+//            holder.tvActionLike.setClickable(!forumPost.IsLiked.equalsIgnoreCase("Y"));
+            if(forumPost.IsLiked.equalsIgnoreCase("Y")){
+                holder.tvActionLike.setClickable(false);
+                holder.tvActionLike.setBackgroundColor(ContextCompat.getColor(mActivity, android.R.color.holo_green_dark));
+                holder.tvActionLike.setText("Likes ("+forumPost.postLikes+ ")");
+            }else{
+                holder.tvActionLike.setClickable(true);
+                holder.tvActionLike.setBackgroundColor(ContextCompat.getColor(mActivity,R.color.black));
+            }
+        }else{
+            holder.tvActionLike.setClickable(true);
+            holder.tvActionLike.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.black));
         }
 
         Glide.with(holder.ivUserPic.getContext())
