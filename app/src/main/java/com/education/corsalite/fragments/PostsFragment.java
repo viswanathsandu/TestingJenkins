@@ -105,7 +105,7 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
 
     private void loadForumMyComments() {
         showProgress();
-        ApiManager.getInstance(getActivity()).getMyComments(AbstractBaseActivity.selectedCourse.courseId + "", LoginUserCache.getInstance().loginResponse.userId, "MyComments",
+        ApiManager.getInstance(getActivity()).getMyComments(AbstractBaseActivity.selectedCourse.courseId + "", LoginUserCache.getInstance().loginResponse.userId, "forumLibrary",
                 new ApiCallback<ArrayList<ForumPost>>(getActivity()) {
                     @Override
                     public void success(ArrayList<ForumPost> forumPosts, Response response) {
