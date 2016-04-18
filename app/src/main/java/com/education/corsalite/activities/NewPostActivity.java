@@ -32,6 +32,7 @@ import com.education.corsalite.models.requestmodels.AddNoteRequest;
 import com.education.corsalite.models.requestmodels.ForumModel;
 import com.education.corsalite.models.requestmodels.Note;
 import com.education.corsalite.models.requestmodels.UpdateNoteRequest;
+import com.education.corsalite.models.responsemodels.CommonResponseModel;
 import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.DefaultForumResponse;
@@ -68,6 +69,9 @@ public class NewPostActivity extends AbstractBaseActivity {
     private String notesId;
     private String postId;
     private String postsubject;
+    private String userId;
+    private String locked;
+    private String courseId;
     private String isAuthorOnly;
     private String originalContent;
     private String updateContent;
@@ -91,6 +95,9 @@ public class NewPostActivity extends AbstractBaseActivity {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             operation = bundle.getString("operation", "Add");
+            courseId = bundle.getString("course_id", "");
+            userId = bundle.getString("user_id", "");
+            locked = bundle.getString("locked", "");
             studentId = bundle.getString("student_id", "");
             subjectId = bundle.getString("subject_id", "");
             chapterId = bundle.getString("chapter_id", "");
@@ -133,7 +140,7 @@ public class NewPostActivity extends AbstractBaseActivity {
         chapterSpinner = (Spinner) findViewById(R.id.chapter_spinner);
         topicSpinner = (Spinner) findViewById(R.id.topic_spinner);
         progress = findViewById(R.id.progress);
-        if (type.equals("Note")) {
+        if (type.equals("Note") || type.equals("Comment")) {
             forumHeaderLayout.setVisibility(View.GONE);
         } else if (type.equals("Forum")) {
             forumHeaderLayout.setVisibility(View.VISIBLE);
@@ -144,6 +151,8 @@ public class NewPostActivity extends AbstractBaseActivity {
             isAuthorOnlyCkb.setChecked(true);
         } else if (isAuthorOnly.equals("N")) {
             isAuthorOnlyCkb.setChecked(false);
+        } else {
+            isAuthorOnlyCkb.setVisibility(View.GONE);
         }
         titleTxt = (EditText) findViewById(R.id.title_txt);
         if (!TextUtils.isEmpty(postsubject)) {
@@ -193,11 +202,55 @@ public class NewPostActivity extends AbstractBaseActivity {
         webview.loadUrl("file:///android_asset/ckeditor/samples/index.html");
     }
 
+    private void addComment(ForumModel post) {
+        try {
+            showProgress();
+            ApiManager.getInstance(this).addComment(post, new ApiCallback<CommonResponseModel>(this){
+                @Override
+                public void failure(CorsaliteError error) {
+                    super.failure(error);
+                    closeProgress();
+                    showToast("Failed to add comment");
+                }
+                @Override
+                public void success(CommonResponseModel commonResponseModel, Response response) {
+                    super.success(commonResponseModel, response);
+                    closeProgress();
+                    showToast("Comment added successfully");
+                    finish();
+                }
+            });
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+    }
+
+    private ForumModel getComment() {
+        ForumModel post = new ForumModel();
+        post.userId = LoginUserCache.getInstance().getLongResponse().userId;
+        post.studentId = LoginUserCache.getInstance().getLongResponse().studentId;
+        post.courseId = courseId;
+        post.idCourseSubject = subjectId;
+        post.idCourseSubjectChapter = chapterId;
+        post.topicId = topicId;
+        post.postSubject = postsubject;
+        if(!TextUtils.isEmpty(postId)) {
+            post.idUserPost = null;
+            post.referIdUserPost = postId;
+        }
+        post.postContent = updateContent;
+        post.isAuthorOnly = isAuthorOnly;
+        post.locked="Y";
+        return post;
+    }
+
     private void addContent() {
         if (type.equalsIgnoreCase("Note")) {
             addNotes();
         } else if (type.equalsIgnoreCase("Forum")) {
             addEditPostToForum(getForumPost());
+        }else if(type.equalsIgnoreCase("Comment")) {
+            addComment(getComment());
         }
     }
 
@@ -243,7 +296,7 @@ public class NewPostActivity extends AbstractBaseActivity {
                     super.success(defaultNoteResponse, response);
                     closeProgress();
                     Toast.makeText(NewPostActivity.this, "Post added successfully", Toast.LENGTH_SHORT).show();
-                    NewPostActivity.this.finish();
+                    finish();
                 }
             });
         } catch (Exception e) {
@@ -268,7 +321,7 @@ public class NewPostActivity extends AbstractBaseActivity {
                     super.success(defaultNoteResponse, response);
                     closeProgress();
                     Toast.makeText(NewPostActivity.this, "Note added successfully", Toast.LENGTH_SHORT).show();
-                    NewPostActivity.this.finish();
+                    finish();
                 }
             });
         } catch (Exception e) {
@@ -292,7 +345,7 @@ public class NewPostActivity extends AbstractBaseActivity {
                 super.success(defaultNoteResponse, response);
                 Toast.makeText(NewPostActivity.this, "Updated Note successfully", Toast.LENGTH_SHORT).show();
                 closeProgress();
-                NewPostActivity.this.finish();
+                finish();
             }
         });
     }
