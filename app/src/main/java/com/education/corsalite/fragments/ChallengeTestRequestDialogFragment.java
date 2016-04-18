@@ -176,7 +176,21 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
 
     @OnClick(R.id.start_btn)
     public void startTest() {
-        startChallenge();
+        // TODO revert this code before merging
+//        startChallenge();
+        navigateToExam();
+    }
+
+    private void navigateToExam() {
+        mTestQuestionPaperId = mCurrentUser.idTestQuestionPaper;
+        ChallengeTestUpdateRequestEvent event = new ChallengeTestUpdateRequestEvent();
+        event.setChallengeTestRequestEvent(mChallengeTestRequestEvent);
+        event.challengerName = mCurrentUser.displayName;
+        event.challengerStatus = "Started";
+        sendChallengeStartRequestEvent();
+        WebSocketHelper.get(getActivity()).sendChallengeUpdateEvent(event);
+        updateChallengeStatus("In Test");
+        ((AbstractBaseActivity) getActivity()).startChallengeTest(mCurrentUser.idTestQuestionPaper, mCurrentUser.challengeTestParentId);
     }
 
     private void startChallenge() {
