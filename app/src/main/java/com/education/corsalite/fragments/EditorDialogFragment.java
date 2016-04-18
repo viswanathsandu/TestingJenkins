@@ -51,7 +51,10 @@ import retrofit.client.Response;
 
 /**
  * Created by vissu on 11/3/15.
+ *
+ * This was being used before EditorActivity. Now EditorActivity can be used instead of EditorDialogFragment
  */
+@Deprecated
 public class EditorDialogFragment extends DialogFragment implements View.OnClickListener {
 
     private WebView webview;

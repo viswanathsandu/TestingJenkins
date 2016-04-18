@@ -15,7 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.education.corsalite.R;
-import com.education.corsalite.activities.NewPostActivity;
+import com.education.corsalite.activities.EditorActivity;
 import com.education.corsalite.activities.NotesActivity;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
@@ -166,7 +166,7 @@ public class NotesAdapter extends AbstractRecycleViewAdapter {
                         bundle.putString("content_id", noteObj.contentId);
                         bundle.putString("notes_id", noteObj.idNotes);
                         bundle.putString("content", htmlContent);
-                        Intent intent = new Intent(context, NewPostActivity.class);
+                        Intent intent = new Intent(context, EditorActivity.class);
                         intent.putExtras(bundle);
                         context.startActivity(intent);
 

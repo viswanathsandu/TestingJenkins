@@ -16,7 +16,7 @@ import android.widget.Toast;
 import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.activities.ForumActivity;
-import com.education.corsalite.activities.NewPostActivity;
+import com.education.corsalite.activities.EditorActivity;
 import com.education.corsalite.adapters.PostAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
@@ -210,7 +210,7 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
         bundle.putString("post_subject", item.PostSubject);
         bundle.putString("post_id", item.idUserPost);
         bundle.putString("is_author_only", item.isAuthorOnly);
-        Intent intent = new Intent(getActivity(), NewPostActivity.class);
+        Intent intent = new Intent(getActivity(), EditorActivity.class);
         intent.putExtras(bundle);
         startActivity(intent);
     }
@@ -257,7 +257,7 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
         bundle.putString("post_subject", forumPost.PostSubject);
         bundle.putString("content", forumPost.htmlText);
         bundle.putString("is_author_only", forumPost.isAuthorOnly);
-        Intent intent = new Intent(getActivity(), NewPostActivity.class);
+        Intent intent = new Intent(getActivity(), EditorActivity.class);
         intent.putExtras(bundle);
         startActivity(intent);
     }

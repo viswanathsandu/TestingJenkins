@@ -49,7 +49,7 @@ import retrofit.client.Response;
 /**
  * Created by Madhuri on 14-04-2016.
  */
-public class NewPostActivity extends AbstractBaseActivity {
+public class EditorActivity extends AbstractBaseActivity {
     private WebView webview;
     private RelativeLayout forumHeaderLayout;
     private Spinner subjectSpinner;
@@ -283,19 +283,19 @@ public class NewPostActivity extends AbstractBaseActivity {
     private void addEditPostToForum(ForumModel post) {
         try {
             showProgress();
-            ApiManager.getInstance(NewPostActivity.this).addEditForumPost(post, new ApiCallback<DefaultForumResponse>(NewPostActivity.this) {
+            ApiManager.getInstance(EditorActivity.this).addEditForumPost(post, new ApiCallback<DefaultForumResponse>(EditorActivity.this) {
                 @Override
                 public void failure(CorsaliteError error) {
                     super.failure(error);
                     closeProgress();
-                    Toast.makeText(NewPostActivity.this, "Failed to add post on Forum", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditorActivity.this, "Failed to add post on Forum", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void success(DefaultForumResponse defaultNoteResponse, Response response) {
                     super.success(defaultNoteResponse, response);
                     closeProgress();
-                    Toast.makeText(NewPostActivity.this, "Post added successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditorActivity.this, "Post added successfully", Toast.LENGTH_SHORT).show();
                     finish();
                 }
             });
@@ -308,19 +308,19 @@ public class NewPostActivity extends AbstractBaseActivity {
         try {
             showProgress();
             AddNoteRequest request = new AddNoteRequest(studentId, new Note(topicId, contentId, updateContent));
-            ApiManager.getInstance(NewPostActivity.this).addNote(new Gson().toJson(request), new ApiCallback<DefaultNoteResponse>(NewPostActivity.this) {
+            ApiManager.getInstance(EditorActivity.this).addNote(new Gson().toJson(request), new ApiCallback<DefaultNoteResponse>(EditorActivity.this) {
                 @Override
                 public void failure(CorsaliteError error) {
                     super.failure(error);
                     closeProgress();
-                    Toast.makeText(NewPostActivity.this, "Failed to add Note", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditorActivity.this, "Failed to add Note", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void success(DefaultNoteResponse defaultNoteResponse, Response response) {
                     super.success(defaultNoteResponse, response);
                     closeProgress();
-                    Toast.makeText(NewPostActivity.this, "Note added successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditorActivity.this, "Note added successfully", Toast.LENGTH_SHORT).show();
                     finish();
                 }
             });
@@ -332,18 +332,18 @@ public class NewPostActivity extends AbstractBaseActivity {
     private void editNotes() {
         UpdateNoteRequest request = new UpdateNoteRequest(studentId, notesId, updateContent);
         showProgress();
-        ApiManager.getInstance(NewPostActivity.this).updateNote(new Gson().toJson(request), new ApiCallback<DefaultNoteResponse>(NewPostActivity.this) {
+        ApiManager.getInstance(EditorActivity.this).updateNote(new Gson().toJson(request), new ApiCallback<DefaultNoteResponse>(EditorActivity.this) {
             @Override
             public void failure(CorsaliteError error) {
                 super.failure(error);
                 closeProgress();
-                Toast.makeText(NewPostActivity.this, "Failed to update Note", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditorActivity.this, "Failed to update Note", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void success(DefaultNoteResponse defaultNoteResponse, Response response) {
                 super.success(defaultNoteResponse, response);
-                Toast.makeText(NewPostActivity.this, "Updated Note successfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditorActivity.this, "Updated Note successfully", Toast.LENGTH_SHORT).show();
                 closeProgress();
                 finish();
             }
@@ -352,14 +352,14 @@ public class NewPostActivity extends AbstractBaseActivity {
 
     private void getContentIndex(String courseId, String studentId) {
         showProgress();
-        ApiManager.getInstance(NewPostActivity.this).getContentIndex(courseId, studentId,
-                new ApiCallback<List<ContentIndex>>(NewPostActivity.this) {
+        ApiManager.getInstance(EditorActivity.this).getContentIndex(courseId, studentId,
+                new ApiCallback<List<ContentIndex>>(EditorActivity.this) {
                     @Override
                     public void failure(CorsaliteError error) {
                         super.failure(error);
                         closeProgress();
                         if (error != null && !TextUtils.isEmpty(error.message)) {
-                            ((AbstractBaseActivity) NewPostActivity.this).showToast(error.message);
+                            ((AbstractBaseActivity) EditorActivity.this).showToast(error.message);
                         }
                     }
 
@@ -378,7 +378,7 @@ public class NewPostActivity extends AbstractBaseActivity {
     private void showSubject() {
         ContentIndex mContentIndex = mContentIndexList.get(0);
         mSubjectModelList = new ArrayList<>(mContentIndex.subjectModelList);
-        final SubjectAdapter subjectAdapter = new SubjectAdapter(mSubjectModelList, NewPostActivity.this);
+        final SubjectAdapter subjectAdapter = new SubjectAdapter(mSubjectModelList, EditorActivity.this);
         subjectSpinner.setAdapter(subjectAdapter);
 
         int listSize = mSubjectModelList.size();
@@ -409,7 +409,7 @@ public class NewPostActivity extends AbstractBaseActivity {
 
         mChapterModelList = new ArrayList<>(mSubjectModelList.get(subjectPosition).chapters);
         Collections.sort(mChapterModelList); // sort the chapters based on the chapterSortOrder
-        final ChapterAdapter chapterAdapter = new ChapterAdapter(mChapterModelList, NewPostActivity.this);
+        final ChapterAdapter chapterAdapter = new ChapterAdapter(mChapterModelList, EditorActivity.this);
         chapterSpinner.setAdapter(chapterAdapter);
 
         if (!chapterId.isEmpty()) {
@@ -440,7 +440,7 @@ public class NewPostActivity extends AbstractBaseActivity {
         mTopicModelList = new ArrayList<>(mChapterModelList.get(chapterPosition).topicMap);
         Collections.sort(mTopicModelList);
         if (mTopicModelList != null) {
-            final TopicAdapter topicAdapter = new TopicAdapter(mTopicModelList, NewPostActivity.this);
+            final TopicAdapter topicAdapter = new TopicAdapter(mTopicModelList, EditorActivity.this);
             topicSpinner.setAdapter(topicAdapter);
 
             if (!topicId.isEmpty()) {

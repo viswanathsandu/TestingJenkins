@@ -156,7 +156,7 @@
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:theme="@style/UserProfileTheme" />
         <activity
-            android:name=".activities.NewPostActivity"
+            android:name=".activities.EditorActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:theme="@style/UserProfileTheme" />
 

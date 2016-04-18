@@ -91,7 +91,7 @@ public class ForumActivity extends AbstractBaseActivity {
         Bundle bundle = new Bundle();
         bundle.putString("type", "Forum");
         bundle.putString("operation", "Add");
-        Intent post = new Intent(this, NewPostActivity.class);
+        Intent post = new Intent(this, EditorActivity.class);
         post.putExtras(bundle);
         startActivity(post);
     }
