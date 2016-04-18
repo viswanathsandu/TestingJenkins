@@ -253,6 +253,7 @@
                     android:paddingRight="10dp"
                     android:paddingTop="5dp"
                     android:text="Like"
+                    android:visibility="gone"
                     android:textColor="@android:color/white" />
 
                 <TextView
@@ -288,6 +289,25 @@
                     android:paddingRight="10dp"
                     android:paddingTop="5dp"
                     android:text="Delete"
+                    android:visibility="gone"
+                    android:textColor="@android:color/white" />
+
+                <TextView
+                    android:id="@+id/tv_post_action_edit"
+                    fontPath="@string/roboto_regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:background="@android:color/holo_blue_dark"
+                    android:drawableLeft="@drawable/comment_white"
+                    android:drawablePadding="5dp"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="5dp"
+                    android:text="Edit"
+                    android:visibility="gone"
                     android:textColor="@android:color/white" />
 
                 <TextView
@@ -305,6 +325,7 @@
                     android:paddingRight="10dp"
                     android:paddingTop="5dp"
                     android:text="Comment"
+                    android:visibility="gone"
                     android:textColor="@android:color/white" />
             </LinearLayout>
         </LinearLayout>
