@@ -3,7 +3,6 @@ package com.education.corsalite.fragments;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,8 +14,8 @@ import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
-import com.education.corsalite.activities.ForumActivity;
 import com.education.corsalite.activities.EditorActivity;
+import com.education.corsalite.activities.ForumActivity;
 import com.education.corsalite.adapters.PostAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
@@ -68,18 +67,16 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_posts, container, false);
         ButterKnife.bind(this, view);
-
+        setUI();
         return view;
     }
-
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        setUI();
+    public void onResume() {
+        super.onResume();
+        refreshData();
     }
 
     private void setUI() {
@@ -88,6 +85,9 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
         mRecyclerView.setLayoutManager(mLayoutManager);
         mPostAdapter = new PostAdapter(getActivity(), this, mPage);
         mRecyclerView.setAdapter(mPostAdapter);
+    }
+
+    private void refreshData() {
         switch (mPage) {
             case 0:
                 loadForumPosts();
@@ -96,14 +96,14 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
                 loadForumMyPosts();
                 break;
             case 2:
-                loadForumMyComments();
+                loadForumLibrary();
                 break;
             default:
                 break;
         }
     }
 
-    private void loadForumMyComments() {
+    private void loadForumLibrary() {
         showProgress();
         ApiManager.getInstance(getActivity()).getMyComments(AbstractBaseActivity.selectedCourse.courseId + "", LoginUserCache.getInstance().loginResponse.userId, "forumLibrary",
                 new ApiCallback<ArrayList<ForumPost>>(getActivity()) {

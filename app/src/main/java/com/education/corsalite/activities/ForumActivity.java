@@ -59,6 +59,12 @@ public class ForumActivity extends AbstractBaseActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
     public void onEvent(Course course) {
         super.onEvent(course);
         getStudyCentreData(course.courseId.toString());
