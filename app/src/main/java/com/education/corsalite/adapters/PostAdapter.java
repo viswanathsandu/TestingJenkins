@@ -1,6 +1,7 @@
 package com.education.corsalite.adapters;
 
 import android.app.Activity;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -90,16 +91,23 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
             holder.tvTopicName.setText(forumPost.TopicName);
         }
         holder.tvComments.setText(forumPost.postReplies+" Comments");
-        holder.tvLikes.setText(forumPost.postLikes+" Likes");
         holder.tvViews.setText(forumPost.postViews+" Views");
         if(!TextUtils.isEmpty(forumPost.IsLiked)) {
-            holder.tvActionLike.setClickable(!forumPost.IsLiked.equalsIgnoreCase("Y"));
+            if(forumPost.IsLiked.equalsIgnoreCase("Y")){
+                holder.tvActionLike.setClickable(false);
+                holder.tvActionLike.setBackgroundColor(ContextCompat.getColor(mActivity, android.R.color.holo_green_dark));
+                holder.tvActionLike.setText("Liked");
+            }else{
+                holder.tvActionLike.setClickable(true);
+                holder.tvActionLike.setText("Like");
+                holder.tvActionLike.setBackgroundColor(ContextCompat.getColor(mActivity,R.color.black));
+            }
         }
 
         Glide.with(holder.ivUserPic.getContext())
-            .load(ApiClientService.getBaseUrl() + forumPost.PhotoUrl)
-            .centerCrop()
-            .placeholder(R.drawable.profile_pic)
+                .load(ApiClientService.getBaseUrl() + forumPost.PhotoUrl)
+                .centerCrop()
+                .placeholder(R.drawable.profile_pic)
             .crossFade()
             .into(holder.ivUserPic);
 
