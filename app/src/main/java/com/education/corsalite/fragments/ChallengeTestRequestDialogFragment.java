@@ -241,7 +241,6 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
         int accepted = 0;
         int declined = 0;
         int initiated = 0;
-        boolean isAuthor = false;
         for(ChallengeUser friend : mChallengeUsers) {
             if(friend.idStudent.equals(mCurrentUser.idStudent)) {
                 if(friend.status.equalsIgnoreCase("Accepted")) {
