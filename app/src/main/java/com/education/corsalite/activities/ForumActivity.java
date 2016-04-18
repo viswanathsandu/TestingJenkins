@@ -1,8 +1,9 @@
 package com.education.corsalite.activities;
 
 
-import android.support.v4.app.FragmentTransaction;
+
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -19,7 +20,6 @@ import com.education.corsalite.adapters.PostPagerAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.fragments.EditorDialogFragment;
 import com.education.corsalite.models.responsemodels.Chapter;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
@@ -36,7 +36,7 @@ import retrofit.client.Response;
 /**
  * Created by ayush on 27/10/15.
  */
-public class ForumActivity extends AbstractBaseActivity{
+public class ForumActivity extends AbstractBaseActivity {
     @Bind(R.id.tabLayout)
     TabLayout mTabLayout;
     @Bind(R.id.viewPager)
@@ -68,29 +68,20 @@ public class ForumActivity extends AbstractBaseActivity{
         mTabLayout.setupWithViewPager(mViewPager);
     }
 
-    public interface  RefreshForum{
-        void refresh();
-    }
-
-
-   @Override
+    @Override
     public void onEvent(Course course) {
         super.onEvent(course);
-       adapter.notifyDataSetChanged();
-       mViewPager.invalidate();
+        adapter.notifyDataSetChanged();
+        mViewPager.invalidate();
     }
 
+
     public void onNewPostClicked() {
-        EditorDialogFragment fragment = new EditorDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putString("type", "Forum");
         bundle.putString("operation", "Add");
-        fragment.setArguments(bundle);
-        fragment.show(getSupportFragmentManager(), "ForumEditorDialog");
+        Intent post = new Intent(this, NewPostActivity.class);
+        post.putExtras(bundle);
+        startActivity(post);
     }
-
-
-
-
 }
-

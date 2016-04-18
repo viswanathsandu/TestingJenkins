@@ -1,152 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 
-    <ScrollView
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="?attr/actionBarSize"
+        android:background="@android:color/black"
+        android:minHeight="?attr/actionBarSize"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        android:fillViewport="false"/>
 
-        <LinearLayout
-
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <RelativeLayout
-                android:id="@+id/forum_header_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="50dp"
-                android:layout_marginRight="50dp"
-                android:layout_marginTop="10dp"
-                android:visibility="visible">
-
-                <LinearLayout
-                    android:id="@+id/spinners_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:layout_marginBottom="20dp"
-                    android:orientation="horizontal"
-                    android:weightSum="3">
-
-                    <Spinner
-                        android:id="@+id/subject_spinner"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/spinner_bg"
-                        android:drawSelectorOnTop="true"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="20dp" />
-
-                    <Spinner
-                        android:id="@+id/chapter_spinner"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/spinner_bg"
-                        android:drawSelectorOnTop="true"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="20dp" />
-
-                    <Spinner
-                        android:id="@+id/topic_spinner"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/spinner_bg"
-                        android:drawSelectorOnTop="true"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="20dp" />
-
-                </LinearLayout>
-
-                <CheckBox
-                    android:id="@+id/is_author_only_ckb"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@+id/spinners_layout"
-                    android:text="is Author Only" />
-
-                <EditText
-                    android:id="@+id/title_txt"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/spinners_layout"
-                    android:layout_toLeftOf="@+id/is_author_only_ckb"
-                    android:hint="Title" />
-
-            </RelativeLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:layout_marginLeft="50dp"
-                android:layout_marginRight="50dp"
-                android:layout_marginTop="10dp"
-                android:minWidth="600dp"
-                android:orientation="vertical">
-
-                <WebView
-                    android:id="@+id/editor_webview"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:padding="10dp">
-
-                <Button
-                    android:id="@+id/cancel_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="20dp"
-                    android:background="@drawable/white_shape"
-                    android:text="Cancel"
-                    android:textColor="@color/text_black" />
-
-                <Button
-                    android:id="@+id/add_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/white_shape"
-                    android:text="Done"
-                    android:textColor="@color/text_black"
-                    android:visibility="gone" />
-
-                <Button
-                    android:id="@+id/edit_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/white_shape"
-                    android:text="Done"
-                    android:textColor="@color/text_black"
-                    android:visibility="gone" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-    </ScrollView>
-    <LinearLayout
-        android:id="@+id/progress"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:visibility="gone"
-        android:background="@color/white">
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
+        android:layout_marginTop="20dp">
 
-</RelativeLayout>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical" >
+
+                <RelativeLayout
+                    android:id="@+id/forum_header_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="50dp"
+                    android:layout_marginRight="50dp"
+                    android:layout_marginTop="10dp"
+                    android:visibility="visible" >
+
+                    <LinearLayout
+                        android:id="@+id/spinners_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:layout_marginBottom="20dp"
+                        android:orientation="horizontal"
+                        android:weightSum="3" >
+
+                        <Spinner
+                            android:id="@+id/subject_spinner"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/spinner_bg"
+                            android:drawSelectorOnTop="true"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="20dp" />
+
+                        <Spinner
+                            android:id="@+id/chapter_spinner"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/spinner_bg"
+                            android:drawSelectorOnTop="true"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="20dp" />
+
+                        <Spinner
+                            android:id="@+id/topic_spinner"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/spinner_bg"
+                            android:drawSelectorOnTop="true"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="20dp" />
+                    </LinearLayout>
+
+                    <CheckBox
+                        android:id="@+id/is_author_only_ckb"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_below="@+id/spinners_layout"
+                        android:text="is Author Only" />
+
+                    <EditText
+                        android:id="@+id/title_txt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/spinners_layout"
+                        android:layout_toLeftOf="@+id/is_author_only_ckb"
+                        android:hint="Title" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_marginLeft="50dp"
+                    android:layout_marginRight="50dp"
+                    android:layout_marginTop="10dp"
+                    android:minWidth="600dp"
+                    android:orientation="vertical" >
+
+                    <WebView
+                        android:id="@+id/editor_webview"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:padding="10dp" >
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+
+        <LinearLayout
+            android:id="@+id/progress"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:gravity="center"
+            android:visibility="gone" >
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>

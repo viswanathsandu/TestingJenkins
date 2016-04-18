@@ -232,6 +232,11 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     }
 
+    protected void setToolbarForPost() {
+        toolbar.findViewById(R.id.new_post1).setVisibility(View.VISIBLE);
+        setToolbarTitle(getResources().getString(R.string.post));
+    }
+
     protected void setToolbarForExercise(String title) {
         setToolbarTitle(title);
         setDrawerIconInvisible();
@@ -314,6 +319,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         if (config.enableForum != null && config.enableForum) {
             navigationView.findViewById(R.id.navigation_forum).setVisibility(View.VISIBLE);
         }
+
         if (config.enableLogout != null && config.enableLogout) {
             navigationView.findViewById(R.id.navigation_logout).setVisibility(View.VISIBLE);
         }
