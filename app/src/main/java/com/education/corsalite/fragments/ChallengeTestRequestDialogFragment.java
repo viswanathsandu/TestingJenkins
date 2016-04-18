@@ -176,8 +176,6 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
 
     @OnClick(R.id.start_btn)
     public void startTest() {
-        // TODO revert this code before merging
-//        startChallenge();
         navigateToExam();
     }
 
@@ -193,6 +191,10 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
         ((AbstractBaseActivity) getActivity()).startChallengeTest(mCurrentUser.idTestQuestionPaper, mCurrentUser.challengeTestParentId);
     }
 
+    /**
+     *
+     */
+    @Deprecated
     private void startChallenge() {
         ChallengestartRequest request = new ChallengestartRequest(mCurrentUser.challengeTestParentId, examId);
         ApiManager.getInstance(getActivity()).postChallengeStart(new Gson().toJson(request),
