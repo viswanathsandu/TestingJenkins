@@ -289,6 +289,14 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         actionBarDrawerToggle.syncState();
     }
 
+    public Boolean isEnabled(String value){
+        if(value!=null && value.equalsIgnoreCase("true")){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     private void enableNavigationOptions() {
         AppConfig config = AppConfig.getInstance();
         if (config == null) {
@@ -297,22 +305,22 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
         navigationView.findViewById(R.id.navigation_welcome).setVisibility(View.VISIBLE);
 
-        if (config.enableMyProfile != null && config.enableMyProfile) {
+        if (config.enableMyProfile != null && isEnabled(config.enableMyProfile)) {
             navigationView.findViewById(R.id.navigation_profile).setVisibility(View.VISIBLE);
         }
-        if (config.enableStudyCenter != null && config.enableStudyCenter) {
+        if (config.enableStudyCenter != null && isEnabled(config.enableStudyCenter)) {
             navigationView.findViewById(R.id.navigation_study_center).setVisibility(View.VISIBLE);
         }
-        if (config.enableSmartClass != null && config.enableSmartClass) {
+        if (config.enableSmartClass != null && isEnabled(config.enableSmartClass)) {
             navigationView.findViewById(R.id.navigation_smart_class).setVisibility(View.VISIBLE);
         }
-        if (config.enableAnalytics != null && config.enableAnalytics) {
+        if (config.enableAnalytics != null && isEnabled(config.enableAnalytics)) {
             navigationView.findViewById(R.id.navigation_analytics).setVisibility(View.VISIBLE);
         }
-        if (config.enableOffline != null && config.enableOffline) {
+        if (config.enableOffline != null && isEnabled(config.enableOffline)) {
             navigationView.findViewById(R.id.navigation_offline).setVisibility(View.VISIBLE);
         }
-        if (config.enableChallangeTest != null && config.enableChallangeTest) {
+        if (config.enableChallangeTest != null && isEnabled(config.enableChallangeTest)) {
             navigationView.findViewById(R.id.navigation_challenge_your_friends).setVisibility(View.VISIBLE);
         }
 
@@ -320,7 +328,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             navigationView.findViewById(R.id.navigation_forum).setVisibility(View.VISIBLE);
         }
 
-        if (config.enableLogout != null && config.enableLogout) {
+        if (config.enableLogout != null && isEnabled(config.enableLogout)) {
             navigationView.findViewById(R.id.navigation_logout).setVisibility(View.VISIBLE);
         }
 
@@ -752,4 +760,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     protected void startWebSocket() {
         WebSocketHelper.get(this).connectWebSocket();
     }
+
+
+
 }

@@ -6,6 +6,7 @@ import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
 
 import retrofit.client.Response;
 
@@ -15,39 +16,34 @@ import retrofit.client.Response;
 public class AppConfig {
 
     private static AppConfig instance;
-
-    public String baseUrl;
+    @SerializedName("BaseUrl")
+    private String baseUrl;
     public String stageUrl;
     public String productionUrl;
     public String stageSocketUrl;
     public String productionSocketUrl;
     public Boolean enableProduction;
-    public Integer splashDuration;
-    public Boolean enableStudyCenter;
-    public Boolean enableAnalytics;
-    public Boolean enableSmartClass;
-    public Boolean enableMyProfile;
-    public Boolean enableOffline;
-    public Boolean enableLogout;
-    public Boolean enableUsageanalysis;
-    public Boolean enableChallangeTest;
+    @SerializedName("SplashDuration")
+    public String splashDuration;
+    @SerializedName("EnableStudyCenter")
+    public String enableStudyCenter;
+    @SerializedName("EnableAnalytics")
+    public String enableAnalytics;
+    @SerializedName("EnableSmartClass")
+    public String enableSmartClass;
+    @SerializedName("EnableMyProfile")
+    public String enableMyProfile;
+    @SerializedName("EnableOffline")
+    public String enableOffline;
+    @SerializedName("EnableLogout")
+    public String enableLogout;
+    @SerializedName("EnableUsageAnalysis")
+    public String enableUsageanalysis;
+    @SerializedName("EnableChallengeTest")
+    public String enableChallangeTest;
     public Boolean enableForum;
     public String idClientAppConfig;
     public String idUser;
-    public String BaseUrl;
-    public String SplashDuration;
-    public String EnableStudyCenter;
-    public String EnableAnalytics;
-    public String EnableSmartClass;
-    public String EnableMyProfile;
-    public String EnableOffline;
-    public String EnableUsageAnalysis;
-    public String EnableChallengeTest;
-    public String EnableLogout;
-
-
-
-
 
     public static void loadAppconfig(Context context) {
         String jsonResponse = FileUtils.loadJSONFromAsset(context.getAssets(), "config.json");
@@ -60,20 +56,26 @@ public class AppConfig {
             @Override
             public void failure(CorsaliteError error) {
                 super.failure(error);
-                System.out.println("--> Response=" + error.message);
                 }
 
             @Override
             public void success(AppConfig appConfig, Response response) {
                 super.success(appConfig, response);
-
-                System.out.println("-----> Response=" + appConfig.BaseUrl);
+                instance = appConfig;
+                System.out.println("VALIDATING RESPONSE="+instance);
             }
         });
 
     }
 
 
+  public Integer getSplashDuration(){
+        if(splashDuration!=null){
+            return Integer.valueOf(splashDuration);
+        }else{
+            return 5000;
+        }
+    }
 
     public static AppConfig getInstance() {
         return instance;
