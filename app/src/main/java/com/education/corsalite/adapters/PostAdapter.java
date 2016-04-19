@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.education.corsalite.R;
+import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.listener.SocialEventsListener;
 import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.ForumPost;
@@ -52,21 +53,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
     @Override
     public void onBindViewHolder(PostHolder holder, int position) {
         final ForumPost forumPost = mForumPostList.get(position);
-        if(mPage==0){
-            holder.tvActionLike.setVisibility(View.VISIBLE);
-            holder.tvActionComment.setVisibility(View.VISIBLE);
-            holder.tvActionDelete.setVisibility(View.GONE);
-            holder.tvActionLock.setVisibility(View.GONE);
-            holder.tvActionComment.setText("Comment");
-        } else if(mPage==1) {
-            holder.tvActionLike.setVisibility(View.GONE);
-            holder.tvActionComment.setVisibility(View.VISIBLE);
+        holder.tvActionLike.setVisibility(View.VISIBLE);
+        holder.tvActionLock.setVisibility(View.GONE);
+        holder.tvActionComment.setVisibility(View.VISIBLE);
+        if(forumPost.idUser.equals(LoginUserCache.getInstance().getLongResponse().userId)) {
             holder.tvActionDelete.setVisibility(View.VISIBLE);
-            holder.tvActionLock.setVisibility(View.GONE);
-            holder.tvActionComment.setText("Edit");
+            holder.tvActionEdit.setVisibility(View.VISIBLE);
         }
-
-
         setupActionListener(holder, position);
 
         holder.tvQuestion.setText(forumPost.PostSubject);
@@ -205,6 +198,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
         TextView tvActionBookmark;
         @Bind(R.id.tv_post_action_Comment)
         TextView tvActionComment;
+        @Bind(R.id.tv_post_action_edit)
+        TextView tvActionEdit;
         @Bind(R.id.tv_post_action_lock)
         TextView tvActionLock;
         @Bind(R.id.tv_post_action_delete)

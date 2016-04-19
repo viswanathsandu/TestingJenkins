@@ -15,12 +15,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.education.corsalite.R;
-import com.education.corsalite.activities.NewPostActivity;
+import com.education.corsalite.activities.EditorActivity;
 import com.education.corsalite.activities.NotesActivity;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.listener.OnRefreshNotesListener;
 import com.education.corsalite.models.requestmodels.UpdateNoteRequest;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.DefaultNoteResponse;
@@ -166,7 +165,7 @@ public class NotesAdapter extends AbstractRecycleViewAdapter {
                         bundle.putString("content_id", noteObj.contentId);
                         bundle.putString("notes_id", noteObj.idNotes);
                         bundle.putString("content", htmlContent);
-                        Intent intent = new Intent(context, NewPostActivity.class);
+                        Intent intent = new Intent(context, EditorActivity.class);
                         intent.putExtras(bundle);
                         context.startActivity(intent);
 
@@ -176,13 +175,13 @@ public class NotesAdapter extends AbstractRecycleViewAdapter {
             deleteBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    deleteNote((Note) note.tag, (OnRefreshNotesListener) context);
+                    deleteNote((Note) note.tag);
                 }
             });
         }
     }
 
-    private void deleteNote(Note note, final OnRefreshNotesListener listener) {
+    private void deleteNote(Note note) {
         UpdateNoteRequest request = new UpdateNoteRequest(note.studentId, note.idNotes, null);
         ApiManager.getInstance(context).deleteNote(new Gson().toJson(request), new ApiCallback<DefaultNoteResponse>(context) {
             @Override
@@ -194,9 +193,6 @@ public class NotesAdapter extends AbstractRecycleViewAdapter {
             @Override
             public void success(DefaultNoteResponse defaultNoteResponse, Response response) {
                 super.success(defaultNoteResponse, response);
-                if (listener != null) {
-                    listener.refreshNotes();
-                }
                 Toast.makeText(context, "Deleted Note successfully", Toast.LENGTH_SHORT).show();
             }
         });
