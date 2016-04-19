@@ -1,7 +1,7 @@
 package com.education.corsalite.adapters;
 
 import android.app.Activity;
-import android.support.v4.content.ContextCompat;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -52,9 +52,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
     @Override
     public void onBindViewHolder(PostHolder holder, int position) {
         final ForumPost forumPost = mForumPostList.get(position);
-        holder.tvActionLike.setVisibility(View.GONE);
         holder.tvActionLock.setVisibility(View.GONE);
-        holder.tvActionComment.setVisibility(View.GONE);
+        holder.tvActionComment.setVisibility(View.INVISIBLE);
         if(forumPost.idUser.equals(LoginUserCache.getInstance().getLongResponse().userId)) {
             holder.tvActionDelete.setVisibility(View.VISIBLE);
             holder.tvActionEdit.setVisibility(View.VISIBLE);
@@ -95,12 +94,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
         if(!TextUtils.isEmpty(forumPost.IsLiked)) {
             if(forumPost.IsLiked.equalsIgnoreCase("Y")){
                 holder.tvLikes.setClickable(false);
-                holder.tvLikes.setBackgroundColor(ContextCompat.getColor(mActivity, android.R.color.holo_green_dark));
-                holder.tvLikes.setText(forumPost.postLikes+" Likes");
+                Drawable img = mActivity.getResources().getDrawable( R.drawable.like_green);
+                holder.tvLikes.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
+                holder.tvLikes.setText(forumPost.postLikes + " Likes");
             }else{
                 holder.tvLikes.setClickable(true);
+                Drawable img = mActivity.getResources().getDrawable( R.drawable.like);
+                holder.tvLikes.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
                 holder.tvLikes.setText("Like");
-                holder.tvLikes.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.black));
+
             }
         }
 
@@ -109,8 +111,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
                 .load(ApiClientService.getBaseUrl() + forumPost.PhotoUrl)
                 .centerCrop()
                 .placeholder(R.drawable.profile_pic)
-            .crossFade()
-            .into(holder.ivUserPic);
+                .crossFade()
+                .into(holder.ivUserPic);
 
     }
 
@@ -196,12 +198,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
         TextView tvActionComment;
         @Bind(R.id.tv_post_action_edit)
         TextView tvActionEdit;
-       @Bind(R.id.tv_post_action_lock)
+        @Bind(R.id.tv_post_action_lock)
         TextView tvActionLock;
         @Bind(R.id.tv_post_action_delete)
         TextView tvActionDelete;
-        @Bind(R.id.tv_post_action_Like)
-        TextView tvActionLike;
         @Bind(R.id.tv_post_question)
         TextView tvQuestion;
         @Bind(R.id.tv_post_date)
