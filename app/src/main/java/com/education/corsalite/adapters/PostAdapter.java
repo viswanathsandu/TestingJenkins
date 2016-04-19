@@ -2,6 +2,7 @@ package com.education.corsalite.adapters;
 
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.education.corsalite.R;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.listener.SocialEventsListener;
+import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.ForumPost;
 import com.education.corsalite.services.ApiClientService;
 
@@ -105,7 +107,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
 
             }
         }
-
 
         Glide.with(holder.ivUserPic.getContext())
                 .load(ApiClientService.getBaseUrl() + forumPost.PhotoUrl)

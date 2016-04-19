@@ -226,7 +226,10 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     protected void setToolbarForForum() {
         toolbar.findViewById(R.id.new_post).setVisibility(View.VISIBLE);
+        toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
         setToolbarTitle(getResources().getString(R.string.forum));
+        loadCoursesList();
+
     }
 
     protected void setToolbarForPost() {
@@ -534,6 +537,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     private void loadCoursesList() {
+
         if (LoginUserCache.getInstance().loginResponse == null || LoginUserCache.getInstance().loginResponse.studentId == null) {
             return;
         }
