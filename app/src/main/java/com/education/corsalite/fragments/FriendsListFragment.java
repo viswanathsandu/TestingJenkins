@@ -34,7 +34,7 @@ import retrofit.client.Response;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class FriendsListFragment extends BaseFragment  implements SearchView.OnQueryTextListener, SearchView.OnCloseListener {
+public class FriendsListFragment extends BaseFragment implements SearchView.OnQueryTextListener, SearchView.OnCloseListener {
 
     private static final String ARG_CALLBACK = "ARG_CALLBACK";
     private SearchView mFriendSearchView;
@@ -92,7 +92,7 @@ public class FriendsListFragment extends BaseFragment  implements SearchView.OnQ
         mTextViewCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               getActivity().finish();
+                getActivity().finish();
             }
         });
         return view;
@@ -170,7 +170,7 @@ public class FriendsListFragment extends BaseFragment  implements SearchView.OnQ
     }
 
     private void updateFriendsListStatus() {
-        if(friendsData != null && friendsData.friendsList != null){
+        if (friendsData != null && friendsData.friendsList != null) {
             for (FriendsData.Friend friend : friendsData.friendsList) {
                 friend.isOnline = challengeFriendsId.contains(friend.idStudent);
             }
@@ -181,14 +181,16 @@ public class FriendsListFragment extends BaseFragment  implements SearchView.OnQ
         showToast("User list event");
         challengeFriendsId = event.users;
         showFriendsList();
-        L.info("Websocket : "+new Gson().toJson(event.users));
+        L.info("Websocket : " + new Gson().toJson(event.users));
     }
 
     private void fetchDisplayName() {
-        for (FriendsData.Friend friend : friendsData.friendsList) {
-            if(friend.idStudent.equals(LoginUserCache.getInstance().getLongResponse().studentId)) {
-                if(getActivity() instanceof ChallengeActivity) {
-                    ((ChallengeActivity)getActivity()).mDisplayName = friend.displayName;
+        if (friendsData != null && friendsData.friendsList != null) {
+            for (FriendsData.Friend friend : friendsData.friendsList) {
+                if (friend.idStudent.equals(LoginUserCache.getInstance().getLongResponse().studentId)) {
+                    if (getActivity() instanceof ChallengeActivity) {
+                        ((ChallengeActivity) getActivity()).mDisplayName = friend.displayName;
+                    }
                 }
             }
         }
