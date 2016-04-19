@@ -119,6 +119,8 @@ public class ApiManager {
         }
     }
 
+
+
     public void logout(String update, ApiCallback<LogoutResponse> callback) {
         if (isApiOnline()) {
             ApiClientService.get().logout(new TypedString("Update=" + update), callback);
@@ -200,6 +202,12 @@ public class ApiManager {
         }
 
     }
+
+
+    public void loadAppConfig(){
+
+    }
+
 
     public void getTestCoverage(String studentId, String courseId, ApiCallback<List<TestCoverage>> callback) {
         if (isApiOnline()) {
@@ -559,13 +567,19 @@ public class ApiManager {
 
     public void getPartTestGrid(String studentId,String courseId,String subjectId,ApiCallback<PartTestModel> callback){
         if (isApiOnline()){
-            ApiClientService.get().getPartTestGrid(studentId,courseId,subjectId,callback);
+            ApiClientService.get().getPartTestGrid(studentId, courseId, subjectId, callback);
         }
     }
 
     public void postBookmark(Bookmark bookmark, ApiCallback<BookmarkResponse> callback){
         if(isApiOnline()){
-            ApiClientService.get().addDeleteBookmark(new TypedString(("Update="+ new Gson().toJson(bookmark))), callback);
+            ApiClientService.get().addDeleteBookmark(new TypedString(("Update=" + new Gson().toJson(bookmark))), callback);
+        }
+    }
+
+    public void getAppConfig(String idUser, ApiCallback<String> callback){
+        if(isApiOnline()){
+            ApiClientService.get().getAppConfig(idUser,callback);
         }
     }
 }

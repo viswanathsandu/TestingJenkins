@@ -31,7 +31,8 @@ public class SplashActivity extends AbstractBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        AppConfig.loadAppconfig(SplashActivity.this);
+       AppConfig.loadAppconfig(SplashActivity.this);
+
         checkProduction();
         new CountDownTimer(AppConfig.getInstance().splashDuration, 100) {
             @Override
@@ -105,6 +106,7 @@ public class SplashActivity extends AbstractBaseActivity {
     private void onLoginsuccess(LoginResponse response, boolean fetchLocal) {
         if(response != null && response.studentId != null) {
             LoginUserCache.getInstance().setLoginResponse(response);
+            AppConfig.loadAppConfigFromService(SplashActivity.this, response.userId);
             if(!fetchLocal) {
                 isLoginSuccess = true;
                 showToast(getResources().getString(R.string.login_successful));

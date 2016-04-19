@@ -264,4 +264,9 @@ public interface ICorsaliteApi {
 
     @GET("/PartTestGrid")
     void getPartTestGrid(@Query("idStudent")String studentId,@Query("idCourse")String courseId,@Query("idSubject") String subjectId,ApiCallback<PartTestModel> callback);
+
+    @GET("/ClientAppConfig")
+    void getAppConfig(@Query("idUser")String studentId,ApiCallback<String> callback);
+
+
 }
