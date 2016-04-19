@@ -176,9 +176,25 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
 
     @OnClick(R.id.start_btn)
     public void startTest() {
-        startChallenge();
+        navigateToExam();
     }
 
+    private void navigateToExam() {
+        mTestQuestionPaperId = mCurrentUser.idTestQuestionPaper;
+        ChallengeTestUpdateRequestEvent event = new ChallengeTestUpdateRequestEvent();
+        event.setChallengeTestRequestEvent(mChallengeTestRequestEvent);
+        event.challengerName = mCurrentUser.displayName;
+        event.challengerStatus = "Started";
+        sendChallengeStartRequestEvent();
+        WebSocketHelper.get(getActivity()).sendChallengeUpdateEvent(event);
+        updateChallengeStatus("In Test");
+        ((AbstractBaseActivity) getActivity()).startChallengeTest(mCurrentUser.idTestQuestionPaper, mCurrentUser.challengeTestParentId);
+    }
+
+    /**
+     *
+     */
+    @Deprecated
     private void startChallenge() {
         ChallengestartRequest request = new ChallengestartRequest(mCurrentUser.challengeTestParentId, examId);
         ApiManager.getInstance(getActivity()).postChallengeStart(new Gson().toJson(request),
@@ -225,7 +241,6 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
         int accepted = 0;
         int declined = 0;
         int initiated = 0;
-        boolean isAuthor = false;
         for(ChallengeUser friend : mChallengeUsers) {
             if(friend.idStudent.equals(mCurrentUser.idStudent)) {
                 if(friend.status.equalsIgnoreCase("Accepted")) {

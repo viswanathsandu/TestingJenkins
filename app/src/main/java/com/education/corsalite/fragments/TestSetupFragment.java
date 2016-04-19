@@ -240,7 +240,9 @@ public class TestSetupFragment extends BaseFragment {
 
     @OnClick(R.id.tv_testsetup_cancel)
     public void onCancelClick() {
-        mTestSetupCallback.popUpFriendsListFragment();
+        if(mTestSetupCallback != null) {
+            mTestSetupCallback.popUpFriendsListFragment();
+        }
     }
 
     private void loadContent() {

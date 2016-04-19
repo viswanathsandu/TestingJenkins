@@ -69,6 +69,12 @@ public class ForumActivity extends AbstractBaseActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
     public void onEvent(Course course) {
         super.onEvent(course);
         adapter.notifyDataSetChanged();
@@ -80,7 +86,7 @@ public class ForumActivity extends AbstractBaseActivity {
         Bundle bundle = new Bundle();
         bundle.putString("type", "Forum");
         bundle.putString("operation", "Add");
-        Intent post = new Intent(this, NewPostActivity.class);
+        Intent post = new Intent(this, EditorActivity.class);
         post.putExtras(bundle);
         startActivity(post);
     }

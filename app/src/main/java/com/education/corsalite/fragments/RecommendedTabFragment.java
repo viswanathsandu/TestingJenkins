@@ -30,6 +30,7 @@ import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.SystemUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
@@ -100,7 +101,7 @@ public class RecommendedTabFragment extends Fragment implements RecommendationsA
 
     private void getCourseData(String courseId) {
         ApiManager.getInstance(getActivity()).getCourseAnalysisData(LoginUserCache.getInstance().loginResponse.studentId,
-                courseId, null, "Topic", "None", "180", "true",
+                courseId, null, "Topic", "Month", "365", "false",
                 new ApiCallback<List<CourseAnalysis>>(getActivity()) {
                     @Override
                     public void failure(CorsaliteError error) {
@@ -191,7 +192,7 @@ public class RecommendedTabFragment extends Fragment implements RecommendationsA
                 selectedSubjectCourses.add(completeCourses.get(i));
             }
         }
-
+        Collections.sort(selectedSubjectCourses);
         if (selectedSubjectCourses.size() > 0) {
             mAdapter = new RecommendationsAdapter(selectedSubjectCourses, mInflater, RecommendedTabFragment.this);
             mRecyclerView.setAdapter(mAdapter);
@@ -202,7 +203,6 @@ public class RecommendedTabFragment extends Fragment implements RecommendationsA
             mFailureText.setText("No Analytics available for " + subjectName + " Recommended Reading");
         }
     }
-
     @Override
     public void onItemClick(int position) {
         CourseAnalysis courseAnalysis = (CourseAnalysis) mAdapter.getItem(position);
