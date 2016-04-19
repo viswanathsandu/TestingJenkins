@@ -1,6 +1,7 @@
 package com.education.corsalite.adapters;
 
 import android.app.Activity;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -51,9 +52,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
     @Override
     public void onBindViewHolder(PostHolder holder, int position) {
         final ForumPost forumPost = mForumPostList.get(position);
-        holder.tvActionLike.setVisibility(View.VISIBLE);
         holder.tvActionLock.setVisibility(View.GONE);
-        holder.tvActionComment.setVisibility(View.VISIBLE);
+        holder.tvActionComment.setVisibility(View.INVISIBLE);
         if(forumPost.idUser.equals(LoginUserCache.getInstance().getLongResponse().userId)) {
             holder.tvActionDelete.setVisibility(View.VISIBLE);
             holder.tvActionEdit.setVisibility(View.VISIBLE);
@@ -90,18 +90,29 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
             holder.tvTopicName.setText(forumPost.TopicName);
         }
         holder.tvComments.setText(forumPost.postReplies+" Comments");
-        holder.tvLikes.setText(forumPost.postLikes+" Likes");
         holder.tvViews.setText(forumPost.postViews+" Views");
         if(!TextUtils.isEmpty(forumPost.IsLiked)) {
-            holder.tvActionLike.setClickable(!forumPost.IsLiked.equalsIgnoreCase("Y"));
+            if(forumPost.IsLiked.equalsIgnoreCase("Y")){
+                holder.tvLikes.setClickable(false);
+                Drawable img = mActivity.getResources().getDrawable( R.drawable.like_green);
+                holder.tvLikes.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
+                holder.tvLikes.setText(forumPost.postLikes + " Likes");
+            }else{
+                holder.tvLikes.setClickable(true);
+                Drawable img = mActivity.getResources().getDrawable( R.drawable.like);
+                holder.tvLikes.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
+                holder.tvLikes.setText("Like");
+
+            }
         }
 
+
         Glide.with(holder.ivUserPic.getContext())
-            .load(ApiClientService.getBaseUrl() + forumPost.PhotoUrl)
-            .centerCrop()
-            .placeholder(R.drawable.profile_pic)
-            .crossFade()
-            .into(holder.ivUserPic);
+                .load(ApiClientService.getBaseUrl() + forumPost.PhotoUrl)
+                .centerCrop()
+                .placeholder(R.drawable.profile_pic)
+                .crossFade()
+                .into(holder.ivUserPic);
 
     }
 
@@ -113,7 +124,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
             }
         });
 
-        holder.tvActionLike.setOnClickListener(new View.OnClickListener() {
+        holder.tvLikes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mSocialEventsListener.onLikeClicked(position);
@@ -134,14 +145,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
         });
 
         if(mPage==0){
-            holder.tvActionComment.setOnClickListener(new View.OnClickListener() {
+            holder.tvComments.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     mSocialEventsListener.onCommentClicked(position);
                 }
             });
         } else if(mPage==1) {
-            holder.tvActionComment.setOnClickListener(new View.OnClickListener() {
+            holder.tvComments.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     mSocialEventsListener.onEditClicked(position);
@@ -191,8 +202,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
         TextView tvActionLock;
         @Bind(R.id.tv_post_action_delete)
         TextView tvActionDelete;
-        @Bind(R.id.tv_post_action_Like)
-        TextView tvActionLike;
         @Bind(R.id.tv_post_question)
         TextView tvQuestion;
         @Bind(R.id.tv_post_date)
