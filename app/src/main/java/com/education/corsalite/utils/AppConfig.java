@@ -32,6 +32,22 @@ public class AppConfig {
     public Boolean enableUsageanalysis;
     public Boolean enableChallangeTest;
     public Boolean enableForum;
+    public String idClientAppConfig;
+    public String idUser;
+    public String BaseUrl;
+    public String SplashDuration;
+    public String EnableStudyCenter;
+    public String EnableAnalytics;
+    public String EnableSmartClass;
+    public String EnableMyProfile;
+    public String EnableOffline;
+    public String EnableUsageAnalysis;
+    public String EnableChallengeTest;
+    public String EnableLogout;
+
+
+
+
 
     public static void loadAppconfig(Context context) {
         String jsonResponse = FileUtils.loadJSONFromAsset(context.getAssets(), "config.json");
@@ -40,7 +56,7 @@ public class AppConfig {
 
 
     public static void loadAppConfigFromService(Context context, String idUser){
-        ApiManager.getInstance(context).getAppConfig(idUser, new ApiCallback<String>(context) {
+        ApiManager.getInstance(context).getAppConfig(idUser, new ApiCallback<AppConfig>(context) {
             @Override
             public void failure(CorsaliteError error) {
                 super.failure(error);
@@ -48,10 +64,10 @@ public class AppConfig {
                 }
 
             @Override
-            public void success(String s, Response response) {
-                super.success(s, response);
-//                instance = new Gson().fromJson(s, AppConfig.class);
-                System.out.println("--> Response="+response.getStatus());
+            public void success(AppConfig appConfig, Response response) {
+                super.success(appConfig, response);
+
+                System.out.println("-----> Response=" + appConfig.BaseUrl);
             }
         });
 

@@ -577,7 +577,7 @@ public class ApiManager {
         }
     }
 
-    public void getAppConfig(String idUser, ApiCallback<String> callback){
+    public void getAppConfig(String idUser, ApiCallback<com.education.corsalite.utils.AppConfig> callback){
         if(isApiOnline()){
             ApiClientService.get().getAppConfig(idUser,callback);
         }
