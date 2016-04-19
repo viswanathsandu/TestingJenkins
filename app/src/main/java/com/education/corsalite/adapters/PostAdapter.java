@@ -52,9 +52,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
     @Override
     public void onBindViewHolder(PostHolder holder, int position) {
         final ForumPost forumPost = mForumPostList.get(position);
-        holder.tvActionLike.setVisibility(View.VISIBLE);
+        holder.tvActionLike.setVisibility(View.GONE);
         holder.tvActionLock.setVisibility(View.GONE);
-        holder.tvActionComment.setVisibility(View.VISIBLE);
+        holder.tvActionComment.setVisibility(View.GONE);
         if(forumPost.idUser.equals(LoginUserCache.getInstance().getLongResponse().userId)) {
             holder.tvActionDelete.setVisibility(View.VISIBLE);
             holder.tvActionEdit.setVisibility(View.VISIBLE);
@@ -94,15 +94,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
         holder.tvViews.setText(forumPost.postViews+" Views");
         if(!TextUtils.isEmpty(forumPost.IsLiked)) {
             if(forumPost.IsLiked.equalsIgnoreCase("Y")){
-                holder.tvActionLike.setClickable(false);
-                holder.tvActionLike.setBackgroundColor(ContextCompat.getColor(mActivity, android.R.color.holo_green_dark));
-                holder.tvActionLike.setText("Liked");
+                holder.tvLikes.setClickable(false);
+                holder.tvLikes.setBackgroundColor(ContextCompat.getColor(mActivity, android.R.color.holo_green_dark));
+                holder.tvLikes.setText(forumPost.postLikes+" Likes");
             }else{
-                holder.tvActionLike.setClickable(true);
-                holder.tvActionLike.setText("Like");
-                holder.tvActionLike.setBackgroundColor(ContextCompat.getColor(mActivity,R.color.black));
+                holder.tvLikes.setClickable(true);
+                holder.tvLikes.setText("Like");
+                holder.tvLikes.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.black));
             }
         }
+
 
         Glide.with(holder.ivUserPic.getContext())
                 .load(ApiClientService.getBaseUrl() + forumPost.PhotoUrl)
@@ -121,7 +122,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
             }
         });
 
-        holder.tvActionLike.setOnClickListener(new View.OnClickListener() {
+        holder.tvLikes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mSocialEventsListener.onLikeClicked(position);
@@ -142,14 +143,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
         });
 
         if(mPage==0){
-            holder.tvActionComment.setOnClickListener(new View.OnClickListener() {
+            holder.tvComments.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     mSocialEventsListener.onCommentClicked(position);
                 }
             });
         } else if(mPage==1) {
-            holder.tvActionComment.setOnClickListener(new View.OnClickListener() {
+            holder.tvComments.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     mSocialEventsListener.onEditClicked(position);
@@ -195,7 +196,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
         TextView tvActionComment;
         @Bind(R.id.tv_post_action_edit)
         TextView tvActionEdit;
-        @Bind(R.id.tv_post_action_lock)
+       @Bind(R.id.tv_post_action_lock)
         TextView tvActionLock;
         @Bind(R.id.tv_post_action_delete)
         TextView tvActionDelete;
