@@ -42,12 +42,10 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
     public static final String MEAL_TYPE_ARG = "MEAL_TYPE_ARG";
 
     private int mPage;
-    @Bind(R.id.rcv_posts)
-    RecyclerView mRecyclerView;
-    @Bind(R.id.empty_layout)
-    View emptyLayout;
-    @Bind(R.id.new_post_btn)
-    Button newPostBtn;
+    @Bind(R.id.rcv_posts) RecyclerView mRecyclerView;
+    @Bind(R.id.empty_layout) View emptyLayout;
+    @Bind(R.id.new_post_btn) Button newPostBtn;
+    @Bind(R.id.progress_layout) View progress;
 
     private LinearLayoutManager mLayoutManager;
     private PostAdapter mPostAdapter;
@@ -98,81 +96,48 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
             case 2:
                 loadForumLibrary();
                 break;
-            default:
-                break;
         }
     }
 
+    ApiCallback<ArrayList<ForumPost>> postsCallback = new ApiCallback<ArrayList<ForumPost>>(getActivity()) {
+        @Override
+        public void success(ArrayList<ForumPost> forumPosts, Response response) {
+            super.success(forumPosts, response);
+            closeProgress();
+            if (forumPosts != null && !forumPosts.isEmpty()) {
+                setForumPosts(forumPosts);
+            } else {
+                emptyLayout.setVisibility(View.VISIBLE);
+            }
+        }
+
+        @Override
+        public void failure(CorsaliteError error) {
+            super.failure(error);
+            closeProgress();
+            emptyLayout.setVisibility(View.VISIBLE);
+        }
+    };
+
     private void loadForumLibrary() {
         showProgress();
-        ApiManager.getInstance(getActivity()).getMyComments(AbstractBaseActivity.selectedCourse.courseId + "", LoginUserCache.getInstance().loginResponse.userId, "forumLibrary",
-                new ApiCallback<ArrayList<ForumPost>>(getActivity()) {
-                    @Override
-                    public void success(ArrayList<ForumPost> forumPosts, Response response) {
-                        super.success(forumPosts, response);
-                        closeProgress();
-                        if (forumPosts != null && !forumPosts.isEmpty()) {
-                            setForumPosts(forumPosts);
-                        } else {
-                            emptyLayout.setVisibility(View.VISIBLE);
-                        }
-                    }
-
-                    @Override
-                    public void failure(CorsaliteError error) {
-                        super.failure(error);
-                        closeProgress();
-                        emptyLayout.setVisibility(View.VISIBLE);
-                    }
-                });
+        ApiManager.getInstance(getActivity()).getMyComments(AbstractBaseActivity.selectedCourse.courseId + "",
+                LoginUserCache.getInstance().loginResponse.userId, "forumLibrary",
+                postsCallback);
     }
 
     private void loadForumPosts() {
         showProgress();
-        ApiManager.getInstance(getActivity()).getAllPosts(AbstractBaseActivity.selectedCourse.courseId + "", LoginUserCache.getInstance().loginResponse.userId, "AllPosts", "", "",
-                new ApiCallback<ArrayList<ForumPost>>(getActivity()) {
-                    @Override
-                    public void success(ArrayList<ForumPost> forumPosts, Response response) {
-                        super.success(forumPosts, response);
-                        closeProgress();
-                        if (forumPosts != null && !forumPosts.isEmpty()) {
-                            setForumPosts(forumPosts);
-                        } else {
-                            emptyLayout.setVisibility(View.VISIBLE);
-                        }
-                    }
-
-                    @Override
-                    public void failure(CorsaliteError error) {
-                        super.failure(error);
-                        closeProgress();
-                        emptyLayout.setVisibility(View.VISIBLE);
-                    }
-                });
+        ApiManager.getInstance(getActivity()).getAllPosts(AbstractBaseActivity.selectedCourse.courseId + "",
+                LoginUserCache.getInstance().loginResponse.userId, "AllPosts", "", "",
+                postsCallback);
     }
 
     private void loadForumMyPosts() {
         showProgress();
-        ApiManager.getInstance(getActivity()).getMyPosts(AbstractBaseActivity.selectedCourse.courseId + "", LoginUserCache.getInstance().loginResponse.userId,
-                new ApiCallback<ArrayList<ForumPost>>(getActivity()) {
-                    @Override
-                    public void success(ArrayList<ForumPost> forumPosts, Response response) {
-                        super.success(forumPosts, response);
-                        closeProgress();
-                        if (forumPosts != null && !forumPosts.isEmpty()) {
-                            setForumPosts(forumPosts);
-                        } else {
-                            emptyLayout.setVisibility(View.VISIBLE);
-                        }
-                    }
-
-                    @Override
-                    public void failure(CorsaliteError error) {
-                        super.failure(error);
-                        closeProgress();
-                        emptyLayout.setVisibility(View.VISIBLE);
-                    }
-                });
+        ApiManager.getInstance(getActivity()).getMyPosts(AbstractBaseActivity.selectedCourse.courseId + "",
+                LoginUserCache.getInstance().loginResponse.userId,
+                postsCallback);
     }
 
     private void setForumPosts(List<ForumPost> forumPosts) {
@@ -182,7 +147,6 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
     @Override
     public void onLikeClicked(final int position) {
         final ForumPost forumPost = mPostAdapter.getItem(position);
-
         ApiManager.getInstance(getActivity()).addForumLike(new ForumLikeRequest(forumPost.idUser, forumPost.idUserPost),
                 new ApiCallback<CommonResponseModel>(getActivity()) {
                     @Override
@@ -310,4 +274,13 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
         }
     }
 
+    @Override
+    public void showProgress() {
+        progress.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void closeProgress() {
+        progress.setVisibility(View.GONE);
+    }
 }
