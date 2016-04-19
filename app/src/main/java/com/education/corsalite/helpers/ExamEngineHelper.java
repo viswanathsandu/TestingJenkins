@@ -19,6 +19,7 @@ import com.education.corsalite.models.requestmodels.PostQuestionPaperRequest;
 import com.education.corsalite.models.responsemodels.Chapter;
 import com.education.corsalite.models.responsemodels.Exam;
 import com.education.corsalite.models.responsemodels.ExamModel;
+import com.education.corsalite.models.responsemodels.PartTestGridElement;
 import com.education.corsalite.models.responsemodels.PostExamTemplate;
 import com.education.corsalite.models.responsemodels.PostQuestionPaper;
 import com.education.corsalite.utils.L;
@@ -37,6 +38,7 @@ public class ExamEngineHelper {
     private Context mActivity;
     private ExamType examType;
     private BaseTest test;
+    List<PartTestGridElement> partTestGridelements;
 
     public ExamEngineHelper(Context activity) {
         this.mActivity = activity;
@@ -57,11 +59,12 @@ public class ExamEngineHelper {
         getStandardExamByCourse(callback);
     }
 
-    public void loadPartTest(String subjectName, String subjectId, OnExamLoadCallback callback) {
+    public void loadPartTest(String subjectName, String subjectId, List<PartTestGridElement> elements, OnExamLoadCallback callback) {
         if (callback == null) {
             L.error("No callback registered");
             return;
         }
+        this.partTestGridelements = elements;
         examType = ExamType.PART_TEST;
         test = new PartTest();
         test.subjectId = subjectId;
@@ -108,17 +111,21 @@ public class ExamEngineHelper {
         postCustomExamTemplate.examId = examsList.get(0).examId;
         postCustomExamTemplate.examName = examsList.get(0).examName;
         postCustomExamTemplate.examTemplateConfig = new ArrayList<>();
-
         ExamTemplateConfig examTemplateConfig = new ExamTemplateConfig();
         examTemplateConfig.subjectId = test.subjectId;
         examTemplateConfig.questionCount = questionsCount == null ? "" : questionsCount;
         examTemplateConfig.examTemplateChapter = new ArrayList<>();
-        ExamTemplateChapter examTemplateChapter = new ExamTemplateChapter();
-        examTemplateChapter.chapterID = chapterId;
-        examTemplateChapter.topicIDs = topicIds;
-        // TODO : for part test, it has to be updated
-        examTemplateChapter.questionCount = "";
-        examTemplateConfig.examTemplateChapter.add(examTemplateChapter);
+        if(partTestGridelements != null && !partTestGridelements.isEmpty()) {
+            for(PartTestGridElement element : partTestGridelements) {
+                examTemplateConfig.examTemplateChapter.add(new ExamTemplateChapter(element.idCourseSubjectChapter, element.recommendedQuestionCount));
+            }
+        } else {
+            ExamTemplateChapter examTemplateChapter = new ExamTemplateChapter();
+            examTemplateChapter.chapterID = chapterId;
+            examTemplateChapter.topicIDs = topicIds;
+            examTemplateChapter.questionCount = questionsCount;
+            examTemplateConfig.examTemplateChapter.add(examTemplateChapter);
+        }
         postCustomExamTemplate.examTemplateConfig.add(examTemplateConfig);
         ApiManager.getInstance(mActivity).postCustomExamTemplate(new Gson().toJson(postCustomExamTemplate),
                 new ApiCallback<PostExamTemplate>(mActivity) {

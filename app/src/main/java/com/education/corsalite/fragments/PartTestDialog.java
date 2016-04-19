@@ -103,78 +103,78 @@ public class PartTestDialog extends DialogFragment {
         recommendedList = new ArrayList<>();
         for (PartTestGridElement element : allList) {
             if (element.isRecommended.equalsIgnoreCase("Y")) {
-                 recommendedList.add(element);
+                recommendedList.add(element);
             }
         }
     }
 
-    private void loadRecommendedList(){
-        if(recommendedList != null && !recommendedList.isEmpty()){
-            adapter = new PartTestGridAdapter(recommendedList,getActivity().getLayoutInflater());
+    private void loadRecommendedList() {
+        if (recommendedList != null && !recommendedList.isEmpty()) {
+            adapter = new PartTestGridAdapter(recommendedList, getActivity().getLayoutInflater());
             recyclerView.setAdapter(adapter);
         }
     }
 
-    private void loadAllList(){
-        if(allList != null && !allList.isEmpty()){
-            adapter = new PartTestGridAdapter(allList,getActivity().getLayoutInflater());
+    private void loadAllList() {
+        if (allList != null && !allList.isEmpty()) {
+            adapter = new PartTestGridAdapter(allList, getActivity().getLayoutInflater());
             recyclerView.setAdapter(adapter);
         }
     }
 
-    @OnClick({R.id.tv_all,R.id.tv_cancel,R.id.tv_recommended,R.id.tv_taketest,R.id.tv_download})
-    public void onClick(View view){
-        switch (view.getId()){
-            case R.id.tv_cancel:
+    @OnClick({R.id.tv_all, R.id.btn_cancel, R.id.tv_recommended, R.id.btn_next, R.id.btn_download})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btn_cancel:
                 dismiss();
                 break;
             case R.id.tv_recommended:
-                if(!tvReceommended.isSelected()){
+                if (!tvReceommended.isSelected()) {
                     loadRecommendedList();
                     tvReceommended.setSelected(true);
                     tvAll.setSelected(false);
                 }
                 break;
             case R.id.tv_all:
-                if(!tvAll.isSelected()){
+                if (!tvAll.isSelected()) {
                     tvAll.setSelected(true);
                     tvReceommended.setSelected(false);
                     loadAllList();
                 }
                 break;
-            case R.id.tv_taketest:
+            case R.id.btn_next:
                 startPartTest();
                 dismiss();
                 break;
-            case R.id.tv_download:
+            case R.id.btn_download:
                 downloadPartTest();
                 dismiss();
-            default:dismiss();
+            default:
+                dismiss();
         }
     }
 
-    private void startPartTest(){
-        List<PartTestGridElement> list = null;
-        if(adapter != null){
-            list = adapter.getListData();
-        }
+    private void startPartTest() {
         Intent intent = new Intent(getActivity(), ExamEngineActivity.class);
         intent.putExtra(Constants.TEST_TITLE, subjectName);
         intent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
         intent.putExtra(Constants.SELECTED_SUBJECTID, idCourseSubject + "");
         intent.putExtra(Constants.SELECTED_TOPIC, subjectName);
         intent.putExtra(Constants.ADAPIVE_LEAERNING, mIsAdaptiveTest);
-        if(list != null){
-            intent.putExtra(Constants.PARTTEST_GRIDMODELS, new Gson().toJson(list));
+        if (adapter != null && adapter.getListData() != null) {
+            intent.putExtra(Constants.PARTTEST_GRIDMODELS, new Gson().toJson(adapter.getListData()));
         }
         startActivity(intent);
     }
 
-    private void downloadPartTest(){
+    private void downloadPartTest() {
         Intent intent = new Intent(getActivity(), TestDownloadService.class);
-        intent.putExtra("selectedPartTest",subjectName);
+        intent.putExtra("selectedPartTest", subjectName);
         intent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
         intent.putExtra("subjectId", idCourseSubject + "");
+        if (adapter != null && adapter.getListData() != null) {
+            intent.putExtra(Constants.PARTTEST_GRIDMODELS, new Gson().toJson(adapter.getListData()));
+        }
         getActivity().startService(intent);
         Toast.makeText(getActivity(), "Downloading test paper in background", Toast.LENGTH_SHORT).show();
     }

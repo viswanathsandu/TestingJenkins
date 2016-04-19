@@ -71,14 +71,21 @@ public class OfflineTestsFragment  extends BaseFragment implements OfflineConten
         chaptersList = new ArrayList<>();
         partTestList = new ArrayList<>();
         for (OfflineTestModel model: offlineTestModels) {
-            if(model.mockTest != null){
-                mockTestModels.add(model);
-            }else if(model.scheduledTest != null){
-                scheduledTestModels.add(model);
-            }else if(model.baseTest.chapter != null){
-                chaptersList.add(model);
-            }else if(model.baseTest.subjectName != null){
-                partTestList.add(model);
+            if(model != null && model.testType != null) {
+                switch (model.testType) {
+                    case MOCK:
+                        mockTestModels.add(model);
+                        break;
+                    case SCHEDULED:
+                        scheduledTestModels.add(model);
+                        break;
+                    case CHAPTER:
+                        chaptersList.add(model);
+                        break;
+                    case PART:
+                        partTestList.add(model);
+                        break;
+                }
             }
         }
     }
