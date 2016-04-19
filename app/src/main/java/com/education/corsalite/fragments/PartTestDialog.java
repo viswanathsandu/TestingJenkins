@@ -41,14 +41,10 @@ import retrofit.client.Response;
  */
 public class PartTestDialog extends DialogFragment {
 
-    @Bind(R.id.tv_recommended)
-    TextView tvReceommended;
-    @Bind(R.id.tv_all)
-    TextView tvAll;
-    @Bind(R.id.parttest_recyclerView)
-    RecyclerView recyclerView;
-    @Bind(R.id.checkbox_adaptive_learning)
-    CheckBox catCheckBox;
+    @Bind(R.id.tv_recommended) TextView tvReceommended;
+    @Bind(R.id.tv_all) TextView tvAll;
+    @Bind(R.id.parttest_recyclerView) RecyclerView recyclerView;
+    @Bind(R.id.checkbox_adaptive_learning) CheckBox catCheckBox;
 
     private int idCourseSubject;
     private String subjectName;
@@ -169,7 +165,7 @@ public class PartTestDialog extends DialogFragment {
         intent.putExtra(Constants.SELECTED_TOPIC, subjectName);
         intent.putExtra(Constants.ADAPIVE_LEAERNING, mIsAdaptiveTest);
         if(list != null){
-            intent.putExtra(Constants.PARTTEST_GRIDMODELS,new Gson().toJson(list));
+            intent.putExtra(Constants.PARTTEST_GRIDMODELS, new Gson().toJson(list));
         }
         startActivity(intent);
     }

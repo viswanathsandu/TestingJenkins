@@ -70,6 +70,7 @@ import com.education.corsalite.models.responsemodels.AnswerChoiceModel;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Exam;
 import com.education.corsalite.models.responsemodels.ExamModel;
+import com.education.corsalite.models.responsemodels.PartTestGridElement;
 import com.education.corsalite.models.responsemodels.PostExamTemplate;
 import com.education.corsalite.models.responsemodels.PostExercise;
 import com.education.corsalite.models.responsemodels.PostFlaggedQuestions;
@@ -88,7 +89,9 @@ import com.education.corsalite.utils.TimeUtils;
 import com.education.corsalite.utils.WebUrls;
 import com.education.corsalite.views.GridViewInScrollView;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -181,6 +184,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private TestPaperIndex mockTestPaperIndex;
     private List<ExamModel> localExamModelList;
     private List<ExamModel> flaggedQuestions;
+    private List<PartTestGridElement> partTestGridElements;
     private List<String> sections;
     private TestAnswerPaper testanswerPaper = new TestAnswerPaper();
 
@@ -234,6 +238,11 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         offlineModelDate = getIntent().getExtras().getLong("OfflineTestModel");
         challengeTestId = getIntent().getStringExtra("challenge_test_id");
         mIsAdaptiveTest = getIntent().getBooleanExtra(Constants.ADAPIVE_LEAERNING, false);
+        String partTestGridElimentsJson = getIntent().getStringExtra(Constants.PARTTEST_GRIDMODELS);
+        if(!TextUtils.isEmpty(partTestGridElimentsJson)) {
+            Type listType = new TypeToken<ArrayList<PartTestGridElement>>() {}.getType();
+            partTestGridElements = new Gson().fromJson(partTestGridElimentsJson, listType);
+        }
         if (title.equalsIgnoreCase("Flagged Questions")) {
             loadFlaggedQuestions();
         } else if (title.equalsIgnoreCase("Exercises")) {
@@ -1491,11 +1500,17 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         examTemplateConfig.subjectId = subjectId;
         examTemplateConfig.examTemplateChapter = new ArrayList<>();
 
-        ExamTemplateChapter examTemplateChapter = new ExamTemplateChapter();
-        examTemplateChapter.chapterID = chapterId;
-        examTemplateChapter.topicIDs = topicIds;
-        examTemplateChapter.questionCount = questionsCount;
-        examTemplateConfig.examTemplateChapter.add(examTemplateChapter);
+        if(partTestGridElements != null && !partTestGridElements.isEmpty()) {
+            for(PartTestGridElement element : partTestGridElements) {
+                examTemplateConfig.examTemplateChapter.add(new ExamTemplateChapter(element.idCourseSubjectChapter, element.recommendedQuestionCount));
+            }
+        } else {
+            ExamTemplateChapter examTemplateChapter = new ExamTemplateChapter();
+            examTemplateChapter.chapterID = chapterId;
+            examTemplateChapter.topicIDs = topicIds;
+            examTemplateChapter.questionCount = questionsCount;
+            examTemplateConfig.examTemplateChapter.add(examTemplateChapter);
+        }
         postCustomExamTemplate.examTemplateConfig.add(examTemplateConfig);
 
         ApiManager.getInstance(this).postCustomExamTemplate(new Gson().toJson(postCustomExamTemplate),
