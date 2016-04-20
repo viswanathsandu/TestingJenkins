@@ -7,6 +7,8 @@ public interface SocialEventsListener {
 
     void onLikeClicked(int position);
 
+    void onDetailsClicked(int position);
+
     void onCommentClicked(int position);
 
     void onBookmarkClicked(int position);

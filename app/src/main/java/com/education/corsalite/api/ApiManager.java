@@ -225,6 +225,11 @@ public class ApiManager {
         }
     }
 
+    public void getPostDetails(String userId, String postId, ApiCallback<ForumPost> callback) {
+        if (isApiOnline()) {
+            ApiClientService.get().getPostDetails(userId, postId, callback);
+        }
+    }
     public void getUserProfile(String studentId, ApiCallback<UserProfileResponse> callback) {
         apiCacheHolder.setUserProfileRequest(studentId);
         if (isApiOnline() && isNetworkConnected()) {

@@ -92,6 +92,11 @@
             android:label="Study Center"
             android:theme="@style/UserProfileTheme" />
         <activity
+            android:name=".activities.DetailsActivity"
+            android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
+            android:label="Details"
+            android:theme="@style/UserProfileTheme" />
+        <activity
             android:name=".activities.AnalyticsActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="Analytics"

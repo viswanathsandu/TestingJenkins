@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
+import com.education.corsalite.activities.DetailsActivity;
 import com.education.corsalite.activities.EditorActivity;
 import com.education.corsalite.activities.ForumActivity;
 import com.education.corsalite.adapters.PostAdapter;
@@ -160,6 +161,18 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
                         }
                     }
                 });
+    }
+    public void onDetailsClicked(int position) {
+
+        ForumPost item = mPostAdapter.getItem(position);
+        Bundle bundle = new Bundle();
+        bundle.putString("user_id",LoginUserCache.getInstance().loginResponse.userId);
+        bundle.putString("post_id",item.idUserPost);
+        Intent intent = new Intent(getActivity(), DetailsActivity.class);
+        intent.putExtras(bundle);
+        startActivity(intent);
+
+
     }
 
     @Override

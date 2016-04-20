@@ -114,6 +114,11 @@ public interface ICorsaliteApi {
                          @Query("idCourse") String courseId,
                          ApiCallback<List<TestCoverage>> callback);
 
+    void getPostDetails(@Query("idUser") String userId,
+                         @Query("postId") String postId,
+                         ApiCallback<ForumPost> callback);
+
+
     @GET("/FriendsList")
     void getFriendsList(@Query("idUser") String userId,
                          @Query("idCourse") String courseId,
