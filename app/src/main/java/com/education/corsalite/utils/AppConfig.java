@@ -24,47 +24,6 @@ public class AppConfig {
     public String stageSocketUrl;
     public String productionSocketUrl;
     public Boolean enableProduction;
-
-    public Boolean getEnableStudyCenter() {
-        return isEnabled(enableStudyCenter);
-    }
-
-    public Boolean getEnableAnalytics() {
-        return isEnabled(enableAnalytics);
-    }
-
-    public Boolean getEnableSmartClass() {
-        return isEnabled(enableSmartClass);
-    }
-
-    public Boolean getEnableMyProfile() {
-        return isEnabled(enableMyProfile);
-    }
-
-    public Boolean getEnableOffline() {
-        return isEnabled(enableOffline);
-    }
-
-    public Boolean getEnableLogout() {
-        return isEnabled(enableLogout);
-    }
-
-    public Boolean getEnableUsageanalysis() {
-        return isEnabled(enableUsageanalysis);
-    }
-
-    public Boolean getEnableChallangeTest() {
-        return isEnabled(enableChallangeTest);
-    }
-
-    private Boolean isEnabled(String text){
-        if(text!=null && text.equalsIgnoreCase("true")){
-            return true;
-        }else{
-            return false;
-        }
-    }
-
     @SerializedName("SplashDuration")
     public String splashDuration;
     @SerializedName("EnableStudyCenter")
@@ -79,8 +38,6 @@ public class AppConfig {
     public String enableOffline;
     @SerializedName("EnableLogout")
     public String enableLogout;
-    @SerializedName("EnableUsageAnalysis")
-    public String enableUsageanalysis;
     @SerializedName("EnableChallengeTest")
     public String enableChallangeTest;
     public Boolean enableForum;
@@ -131,5 +88,37 @@ public class AppConfig {
 
     public void disableProduction() {
         enableProduction = false;
+    }
+
+    public boolean isStudyCenterEnabled() {
+        return isEnabled(enableStudyCenter);
+    }
+
+    public boolean isAnalyticsEnabled() {
+        return isEnabled(enableAnalytics);
+    }
+
+    public boolean isSmartClassEnabled() {
+        return isEnabled(enableSmartClass);
+    }
+
+    public boolean isMyProfileEnabled() {
+        return isEnabled(enableMyProfile);
+    }
+
+    public boolean isOfflineEnabled() {
+        return isEnabled(enableOffline);
+    }
+
+    public boolean isLogoutEnabled() {
+        return isEnabled(enableLogout);
+    }
+
+    public boolean isChallengeTestEnabled() {
+        return isEnabled(enableChallangeTest);
+    }
+
+    private Boolean isEnabled(String text){
+        return (text != null && text.equalsIgnoreCase("true"));
     }
 }

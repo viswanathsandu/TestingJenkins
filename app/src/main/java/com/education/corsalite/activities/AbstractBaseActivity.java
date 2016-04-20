@@ -297,28 +297,28 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
         navigationView.findViewById(R.id.navigation_welcome).setVisibility(View.VISIBLE);
 
-        if (config.getEnableMyProfile()) {
+        if (config.isMyProfileEnabled()) {
             navigationView.findViewById(R.id.navigation_profile).setVisibility(View.VISIBLE);
         }
-        if (config.getEnableStudyCenter()) {
+        if (config.isStudyCenterEnabled()) {
             navigationView.findViewById(R.id.navigation_study_center).setVisibility(View.VISIBLE);
         }
-        if (config.getEnableSmartClass()) {
+        if (config.isSmartClassEnabled()) {
             navigationView.findViewById(R.id.navigation_smart_class).setVisibility(View.VISIBLE);
         }
-        if (config.getEnableAnalytics()) {
+        if (config.isAnalyticsEnabled()) {
             navigationView.findViewById(R.id.navigation_analytics).setVisibility(View.VISIBLE);
         }
-        if (config.getEnableOffline()) {
+        if (config.isOfflineEnabled()) {
             navigationView.findViewById(R.id.navigation_offline).setVisibility(View.VISIBLE);
         }
-        if (config.getEnableChallangeTest()) {
+        if (config.isChallengeTestEnabled()) {
             navigationView.findViewById(R.id.navigation_challenge_your_friends).setVisibility(View.VISIBLE);
         }
         if (config.enableForum != null && config.enableForum) {
             navigationView.findViewById(R.id.navigation_forum).setVisibility(View.VISIBLE);
         }
-        if (config.getEnableLogout()) {
+        if (config.isLogoutEnabled()) {
             navigationView.findViewById(R.id.navigation_logout).setVisibility(View.VISIBLE);
         }
     }
