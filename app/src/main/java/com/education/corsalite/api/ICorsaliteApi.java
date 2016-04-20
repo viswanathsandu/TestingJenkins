@@ -268,6 +268,4 @@ public interface ICorsaliteApi {
 
     @GET("/ClientAppConfig")
     void getAppConfig(@Query("idUser")String studentId,ApiCallback<AppConfig> callback);
-
-
 }

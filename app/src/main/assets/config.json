@@ -5,7 +5,7 @@
   "stageSocketUrl":"ws://staging.corsalite.com:9300",
   "productionSocketUrl":"ws://app.corsalite.com:9300",
   "enableProduction":false,
-  "splashDuration":5000, // in milli seconds
+  "splashDuration":2000, // in milli seconds
   "enableStudyCenter": true,
   "enableAnalytics":true,
   "enableSmartClass":true,

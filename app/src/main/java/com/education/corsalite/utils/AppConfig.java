@@ -49,13 +49,12 @@ public class AppConfig {
         instance = new Gson().fromJson(jsonResponse, AppConfig.class);
     }
 
-
-    public static void loadAppConfigFromService(Context context, String idUser){
+    public static void loadAppConfigFromService(Context context, String idUser) {
         ApiManager.getInstance(context).getAppConfig(idUser, new ApiCallback<AppConfig>(context) {
             @Override
             public void failure(CorsaliteError error) {
                 super.failure(error);
-                }
+            }
 
             @Override
             public void success(AppConfig appConfig, Response response) {
@@ -63,19 +62,18 @@ public class AppConfig {
                 instance = appConfig;
             }
         });
-
     }
 
-
-  public Integer getSplashDuration(){
-      int defaultTime = 5000;
-      try{
-          if(splashDuration!=null){
-              defaultTime = TextUtils.isEmpty(splashDuration) ? 5000 : Integer.valueOf(splashDuration);
-          }
-      }catch(Exception e){
-      }
-      return defaultTime;
+    public Integer getSplashDuration() {
+        int defaultTime = 2000;
+        try {
+            if (!TextUtils.isEmpty(splashDuration)) {
+                return Integer.valueOf(splashDuration);
+            }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+        return defaultTime;
     }
 
     public static AppConfig getInstance() {
@@ -118,7 +116,7 @@ public class AppConfig {
         return isEnabled(enableChallangeTest);
     }
 
-    private Boolean isEnabled(String text){
+    private Boolean isEnabled(String text) {
         return (text != null && text.equalsIgnoreCase("true"));
     }
 }

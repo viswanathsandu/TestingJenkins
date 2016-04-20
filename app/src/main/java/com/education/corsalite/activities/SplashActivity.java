@@ -104,7 +104,6 @@ public class SplashActivity extends AbstractBaseActivity {
     }
 
     private void onLoginsuccess(LoginResponse response, boolean fetchLocal) {
-    // TODO: 4/20/2016
         if(response != null && response.studentId != null) {
             LoginUserCache.getInstance().setLoginResponse(response);
             AppConfig.loadAppConfigFromService(SplashActivity.this, "1624");
