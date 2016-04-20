@@ -752,4 +752,8 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     protected void startWebSocket() {
         WebSocketHelper.get(this).connectWebSocket();
     }
+
+    private void showNotification() {
+
+    }
 }

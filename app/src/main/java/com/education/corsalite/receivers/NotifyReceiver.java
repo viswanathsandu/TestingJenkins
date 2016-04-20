@@ -1,4 +1,4 @@
-package com.education.corsalite.utils;
+package com.education.corsalite.receivers;
 
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -9,8 +9,12 @@ import android.widget.Toast;
 
 import com.education.corsalite.activities.ExamEngineActivity;
 import com.education.corsalite.services.NotificationsUtils;
+import com.education.corsalite.utils.Constants;
 
 public class NotifyReceiver extends BroadcastReceiver {
+
+    private int requestCode = 0;
+
     @Override
     public void onReceive(Context context, Intent intent) {
         Bundle extras = intent.getExtras();
@@ -21,8 +25,6 @@ public class NotifyReceiver extends BroadcastReceiver {
         Toast.makeText(context, "Notification : "+title, Toast.LENGTH_SHORT).show();
         NotificationsUtils.NotifyUser(context, id, title, subTitle, getScheduledExamActivityIntent(context, testQuestionPaperId));
     }
-
-    int requestCode = 0;
 
     private PendingIntent getScheduledExamActivityIntent(Context context, String examTemplateId) {
         if(examTemplateId.equals("")) {

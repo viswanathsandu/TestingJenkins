@@ -36,7 +36,7 @@ import com.education.corsalite.services.TestDownloadService;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.Data;
 import com.education.corsalite.utils.L;
-import com.education.corsalite.utils.NotifyReceiver;
+import com.education.corsalite.receivers.NotifyReceiver;
 import com.google.gson.Gson;
 
 import java.text.ParseException;
