@@ -110,7 +110,7 @@ public class LoginActivity extends AbstractBaseActivity {
                 final int DRAWABLE_BOTTOM = 3;
 
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    if (event.getRawX() >= (passwordTxt.getRight() - passwordTxt
+                    if (event.getRawX() > (passwordTxt.getRight() - passwordTxt
                             .getCompoundDrawables()[DRAWABLE_RIGHT].getBounds()
                             .width())) {
 

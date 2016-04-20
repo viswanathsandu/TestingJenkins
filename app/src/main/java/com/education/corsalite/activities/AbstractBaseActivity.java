@@ -289,14 +289,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         actionBarDrawerToggle.syncState();
     }
 
-    public Boolean isEnabled(String value){
-        if(value!=null && value.equalsIgnoreCase("true")){
-            return true;
-        }else{
-            return false;
-        }
-    }
-
     private void enableNavigationOptions() {
         AppConfig config = AppConfig.getInstance();
         if (config == null) {
@@ -305,34 +297,30 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
         navigationView.findViewById(R.id.navigation_welcome).setVisibility(View.VISIBLE);
 
-        if (config.enableMyProfile != null && isEnabled(config.enableMyProfile)) {
+        if (config.getEnableMyProfile()) {
             navigationView.findViewById(R.id.navigation_profile).setVisibility(View.VISIBLE);
         }
-        if (config.enableStudyCenter != null && isEnabled(config.enableStudyCenter)) {
+        if (config.getEnableStudyCenter()) {
             navigationView.findViewById(R.id.navigation_study_center).setVisibility(View.VISIBLE);
         }
-        if (config.enableSmartClass != null && isEnabled(config.enableSmartClass)) {
+        if (config.getEnableSmartClass()) {
             navigationView.findViewById(R.id.navigation_smart_class).setVisibility(View.VISIBLE);
         }
-        if (config.enableAnalytics != null && isEnabled(config.enableAnalytics)) {
+        if (config.getEnableAnalytics()) {
             navigationView.findViewById(R.id.navigation_analytics).setVisibility(View.VISIBLE);
         }
-        if (config.enableOffline != null && isEnabled(config.enableOffline)) {
+        if (config.getEnableOffline()) {
             navigationView.findViewById(R.id.navigation_offline).setVisibility(View.VISIBLE);
         }
-        if (config.enableChallangeTest != null && isEnabled(config.enableChallangeTest)) {
+        if (config.getEnableChallangeTest()) {
             navigationView.findViewById(R.id.navigation_challenge_your_friends).setVisibility(View.VISIBLE);
         }
-
         if (config.enableForum != null && config.enableForum) {
             navigationView.findViewById(R.id.navigation_forum).setVisibility(View.VISIBLE);
         }
-
-        if (config.enableLogout != null && isEnabled(config.enableLogout)) {
+        if (config.getEnableLogout()) {
             navigationView.findViewById(R.id.navigation_logout).setVisibility(View.VISIBLE);
         }
-
-
     }
 
     private void setNavigationClickListeners() {

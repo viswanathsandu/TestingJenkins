@@ -1,6 +1,7 @@
 package com.education.corsalite.utils;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
@@ -23,6 +24,47 @@ public class AppConfig {
     public String stageSocketUrl;
     public String productionSocketUrl;
     public Boolean enableProduction;
+
+    public Boolean getEnableStudyCenter() {
+        return isEnabled(enableStudyCenter);
+    }
+
+    public Boolean getEnableAnalytics() {
+        return isEnabled(enableAnalytics);
+    }
+
+    public Boolean getEnableSmartClass() {
+        return isEnabled(enableSmartClass);
+    }
+
+    public Boolean getEnableMyProfile() {
+        return isEnabled(enableMyProfile);
+    }
+
+    public Boolean getEnableOffline() {
+        return isEnabled(enableOffline);
+    }
+
+    public Boolean getEnableLogout() {
+        return isEnabled(enableLogout);
+    }
+
+    public Boolean getEnableUsageanalysis() {
+        return isEnabled(enableUsageanalysis);
+    }
+
+    public Boolean getEnableChallangeTest() {
+        return isEnabled(enableChallangeTest);
+    }
+
+    private Boolean isEnabled(String text){
+        if(text!=null && text.equalsIgnoreCase("true")){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     @SerializedName("SplashDuration")
     public String splashDuration;
     @SerializedName("EnableStudyCenter")
@@ -62,7 +104,6 @@ public class AppConfig {
             public void success(AppConfig appConfig, Response response) {
                 super.success(appConfig, response);
                 instance = appConfig;
-                System.out.println("VALIDATING RESPONSE="+instance);
             }
         });
 
@@ -70,11 +111,14 @@ public class AppConfig {
 
 
   public Integer getSplashDuration(){
-        if(splashDuration!=null){
-            return Integer.valueOf(splashDuration);
-        }else{
-            return 5000;
-        }
+      int defaultTime = 5000;
+      try{
+          if(splashDuration!=null){
+              defaultTime = TextUtils.isEmpty(splashDuration) ? 5000 : Integer.valueOf(splashDuration);
+          }
+      }catch(Exception e){
+      }
+      return defaultTime;
     }
 
     public static AppConfig getInstance() {
