@@ -104,10 +104,7 @@ public class LoginActivity extends AbstractBaseActivity {
         passwordTxt.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                final int DRAWABLE_LEFT = 0;
-                final int DRAWABLE_TOP = 1;
                 final int DRAWABLE_RIGHT = 2;
-                final int DRAWABLE_BOTTOM = 3;
 
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     if (event.getRawX() > (passwordTxt.getRight() - passwordTxt
@@ -123,7 +120,7 @@ public class LoginActivity extends AbstractBaseActivity {
                             passwordTxt.setTransformationMethod(PasswordTransformationMethod.getInstance());
                             passwordTxt.setTag("Y");
                         }
-                        return true;
+                        return false;
                     }
                 }
                 return false;

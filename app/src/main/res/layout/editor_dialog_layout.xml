@@ -3,41 +3,37 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@android:color/black"
+        android:fillViewport="false"
         android:minHeight="?attr/actionBarSize"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        android:fillViewport="false"/>
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="20dp">
+        android:layout_height="match_parent">
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical" >
+                android:orientation="vertical">
 
                 <RelativeLayout
                     android:id="@+id/forum_header_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="50dp"
-                    android:layout_marginRight="50dp"
-                    android:layout_marginTop="10dp"
-                    android:visibility="visible" >
+                        android:layout_marginLeft="50dp"
+                        android:layout_marginRight="50dp"
+                    android:visibility="visible">
 
                     <LinearLayout
                         android:id="@+id/spinners_layout"
@@ -46,7 +42,7 @@
                         android:layout_margin="10dp"
                         android:layout_marginBottom="20dp"
                         android:orientation="horizontal"
-                        android:weightSum="3" >
+                        android:weightSum="3">
 
                         <Spinner
                             android:id="@+id/subject_spinner"
@@ -56,7 +52,6 @@
                             android:layout_weight="1"
                             android:background="@drawable/spinner_bg"
                             android:drawSelectorOnTop="true"
-                            android:paddingLeft="10dp"
                             android:paddingRight="20dp" />
 
                         <Spinner
@@ -67,7 +62,6 @@
                             android:layout_weight="1"
                             android:background="@drawable/spinner_bg"
                             android:drawSelectorOnTop="true"
-                            android:paddingLeft="10dp"
                             android:paddingRight="20dp" />
 
                         <Spinner
@@ -77,7 +71,6 @@
                             android:layout_weight="1"
                             android:background="@drawable/spinner_bg"
                             android:drawSelectorOnTop="true"
-                            android:paddingLeft="10dp"
                             android:paddingRight="20dp" />
                     </LinearLayout>
 
@@ -100,12 +93,12 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
+                    android:layout_height="500dp"
                     android:layout_marginLeft="50dp"
                     android:layout_marginRight="50dp"
                     android:layout_marginTop="10dp"
                     android:minWidth="600dp"
-                    android:orientation="vertical" >
+                    android:orientation="vertical">
 
                     <WebView
                         android:id="@+id/editor_webview"
@@ -117,8 +110,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
-                    android:padding="10dp" >
-                </LinearLayout>
+                    android:padding="10dp" />
             </LinearLayout>
         </ScrollView>
 
@@ -128,7 +120,7 @@
             android:layout_height="match_parent"
             android:background="@color/white"
             android:gravity="center"
-            android:visibility="gone" >
+            android:visibility="gone">
 
             <ProgressBar
                 android:layout_width="wrap_content"

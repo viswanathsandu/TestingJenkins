@@ -12,7 +12,7 @@ public class PartTestGridElement {
     @SerializedName("IsRecommended")
     public String isRecommended;
     @SerializedName("QuestionCount")
-    public int questionCount;
+    public String questionCount;
     @SerializedName("RecommendedQuestionCount")
-    public int recommendedQuestionCount;
+    public String recommendedQuestionCount;
 }

@@ -124,7 +124,6 @@ public class EditorActivity extends AbstractBaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-            case R.id.cancel_btn:
                 finish();
                 break;
             case R.id.edit_btn:

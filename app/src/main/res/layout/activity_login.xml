@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:hint="Password"
-            android:drawableRight="@drawable/view_password"
+            android:drawableRight="@drawable/view"
             android:drawablePadding="6dp"
             android:inputType="textPassword"
             android:singleLine="true"

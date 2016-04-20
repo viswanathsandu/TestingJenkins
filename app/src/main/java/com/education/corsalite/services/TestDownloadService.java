@@ -8,6 +8,7 @@ import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.db.DbManager;
+import com.education.corsalite.enums.Tests;
 import com.education.corsalite.helpers.ExamEngineHelper;
 import com.education.corsalite.listener.OnExamLoadCallback;
 import com.education.corsalite.models.ExerciseOfflineModel;
@@ -18,7 +19,9 @@ import com.education.corsalite.models.examengine.BaseTest;
 import com.education.corsalite.models.responsemodels.Chapter;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.ExamModel;
+import com.education.corsalite.models.responsemodels.PartTestGridElement;
 import com.education.corsalite.models.responsemodels.TestPaperIndex;
+import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.L;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -57,6 +60,12 @@ public class TestDownloadService extends IntentService {
             }.getType();
             exerciseModelsList = new Gson().fromJson(exerciseQuestionsListJson, listType);
         }
+        String partTestGridElimentsJson = intent.getStringExtra(Constants.PARTTEST_GRIDMODELS);
+        List<PartTestGridElement> partTestGridElements = null;
+        if(!TextUtils.isEmpty(partTestGridElimentsJson)) {
+            Type listType = new TypeToken<ArrayList<PartTestGridElement>>() {}.getType();
+            partTestGridElements = new Gson().fromJson(partTestGridElimentsJson, listType);
+        }
         if (mockTestStr != null) {
             MockTest mockTest = new Gson().fromJson(mockTestStr, MockTest.class);
             getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, mockTest, testPaperIndicies, null);
@@ -67,8 +76,8 @@ public class TestDownloadService extends IntentService {
             Chapter chapter = new Gson().fromJson(takeTestStr,Chapter.class);
             loadTakeTest(chapter,null, questionsCount, subjectId);
         } else if(partTestStr != null){
-            OfflineTestModel model = new OfflineTestModel();
-            loadPartTest(subjectName, subjectId, model);
+            subjectName = partTestStr;
+            loadPartTest(subjectName, subjectId, partTestGridElements);
         } else if(exerciseModelsList != null) {
             downloadExercises(exerciseModelsList);
         }
@@ -106,8 +115,10 @@ public class TestDownloadService extends IntentService {
                         OfflineTestModel model = new OfflineTestModel();
                         model.examModels = examModels;
                         if (mockTest != null) {
+                            model.testType = Tests.MOCK;
                             model.mockTest = mockTest;
                         } else {
+                            model.testType = Tests.SCHEDULED;
                             model.scheduledTest = scheduledTestsArray;
                         }
                         model.testPaperIndecies = testPAperIndecies;
@@ -125,6 +136,7 @@ public class TestDownloadService extends IntentService {
             @Override
             public void onSuccess(BaseTest test) {
                 OfflineTestModel model = new OfflineTestModel();
+                model.testType = Tests.CHAPTER;
                 model.baseTest = test;
                 model.dateTime = System.currentTimeMillis();
                 DbManager.getInstance(TestDownloadService.this).saveOfflineTest(model);
@@ -136,14 +148,21 @@ public class TestDownloadService extends IntentService {
         });
     }
 
-    private void loadPartTest(String subjectName, String subjectId, final OfflineTestModel model){
+    private void loadPartTest(final String subjectName, final String subjectId, List<PartTestGridElement> elements){
         ExamEngineHelper helper = new ExamEngineHelper(this);
-        helper.loadPartTest(subjectName,subjectId, new OnExamLoadCallback() {
+        helper.loadPartTest(subjectName, subjectId, elements, new OnExamLoadCallback() {
             @Override
             public void onSuccess(BaseTest test) {
+                OfflineTestModel model = new OfflineTestModel();
+                model.testType = Tests.PART;
                 model.baseTest = test;
+                if(test!= null) {
+                    model.baseTest.subjectId = subjectId;
+                    model.baseTest.subjectName = subjectName;
+                }
                 model.dateTime = System.currentTimeMillis();
                 DbManager.getInstance(TestDownloadService.this).saveOfflineTest(model);
+                L.info("Test Saved : "+model.getClass());
             }
 
             @Override

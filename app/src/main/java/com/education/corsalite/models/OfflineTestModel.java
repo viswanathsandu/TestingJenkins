@@ -1,5 +1,6 @@
 package com.education.corsalite.models;
 
+import com.education.corsalite.enums.Tests;
 import com.education.corsalite.models.examengine.BaseTest;
 import com.education.corsalite.models.responsemodels.BaseModel;
 import com.education.corsalite.models.responsemodels.ExamModel;
@@ -13,6 +14,7 @@ import java.util.List;
  */
 public class OfflineTestModel extends BaseModel {
 
+    public Tests testType;
     public MockTest mockTest;
     public List<ExamModel> examModels;
     public ScheduledTestList.ScheduledTestsArray scheduledTest;
