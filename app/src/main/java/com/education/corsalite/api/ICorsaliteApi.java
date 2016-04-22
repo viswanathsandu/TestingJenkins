@@ -44,6 +44,7 @@ import com.education.corsalite.models.responsemodels.UserProfileResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencyBalanceResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencySummaryResponse;
 import com.education.corsalite.models.responsemodels.WelcomeDetails;
+import com.education.corsalite.utils.AppConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -269,4 +270,7 @@ public interface ICorsaliteApi {
 
     @GET("/PartTestGrid")
     void getPartTestGrid(@Query("idStudent")String studentId,@Query("idCourse")String courseId,@Query("idSubject") String subjectId,ApiCallback<PartTestModel> callback);
+
+    @GET("/ClientAppConfig")
+    void getAppConfig(@Query("idUser")String studentId,ApiCallback<AppConfig> callback);
 }
