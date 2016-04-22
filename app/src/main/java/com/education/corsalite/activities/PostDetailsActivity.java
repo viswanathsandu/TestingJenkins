@@ -16,7 +16,7 @@ import retrofit.client.Response;
 /**
  * Created by Madhuri on 20-04-2016.
  */
-public class DetailsActivity extends AbstractBaseActivity {
+public class PostDetailsActivity extends AbstractBaseActivity {
     private WebView webview;
     private String postId;
     private String userId;
