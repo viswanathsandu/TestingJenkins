@@ -1,5 +1,6 @@
 package com.education.corsalite.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.education.corsalite.models.socket.requests.NewChallengeTestRequestEve
 import com.education.corsalite.models.socket.response.ChallengeTestRequestEvent;
 import com.education.corsalite.models.socket.response.ChallengeTestStartEvent;
 import com.education.corsalite.models.socket.response.ChallengeTestUpdateEvent;
+import com.education.corsalite.utils.Constants;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -195,5 +197,19 @@ public class ChallengeActivity extends AbstractBaseActivity {
     public void onEventMainThread(ChallengeTestStartEvent event) {
         mTestQuestionPaperId = event.testQuestionPaperId;
         startChallengeTest(mTestQuestionPaperId, event.challengeTestParentId);
+    }
+
+    public void startChallengeTest(String testQuestionPaperId, String challngeTestId) {
+        Intent intent = new Intent(this, ExamEngineActivity.class);
+        intent.putExtra(Constants.TEST_TITLE, "Challenge Test");
+        intent.putExtra("test_question_paper_id", testQuestionPaperId);
+        intent.putExtra("challenge_test_id", challngeTestId);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public void onEventMainThread(ChallengeTestRequestEvent event) {
+        showChallengeTestRequestFragment(event);
     }
 }

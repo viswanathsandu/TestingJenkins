@@ -111,6 +111,7 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
             closeProgress();
             if (forumPosts != null && !forumPosts.isEmpty()) {
                 setForumPosts(forumPosts);
+                emptyLayout.setVisibility(View.GONE);
             } else {
                 emptyLayout.setVisibility(View.VISIBLE);
             }
@@ -189,10 +190,12 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
         }
         bookmark.idUserPost = forumPost.idUserPost;
         bookmark.idUser = LoginUserCache.getInstance().loginResponse.userId;
+        showProgress();
         ApiManager.getInstance(getActivity()).postBookmark(bookmark, new ApiCallback<CommonResponseModel>(getActivity()) {
             @Override
             public void success(CommonResponseModel bookmarkResponse, Response response) {
                 super.success(bookmarkResponse, response);
+                closeProgress();
                 if (bookmarkResponse.isSuccessful()) {
                     forumPost.bookmark = bookmark.bookmarkdelete;
                     if (bookmark.bookmarkdelete.equalsIgnoreCase("Y")) {
@@ -202,6 +205,12 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
                     }
                     mPostAdapter.updateCurrentItem(position);
                 }
+            }
+
+            @Override
+            public void failure(CorsaliteError error) {
+                super.failure(error);
+                closeProgress();
             }
         });
     }
@@ -251,14 +260,23 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
     }
 
     private void deletePost(ForumPost forumPost, final int position) {
+        showProgress();
         ApiManager.getInstance(getActivity()).deleteForum(new ForumLikeRequest(forumPost.idUser, forumPost.idUserPost),
                 new ApiCallback<CommonResponseModel>(getActivity()) {
                     @Override
                     public void success(CommonResponseModel baseResponseModel, Response response) {
                         super.success(baseResponseModel, response);
+                        closeProgress();
                         if (baseResponseModel.isSuccessful()) {
                             mPostAdapter.deleteForumPost(position);
                         }
+                        refreshData();
+                    }
+
+                    @Override
+                    public void failure(CorsaliteError error) {
+                        super.failure(error);
+                        closeProgress();
                     }
                 });
     }
