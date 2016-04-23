@@ -439,6 +439,8 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater li = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View dialogView = li.inflate(R.layout.layout_list_item_view_popup, null);
+        TextView saveOfflineText = (TextView) dialogView.findViewById(R.id.offline_content);
+        saveOfflineText.setVisibility(View.GONE);
         builder.setView(dialogView);
         setDataForAlert(dialogView,studyCenter);
         AlertDialog dialog = builder.create();
@@ -472,6 +474,22 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                 showPartTestGrid();
             }
         });
+        dialogView.findViewById(R.id.notes_layout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (dialog != null) {
+                    dialog.cancel();
+                }
+                startNotesActivity();
+            }
+        });
+    }
+
+    private void startNotesActivity() {
+        Intent intent = new Intent(this, NotesActivity.class);
+        intent.putExtra("courseId", AbstractBaseActivity.selectedCourse.courseId.toString());
+        intent.putExtra("subjectId", getSelectedSubjectId());
+        startActivity(intent);
     }
 
     private void showPartTestGrid(){
