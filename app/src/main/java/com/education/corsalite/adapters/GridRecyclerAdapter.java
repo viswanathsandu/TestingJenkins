@@ -159,7 +159,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         dialogView.findViewById(R.id.take_test).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.cancel();
+                dialog.dismiss();
                 // startExerciseActivity(chapter);
                 startTakeTest(chapter);
             }
@@ -167,28 +167,28 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         dialogView.findViewById(R.id.start_reading).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.cancel();
+                dialog.dismiss();
                 startContentActivity(chapter);
             }
         });
         dialogView.findViewById(R.id.notes_layout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.cancel();
+                dialog.dismiss();
                 startNotesActivity(chapter);
             }
         });
         dialogView.findViewById(R.id.offline_content).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.cancel();
+                dialog.dismiss();
                 startOfflineActivity(chapter);
             }
         });
         dialogView.findViewById(R.id.flagged_questions).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.cancel();
+                dialog.dismiss();
                 startFlaggedQuestionView(chapter);
             }
         });

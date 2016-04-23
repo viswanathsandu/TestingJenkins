@@ -89,7 +89,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (mAdapter != null) {
+        if(mAdapter != null) {
             recyclerView.invalidate();
         }
     }
@@ -107,7 +107,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         redView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (studyCenter != null && studyCenter.redListChapters != null) {
+                if(studyCenter != null && studyCenter.redListChapters != null) {
                     mAdapter.updateData(studyCenter.redListChapters, key);
                     mAdapter.notifyDataSetChanged();
                     updateSelected(redView);
@@ -117,7 +117,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         blueView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (studyCenter != null && studyCenter.blueListChapters != null) {
+                if(studyCenter != null && studyCenter.blueListChapters != null) {
                     mAdapter.updateData(studyCenter.blueListChapters, key);
                     mAdapter.notifyDataSetChanged();
                     updateSelected(blueView);
@@ -127,7 +127,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         yellowView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (studyCenter != null && studyCenter.amberListChapters != null) {
+                if(studyCenter != null && studyCenter.amberListChapters != null) {
                     mAdapter.updateData(studyCenter.amberListChapters, key);
                     mAdapter.notifyDataSetChanged();
                     updateSelected(yellowView);
@@ -137,7 +137,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         greenView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (studyCenter != null && studyCenter.greenListChapters != null) {
+                if(studyCenter != null && studyCenter.greenListChapters != null) {
                     mAdapter.updateData(studyCenter.greenListChapters, key);
                     mAdapter.notifyDataSetChanged();
                     updateSelected(greenView);
@@ -309,7 +309,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                         offlineContent.scoreAmber = chapter.scoreAmber;
                         offlineContent.scoreRed = chapter.scoreRed;
                     }
-                    if (!saveForOffline) {
+                    if(!saveForOffline) {
                         if (idMatchFound) {
                             chapter.isChapterOffline = true;
                         } else {
@@ -317,9 +317,9 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                         }
                     }
                 }
-                if (saveForOffline) {
+                if(saveForOffline){
                     DbManager.getInstance(getApplicationContext()).saveOfflineContent(offlineContents);
-                } else {
+                }else {
                     mCourseData = new CourseData();
                     mCourseData.StudyCenter = studyCenters;
                     key = mCourseData.StudyCenter.get(getIndex(studyCenters)).SubjectName;
@@ -414,8 +414,8 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         tv.setText(studyCenter.SubjectName);
         tv.setTag(subjectId);
 
-        ImageView iv = (ImageView) v.findViewById(R.id.arrow_img);
-        setListener(v, iv, studyCenter);
+        ImageView iv = (ImageView)v.findViewById(R.id.arrow_img);
+        setListener(v,iv,studyCenter);
         if (isSelected) {
             tv.setSelected(true);
             selectedSubjectTxt = tv;
@@ -482,7 +482,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
             @Override
             public void onClick(View v) {
                 if (dialog != null) {
-                    dialog.cancel();
+                    dialog.dismiss();
                 }
                 //startPartTest(studyCenter);
                 showPartTestGrid();
@@ -492,7 +492,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
             @Override
             public void onClick(View v) {
                 if (dialog != null) {
-                    dialog.cancel();
+                    dialog.dismiss();
                 }
                 startNotesActivity();
             }
@@ -501,7 +501,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
             @Override
             public void onClick(View v) {
                 if (dialog != null) {
-                    dialog.cancel();
+                    dialog.dismiss();
                 }
                 startFlaggedQuestionView();
             }
@@ -510,7 +510,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
             @Override
             public void onClick(View v) {
                 if (dialog != null) {
-                    dialog.cancel();
+                    dialog.dismiss();
                 }
                 if (allChapters != null && allChapters.size() > 0) {
                     startContentActivity(allChapters.get(0));
