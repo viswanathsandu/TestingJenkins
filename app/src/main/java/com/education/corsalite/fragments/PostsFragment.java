@@ -22,7 +22,6 @@ import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.listener.SocialEventsListener;
 import com.education.corsalite.models.requestmodels.Bookmark;
 import com.education.corsalite.models.requestmodels.ForumLikeRequest;
-import com.education.corsalite.models.responsemodels.BookmarkResponse;
 import com.education.corsalite.models.responsemodels.CommonResponseModel;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.ForumPost;
@@ -210,9 +209,9 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
         }
         bookmark.idUserPost = forumPost.idUserPost;
         bookmark.idUser = LoginUserCache.getInstance().loginResponse.userId;
-        ApiManager.getInstance(getActivity()).postBookmark(bookmark, new ApiCallback<BookmarkResponse>(getActivity()) {
+        ApiManager.getInstance(getActivity()).postBookmark(bookmark, new ApiCallback<CommonResponseModel>(getActivity()) {
             @Override
-            public void success(BookmarkResponse bookmarkResponse, Response response) {
+            public void success(CommonResponseModel bookmarkResponse, Response response) {
                 super.success(bookmarkResponse, response);
                 if(bookmarkResponse.isSuccessful()){
                     forumPost.bookmark = bookmark.bookmarkdelete;

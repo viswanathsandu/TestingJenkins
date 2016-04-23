@@ -15,7 +15,6 @@ import com.education.corsalite.models.requestmodels.Bookmark;
 import com.education.corsalite.models.requestmodels.CreateChallengeRequest;
 import com.education.corsalite.models.requestmodels.ForumLikeRequest;
 import com.education.corsalite.models.requestmodels.ForumModel;
-import com.education.corsalite.models.responsemodels.BookmarkResponse;
 import com.education.corsalite.models.responsemodels.ChallengeCompleteResponseModel;
 import com.education.corsalite.models.responsemodels.ChallengeStartResponseModel;
 import com.education.corsalite.models.responsemodels.ChallengeUser;
@@ -556,7 +555,7 @@ public class ApiManager {
         }
     }
 
-    public void postBookmark(Bookmark bookmark, ApiCallback<BookmarkResponse> callback){
+    public void postBookmark(Bookmark bookmark, ApiCallback<CommonResponseModel> callback){
         if(isApiOnline()){
             ApiClientService.get().addDeleteBookmark(new TypedString(("Update="+ new Gson().toJson(bookmark))), callback);
         }
