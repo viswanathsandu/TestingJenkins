@@ -252,14 +252,23 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
     }
 
     private void deletePost(ForumPost forumPost, final int position) {
+        showProgress();
         ApiManager.getInstance(getActivity()).deleteForum(new ForumLikeRequest(forumPost.idUser, forumPost.idUserPost),
                 new ApiCallback<CommonResponseModel>(getActivity()) {
                     @Override
                     public void success(CommonResponseModel baseResponseModel, Response response) {
                         super.success(baseResponseModel, response);
+                        closeProgress();
                         if (baseResponseModel.isSuccessful()) {
                             mPostAdapter.deleteForumPost(position);
                         }
+                        refreshData();
+                    }
+
+                    @Override
+                    public void failure(CorsaliteError error) {
+                        super.failure(error);
+                        closeProgress();
                     }
                 });
     }

@@ -55,36 +55,36 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
         holder.tvActionLock.setVisibility(View.GONE);
         holder.tvActionComment.setVisibility(View.INVISIBLE);
 
-        if(forumPost.idUser.equals(LoginUserCache.getInstance().getLongResponse().userId)) {
+        if (forumPost.idUser.equals(LoginUserCache.getInstance().getLongResponse().userId)) {
             holder.tvActionDelete.setVisibility(View.VISIBLE);
             holder.tvActionEdit.setVisibility(View.VISIBLE);
         }
         setupActionListener(holder, position);
 
         holder.tvQuestion.setText(forumPost.PostSubject);
-        holder.tvDate.setText(forumPost.Datetime+" by");
+        holder.tvDate.setText(forumPost.Datetime + " by");
         holder.tvUserName.setText(forumPost.DisplayName);
         holder.postDescriptionWebview.getSettings().setJavaScriptEnabled(true);
         holder.postDescriptionWebview.loadDataWithBaseURL("", forumPost.htmlText, "text/html", "UTF-8", "");
-        if(TextUtils.isEmpty(forumPost.CourseName)){
+        if (TextUtils.isEmpty(forumPost.CourseName)) {
             holder.tvCourseName.setVisibility(View.GONE);
         } else {
             holder.tvCourseName.setVisibility(View.VISIBLE);
             holder.tvCourseName.setText(forumPost.CourseName);
         }
-        if(TextUtils.isEmpty(forumPost.SubjectName)) {
+        if (TextUtils.isEmpty(forumPost.SubjectName)) {
             holder.tvSubjectName.setVisibility(View.GONE);
         } else {
             holder.tvSubjectName.setVisibility(View.VISIBLE);
             holder.tvSubjectName.setText(forumPost.SubjectName);
         }
-        if(TextUtils.isEmpty(forumPost.ChapterName)){
+        if (TextUtils.isEmpty(forumPost.ChapterName)) {
             holder.tvChapterName.setVisibility(View.GONE);
         } else {
             holder.tvChapterName.setVisibility(View.VISIBLE);
             holder.tvChapterName.setText(forumPost.ChapterName);
         }
-        if(TextUtils.isEmpty(forumPost.TopicName)){
+        if (TextUtils.isEmpty(forumPost.TopicName)) {
             holder.tvTopicName.setVisibility(View.GONE);
         } else {
             holder.tvTopicName.setVisibility(View.VISIBLE);
@@ -92,20 +92,19 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
         }
 
         holder.tvComments.setClickable(!TextUtils.isEmpty(forumPost.postReplies) && !forumPost.postReplies.equalsIgnoreCase("0"));
-        holder.tvComments.setText(forumPost.postReplies+" Comments");
-        holder.tvViews.setText(forumPost.postViews+" Views");
+        holder.tvComments.setText(forumPost.postReplies + " Comments");
+        holder.tvViews.setText(forumPost.postViews + " Views");
 
 
-
-        if(!TextUtils.isEmpty(forumPost.IsLiked)) {
-            if(forumPost.IsLiked.equalsIgnoreCase("Y")){
+        if (!TextUtils.isEmpty(forumPost.IsLiked)) {
+            if (forumPost.IsLiked.equalsIgnoreCase("Y")) {
                 holder.tvLikes.setClickable(false);
-                Drawable img = mActivity.getResources().getDrawable( R.drawable.like_green);
+                Drawable img = mActivity.getResources().getDrawable(R.drawable.like_green);
                 holder.tvLikes.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
                 holder.tvLikes.setText(forumPost.postLikes + " Likes");
-            }else{
+            } else {
                 holder.tvLikes.setClickable(true);
-                Drawable img = mActivity.getResources().getDrawable( R.drawable.like);
+                Drawable img = mActivity.getResources().getDrawable(R.drawable.like);
                 holder.tvLikes.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
                 holder.tvLikes.setText("Like");
 
@@ -146,22 +145,18 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
                 mSocialEventsListener.onLockClicked(position);
             }
         });
-
-        if(mPage==0){
-            holder.tvComments.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mSocialEventsListener.onCommentClicked(position);
-                }
-            });
-        } else if(mPage==1) {
-            holder.tvComments.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mSocialEventsListener.onEditClicked(position);
-                }
-            });
-        }
+        holder.tvComments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSocialEventsListener.onCommentClicked(position);
+            }
+        });
+        holder.tvActionEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSocialEventsListener.onEditClicked(position);
+            }
+        });
     }
 
     @Override
@@ -169,14 +164,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
         return mForumPostList.size();
     }
 
-    public ForumPost getItem(int position){
+    public ForumPost getItem(int position) {
         return mForumPostList.get(position);
     }
 
     public void setForumPostList(List<ForumPost> forumPosts) {
-        if(mForumPostList != null) {
+        if (mForumPostList != null) {
             mForumPostList.clear();
-            if(forumPosts != null) {
+            if (forumPosts != null) {
                 mForumPostList.addAll(forumPosts);
             }
             notifyDataSetChanged();
