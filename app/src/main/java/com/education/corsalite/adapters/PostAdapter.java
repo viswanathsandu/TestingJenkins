@@ -100,7 +100,17 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
         holder.tvLikes.setText(forumPost.postLikes+" Likes");
         holder.tvViews.setText(forumPost.postViews+" Views");
         if(!TextUtils.isEmpty(forumPost.IsLiked)) {
-            holder.tvActionLike.setClickable(!forumPost.IsLiked.equalsIgnoreCase("Y"));
+            if(forumPost.IsLiked.equalsIgnoreCase("Y")){
+                holder.tvActionLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_unlike, 0, 0, 0);
+                holder.tvActionLike.setText("Unlike");
+                holder.tvActionLike.setClickable(false);
+
+            }else {
+                holder.tvActionLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.like_white, 0, 0, 0);
+                holder.tvActionLike.setText("Like");
+                holder.tvActionLike.setClickable(true);
+
+            }
         }
 
         Glide.with(holder.ivUserPic.getContext())
