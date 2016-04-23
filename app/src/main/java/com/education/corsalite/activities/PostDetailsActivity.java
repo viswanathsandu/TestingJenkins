@@ -59,8 +59,13 @@ public class PostDetailsActivity extends AbstractBaseActivity implements Comment
             finish();
             return;
         }
-        getPostDetails(userId, postId);
         setUI();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getPostDetails(userId, postId);
     }
 
     private void setUI() {

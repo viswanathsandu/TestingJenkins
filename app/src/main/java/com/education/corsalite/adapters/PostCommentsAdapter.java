@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.education.corsalite.R;
-import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.listener.CommentEventsListener;
 import com.education.corsalite.models.responsemodels.ForumPost;
 import com.education.corsalite.services.ApiClientService;
@@ -43,10 +42,11 @@ public class PostCommentsAdapter extends RecyclerView.Adapter<PostCommentsAdapte
     @Override
     public void onBindViewHolder(CommentHolder holder, int position) {
         final ForumPost forumPost = mForumPostList.get(position);
-        if (forumPost.idUser.equals(LoginUserCache.getInstance().getLongResponse().userId)) {
-            holder.tvActionDelete.setVisibility(View.VISIBLE);
-            holder.tvActionEdit.setVisibility(View.VISIBLE);
-        }
+        // TODO : uncomment it after implementing the edit/delete functionality
+        //    if (forumPost.idUser.equals(LoginUserCache.getInstance().getLongResponse().userId)) {
+        //        holder.tvActionDelete.setVisibility(View.VISIBLE);
+        //        holder.tvActionEdit.setVisibility(View.VISIBLE);
+        //    }
         setupActionListener(holder, position);
 
         holder.tvDate.setText(forumPost.Datetime + " by");

@@ -168,30 +168,13 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
                 });
     }
 
-    public void onDetailsClicked(int position) {
+    @Override
+    public void onCommentClicked(int position) {
         ForumPost item = mPostAdapter.getItem(position);
         Bundle bundle = new Bundle();
         bundle.putString("user_id",LoginUserCache.getInstance().loginResponse.userId);
         bundle.putString("post_id",item.idUserPost);
         Intent intent = new Intent(getActivity(), PostDetailsActivity.class);
-        intent.putExtras(bundle);
-        startActivity(intent);
-    }
-
-    @Override
-    public void onCommentClicked(int position) {
-        ForumPost item = mPostAdapter.getItem(position);
-        Bundle bundle = new Bundle();
-        bundle.putString("type", "Comment");
-        bundle.putString("operation", "Add");
-        bundle.putString("course_id", item.idCourse);
-        bundle.putString("subject_id", item.idCourseSubject);
-        bundle.putString("chapter_id", item.idCourseSubjectChapter);
-        bundle.putString("topic_id", item.idTopic);
-        bundle.putString("post_subject", item.PostSubject);
-        bundle.putString("post_id", item.idUserPost);
-        bundle.putString("is_author_only", item.isAuthorOnly);
-        Intent intent = new Intent(getActivity(), EditorActivity.class);
         intent.putExtras(bundle);
         startActivity(intent);
     }
