@@ -58,7 +58,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
         if(forumPost.idUser.equals(LoginUserCache.getInstance().getLongResponse().userId)) {
             holder.tvActionDelete.setVisibility(View.VISIBLE);
             holder.tvActionEdit.setVisibility(View.VISIBLE);
-            holder.tvDetails.setVisibility(View.VISIBLE);
         }
         setupActionListener(holder, position);
 
@@ -91,6 +90,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
             holder.tvTopicName.setVisibility(View.VISIBLE);
             holder.tvTopicName.setText(forumPost.TopicName);
         }
+
+        holder.tvComments.setClickable(!TextUtils.isEmpty(forumPost.postReplies) && !forumPost.postReplies.equalsIgnoreCase("0"));
         holder.tvComments.setText(forumPost.postReplies+" Comments");
         holder.tvViews.setText(forumPost.postViews+" Views");
 
@@ -127,20 +128,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
                 mSocialEventsListener.onBookmarkClicked(position);
             }
         });
-        holder.tvDetails.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mSocialEventsListener.onDetailsClicked(position);
-            }
-        });
-
         holder.tvLikes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mSocialEventsListener.onLikeClicked(position);
             }
         });
-
         holder.tvActionDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -158,7 +151,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
             holder.tvComments.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mSocialEventsListener.onCommentClicked(position);
+                    mSocialEventsListener.onDetailsClicked(position);
                 }
             });
         } else if(mPage==1) {
@@ -202,8 +195,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
     public class PostHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.iv_post_user_pic)
         ImageView ivUserPic;
-        @Bind(R.id.tv_details)
-        TextView tvDetails;
         @Bind(R.id.tv_post_action_bookmark)
         TextView tvActionBookmark;
         @Bind(R.id.tv_post_action_Comment)

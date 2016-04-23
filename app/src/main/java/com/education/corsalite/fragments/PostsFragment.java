@@ -14,9 +14,9 @@ import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
-import com.education.corsalite.activities.DetailsActivity;
 import com.education.corsalite.activities.EditorActivity;
 import com.education.corsalite.activities.ForumActivity;
+import com.education.corsalite.activities.PostDetailsActivity;
 import com.education.corsalite.adapters.PostAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
@@ -43,10 +43,14 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
     public static final String MEAL_TYPE_ARG = "MEAL_TYPE_ARG";
 
     private int mPage;
-    @Bind(R.id.rcv_posts) RecyclerView mRecyclerView;
-    @Bind(R.id.empty_layout) View emptyLayout;
-    @Bind(R.id.new_post_btn) Button newPostBtn;
-    @Bind(R.id.progress_layout) View progress;
+    @Bind(R.id.rcv_posts)
+    RecyclerView mRecyclerView;
+    @Bind(R.id.empty_layout)
+    View emptyLayout;
+    @Bind(R.id.new_post_btn)
+    Button newPostBtn;
+    @Bind(R.id.progress_layout)
+    View progress;
 
     private LinearLayoutManager mLayoutManager;
     private PostAdapter mPostAdapter;
@@ -72,6 +76,7 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
         setUI();
         return view;
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -162,17 +167,15 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
                     }
                 });
     }
-    public void onDetailsClicked(int position) {
 
+    public void onDetailsClicked(int position) {
         ForumPost item = mPostAdapter.getItem(position);
         Bundle bundle = new Bundle();
         bundle.putString("user_id",LoginUserCache.getInstance().loginResponse.userId);
         bundle.putString("post_id",item.idUserPost);
-        Intent intent = new Intent(getActivity(), DetailsActivity.class);
+        Intent intent = new Intent(getActivity(), PostDetailsActivity.class);
         intent.putExtras(bundle);
         startActivity(intent);
-
-
     }
 
     @Override
@@ -181,8 +184,8 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
         Bundle bundle = new Bundle();
         bundle.putString("type", "Comment");
         bundle.putString("operation", "Add");
-        bundle.putString("course_id",item.idCourse);
-        bundle.putString("subject_id",item.idCourseSubject);
+        bundle.putString("course_id", item.idCourse);
+        bundle.putString("subject_id", item.idCourseSubject);
         bundle.putString("chapter_id", item.idCourseSubjectChapter);
         bundle.putString("topic_id", item.idTopic);
         bundle.putString("post_subject", item.PostSubject);
@@ -199,7 +202,7 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
         final Bookmark bookmark = new Bookmark();
         if (forumPost.bookmark == null || (forumPost.bookmark != null && forumPost.bookmark.equalsIgnoreCase("N"))) {
             bookmark.bookmarkdelete = "Y";
-        }else {
+        } else {
             bookmark.bookmarkdelete = "N";
         }
         bookmark.idUserPost = forumPost.idUserPost;
@@ -208,11 +211,11 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
             @Override
             public void success(BookmarkResponse bookmarkResponse, Response response) {
                 super.success(bookmarkResponse, response);
-                if(bookmarkResponse.isSuccessful()){
+                if (bookmarkResponse.isSuccessful()) {
                     forumPost.bookmark = bookmark.bookmarkdelete;
                     if (bookmark.bookmarkdelete.equalsIgnoreCase("Y")) {
                         Toast.makeText(getActivity(), "Post is successfully bookmarked.", Toast.LENGTH_SHORT).show();
-                    }else {
+                    } else {
                         Toast.makeText(getActivity(), "Removed bookmark successfully.", Toast.LENGTH_SHORT).show();
                     }
                     mPostAdapter.updateCurrentItem(position);

@@ -162,6 +162,11 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         loadCoursesList();
     }
 
+    protected void setToolbarForPostcomments() {
+        toolbar.findViewById(R.id.new_post).setVisibility(View.VISIBLE);
+        setToolbarTitle("Comments");
+    }
+
     protected void setToolbarForTestStartScreen() {
         toolbar.findViewById(R.id.start_layout).setVisibility(View.VISIBLE);
         setToolbarTitle("Chapter Test");

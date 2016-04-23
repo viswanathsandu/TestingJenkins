@@ -92,9 +92,9 @@
             android:label="Study Center"
             android:theme="@style/UserProfileTheme" />
         <activity
-            android:name=".activities.DetailsActivity"
+            android:name=".activities.PostDetailsActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
-            android:label="Details"
+            android:label="Comments"
             android:theme="@style/UserProfileTheme" />
         <activity
             android:name=".activities.AnalyticsActivity"

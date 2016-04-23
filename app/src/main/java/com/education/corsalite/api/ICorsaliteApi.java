@@ -22,6 +22,7 @@ import com.education.corsalite.models.responsemodels.Exam;
 import com.education.corsalite.models.responsemodels.ExamHistory;
 import com.education.corsalite.models.responsemodels.ExamModel;
 import com.education.corsalite.models.responsemodels.ForumPost;
+import com.education.corsalite.models.responsemodels.FourmCommentPostModel;
 import com.education.corsalite.models.responsemodels.FriendsData;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
@@ -114,9 +115,10 @@ public interface ICorsaliteApi {
                          @Query("idCourse") String courseId,
                          ApiCallback<List<TestCoverage>> callback);
 
+    @GET("/ViewPost")
     void getPostDetails(@Query("idUser") String userId,
                          @Query("postId") String postId,
-                         ApiCallback<ForumPost> callback);
+                         ApiCallback<FourmCommentPostModel> callback);
 
 
     @GET("/FriendsList")
