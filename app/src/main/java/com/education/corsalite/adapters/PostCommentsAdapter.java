@@ -49,7 +49,7 @@ public class PostCommentsAdapter extends RecyclerView.Adapter<PostCommentsAdapte
         //    }
         setupActionListener(holder, position);
 
-        holder.tvDate.setText(forumPost.Datetime + " by");
+        holder.tvDate.setText(forumPost.Datetime);
         holder.tvUserName.setText(forumPost.DisplayName);
         holder.postDescriptionWebview.getSettings().setJavaScriptEnabled(true);
         holder.postDescriptionWebview.loadDataWithBaseURL("", forumPost.htmlText, "text/html", "UTF-8", "");
