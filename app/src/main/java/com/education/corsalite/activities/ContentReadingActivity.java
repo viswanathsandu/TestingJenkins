@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,7 +36,6 @@ import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.db.DbManager;
 import com.education.corsalite.event.ContentReadingEvent;
-import com.education.corsalite.fragments.EditorDialogFragment;
 import com.education.corsalite.fragments.VideoListDialog;
 import com.education.corsalite.models.ChapterModel;
 import com.education.corsalite.models.ContentModel;
@@ -247,7 +245,6 @@ public class ContentReadingActivity extends AbstractBaseActivity {
     }
 
     private void addToNote(String htmlText) {
-        EditorDialogFragment fragment = new EditorDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putString("type", "Note");
         bundle.putString("operation", "Add");
@@ -255,12 +252,12 @@ public class ContentReadingActivity extends AbstractBaseActivity {
         bundle.putString("topic_id", topicModelList.get(spTopic.getSelectedItemPosition()).idTopic);
         bundle.putString("content_id", contentModelList.get(mContentIdPosition).idContent);
         bundle.putString("content", htmlText);
-        fragment.setArguments(bundle);
-        fragment.show(getSupportFragmentManager(), "NotesEditorDialog");
+        Intent intent = new Intent(this, EditorActivity.class);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     private void addToForum(String htmlText) {
-        EditorDialogFragment fragment = new EditorDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putString("type", "Forum");
         bundle.putString("operation", "Add");
@@ -270,8 +267,9 @@ public class ContentReadingActivity extends AbstractBaseActivity {
         bundle.putString("topic_id", topicModelList.get(spTopic.getSelectedItemPosition()).idTopic);
         bundle.putString("content_id", contentModelList.get(mContentIdPosition).idContent);
         bundle.putString("content", htmlText);
-        fragment.setArguments(bundle);
-        fragment.show(getSupportFragmentManager(), "ForumEditorDialog");
+        Intent intent = new Intent(this, EditorActivity.class);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     private void loadWeb(String htmlUrl) {

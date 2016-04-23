@@ -2,6 +2,7 @@ package com.education.corsalite.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,7 +64,10 @@ public class PartTestGridAdapter extends AbstractRecycleViewAdapter {
             ButterKnife.bind(this, view);
         }
 
-        public void bindData(final int position, final PartTestGridElement element) {
+        public void bindData(final int position, PartTestGridElement element) {
+            if (TextUtils.isEmpty(element.questionCount)) {
+                ((PartTestGridElement) data.get(position)).recommendedQuestionCount = "10";
+            }
             tvChapter.setText(element.chapterName);
             etRecommended.setText(element.recommendedQuestionCount + "");
             etRecommended.addTextChangedListener(new TextWatcher() {
@@ -78,8 +82,9 @@ public class PartTestGridAdapter extends AbstractRecycleViewAdapter {
 
                 @Override
                 public void afterTextChanged(Editable editable) {
-                    if (editable.length() > 0)
-                        ((PartTestGridElement) data.get(position)).recommendedQuestionCount = Integer.valueOf(editable.toString());
+                    if (editable.length() > 0) {
+                        ((PartTestGridElement) data.get(position)).recommendedQuestionCount = editable.toString();
+                    }
                 }
             });
             tvQuestions.setText(element.questionCount + "");

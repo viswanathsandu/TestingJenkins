@@ -80,6 +80,7 @@
     <string name="exam_schedule">Exam Schedule</string>
     <string name="challenge_your_friends">Challenge</string>
     <string name="forum">Forum</string>
+    <string name="post">New Post</string>
     <string name="open_drawer">Open</string>
     <string name="close_drawer">Closed</string>
     <string name="log_out">Log Out</string>
@@ -157,6 +158,6 @@
     <string-array name="tab_names">
         <item>All Posts</item>
         <item>My Posts</item>
-        <item>My Comments</item>
+        <item>Library</item>
     </string-array>
 </resources>

@@ -168,29 +168,30 @@
                     fontPath="@string/roboto_regular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
+                    android:drawableLeft="@drawable/like_white"
                     android:drawablePadding="5dp"
-                    android:drawableStart="@drawable/like"
                     android:gravity="center_vertical"
-                    android:paddingBottom="7dp"
-                    android:paddingEnd="10dp"
-                    android:paddingStart="0dp"
-                    android:paddingTop="7dp"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="5dp"
+                    android:text="Like"
                     android:textColor="@android:color/black"
-                    tools:text="15 Likes" />
+                    />
 
                 <TextView
                     android:id="@+id/tv_post_response_comments"
                     fontPath="@string/roboto_regular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
                     android:drawablePadding="5dp"
-                    android:drawableStart="@drawable/comment"
+                    android:drawableLeft="@drawable/comment"
                     android:gravity="center_vertical"
                     android:paddingBottom="7dp"
-                    android:paddingEnd="10dp"
-                    android:paddingStart="0dp"
+                    android:paddingRight="10dp"
+                    android:paddingLeft="0dp"
                     android:paddingTop="7dp"
                     android:textColor="@android:color/black"
                     tools:text="4 Comments" />
@@ -200,13 +201,13 @@
                     fontPath="@string/roboto_regular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
                     android:drawablePadding="5dp"
-                    android:drawableStart="@drawable/view"
+                    android:drawableLeft="@drawable/view"
                     android:gravity="center_vertical"
                     android:paddingBottom="7dp"
-                    android:paddingEnd="10dp"
-                    android:paddingStart="0dp"
+                    android:paddingRight="10dp"
+                    android:paddingLeft="0dp"
                     android:paddingTop="7dp"
                     android:textColor="@android:color/black"
                     tools:text="127 Views" />
@@ -238,32 +239,14 @@
 
 
                 <TextView
-                    android:id="@+id/tv_post_action_Like"
-                    fontPath="@string/roboto_regular"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:background="@android:color/holo_green_dark"
-                    android:drawablePadding="5dp"
-                    android:drawableLeft="@drawable/like_white"
-                    android:gravity="center_vertical"
-                    android:paddingBottom="5dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:paddingTop="5dp"
-                    android:text="Like"
-                    android:textColor="@android:color/white" />
-
-                <TextView
                     android:id="@+id/tv_post_action_lock"
                     fontPath="@string/roboto_regular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
                     android:background="@android:color/holo_red_light"
                     android:drawablePadding="5dp"
-                    android:drawableStart="@drawable/lock"
+                    android:drawableLeft="@drawable/lock"
                     android:gravity="center_vertical"
                     android:paddingBottom="5dp"
                     android:paddingLeft="10dp"
@@ -278,16 +261,35 @@
                     fontPath="@string/roboto_regular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
                     android:background="@android:color/holo_red_light"
                     android:drawablePadding="5dp"
-                    android:drawableStart="@drawable/delete"
+                    android:drawableLeft="@drawable/delete"
                     android:gravity="center_vertical"
                     android:paddingBottom="5dp"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                     android:paddingTop="5dp"
                     android:text="Delete"
+                    android:visibility="gone"
+                    android:textColor="@android:color/white" />
+
+                <TextView
+                    android:id="@+id/tv_post_action_edit"
+                    fontPath="@string/roboto_regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:background="@android:color/holo_blue_dark"
+                    android:drawableLeft="@drawable/comment_white"
+                    android:drawablePadding="5dp"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="5dp"
+                    android:text="Edit"
+                    android:visibility="gone"
                     android:textColor="@android:color/white" />
 
                 <TextView
@@ -305,7 +307,10 @@
                     android:paddingRight="10dp"
                     android:paddingTop="5dp"
                     android:text="Comment"
+                    android:visibility="gone"
                     android:textColor="@android:color/white" />
+
+
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

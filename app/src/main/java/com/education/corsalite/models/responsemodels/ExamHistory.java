@@ -11,6 +11,8 @@ public class ExamHistory {
     public String idTestAnswerPaper;
     @SerializedName("StartTime")
     public String dateTime;
+    @SerializedName("Time")
+    public String timestamp;
     @SerializedName("TestName")
     public String examName;
 

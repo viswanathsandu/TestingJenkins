@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.models.responsemodels.ExamHistory;
@@ -54,6 +53,8 @@ public class ExamHistoryAdapter extends AbstractRecycleViewAdapter {
         View parent;
         @Bind(R.id.tv_examhistory_date)
         TextView examHistoryDate;
+        @Bind(R.id.tv_time)
+        TextView time;
         @Bind(R.id.tv_exam)
         TextView exam;
         @Bind(R.id.tv_type)
@@ -82,6 +83,8 @@ public class ExamHistoryAdapter extends AbstractRecycleViewAdapter {
             if (!examHistory.dateTime.isEmpty()) {
                 this.examHistoryDate.setText(examHistory.dateTime.split(" ")[0]);
             }
+
+           // this.time.setText(examHistory.time);
             this.exam.setText(examHistory.examName);
             this.type.setText(examHistory.testType);
             this.rank.setText(examHistory.rank);

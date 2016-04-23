@@ -20,7 +20,6 @@ import com.education.corsalite.adapters.NotesAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.listener.OnRefreshNotesListener;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.CourseData;
@@ -35,7 +34,7 @@ import retrofit.client.Response;
 /**
  * Created by ayush on 27/10/15.
  */
-public class NotesActivity extends AbstractBaseActivity implements OnRefreshNotesListener {
+public class NotesActivity extends AbstractBaseActivity {
 
     private LinearLayout spinnerLayout;
     private RecyclerView recyclerView;
@@ -70,6 +69,14 @@ public class NotesActivity extends AbstractBaseActivity implements OnRefreshNote
         initUI();
         setAdapter();
         sendAnalytics(getString(R.string.screen_notes));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(mCourseData != null && mCourseData.StudyCenter != null) {
+            getNotesData();
+        }
     }
 
     @Override
@@ -201,17 +208,17 @@ public class NotesActivity extends AbstractBaseActivity implements OnRefreshNote
     private void callNotesData(Integer idCourseSubject) {
         hideList();
         if(!TextUtils.isEmpty(mSubjectId) && mSubjectId.equalsIgnoreCase(idCourseSubject.toString())) {
-            getNotesData(mSubjectId, mChapterId, mTopicId);
+            getNotesData();
         } else {
             mSubjectId = idCourseSubject.toString();
             mChapterId = null;
             mTopicId = null;
-            getNotesData(idCourseSubject.toString(), null, null);
+            getNotesData();
         }
         mAdapter.notifyDataSetChanged();
     }
 
-    private void getNotesData(String subjectId, String chapterId, String topicId) {
+    private void getNotesData() {
         ApiManager.getInstance(this).getNotes(LoginUserCache.getInstance().loginResponse.studentId, mSubjectId, mChapterId, mTopicId, new ApiCallback<List<Note>>(this) {
             @Override
             public void failure(CorsaliteError error) {
@@ -284,11 +291,6 @@ public class NotesActivity extends AbstractBaseActivity implements OnRefreshNote
             this.type = type;
             this.tag = tag;
         }
-    }
-
-    @Override
-    public void refreshNotes() {
-        getNotesData(mSubjectId, mChapterId, mTopicId);
     }
 }
 

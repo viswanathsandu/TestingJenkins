@@ -1,5 +1,9 @@
 package com.education.corsalite.models.responsemodels;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
+
 /**
  * Created by sridharnalam on 1/13/16.
  */
@@ -36,6 +40,10 @@ public class ForumPost {
     public String EditedBy;
     public String Locked;
     public String IsLiked;
+    @SerializedName("postData")
+    public ForumPost postData;
+    @SerializedName("postDataReply")
+    public List<ForumPost> postDataReplyList;
 
     @Override
     public boolean equals(Object o) {

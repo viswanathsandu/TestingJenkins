@@ -21,6 +21,7 @@ import com.education.corsalite.models.responsemodels.Exam;
 import com.education.corsalite.models.responsemodels.ExamHistory;
 import com.education.corsalite.models.responsemodels.ExamModel;
 import com.education.corsalite.models.responsemodels.ForumPost;
+import com.education.corsalite.models.responsemodels.FourmCommentPostModel;
 import com.education.corsalite.models.responsemodels.FriendsData;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
@@ -43,6 +44,7 @@ import com.education.corsalite.models.responsemodels.UserProfileResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencyBalanceResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencySummaryResponse;
 import com.education.corsalite.models.responsemodels.WelcomeDetails;
+import com.education.corsalite.utils.AppConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,6 +114,12 @@ public interface ICorsaliteApi {
     void getTestCoverage(@Query("idStudent") String studentId,
                          @Query("idCourse") String courseId,
                          ApiCallback<List<TestCoverage>> callback);
+
+    @GET("/ViewPost")
+    void getPostDetails(@Query("idUser") String userId,
+                         @Query("postId") String postId,
+                         ApiCallback<FourmCommentPostModel> callback);
+
 
     @GET("/FriendsList")
     void getFriendsList(@Query("idUser") String userId,
@@ -212,6 +220,10 @@ public interface ICorsaliteApi {
     void addPostToForum(@Body TypedString update, ApiCallback<DefaultForumResponse> callback);
 
     @Headers("Content-Type:application/x-www-form-urlencoded")
+    @POST("/Forums")
+    void addComment(@Body TypedString update, ApiCallback<CommonResponseModel> callback);
+
+    @Headers("Content-Type:application/x-www-form-urlencoded")
     @POST("/ForumDelete")
     void deleteForum(@Body TypedString delete, ApiCallback<CommonResponseModel> callback);
 
@@ -240,7 +252,6 @@ public interface ICorsaliteApi {
     @POST("/CreateChallenge")
     void createChallenge(@Body TypedString insert, ApiCallback<CreateChallengeResponseModel> callback);
 
-
     @GET("/challengeTestDetails")
     void getchallengeTestDetails(@Query("idChallengeTest")String idChallengeTest, @Query("idCourse") String courseId, ApiCallback<ChallengeUserListResponse> callback);
 
@@ -260,4 +271,7 @@ public interface ICorsaliteApi {
 
     @GET("/PartTestGrid")
     void getPartTestGrid(@Query("idStudent")String studentId,@Query("idCourse")String courseId,@Query("idSubject") String subjectId,ApiCallback<PartTestModel> callback);
+
+    @GET("/ClientAppConfig")
+    void getAppConfig(@Query("idUser")String studentId,ApiCallback<AppConfig> callback);
 }

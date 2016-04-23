@@ -34,6 +34,7 @@ import com.education.corsalite.models.responsemodels.ExamHistory;
 import com.education.corsalite.models.responsemodels.ExamModel;
 import com.education.corsalite.models.responsemodels.Exam;
 import com.education.corsalite.models.responsemodels.ForumPost;
+import com.education.corsalite.models.responsemodels.FourmCommentPostModel;
 import com.education.corsalite.models.responsemodels.FriendsData;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
@@ -105,7 +106,7 @@ public class ApiManager {
 
     public void login(String loginId, String passwordHash, ApiCallback<LoginResponse> callback, boolean fetchFromDb) {
         apiCacheHolder.setLoginRequest(loginId, passwordHash);
-        if(fetchFromDb || !isNetworkConnected()) {
+        if (fetchFromDb || !isNetworkConnected()) {
             LoginReqRes reqRes = new LoginReqRes();
             reqRes.request = apiCacheHolder.loginRequest;
             DbManager.getInstance(context).getResponse(reqRes, callback);
@@ -132,7 +133,7 @@ public class ApiManager {
         apiCacheHolder.setCoursesRequest(studentId);
         if (isApiOnline() && isNetworkConnected()) {
             ApiClientService.get().getCourses(studentId, callback);
-        } else if(!isNetworkConnected()) {
+        } else if (!isNetworkConnected()) {
             DbManager.getInstance(context).getResponse(apiCacheHolder.courses, callback);
         } else {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/courses.json");
@@ -141,10 +142,10 @@ public class ApiManager {
         }
     }
 
-    public void getUsageAnalysis(String userId,ApiCallback<UsageAnalysis> callback){
-        if(isApiOnline()){
+    public void getUsageAnalysis(String userId, ApiCallback<UsageAnalysis> callback) {
+        if (isApiOnline()) {
             ApiClientService.get().getUsageAnalysis(userId, callback);
-        }else {
+        } else {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/usage_analysis.json");
             L.info("Response for 'api/usage_analysis.json' is " + jsonResponse);
             callback.success(new Gson().fromJson(jsonResponse, UsageAnalysis.class), MockUtils.getRetrofitResponse());
@@ -215,7 +216,6 @@ public class ApiManager {
             }
             callback.success(testCoverageList, MockUtils.getRetrofitResponse());
         }
-
     }
 
     public void getTestCoverage(String studentId, String courseId, String subjectId, String chapterId, ApiCallback<List<TestCoverage>> callback) {
@@ -224,11 +224,16 @@ public class ApiManager {
         }
     }
 
+    public void getPostDetails(String userId, String postId, ApiCallback<FourmCommentPostModel> callback) {
+        if (isApiOnline()) {
+            ApiClientService.get().getPostDetails(userId, postId, callback);
+        }
+    }
     public void getUserProfile(String studentId, ApiCallback<UserProfileResponse> callback) {
         apiCacheHolder.setUserProfileRequest(studentId);
         if (isApiOnline() && isNetworkConnected()) {
             ApiClientService.get().getUserProfile(studentId, callback);
-        } else if(!isNetworkConnected()) {
+        } else if (!isNetworkConnected()) {
             DbManager.getInstance(context).getResponse(apiCacheHolder.userProfile, callback);
         } else {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/user_profile.json");
@@ -241,7 +246,7 @@ public class ApiManager {
         apiCacheHolder.setVirtualCurrencyBalanceRequest(studentId);
         if (isApiOnline() && isNetworkConnected()) {
             ApiClientService.get().getVirtualCurrencyBalance(studentId, callback);
-        } else if(!isNetworkConnected()) {
+        } else if (!isNetworkConnected()) {
             DbManager.getInstance(context).getResponse(apiCacheHolder.virtualCurrencyBalance, callback);
         } else {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/virtual_currency_balance.json");
@@ -270,7 +275,7 @@ public class ApiManager {
         }
     }
 
-    public void getExamHistory(String studentId,String beginRowNumber,String numRows, ApiCallback<List<ExamHistory>> callback) {
+    public void getExamHistory(String studentId, String beginRowNumber, String numRows, ApiCallback<List<ExamHistory>> callback) {
         if (isApiOnline()) {
             ApiClientService.get().getExamHistory(studentId, beginRowNumber, numRows, callback);
         } else {
@@ -280,12 +285,11 @@ public class ApiManager {
         }
     }
 
-
     public void getStudyCentreData(String studentId, String courseID, ApiCallback<List<StudyCenter>> callback) {
         apiCacheHolder.setStudyCenterRequest(studentId, courseID);
         if (isApiOnline() && isNetworkConnected()) {
             ApiClientService.get().getCourseStudyCenterData(studentId, courseID, callback);
-        } else if(!isNetworkConnected()) {
+        } else if (!isNetworkConnected()) {
             StudyCenterReqRes reqRes = new StudyCenterReqRes();
             reqRes.request = apiCacheHolder.studyCenterRequest;
             DbManager.getInstance(context).getResponse(reqRes, callback);
@@ -300,7 +304,7 @@ public class ApiManager {
         apiCacheHolder.setContentIndexRequest(studentId, courseID);
         if (isApiOnline() && isNetworkConnected()) {
             ApiClientService.get().getContentIndexData(courseID, studentId, callback);
-        } else if(!isNetworkConnected()) {
+        } else if (!isNetworkConnected()) {
             DbManager.getInstance(context).getResponse(apiCacheHolder.contentIndex, callback);
         } else {
             String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/content_index.json");
@@ -363,19 +367,19 @@ public class ApiManager {
     }
 
     public void getTestQuestionPaper(String testQuestionPaperId, String testAnswerPaperId, ApiCallback<List<ExamModel>> callback) {
-        if(isApiOnline()) {
+        if (isApiOnline()) {
             ApiClientService.get().getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, callback);
         }
     }
 
     public void submitTestAnswerPaper(TestAnswerPaper testAnswerPaper, ApiCallback<TestAnswerPaperResponse> callback) {
-        if(isApiOnline()) {
+        if (isApiOnline()) {
             ApiClientService.get().submitTestAnswerPaper(new TypedString("Upsert=" + new Gson().toJson(testAnswerPaper)), callback);
         }
     }
 
     public void getStandardExamsByCourse(String courseId, String entityId, ApiCallback<List<Exam>> callback) {
-        if(isApiOnline()) {
+        if (isApiOnline()) {
             ApiClientService.get().getStandardExamsByCourse(courseId, entityId, callback);
         }
     }
@@ -394,20 +398,20 @@ public class ApiManager {
     }
 
     public void addNote(String insertNote, ApiCallback<DefaultNoteResponse> callback) {
-        if(isApiOnline()) {
+        if (isApiOnline()) {
             ApiClientService.get().addNote(new TypedString("Insert=" + insertNote), callback);
         }
     }
 
     public void updateNote(String updateNote, ApiCallback<DefaultNoteResponse> callback) {
-        if(isApiOnline()) {
+        if (isApiOnline()) {
             ApiClientService.get().updateNote(new TypedString("Update=" + updateNote), callback);
         }
     }
 
     public void deleteNote(String deleteNote, ApiCallback<DefaultNoteResponse> callback) {
-        if(isApiOnline()) {
-            ApiClientService.get().updateNote(new TypedString("Delete="+deleteNote), callback);
+        if (isApiOnline()) {
+            ApiClientService.get().updateNote(new TypedString("Delete=" + deleteNote), callback);
         }
     }
 
@@ -471,26 +475,33 @@ public class ApiManager {
         }
     }
 
-    public void addForumLike(ForumLikeRequest forumLikeRequest, ApiCallback<CommonResponseModel> callback){
-        if(isApiOnline()){
+    public void addForumLike(ForumLikeRequest forumLikeRequest, ApiCallback<CommonResponseModel> callback) {
+        if (isApiOnline()) {
             ApiClientService.get().addForumLike(new TypedString("Insert=" + new Gson().toJson(forumLikeRequest)), callback);
         }
     }
 
-    public void addEditForumPost(ForumModel forumPost, ApiCallback<DefaultForumResponse> callback){
-        if(isApiOnline()){
+    public void addEditForumPost(ForumModel forumPost, ApiCallback<DefaultForumResponse> callback) {
+        if (isApiOnline()) {
             ApiClientService.get().addPostToForum(new TypedString("Update=" + new Gson().toJson(forumPost)), callback);
         }
     }
 
-    public void deleteForum(ForumLikeRequest forumdeleteRequest, ApiCallback<CommonResponseModel> callback){
-        if(isApiOnline()){
+
+    public void addComment(ForumModel forumPost, ApiCallback<CommonResponseModel> callback) {
+        if (isApiOnline()) {
+            ApiClientService.get().addComment(new TypedString("Update=" + new Gson().toJson(forumPost)), callback);
+        }
+    }
+
+    public void deleteForum(ForumLikeRequest forumdeleteRequest, ApiCallback<CommonResponseModel> callback) {
+        if (isApiOnline()) {
             ApiClientService.get().deleteForum(new TypedString("Delete=" + new Gson().toJson(forumdeleteRequest)), callback);
         }
     }
 
-    public void postUserEvents(String insert, ApiCallback<UserEventsResponse> callback){
-        if(isApiOnline()){
+    public void postUserEvents(String insert, ApiCallback<UserEventsResponse> callback) {
+        if (isApiOnline()) {
             ApiClientService.get().postUserEvents(new TypedString("Insert=" + insert), callback);
         }
     }
@@ -501,63 +512,69 @@ public class ApiManager {
         }
     }
 
-    public void getTestPaperIndex(String questionPaperId,String answerPpaerId,String allPosts,ApiCallback<TestPaperIndex> callback){
-        if(isApiOnline()){
+    public void getTestPaperIndex(String questionPaperId, String answerPpaerId, String allPosts, ApiCallback<TestPaperIndex> callback) {
+        if (isApiOnline()) {
             ApiClientService.get().getTestPaperIndex(questionPaperId, answerPpaerId, allPosts, callback);
         }
     }
 
-    public void getWelcomeDetails(String idStudent,ApiCallback<WelcomeDetails> callback){
-        if(isApiOnline()){
+    public void getWelcomeDetails(String idStudent, ApiCallback<WelcomeDetails> callback) {
+        if (isApiOnline()) {
             ApiClientService.get().getWelcomeDetails(idStudent, callback);
         }
     }
 
-    public void createChallenge(CreateChallengeRequest insert, ApiCallback<CreateChallengeResponseModel> callback){
-        if(isApiOnline()){
+    public void createChallenge(CreateChallengeRequest insert, ApiCallback<CreateChallengeResponseModel> callback) {
+        if (isApiOnline()) {
             ApiClientService.get().createChallenge(new TypedString("Insert=" + new Gson().toJson(insert)), callback);
         }
     }
 
-    public void getChallengeTestDetails(String challengeTestId, String courseId, ApiCallback<ChallengeUserListResponse> callback){
-        if(isApiOnline()){
+    public void getChallengeTestDetails(String challengeTestId, String courseId, ApiCallback<ChallengeUserListResponse> callback) {
+        if (isApiOnline()) {
             ApiClientService.get().getchallengeTestDetails(challengeTestId, courseId, callback);
         }
     }
 
-    public void postChallengeStatus(String update, ApiCallback<CommonResponseModel> callback){
-        if(isApiOnline()){
+    public void postChallengeStatus(String update, ApiCallback<CommonResponseModel> callback) {
+        if (isApiOnline()) {
             ApiClientService.get().updateChallengStatus(new TypedString("Update=" + update), callback);
         }
     }
 
-    public void postChallengeStart(String update, ApiCallback<ChallengeStartResponseModel> callback){
-        if(isApiOnline()){
+    public void postChallengeStart(String update, ApiCallback<ChallengeStartResponseModel> callback) {
+        if (isApiOnline()) {
             ApiClientService.get().startChallenge(new TypedString("Update=" + update), callback);
         }
     }
 
-    public void completeChallengeTest(String challengeTestId, String testQuestionPaperId, String studentId, ApiCallback<ChallengeCompleteResponseModel> callback){
-        if(isApiOnline()){
+    public void completeChallengeTest(String challengeTestId, String testQuestionPaperId, String studentId, ApiCallback<ChallengeCompleteResponseModel> callback) {
+        if (isApiOnline()) {
             ApiClientService.get().completeChallenge(challengeTestId, testQuestionPaperId, studentId, callback);
         }
     }
 
-    public void getChallengeResults(String challengeTestId, ApiCallback<List<ChallengeUser>> callback){
-        if(isApiOnline()){
+    public void getChallengeResults(String challengeTestId, ApiCallback<List<ChallengeUser>> callback) {
+        if (isApiOnline()) {
             ApiClientService.get().getChallengeResults(challengeTestId, callback);
         }
     }
 
-    public void getPartTestGrid(String studentId,String courseId,String subjectId,ApiCallback<PartTestModel> callback){
-        if (isApiOnline()){
-            ApiClientService.get().getPartTestGrid(studentId,courseId,subjectId,callback);
+    public void getPartTestGrid(String studentId, String courseId, String subjectId, ApiCallback<PartTestModel> callback) {
+        if (isApiOnline()) {
+            ApiClientService.get().getPartTestGrid(studentId, courseId, subjectId, callback);
         }
     }
 
-    public void postBookmark(Bookmark bookmark, ApiCallback<CommonResponseModel> callback){
-        if(isApiOnline()){
-            ApiClientService.get().addDeleteBookmark(new TypedString(("Update="+ new Gson().toJson(bookmark))), callback);
+    public void postBookmark(Bookmark bookmark, ApiCallback<CommonResponseModel> callback) {
+        if (isApiOnline()) {
+            ApiClientService.get().addDeleteBookmark(new TypedString(("Update=" + new Gson().toJson(bookmark))), callback);
+        }
+    }
+
+    public void getAppConfig(String idUser, ApiCallback<com.education.corsalite.utils.AppConfig> callback) {
+        if (isApiOnline()) {
+            ApiClientService.get().getAppConfig(idUser, callback);
         }
     }
 }

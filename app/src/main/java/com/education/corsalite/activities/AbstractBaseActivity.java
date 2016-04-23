@@ -162,6 +162,11 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         loadCoursesList();
     }
 
+    protected void setToolbarForPostcomments() {
+        toolbar.findViewById(R.id.new_post).setVisibility(View.VISIBLE);
+        setToolbarTitle("Comments");
+    }
+
     protected void setToolbarForTestStartScreen() {
         toolbar.findViewById(R.id.start_layout).setVisibility(View.VISIBLE);
         setToolbarTitle("Chapter Test");
@@ -226,7 +231,15 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     protected void setToolbarForForum() {
         toolbar.findViewById(R.id.new_post).setVisibility(View.VISIBLE);
+        toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
         setToolbarTitle(getResources().getString(R.string.forum));
+        loadCoursesList();
+
+    }
+
+    protected void setToolbarForPost() {
+        toolbar.findViewById(R.id.new_post1).setVisibility(View.VISIBLE);
+        setToolbarTitle(getResources().getString(R.string.post));
     }
 
     protected void setToolbarForExercise(String title) {
@@ -289,33 +302,30 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
         navigationView.findViewById(R.id.navigation_welcome).setVisibility(View.VISIBLE);
 
-        if (config.enableMyProfile != null && config.enableMyProfile) {
+        if (config.isMyProfileEnabled()) {
             navigationView.findViewById(R.id.navigation_profile).setVisibility(View.VISIBLE);
         }
-        if (config.enableStudyCenter != null && config.enableStudyCenter) {
+        if (config.isStudyCenterEnabled()) {
             navigationView.findViewById(R.id.navigation_study_center).setVisibility(View.VISIBLE);
         }
-        if (config.enableSmartClass != null && config.enableSmartClass) {
+        if (config.isSmartClassEnabled()) {
             navigationView.findViewById(R.id.navigation_smart_class).setVisibility(View.VISIBLE);
         }
-        if (config.enableAnalytics != null && config.enableAnalytics) {
+        if (config.isAnalyticsEnabled()) {
             navigationView.findViewById(R.id.navigation_analytics).setVisibility(View.VISIBLE);
         }
-        if (config.enableOffline != null && config.enableOffline) {
+        if (config.isOfflineEnabled()) {
             navigationView.findViewById(R.id.navigation_offline).setVisibility(View.VISIBLE);
         }
-        if (config.enableChallangeTest != null && config.enableChallangeTest) {
+        if (config.isChallengeTestEnabled()) {
             navigationView.findViewById(R.id.navigation_challenge_your_friends).setVisibility(View.VISIBLE);
         }
-
         if (config.enableForum != null && config.enableForum) {
             navigationView.findViewById(R.id.navigation_forum).setVisibility(View.VISIBLE);
         }
-        if (config.enableLogout != null && config.enableLogout) {
+        if (config.isLogoutEnabled()) {
             navigationView.findViewById(R.id.navigation_logout).setVisibility(View.VISIBLE);
         }
-
-
     }
 
     private void setNavigationClickListeners() {
@@ -528,6 +538,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     private void loadCoursesList() {
+
         if (LoginUserCache.getInstance().loginResponse == null || LoginUserCache.getInstance().loginResponse.studentId == null) {
             return;
         }

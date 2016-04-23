@@ -70,6 +70,7 @@ import com.education.corsalite.models.responsemodels.AnswerChoiceModel;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Exam;
 import com.education.corsalite.models.responsemodels.ExamModel;
+import com.education.corsalite.models.responsemodels.PartTestGridElement;
 import com.education.corsalite.models.responsemodels.PostExamTemplate;
 import com.education.corsalite.models.responsemodels.PostExercise;
 import com.education.corsalite.models.responsemodels.PostFlaggedQuestions;
@@ -88,7 +89,9 @@ import com.education.corsalite.utils.TimeUtils;
 import com.education.corsalite.utils.WebUrls;
 import com.education.corsalite.views.GridViewInScrollView;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -181,6 +184,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private TestPaperIndex mockTestPaperIndex;
     private List<ExamModel> localExamModelList;
     private List<ExamModel> flaggedQuestions;
+    private List<PartTestGridElement> partTestGridElements;
     private List<String> sections;
     private TestAnswerPaper testanswerPaper = new TestAnswerPaper();
 
@@ -234,6 +238,11 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         offlineModelDate = getIntent().getExtras().getLong("OfflineTestModel");
         challengeTestId = getIntent().getStringExtra("challenge_test_id");
         mIsAdaptiveTest = getIntent().getBooleanExtra(Constants.ADAPIVE_LEAERNING, false);
+        String partTestGridElimentsJson = getIntent().getStringExtra(Constants.PARTTEST_GRIDMODELS);
+        if(!TextUtils.isEmpty(partTestGridElimentsJson)) {
+            Type listType = new TypeToken<ArrayList<PartTestGridElement>>() {}.getType();
+            partTestGridElements = new Gson().fromJson(partTestGridElimentsJson, listType);
+        }
         if (title.equalsIgnoreCase("Flagged Questions")) {
             loadFlaggedQuestions();
         } else if (title.equalsIgnoreCase("Exercises")) {
@@ -655,18 +664,6 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
     private void updateTestAnswerPaper(final TestanswerPaperState state) {
         testanswerPaper.status = state.toString();
-
-        //TODO : remove the unattended items. This has to be removed when API is fixed
-                /* ****************************************** */
-        Iterator<TestAnswer> i = testanswerPaper.testAnswers.iterator();
-        while (i.hasNext()) {
-            TestAnswer answer = i.next();
-            if (answer.status.equalsIgnoreCase("Unattended")) {
-                i.remove();
-            }
-        }
-                /* ****************************************** */
-
         ApiManager.getInstance(ExamEngineActivity.this).submitTestAnswerPaper(testanswerPaper, new ApiCallback<TestAnswerPaperResponse>(ExamEngineActivity.this) {
             @Override
             public void failure(CorsaliteError error) {
@@ -685,6 +682,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             @Override
             public void success(TestAnswerPaperResponse testAnswerPaperResponse, Response response) {
                 super.success(testAnswerPaperResponse, response);
+                sendLederBoardRequestEvent();
                 if(state == TestanswerPaperState.STARTED) {
 
                 } else if(state == TestanswerPaperState.SUSPENDED) {
@@ -696,6 +694,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     mViewSwitcher.showNext();
                     if(ischallengeTest()) {
                         openChallengeTestResults();
+                        finish();
                     } else if (testAnswerPaperResponse != null && !TextUtils.isEmpty(testAnswerPaperResponse.testAnswerPaperId)) {
                         openAdvancedExamResultSummary(testAnswerPaperResponse.testAnswerPaperId);
                         finish();
@@ -785,9 +784,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private void openChallengeTestResults() {
         Intent intent = new Intent(ExamEngineActivity.this, ChallengeResultActivity.class);
         intent.putExtra("challenge_test_id", challengeTestId);
-        intent.putExtra("tesst_question_paper_id", testQuestionPaperId);
+        intent.putExtra("test_question_paper_id", testQuestionPaperId);
         startActivity(intent);
-        finish();
     }
 
     private void openAdvancedExamResultSummary(String answerPaperId) {
@@ -807,6 +805,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
     private void navigateToExamResultActivity(int totalQuestions, int correct, int wrong) {
         AbstractBaseActivity.setSharedExamModels(localExamModelList);
+
         Intent intent = new Intent(this, ExamResultActivity.class);
         intent.putExtra("exam", "Chapter");
         intent.putExtra("type", "Custom");
@@ -1413,6 +1412,9 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void getFlaggedQuestion(final boolean showFlaggedQuestions) {
+        if(TextUtils.isEmpty(subjectId) || TextUtils.isEmpty(chapterId)) {
+            return;
+        }
         ApiManager.getInstance(this).getFlaggedQuestions(LoginUserCache.getInstance().loginResponse.studentId,
                 subjectId,
                 chapterId, "", new ApiCallback<List<ExamModel>>(this) {
@@ -1499,11 +1501,17 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         examTemplateConfig.subjectId = subjectId;
         examTemplateConfig.examTemplateChapter = new ArrayList<>();
 
-        ExamTemplateChapter examTemplateChapter = new ExamTemplateChapter();
-        examTemplateChapter.chapterID = chapterId;
-        examTemplateChapter.topicIDs = topicIds;
-        examTemplateChapter.questionCount = questionsCount;
-        examTemplateConfig.examTemplateChapter.add(examTemplateChapter);
+        if(partTestGridElements != null && !partTestGridElements.isEmpty()) {
+            for(PartTestGridElement element : partTestGridElements) {
+                examTemplateConfig.examTemplateChapter.add(new ExamTemplateChapter(element.idCourseSubjectChapter, element.recommendedQuestionCount));
+            }
+        } else {
+            ExamTemplateChapter examTemplateChapter = new ExamTemplateChapter();
+            examTemplateChapter.chapterID = chapterId;
+            examTemplateChapter.topicIDs = topicIds;
+            examTemplateChapter.questionCount = questionsCount;
+            examTemplateConfig.examTemplateChapter.add(examTemplateChapter);
+        }
         postCustomExamTemplate.examTemplateConfig.add(examTemplateConfig);
 
         ApiManager.getInstance(this).postCustomExamTemplate(new Gson().toJson(postCustomExamTemplate),
@@ -1635,10 +1643,6 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         for (ExamModel question : questions) {
             TestAnswer answer = new TestAnswer();
             answer.testQuestionId = question.idTestQuestion;
-            answer.answerKeyId = null;
-            answer.answerText = null;
-            answer.status = "Unattended"; //Unattended | Skipped | Answered | Skipped
-            answer.timeTaken = null;
             testanswerPaper.testAnswers.add(answer);
         }
     }

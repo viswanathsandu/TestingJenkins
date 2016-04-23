@@ -1,6 +1,7 @@
 package com.education.corsalite.adapters;
 
 import android.app.Activity;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.education.corsalite.R;
+import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.listener.SocialEventsListener;
 import com.education.corsalite.models.responsemodels.ForumPost;
 import com.education.corsalite.services.ApiClientService;
@@ -50,21 +52,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
     @Override
     public void onBindViewHolder(PostHolder holder, int position) {
         final ForumPost forumPost = mForumPostList.get(position);
-        if(mPage==0){
-            holder.tvActionLike.setVisibility(View.VISIBLE);
-            holder.tvActionComment.setVisibility(View.VISIBLE);
-            holder.tvActionDelete.setVisibility(View.GONE);
-            holder.tvActionLock.setVisibility(View.GONE);
-            holder.tvActionComment.setText("Comment");
-            holder.tvActionComment.setVisibility(View.GONE);
-        } else if(mPage==1) {
-            holder.tvActionLike.setVisibility(View.GONE);
-            holder.tvActionComment.setVisibility(View.VISIBLE);
-            holder.tvActionDelete.setVisibility(View.VISIBLE);
-            holder.tvActionLock.setVisibility(View.GONE);
-            holder.tvActionComment.setText("Edit");
-        }
+        holder.tvActionLock.setVisibility(View.GONE);
+        holder.tvActionComment.setVisibility(View.INVISIBLE);
 
+        if(forumPost.idUser.equals(LoginUserCache.getInstance().getLongResponse().userId)) {
+            holder.tvActionDelete.setVisibility(View.VISIBLE);
+            holder.tvActionEdit.setVisibility(View.VISIBLE);
+        }
         setupActionListener(holder, position);
 
         holder.tvQuestion.setText(forumPost.PostSubject);
@@ -96,29 +90,34 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
             holder.tvTopicName.setVisibility(View.VISIBLE);
             holder.tvTopicName.setText(forumPost.TopicName);
         }
+
+        holder.tvComments.setClickable(!TextUtils.isEmpty(forumPost.postReplies) && !forumPost.postReplies.equalsIgnoreCase("0"));
         holder.tvComments.setText(forumPost.postReplies+" Comments");
-        holder.tvLikes.setText(forumPost.postLikes+" Likes");
         holder.tvViews.setText(forumPost.postViews+" Views");
+
+
+
         if(!TextUtils.isEmpty(forumPost.IsLiked)) {
             if(forumPost.IsLiked.equalsIgnoreCase("Y")){
-                holder.tvActionLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_unlike, 0, 0, 0);
-                holder.tvActionLike.setText("Unlike");
-                holder.tvActionLike.setClickable(false);
-
-            }else {
-                holder.tvActionLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.like_white, 0, 0, 0);
-                holder.tvActionLike.setText("Like");
-                holder.tvActionLike.setClickable(true);
+                holder.tvLikes.setClickable(false);
+                Drawable img = mActivity.getResources().getDrawable( R.drawable.like_green);
+                holder.tvLikes.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
+                holder.tvLikes.setText(forumPost.postLikes + " Likes");
+            }else{
+                holder.tvLikes.setClickable(true);
+                Drawable img = mActivity.getResources().getDrawable( R.drawable.like);
+                holder.tvLikes.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
+                holder.tvLikes.setText("Like");
 
             }
         }
 
         Glide.with(holder.ivUserPic.getContext())
-            .load(ApiClientService.getBaseUrl() + forumPost.PhotoUrl)
-            .centerCrop()
-            .placeholder(R.drawable.profile_pic)
-            .crossFade()
-            .into(holder.ivUserPic);
+                .load(ApiClientService.getBaseUrl() + forumPost.PhotoUrl)
+                .centerCrop()
+                .placeholder(R.drawable.profile_pic)
+                .crossFade()
+                .into(holder.ivUserPic);
 
     }
 
@@ -129,14 +128,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
                 mSocialEventsListener.onBookmarkClicked(position);
             }
         });
-
-        holder.tvActionLike.setOnClickListener(new View.OnClickListener() {
+        holder.tvLikes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mSocialEventsListener.onLikeClicked(position);
             }
         });
-
         holder.tvActionDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -151,14 +148,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
         });
 
         if(mPage==0){
-            holder.tvActionComment.setOnClickListener(new View.OnClickListener() {
+            holder.tvComments.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     mSocialEventsListener.onCommentClicked(position);
                 }
             });
         } else if(mPage==1) {
-            holder.tvActionComment.setOnClickListener(new View.OnClickListener() {
+            holder.tvComments.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     mSocialEventsListener.onEditClicked(position);
@@ -202,12 +199,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
         TextView tvActionBookmark;
         @Bind(R.id.tv_post_action_Comment)
         TextView tvActionComment;
+        @Bind(R.id.tv_post_action_edit)
+        TextView tvActionEdit;
         @Bind(R.id.tv_post_action_lock)
         TextView tvActionLock;
         @Bind(R.id.tv_post_action_delete)
         TextView tvActionDelete;
-        @Bind(R.id.tv_post_action_Like)
-        TextView tvActionLike;
         @Bind(R.id.tv_post_question)
         TextView tvQuestion;
         @Bind(R.id.tv_post_date)

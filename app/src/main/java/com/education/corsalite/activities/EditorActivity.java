@@ -3,13 +3,15 @@ package com.education.corsalite.activities;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -23,7 +25,6 @@ import com.education.corsalite.adapters.TopicAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.listener.OnRefreshNotesListener;
 import com.education.corsalite.models.ChapterModel;
 import com.education.corsalite.models.SubjectModel;
 import com.education.corsalite.models.TopicModel;
@@ -31,6 +32,7 @@ import com.education.corsalite.models.requestmodels.AddNoteRequest;
 import com.education.corsalite.models.requestmodels.ForumModel;
 import com.education.corsalite.models.requestmodels.Note;
 import com.education.corsalite.models.requestmodels.UpdateNoteRequest;
+import com.education.corsalite.models.responsemodels.CommonResponseModel;
 import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.DefaultForumResponse;
@@ -47,7 +49,7 @@ import retrofit.client.Response;
 /**
  * Created by Madhuri on 14-04-2016.
  */
-public class NewPostActivity extends AbstractBaseActivity implements View.OnClickListener{
+public class EditorActivity extends AbstractBaseActivity {
     private WebView webview;
     private RelativeLayout forumHeaderLayout;
     private Spinner subjectSpinner;
@@ -55,9 +57,6 @@ public class NewPostActivity extends AbstractBaseActivity implements View.OnClic
     private Spinner topicSpinner;
     private EditText titleTxt;
     private CheckBox isAuthorOnlyCkb;
-    private Button addBtn;
-    private Button editBtn;
-    private Button cancelBtn;
     private View progress;
 
     private String type;
@@ -70,87 +69,100 @@ public class NewPostActivity extends AbstractBaseActivity implements View.OnClic
     private String notesId;
     private String postId;
     private String postsubject;
+    private String userId;
+    private String locked;
+    private String courseId;
     private String isAuthorOnly;
     private String originalContent;
     private String updateContent;
-    private OnRefreshNotesListener onRefreshNotesListener;
 
     private List<ContentIndex> mContentIndexList;
     private List<SubjectModel> mSubjectModelList;
     private List<ChapterModel> mChapterModelList;
     private List<TopicModel> mTopicModelList;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.editor_dialog_layout);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        toolbar.setTitleTextColor(0xFFFFFFFF);
+
         type = getIntent().getExtras().getString("type", "Note");
-		
-		Bundle data = getIntent().getExtras();
-		
-		if(data!=null)
-		{
-		operation = data.getString("operation", "Add");
-        studentId = data.getString("student_id", "");
-        subjectId = data.getString("subject_id", "");
-        chapterId = data.getString("chapter_id", "");
-        topicId = data.getString("topic_id", "");
-        contentId = data.getString("content_id", "");
-        notesId = data.getString("notes_id", "");
-        postId = data.getString("post_id", "");
-        originalContent = data.getString("content", "");
-        isAuthorOnly = data.getString("is_author_only", "");
-        postsubject = data.getString("post_subject", "");
-		initUi();
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            operation = bundle.getString("operation", "Add");
+            courseId = bundle.getString("course_id", "");
+            userId = bundle.getString("user_id", "");
+            locked = bundle.getString("locked", "");
+            studentId = bundle.getString("student_id", "");
+            subjectId = bundle.getString("subject_id", "");
+            chapterId = bundle.getString("chapter_id", "");
+            topicId = bundle.getString("topic_id", "");
+            contentId = bundle.getString("content_id", "");
+            notesId = bundle.getString("notes_id", "");
+            postId = bundle.getString("post_id", "");
+            originalContent = bundle.getString("content", "");
+            isAuthorOnly = bundle.getString("is_author_only", "");
+            postsubject = bundle.getString("post_subject", "");
+        }
+        getSupportActionBar().setTitle(operation+" "+type);
+        initUi();
         loadWebview();
-		}
-        
     }
 
-
-    public void setRefreshNoteListener(OnRefreshNotesListener onRefreshNotesListener) {
-        this.onRefreshNotesListener = onRefreshNotesListener;
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.new_post_menu, menu);
+        return super.onCreateOptionsMenu(menu);
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+            case R.id.edit_btn:
+                webview.loadUrl("javascript:getUpdatedHtml()");
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void initUi() {
         forumHeaderLayout = (RelativeLayout) findViewById(R.id.forum_header_layout);
         subjectSpinner = (Spinner) findViewById(R.id.subject_spinner);
         chapterSpinner = (Spinner) findViewById(R.id.chapter_spinner);
         topicSpinner = (Spinner) findViewById(R.id.topic_spinner);
         progress = findViewById(R.id.progress);
-        if(type.equals("Note")) {
+        if (type.equals("Note") || type.equals("Comment")) {
             forumHeaderLayout.setVisibility(View.GONE);
-        } else if(type.equals("Forum")) {
+        } else if (type.equals("Forum")) {
             forumHeaderLayout.setVisibility(View.VISIBLE);
-            getContentIndex(AbstractBaseActivity.selectedCourse.courseId+"", LoginUserCache.getInstance().loginResponse.studentId);
+            getContentIndex(AbstractBaseActivity.selectedCourse.courseId + "", LoginUserCache.getInstance().loginResponse.studentId);
         }
-        isAuthorOnlyCkb = (CheckBox)findViewById(R.id.is_author_only_ckb);
-        if(isAuthorOnly.equals("Y")) {
+        isAuthorOnlyCkb = (CheckBox) findViewById(R.id.is_author_only_ckb);
+        if (isAuthorOnly.equals("Y")) {
             isAuthorOnlyCkb.setChecked(true);
-        } else if(isAuthorOnly.equals("N")) {
+        } else if (isAuthorOnly.equals("N")) {
             isAuthorOnlyCkb.setChecked(false);
+        } else {
+            isAuthorOnlyCkb.setVisibility(View.GONE);
         }
-        titleTxt = (EditText)findViewById(R.id.title_txt);
-        if(!TextUtils.isEmpty(postsubject)) {
+        titleTxt = (EditText) findViewById(R.id.title_txt);
+        if (!TextUtils.isEmpty(postsubject)) {
             titleTxt.setText(postsubject);
         }
-        if(operation.equals("Add")) {
-            addBtn = (Button) findViewById(R.id.add_btn);
-            addBtn.setOnClickListener(this);
-            addBtn.setVisibility(View.VISIBLE);
-        } else if(operation.equals("Edit")) {
-            editBtn = (Button) findViewById(R.id.edit_btn);
-            editBtn.setOnClickListener(this);
-            editBtn.setVisibility(View.VISIBLE);
-        }
-        cancelBtn = (Button) findViewById(R.id.cancel_btn);
-        cancelBtn.setOnClickListener(this);
         initWebview();
     }
 
     @SuppressLint("JavascriptInterface")
     private void initWebview() {
-        webview = (WebView)findViewById(R.id.editor_webview);
+        webview = (WebView) findViewById(R.id.editor_webview);
         webview.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
         webview.setScrollbarFadingEnabled(true);
         webview.getSettings().setLoadsImagesAutomatically(true);
@@ -162,22 +174,26 @@ public class NewPostActivity extends AbstractBaseActivity implements View.OnClic
                 return false;
             }
 
-            public void onPageFinished(WebView view, String url){
-                webview.loadUrl("javascript:loadHtml('"+originalContent+"')");
+            public void onPageFinished(WebView view, String url) {
+                webview.loadUrl("javascript:loadHtml('" + originalContent + "')");
             }
         });
         webview.addJavascriptInterface(new Object() {
             @JavascriptInterface
             public void updateContent(String content) {
                 updateContent = content;
-                L.info("UpdatedContent : " + updateContent);
-                if(operation.equalsIgnoreCase("Add")) {
-                    addContent();
-                } else if(operation.equalsIgnoreCase("Edit")) {
-                    editContent();
-                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        L.info("UpdatedContent : " + updateContent);
+                        if (operation.equalsIgnoreCase("Add")) {
+                            addContent();
+                        } else if (operation.equalsIgnoreCase("Edit")) {
+                            editContent();
+                        }
+                    }
+                });
             }
-
         }, "Android");
     }
 
@@ -185,39 +201,69 @@ public class NewPostActivity extends AbstractBaseActivity implements View.OnClic
         webview.loadUrl("file:///android_asset/ckeditor/samples/index.html");
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.add_btn:
-            case R.id.edit_btn:
-                webview.loadUrl("javascript:getUpdatedHtml()");
-                break;
-            case R.id.cancel_btn:
-                break;
-            default :
-                break;
+    private void addComment(ForumModel post) {
+        try {
+            showProgress();
+            ApiManager.getInstance(this).addComment(post, new ApiCallback<CommonResponseModel>(this){
+                @Override
+                public void failure(CorsaliteError error) {
+                    super.failure(error);
+                    closeProgress();
+                    showToast("Failed to add comment");
+                }
+                @Override
+                public void success(CommonResponseModel commonResponseModel, Response response) {
+                    super.success(commonResponseModel, response);
+                    closeProgress();
+                    showToast("Comment added successfully");
+                    finish();
+                }
+            });
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
         }
     }
 
+    private ForumModel getComment() {
+        ForumModel post = new ForumModel();
+        post.userId = LoginUserCache.getInstance().getLongResponse().userId;
+        post.studentId = LoginUserCache.getInstance().getLongResponse().studentId;
+        post.courseId = courseId;
+        post.idCourseSubject = subjectId;
+        post.idCourseSubjectChapter = chapterId;
+        post.topicId = topicId;
+        post.postSubject = postsubject;
+        if(!TextUtils.isEmpty(postId)) {
+            post.idUserPost = null;
+            post.referIdUserPost = postId;
+        }
+        post.postContent = updateContent;
+        post.isAuthorOnly = isAuthorOnly;
+        post.locked="Y";
+        return post;
+    }
+
     private void addContent() {
-        if(type.equalsIgnoreCase("Note")) {
+        if (type.equalsIgnoreCase("Note")) {
             addNotes();
-        } else if(type.equalsIgnoreCase("Forum")) {
+        } else if (type.equalsIgnoreCase("Forum")) {
             addEditPostToForum(getForumPost());
+        }else if(type.equalsIgnoreCase("Comment")) {
+            addComment(getComment());
         }
     }
 
     private void editContent() {
-        if(type.equalsIgnoreCase("Note")) {
+        if (type.equalsIgnoreCase("Note")) {
             editNotes();
-        } else if(type.equalsIgnoreCase("Forum")) {
+        } else if (type.equalsIgnoreCase("Forum")) {
             addEditPostToForum(getForumPost());
         }
     }
 
     private ForumModel getForumPost() {
         ForumModel post = new ForumModel();
-        if(!TextUtils.isEmpty(postId)) {
+        if (!TextUtils.isEmpty(postId)) {
             post.idUserPost = postId;
         }
         post.studentId = LoginUserCache.getInstance().loginResponse.studentId;
@@ -236,22 +282,20 @@ public class NewPostActivity extends AbstractBaseActivity implements View.OnClic
     private void addEditPostToForum(ForumModel post) {
         try {
             showProgress();
-            ApiManager.getInstance(NewPostActivity.this).addEditForumPost(post, new ApiCallback<DefaultForumResponse>(NewPostActivity.this) {
+            ApiManager.getInstance(EditorActivity.this).addEditForumPost(post, new ApiCallback<DefaultForumResponse>(EditorActivity.this) {
                 @Override
                 public void failure(CorsaliteError error) {
                     super.failure(error);
                     closeProgress();
-                    Toast.makeText(NewPostActivity.this, "Failed to add post on Forum", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditorActivity.this, "Failed to add post on Forum", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void success(DefaultForumResponse defaultNoteResponse, Response response) {
                     super.success(defaultNoteResponse, response);
-                    if (NewPostActivity.this != null) {
-                        closeProgress();
-                        Toast.makeText(NewPostActivity.this, "Post added successfully", Toast.LENGTH_SHORT).show();
-                    }
-                    NewPostActivity.this.finish();
+                    closeProgress();
+                    Toast.makeText(EditorActivity.this, "Post added successfully", Toast.LENGTH_SHORT).show();
+                    finish();
                 }
             });
         } catch (Exception e) {
@@ -263,22 +307,20 @@ public class NewPostActivity extends AbstractBaseActivity implements View.OnClic
         try {
             showProgress();
             AddNoteRequest request = new AddNoteRequest(studentId, new Note(topicId, contentId, updateContent));
-            ApiManager.getInstance(NewPostActivity.this).addNote(new Gson().toJson(request), new ApiCallback<DefaultNoteResponse>(NewPostActivity.this) {
+            ApiManager.getInstance(EditorActivity.this).addNote(new Gson().toJson(request), new ApiCallback<DefaultNoteResponse>(EditorActivity.this) {
                 @Override
                 public void failure(CorsaliteError error) {
                     super.failure(error);
                     closeProgress();
-                    Toast.makeText(NewPostActivity.this, "Failed to add Note", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditorActivity.this, "Failed to add Note", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void success(DefaultNoteResponse defaultNoteResponse, Response response) {
                     super.success(defaultNoteResponse, response);
-                    if (NewPostActivity.this != null) {
-                        closeProgress();
-                        Toast.makeText(NewPostActivity.this, "Note added successfully", Toast.LENGTH_SHORT).show();
-                    }
-                    NewPostActivity.this.finish();
+                    closeProgress();
+                    Toast.makeText(EditorActivity.this, "Note added successfully", Toast.LENGTH_SHORT).show();
+                    finish();
                 }
             });
         } catch (Exception e) {
@@ -289,37 +331,34 @@ public class NewPostActivity extends AbstractBaseActivity implements View.OnClic
     private void editNotes() {
         UpdateNoteRequest request = new UpdateNoteRequest(studentId, notesId, updateContent);
         showProgress();
-        ApiManager.getInstance(NewPostActivity.this).updateNote(new Gson().toJson(request), new ApiCallback<DefaultNoteResponse>(NewPostActivity.this) {
+        ApiManager.getInstance(EditorActivity.this).updateNote(new Gson().toJson(request), new ApiCallback<DefaultNoteResponse>(EditorActivity.this) {
             @Override
             public void failure(CorsaliteError error) {
                 super.failure(error);
                 closeProgress();
-                Toast.makeText(NewPostActivity.this, "Failed to update Note", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditorActivity.this, "Failed to update Note", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void success(DefaultNoteResponse defaultNoteResponse, Response response) {
                 super.success(defaultNoteResponse, response);
-                Toast.makeText(NewPostActivity.this, "Updated Note successfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditorActivity.this, "Updated Note successfully", Toast.LENGTH_SHORT).show();
                 closeProgress();
-                if(onRefreshNotesListener != null) {
-                    onRefreshNotesListener.refreshNotes();
-                }
-                NewPostActivity.this.finish();
+                finish();
             }
         });
     }
 
     private void getContentIndex(String courseId, String studentId) {
         showProgress();
-        ApiManager.getInstance(NewPostActivity.this).getContentIndex(courseId, studentId,
-                new ApiCallback<List<ContentIndex>>(NewPostActivity.this) {
+        ApiManager.getInstance(EditorActivity.this).getContentIndex(courseId, studentId,
+                new ApiCallback<List<ContentIndex>>(EditorActivity.this) {
                     @Override
                     public void failure(CorsaliteError error) {
                         super.failure(error);
                         closeProgress();
                         if (error != null && !TextUtils.isEmpty(error.message)) {
-                            ((AbstractBaseActivity) NewPostActivity.this).showToast(error.message);
+                            ((AbstractBaseActivity) EditorActivity.this).showToast(error.message);
                         }
                     }
 
@@ -338,7 +377,7 @@ public class NewPostActivity extends AbstractBaseActivity implements View.OnClic
     private void showSubject() {
         ContentIndex mContentIndex = mContentIndexList.get(0);
         mSubjectModelList = new ArrayList<>(mContentIndex.subjectModelList);
-        final SubjectAdapter subjectAdapter = new SubjectAdapter(mSubjectModelList, NewPostActivity.this);
+        final SubjectAdapter subjectAdapter = new SubjectAdapter(mSubjectModelList, EditorActivity.this);
         subjectSpinner.setAdapter(subjectAdapter);
 
         int listSize = mSubjectModelList.size();
@@ -369,7 +408,7 @@ public class NewPostActivity extends AbstractBaseActivity implements View.OnClic
 
         mChapterModelList = new ArrayList<>(mSubjectModelList.get(subjectPosition).chapters);
         Collections.sort(mChapterModelList); // sort the chapters based on the chapterSortOrder
-        final ChapterAdapter chapterAdapter = new ChapterAdapter(mChapterModelList, NewPostActivity.this);
+        final ChapterAdapter chapterAdapter = new ChapterAdapter(mChapterModelList, EditorActivity.this);
         chapterSpinner.setAdapter(chapterAdapter);
 
         if (!chapterId.isEmpty()) {
@@ -400,7 +439,7 @@ public class NewPostActivity extends AbstractBaseActivity implements View.OnClic
         mTopicModelList = new ArrayList<>(mChapterModelList.get(chapterPosition).topicMap);
         Collections.sort(mTopicModelList);
         if (mTopicModelList != null) {
-            final TopicAdapter topicAdapter = new TopicAdapter(mTopicModelList,NewPostActivity.this);
+            final TopicAdapter topicAdapter = new TopicAdapter(mTopicModelList, EditorActivity.this);
             topicSpinner.setAdapter(topicAdapter);
 
             if (!topicId.isEmpty()) {
@@ -422,14 +461,13 @@ public class NewPostActivity extends AbstractBaseActivity implements View.OnClic
 
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
-
                 }
             });
         }
     }
 
     public void showProgress() {
-        if(progress != null &&NewPostActivity.this != null) {
+        if (progress != null) {
             progress.setVisibility(View.VISIBLE);
         }
     }

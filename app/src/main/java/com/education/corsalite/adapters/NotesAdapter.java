@@ -1,6 +1,7 @@
 package com.education.corsalite.adapters;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -14,12 +15,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.education.corsalite.R;
+import com.education.corsalite.activities.EditorActivity;
 import com.education.corsalite.activities.NotesActivity;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.fragments.EditorDialogFragment;
-import com.education.corsalite.listener.OnRefreshNotesListener;
 import com.education.corsalite.models.requestmodels.UpdateNoteRequest;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.DefaultNoteResponse;
@@ -149,18 +149,14 @@ public class NotesAdapter extends AbstractRecycleViewAdapter {
             final String htmlContent = ((Note) note.tag).noteHtml;
             try {
                 notesContentWebview.loadDataWithBaseURL(baseUrl, htmlContent, "text/html", "UTF-8", null);
-            } catch(Exception e) {
+            } catch (Exception e) {
                 L.error(e.getMessage(), e);
             }
             editBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(note.tag instanceof Note) {
+                    if (note.tag instanceof Note) {
                         Note noteObj = (Note) note.tag;
-                        EditorDialogFragment fragment = new EditorDialogFragment();
-                        if(context instanceof OnRefreshNotesListener) {
-                            fragment.setRefreshNoteListener((OnRefreshNotesListener) context);
-                        }
                         Bundle bundle = new Bundle();
                         bundle.putString("type", "Note");
                         bundle.putString("operation", "Edit");
@@ -169,21 +165,23 @@ public class NotesAdapter extends AbstractRecycleViewAdapter {
                         bundle.putString("content_id", noteObj.contentId);
                         bundle.putString("notes_id", noteObj.idNotes);
                         bundle.putString("content", htmlContent);
-                        fragment.setArguments(bundle);
-                        fragment.show(((NotesActivity) context).getSupportFragmentManager(), "NotesEditorDialog");
+                        Intent intent = new Intent(context, EditorActivity.class);
+                        intent.putExtras(bundle);
+                        context.startActivity(intent);
+
                     }
                 }
             });
             deleteBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    deleteNote((Note) note.tag, (OnRefreshNotesListener) context);
+                    deleteNote((Note) note.tag);
                 }
             });
         }
     }
 
-    private void deleteNote(Note note, final OnRefreshNotesListener listener) {
+    private void deleteNote(Note note) {
         UpdateNoteRequest request = new UpdateNoteRequest(note.studentId, note.idNotes, null);
         ApiManager.getInstance(context).deleteNote(new Gson().toJson(request), new ApiCallback<DefaultNoteResponse>(context) {
             @Override
@@ -195,9 +193,6 @@ public class NotesAdapter extends AbstractRecycleViewAdapter {
             @Override
             public void success(DefaultNoteResponse defaultNoteResponse, Response response) {
                 super.success(defaultNoteResponse, response);
-                if(listener != null) {
-                    listener.refreshNotes();
-                }
                 Toast.makeText(context, "Deleted Note successfully", Toast.LENGTH_SHORT).show();
             }
         });

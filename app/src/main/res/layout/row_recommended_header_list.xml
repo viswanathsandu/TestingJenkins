@@ -7,6 +7,7 @@
     <TextView
         android:id="@+id/tv_subject_name"
         android:layout_weight="1"
+        android:visibility="gone"
         android:text="@string/subject_label"
         style="@style/analytics_recommended_reading_heading_text_style" />
 
@@ -52,5 +53,6 @@
         android:id="@+id/tv_time"
         android:layout_weight="1"
         android:text="@string/time_label"
+        android:visibility="gone"
         style="@style/analytics_recommended_reading_heading_text_style" />
 </LinearLayout>

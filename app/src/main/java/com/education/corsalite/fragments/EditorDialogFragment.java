@@ -27,7 +27,6 @@ import com.education.corsalite.adapters.TopicAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.listener.OnRefreshNotesListener;
 import com.education.corsalite.models.ChapterModel;
 import com.education.corsalite.models.SubjectModel;
 import com.education.corsalite.models.TopicModel;
@@ -35,6 +34,7 @@ import com.education.corsalite.models.requestmodels.AddNoteRequest;
 import com.education.corsalite.models.requestmodels.ForumModel;
 import com.education.corsalite.models.requestmodels.Note;
 import com.education.corsalite.models.requestmodels.UpdateNoteRequest;
+import com.education.corsalite.models.responsemodels.CommonResponseModel;
 import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.DefaultForumResponse;
@@ -50,7 +50,10 @@ import retrofit.client.Response;
 
 /**
  * Created by vissu on 11/3/15.
+ *
+ * This was being used before EditorActivity. Now EditorActivity can be used instead of EditorDialogFragment
  */
+@Deprecated
 public class EditorDialogFragment extends DialogFragment implements View.OnClickListener {
 
     private WebView webview;
@@ -66,6 +69,8 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
     private View progress;
 
     private String type;
+    private String userId;
+    private String locked;
     private String operation;
     private String studentId;
     private String subjectId;
@@ -74,21 +79,15 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
     private String contentId;
     private String notesId;
     private String postId;
+    private String courseId;
     private String postsubject;
     private String isAuthorOnly;
     private String originalContent;
     private String updateContent;
-    private OnRefreshNotesListener onRefreshNotesListener;
-
     private List<ContentIndex> mContentIndexList;
     private List<SubjectModel> mSubjectModelList;
     private List<ChapterModel> mChapterModelList;
     private List<TopicModel> mTopicModelList;
-
-
-    public void setRefreshNoteListener(OnRefreshNotesListener onRefreshNotesListener) {
-        this.onRefreshNotesListener = onRefreshNotesListener;
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -97,6 +96,9 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
                 false);
 
         type = getArguments().getString("type", "Note");
+        courseId = getArguments().getString("course_id", "");
+        userId = getArguments().getString("user_id", "");
+        locked = getArguments().getString("locked", "");
         operation = getArguments().getString("operation", "Add");
         studentId = getArguments().getString("student_id", "");
         subjectId = getArguments().getString("subject_id", "");
@@ -120,7 +122,7 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
         chapterSpinner = (Spinner) view.findViewById(R.id.chapter_spinner);
         topicSpinner = (Spinner) view.findViewById(R.id.topic_spinner);
         progress = view.findViewById(R.id.progress);
-        if(type.equals("Note")) {
+        if(type.equals("Note") || type.equals("Comment")) {
             forumHeaderLayout.setVisibility(View.GONE);
         } else if(type.equals("Forum")) {
             forumHeaderLayout.setVisibility(View.VISIBLE);
@@ -131,7 +133,11 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
             isAuthorOnlyCkb.setChecked(true);
         } else if(isAuthorOnly.equals("N")) {
             isAuthorOnlyCkb.setChecked(false);
+        } else{
+            isAuthorOnlyCkb.setVisibility(View.GONE);
         }
+
+
         titleTxt = (EditText) view.findViewById(R.id.title_txt);
         if(!TextUtils.isEmpty(postsubject)) {
             titleTxt.setText(postsubject);
@@ -164,8 +170,8 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
                 return false;
             }
 
-            public void onPageFinished(WebView view, String url){
-                webview.loadUrl("javascript:loadHtml('"+originalContent+"')");
+            public void onPageFinished(WebView view, String url) {
+                webview.loadUrl("javascript:loadHtml('" + originalContent + "')");
             }
         });
         webview.addJavascriptInterface(new Object() {
@@ -173,9 +179,9 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
             public void updateContent(String content) {
                 updateContent = content;
                 L.info("UpdatedContent : " + updateContent);
-                if(operation.equalsIgnoreCase("Add")) {
+                if (operation.equalsIgnoreCase("Add")) {
                     addContent();
-                } else if(operation.equalsIgnoreCase("Edit")) {
+                } else if (operation.equalsIgnoreCase("Edit")) {
                     editContent();
                 }
             }
@@ -191,6 +197,7 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.add_btn:
+                addContent();
             case R.id.edit_btn:
                 webview.loadUrl("javascript:getUpdatedHtml()");
                 break;
@@ -207,6 +214,8 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
             addNotes();
         } else if(type.equalsIgnoreCase("Forum")) {
             addEditPostToForum(getForumPost());
+        }else if(type.equalsIgnoreCase("Comment")) {
+            addComment(getComment());
         }
     }
 
@@ -216,6 +225,25 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
         } else if(type.equalsIgnoreCase("Forum")) {
             addEditPostToForum(getForumPost());
         }
+    }
+
+    private ForumModel getComment() {
+        ForumModel post = new ForumModel();
+        post.userId = LoginUserCache.getInstance().getLongResponse().userId;
+        post.studentId = LoginUserCache.getInstance().getLongResponse().studentId;
+        post.courseId = courseId;
+        post.idCourseSubject = subjectId;
+        post.idCourseSubjectChapter = chapterId;
+        post.topicId = topicId;
+        post.postSubject = postsubject;
+        if(!TextUtils.isEmpty(postId)) {
+            post.idUserPost = null;
+            post.referIdUserPost = postId;
+        }
+        post.postContent = updateContent;
+        post.isAuthorOnly = isAuthorOnly;
+        post.locked="Y";
+        return post;
     }
 
     private ForumModel getForumPost() {
@@ -262,6 +290,36 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
         }
     }
 
+
+    private void addComment(ForumModel post) {
+        try {
+            showProgress();
+            ApiManager.getInstance(getActivity()).addComment(post, new ApiCallback<CommonResponseModel>(getActivity()){
+                @Override
+                public void failure(CorsaliteError error) {
+                    super.failure(error);
+                    if (getActivity() != null) {
+                        closeProgress();
+                        Toast.makeText(getActivity(), "Failed to add comment", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                @Override
+                public void success(CommonResponseModel commonResponseModel, Response response) {
+                    super.success(commonResponseModel, response);
+                    if (getActivity() != null) {
+                        closeProgress();
+                        Toast.makeText(getActivity(), "Comment added successfully", Toast.LENGTH_SHORT).show();
+                        dismiss();
+                    }
+                }
+            });
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+    }
+
+
+
     private void addNotes() {
         try {
             showProgress();
@@ -305,9 +363,6 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
                 super.success(defaultNoteResponse, response);
                 Toast.makeText(getActivity(), "Updated Note successfully", Toast.LENGTH_SHORT).show();
                 closeProgress();
-                if(onRefreshNotesListener != null) {
-                    onRefreshNotesListener.refreshNotes();
-                }
                 dismiss();
             }
         });

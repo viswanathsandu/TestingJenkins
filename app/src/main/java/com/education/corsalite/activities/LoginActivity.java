@@ -3,7 +3,10 @@ package com.education.corsalite.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
@@ -61,7 +64,7 @@ public class LoginActivity extends AbstractBaseActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 AppConfig config = AppConfig.getInstance();
                 config.enableProduction = isChecked;
-                AppPref.getInstance(LoginActivity.this).save("enable_production", config.enableProduction+"");
+                AppPref.getInstance(LoginActivity.this).save("enable_production", config.enableProduction + "");
                 ApiClientService.setBaseUrl(isChecked ? config.productionUrl : config.stageUrl);
                 ApiClientService.setSocketUrl(isChecked ? config.productionSocketUrl : config.stageSocketUrl);
             }
@@ -75,13 +78,13 @@ public class LoginActivity extends AbstractBaseActivity {
         forgotPasswordTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(SystemUtils.isNetworkConnected(LoginActivity.this)) {
+                if (SystemUtils.isNetworkConnected(LoginActivity.this)) {
                     Intent intent = new Intent(LoginActivity.this, WebviewActivity.class);
                     intent.putExtra(URL, WebUrls.getForgotPasswordUrl());
                     intent.putExtra(TITLE, getString(R.string.forgot_password));
                     intent.putExtra("clear_cookies", true);
                     startActivity(intent);
-                }else {
+                } else {
                     showToast("Please check your network connection");
                 }
             }
@@ -90,12 +93,41 @@ public class LoginActivity extends AbstractBaseActivity {
         passwordTxt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-                if(actionId == EditorInfo.IME_ACTION_DONE){
-                   login();
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    login();
                 }
                 return false;
             }
         });
+
+        passwordTxt.setTag("N");
+        passwordTxt.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final int DRAWABLE_RIGHT = 2;
+
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (event.getRawX() > (passwordTxt.getRight() - passwordTxt
+                            .getCompoundDrawables()[DRAWABLE_RIGHT].getBounds()
+                            .width())) {
+
+                        String showing = passwordTxt.getTag().toString();
+
+                        if(showing.equalsIgnoreCase("Y")){
+                            passwordTxt.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                            passwordTxt.setTag("N");
+                        }else{
+                            passwordTxt.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                            passwordTxt.setTag("Y");
+                        }
+                        return false;
+                    }
+                }
+                return false;
+            }
+        });
+
+
     }
 
     private void login(final String username, final String password, final boolean fetchLocal) {
