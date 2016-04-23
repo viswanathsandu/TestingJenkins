@@ -369,7 +369,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Localytics.tagEvent("Analytics");
-                startActivity(new Intent(AbstractBaseActivity.this, AnalyticsActivity.class));
+                startActivity(new Intent(AbstractBaseActivity.this, NewAnalyticsActivity.class));
                 drawerLayout.closeDrawers();
             }
         });
