@@ -1,4 +1,4 @@
-package com.education.corsalite.services;
+package com.education.corsalite.notifications;
 
 import android.app.Notification;
 import android.app.NotificationManager;

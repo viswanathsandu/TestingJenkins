@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.education.corsalite.activities.ExamEngineActivity;
-import com.education.corsalite.services.NotificationsUtils;
+import com.education.corsalite.notifications.NotificationsUtils;
 import com.education.corsalite.utils.Constants;
 
 public class NotifyReceiver extends BroadcastReceiver {

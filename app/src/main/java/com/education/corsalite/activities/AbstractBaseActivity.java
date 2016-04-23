@@ -52,6 +52,7 @@ import com.education.corsalite.models.responsemodels.VirtualCurrencyBalanceRespo
 import com.education.corsalite.models.socket.response.ChallengeTestRequestEvent;
 import com.education.corsalite.models.socket.response.ChallengeTestStartEvent;
 import com.education.corsalite.models.socket.response.ChallengeTestUpdateEvent;
+import com.education.corsalite.notifications.ChallengeUtils;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.AppConfig;
 import com.education.corsalite.utils.AppPref;
@@ -712,10 +713,11 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     // trigger challenge test request
     public void onEventMainThread(ChallengeTestRequestEvent event) {
-        Intent intent = new Intent(this, ChallengeActivity.class);
-        intent.putExtra("type", "REQUEST");
-        intent.putExtra("challenge_test_request_json", new Gson().toJson(event));
-        startActivity(intent);
+//        Intent intent = new Intent(this, ChallengeActivity.class);
+//        intent.putExtra("type", "REQUEST");
+//        intent.putExtra("challenge_test_request_json", new Gson().toJson(event));
+//        startActivity(intent);
+        ChallengeUtils.get(this).showChallengeRequestNotification(event);
     }
 
     public void onEventMainThread(ChallengeTestUpdateEvent event) {
