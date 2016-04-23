@@ -111,6 +111,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
             }
         }
 
+        Drawable img = mActivity.getResources().getDrawable(!TextUtils.isEmpty(forumPost.bookmark) ? R.drawable.bookmark_green : R.drawable.bookmark);
+        holder.tvActionBookmark.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
+
         Glide.with(holder.ivUserPic.getContext())
                 .load(ApiClientService.getBaseUrl() + forumPost.PhotoUrl)
                 .centerCrop()
