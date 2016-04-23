@@ -72,7 +72,6 @@ public class WebviewActivity extends AbstractBaseActivity {
         loginWebview.getSettings().setJavaScriptEnabled(true);
         loginWebview.setWebViewClient(new LoginWebViewClient());
         loginWebview.loadUrl(getLoginUrl());
-        L.info("Load Url : "+getLoginUrl());
     }
 
     private String getLoginUrl() {
