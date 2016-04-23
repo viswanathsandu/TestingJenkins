@@ -712,26 +712,17 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     // trigger challenge test request
     public void onEventMainThread(ChallengeTestRequestEvent event) {
-        showChallengeTestRequestFragment(event);
+        Intent intent = new Intent(this, ChallengeActivity.class);
+        intent.putExtra("type", "REQUEST");
+        intent.putExtra("challenge_test_request_json", new Gson().toJson(event));
+        startActivity(intent);
     }
 
     public void onEventMainThread(ChallengeTestUpdateEvent event) {
-        if (challengeTestRequestDialogFragment == null || !challengeTestRequestDialogFragment.isVisible()) {
-            ChallengeTestRequestEvent requestEvent = new ChallengeTestRequestEvent();
-            requestEvent.challengeTestParentId = event.challengeTestParentId;
-            requestEvent.challengerName = event.challengerName;
-            showChallengeTestRequestFragment(requestEvent);
-        }
-    }
-
-    public void showChallengeTestRequestFragment(ChallengeTestRequestEvent event) {
-        if (challengeTestRequestDialogFragment != null && challengeTestRequestDialogFragment.isVisible()) {
-            challengeTestRequestDialogFragment.dismiss();
-        }
-        challengeTestRequestDialogFragment = ChallengeTestRequestDialogFragment.newInstance(event);
-        if (challengeTestRequestDialogFragment != null) {
-            challengeTestRequestDialogFragment.show(getSupportFragmentManager(), ChallengeTestRequestDialogFragment.class.getSimpleName());
-        }
+        Intent intent = new Intent(this, ChallengeActivity.class);
+        intent.putExtra("type", "UPDATE");
+        intent.putExtra("challenge_test_update_json", new Gson().toJson(event));
+        startActivity(intent);
     }
 
     public void onEventMainThread(ChallengeTestStartEvent event) {
