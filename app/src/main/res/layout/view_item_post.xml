@@ -309,6 +309,8 @@
                     android:text="Comment"
                     android:visibility="gone"
                     android:textColor="@android:color/white" />
+
+
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
