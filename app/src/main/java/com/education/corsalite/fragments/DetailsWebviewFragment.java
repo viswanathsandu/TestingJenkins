@@ -2,22 +2,30 @@ package com.education.corsalite.fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.RelativeLayout;
+
+import com.education.corsalite.R;
+import com.education.corsalite.services.ApiClientService;
+import com.education.corsalite.utils.AppPref;
+import com.education.corsalite.utils.L;
 
 /**
  * Created by madhuri on 4/23/16.
  */
 public class DetailsWebviewFragment extends Fragment {
 
-    private WebView mWebView;
     private boolean mIsWebViewAvailable;
     private String mUrl = null;
+    private AppPref appPref;
+    private final String URL = "URL";
+    private WebView mWebView;
+    private WebView loginWebview;
 
     public DetailsWebviewFragment() {
         super();
@@ -26,31 +34,13 @@ public class DetailsWebviewFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        if (mWebView != null) {
-            mWebView.destroy();
-        }
+        RelativeLayout myView = (RelativeLayout) inflater.inflate(R.layout.activity_webview, null, false);
+        mWebView = (WebView) myView.findViewById(R.id.webview);
+        loginWebview = (WebView) myView.findViewById(R.id.login_webview);
         mUrl = getArguments().getString("URL");
-        mWebView = new WebView(getActivity());
-        mWebView.setOnKeyListener(new View.OnKeyListener(){
-
-
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if ((keyCode == KeyEvent.KEYCODE_BACK) && mWebView.canGoBack()) {
-                    mWebView.goBack();
-                    return true;
-                }
-                return false;
-            }
-
-        });
-        mWebView.setWebViewClient(new InnerWebViewClient()); // forces it to open in app
-        mWebView.loadUrl(mUrl);
-        mIsWebViewAvailable = true;
-        WebSettings settings = mWebView.getSettings();
-        settings.setJavaScriptEnabled(true);
-        return mWebView;
+        appPref = AppPref.getInstance(getActivity());
+        loadLoginUrl();
+        return myView;
     }
 
     @Override
@@ -80,17 +70,55 @@ public class DetailsWebviewFragment extends Fragment {
         super.onDestroy();
     }
 
+    private String getLoginUrl() {
+        String loginUrl = String.format("%swebservices/AuthToken?LoginID=%s&PasswordHash=%s",
+                ApiClientService.getBaseUrl(),
+                appPref.getValue("loginId"),
+                appPref.getValue("passwordHash"));
+        return loginUrl;
+    }
+
+    private void loadLoginUrl() {
+        loginWebview.getSettings().setJavaScriptEnabled(true);
+        loginWebview.setWebViewClient(new LoginWebViewClient());
+        loginWebview.loadUrl(getLoginUrl());
+        L.info("Load Url : " + getLoginUrl());
+    }
+
     public WebView getWebView() {
         return mIsWebViewAvailable ? mWebView : null;
     }
 
-    private class InnerWebViewClient extends WebViewClient {
+    private class LoginWebViewClient extends WebViewClient {
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+            L.info("Login page loading completed in webview");
+            loadWebpage();
+        }
+
+    }
+
+    private void loadWebpage() {
+
+        mWebView.getSettings().setJavaScriptEnabled(true);
+        mWebView.setWebViewClient(new MyWebViewClient());
+        mWebView.loadUrl(mUrl);
+    }
+
+    private class MyWebViewClient extends WebViewClient {
+
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             view.loadUrl(url);
             return true;
         }
 
-
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+            L.info("Finished Loading URL : " + url);
+            mWebView.setVisibility(View.VISIBLE);
+        }
     }
 }
