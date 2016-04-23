@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.education.corsalite.activities.ChallengeActivity;
 import com.education.corsalite.models.socket.response.ChallengeTestRequestEvent;
+import com.education.corsalite.models.socket.response.ChallengeTestUpdateEvent;
 import com.education.corsalite.utils.L;
 import com.google.gson.Gson;
 
@@ -33,7 +34,7 @@ public class ChallengeUtils {
         try {
             Bundle extras = new Bundle();
             String title = extras.getString("title", "Challenge Request");
-            String subTitle = extras.getString("sub_title", "from" + event.challengerName);
+            String subTitle = extras.getString("sub_title", "Challenger : " + event.challengerName);
             Toast.makeText(context, "Notification : " + title, Toast.LENGTH_SHORT).show();
             NotificationsUtils.NotifyUser(context, Integer.valueOf(event.challengeTestParentId), title, subTitle, getChallengeRequestIntent(event));
         } catch (Exception e) {
@@ -53,4 +54,30 @@ public class ChallengeUtils {
                 PendingIntent.FLAG_UPDATE_CURRENT);
         return pendingIntent;
     }
+
+    public void showChallengeUpdateNotification(ChallengeTestUpdateEvent event) {
+        try {
+            Bundle extras = new Bundle();
+            String title = extras.getString("title", "Challenge Request");
+            String subTitle = extras.getString("sub_title", "from" + event.challengerName);
+            Toast.makeText(context, "Notification : " + title, Toast.LENGTH_SHORT).show();
+            NotificationsUtils.NotifyUser(context, Integer.valueOf(event.challengeTestParentId), title, subTitle, getChallengeUpdateIntent(event));
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+    }
+
+    private PendingIntent getChallengeUpdateIntent(ChallengeTestUpdateEvent event) {
+        if(event != null && (TextUtils.isEmpty(event.challengeTestParentId) || TextUtils.isEmpty(event.challengerName))) {
+            return null;
+        }
+        Intent intent = new Intent(context, ChallengeActivity.class);
+        intent.putExtra("type", "UPDATE");
+        intent.putExtra("challenge_test_update_json", new Gson().toJson(event));
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                context, requestCode++, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        return pendingIntent;
+    }
+
 }
