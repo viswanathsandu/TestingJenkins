@@ -91,12 +91,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         if (model.status == Constants.STATUS_COMPLETED) {
             textViewStatus.setText("Completed");
             ivStatus.setImageResource(R.drawable.ico_correct);
-        }
-        else if (model.status == Constants.STATUS_START) {
+        } else if (model.status == Constants.STATUS_START) {
             textViewStatus.setText("Not Started");
             ivStatus.setImageResource(R.drawable.ico_yettoattempt);
-        }
-        else if (model.status == Constants.STATUS_SUSPENDED) {
+        } else if (model.status == Constants.STATUS_SUSPENDED) {
             textViewStatus.setText("Suspended");
             ivStatus.setImageResource(R.drawable.ico_notattended);
         }
@@ -220,52 +218,64 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     private void startScheduleTest(OfflineTestModel model) {
-        try {
-            ScheduledTestList.ScheduledTestsArray exam = model.scheduledTest;
-            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            long startTimeInMillis = df.parse(exam.startTime).getTime();
-            if (startTimeInMillis < System.currentTimeMillis() + 1000 * 60) {
-                Intent intent = new Intent(context, ExamEngineActivity.class);
-                intent.putExtra(Constants.TEST_TITLE, "Scheduled Test");
-                intent.putExtra("test_question_paper_id", exam.testQuestionPaperId);
-                intent.putExtra("OfflineTestModel", model.dateTime);
-                context.startActivity(intent);
-                return;
+        if (model.status != Constants.STATUS_COMPLETED) {
+            try {
+                ScheduledTestList.ScheduledTestsArray exam = model.scheduledTest;
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                long startTimeInMillis = df.parse(exam.startTime).getTime();
+                if (startTimeInMillis < System.currentTimeMillis() + 1000 * 60) {
+                    Intent intent = new Intent(context, ExamEngineActivity.class);
+                    intent.putExtra(Constants.TEST_TITLE, "Scheduled Test");
+                    intent.putExtra("test_question_paper_id", exam.testQuestionPaperId);
+                    intent.putExtra("OfflineTestModel", model.dateTime);
+                    context.startActivity(intent);
+                    return;
+                }
+            } catch (ParseException e) {
+                L.error(e.getMessage(), e);
             }
-        } catch (ParseException e) {
-            L.error(e.getMessage(), e);
+            Toast.makeText(context, "Please access the test during scheduled time", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(context, "You have already taken the test.", Toast.LENGTH_SHORT).show();
         }
-        Toast.makeText(context, "Please access the test during scheduled time", Toast.LENGTH_SHORT).show();
     }
 
     private void startTakeTest(OfflineTestModel model) {
-        Chapter chapter = model.baseTest.chapter;
-        String subjectId = model.baseTest.subjectId;
-        Intent exerciseIntent = new Intent(context, ExamEngineActivity.class);
-        exerciseIntent.putExtra(TestStartActivity.KEY_TEST_TYPE, Tests.CHAPTER.getType());
-        exerciseIntent.putExtra(Constants.TEST_TITLE, chapter.chapterName);
-        exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
-        exerciseIntent.putExtra(Constants.SELECTED_CHAPTERID, chapter.idCourseSubjectchapter);
-        exerciseIntent.putExtra(Constants.SELECTED_CHAPTER_NAME, chapter.chapterName);
-        exerciseIntent.putExtra(Constants.LEVEL_CROSSED, chapter.passedComplexity);
-        exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, subjectId);
-        exerciseIntent.putExtra(Constants.IS_OFFLINE, true);
-        exerciseIntent.putExtra("OfflineTestModel", model.dateTime);
-        context.startActivity(exerciseIntent);
+        if (model.status != Constants.STATUS_COMPLETED) {
+            Chapter chapter = model.baseTest.chapter;
+            String subjectId = model.baseTest.subjectId;
+            Intent exerciseIntent = new Intent(context, ExamEngineActivity.class);
+            exerciseIntent.putExtra(TestStartActivity.KEY_TEST_TYPE, Tests.CHAPTER.getType());
+            exerciseIntent.putExtra(Constants.TEST_TITLE, chapter.chapterName);
+            exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
+            exerciseIntent.putExtra(Constants.SELECTED_CHAPTERID, chapter.idCourseSubjectchapter);
+            exerciseIntent.putExtra(Constants.SELECTED_CHAPTER_NAME, chapter.chapterName);
+            exerciseIntent.putExtra(Constants.LEVEL_CROSSED, chapter.passedComplexity);
+            exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, subjectId);
+            exerciseIntent.putExtra(Constants.IS_OFFLINE, true);
+            exerciseIntent.putExtra("OfflineTestModel", model.dateTime);
+            context.startActivity(exerciseIntent);
+        } else {
+            Toast.makeText(context, "You have already taken the test.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void startPartTest(OfflineTestModel model) {
-        String subjectName = model.baseTest.subjectName;
-        String subjectId = model.baseTest.subjectId;
-        Intent exerciseIntent = new Intent(context, ExamEngineActivity.class);
-        exerciseIntent.putExtra(TestStartActivity.KEY_TEST_TYPE, Tests.PART.getType());
-        exerciseIntent.putExtra(Constants.TEST_TITLE, subjectName);
-        exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
-        exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, subjectId);
-        exerciseIntent.putExtra(Constants.SELECTED_TOPIC, subjectName);
-        exerciseIntent.putExtra(Constants.IS_OFFLINE, true);
-        exerciseIntent.putExtra("OfflineTestModel", model.dateTime);
-        context.startActivity(exerciseIntent);
+        if (model.status != Constants.STATUS_COMPLETED) {
+            String subjectName = model.baseTest.subjectName;
+            String subjectId = model.baseTest.subjectId;
+            Intent exerciseIntent = new Intent(context, ExamEngineActivity.class);
+            exerciseIntent.putExtra(TestStartActivity.KEY_TEST_TYPE, Tests.PART.getType());
+            exerciseIntent.putExtra(Constants.TEST_TITLE, subjectName);
+            exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
+            exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, subjectId);
+            exerciseIntent.putExtra(Constants.SELECTED_TOPIC, subjectName);
+            exerciseIntent.putExtra(Constants.IS_OFFLINE, true);
+            exerciseIntent.putExtra("OfflineTestModel", model.dateTime);
+            context.startActivity(exerciseIntent);
+        } else {
+            Toast.makeText(context, "You have already taken the test.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private Status getRejectedStatus(List<OfflineTestModel> offlineTestModels) {

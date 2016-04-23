@@ -183,18 +183,19 @@ public class TestSetupFragment extends BaseFragment {
             }
         }
         request.challengedFriendsId = friend;
-
+        showProgress();
         ApiManager.getInstance(getActivity()).createChallenge(request, new ApiCallback<CreateChallengeResponseModel>(getActivity()) {
             @Override
             public void failure(CorsaliteError error) {
                 super.failure(error);
+                closeProgress();
                 Toast.makeText(getActivity(), "Failed to create test", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void success(CreateChallengeResponseModel createChallengeResponseModel, Response response) {
                 super.success(createChallengeResponseModel, response);
-                Toast.makeText(getActivity(), "Created Test", Toast.LENGTH_SHORT).show();
+                closeProgress();
                 if(createChallengeResponseModel != null && createChallengeResponseModel.testQuestionPaperId != null) {
                     EventBus.getDefault().post(createChallengeResponseModel);
                 }
@@ -246,6 +247,7 @@ public class TestSetupFragment extends BaseFragment {
     }
 
     private void loadContent() {
+        showProgress();
         ApiManager.getInstance(getActivity()).getContentIndex(
                 AbstractBaseActivity.selectedCourse.courseId.toString(), LoginUserCache.getInstance().loginResponse.studentId,
                 new ApiCallback<List<ContentIndex>>(getActivity()) {
@@ -253,6 +255,7 @@ public class TestSetupFragment extends BaseFragment {
                     @Override
                     public void success(List<ContentIndex> contentIndexList, Response response) {
                         super.success(contentIndexList, response);
+                        closeProgress();
                         if (contentIndexList != null) {
                             showSubjects(contentIndexList);
                         }
@@ -261,6 +264,7 @@ public class TestSetupFragment extends BaseFragment {
                     @Override
                     public void failure(CorsaliteError error) {
                         super.failure(error);
+                        closeProgress();
                         ((AbstractBaseActivity) getActivity()).showToast("No data available");
                     }
                 });
@@ -281,6 +285,7 @@ public class TestSetupFragment extends BaseFragment {
                     @Override
                     public void failure(CorsaliteError error) {
                         super.failure(error);
+                        closeProgress();
                     }
                 });
     }
@@ -300,9 +305,7 @@ public class TestSetupFragment extends BaseFragment {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
+            public void onNothingSelected(AdapterView<?> adapterView) {}
         });
     }
 
@@ -333,24 +336,19 @@ public class TestSetupFragment extends BaseFragment {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
+            public void onNothingSelected(AdapterView<?> adapterView) {}
         });
 
         selectChapSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                if (adapterView.getItemAtPosition(position).toString().equalsIgnoreCase("Chapter")) {
-                } else {
+                if (!adapterView.getItemAtPosition(position).toString().equalsIgnoreCase("Chapter")) {
                     selectChapError.setVisibility(View.GONE);
                 }
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
+            public void onNothingSelected(AdapterView<?> adapterView) {}
         });
     }
 
