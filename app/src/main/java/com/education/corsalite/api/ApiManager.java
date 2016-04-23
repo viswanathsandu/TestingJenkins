@@ -35,6 +35,7 @@ import com.education.corsalite.models.responsemodels.ExamHistory;
 import com.education.corsalite.models.responsemodels.ExamModel;
 import com.education.corsalite.models.responsemodels.Exam;
 import com.education.corsalite.models.responsemodels.ForumPost;
+import com.education.corsalite.models.responsemodels.FourmCommentPostModel;
 import com.education.corsalite.models.responsemodels.FriendsData;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
@@ -224,6 +225,11 @@ public class ApiManager {
         }
     }
 
+    public void getPostDetails(String userId, String postId, ApiCallback<FourmCommentPostModel> callback) {
+        if (isApiOnline()) {
+            ApiClientService.get().getPostDetails(userId, postId, callback);
+        }
+    }
     public void getUserProfile(String studentId, ApiCallback<UserProfileResponse> callback) {
         apiCacheHolder.setUserProfileRequest(studentId);
         if (isApiOnline() && isNetworkConnected()) {

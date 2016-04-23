@@ -2,7 +2,6 @@ package com.education.corsalite.adapters;
 
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -17,7 +16,6 @@ import com.bumptech.glide.Glide;
 import com.education.corsalite.R;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.listener.SocialEventsListener;
-import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.ForumPost;
 import com.education.corsalite.services.ApiClientService;
 
@@ -56,6 +54,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
         final ForumPost forumPost = mForumPostList.get(position);
         holder.tvActionLock.setVisibility(View.GONE);
         holder.tvActionComment.setVisibility(View.INVISIBLE);
+
         if(forumPost.idUser.equals(LoginUserCache.getInstance().getLongResponse().userId)) {
             holder.tvActionDelete.setVisibility(View.VISIBLE);
             holder.tvActionEdit.setVisibility(View.VISIBLE);
@@ -91,8 +90,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
             holder.tvTopicName.setVisibility(View.VISIBLE);
             holder.tvTopicName.setText(forumPost.TopicName);
         }
+
+        holder.tvComments.setClickable(!TextUtils.isEmpty(forumPost.postReplies) && !forumPost.postReplies.equalsIgnoreCase("0"));
         holder.tvComments.setText(forumPost.postReplies+" Comments");
         holder.tvViews.setText(forumPost.postViews+" Views");
+
+
+
         if(!TextUtils.isEmpty(forumPost.IsLiked)) {
             if(forumPost.IsLiked.equalsIgnoreCase("Y")){
                 holder.tvLikes.setClickable(false);
@@ -124,14 +128,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
                 mSocialEventsListener.onBookmarkClicked(position);
             }
         });
-
         holder.tvLikes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mSocialEventsListener.onLikeClicked(position);
             }
         });
-
         holder.tvActionDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
