@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.RelativeLayout;
@@ -20,7 +19,6 @@ import com.education.corsalite.utils.L;
  */
 public class DetailsWebviewFragment extends Fragment {
 
-    private boolean mIsWebViewAvailable;
     private String mUrl = null;
     private AppPref appPref;
     private final String URL = "URL";
@@ -57,7 +55,6 @@ public class DetailsWebviewFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
-        mIsWebViewAvailable = false;
         super.onDestroyView();
     }
 
@@ -82,37 +79,24 @@ public class DetailsWebviewFragment extends Fragment {
         loginWebview.getSettings().setJavaScriptEnabled(true);
         loginWebview.setWebViewClient(new LoginWebViewClient());
         loginWebview.loadUrl(getLoginUrl());
-        L.info("Load Url : " + getLoginUrl());
-    }
-
-    public WebView getWebView() {
-        return mIsWebViewAvailable ? mWebView : null;
     }
 
     private class LoginWebViewClient extends WebViewClient {
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            L.info("Login page loading completed in webview");
             loadWebpage();
         }
 
     }
 
     private void loadWebpage() {
-
         mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.setWebViewClient(new MyWebViewClient());
         mWebView.loadUrl(mUrl);
     }
 
     private class MyWebViewClient extends WebViewClient {
-
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            view.loadUrl(url);
-            return true;
-        }
 
         @Override
         public void onPageFinished(WebView view, String url) {
