@@ -52,6 +52,7 @@ import com.education.corsalite.models.responsemodels.VirtualCurrencyBalanceRespo
 import com.education.corsalite.models.socket.response.ChallengeTestRequestEvent;
 import com.education.corsalite.models.socket.response.ChallengeTestStartEvent;
 import com.education.corsalite.models.socket.response.ChallengeTestUpdateEvent;
+import com.education.corsalite.notifications.ChallengeUtils;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.AppConfig;
 import com.education.corsalite.utils.AppPref;
@@ -625,9 +626,9 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         selectedVideoPosition = position;
     }
 
+    // this method will be overridden by the classes that subscribes from event bus
     public void onEvent(Course course) {
         selectedCourse = course;
-        // this method will be overridden by the classes that subscribes from event bus
     }
 
     public void onEvent(OfflineEventClass offlineEventClass) {
@@ -712,17 +713,11 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     // trigger challenge test request
     public void onEventMainThread(ChallengeTestRequestEvent event) {
-        Intent intent = new Intent(this, ChallengeActivity.class);
-        intent.putExtra("type", "REQUEST");
-        intent.putExtra("challenge_test_request_json", new Gson().toJson(event));
-        startActivity(intent);
+        ChallengeUtils.get(this).showChallengeRequestNotification(event);
     }
 
     public void onEventMainThread(ChallengeTestUpdateEvent event) {
-        Intent intent = new Intent(this, ChallengeActivity.class);
-        intent.putExtra("type", "UPDATE");
-        intent.putExtra("challenge_test_update_json", new Gson().toJson(event));
-        startActivity(intent);
+        ChallengeUtils.get(this).showChallengeUpdateNotification(event);
     }
 
     public void onEventMainThread(ChallengeTestStartEvent event) {
@@ -730,15 +725,9 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         intent.putExtra(Constants.TEST_TITLE, "Challenge Test");
         intent.putExtra("test_question_paper_id", event.testQuestionPaperId);
         startActivity(intent);
-    }
-
-    public void startChallengeTest(String testQuestionPaperId, String challngeTestId) {
-        Intent intent = new Intent(this, ExamEngineActivity.class);
-        intent.putExtra(Constants.TEST_TITLE, "Challenge Test");
-        intent.putExtra("test_question_paper_id", testQuestionPaperId);
-        intent.putExtra("challenge_test_id", challngeTestId);
-        startActivity(intent);
-        finish();
+        if(this instanceof ChallengeActivity) {
+            finish();
+        }
     }
 
     protected void startWebSocket() {

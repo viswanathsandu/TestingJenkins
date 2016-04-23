@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
+import com.education.corsalite.activities.ChallengeActivity;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
@@ -188,7 +189,7 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
         sendChallengeStartRequestEvent();
         WebSocketHelper.get(getActivity()).sendChallengeUpdateEvent(event);
         updateChallengeStatus("In Test");
-        ((AbstractBaseActivity) getActivity()).startChallengeTest(mCurrentUser.idTestQuestionPaper, mCurrentUser.challengeTestParentId);
+        ((ChallengeActivity) getActivity()).startChallengeTest(mCurrentUser.idTestQuestionPaper, mCurrentUser.challengeTestParentId);
     }
 
     /**
@@ -211,7 +212,7 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
                             sendChallengeStartRequestEvent();
                             WebSocketHelper.get(getActivity()).sendChallengeUpdateEvent(event);
                             updateChallengeStatus("In Test");
-                            ((AbstractBaseActivity) getActivity()).startChallengeTest(mTestQuestionPaperId, mCurrentUser.challengeTestParentId);
+                            ((ChallengeActivity) getActivity()).startChallengeTest(mTestQuestionPaperId, mCurrentUser.challengeTestParentId);
                         } else {
                             showToast("could not start exam");
                         }
@@ -286,7 +287,7 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
     public void onEventMainThread(ChallengeTestStartEvent event) {
         mTestQuestionPaperId = event.testQuestionPaperId;
         sendChallengeStartRequestEvent();
-        ((AbstractBaseActivity)getActivity()).startChallengeTest(mTestQuestionPaperId, event.challengeTestParentId);
+        ((ChallengeActivity)getActivity()).startChallengeTest(mTestQuestionPaperId, event.challengeTestParentId);
     }
 
 }

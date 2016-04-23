@@ -61,7 +61,7 @@ public abstract class BaseFragment extends Fragment {
     }
 
     public void closeProgress(){
-        if(dialog != null && dialog.isShowing()){
+        if(dialog != null) {
             dialog.dismiss();
         }
     }
