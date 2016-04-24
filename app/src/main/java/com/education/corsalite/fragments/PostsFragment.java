@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,14 +43,10 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
     public static final String MEAL_TYPE_ARG = "MEAL_TYPE_ARG";
 
     private int mPage;
-    @Bind(R.id.rcv_posts)
-    RecyclerView mRecyclerView;
-    @Bind(R.id.empty_layout)
-    View emptyLayout;
-    @Bind(R.id.new_post_btn)
-    Button newPostBtn;
-    @Bind(R.id.progress_layout)
-    View progress;
+    @Bind(R.id.rcv_posts) RecyclerView mRecyclerView;
+    @Bind(R.id.empty_layout) View emptyLayout;
+    @Bind(R.id.new_post_btn) Button newPostBtn;
+    @Bind(R.id.progress_layout) View progress;
 
     private LinearLayoutManager mLayoutManager;
     private PostAdapter mPostAdapter;
@@ -90,7 +87,7 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
         mRecyclerView.setAdapter(mPostAdapter);
     }
 
-    private void refreshData() {
+    public void refreshData() {
         switch (mPage) {
             case 0:
                 loadForumPosts();
@@ -158,11 +155,8 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
                     @Override
                     public void success(CommonResponseModel baseResponseModel, Response response) {
                         super.success(baseResponseModel, response);
-                        if (baseResponseModel.isSuccessful()) {
-                            forumPost.postLikes = Integer.parseInt(forumPost.postLikes) + 1 + "";
-                            forumPost.IsLiked = "Y";
-                            mPostAdapter.updateCurrentItem(position);
-
+                        if(getActivity() instanceof ForumActivity) {
+                            ((ForumActivity) getActivity()).refreshData();
                         }
                     }
                 });
@@ -171,12 +165,28 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
     @Override
     public void onCommentClicked(int position) {
         ForumPost item = mPostAdapter.getItem(position);
-        Bundle bundle = new Bundle();
-        bundle.putString("user_id",LoginUserCache.getInstance().loginResponse.userId);
-        bundle.putString("post_id",item.idUserPost);
-        Intent intent = new Intent(getActivity(), PostDetailsActivity.class);
-        intent.putExtras(bundle);
-        startActivity(intent);
+        if(TextUtils.isEmpty(item.postReplies) || item.postReplies.equals("0")) {
+            Bundle bundle = new Bundle();
+            bundle.putString("type", "Comment");
+            bundle.putString("operation", "Add");
+            bundle.putString("course_id", item.idCourse);
+            bundle.putString("subject_id", item.idCourseSubject);
+            bundle.putString("chapter_id", item.idCourseSubjectChapter);
+            bundle.putString("topic_id", item.idTopic);
+            bundle.putString("post_subject", item.PostSubject);
+            bundle.putString("post_id", item.idUserPost);
+            bundle.putString("is_author_only", item.isAuthorOnly);
+            Intent intent = new Intent(getActivity(), EditorActivity.class);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        } else {
+            Bundle bundle = new Bundle();
+            bundle.putString("user_id", LoginUserCache.getInstance().loginResponse.userId);
+            bundle.putString("post_id", item.idUserPost);
+            Intent intent = new Intent(getActivity(), PostDetailsActivity.class);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -270,7 +280,9 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
                         if (baseResponseModel.isSuccessful()) {
                             mPostAdapter.deleteForumPost(position);
                         }
-                        refreshData();
+                        if(getActivity() instanceof ForumActivity) {
+                            ((ForumActivity) getActivity()).refreshData();
+                        }
                     }
 
                     @Override

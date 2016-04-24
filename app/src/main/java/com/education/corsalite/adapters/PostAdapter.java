@@ -91,7 +91,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
             holder.tvTopicName.setText(forumPost.TopicName);
         }
 
-        holder.tvComments.setClickable(!TextUtils.isEmpty(forumPost.postReplies) && !forumPost.postReplies.equalsIgnoreCase("0"));
         holder.tvComments.setText(forumPost.postReplies + " Comments");
         holder.tvViews.setText(forumPost.postViews + " Views");
 
@@ -107,7 +106,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
                 Drawable img = mActivity.getResources().getDrawable(R.drawable.like);
                 holder.tvLikes.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
                 holder.tvLikes.setText("Like");
-
             }
         }
 
