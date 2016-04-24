@@ -83,12 +83,8 @@ public class ContentReadingActivity extends AbstractBaseActivity {
     Spinner spChapter;
     @Bind(R.id.sp_topic)
     Spinner spTopic;
-    @Bind(R.id.tv_exercise)
-    TextView tvExercise;
-    @Bind(R.id.layout_exercise)
-    RelativeLayout exerciseButtoncontainer;
-    @Bind(R.id.pb_exercise)
-    ProgressBar pbExercise;
+    @Bind(R.id.iv_exercise)
+    ImageView ivExercise;
     @Bind(R.id.vs_container)
     ViewSwitcher mViewSwitcher;
     @Bind(R.id.footer_layout)
@@ -349,7 +345,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
         btnNext.setOnClickListener(mClickListener);
         btnPrevious.setOnClickListener(mClickListener);
         tvVideo.setOnClickListener(mClickListener);
-        tvExercise.setOnClickListener(mClickListener);
+        ivExercise.setOnClickListener(mClickListener);
     }
 
     private String operation = "";
@@ -378,7 +374,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
                 case R.id.tv_video:
                     showVideoDialog();
                     break;
-                case R.id.tv_exercise:
+                case R.id.iv_exercise:
                     Intent intent = new Intent(ContentReadingActivity.this, ExamEngineActivity.class);
                     intent.putExtra(Constants.SELECTED_TOPIC, topicModelList.get(spTopic.getSelectedItemPosition()).topicName);
                     intent.putExtra(Constants.TEST_TITLE, "Exercises");
@@ -614,9 +610,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
 
     private void getExercise(int topicPosition) {
         if (SystemUtils.isNetworkConnected(this)) {
-            exerciseButtoncontainer.setVisibility(View.VISIBLE);
-            tvExercise.setEnabled(false);
-            pbExercise.setVisibility(View.VISIBLE);
+            ivExercise.setEnabled(false);
             String topicId = topicModelList.get(topicPosition).idTopic;
             if(offlineExercises != null && !offlineExercises.isEmpty() && offlineExercises.contains(new ExerciseOfflineModel(selectedCourse.courseId+"", topicId))) {
                 for(ExerciseOfflineModel model : offlineExercises) {
@@ -642,10 +636,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
                             }
                         });
             }
-        } else {
-            exerciseButtoncontainer.setVisibility(View.GONE);
         }
-
     }
 
     private String contentIds = "";
@@ -930,10 +921,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
 
     private void showExercise() {
         if (AbstractBaseActivity.getSharedExamModels() != null && !AbstractBaseActivity.getSharedExamModels().isEmpty()) {
-            tvExercise.setEnabled(true);
-            pbExercise.setVisibility(View.GONE);
-        } else {
-            exerciseButtoncontainer.setVisibility(View.GONE);
+            ivExercise.setEnabled(true);
         }
     }
 
