@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -158,7 +157,9 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
                                     mChapterId, mChapterName,
                                     topicModel.idTopic, topicModel.topicName,
                                     contentModel.idContent, contentModel.contentName,
-                                    contentModel.contentName + "." + contentModel.type);
+                                    contentModel.contentName
+                                            + (contentModel.type.isEmpty() ? "" : ".")
+                                            + contentModel.type);
                             offlineContents.add(offlineContent);
                         }
                         contentCount++;
@@ -435,18 +436,13 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
         headerProgress.setVisibility(View.GONE);
         TreeNode subjectName = new TreeNode(chapters.chapterName).setViewHolder(new CheckedItemViewHolder(this, false));
         topicModelList = (ArrayList<TopicModel>) chapters.topicMap;
-//        Collections.sort(topicModelList);
-
-        Collections.sort(topicModelList,                                     //List name ex: ArrayList<AnalyticsModel>
-                new Comparator<TopicModel>() {                                                                 //Class AnalyticsModel
-                    public int compare(TopicModel ord1,
-                                       TopicModel ord2) {
-
-                        return ord1.topicName.compareToIgnoreCase(ord2.topicName);
-
-                    }
-                });
-
+        Collections.sort(topicModelList,
+            new Comparator<TopicModel>() {                                                                 //Class AnalyticsModel
+                public int compare(TopicModel ord1,
+                                   TopicModel ord2) {
+                    return ord1.topicName.compareToIgnoreCase(ord2.topicName);
+                }
+            });
 
         for (int i = 0; i < chapters.topicMap.size(); i++) {
             addTopic(chapters.topicMap.get(i), subjectName, dialog);
@@ -456,14 +452,13 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
 
     private void addTopic(TopicModel topicModel, TreeNode subjectName, Dialog d) {
         TreeNode topicName = new TreeNode(topicModel.topicName).setViewHolder(new CheckedItemViewHolder(this, false));
-        int size = topicModel.contentMap.size();
         TreeNode file1 = null;
 
         List<ContentModel> contentModelArrayList = getSortedList(topicModel.contentMap);
         for (ContentModel contentModel : contentModelArrayList) {
-            contentList.add(getTextView(contentModel.contentName + "." + contentModel.type));
+            contentList.add(getTextView(contentModel.contentName + (contentModel.type.isEmpty() ? "" : ".") + contentModel.type));
             topicModelHashMap.put(contentModel.idContent, topicModel);
-            file1 = new TreeNode(contentModel.contentName + "." + contentModel.type).setViewHolder(new CheckedItemViewHolder(this, true));
+            file1 = new TreeNode(contentModel.contentName + (contentModel.type.isEmpty() ? "" : ".") + contentModel.type).setViewHolder(new CheckedItemViewHolder(this, true));
             topicName.addChildren(file1);
         }
         topicList.add(getTextView(topicModel.topicName));
