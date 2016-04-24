@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -482,6 +483,14 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
                 exercises.add(content);
             }
         }
+
+        if (exercises.size() <= 0) {
+            ContentModel contentModel = new ContentModel();
+            contentModel.contentName = "Exercise";
+            contentModel.type = "";
+            exercises.add(contentModel);
+        }
+
         Collections.sort(videoContents,
             new Comparator<ContentModel>() {
                 public int compare(ContentModel content1, ContentModel content2) {
@@ -491,6 +500,7 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
         contents.clear();
         contents.addAll(htmlContents);
         contents.addAll(videoContents);
+        contents.addAll(exercises);
         return contents;
     }
 
