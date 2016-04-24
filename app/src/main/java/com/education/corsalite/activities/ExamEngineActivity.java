@@ -1090,7 +1090,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 checkBoxes[i].setEnabled(false);
                 checkBoxes[i].setClickable(false);
             }
-            WebView optionWebView = new WebView(getApplicationContext());
+            WebView optionWebView = (WebView) container.findViewById(R.id.webview);
             optionWebView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
             optionWebView.setScrollbarFadingEnabled(true);
             optionWebView.getSettings().setLoadsImagesAutomatically(true);
