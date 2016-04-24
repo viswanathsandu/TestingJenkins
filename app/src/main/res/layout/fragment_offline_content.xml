@@ -7,7 +7,7 @@
     <RelativeLayout
         android:id="@+id/main_node_content"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"></RelativeLayout>
+        android:layout_height="wrap_content" />
 
 
     <TextView
