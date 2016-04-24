@@ -461,12 +461,14 @@ public class StudyCentreActivity extends AbstractBaseActivity {
 
     }
 
-    private void startContentActivity(Chapter chapter) {
-        Intent intent = new Intent(this, ContentReadingActivity.class);
-        intent.putExtra("courseId", AbstractBaseActivity.selectedCourse.courseId.toString());
-        intent.putExtra("subjectId", getSelectedSubjectId());
-        intent.putExtra("chapterId", chapter.idCourseSubjectchapter);
-        startActivity(intent);
+    private void startContentActivity(StudyCenter studyCenter) {
+        if(studyCenter != null && studyCenter.chapters != null && !studyCenter.chapters.isEmpty()) {
+            Intent intent = new Intent(this, ContentReadingActivity.class);
+            intent.putExtra("courseId", AbstractBaseActivity.selectedCourse.courseId.toString()+"");
+            intent.putExtra("subjectId", studyCenter.idCourseSubject+"");
+            intent.putExtra("chapterId", studyCenter.chapters.get(0).idCourseSubjectchapter+"");
+            startActivity(intent);
+        }
     }
 
     private void setDataForAlert(View dialogView, final StudyCenter studyCenter) {
@@ -484,8 +486,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                 if (dialog != null) {
                     dialog.dismiss();
                 }
-                //startPartTest(studyCenter);
-                showPartTestGrid();
+                showPartTestGrid(studyCenter);
             }
         });
         dialogView.findViewById(R.id.notes_layout).setOnClickListener(new View.OnClickListener() {
@@ -494,7 +495,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                 if (dialog != null) {
                     dialog.dismiss();
                 }
-                startNotesActivity();
+                startNotesActivity(studyCenter);
             }
         });
         dialogView.findViewById(R.id.flagged_questions).setOnClickListener(new View.OnClickListener() {
@@ -503,7 +504,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                 if (dialog != null) {
                     dialog.dismiss();
                 }
-                startFlaggedQuestionView();
+                startFlaggedQuestionView(studyCenter);
             }
         });
         dialogView.findViewById(R.id.start_reading).setOnClickListener(new View.OnClickListener() {
@@ -512,33 +513,31 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                 if (dialog != null) {
                     dialog.dismiss();
                 }
-                if (allChapters != null && allChapters.size() > 0) {
-                    startContentActivity(allChapters.get(0));
-                }
+                startContentActivity(studyCenter);
             }
         });
     }
 
-    private void startFlaggedQuestionView() {
+    private void startFlaggedQuestionView(StudyCenter studyCenter) {
         Intent exerciseIntent = new Intent(this, ExamEngineActivity.class);
         exerciseIntent.putExtra(Constants.TEST_TITLE, "Flagged Questions");
         exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
-        exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, getSelectedSubjectId());
+        exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, studyCenter.idCourseSubject);
         exerciseIntent.putExtra(Constants.SELECTED_SUBJECT, key);
         startActivity(exerciseIntent);
     }
 
-    private void startNotesActivity() {
+    private void startNotesActivity(StudyCenter studyCenter) {
         Intent intent = new Intent(this, NotesActivity.class);
         intent.putExtra("courseId", AbstractBaseActivity.selectedCourse.courseId.toString());
-        intent.putExtra("subjectId", getSelectedSubjectId());
+        intent.putExtra("subjectId", studyCenter.idCourseSubject);
         /*if (allChapters != null && allChapters.size() > 0) {
             intent.putExtra("chapterId", allChapters.get(0).idCourseSubjectchapter);
         }*/
         startActivity(intent);
     }
 
-    private void showPartTestGrid() {
+    private void showPartTestGrid(StudyCenter studyCenter) {
         if (SystemUtils.isNetworkConnected(this)) {
             PartTestDialog dialog = new PartTestDialog();
             Bundle bundle = new Bundle();
