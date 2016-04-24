@@ -56,17 +56,16 @@ public class ForumActivity extends AbstractBaseActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
     public void onEvent(Course course) {
         super.onEvent(course);
         adapter.notifyDataSetChanged();
         mViewPager.invalidate();
     }
 
+    public void refreshData() {
+        adapter.notifyDataSetChanged();
+        mViewPager.invalidate();
+    }
 
     public void onNewPostClicked() {
         Bundle bundle = new Bundle();
