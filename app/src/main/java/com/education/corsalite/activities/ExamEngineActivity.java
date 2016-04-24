@@ -754,13 +754,30 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             int failure = 0;
             for (ExamModel model : localExamModelList) {
                 if (!TextUtils.isEmpty(model.selectedAnswers)) {
-                    int selectedOption = -1;
                     try {
-                        selectedOption = Integer.parseInt(model.selectedAnswers);
-                        if (model.answerChoice.get(selectedOption).isCorrectAnswer.equals("Y")) {
-                            success++;
+                        if(!model.selectedAnswers.contains(",")) {
+                            int selectedOption = -1;
+                            selectedOption = Integer.parseInt(model.selectedAnswers);
+                            if (model.answerChoice.get(selectedOption).isCorrectAnswer.equals("Y")) {
+                                success++;
+                            } else {
+                                failure++;
+                            }
                         } else {
-                            failure++;
+                            String [] selectedOptions = model.selectedAnswers.split(",");
+                            boolean isCorrect = true;
+                            for(String option : selectedOptions) {
+                                int selectedOption = Integer.valueOf(option);
+                                if(!model.answerChoice.get(selectedOption).isCorrectAnswer.equals("Y")) {
+                                    isCorrect = false;
+                                    break;
+                                }
+                            }
+                            if(isCorrect) {
+                                success++;
+                            } else {
+                                failure++;
+                            }
                         }
                     } catch (NumberFormatException e) {
                         L.error(e.getMessage(), e);
@@ -1048,7 +1065,6 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         final int size = answerChoiceModels.size();
         final CheckBox[] checkBoxes = new CheckBox[size];
         final TextView[] tvSerial = new TextView[size];
-        final LinearLayout[] rowLayout = new LinearLayout[size];
 
         String[] preselectedAnswers = null;
         if (!title.equalsIgnoreCase("Exercises") &&
@@ -1059,38 +1075,21 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         for (int i = 0; i < size; i++) {
 
             final AnswerChoiceModel answerChoiceModel = answerChoiceModels.get(i);
-
-            rowLayout[i] = new LinearLayout(this);
-            rowLayout[i].setOrientation(LinearLayout.HORIZONTAL);
-            rowLayout[i].setGravity(Gravity.CENTER_VERTICAL);
-            LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-
-            tvSerial[i] = new TextView(this);
-            tvSerial[i].setText((i + 1) + ")");
-            tvSerial[i].setTextColor(Color.BLACK);
-            tvSerial[i].setGravity(Gravity.TOP);
-            tvSerial[i].setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-            p.setMargins(0, 0, 10, 0);
-            tvSerial[i].setLayoutParams(p);
-
-
-            checkBoxes[i] = new CheckBox(this);
+            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LinearLayout container = (LinearLayout) inflater.inflate(R.layout.exam_engine_check_box, null);
+            TextView optionNumberTxt = (TextView) container.findViewById(R.id.option_number_txt);
+            optionNumberTxt.setText((i + 1) + "");
+            final CheckBox optionCheckbox = (CheckBox) container.findViewById(R.id.option_check_box);
+            optionCheckbox.setId(Integer.valueOf(answerChoiceModel.idAnswerKey));
+            optionCheckbox.setTag(answerChoiceModel);
+            checkBoxes[i] = optionCheckbox;
             checkBoxes[i].setId(Integer.valueOf(answerChoiceModel.idAnswerKey));
             checkBoxes[i].setTag(answerChoiceModel);
-            checkBoxes[i].setBackgroundResource(R.drawable.selector_checkbox);
 
             if (title.equalsIgnoreCase("Flagged Questions") || title.equalsIgnoreCase("View Answers")) {
                 checkBoxes[i].setEnabled(false);
                 checkBoxes[i].setClickable(false);
             }
-
-            rowLayout[i] = new LinearLayout(this);
-            rowLayout[i].setOrientation(LinearLayout.HORIZONTAL);
-            rowLayout[i].setGravity(Gravity.CENTER_VERTICAL);
-            checkBoxes[i].setLayoutParams(p);
-
-            rowLayout[i].addView(checkBoxes[i]);
-
             WebView optionWebView = new WebView(getApplicationContext());
             optionWebView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
             optionWebView.setScrollbarFadingEnabled(true);
@@ -1105,10 +1104,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             } else {
                 optionWebView.loadData(answerChoiceModel.answerChoiceTextHtml, "text/html; charset=UTF-8", null);
             }
-            p = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 1.0f);
-            optionWebView.setLayoutParams(p);
-            rowLayout[i].addView(optionWebView);
-            answerLayout.addView(rowLayout[i]);
+            answerLayout.addView(container);
 
             try {
                 checkBoxes[i].setOnClickListener(new View.OnClickListener() {
@@ -1170,7 +1166,6 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         }
         setExplanationLayout();
     }
-
 
     private void loadSingleSelectChoiceAnswers(int position) {
         resetExplanation();
