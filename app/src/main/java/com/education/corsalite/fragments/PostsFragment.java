@@ -155,11 +155,8 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
                     @Override
                     public void success(CommonResponseModel baseResponseModel, Response response) {
                         super.success(baseResponseModel, response);
-                        if (baseResponseModel.isSuccessful()) {
-                            forumPost.postLikes = Integer.parseInt(forumPost.postLikes) + 1 + "";
-                            forumPost.IsLiked = "Y";
-                            mPostAdapter.updateCurrentItem(position);
-
+                        if(getActivity() instanceof ForumActivity) {
+                            ((ForumActivity) getActivity()).refreshData();
                         }
                     }
                 });
