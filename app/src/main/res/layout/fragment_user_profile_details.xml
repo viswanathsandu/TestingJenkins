@@ -77,9 +77,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingRight="8dp"
-                    android:layout_alignParentLeft="true"
                     android:layout_toLeftOf="@id/sp_default_course"
-                    android:drawableEnd="@drawable/ico_edit"
+                    android:layout_alignTop="@id/sp_default_course"
+                    android:layout_alignBottom="@id/sp_default_course"
+                    android:drawableRight="@drawable/ico_edit"
                     style="@style/user_profile_heading_caps"/>
 
             </RelativeLayout>

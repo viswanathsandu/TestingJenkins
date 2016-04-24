@@ -1,6 +1,6 @@
 package com.education.corsalite.fragments;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -75,19 +75,11 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
     private boolean coursesSpinnerCLicked;
     private SpinnerAdapter dataAdapter;
 
-    public static UserProfileDetailsFragment newInstance(String param1, String param2) {
-        UserProfileDetailsFragment fragment = new UserProfileDetailsFragment();
-        return fragment;
-    }
-
-    public UserProfileDetailsFragment() {
-    }
-
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
         if (updateExamData == null) {
-            updateExamData = (UpdateExamData) activity;
+            updateExamData = (UpdateExamData) context;
         }
     }
 
@@ -250,7 +242,6 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
                             dbManager.saveReqRes(ApiCacheHolder.getInstance().userProfile);
                             user = userProfileResponse;
                             showProfileData(userProfileResponse.basicProfile);
-//                            loadCoursesData(userProfileResponse.basicProfile);
                             if (updateExamData != null) {
                                 updateExamData.getExamData(userProfileResponse.examDetails);
                             }
