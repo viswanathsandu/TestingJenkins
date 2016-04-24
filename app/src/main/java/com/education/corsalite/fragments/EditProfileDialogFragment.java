@@ -117,6 +117,8 @@ public class EditProfileDialogFragment extends DialogFragment {
         if(!TextUtils.isEmpty(emailIdTxt.getText().toString())) {
             model.emailId = emailIdTxt.getText().toString();
         }
+        // TODO : creitical. Need to remvoe this after having discusison with sunil
+        model.gender = "Male";
         return model;
     }
 

@@ -77,6 +77,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingRight="8dp"
+                    android:layout_alignParentLeft="true"
                     android:layout_toLeftOf="@id/sp_default_course"
                     android:layout_alignTop="@id/sp_default_course"
                     android:layout_alignBottom="@id/sp_default_course"
