@@ -35,36 +35,37 @@
 
             <CheckBox
                 android:id="@+id/exercises_ckb"
+                fontPath="@string/roboto_regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
                 android:text="Exercises"
                 android:textColor="@color/text_black"
                 android:textSize="18sp"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                fontPath="@string/roboto_regular"/>
+                android:visibility="gone" />
 
             <Button
                 android:id="@+id/ok"
+                fontPath="@string/roboto_regular"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:text="Download"
-                android:textAllCaps="false"
                 android:layout_alignParentRight="true"
                 android:background="@color/transparent"
-                android:textColor="@color/green"
-                fontPath="@string/roboto_regular"/>
+                android:text="Download"
+                android:textAllCaps="false"
+                android:textColor="@color/green" />
 
             <Button
                 android:id="@+id/cancel"
+                fontPath="@string/roboto_regular"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:text="Cancel"
-                android:textAllCaps="false"
                 android:layout_toLeftOf="@+id/ok"
                 android:background="@color/transparent"
-                android:textColor="@color/text_black"
-                fontPath="@string/roboto_regular"/>
+                android:text="Cancel"
+                android:textAllCaps="false"
+                android:textColor="@color/text_black" />
         </RelativeLayout>
 
     </LinearLayout>
