@@ -37,6 +37,7 @@ import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.CourseData;
 import com.education.corsalite.models.responsemodels.StudyCenter;
+import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.Data;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.SystemUtils;
@@ -423,7 +424,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         return v;
     }
 
-    private void setListener(final View v,ImageView imageView,final StudyCenter studyCenter){
+    private void setListener(final View v, ImageView imageView, final StudyCenter studyCenter) {
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -434,13 +435,20 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         });
     }
 
-    private void showAlertDialog(View v,StudyCenter studyCenter){
+    private void showAlertDialog(View v, StudyCenter studyCenter) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        LayoutInflater li = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater li = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View dialogView = li.inflate(R.layout.layout_list_item_view_popup, null);
+
+        TextView saveOfflineText = (TextView) dialogView.findViewById(R.id.offline_content);
+        saveOfflineText.setVisibility(View.GONE);
+
+        TextView flaggedText = (TextView) dialogView.findViewById(R.id.flagged_questions);
+        flaggedText.setVisibility(View.GONE);
+
         builder.setView(dialogView);
-        setDataForAlert(dialogView,studyCenter);
+        setDataForAlert(dialogView, studyCenter);
         AlertDialog dialog = builder.create();
         WindowManager.LayoutParams wmlp = dialog.getWindow().getAttributes();
         wmlp.gravity = Gravity.TOP | Gravity.LEFT;
@@ -453,7 +461,17 @@ public class StudyCentreActivity extends AbstractBaseActivity {
 
     }
 
-    private void setDataForAlert( View dialogView,final StudyCenter studyCenter) {
+    private void startContentActivity(StudyCenter studyCenter) {
+        if(studyCenter != null && studyCenter.chapters != null && !studyCenter.chapters.isEmpty()) {
+            Intent intent = new Intent(this, ContentReadingActivity.class);
+            intent.putExtra("courseId", AbstractBaseActivity.selectedCourse.courseId.toString()+"");
+            intent.putExtra("subjectId", studyCenter.idCourseSubject+"");
+            intent.putExtra("chapterId", studyCenter.chapters.get(0).idCourseSubjectchapter+"");
+            startActivity(intent);
+        }
+    }
+
+    private void setDataForAlert(View dialogView, final StudyCenter studyCenter) {
         TextView takeTestLabel = (TextView) dialogView.findViewById(R.id.take_test);
         takeTestLabel.setText(getString(R.string.menu_part_test));
         TextView score = (TextView) dialogView.findViewById(R.id.score);
@@ -466,23 +484,68 @@ public class StudyCentreActivity extends AbstractBaseActivity {
             @Override
             public void onClick(View v) {
                 if (dialog != null) {
-                    dialog.cancel();
+                    dialog.dismiss();
                 }
-                //startPartTest(studyCenter);
-                showPartTestGrid();
+                showPartTestGrid(studyCenter);
+            }
+        });
+        dialogView.findViewById(R.id.notes_layout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+                startNotesActivity(studyCenter);
+            }
+        });
+        dialogView.findViewById(R.id.flagged_questions).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+                startFlaggedQuestionView(studyCenter);
+            }
+        });
+        dialogView.findViewById(R.id.start_reading).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+                startContentActivity(studyCenter);
             }
         });
     }
 
-    private void showPartTestGrid(){
-        if(SystemUtils.isNetworkConnected(this)) {
+    private void startFlaggedQuestionView(StudyCenter studyCenter) {
+        Intent exerciseIntent = new Intent(this, ExamEngineActivity.class);
+        exerciseIntent.putExtra(Constants.TEST_TITLE, "Flagged Questions");
+        exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
+        exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, studyCenter.idCourseSubject);
+        exerciseIntent.putExtra(Constants.SELECTED_SUBJECT, key);
+        startActivity(exerciseIntent);
+    }
+
+    private void startNotesActivity(StudyCenter studyCenter) {
+        Intent intent = new Intent(this, NotesActivity.class);
+        intent.putExtra("courseId", AbstractBaseActivity.selectedCourse.courseId.toString());
+        intent.putExtra("subjectId", studyCenter.idCourseSubject);
+        /*if (allChapters != null && allChapters.size() > 0) {
+            intent.putExtra("chapterId", allChapters.get(0).idCourseSubjectchapter);
+        }*/
+        startActivity(intent);
+    }
+
+    private void showPartTestGrid(StudyCenter studyCenter) {
+        if (SystemUtils.isNetworkConnected(this)) {
             PartTestDialog dialog = new PartTestDialog();
             Bundle bundle = new Bundle();
             bundle.putInt("idCourseSubject", studyCenter.idCourseSubject);
             bundle.putString("SubjectName", studyCenter.SubjectName);
             dialog.setArguments(bundle);
             dialog.show(getFragmentManager(), "PartTestDialog");
-        }else {
+        } else {
             Intent exerciseIntent = new Intent(this, OfflineContentActivity.class);
             exerciseIntent.putExtra("selection", 1);
             startActivity(exerciseIntent);
@@ -490,10 +553,10 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     }
 
     private void showMockTestsDialog() {
-        if(SystemUtils.isNetworkConnected(this)) {
+        if (SystemUtils.isNetworkConnected(this)) {
             MockTestDialog dialog = new MockTestDialog();
             dialog.show(getFragmentManager(), "MockTestsListDialog");
-        }else {
+        } else {
             Intent exerciseIntent = new Intent(this, OfflineContentActivity.class);
             exerciseIntent.putExtra("selection", 1);
             startActivity(exerciseIntent);
@@ -579,7 +642,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
 
     @Override
     public void onBackPressed() {
-        if(isTaskRoot()) {
+        if (isTaskRoot()) {
             loadWelcomeScreen();
         } else {
             super.onBackPressed();

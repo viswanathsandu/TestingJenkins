@@ -5,14 +5,13 @@
   "stageSocketUrl":"ws://staging.corsalite.com:9300",
   "productionSocketUrl":"ws://app.corsalite.com:9300",
   "enableProduction":false,
-  "splashDuration":2000, // in milli seconds
-  "enableStudyCenter": true,
-  "enableAnalytics":true,
-  "enableSmartClass":true,
-  "enableMyProfile":true,
-  "enableOffline":true,
-  "enableUsageanalysis":true,
-  "enableChallangeTest":true,
+  "SplashDuration":2000, // in milli seconds
+  "EnableStudyCenter": true,
+  "EnableAnalytics":true,
+  "EnableSmartClass":true,
+  "EnableMyProfile":true,
+  "EnableOffline":true,
+  "EnableChallengeTest":true,
   "enableForum":true,
-  "enableLogout":true
+  "EnableLogout":true
 }

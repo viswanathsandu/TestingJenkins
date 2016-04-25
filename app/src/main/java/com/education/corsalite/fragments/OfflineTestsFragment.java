@@ -26,6 +26,7 @@ import retrofit.client.Response;
  */
 public class OfflineTestsFragment  extends BaseFragment implements OfflineContentActivity.IOfflineTestEventListener {
     @Bind(R.id.expandableList)ExpandableListView rvOfflineTests;
+    @Bind(R.id.no_test_txt) View emptyTestsView;
     private List<OfflineTestModel> mockTestModels;
     private List<OfflineTestModel> scheduledTestModels;
     private List<OfflineTestModel> chaptersList;
@@ -41,7 +42,6 @@ public class OfflineTestsFragment  extends BaseFragment implements OfflineConten
         rvOfflineTests.setGroupIndicator(null);
         offlineTests = new HashMap<>();
         allTests = loadAllTests();
-        //loadOfflineTests();
         return v;
     }
 
@@ -51,6 +51,7 @@ public class OfflineTestsFragment  extends BaseFragment implements OfflineConten
             public void success(List<OfflineTestModel> offlineTestModels, Response response) {
                 super.success(offlineTestModels, response);
                 if (offlineTestModels != null && !offlineTestModels.isEmpty()) {
+                    emptyTestsView.setVisibility(View.GONE);
                     separateTestModel(offlineTestModels);
                     offlineTests.put("Mock Test", mockTestModels);
                     offlineTests.put("Scheduled Test", scheduledTestModels);
@@ -58,8 +59,7 @@ public class OfflineTestsFragment  extends BaseFragment implements OfflineConten
                     offlineTests.put("Part Test", partTestList);
                     initNodes();
                 } else {
-                    // Show no tests layout
-//                    Toast.makeText(getActivity(), "No offline test available ", Toast.LENGTH_SHORT).show();
+                    emptyTestsView.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -92,7 +92,6 @@ public class OfflineTestsFragment  extends BaseFragment implements OfflineConten
 
     private ArrayList<String>  loadAllTests() {
         ArrayList<String> alltests = new ArrayList<>();
-        // alltests.add("Exercise Test");
         alltests.add("Take Test");
         alltests.add("Part Test");
         alltests.add("Scheduled Test");
@@ -107,16 +106,15 @@ public class OfflineTestsFragment  extends BaseFragment implements OfflineConten
 
     @Override
     public void onDeleteOfflineTest(int position, String tag) {
-            if(tag.equalsIgnoreCase("Mock Test")){
-               DbManager.getInstance(getActivity().getApplicationContext()).deleteOfflineMockTest(mockTestModels.get(position));
-            }else  if(tag.equalsIgnoreCase("Scheduled Test")) {
+        if(tag.equalsIgnoreCase("Mock Test")){
+           DbManager.getInstance(getActivity().getApplicationContext()).deleteOfflineMockTest(mockTestModels.get(position));
+        }else  if(tag.equalsIgnoreCase("Scheduled Test")) {
 
-            } else  if(tag.equalsIgnoreCase("Part Test")){
+        } else  if(tag.equalsIgnoreCase("Part Test")){
 
-            }else  if(tag.equalsIgnoreCase("Exercise Test")){
+        }else  if(tag.equalsIgnoreCase("Exercise Test")){
 
-            }
-
+        }
     }
 
     @Override

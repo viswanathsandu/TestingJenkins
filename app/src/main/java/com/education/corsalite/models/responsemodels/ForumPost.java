@@ -41,12 +41,9 @@ public class ForumPost {
     public String Locked;
     public String IsLiked;
     @SerializedName("postData")
-    ForumPost postData;
+    public ForumPost postData;
     @SerializedName("postDataReply")
-    List<ForumPost> postDataReplyList;
-
-
-
+    public List<ForumPost> postDataReplyList;
 
     @Override
     public boolean equals(Object o) {

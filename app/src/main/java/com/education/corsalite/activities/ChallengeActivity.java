@@ -1,6 +1,8 @@
 package com.education.corsalite.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -9,6 +11,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.education.corsalite.R;
+import com.education.corsalite.fragments.ChallengeTestRequestDialogFragment;
 import com.education.corsalite.fragments.FriendsListFragment;
 import com.education.corsalite.fragments.TestSetupFragment;
 import com.education.corsalite.helpers.WebSocketHelper;
@@ -17,6 +20,9 @@ import com.education.corsalite.models.responsemodels.FriendsData;
 import com.education.corsalite.models.socket.requests.NewChallengeTestRequestEvent;
 import com.education.corsalite.models.socket.response.ChallengeTestRequestEvent;
 import com.education.corsalite.models.socket.response.ChallengeTestStartEvent;
+import com.education.corsalite.models.socket.response.ChallengeTestUpdateEvent;
+import com.education.corsalite.utils.Constants;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -44,6 +50,7 @@ public class ChallengeActivity extends AbstractBaseActivity {
     public String mDisplayName = "";
     public String mChallengeTestId = "";
     public String mTestQuestionPaperId = "";
+    private String screenType = "NEW_CHALLENGE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +60,24 @@ public class ChallengeActivity extends AbstractBaseActivity {
         initListeners();
         loadCharecters();
         loadPlayers();
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragment_container, FriendsListFragment.newInstance(mFriendsListCallback), "FriendsList").commit();
+        Bundle bundle = getIntent().getExtras();
+        if(bundle != null) {
+            screenType = bundle.getString("type", "REQUEST");
+        }
+        if(!TextUtils.isEmpty(screenType)) {
+            if(screenType.equalsIgnoreCase("NEW_CHALLENGE")) {
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.fragment_container, FriendsListFragment.newInstance(mFriendsListCallback), "FriendsList").commit();
+            } else if(screenType.equalsIgnoreCase("REQUEST")) {
+                String challengeTestRequestJson = bundle.getString("challenge_test_request_json");
+                ChallengeTestRequestEvent event = new Gson().fromJson(challengeTestRequestJson, ChallengeTestRequestEvent.class);
+                showChallengeTestRequestFragment(event);
+            } else if(screenType.equalsIgnoreCase("UPDATE")) {
+                String challengeTestRequestJson = bundle.getString("challenge_test_update_json");
+                ChallengeTestUpdateEvent event = new Gson().fromJson(challengeTestRequestJson, ChallengeTestUpdateEvent.class);
+                showChallengeTestRequestFragment(getRequestEvent(event));
+            }
+        }
     }
 
     private void initListeners() {
@@ -64,6 +87,21 @@ public class ChallengeActivity extends AbstractBaseActivity {
                 getSupportFragmentManager().popBackStackImmediate();
             }
         };
+    }
+
+    public void showChallengeTestRequestFragment(ChallengeTestRequestEvent event) {
+        ChallengeTestRequestDialogFragment challengeRequestDialog = ChallengeTestRequestDialogFragment.newInstance(event);
+        if (challengeRequestDialog != null) {
+            challengeRequestDialog.setCancelable(false);
+            challengeRequestDialog.show(getSupportFragmentManager(), ChallengeTestRequestDialogFragment.class.getSimpleName());
+        }
+    }
+
+    private ChallengeTestRequestEvent getRequestEvent(ChallengeTestUpdateEvent event) {
+        ChallengeTestRequestEvent requestEvent = new ChallengeTestRequestEvent();
+        requestEvent.challengeTestParentId = event.challengeTestParentId;
+        requestEvent.challengerName = event.challengerName;
+        return requestEvent;
     }
 
     private FriendsListCallback mFriendsListCallback = new FriendsListCallback() {
@@ -159,5 +197,19 @@ public class ChallengeActivity extends AbstractBaseActivity {
     public void onEventMainThread(ChallengeTestStartEvent event) {
         mTestQuestionPaperId = event.testQuestionPaperId;
         startChallengeTest(mTestQuestionPaperId, event.challengeTestParentId);
+    }
+
+    public void startChallengeTest(String testQuestionPaperId, String challngeTestId) {
+        Intent intent = new Intent(this, ExamEngineActivity.class);
+        intent.putExtra(Constants.TEST_TITLE, "Challenge Test");
+        intent.putExtra("test_question_paper_id", testQuestionPaperId);
+        intent.putExtra("challenge_test_id", challngeTestId);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public void onEventMainThread(ChallengeTestRequestEvent event) {
+        showChallengeTestRequestFragment(event);
     }
 }

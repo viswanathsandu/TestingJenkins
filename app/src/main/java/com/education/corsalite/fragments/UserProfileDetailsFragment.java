@@ -1,6 +1,6 @@
 package com.education.corsalite.fragments;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -75,19 +75,11 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
     private boolean coursesSpinnerCLicked;
     private SpinnerAdapter dataAdapter;
 
-    public static UserProfileDetailsFragment newInstance(String param1, String param2) {
-        UserProfileDetailsFragment fragment = new UserProfileDetailsFragment();
-        return fragment;
-    }
-
-    public UserProfileDetailsFragment() {
-    }
-
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
         if (updateExamData == null) {
-            updateExamData = (UpdateExamData) activity;
+            updateExamData = (UpdateExamData) context;
         }
     }
 
@@ -119,7 +111,7 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
     }
 
     public void loadCourses() {
-        mCourses = ((AbstractBaseActivity)getActivity()).getCourses();
+        mCourses = ((AbstractBaseActivity) getActivity()).getCourses();
     }
 
     private void setListeners() {
@@ -152,7 +144,6 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 defaultcourseIndex = position;
-
                 dataAdapter.setSelectedPosition(position);
                 if (coursesSpinnerCLicked) {
                     saveDefaultCourse(mCourses.get(position));
@@ -182,7 +173,7 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
         dialogFragment.show(getFragmentManager(), "Edit Profile");
     }
 
-    private void showEditProfilePicDialogFragment(){
+    private void showEditProfilePicDialogFragment() {
         EditProfilePicDialogFragment dialogFragment = new EditProfilePicDialogFragment();
         dialogFragment.setUpdateProfilePicListener(this);
         Bundle bundle = new Bundle();
@@ -191,16 +182,10 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
         dialogFragment.show(getFragmentManager(), "Edit Profile Picture");
     }
 
-
-    @Override
-    public void onUpdateProfilePic(Bitmap image) {
-        profilePicImg.setImageBitmap(image);
-    }
-
     private void saveDefaultCourse(Course course) {
-        if(course != null) {
+        if (course != null) {
             String update = new Gson().toJson(new Defaultcourserequest(
-                    LoginUserCache.getInstance().loginResponse.studentId, course.courseId+""));
+                    LoginUserCache.getInstance().loginResponse.studentId, course.courseId + ""));
             showProgress();
             ApiManager.getInstance(getActivity()).updateDefaultCourse(update, new ApiCallback<DefaultCourseResponse>(getActivity()) {
                 @Override
@@ -250,7 +235,6 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
                             dbManager.saveReqRes(ApiCacheHolder.getInstance().userProfile);
                             user = userProfileResponse;
                             showProfileData(userProfileResponse.basicProfile);
-//                            loadCoursesData(userProfileResponse.basicProfile);
                             if (updateExamData != null) {
                                 updateExamData.getExamData(userProfileResponse.examDetails);
                             }
@@ -313,9 +297,9 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
 
     private void setEnrolledCourses() {
         String courses = "";
-        for(Course course : mCourses) {
-            courses += TextUtils.isEmpty(courses) ? course.name : ", "+course.name;
-            if(course.isDefault()) {
+        for (Course course : mCourses) {
+            courses += TextUtils.isEmpty(courses) ? course.name : ", " + course.name;
+            if (course.isDefault()) {
                 defaultcourseIndex = mCourses.indexOf(course);
             }
         }
@@ -324,9 +308,12 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
 
     @Override
     public void onUpdateProfileDetails(UserProfileModel userProfileModel) {
-        usernameTxt.setText(userProfileModel.displayName);
-        userFullNameTxt.setText(userProfileModel.givenName);
-        emailTxt.setText(userProfileModel.emailId);
+        fetchUserProfileData();
+    }
+
+    @Override
+    public void onUpdateProfilePic(Bitmap image) {
+        fetchUserProfileData();
     }
 
     public interface UpdateExamData {

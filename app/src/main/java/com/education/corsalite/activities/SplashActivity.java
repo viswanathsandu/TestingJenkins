@@ -106,7 +106,8 @@ public class SplashActivity extends AbstractBaseActivity {
     private void onLoginsuccess(LoginResponse response, boolean fetchLocal) {
         if(response != null && response.studentId != null) {
             LoginUserCache.getInstance().setLoginResponse(response);
-            AppConfig.loadAppConfigFromService(SplashActivity.this, "1624");
+            // Uncomment it after fixing server issues
+//            AppConfig.loadAppConfigFromService(SplashActivity.this, "1624");
             if(!fetchLocal) {
                 isLoginSuccess = true;
                 showToast(getResources().getString(R.string.login_successful));

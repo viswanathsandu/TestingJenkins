@@ -83,7 +83,7 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
     private ArrayList<SubjectModel> subjectModelList;
     private ArrayList<ChapterModel> chapterModelList;
     private ArrayList<TopicModel> topicModelList;
-    private HashMap<String,TopicModel> topicModelHashMap = new HashMap<String, TopicModel>();
+    private HashMap<String, TopicModel> topicModelHashMap = new HashMap<String, TopicModel>();
     private LinearLayout downloadImage;
     private ProgressBar headerProgress;
     private Bundle savedInstanceState;
@@ -117,9 +117,10 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
     }
 
     private void loopCheckedViews() {
+        offlineExerciseModels = new ArrayList<>();
         String videoContentId = "";
         String htmlContentId = "";
-        if(dialog == null) {
+        if (dialog == null) {
             dialog = getDisplayDialog();
         }
         dialog.setTitle(getResources().getString(R.string.offline_dialog_title_text));
@@ -142,20 +143,23 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
                             contentText += "\t\t" + innerMostNode.getValue().toString() + "\n";
                             if (contentModel.type.equals(Constants.VIDEO_FILE)) {
                                 videoContentId += contentModel.idContent + ",";
-                            } else {
+                            } else if (contentModel.type.equals(Constants.HTML_FILE)) {
                                 htmlContentId += contentModel.idContent + ",";
+                            } else {
+                                ExerciseOfflineModel model = new ExerciseOfflineModel(
+                                        AbstractBaseActivity.selectedCourse.courseId + "", topicModel.idTopic);
+                                if (!offlineExerciseModels.contains(model)) {
+                                    offlineExerciseModels.add(model);
+                                }
                             }
-                            OfflineContent offlineContent = new OfflineContent(mCourseId,mCourseName,
-                                    mSubjectId,mSubjectName,
-                                    mChapterId,mChapterName,
-                                    topicModel.idTopic,topicModel.topicName,
-                                    contentModel.idContent,contentModel.contentName,
-                                    contentModel.contentName + "." + contentModel.type);
-                            ExerciseOfflineModel model = new ExerciseOfflineModel(
-                                    AbstractBaseActivity.selectedCourse.courseId+"", topicModel.idTopic);
-                            if(!offlineExerciseModels.contains(model)) {
-                                offlineExerciseModels.add(model);
-                            }
+                            OfflineContent offlineContent = new OfflineContent(mCourseId, mCourseName,
+                                    mSubjectId, mSubjectName,
+                                    mChapterId, mChapterName,
+                                    topicModel.idTopic, topicModel.topicName,
+                                    contentModel.idContent, contentModel.contentName,
+                                    contentModel.contentName
+                                            + (contentModel.type.isEmpty() ? "" : ".")
+                                            + contentModel.type);
                             offlineContents.add(offlineContent);
                         }
                         contentCount++;
@@ -209,9 +213,10 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
         if (!videoContentId.isEmpty()) {
             finalContentIds += COMMA_STRING + videoContentId;
         }
-        if(downloadExercises) {
-            downloadExercises();
-        }
+
+        if (offlineExerciseModels.size() > 0) downloadExercises();
+        /*if(downloadExercises) {
+        }*/
         if (finalContentIds.isEmpty()) {
             Toast.makeText(SaveForOfflineActivity.this, getResources().getString(R.string.select_content_toast), Toast.LENGTH_SHORT).show();
         } else {
@@ -251,19 +256,18 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
         });
     }
 
-    private void saveFileToDisk(final String htmlText,final Content content) {
+    private void saveFileToDisk(final String htmlText, final Content content) {
         TopicModel topicModel = topicModelHashMap.get(content.idContent);
         FileUtilities fileUtilities = new FileUtilities(this);
-        final String folderStructure =  selectedCourse.name + File.separator +mSubjectName + File.separator +
+        final String folderStructure = selectedCourse.name + File.separator + mSubjectName + File.separator +
                 mChapterName + File.separator + topicModel.topicName;
-        if(content.type.equalsIgnoreCase(Constants.VIDEO_FILE)){
-            downloadVideo(content.name+"."+Constants.VIDEO_FILE, ApiClientService.getBaseUrl() + htmlText.replaceFirst("./", ""), folderStructure);
-        }
-        else if(TextUtils.isEmpty(htmlText) || htmlText.endsWith(Constants.HTML_FILE)) {
+        if (content.type.equalsIgnoreCase(Constants.VIDEO_FILE)) {
+            downloadVideo(content.name + "." + Constants.VIDEO_FILE, ApiClientService.getBaseUrl() + htmlText.replaceFirst("./", ""), folderStructure);
+        } else if (TextUtils.isEmpty(htmlText) || htmlText.endsWith(Constants.HTML_FILE)) {
             showToast(getString(R.string.file_exists));
         } else {
             String htmlUrl = fileUtilities.write(content.name + "." + Constants.HTML_FILE, htmlText, folderStructure);
-            if(htmlUrl != null) {
+            if (htmlUrl != null) {
                 getEventbus().post(new OfflineEventClass(content.idContent));
                 showToast(getString(R.string.file_saved));
             } else {
@@ -272,38 +276,38 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
         }
     }
 
-    private void downloadVideo(String fileName,String download_file_path,String folderStructure){
+    private void downloadVideo(String fileName, String download_file_path, String folderStructure) {
         Intent intent = new Intent(this, VideoDownloadService.class);
-        intent.putExtra("fileName",fileName);
-        intent.putExtra("download_file_path",download_file_path);
+        intent.putExtra("fileName", fileName);
+        intent.putExtra("download_file_path", download_file_path);
         intent.putExtra("folderStructure", folderStructure);
         startService(intent);
     }
 
-    private void storeDataInDb(List<Content> contents){
+    private void storeDataInDb(List<Content> contents) {
         String fileName = "";
         List<OfflineContent> offlineContents = new ArrayList<OfflineContent>(contents.size());
         OfflineContent offlineContent;
-        for(Content content : contents) {
-            if(TextUtils.isEmpty(content.type)) {
+        for (Content content : contents) {
+            if (TextUtils.isEmpty(content.type)) {
                 fileName = content.name + ".html";
-            } else if(content.type.equalsIgnoreCase("html")){
+            } else if (content.type.equalsIgnoreCase("html")) {
                 fileName = content.name + "." + content.type;
-            } else if(content.type.equalsIgnoreCase("mpg")){
+            } else if (content.type.equalsIgnoreCase("mpg")) {
                 fileName = content.name.replace("./", ApiClientService.getBaseUrl()) + "." + content.type;
             }
             TopicModel topicModel = topicModelHashMap.get(content.idContent);
             offlineContent = new OfflineContent(mCourseId, mCourseName, mSubjectId, mSubjectName,
                     mChapterId, mChapterName, topicModel.idTopic, topicModel.topicName, content.idContent, content.name, fileName);
             offlineContents.add(offlineContent);
-            saveFileToDisk(getHtmlText(content),content);
+            saveFileToDisk(getHtmlText(content), content);
         }
         AppPref.getInstance(SaveForOfflineActivity.this).save("DATA_IN_PROGRESS", null);
         DbManager.getInstance(getApplicationContext()).saveOfflineContent(offlineContents);
 
     }
 
-    private String getHtmlText(Content content){
+    private String getHtmlText(Content content) {
         String text = content.type.equalsIgnoreCase(Constants.VIDEO_FILE) ?
                 content.url :
                 "<script type='text/javascript'>" +
@@ -312,7 +316,7 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
                         "    return t;" +
                         "}" +
                         "</script>" + content.contentHtml;
-        return  text;
+        return text;
     }
 
 
@@ -432,18 +436,13 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
         headerProgress.setVisibility(View.GONE);
         TreeNode subjectName = new TreeNode(chapters.chapterName).setViewHolder(new CheckedItemViewHolder(this, false));
         topicModelList = (ArrayList<TopicModel>) chapters.topicMap;
-//        Collections.sort(topicModelList);
-
-        Collections.sort(topicModelList,                                     //List name ex: ArrayList<AnalyticsModel>
-                new Comparator<TopicModel>() {                                                                 //Class AnalyticsModel
-                    public int compare(TopicModel ord1,
-                                       TopicModel ord2) {
-
-                        return ord1.topicName.compareToIgnoreCase(ord2.topicName);
-
-                    }
-                });
-
+        Collections.sort(topicModelList,
+            new Comparator<TopicModel>() {                                                                 //Class AnalyticsModel
+                public int compare(TopicModel ord1,
+                                   TopicModel ord2) {
+                    return ord1.topicName.compareToIgnoreCase(ord2.topicName);
+                }
+            });
 
         for (int i = 0; i < chapters.topicMap.size(); i++) {
             addTopic(chapters.topicMap.get(i), subjectName, dialog);
@@ -453,14 +452,13 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
 
     private void addTopic(TopicModel topicModel, TreeNode subjectName, Dialog d) {
         TreeNode topicName = new TreeNode(topicModel.topicName).setViewHolder(new CheckedItemViewHolder(this, false));
-        int size = topicModel.contentMap.size();
         TreeNode file1 = null;
 
         List<ContentModel> contentModelArrayList = getSortedList(topicModel.contentMap);
         for (ContentModel contentModel : contentModelArrayList) {
-            contentList.add(getTextView(contentModel.contentName + "." + contentModel.type));
-            topicModelHashMap.put(contentModel.idContent,topicModel);
-            file1 = new TreeNode(contentModel.contentName + "." + contentModel.type).setViewHolder(new CheckedItemViewHolder(this, true));
+            contentList.add(getTextView(contentModel.contentName + (contentModel.type.isEmpty() ? "" : ".") + contentModel.type));
+            topicModelHashMap.put(contentModel.idContent, topicModel);
+            file1 = new TreeNode(contentModel.contentName + (contentModel.type.isEmpty() ? "" : ".") + contentModel.type).setViewHolder(new CheckedItemViewHolder(this, true));
             topicName.addChildren(file1);
         }
         topicList.add(getTextView(topicModel.topicName));
@@ -473,24 +471,31 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
         List<ContentModel> exercises = new ArrayList<>();
         List<ContentModel> htmlContents = new ArrayList<>();
         List<ContentModel> videoContents = new ArrayList<>();
-        for(ContentModel content : contents) {
-            if(content.type.toLowerCase().endsWith("mpg")) {
+        for (ContentModel content : contents) {
+            if (content.type.toLowerCase().endsWith("mpg")) {
                 videoContents.add(content);
-            } else if(content.type.toLowerCase().endsWith("html")) {
+            } else if (content.type.toLowerCase().endsWith("html")) {
                 htmlContents.add(content);
             } else {
                 exercises.add(content);
             }
         }
+
+        ContentModel contentModel = new ContentModel();
+        contentModel.contentName = "Exercise";
+        contentModel.type = "";
+        exercises.add(contentModel);
+
         Collections.sort(videoContents,
-            new Comparator<ContentModel>() {
-                public int compare(ContentModel content1, ContentModel content2) {
-                    return content1.contentName.compareToIgnoreCase(content2.contentName);
-                }
-            });
+                new Comparator<ContentModel>() {
+                    public int compare(ContentModel content1, ContentModel content2) {
+                        return content1.contentName.compareToIgnoreCase(content2.contentName);
+                    }
+                });
         contents.clear();
         contents.addAll(htmlContents);
         contents.addAll(videoContents);
+        contents.addAll(exercises);
         return contents;
     }
 

@@ -2,7 +2,6 @@ package com.education.corsalite.api;
 
 import com.education.corsalite.models.MockTest;
 import com.education.corsalite.models.ScheduledTestList;
-import com.education.corsalite.models.responsemodels.BookmarkResponse;
 import com.education.corsalite.models.responsemodels.ChallengeCompleteResponseModel;
 import com.education.corsalite.models.responsemodels.ChallengeStartResponseModel;
 import com.education.corsalite.models.responsemodels.ChallengeUser;
@@ -22,6 +21,7 @@ import com.education.corsalite.models.responsemodels.Exam;
 import com.education.corsalite.models.responsemodels.ExamHistory;
 import com.education.corsalite.models.responsemodels.ExamModel;
 import com.education.corsalite.models.responsemodels.ForumPost;
+import com.education.corsalite.models.responsemodels.FourmCommentPostModel;
 import com.education.corsalite.models.responsemodels.FriendsData;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
@@ -115,9 +115,10 @@ public interface ICorsaliteApi {
                          @Query("idCourse") String courseId,
                          ApiCallback<List<TestCoverage>> callback);
 
+    @GET("/ViewPost")
     void getPostDetails(@Query("idUser") String userId,
                          @Query("postId") String postId,
-                         ApiCallback<ForumPost> callback);
+                         ApiCallback<FourmCommentPostModel> callback);
 
 
     @GET("/FriendsList")
@@ -228,7 +229,7 @@ public interface ICorsaliteApi {
 
     @Headers("Content-Type:application/x-www-form-urlencoded")
     @POST("/Bookmark")
-    void addDeleteBookmark(@Body TypedString update, ApiCallback<BookmarkResponse> callback);
+    void addDeleteBookmark(@Body TypedString update, ApiCallback<CommonResponseModel> callback);
 
     @Headers("Content-Type:application/x-www-form-urlencoded")
     @POST("/UserEvents")

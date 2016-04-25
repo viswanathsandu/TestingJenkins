@@ -17,11 +17,19 @@
         android:paddingLeft="10dp">
 
         <ImageView
+            android:id="@+id/iv_exercise"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ico_offline_exercise" />
+
+        <ImageView
             android:id="@+id/iv_editnotes"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_gravity="center_vertical"
-            android:background="@drawable/ico_add_note" />
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/ico_add_note" />
 
         <ImageView
             android:id="@+id/iv_forum"
@@ -29,7 +37,7 @@
             android:layout_height="35dp"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="15dp"
-            android:background="@drawable/ico_add_forum" />
+            android:src="@drawable/ico_add_forum" />
 
     </LinearLayout>
 
@@ -119,35 +127,6 @@
 
             </RelativeLayout>
 
-            <RelativeLayout
-                android:background="@drawable/shape_rounded_corners_black"
-                android:id="@+id/layout_exercise"
-                android:layout_width="wrap_content"
-                android:paddingLeft="10dp"
-                android:layout_height="wrap_content">
-
-                <Button
-                    android:id="@+id/tv_exercise"
-                    fontPath="@string/roboto_light"
-                    android:layout_width="wrap_content"
-                    android:background="@null"
-                    android:layout_height="wrap_content"
-                    android:gravity="left|center_vertical"
-                    android:singleLine="true"
-                    android:textAllCaps="false"
-                    android:text="@string/exercise"
-                    android:textColor="@color/white"
-                    android:textSize="18sp" />
-
-                <ProgressBar
-                    android:layout_toRightOf="@id/tv_exercise"
-                    android:id="@+id/pb_exercise"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"/>
-
-            </RelativeLayout>
         </LinearLayout>
     </HorizontalScrollView>
 

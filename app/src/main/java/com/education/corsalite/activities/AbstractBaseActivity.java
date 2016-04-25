@@ -52,6 +52,7 @@ import com.education.corsalite.models.responsemodels.VirtualCurrencyBalanceRespo
 import com.education.corsalite.models.socket.response.ChallengeTestRequestEvent;
 import com.education.corsalite.models.socket.response.ChallengeTestStartEvent;
 import com.education.corsalite.models.socket.response.ChallengeTestUpdateEvent;
+import com.education.corsalite.notifications.ChallengeUtils;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.AppConfig;
 import com.education.corsalite.utils.AppPref;
@@ -160,6 +161,11 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         setToolbarTitle(getResources().getString(R.string.analytics));
         showVirtualCurrency();
         loadCoursesList();
+    }
+
+    protected void setToolbarForPostcomments() {
+        toolbar.findViewById(R.id.new_post).setVisibility(View.VISIBLE);
+        setToolbarTitle("Comments");
     }
 
     protected void setToolbarForTestStartScreen() {
@@ -364,7 +370,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Localytics.tagEvent("Analytics");
-                startActivity(new Intent(AbstractBaseActivity.this, AnalyticsActivity.class));
+                startActivity(new Intent(AbstractBaseActivity.this, NewAnalyticsActivity.class));
                 drawerLayout.closeDrawers();
             }
         });
@@ -620,9 +626,9 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         selectedVideoPosition = position;
     }
 
+    // this method will be overridden by the classes that subscribes from event bus
     public void onEvent(Course course) {
         selectedCourse = course;
-        // this method will be overridden by the classes that subscribes from event bus
     }
 
     public void onEvent(OfflineEventClass offlineEventClass) {
@@ -707,26 +713,11 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     // trigger challenge test request
     public void onEventMainThread(ChallengeTestRequestEvent event) {
-        showChallengeTestRequestFragment(event);
+        ChallengeUtils.get(this).showChallengeRequestNotification(event);
     }
 
     public void onEventMainThread(ChallengeTestUpdateEvent event) {
-        if (challengeTestRequestDialogFragment == null || !challengeTestRequestDialogFragment.isVisible()) {
-            ChallengeTestRequestEvent requestEvent = new ChallengeTestRequestEvent();
-            requestEvent.challengeTestParentId = event.challengeTestParentId;
-            requestEvent.challengerName = event.challengerName;
-            showChallengeTestRequestFragment(requestEvent);
-        }
-    }
-
-    public void showChallengeTestRequestFragment(ChallengeTestRequestEvent event) {
-        if (challengeTestRequestDialogFragment != null && challengeTestRequestDialogFragment.isVisible()) {
-            challengeTestRequestDialogFragment.dismiss();
-        }
-        challengeTestRequestDialogFragment = ChallengeTestRequestDialogFragment.newInstance(event);
-        if (challengeTestRequestDialogFragment != null) {
-            challengeTestRequestDialogFragment.show(getSupportFragmentManager(), ChallengeTestRequestDialogFragment.class.getSimpleName());
-        }
+        ChallengeUtils.get(this).showChallengeUpdateNotification(event);
     }
 
     public void onEventMainThread(ChallengeTestStartEvent event) {
@@ -734,15 +725,9 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         intent.putExtra(Constants.TEST_TITLE, "Challenge Test");
         intent.putExtra("test_question_paper_id", event.testQuestionPaperId);
         startActivity(intent);
-    }
-
-    public void startChallengeTest(String testQuestionPaperId, String challngeTestId) {
-        Intent intent = new Intent(this, ExamEngineActivity.class);
-        intent.putExtra(Constants.TEST_TITLE, "Challenge Test");
-        intent.putExtra("test_question_paper_id", testQuestionPaperId);
-        intent.putExtra("challenge_test_id", challngeTestId);
-        startActivity(intent);
-        finish();
+        if(this instanceof ChallengeActivity) {
+            finish();
+        }
     }
 
     protected void startWebSocket() {

@@ -2,7 +2,6 @@ package com.education.corsalite.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +10,6 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.education.corsalite.R;
-import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
@@ -32,7 +30,7 @@ import retrofit.client.Response;
 /**
  * Created by Aastha on 20/09/15.
  */
-public class EditProfileDialogFragment extends DialogFragment {
+public class EditProfileDialogFragment extends BaseDialogFragment {
 
     IUpdateProfileDetailsListener updateProfileDetailsListener;
     private UserProfileResponse user;
@@ -74,6 +72,7 @@ public class EditProfileDialogFragment extends DialogFragment {
     public void setUpdateProfileDetailsListener(IUpdateProfileDetailsListener listener){
         this.updateProfileDetailsListener = listener;
     }
+
     private void updateUserProfile() {
         final UserProfileModel model = getUserData();
         String userProfileJson = new Gson().toJson(model);
@@ -82,19 +81,18 @@ public class EditProfileDialogFragment extends DialogFragment {
             public void failure(CorsaliteError error) {
                 super.failure(error);
                 L.error(error.message);
-                // TODO : its returning failed. but data is being updated. Need to fix it
-                ((AbstractBaseActivity)getActivity()).showToast("Failed to Update User Profile");
-                getDialog().cancel();
+                showToast("Failed to Update User Profile");
+                getDialog().dismiss();
             }
 
             @Override
             public void success(EditProfileModel editProfileResponse, Response response) {
                 super.success(editProfileResponse, response);
                 if (editProfileResponse.isSuccessful()) {
-                    ((AbstractBaseActivity)getActivity()).showToast("Updated User Profile Successfully");
+                    showToast("Updated User Profile Successfully");
                     if(updateProfileDetailsListener != null)
                         updateProfileDetailsListener.onUpdateProfileDetails(model);
-                    getDialog().cancel();
+                    getDialog().dismiss();
                 }
             }
         });
@@ -117,6 +115,8 @@ public class EditProfileDialogFragment extends DialogFragment {
         if(!TextUtils.isEmpty(emailIdTxt.getText().toString())) {
             model.emailId = emailIdTxt.getText().toString();
         }
+        // TODO : critical. Need to remvoe this after having discusison with sunil
+        model.gender = "Male";
         return model;
     }
 

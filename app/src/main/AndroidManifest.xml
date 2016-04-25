@@ -92,12 +92,18 @@
             android:label="Study Center"
             android:theme="@style/UserProfileTheme" />
         <activity
-            android:name=".activities.DetailsActivity"
+            android:name=".activities.PostDetailsActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
-            android:label="Details"
+            android:label="Comments"
             android:theme="@style/UserProfileTheme" />
         <activity
             android:name=".activities.AnalyticsActivity"
+            android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
+            android:label="Analytics"
+            android:screenOrientation="sensorLandscape"
+            android:theme="@style/UserProfileTheme" />
+        <activity
+            android:name=".activities.NewAnalyticsActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="Analytics"
             android:screenOrientation="sensorLandscape"
