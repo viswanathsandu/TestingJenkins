@@ -1,6 +1,7 @@
 package com.education.corsalite.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -80,6 +81,7 @@ public class WelcomeActivity extends AbstractBaseActivity implements View.OnClic
     }
 
     private void setListeners() {
+        profilePic.setOnClickListener(this);
         redeemBtn.setOnClickListener(this);
         studyCenterBtn.setOnClickListener(this);
         messagesBtn.setOnClickListener(this);
@@ -92,6 +94,10 @@ public class WelcomeActivity extends AbstractBaseActivity implements View.OnClic
         switch (v.getId()) {
             case R.id.redeem_welcome_btn:
                 redeem();
+                break;
+            case R.id.profile_pic:
+                Intent myprofile = new Intent(this,UserProfileActivity.class);
+                startActivity(myprofile);
                 break;
             case R.id.studycenter_btn:
                 loadStudyCenterScreen();
