@@ -146,14 +146,18 @@ public class NotesActivity extends AbstractBaseActivity {
     private void setupSubjects(CourseData courseData) {
         subjects = new ArrayList<String>();
         List<String> courses = new ArrayList<>();
+        int selectedIndex = -1;
         for (StudyCenter studyCenter : courseData.StudyCenter) {
+            if(mSubjectId != null && studyCenter.idCourseSubject.toString().equals(mSubjectId)) {
+                selectedIndex = courseData.StudyCenter.indexOf(studyCenter);
+            }
             courses.add(studyCenter.SubjectName.toString());
         }
         spinnerLayout.setVisibility(View.VISIBLE);
-        addSubjectsAndCreateViews(courses);
+        addSubjectsAndCreateViews(courses, selectedIndex);
     }
 
-    private void addSubjectsAndCreateViews(List<String> courses) {
+    private void addSubjectsAndCreateViews(List<String> courses, int selectedIndex) {
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, R.layout.spinner_title_textview, courses);
         dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         courseSpinner.setAdapter(dataAdapter);
@@ -164,7 +168,7 @@ public class NotesActivity extends AbstractBaseActivity {
                 for (StudyCenter studyCenter : mCourseData.StudyCenter) {
                     if (key.equalsIgnoreCase(studyCenter.SubjectName)) {
                         ((TextView) courseSpinner.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
-                        callNotesData(studyCenter.idCourseSubject);
+                        callNotesData(studyCenter.idCourseSubject+"");
                         break;
                     }
                 }
@@ -174,40 +178,14 @@ public class NotesActivity extends AbstractBaseActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+        if(selectedIndex != -1) {
+            courseSpinner.setSelection(selectedIndex);
+        }
     }
 
-    private View getView() {
-        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.study_center_text_view, null);
-        view.findViewById(R.id.arrow_img).setVisibility(View.GONE);
-        return view;
-    }
-
-    private void setListener(final TextView textView, final String text) {
-        textView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (selectedSubjectTxt != null) {
-                    selectedSubjectTxt.setSelected(false);
-                }
-                selectedSubjectTxt = textView;
-                selectedSubjectTxt.setSelected(true);
-                if (mCourseData != null && mCourseData.StudyCenter != null) {
-                    key = text;
-                    for (StudyCenter studyCenter : mCourseData.StudyCenter) {
-                        if (key.equalsIgnoreCase(studyCenter.SubjectName)) {
-//                            callNotesData(studyCenter.textView);
-                            break;
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    private void callNotesData(Integer idCourseSubject) {
+    private void callNotesData(String idCourseSubject) {
         hideList();
-        if(!TextUtils.isEmpty(mSubjectId) && mSubjectId.equalsIgnoreCase(idCourseSubject.toString())) {
+        if(!TextUtils.isEmpty(mSubjectId)) {
             getNotesData();
         } else {
             mSubjectId = idCourseSubject.toString();

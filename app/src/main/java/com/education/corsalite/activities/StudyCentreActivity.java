@@ -527,10 +527,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     private void startNotesActivity(StudyCenter studyCenter) {
         Intent intent = new Intent(this, NotesActivity.class);
         intent.putExtra("courseId", AbstractBaseActivity.selectedCourse.courseId.toString());
-        intent.putExtra("subjectId", studyCenter.idCourseSubject);
-        /*if (allChapters != null && allChapters.size() > 0) {
-            intent.putExtra("chapterId", allChapters.get(0).idCourseSubjectchapter);
-        }*/
+        intent.putExtra(GridRecyclerAdapter.SUBJECT_ID, studyCenter.idCourseSubject+"");
         startActivity(intent);
     }
 
