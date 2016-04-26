@@ -1,6 +1,7 @@
 package com.education.corsalite.adapters;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,12 +80,10 @@ public class ExamHistoryAdapter extends AbstractRecycleViewAdapter {
             } else {
                 parent.setBackgroundColor(inflater.getContext().getResources().getColor(R.color.white));
             }
-
-            if (!examHistory.dateTime.isEmpty()) {
+            if (!TextUtils.isEmpty(examHistory.dateTime) && examHistory.dateTime.contains(" ")) {
                 this.examHistoryDate.setText(examHistory.dateTime.split(" ")[0]);
+                this.time.setText(examHistory.dateTime.split(" ")[1]);
             }
-
-           // this.time.setText(examHistory.time);
             this.exam.setText(examHistory.examName);
             this.type.setText(examHistory.testType);
             this.rank.setText(examHistory.rank);

@@ -15,7 +15,6 @@ public class ExamHistory {
     public String timestamp;
     @SerializedName("TestName")
     public String examName;
-
     @SerializedName("TestType")
     public String testType;
     @SerializedName("Rank")

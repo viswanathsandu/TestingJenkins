@@ -120,6 +120,7 @@
             android:theme="@style/UserProfileTheme" />
         <activity
             android:name=".activities.ExamHistoryActivity"
+            android:screenOrientation="sensorLandscape"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="ExamHistory" />
         <activity

@@ -34,14 +34,10 @@ import retrofit.client.Response;
  */
 public class ExamHistoryActivity extends AbstractBaseActivity implements ExamHistoryAdapter.SetOnExamHistoryClick {
 
-    @Bind(R.id.rv_exam_history)
-    RecyclerView recyclerView;
-    @Bind(R.id.progress_bar_tab)
-    ProgressBar mProgressBar;
-    @Bind(R.id.tv_failure_text)
-    TextView mTextView;
-    @Bind(R.id.headerLayout)
-    LinearLayout mHeaderLayout;
+    @Bind(R.id.rv_exam_history) RecyclerView recyclerView;
+    @Bind(R.id.progress_bar_tab) ProgressBar mProgressBar;
+    @Bind(R.id.tv_failure_text) TextView mTextView;
+    @Bind(R.id.headerLayout) LinearLayout mHeaderLayout;
     LinearLayoutManager mLayoutManager;
     private static final int MAX_ROW_COUNT = 10;
     private boolean mLoading = true;
