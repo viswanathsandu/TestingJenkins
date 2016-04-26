@@ -70,6 +70,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     private View selectedColorFilter;
     private ArrayList<Object> offlineContentList;
     private boolean isNetworkConnected;
+    private AlertDialog alertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -446,15 +447,15 @@ public class StudyCentreActivity extends AbstractBaseActivity {
 
         builder.setView(dialogView);
         setDataForAlert(dialogView, studyCenter);
-        AlertDialog dialog = builder.create();
-        WindowManager.LayoutParams wmlp = dialog.getWindow().getAttributes();
+        alertDialog = builder.create();
+        WindowManager.LayoutParams wmlp = alertDialog.getWindow().getAttributes();
         wmlp.gravity = Gravity.TOP | Gravity.LEFT;
-        // position the dialog
+        // position the alertDialog
         wmlp.x = (int) v.getX() + 15;
         wmlp.y = (int) v.getY() + 140;
-        dialog.show();
-        dialog.getWindow().setAttributes(wmlp);
-        dialog.getWindow().setLayout(300, ViewGroup.LayoutParams.WRAP_CONTENT);
+        alertDialog.show();
+        alertDialog.getWindow().setAttributes(wmlp);
+        alertDialog.getWindow().setLayout(300, ViewGroup.LayoutParams.WRAP_CONTENT);
 
     }
 
@@ -480,8 +481,8 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         dialogView.findViewById(R.id.take_test).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (dialog != null) {
-                    dialog.dismiss();
+                if (alertDialog != null) {
+                    alertDialog.dismiss();
                 }
                 showPartTestGrid(studyCenter);
             }
@@ -489,8 +490,8 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         dialogView.findViewById(R.id.notes_layout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (dialog != null) {
-                    dialog.dismiss();
+                if (alertDialog != null) {
+                    alertDialog.dismiss();
                 }
                 startNotesActivity(studyCenter);
             }
@@ -498,8 +499,8 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         dialogView.findViewById(R.id.flagged_questions).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (dialog != null) {
-                    dialog.dismiss();
+                if (alertDialog != null) {
+                    alertDialog.dismiss();
                 }
                 startFlaggedQuestionView(studyCenter);
             }
@@ -507,8 +508,8 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         dialogView.findViewById(R.id.start_reading).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (dialog != null) {
-                    dialog.dismiss();
+                if (alertDialog != null) {
+                    alertDialog.dismiss();
                 }
                 startContentActivity(studyCenter);
             }
@@ -538,7 +539,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
             bundle.putInt("idCourseSubject", studyCenter.idCourseSubject);
             bundle.putString("SubjectName", studyCenter.SubjectName);
             dialog.setArguments(bundle);
-            dialog.show(getFragmentManager(), "PartTestDialog");
+            dialog.show(getSupportFragmentManager(), "PartTestDialog");
         } else {
             Intent exerciseIntent = new Intent(this, OfflineContentActivity.class);
             exerciseIntent.putExtra("selection", 1);

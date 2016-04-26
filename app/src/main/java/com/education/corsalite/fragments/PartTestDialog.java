@@ -1,6 +1,5 @@
 package com.education.corsalite.fragments;
 
-import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -39,7 +38,7 @@ import retrofit.client.Response;
 /**
  * Created by madhuri on 3/26/16.
  */
-public class PartTestDialog extends DialogFragment {
+public class PartTestDialog extends BaseDialogFragment {
 
     @Bind(R.id.tv_recommended) TextView tvReceommended;
     @Bind(R.id.tv_all) TextView tvAll;
@@ -80,21 +79,24 @@ public class PartTestDialog extends DialogFragment {
                     @Override
                     public void failure(CorsaliteError error) {
                         super.failure(error);
-                        ((AbstractBaseActivity) getActivity()).showToast("No part tests available");
-                        dismiss();
+                        if(getActivity() != null) {
+                            showToast("No part tests available");
+                            dismiss();
+                        }
                     }
 
                     @Override
                     public void success(PartTestModel partTestModel, Response response) {
                         super.success(partTestModel, response);
-                        allList = partTestModel.partTestGrid;
-                        if (allList != null) {
-                            filterRecommended();
-                            tvReceommended.setSelected(true);
-                            tvAll.setSelected(false);
-                            loadRecommendedList();
+                        if(getActivity() != null) {
+                            allList = partTestModel.partTestGrid;
+                            if (allList != null) {
+                                filterRecommended();
+                                tvReceommended.setSelected(true);
+                                tvAll.setSelected(false);
+                                loadRecommendedList();
+                            }
                         }
-
                     }
                 });
     }
@@ -156,7 +158,7 @@ public class PartTestDialog extends DialogFragment {
 
     private void startPartTest() {
         Intent intent = new Intent(getActivity(), ExamEngineActivity.class);
-        intent.putExtra(Constants.TEST_TITLE, subjectName);
+        intent.putExtra(Constants.TEST_TITLE, "Part Test - " + subjectName);
         intent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
         intent.putExtra(Constants.SELECTED_SUBJECTID, idCourseSubject + "");
         intent.putExtra(Constants.SELECTED_TOPIC, subjectName);
