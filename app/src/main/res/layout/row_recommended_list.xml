@@ -56,12 +56,4 @@
         android:singleLine="true"
         android:ellipsize="end"/>
 
-    <TextView
-        android:layout_weight="1"
-        android:id="@+id/tv_time"
-        android:text="@string/time_label"
-        android:visibility="gone"
-        style="@style/analytics_recommended_reading_text_style"
-        android:singleLine="true"
-        android:ellipsize="end"/>
 </LinearLayout>

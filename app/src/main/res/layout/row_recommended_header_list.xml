@@ -49,10 +49,4 @@
         android:text="@string/speed_label"
         style="@style/analytics_recommended_reading_heading_text_style" />
 
-    <TextView
-        android:id="@+id/tv_time"
-        android:layout_weight="1"
-        android:text="@string/time_label"
-        android:visibility="gone"
-        style="@style/analytics_recommended_reading_heading_text_style" />
 </LinearLayout>

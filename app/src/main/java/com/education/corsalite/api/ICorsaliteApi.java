@@ -32,6 +32,7 @@ import com.education.corsalite.models.responsemodels.PostExamTemplate;
 import com.education.corsalite.models.responsemodels.PostExercise;
 import com.education.corsalite.models.responsemodels.PostFlaggedQuestions;
 import com.education.corsalite.models.responsemodels.PostQuestionPaper;
+import com.education.corsalite.models.responsemodels.RecommendedModel;
 import com.education.corsalite.models.responsemodels.ScheduledTest;
 import com.education.corsalite.models.responsemodels.StudyCenter;
 import com.education.corsalite.models.responsemodels.TestAnswerPaperResponse;
@@ -117,14 +118,14 @@ public interface ICorsaliteApi {
 
     @GET("/ViewPost")
     void getPostDetails(@Query("idUser") String userId,
-                         @Query("postId") String postId,
-                         ApiCallback<FourmCommentPostModel> callback);
+                        @Query("postId") String postId,
+                        ApiCallback<FourmCommentPostModel> callback);
 
 
     @GET("/FriendsList")
     void getFriendsList(@Query("idUser") String userId,
-                         @Query("idCourse") String courseId,
-                         ApiCallback<FriendsData> callback);
+                        @Query("idCourse") String courseId,
+                        ApiCallback<FriendsData> callback);
 
     @GET("/GetTestCoverage")
     void getTestCoverage(@Query("idStudent") String studentId,
@@ -243,17 +244,17 @@ public interface ICorsaliteApi {
     void getMockTests(@Query("idCourse") String courseID, @Query("idStudent") String studentId, ApiCallback<List<MockTest>> callback);
 
     @GET("/TestPaperIndex")
-    void getTestPaperIndex(@Query("idTestQuestionPaper")String questionPaperId,@Query("idTestAnswerPaper") String answerPaperId,@Query("doGetAllStage") String allStage ,ApiCallback<TestPaperIndex> callback);
+    void getTestPaperIndex(@Query("idTestQuestionPaper") String questionPaperId, @Query("idTestAnswerPaper") String answerPaperId, @Query("doGetAllStage") String allStage, ApiCallback<TestPaperIndex> callback);
 
     @GET("/Welcome")
-    void getWelcomeDetails(@Query("idStudent")String idStudent,ApiCallback<WelcomeDetails> callback);
+    void getWelcomeDetails(@Query("idStudent") String idStudent, ApiCallback<WelcomeDetails> callback);
 
     @Headers("Content-Type:application/x-www-form-urlencoded")
     @POST("/CreateChallenge")
     void createChallenge(@Body TypedString insert, ApiCallback<CreateChallengeResponseModel> callback);
 
     @GET("/challengeTestDetails")
-    void getchallengeTestDetails(@Query("idChallengeTest")String idChallengeTest, @Query("idCourse") String courseId, ApiCallback<ChallengeUserListResponse> callback);
+    void getchallengeTestDetails(@Query("idChallengeTest") String idChallengeTest, @Query("idCourse") String courseId, ApiCallback<ChallengeUserListResponse> callback);
 
     @Headers("Content-Type:application/x-www-form-urlencoded")
     @POST("/ChallengeStatus")
@@ -264,14 +265,17 @@ public interface ICorsaliteApi {
     void startChallenge(@Body TypedString update, ApiCallback<ChallengeStartResponseModel> callback);
 
     @GET("/challengeComplete")
-    void completeChallenge(@Query("idChallengeTest")String idChallengeTest, @Query("idTestQuestionPaper") String testQuestionPaperId, @Query("idStudent") String studentId, ApiCallback<ChallengeCompleteResponseModel> callback);
+    void completeChallenge(@Query("idChallengeTest") String idChallengeTest, @Query("idTestQuestionPaper") String testQuestionPaperId, @Query("idStudent") String studentId, ApiCallback<ChallengeCompleteResponseModel> callback);
 
     @GET("/challengeResults")
-    void getChallengeResults(@Query("idChallengeTest")String idChallengeTest, ApiCallback<List<ChallengeUser>> callback);
+    void getChallengeResults(@Query("idChallengeTest") String idChallengeTest, ApiCallback<List<ChallengeUser>> callback);
 
     @GET("/PartTestGrid")
-    void getPartTestGrid(@Query("idStudent")String studentId,@Query("idCourse")String courseId,@Query("idSubject") String subjectId,ApiCallback<PartTestModel> callback);
+    void getPartTestGrid(@Query("idStudent") String studentId, @Query("idCourse") String courseId, @Query("idSubject") String subjectId, ApiCallback<PartTestModel> callback);
 
     @GET("/ClientAppConfig")
-    void getAppConfig(@Query("idUser")String studentId,ApiCallback<AppConfig> callback);
+    void getAppConfig(@Query("idUser") String studentId, ApiCallback<AppConfig> callback);
+
+    @GET("/recommendedreading")
+    void getRecommendedReading(@Query("idStudent") String studentId, @Query("idCourse") String courseId, @Query("BeginRowNumber") String beginRowNumber, @Query("RowCount") String rowCount, ApiCallback<List<RecommendedModel>> callback);
 }

@@ -25,12 +25,11 @@ import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
-import com.education.corsalite.models.responsemodels.CourseAnalysis;
+import com.education.corsalite.models.responsemodels.RecommendedModel;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.SystemUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
@@ -44,24 +43,23 @@ import retrofit.client.Response;
  */
 public class RecommendedTabFragment extends Fragment implements RecommendationsAdapter.SetOnRecommendationClickListener {
 
-    @Bind(R.id.rv_analytics_recommended)
-    RecyclerView mRecyclerView;
-    @Bind(R.id.progress_bar_tab)
-    ProgressBar mProgressBar;
-    @Bind(R.id.headerLayout)
-    LinearLayout linearLayout;
-    @Bind(R.id.tv_failure_text)
-    TextView mFailureText;
-    @Bind(R.id.color_bar)
-    public LinearLayout colorBar;
-    @Bind(R.id.subjects_name_id)
-    LinearLayout topbarLayout;
-    private RecyclerView.LayoutManager mLayoutManager;
+    @Bind(R.id.rv_analytics_recommended) RecyclerView mRecyclerView;
+    @Bind(R.id.progress_bar_tab) ProgressBar mProgressBar;
+    @Bind(R.id.headerLayout) LinearLayout linearLayout;
+    @Bind(R.id.tv_failure_text) TextView mFailureText;
+    @Bind(R.id.failure_container) View failureContainer;
+    @Bind(R.id.color_bar) public LinearLayout colorBar;
+    @Bind(R.id.subjects_name_id) LinearLayout topbarLayout;
+    private LinearLayoutManager mLayoutManager;
     private RecommendationsAdapter mAdapter;
     private LayoutInflater mInflater;
     private HashSet<String> subjects;
     private TextView selectedSubjectTxt;
-    private List<CourseAnalysis> completeCourses;
+    private List<RecommendedModel> completeRecommendedModels = new ArrayList<>();
+    private static final int MAX_ROW_COUNT = 500;
+    private boolean mLoading = true;
+    private int currentPage = 0;
+    private boolean isCompleted = false;
 
     @Nullable
     @Override
@@ -72,9 +70,27 @@ public class RecommendedTabFragment extends Fragment implements RecommendationsA
         mRecyclerView.setVisibility(View.VISIBLE);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                if (dy > 0) {
+                    int totalItem = mLayoutManager.getItemCount();
+                    int lastVisibleItem = mLayoutManager.findLastVisibleItemPosition();
+
+                    if (!mLoading && lastVisibleItem == totalItem - 1) {
+                        mLoading = true;
+                        currentPage++;
+                        // Scrolled to bottom. Do something here.
+                        getRecommendedReading((currentPage * MAX_ROW_COUNT) + 1, MAX_ROW_COUNT);
+                    }
+                }
+            }
+        });
         this.mInflater = inflater;
         colorBar.setVisibility(View.GONE);
-
         return view;
     }
 
@@ -95,53 +111,72 @@ public class RecommendedTabFragment extends Fragment implements RecommendationsA
     public void onEvent(Course course) {
         mProgressBar.setVisibility(View.VISIBLE);
         mRecyclerView.setVisibility(View.GONE);
-        mFailureText.setVisibility(View.GONE);
-        getCourseData(course.courseId.toString());
+        failureContainer.setVisibility(View.GONE);
+
+        completeRecommendedModels = new ArrayList<>();
+        isCompleted = false;
+        currentPage = 0;
+        mLoading = true;
+        getRecommendedReading(1, MAX_ROW_COUNT);
     }
 
-    private void getCourseData(String courseId) {
-        ApiManager.getInstance(getActivity()).getCourseAnalysisData(LoginUserCache.getInstance().loginResponse.studentId,
-                courseId, null, "Topic", "Month", "365", "false",
-                new ApiCallback<List<CourseAnalysis>>(getActivity()) {
+    private void getRecommendedReading(int startIndex, int noOfRows) {
+        if(isCompleted) {
+            return;
+        }
+        if(startIndex == 1) {
+            topbarLayout.removeAllViews();
+        }
+        ApiManager.getInstance(getActivity()).getRecommendedReading(LoginUserCache.getInstance().loginResponse.studentId,
+                AbstractBaseActivity.selectedCourse.courseId+"", startIndex+"", noOfRows+"",
+                new ApiCallback<List<RecommendedModel>>(getActivity()) {
                     @Override
                     public void failure(CorsaliteError error) {
                         super.failure(error);
                         if (getActivity() == null) {
                             return;
                         }
+                        mLoading = false;
                         L.error(error.message);
                         mProgressBar.setVisibility(View.GONE);
-                        mFailureText.setVisibility(View.VISIBLE);
+                        failureContainer.setVisibility(View.VISIBLE);
                     }
 
                     @Override
-                    public void success(List<CourseAnalysis> courseAnalysisList, Response response) {
-                        super.success(courseAnalysisList, response);
+                    public void success(List<RecommendedModel> recommendedModels, Response response) {
+                        super.success(recommendedModels, response);
                         if (getActivity() == null) {
                             return;
                         }
-                        if (courseAnalysisList != null) {
-                            completeCourses = courseAnalysisList;
-                            setupSubjects(courseAnalysisList);
+                        mLoading = false;
+                        if (recommendedModels != null && !recommendedModels.isEmpty()) {
+                            completeRecommendedModels.addAll(recommendedModels);
+                            setupSubjects(completeRecommendedModels);
+                        } else {
+                            isCompleted = true;
+                            mProgressBar.setVisibility(View.GONE);
+                            failureContainer.setVisibility(View.VISIBLE);
                         }
-
                     }
                 });
     }
 
-    private void setupSubjects(List<CourseAnalysis> courseAnalysis) {
-        topbarLayout.removeAllViews();
+    private void setupSubjects(List<RecommendedModel> recommendedModels) {
         subjects = new HashSet<String>();
-        for (CourseAnalysis course : courseAnalysis) {
-            addSubjectsAndCreateViews(course);
+        for (RecommendedModel model : recommendedModels) {
+            addSubjectsAndCreateViews(model);
         }
     }
 
-    private void addSubjectsAndCreateViews(CourseAnalysis course) {
-        String subject = course.subjectName;
+    private void addSubjectsAndCreateViews(RecommendedModel model) {
+        String subject = model.subjectName;
         if (!subjects.contains(subject)) {
             subjects.add(subject);
-            topbarLayout.addView(getSubjectView(subject, course.idCourseSubject + "", subjects.size() == 1));
+            if(topbarLayout.findViewWithTag(model.subjectId+"") == null) {
+                topbarLayout.addView(getSubjectView(subject, model.subjectId + "", subjects.size() == 1));
+            } else {
+                loadRecommendedReading(selectedSubjectTxt.getText().toString());
+            }
         }
     }
 
@@ -164,7 +199,7 @@ public class RecommendedTabFragment extends Fragment implements RecommendationsA
         if (isSelected) {
             tv.setSelected(true);
             selectedSubjectTxt = tv;
-            loadCoursesAnalytics(subjectName);
+            loadRecommendedReading(subjectName);
         }
 
         tv.setOnClickListener(new View.OnClickListener() {
@@ -175,42 +210,41 @@ public class RecommendedTabFragment extends Fragment implements RecommendationsA
                 }
                 selectedSubjectTxt = tv;
                 selectedSubjectTxt.setSelected(true);
-                loadCoursesAnalytics(subjectName);
+                loadRecommendedReading(subjectName);
             }
         });
         return v;
     }
 
-    public void loadCoursesAnalytics(String subjectName) {
+    public void loadRecommendedReading(String subjectName) {
         mProgressBar.setVisibility(View.GONE);
         mRecyclerView.setVisibility(View.VISIBLE);
         linearLayout.setVisibility(View.VISIBLE);
-        List<CourseAnalysis> selectedSubjectCourses = new ArrayList<>();
+        List<RecommendedModel> selectedSubjectRecommendedModels = new ArrayList<>();
 
-        for (int i = 0; i < completeCourses.size(); i++) {
-            if (completeCourses.get(i).subjectName.equalsIgnoreCase(subjectName)) {
-                selectedSubjectCourses.add(completeCourses.get(i));
+        for (int i = 0; i < completeRecommendedModels.size(); i++) {
+            if (completeRecommendedModels.get(i).subjectName.equalsIgnoreCase(subjectName)) {
+                selectedSubjectRecommendedModels.add(completeRecommendedModels.get(i));
             }
         }
-        Collections.sort(selectedSubjectCourses);
-        if (selectedSubjectCourses.size() > 0) {
-            mAdapter = new RecommendationsAdapter(selectedSubjectCourses, mInflater, RecommendedTabFragment.this);
+        if (selectedSubjectRecommendedModels.size() > 0) {
+            mAdapter = new RecommendationsAdapter(selectedSubjectRecommendedModels, mInflater, RecommendedTabFragment.this);
             mRecyclerView.setAdapter(mAdapter);
         } else {
-            mFailureText.setVisibility(View.VISIBLE);
+            failureContainer.setVisibility(View.VISIBLE);
             mRecyclerView.setVisibility(View.GONE);
-            mFailureText.setVisibility(View.GONE);
-            mFailureText.setText("No Analytics available for " + subjectName + " Recommended Reading");
+            failureContainer.setVisibility(View.GONE);
+            mFailureText.setText("No Data available for " + subjectName);
         }
     }
     @Override
     public void onItemClick(int position) {
-        CourseAnalysis courseAnalysis = (CourseAnalysis) mAdapter.getItem(position);
+        RecommendedModel model = (RecommendedModel) mAdapter.getItem(position);
         if (SystemUtils.isNetworkConnected(getActivity())) {
             Intent intent = new Intent(getActivity(), ContentReadingActivity.class);
-            intent.putExtra("subjectId", "" + courseAnalysis.idCourseSubject);
-            intent.putExtra("chapterId", "" + courseAnalysis.idCourseSubjectChapter);
-            intent.putExtra("topicId", "" + courseAnalysis.idTopic);
+            intent.putExtra("subjectId", "" + model.subjectId);
+            intent.putExtra("chapterId", "" + model.chapterId);
+            intent.putExtra("topicId", "" + model.topicId);
             startActivity(intent);
         }
     }

@@ -45,6 +45,7 @@ import com.education.corsalite.models.responsemodels.PostExamTemplate;
 import com.education.corsalite.models.responsemodels.PostExercise;
 import com.education.corsalite.models.responsemodels.PostFlaggedQuestions;
 import com.education.corsalite.models.responsemodels.PostQuestionPaper;
+import com.education.corsalite.models.responsemodels.RecommendedModel;
 import com.education.corsalite.models.responsemodels.ScheduledTest;
 import com.education.corsalite.models.responsemodels.StudyCenter;
 import com.education.corsalite.models.responsemodels.TestAnswerPaper;
@@ -575,6 +576,12 @@ public class ApiManager {
     public void getAppConfig(String idUser, ApiCallback<com.education.corsalite.utils.AppConfig> callback) {
         if (isApiOnline()) {
             ApiClientService.get().getAppConfig(idUser, callback);
+        }
+    }
+
+    public void getRecommendedReading(String studentId, String courseId, String beginRowNumber, String rowCount, ApiCallback<List<RecommendedModel>> callback) {
+        if (isApiOnline()) {
+            ApiClientService.get().getRecommendedReading(studentId, courseId, beginRowNumber, rowCount, callback);
         }
     }
 }
