@@ -125,6 +125,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     @Bind(R.id.btn_verify) Button btnVerify;
     @Bind(R.id.tv_clearanswer) TextView tvClearAnswer;
     @Bind(R.id.btn_submit) Button btnSubmit;
+    @Bind(R.id.btn_save) Button btnSave;
     @Bind(R.id.btn_suspend) Button btnSuspend;
     @Bind(R.id.txtAnswerCount) TextView txtAnswerCount;
     @Bind(R.id.txtAnswerExp) WebView txtAnswerExp;
@@ -316,6 +317,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         }
         // load leader board for testing purpose
         loadLeaderBoard();
+        btnSuspend.setVisibility(View.GONE);
+        btnSave.setVisibility(View.GONE);
         imvFlag.setVisibility(View.VISIBLE);
         testQuestionPaperId = getIntent().getExtras().getString("test_question_paper_id");
         sendLederBoardRequestEvent();
@@ -694,10 +697,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     mViewSwitcher.showNext();
                     if(ischallengeTest()) {
                         openChallengeTestResults();
-                        finish();
                     } else if (testAnswerPaperResponse != null && !TextUtils.isEmpty(testAnswerPaperResponse.testAnswerPaperId)) {
                         openAdvancedExamResultSummary(testAnswerPaperResponse.testAnswerPaperId);
-                        finish();
                     }
                     DbManager.getInstance(ExamEngineActivity.this).updateOfflineTestModel(offlineModelDate, Constants.STATUS_COMPLETED, System.currentTimeMillis());
                 }
@@ -803,6 +804,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         intent.putExtra("challenge_test_id", challengeTestId);
         intent.putExtra("test_question_paper_id", testQuestionPaperId);
         startActivity(intent);
+        finish();
     }
 
     private void openAdvancedExamResultSummary(String answerPaperId) {
@@ -811,6 +813,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         intent.putExtra(LoginActivity.URL, WebUrls.getExamResultsSummaryUrl() + answerPaperId);
         intent.putExtra(LoginActivity.TITLE, getString(R.string.results));
         startActivity(intent);
+        finish();
     }
 
     private void postExerciseAnsEvent() {

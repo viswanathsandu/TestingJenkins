@@ -136,11 +136,15 @@ public class ChallengeResultActivity extends AbstractBaseActivity {
     }
 
     private void postStatusEvent(String status) {
-        ChallengeTestUpdateRequestEvent event = new ChallengeTestUpdateRequestEvent();
-        event.setChallengeTestParentId(challengeTestId);
-        event.challengerName = mCurrentUser.displayName;
-        event.challengerStatus = status;
-        WebSocketHelper.get(this).sendChallengeUpdateEvent(event);
+        try {
+            ChallengeTestUpdateRequestEvent event = new ChallengeTestUpdateRequestEvent();
+            event.setChallengeTestParentId(challengeTestId);
+            event.challengerName = mCurrentUser.displayName;
+            event.challengerStatus = status;
+            WebSocketHelper.get(this).sendChallengeUpdateEvent(event);
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
     }
 
 
