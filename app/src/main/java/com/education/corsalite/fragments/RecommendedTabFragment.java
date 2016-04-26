@@ -84,7 +84,7 @@ public class RecommendedTabFragment extends Fragment implements RecommendationsA
                         mLoading = true;
                         currentPage++;
                         // Scrolled to bottom. Do something here.
-                        getRecommendedReading((currentPage * MAX_ROW_COUNT) + 1, MAX_ROW_COUNT);
+                        getRecommendedReading((currentPage * MAX_ROW_COUNT), MAX_ROW_COUNT);
                     }
                 }
             }
@@ -117,14 +117,14 @@ public class RecommendedTabFragment extends Fragment implements RecommendationsA
         isCompleted = false;
         currentPage = 0;
         mLoading = true;
-        getRecommendedReading(1, MAX_ROW_COUNT);
+        getRecommendedReading(0, MAX_ROW_COUNT);
     }
 
     private void getRecommendedReading(int startIndex, int noOfRows) {
         if(isCompleted) {
             return;
         }
-        if(startIndex == 1) {
+        if(startIndex == 0) {
             topbarLayout.removeAllViews();
         }
         ApiManager.getInstance(getActivity()).getRecommendedReading(LoginUserCache.getInstance().loginResponse.studentId,
@@ -154,8 +154,10 @@ public class RecommendedTabFragment extends Fragment implements RecommendationsA
                             setupSubjects(completeRecommendedModels);
                         } else {
                             isCompleted = true;
-                            mProgressBar.setVisibility(View.GONE);
-                            failureContainer.setVisibility(View.VISIBLE);
+                            if(completeRecommendedModels.isEmpty()) {
+                                mProgressBar.setVisibility(View.GONE);
+                                failureContainer.setVisibility(View.VISIBLE);
+                            }
                         }
                     }
                 });
