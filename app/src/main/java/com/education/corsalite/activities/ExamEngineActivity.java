@@ -1407,7 +1407,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void getFlaggedQuestion(final boolean showFlaggedQuestions) {
-        if(TextUtils.isEmpty(subjectId) || TextUtils.isEmpty(chapterId)) {
+        if(TextUtils.isEmpty(subjectId)) {
             return;
         }
         ApiManager.getInstance(this).getFlaggedQuestions(LoginUserCache.getInstance().loginResponse.studentId,

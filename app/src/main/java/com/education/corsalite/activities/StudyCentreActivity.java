@@ -444,9 +444,6 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         TextView saveOfflineText = (TextView) dialogView.findViewById(R.id.offline_content);
         saveOfflineText.setVisibility(View.GONE);
 
-        TextView flaggedText = (TextView) dialogView.findViewById(R.id.flagged_questions);
-        flaggedText.setVisibility(View.GONE);
-
         builder.setView(dialogView);
         setDataForAlert(dialogView, studyCenter);
         AlertDialog dialog = builder.create();
@@ -522,7 +519,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         Intent exerciseIntent = new Intent(this, ExamEngineActivity.class);
         exerciseIntent.putExtra(Constants.TEST_TITLE, "Flagged Questions");
         exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
-        exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, studyCenter.idCourseSubject);
+        exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, studyCenter.idCourseSubject+"");
         exerciseIntent.putExtra(Constants.SELECTED_SUBJECT, key);
         startActivity(exerciseIntent);
     }
