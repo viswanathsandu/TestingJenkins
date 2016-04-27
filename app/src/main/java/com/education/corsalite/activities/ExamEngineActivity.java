@@ -366,6 +366,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         imvRefresh.setVisibility(View.GONE);
         timerLayout.setVisibility(View.GONE);
         testNavFooter.setVisibility(View.GONE);
+        initTestAnswerPaper(localExamModelList);
         renderQuestionLayout();
     }
 
@@ -1117,7 +1118,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                         CheckBox chkBox = (CheckBox) v;
                         if (chkBox.isChecked()) {
                             isCheckedAtLeastOnce = true;
-                            for (int x = 0; x < size; x++) {
+                            for (int x = 0; x < checkBoxes.length; x++) {
                                 if (checkBoxes[x].getId() == Integer.valueOf(answerChoiceModel.idAnswerKey)) {
                                     selectedAnswerPosition = x + 1;
                                     if (TextUtils.isEmpty(localExamModelList.get(selectedPosition).selectedAnswers)) {
