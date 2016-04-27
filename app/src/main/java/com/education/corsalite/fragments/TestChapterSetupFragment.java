@@ -151,7 +151,6 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
     private void requestQuestionPaperDetails() {
         String noOfQuestions = mNoOfQuestionsEditTxt.getText().toString();
         if (!TextUtils.isEmpty(noOfQuestions) && TextUtils.isDigitsOnly(noOfQuestions)) {
-            //Todo Use mChapterLevel, noOfQuestions & mIsAdaptiveLearningEnabled for making api call
             mExtras.putBoolean(Constants.ADAPIVE_LEAERNING, mIsAdaptiveLearningEnabled);
             mExtras.putString(Constants.QUESTIONS_COUNT, noOfQuestions);
             startActivity(ExamEngineActivity.getMyIntent(getActivity(), mExtras));
