@@ -194,6 +194,9 @@ public class NotesAdapter extends AbstractRecycleViewAdapter {
             public void success(DefaultNoteResponse defaultNoteResponse, Response response) {
                 super.success(defaultNoteResponse, response);
                 Toast.makeText(context, "Deleted Note successfully", Toast.LENGTH_SHORT).show();
+                if(context instanceof NotesActivity) {
+                    ((NotesActivity) context).refreshNotes();
+                }
             }
         });
     }

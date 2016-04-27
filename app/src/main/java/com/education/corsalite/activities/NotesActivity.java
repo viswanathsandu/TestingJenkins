@@ -79,6 +79,12 @@ public class NotesActivity extends AbstractBaseActivity {
         }
     }
 
+    public void refreshNotes() {
+        if(mCourseData != null && mCourseData.StudyCenter != null) {
+            getNotesData();
+        }
+    }
+
     @Override
     public void onEvent(Course course) {
         super.onEvent(course);
