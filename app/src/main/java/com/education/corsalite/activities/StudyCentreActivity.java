@@ -299,22 +299,24 @@ public class StudyCentreActivity extends AbstractBaseActivity {
 
             @Override
             public void success(List<OfflineContent> offlineContents, Response response) {
-                for (Chapter chapter : studyCenter.chapters) {
-                    boolean idMatchFound = false;
-                    for (OfflineContent offlineContent : offlineContents) {
-                        if (chapter.idCourseSubjectchapter.equals(offlineContent.chapterId)) {
-                            idMatchFound = true;
+                if(studyCenter != null && studyCenter.chapters != null) {
+                    for (Chapter chapter : studyCenter.chapters) {
+                        boolean idMatchFound = false;
+                        for (OfflineContent offlineContent : offlineContents) {
+                            if (chapter.idCourseSubjectchapter.equals(offlineContent.chapterId)) {
+                                idMatchFound = true;
+                            }
+                            offlineContent.earnedMarks = chapter.earnedMarks;
+                            offlineContent.totalTestedMarks = chapter.totalTestedMarks;
+                            offlineContent.scoreAmber = chapter.scoreAmber;
+                            offlineContent.scoreRed = chapter.scoreRed;
                         }
-                        offlineContent.earnedMarks = chapter.earnedMarks;
-                        offlineContent.totalTestedMarks = chapter.totalTestedMarks;
-                        offlineContent.scoreAmber = chapter.scoreAmber;
-                        offlineContent.scoreRed = chapter.scoreRed;
-                    }
-                    if(!saveForOffline) {
-                        if (idMatchFound) {
-                            chapter.isChapterOffline = true;
-                        } else {
-                            chapter.isChapterOffline = false;
+                        if (!saveForOffline) {
+                            if (idMatchFound) {
+                                chapter.isChapterOffline = true;
+                            } else {
+                                chapter.isChapterOffline = false;
+                            }
                         }
                     }
                 }
