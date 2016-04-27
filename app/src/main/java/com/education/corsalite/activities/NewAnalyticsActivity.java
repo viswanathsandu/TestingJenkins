@@ -47,16 +47,16 @@ public class NewAnalyticsActivity extends AbstractBaseActivity implements Analyt
             case K_TITLE_ACCURACY:
                 DetailsWebviewFragment accuracyVsSpeedTabFragment = new DetailsWebviewFragment();
                 Bundle accuracyVsSpeed = new Bundle();
-                accuracyVsSpeed.putString("URL", "http://staging.corsalite.com/v1/dashboard/courseAnalysis/"+ AbstractBaseActivity.selectedCourse.courseId+"/avgvsspeed?Header=0&Footer=0");
+                accuracyVsSpeed.putString("URL_Pattern", "http://staging.corsalite.com/v1/dashboard/courseAnalysis/%s/avgvsspeed?Header=0&Footer=0");
                 accuracyVsSpeedTabFragment.setArguments(accuracyVsSpeed);
-                getFragmentManager().beginTransaction().replace(R.id.fl_analytics_detail,accuracyVsSpeedTabFragment).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fl_analytics_detail,accuracyVsSpeedTabFragment).commit();
                 break;
             case K_TITLE_PROGRESS_REPORT:
                 DetailsWebviewFragment reportTabFragment = new DetailsWebviewFragment();
                 Bundle reportbundle = new Bundle();
-                reportbundle.putString("URL", "http://staging.corsalite.com/v1/dashboard/courseAnalysis/"+ AbstractBaseActivity.selectedCourse.courseId+"/progressreport?Header=0&Footer=0");
+                reportbundle.putString("URL_Pattern", "http://staging.corsalite.com/v1/dashboard/courseAnalysis/%s/progressreport?Header=0&Footer=0");
                 reportTabFragment.setArguments(reportbundle);
-                getFragmentManager().beginTransaction().replace(R.id.fl_analytics_detail,reportTabFragment).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fl_analytics_detail,reportTabFragment).commit();
                 break;
             case K_TITLE_RECOMMENDED_READING:
                 RecommendedTabFragment recommendedTabFragment = new RecommendedTabFragment();
@@ -65,16 +65,16 @@ public class NewAnalyticsActivity extends AbstractBaseActivity implements Analyt
             case K_TITLE_TEST_COVERAGE:
                 DetailsWebviewFragment testCoverageTabFragment = new DetailsWebviewFragment();
                 Bundle testBundle = new Bundle();
-                testBundle.putString("URL", "http://staging.corsalite.com/v1/dashboard/courseAnalysis/"+ AbstractBaseActivity.selectedCourse.courseId+"/testcoverage?Header=0&Footer=0");
+                testBundle.putString("URL_Pattern", "http://staging.corsalite.com/v1/dashboard/courseAnalysis/%s/testcoverage?Header=0&Footer=0");
                 testCoverageTabFragment.setArguments(testBundle);
-                getFragmentManager().beginTransaction().replace(R.id.fl_analytics_detail,testCoverageTabFragment).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fl_analytics_detail,testCoverageTabFragment).commit();
                 break;
             case K_TITLE_TIME_MANAGEMENT:
                 DetailsWebviewFragment timeManagementTabFragment = new DetailsWebviewFragment();
                 Bundle timeBundle = new Bundle();
-                timeBundle.putString("URL", "http://staging.corsalite.com/v1/dashboard/courseAnalysis/"+ AbstractBaseActivity.selectedCourse.courseId+"/timemanagementbysubject?Header=0&Footer=0");
+                timeBundle.putString("URL_Pattern", "http://staging.corsalite.com/v1/dashboard/courseAnalysis/%s/timemanagementbysubject?Header=0&Footer=0");
                 timeManagementTabFragment.setArguments(timeBundle);
-                getFragmentManager().beginTransaction().replace(R.id.fl_analytics_detail,timeManagementTabFragment).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fl_analytics_detail,timeManagementTabFragment).commit();
                 break;
             case K_TITLE_USAGE_ANALYSIS:
                 UsageAnalysisFragment usageAnalysisFragment = new UsageAnalysisFragment();

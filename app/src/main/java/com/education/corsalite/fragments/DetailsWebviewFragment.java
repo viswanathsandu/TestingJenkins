@@ -1,6 +1,5 @@
 package com.education.corsalite.fragments;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -11,6 +10,8 @@ import android.webkit.WebViewClient;
 import android.widget.RelativeLayout;
 
 import com.education.corsalite.R;
+import com.education.corsalite.activities.AbstractBaseActivity;
+import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.AppPref;
 import com.education.corsalite.utils.L;
@@ -18,17 +19,14 @@ import com.education.corsalite.utils.L;
 /**
  * Created by madhuri on 4/23/16.
  */
-public class DetailsWebviewFragment extends Fragment {
+public class DetailsWebviewFragment extends BaseFragment {
 
-    private String mUrl = null;
+    private String mUrl;
+    private String mUrlPattern;
     private AppPref appPref;
-    private final String URL = "URL";
+    private final String URL_PATTERN_EXTRAS = "URL_Pattern";
     private WebView mWebView;
     private WebView loginWebview;
-
-    public DetailsWebviewFragment() {
-        super();
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -36,7 +34,10 @@ public class DetailsWebviewFragment extends Fragment {
         RelativeLayout myView = (RelativeLayout) inflater.inflate(R.layout.activity_webview, null, false);
         mWebView = (WebView) myView.findViewById(R.id.webview);
         loginWebview = (WebView) myView.findViewById(R.id.login_webview);
-        mUrl = getArguments().getString("URL");
+         mUrlPattern = getArguments().getString(URL_PATTERN_EXTRAS);
+        if(!TextUtils.isEmpty(mUrlPattern)) {
+            mUrl = String.format(mUrlPattern, AbstractBaseActivity.selectedCourse.courseId+"");
+        }
         appPref = AppPref.getInstance(getActivity());
         loadLoginUrl();
         return myView;
@@ -54,9 +55,11 @@ public class DetailsWebviewFragment extends Fragment {
         super.onResume();
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onEvent(Course course) {
+        if(!TextUtils.isEmpty(mUrlPattern)) {
+            mUrl = String.format(mUrlPattern, AbstractBaseActivity.selectedCourse.courseId+"");
+            loadLoginUrl();
+        }
     }
 
     @Override
@@ -88,7 +91,6 @@ public class DetailsWebviewFragment extends Fragment {
             super.onPageFinished(view, url);
             loadWebpage();
         }
-
     }
 
     private void loadWebpage() {
@@ -100,7 +102,6 @@ public class DetailsWebviewFragment extends Fragment {
     }
 
     private class MyWebViewClient extends WebViewClient {
-
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
