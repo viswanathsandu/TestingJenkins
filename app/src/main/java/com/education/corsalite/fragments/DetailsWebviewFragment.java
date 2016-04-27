@@ -2,6 +2,7 @@ package com.education.corsalite.fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -93,7 +94,9 @@ public class DetailsWebviewFragment extends Fragment {
     private void loadWebpage() {
         mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.setWebViewClient(new MyWebViewClient());
-        mWebView.loadUrl(mUrl);
+        if(!TextUtils.isEmpty(mUrl)) {
+            mWebView.loadUrl(mUrl);
+        }
     }
 
     private class MyWebViewClient extends WebViewClient {
