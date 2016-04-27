@@ -18,6 +18,7 @@ import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.responsemodels.WelcomeDetails;
 import com.education.corsalite.services.ApiClientService;
+import com.education.corsalite.utils.L;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -52,32 +53,36 @@ public class WelcomeActivity extends AbstractBaseActivity implements View.OnClic
     }
 
     private void getWelcomeDetails() {
-        ApiManager.getInstance(this).getWelcomeDetails(LoginUserCache.getInstance().loginResponse.studentId, new ApiCallback<WelcomeDetails>(WelcomeActivity.this) {
-            @Override
-            public void success(WelcomeDetails welcomeDetails, Response response) {
-                super.success(welcomeDetails, response);
-                if(welcomeDetails != null){
-                    LoginUserCache.getInstance().setWelcomeDetails(welcomeDetails);
-                    if(!isDestroyed() && !TextUtils.isEmpty(welcomeDetails.photoUrl)) {
-                        Glide.with(WelcomeActivity.this).load(ApiClientService.getBaseUrl() + welcomeDetails.photoUrl.replaceFirst("./", "")).into(profilePic);
-                    }
-                    if(!TextUtils.isEmpty(welcomeDetails.firstName) && !TextUtils.isEmpty(welcomeDetails.lastName)) {
-                        fullName.setText(welcomeDetails.firstName + " " + welcomeDetails.lastName);
-                    }
-                    if(!TextUtils.isEmpty(welcomeDetails.userLastLoginDate)) {
-                        String[] dateStr = welcomeDetails.userLastLoginDate.split(" ");
-                        lastVisitDate.setText(dateStr[0]);
-                        lastVisitTime.setText(dateStr[1]);
-                    }
-                    if(!TextUtils.isEmpty(welcomeDetails.vcCount)) {
-                        vcTotal.setText(welcomeDetails.vcCount);
-                    }
-                    if(!TextUtils.isEmpty(welcomeDetails.vcInLastSession)) {
-                        vcLastSession.setText(welcomeDetails.vcInLastSession);
+        try {
+            ApiManager.getInstance(this).getWelcomeDetails(LoginUserCache.getInstance().loginResponse.studentId, new ApiCallback<WelcomeDetails>(WelcomeActivity.this) {
+                @Override
+                public void success(WelcomeDetails welcomeDetails, Response response) {
+                    super.success(welcomeDetails, response);
+                    if (welcomeDetails != null) {
+                        LoginUserCache.getInstance().setWelcomeDetails(welcomeDetails);
+                        if (!isDestroyed() && !TextUtils.isEmpty(welcomeDetails.photoUrl)) {
+                            Glide.with(WelcomeActivity.this).load(ApiClientService.getBaseUrl() + welcomeDetails.photoUrl.replaceFirst("./", "")).into(profilePic);
+                        }
+                        if (!TextUtils.isEmpty(welcomeDetails.firstName) && !TextUtils.isEmpty(welcomeDetails.lastName)) {
+                            fullName.setText(welcomeDetails.firstName + " " + welcomeDetails.lastName);
+                        }
+                        if (!TextUtils.isEmpty(welcomeDetails.userLastLoginDate)) {
+                            String[] dateStr = welcomeDetails.userLastLoginDate.split(" ");
+                            lastVisitDate.setText(dateStr[0]);
+                            lastVisitTime.setText(dateStr[1]);
+                        }
+                        if (!TextUtils.isEmpty(welcomeDetails.vcCount)) {
+                            vcTotal.setText(welcomeDetails.vcCount);
+                        }
+                        if (!TextUtils.isEmpty(welcomeDetails.vcInLastSession)) {
+                            vcLastSession.setText(welcomeDetails.vcInLastSession);
+                        }
                     }
                 }
-            }
-        });
+            });
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
     }
 
     private void setListeners() {
