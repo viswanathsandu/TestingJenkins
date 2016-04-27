@@ -511,31 +511,40 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     private void logout() {
-        WebSocketHelper.get(this).disconnectWebSocket();
-        LogoutModel logout = new LogoutModel();
-        logout.AuthToken = LoginUserCache.getInstance().getLongResponse().authtoken;
-        appPref.remove("loginId");
-        appPref.remove("passwordHash");
-        ApiManager.getInstance(this).logout(new Gson().toJson(logout), new ApiCallback<LogoutResponse>(this) {
-            @Override
-            public void failure(CorsaliteError error) {
-                super.failure(error);
-                showToast(getResources().getString(R.string.logout_failed));
-            }
-
-            @Override
-            public void success(LogoutResponse logoutResponse, Response response) {
-                if (logoutResponse.isSuccessful()) {
-                    showToast(getResources().getString(R.string.logout_successful));
-                    LoginUserCache.getInstance().clearCache();
-                    deleteSessionCookie();
-                    Intent intent = new Intent(AbstractBaseActivity.this, LoginActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                    finish();
+        try {
+            WebSocketHelper.get(this).disconnectWebSocket();
+            LogoutModel logout = new LogoutModel();
+            logout.AuthToken = LoginUserCache.getInstance().getLongResponse().authtoken;
+            appPref.remove("loginId");
+            appPref.remove("passwordHash");
+            ApiManager.getInstance(this).logout(new Gson().toJson(logout), new ApiCallback<LogoutResponse>(this) {
+                @Override
+                public void failure(CorsaliteError error) {
+                    super.failure(error);
+                    showToast(getResources().getString(R.string.logout_failed));
                 }
-            }
-        });
+
+                @Override
+                public void success(LogoutResponse logoutResponse, Response response) {
+                    if (logoutResponse.isSuccessful()) {
+                        showToast(getResources().getString(R.string.logout_successful));
+                        LoginUserCache.getInstance().clearCache();
+                        deleteSessionCookie();
+                        Intent intent = new Intent(AbstractBaseActivity.this, LoginActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                        finish();
+                    }
+                }
+            });
+        } catch (Exception e) {
+            LoginUserCache.getInstance().clearCache();
+            deleteSessionCookie();
+            Intent intent = new Intent(AbstractBaseActivity.this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
+        }
     }
 
     private void loadCoursesList() {
