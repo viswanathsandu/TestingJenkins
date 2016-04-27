@@ -100,8 +100,6 @@ public class WelcomeActivity extends AbstractBaseActivity implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.redeem_welcome_btn:
-                // TODO : remove it after testing
-                Crashlytics.getInstance().crash();
                 redeem();
                 break;
             case R.id.profile_pic:
