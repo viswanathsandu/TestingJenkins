@@ -1669,7 +1669,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void loadOfflineMockTest(MockTest model) {
-        DbManager.getInstance(getApplicationContext()).getAllExamModels(model, new ApiCallback<OfflineTestModel>(this) {
+        DbManager.getInstance(getApplicationContext()).getAllExamModels(AbstractBaseActivity.selectedCourse.courseId+"", model, new ApiCallback<OfflineTestModel>(this) {
             @Override
             public void success(OfflineTestModel offlineModel, Response response) {
                 super.success(offlineModel, response);
@@ -1682,7 +1682,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void loadOfflineScheduledTest(ScheduledTestList.ScheduledTestsArray model) {
-        DbManager.getInstance(getApplicationContext()).getAllExamModels(model, new ApiCallback<List<ExamModel>>(this) {
+        DbManager.getInstance(getApplicationContext()).getAllExamModels(AbstractBaseActivity.selectedCourse.courseId+"", model, new ApiCallback<List<ExamModel>>(this) {
             @Override
             public void success(List<ExamModel> examModels, Response response) {
                 super.success(examModels, response);
@@ -1708,7 +1708,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void loadOfflineDefaultExam(){
-        DbManager.getInstance(this).getAllExamModels(subjectId, new ApiCallback<BaseTest>(this) {
+        DbManager.getInstance(this).getAllExamModels(AbstractBaseActivity.selectedCourse.courseId+"", subjectId, new ApiCallback<BaseTest>(this) {
             @Override
             public void success(BaseTest baseTest, Response response) {
                 super.success(baseTest, response);

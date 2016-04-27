@@ -15,11 +15,13 @@ import java.util.List;
 public class GetOfflineTestFromDb extends AsyncTask<String, Void, List<OfflineTestModel>> {
 
     private DbService dbService;
+    private String courseId;
     private ApiCallback<List<OfflineTestModel>> callback;
 
-    public GetOfflineTestFromDb(DbService dbService, ApiCallback callback) {
+    public GetOfflineTestFromDb(String courseId, DbService dbService, ApiCallback callback) {
         this.dbService = dbService;
         this.callback = callback;
+        this.courseId = courseId;
     }
 
     @Override
@@ -28,7 +30,7 @@ public class GetOfflineTestFromDb extends AsyncTask<String, Void, List<OfflineTe
         try {
             List<OfflineTestModel> currentUserResults = new ArrayList<>();
             for (OfflineTestModel test : responseList) {
-                if (test != null && test.isCurrentUser()) {
+                if (test != null && test.isCurrentUser() && courseId.equals(test.baseTest.courseId)) {
                     currentUserResults.add(test);
                 }
             }

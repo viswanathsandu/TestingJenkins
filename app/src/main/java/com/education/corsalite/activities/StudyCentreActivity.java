@@ -90,7 +90,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(mAdapter != null) {
+        if (mAdapter != null) {
             recyclerView.invalidate();
         }
     }
@@ -108,7 +108,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         redView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(studyCenter != null && studyCenter.redListChapters != null) {
+                if (studyCenter != null && studyCenter.redListChapters != null) {
                     mAdapter.updateData(studyCenter.redListChapters, key);
                     mAdapter.notifyDataSetChanged();
                     updateSelected(redView);
@@ -118,7 +118,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         blueView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(studyCenter != null && studyCenter.blueListChapters != null) {
+                if (studyCenter != null && studyCenter.blueListChapters != null) {
                     mAdapter.updateData(studyCenter.blueListChapters, key);
                     mAdapter.notifyDataSetChanged();
                     updateSelected(blueView);
@@ -128,7 +128,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         yellowView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(studyCenter != null && studyCenter.amberListChapters != null) {
+                if (studyCenter != null && studyCenter.amberListChapters != null) {
                     mAdapter.updateData(studyCenter.amberListChapters, key);
                     mAdapter.notifyDataSetChanged();
                     updateSelected(yellowView);
@@ -138,7 +138,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         greenView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(studyCenter != null && studyCenter.greenListChapters != null) {
+                if (studyCenter != null && studyCenter.greenListChapters != null) {
                     mAdapter.updateData(studyCenter.greenListChapters, key);
                     mAdapter.notifyDataSetChanged();
                     updateSelected(greenView);
@@ -291,47 +291,48 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     }
 
     private void getOfflineStudyCenterData(final List<StudyCenter> studyCenters, final boolean saveForOffline) {
-        DbManager.getInstance(getApplicationContext()).getOfflineContentList(new ApiCallback<List<OfflineContent>>(this) {
-            @Override
-            public void failure(CorsaliteError error) {
-                super.failure(error);
-            }
+        DbManager.getInstance(getApplicationContext()).getOfflineContentList(AbstractBaseActivity.selectedCourse.courseId + "",
+                new ApiCallback<List<OfflineContent>>(this) {
+                    @Override
+                    public void failure(CorsaliteError error) {
+                        super.failure(error);
+                    }
 
-            @Override
-            public void success(List<OfflineContent> offlineContents, Response response) {
-                if(studyCenter != null && studyCenter.chapters != null) {
-                    for (Chapter chapter : studyCenter.chapters) {
-                        boolean idMatchFound = false;
-                        for (OfflineContent offlineContent : offlineContents) {
-                            if (chapter.idCourseSubjectchapter.equals(offlineContent.chapterId)) {
-                                idMatchFound = true;
+                    @Override
+                    public void success(List<OfflineContent> offlineContents, Response response) {
+                        if (studyCenter != null && studyCenter.chapters != null) {
+                            for (Chapter chapter : studyCenter.chapters) {
+                                boolean idMatchFound = false;
+                                for (OfflineContent offlineContent : offlineContents) {
+                                    if (chapter.idCourseSubjectchapter.equals(offlineContent.chapterId)) {
+                                        idMatchFound = true;
+                                    }
+                                    offlineContent.earnedMarks = chapter.earnedMarks;
+                                    offlineContent.totalTestedMarks = chapter.totalTestedMarks;
+                                    offlineContent.scoreAmber = chapter.scoreAmber;
+                                    offlineContent.scoreRed = chapter.scoreRed;
+                                }
+                                if (!saveForOffline) {
+                                    if (idMatchFound) {
+                                        chapter.isChapterOffline = true;
+                                    } else {
+                                        chapter.isChapterOffline = false;
+                                    }
+                                }
                             }
-                            offlineContent.earnedMarks = chapter.earnedMarks;
-                            offlineContent.totalTestedMarks = chapter.totalTestedMarks;
-                            offlineContent.scoreAmber = chapter.scoreAmber;
-                            offlineContent.scoreRed = chapter.scoreRed;
                         }
-                        if (!saveForOffline) {
-                            if (idMatchFound) {
-                                chapter.isChapterOffline = true;
-                            } else {
-                                chapter.isChapterOffline = false;
-                            }
+                        if (saveForOffline) {
+                            DbManager.getInstance(getApplicationContext()).saveOfflineContent(offlineContents);
+                        } else {
+                            mCourseData = new CourseData();
+                            mCourseData.StudyCenter = studyCenters;
+                            key = mCourseData.StudyCenter.get(getIndex(studyCenters)).SubjectName;
+                            studyCenter = mCourseData.StudyCenter.get(getIndex(studyCenters));
+                            setupSubjects(mCourseData);
+                            initDataAdapter(subjects.get(getIndex(studyCenters)));
                         }
                     }
-                }
-                if(saveForOffline){
-                    DbManager.getInstance(getApplicationContext()).saveOfflineContent(offlineContents);
-                }else {
-                    mCourseData = new CourseData();
-                    mCourseData.StudyCenter = studyCenters;
-                    key = mCourseData.StudyCenter.get(getIndex(studyCenters)).SubjectName;
-                    studyCenter = mCourseData.StudyCenter.get(getIndex(studyCenters));
-                    setupSubjects(mCourseData);
-                    initDataAdapter(subjects.get(getIndex(studyCenters)));
-                }
-            }
-        });
+                });
     }
 
     private int getIndex(List<StudyCenter> studyCenters) {
@@ -417,8 +418,8 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         tv.setText(studyCenter.SubjectName);
         tv.setTag(subjectId);
 
-        ImageView iv = (ImageView)v.findViewById(R.id.arrow_img);
-        setListener(v,iv,studyCenter);
+        ImageView iv = (ImageView) v.findViewById(R.id.arrow_img);
+        setListener(v, iv, studyCenter);
         if (isSelected) {
             tv.setSelected(true);
             selectedSubjectTxt = tv;
@@ -462,11 +463,11 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     }
 
     private void startContentActivity(StudyCenter studyCenter) {
-        if(studyCenter != null && studyCenter.chapters != null && !studyCenter.chapters.isEmpty()) {
+        if (studyCenter != null && studyCenter.chapters != null && !studyCenter.chapters.isEmpty()) {
             Intent intent = new Intent(this, ContentReadingActivity.class);
-            intent.putExtra("courseId", AbstractBaseActivity.selectedCourse.courseId.toString()+"");
-            intent.putExtra("subjectId", studyCenter.idCourseSubject+"");
-            intent.putExtra("chapterId", studyCenter.chapters.get(0).idCourseSubjectchapter+"");
+            intent.putExtra("courseId", AbstractBaseActivity.selectedCourse.courseId.toString() + "");
+            intent.putExtra("subjectId", studyCenter.idCourseSubject + "");
+            intent.putExtra("chapterId", studyCenter.chapters.get(0).idCourseSubjectchapter + "");
             startActivity(intent);
         }
     }
@@ -522,7 +523,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         Intent exerciseIntent = new Intent(this, ExamEngineActivity.class);
         exerciseIntent.putExtra(Constants.TEST_TITLE, "Flagged Questions");
         exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
-        exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, studyCenter.idCourseSubject+"");
+        exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, studyCenter.idCourseSubject + "");
         exerciseIntent.putExtra(Constants.SELECTED_SUBJECT, key);
         startActivity(exerciseIntent);
     }
@@ -530,7 +531,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     private void startNotesActivity(StudyCenter studyCenter) {
         Intent intent = new Intent(this, NotesActivity.class);
         intent.putExtra("courseId", AbstractBaseActivity.selectedCourse.courseId.toString());
-        intent.putExtra(GridRecyclerAdapter.SUBJECT_ID, studyCenter.idCourseSubject+"");
+        intent.putExtra(GridRecyclerAdapter.SUBJECT_ID, studyCenter.idCourseSubject + "");
         startActivity(intent);
     }
 
@@ -543,7 +544,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
             dialog.setArguments(bundle);
             dialog.show(getSupportFragmentManager(), "PartTestDialog");
         } else {
-            Intent exerciseIntent = new Intent(this, OfflineContentActivity.class);
+            Intent exerciseIntent = new Intent(this, OfflineActivity.class);
             exerciseIntent.putExtra("selection", 1);
             startActivity(exerciseIntent);
         }
@@ -554,7 +555,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
             MockTestDialog dialog = new MockTestDialog();
             dialog.show(getFragmentManager(), "MockTestsListDialog");
         } else {
-            Intent exerciseIntent = new Intent(this, OfflineContentActivity.class);
+            Intent exerciseIntent = new Intent(this, OfflineActivity.class);
             exerciseIntent.putExtra("selection", 1);
             startActivity(exerciseIntent);
         }
@@ -597,32 +598,33 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                             if (key.equalsIgnoreCase(studyCenter.SubjectName)) {
                                 StudyCentreActivity.this.studyCenter = studyCenter;
                                 setUpStudyCentreData(studyCenter);
-                                DbManager.getInstance(getApplicationContext()).getOfflineContentList(new ApiCallback<List<OfflineContent>>(StudyCentreActivity.this) {
-                                    @Override
-                                    public void failure(CorsaliteError error) {
-                                        super.failure(error);
-                                    }
+                                DbManager.getInstance(getApplicationContext()).getOfflineContentList(AbstractBaseActivity.selectedCourse.courseId + "",
+                                        new ApiCallback<List<OfflineContent>>(StudyCentreActivity.this) {
+                                            @Override
+                                            public void failure(CorsaliteError error) {
+                                                super.failure(error);
+                                            }
 
-                                    @Override
-                                    public void success(List<OfflineContent> offlineContents, Response response) {
-                                        for (Chapter chapter : getChaptersForSubject()) {
-                                            boolean idMatchFound = false;
-                                            for (OfflineContent offlineContent : offlineContents) {
-                                                if (chapter.idCourseSubjectchapter.equals(offlineContent.chapterId)) {
-                                                    idMatchFound = true;
+                                            @Override
+                                            public void success(List<OfflineContent> offlineContents, Response response) {
+                                                for (Chapter chapter : getChaptersForSubject()) {
+                                                    boolean idMatchFound = false;
+                                                    for (OfflineContent offlineContent : offlineContents) {
+                                                        if (chapter.idCourseSubjectchapter.equals(offlineContent.chapterId)) {
+                                                            idMatchFound = true;
+                                                        }
+                                                    }
+                                                    if (idMatchFound) {
+                                                        chapter.isChapterOffline = true;
+                                                    } else {
+                                                        chapter.isChapterOffline = false;
+                                                    }
+                                                    idMatchFound = false;
                                                 }
+                                                mAdapter.updateData(getChaptersForSubject(), text);
+                                                mAdapter.notifyDataSetChanged();
                                             }
-                                            if (idMatchFound) {
-                                                chapter.isChapterOffline = true;
-                                            } else {
-                                                chapter.isChapterOffline = false;
-                                            }
-                                            idMatchFound = false;
-                                        }
-                                        mAdapter.updateData(getChaptersForSubject(), text);
-                                        mAdapter.notifyDataSetChanged();
-                                    }
-                                });
+                                        });
                                 break;
                             }
                         }

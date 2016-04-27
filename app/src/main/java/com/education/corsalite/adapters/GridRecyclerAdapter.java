@@ -23,7 +23,7 @@ import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.activities.ContentReadingActivity;
 import com.education.corsalite.activities.ExamEngineActivity;
 import com.education.corsalite.activities.NotesActivity;
-import com.education.corsalite.activities.OfflineContentActivity;
+import com.education.corsalite.activities.OfflineActivity;
 import com.education.corsalite.activities.SaveForOfflineActivity;
 import com.education.corsalite.activities.StudyCentreActivity;
 import com.education.corsalite.activities.TestStartActivity;
@@ -219,7 +219,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
             exerciseIntent.putExtra("chapter", new Gson().toJson(chapter));
             studyCentreActivity.startActivity(exerciseIntent);
         }else {
-            Intent exerciseIntent = new Intent(studyCentreActivity, OfflineContentActivity.class);
+            Intent exerciseIntent = new Intent(studyCentreActivity, OfflineActivity.class);
             exerciseIntent.putExtra("selection", 1);
             studyCentreActivity.startActivity(exerciseIntent);
         }

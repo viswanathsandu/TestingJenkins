@@ -19,13 +19,13 @@ import com.education.corsalite.utils.L;
 /**
  * Created by Aastha on 05/10/15.
  */
-public class OfflineContentActivity extends AbstractBaseActivity {
+public class OfflineActivity extends AbstractBaseActivity {
 
-    TabLayout tabLayout;
-    ViewPager mViewPager;
-    IOfflineEventListener offlineEventListener;
+    private TabLayout tabLayout;
+    private ViewPager mViewPager;
+    private IOfflineEventListener offlineEventListener;
+    private IOfflineTestEventListener offlineTestEventListener;
     private int selection;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,12 +56,19 @@ public class OfflineContentActivity extends AbstractBaseActivity {
         this.offlineEventListener = offlineEventListener;
     }
 
+    public void setOfflineTestListener(IOfflineTestEventListener offlineTestEventListener){
+        this.offlineTestEventListener = offlineTestEventListener;
+    }
+
     @Override
     public void onEvent(Course course) {
+        super.onEvent(course);
         if(offlineEventListener!=null) {
             offlineEventListener.onCourseIdSelected(course);
         }
-        super.onEvent(course);
+        if(offlineTestEventListener != null) {
+            offlineTestEventListener.onCourseIdSelected(course);
+        }
     }
 
     @Override
@@ -91,7 +98,6 @@ public class OfflineContentActivity extends AbstractBaseActivity {
                     fragment = new OfflineTestsFragment();
                     fragment.setArguments(args);
                     break;
-
             }
             return fragment;
         }
@@ -135,11 +141,10 @@ public class OfflineContentActivity extends AbstractBaseActivity {
         void onUpdateOfflineData(String selectedCourse);
         void onDeleteOfflineData(String selectedId,String tag);
         void onCourseIdSelected(Course selectedCourse);
-
     }
 
     public interface IOfflineTestEventListener{
+        void onCourseIdSelected(Course selectedCourse);
         void onDeleteOfflineTest(int position,String tag);
     }
-
 }

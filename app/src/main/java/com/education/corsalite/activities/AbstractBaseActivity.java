@@ -379,7 +379,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Localytics.tagEvent("Offline");
-                startActivity(new Intent(AbstractBaseActivity.this, OfflineContentActivity.class));
+                startActivity(new Intent(AbstractBaseActivity.this, OfflineActivity.class));
                 drawerLayout.closeDrawers();
             }
         });
@@ -431,7 +431,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             ScheduledTestDialog dialog = new ScheduledTestDialog();
             dialog.show(getFragmentManager(), "ScheduledTestsListDialog");
         } else {
-            Intent exerciseIntent = new Intent(this, OfflineContentActivity.class);
+            Intent exerciseIntent = new Intent(this, OfflineActivity.class);
             exerciseIntent.putExtra("selection", 1);
             startActivity(exerciseIntent);
         }

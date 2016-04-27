@@ -170,8 +170,8 @@ public class DbManager {
         }).start();
     }
 
-    public <T> void getOfflineContentList(ApiCallback<List<OfflineContent>> callback) {
-        new GetDataFromDbAsync(dbService, callback).execute();
+    public <T> void getOfflineContentList(String courseId, ApiCallback<List<OfflineContent>> callback) {
+        new GetDataFromDbAsync(courseId, dbService, callback).execute();
     }
 
     public void saveOfflineTest(final OfflineTestModel model) {
@@ -229,8 +229,8 @@ public class DbManager {
         }).execute();
     }
 
-    public void getAllExamModels(final String subjectId, final ApiCallback<BaseTest> callback) {
-        new GetOfflineTestFromDb(dbService, new ApiCallback<List<OfflineTestModel>>(context) {
+    public void getAllExamModels(String courseId, final String subjectId, final ApiCallback<BaseTest> callback) {
+        new GetOfflineTestFromDb(courseId, dbService, new ApiCallback<List<OfflineTestModel>>(context) {
             public void success(List<OfflineTestModel> offlineTestModels, Response response) {
                 super.success(offlineTestModels, response);
                 for (OfflineTestModel model : offlineTestModels) {
@@ -253,12 +253,12 @@ public class DbManager {
         dbService.Delete(OfflineTestModel.class, model);
     }
 
-    public void getAllOfflineMockTests(ApiCallback<List<OfflineTestModel>> callback) {
-        new GetOfflineTestFromDb(dbService, callback).execute();
+    public void getAllOfflineMockTests(String courseId, ApiCallback<List<OfflineTestModel>> callback) {
+        new GetOfflineTestFromDb(courseId, dbService, callback).execute();
     }
 
-    public void getAllExamModels(final MockTest mockTest, final ApiCallback<OfflineTestModel> callback) {
-        new GetOfflineTestFromDb(dbService, new ApiCallback<List<OfflineTestModel>>(context) {
+    public void getAllExamModels(String courseId, final MockTest mockTest, final ApiCallback<OfflineTestModel> callback) {
+        new GetOfflineTestFromDb(courseId, dbService, new ApiCallback<List<OfflineTestModel>>(context) {
             public void success(List<OfflineTestModel> offlineTestModels, Response response) {
                 super.success(offlineTestModels, response);
                 for (OfflineTestModel model : offlineTestModels) {
@@ -272,8 +272,8 @@ public class DbManager {
         }).execute();
     }
 
-    public void getAllExamModels(final ScheduledTestList.ScheduledTestsArray scheduledTest, final ApiCallback<List<ExamModel>> callback) {
-        new GetOfflineTestFromDb(dbService, new ApiCallback<List<OfflineTestModel>>(context) {
+    public void getAllExamModels(String courseId, final ScheduledTestList.ScheduledTestsArray scheduledTest, final ApiCallback<List<ExamModel>> callback) {
+        new GetOfflineTestFromDb(courseId, dbService, new ApiCallback<List<OfflineTestModel>>(context) {
             public void success(List<OfflineTestModel> offlineTestModels, Response response) {
                 super.success(offlineTestModels, response);
                 for (OfflineTestModel model : offlineTestModels) {

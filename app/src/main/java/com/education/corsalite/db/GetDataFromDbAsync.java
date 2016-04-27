@@ -15,11 +15,13 @@ import java.util.List;
 public class GetDataFromDbAsync extends AsyncTask<String, Void, List<OfflineContent>> {
 
     private DbService dbService;
+    private String courseId;
     private ApiCallback<List<OfflineContent>> callback;
 
-    public GetDataFromDbAsync(DbService dbService, ApiCallback callback) {
+    public GetDataFromDbAsync(String courseId, DbService dbService, ApiCallback callback) {
         this.dbService = dbService;
         this.callback = callback;
+        this.courseId = courseId;
     }
 
     @Override
@@ -28,7 +30,7 @@ public class GetDataFromDbAsync extends AsyncTask<String, Void, List<OfflineCont
         try {
             List<OfflineContent> currentUserResults = new ArrayList<>();
             for (OfflineContent content : responseList) {
-                if (content != null && content.isCurrentUser()) {
+                if (content != null && content.isCurrentUser() && courseId.equals(content.courseId)) {
                     currentUserResults.add(content);
                 }
             }

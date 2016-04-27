@@ -109,7 +109,7 @@
             android:screenOrientation="sensorLandscape"
             android:theme="@style/UserProfileTheme" />
         <activity
-            android:name=".activities.OfflineContentActivity"
+            android:name=".activities.OfflineActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="Offline Content"
             android:theme="@style/UserProfileTheme" />

@@ -15,7 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
-import com.education.corsalite.activities.OfflineContentActivity;
+import com.education.corsalite.activities.OfflineActivity;
 import com.unnamed.b.atv.model.TreeNode;
 
 public class IconTreeItemHolder extends TreeNode.BaseNodeViewHolder<IconTreeItemHolder.IconTreeItem> {
@@ -56,7 +56,7 @@ public class IconTreeItemHolder extends TreeNode.BaseNodeViewHolder<IconTreeItem
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentManager fragmentManager = ((OfflineContentActivity) context).getFragmentManager();
+                FragmentManager fragmentManager = ((OfflineActivity) context).getFragmentManager();
                 AlertDialogFragment dialogFragment = new AlertDialogFragment ();
                 dialogFragment.show(fragmentManager, "AlertDialog");
             }
@@ -124,7 +124,7 @@ public class IconTreeItemHolder extends TreeNode.BaseNodeViewHolder<IconTreeItem
                     .setPositiveButton("Confirm",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int whichButton) {
-                                    ((OfflineContentActivity)getActivity()).onDelete(value.id,value.tag);
+                                    ((OfflineActivity)getActivity()).onDelete(value.id,value.tag);
                                 }
                             }
                     )

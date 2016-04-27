@@ -14,7 +14,7 @@ import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.activities.ContentReadingActivity;
 import com.education.corsalite.activities.ExamEngineActivity;
-import com.education.corsalite.activities.OfflineContentActivity;
+import com.education.corsalite.activities.OfflineActivity;
 import com.education.corsalite.activities.VideoActivity;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.db.DbManager;
@@ -47,7 +47,7 @@ import retrofit.client.Response;
 /**
  * Created by Aastha on 28/11/15.
  */
-public class OfflineContentFragment extends BaseFragment implements OfflineContentActivity.IOfflineEventListener {
+public class OfflineContentFragment extends BaseFragment implements OfflineActivity.IOfflineEventListener {
 
     @Bind(R.id.main_node_content)
     RelativeLayout mainNodeLayout;
@@ -72,8 +72,8 @@ public class OfflineContentFragment extends BaseFragment implements OfflineConte
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_offline_content, container, false);
         ButterKnife.bind(this, view);
-        if (getActivity() instanceof OfflineContentActivity) {
-            ((OfflineContentActivity) getActivity()).setOfflineListener(this);
+        if (getActivity() instanceof OfflineActivity) {
+            ((OfflineActivity) getActivity()).setOfflineListener(this);
         }
         return view;
     }
@@ -104,49 +104,50 @@ public class OfflineContentFragment extends BaseFragment implements OfflineConte
     private void getContentIndexResponse(final Course course) {
         showProgress();
         emptyContentView.setVisibility(View.GONE);
-        DbManager.getInstance(getActivity().getApplicationContext()).getOfflineContentList(new ApiCallback<List<OfflineContent>>(getActivity()) {
-            @Override
-            public void failure(CorsaliteError error) {
-                super.failure(error);
-                closeProgress();
-            }
-
-            @Override
-            public void success(List<OfflineContent> offlineContentsList, Response response) {
-                closeProgress();
-                ArrayList<OfflineContent> offlineContents = new ArrayList<>(offlineContentsList);
-                String savedData = AppPref.getInstance(getActivity()).getValue("DATA_IN_PROGRESS");
-                ArrayList<OfflineContent> contents = new Gson().fromJson(savedData, new TypeToken<ArrayList<OfflineContent>>() {
-                }.getType());
-                if (contents != null) {
-                    offlineContents.addAll(contents);
-                    getTopicIds(contents);
-                }
-                offlineContentList = new ArrayList<>();
-                for (OfflineContent offlineContent : offlineContents) {
-                    if (offlineContent.courseId.equalsIgnoreCase(course.courseId.toString())) {
-                        offlineContentList.add(offlineContent);
+        DbManager.getInstance(getActivity().getApplicationContext()).getOfflineContentList(AbstractBaseActivity.selectedCourse.courseId + "",
+                new ApiCallback<List<OfflineContent>>(getActivity()) {
+                    @Override
+                    public void failure(CorsaliteError error) {
+                        super.failure(error);
+                        closeProgress();
                     }
-                }
-                offlineContentList = getSortedList(offlineContents);
-                if (offlineContentList != null && !offlineContentList.isEmpty()) {
-                    initNodes();
-                } else {
-                    mainNodeLayout.removeAllViews();
-                    emptyContentView.setVisibility(View.VISIBLE);
-                }
-            }
-        });
+
+                    @Override
+                    public void success(List<OfflineContent> offlineContentsList, Response response) {
+                        closeProgress();
+                        ArrayList<OfflineContent> offlineContents = new ArrayList<>(offlineContentsList);
+                        String savedData = AppPref.getInstance(getActivity()).getValue("DATA_IN_PROGRESS");
+                        ArrayList<OfflineContent> contents = new Gson().fromJson(savedData, new TypeToken<ArrayList<OfflineContent>>() {
+                        }.getType());
+                        if (contents != null) {
+                            offlineContents.addAll(contents);
+                            getTopicIds(contents);
+                        }
+                        offlineContentList = new ArrayList<>();
+                        for (OfflineContent offlineContent : offlineContents) {
+                            if (offlineContent.courseId.equalsIgnoreCase(course.courseId.toString())) {
+                                offlineContentList.add(offlineContent);
+                            }
+                        }
+                        offlineContentList = getSortedList(offlineContents);
+                        if (offlineContentList != null && !offlineContentList.isEmpty()) {
+                            initNodes();
+                        } else {
+                            mainNodeLayout.removeAllViews();
+                            emptyContentView.setVisibility(View.VISIBLE);
+                        }
+                    }
+                });
     }
 
     private List<OfflineContent> getSortedList(List<OfflineContent> contents) {
         List<OfflineContent> exercises = new ArrayList<>();
         List<OfflineContent> htmlContents = new ArrayList<>();
         List<OfflineContent> videoContents = new ArrayList<>();
-        for(OfflineContent content : contents) {
-            if(content.fileName.toLowerCase().endsWith(".mpg")) {
+        for (OfflineContent content : contents) {
+            if (content.fileName.toLowerCase().endsWith(".mpg")) {
                 videoContents.add(content);
-            } else if(content.fileName.toLowerCase().endsWith(".html")) {
+            } else if (content.fileName.toLowerCase().endsWith(".html")) {
                 htmlContents.add(content);
             } else {
                 exercises.add(content);
@@ -266,9 +267,9 @@ public class OfflineContentFragment extends BaseFragment implements OfflineConte
             }
             if (contentRoot == null) {
                 showProgress = contentIds != null && contentIds.contains(offlineContent.contentId);
-                if(offlineContent.fileName.endsWith(".mpg")) {
+                if (offlineContent.fileName.endsWith(".mpg")) {
                     contentRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_video, offlineContent.fileName, offlineContent.contentId, "content", showProgress));
-                } else if(offlineContent.fileName.endsWith(".html")) {
+                } else if (offlineContent.fileName.endsWith(".html")) {
                     contentRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_topic, offlineContent.fileName, offlineContent.contentId, "content", showProgress));
                 }
                 topicRoot.addChild(contentRoot);
@@ -290,13 +291,13 @@ public class OfflineContentFragment extends BaseFragment implements OfflineConte
         public void onClick(TreeNode node, Object value) {
             IconTreeItemHolder.IconTreeItem item = (IconTreeItemHolder.IconTreeItem) value;
 
-            if(item.tag.equalsIgnoreCase("subject")){
+            if (item.tag.equalsIgnoreCase("subject")) {
                 subjectId = item.id;
                 subjectName = item.text;
-            } else if(item.tag.equalsIgnoreCase("chapter")){
+            } else if (item.tag.equalsIgnoreCase("chapter")) {
                 chapterId = item.id;
                 chapterName = item.text;
-            } else if(item.tag.equalsIgnoreCase("topic")){
+            } else if (item.tag.equalsIgnoreCase("topic")) {
                 topicId = item.id;
                 topicName = item.text;
             } else if (item.tag.equalsIgnoreCase("content")) {
@@ -305,7 +306,7 @@ public class OfflineContentFragment extends BaseFragment implements OfflineConte
                 } else {
                     startVideoActivity(course.name, subjectName, chapterName, topicName, item.text);
                 }
-            } else if(item.data != null && item.data instanceof ExerciseOfflineModel){
+            } else if (item.data != null && item.data instanceof ExerciseOfflineModel) {
                 startExerciseTest((ExerciseOfflineModel) item.data);
             }
         }
@@ -375,7 +376,7 @@ public class OfflineContentFragment extends BaseFragment implements OfflineConte
         }
     }
 
-    private int getCorrespondingBGColor(OfflineContent chapter){
+    private int getCorrespondingBGColor(OfflineContent chapter) {
         double totalMarks = Data.getDoubleWithTwoDecimals(chapter.totalTestedMarks);
         double earnedMarks = Data.getDoubleWithTwoDecimals(chapter.earnedMarks);
         double scoreRedPercentage = Data.getInt(chapter.scoreRed) * totalMarks / 100;
@@ -418,7 +419,7 @@ public class OfflineContentFragment extends BaseFragment implements OfflineConte
         File newFile = new File(file, contentName);
         Intent intent = new Intent(getActivity(), VideoActivity.class);
         intent.putExtra("videopath", newFile.getAbsolutePath());
-        L.debug("Loading file from : "+newFile.getAbsolutePath());
+        L.debug("Loading file from : " + newFile.getAbsolutePath());
         if (newFile.exists()) {
             getActivity().startActivity(intent);
         } else
