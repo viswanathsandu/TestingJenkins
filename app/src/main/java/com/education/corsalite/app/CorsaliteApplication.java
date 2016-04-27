@@ -2,11 +2,11 @@ package com.education.corsalite.app;
 
 import android.content.Context;
 import android.content.Intent;
-import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.education.corsalite.R;
 import com.education.corsalite.activities.SplashActivity;
+import com.education.corsalite.utils.L;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.localytics.android.LocalyticsActivityLifecycleCallbacks;
@@ -21,7 +21,9 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
  */
 public class CorsaliteApplication extends com.orm.SugarApp {
 
-    public CorsaliteApplication(){
+    private HashMap<TrackerName, Tracker> mTrackers = new HashMap<TrackerName, Tracker>();
+
+    public CorsaliteApplication() {
         super();
     }
 
@@ -31,24 +33,24 @@ public class CorsaliteApplication extends com.orm.SugarApp {
         Fabric.with(this, new Crashlytics());
         registerActivityLifecycleCallbacks(
                 new LocalyticsActivityLifecycleCallbacks(this));
-//        registerForCrashes();
+        registerForCrashes();
     }
 
     private void registerForCrashes() {
-        Thread.setDefaultUncaughtExceptionHandler (new Thread.UncaughtExceptionHandler() {
+        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
             @Override
-            public void uncaughtException (Thread thread, Throwable e) {
-                handleUncaughtException (thread, e);
+            public void uncaughtException(Thread thread, Throwable e) {
+                handleUncaughtException(thread, e);
             }
         });
     }
 
-    private void handleUncaughtException (Thread thread, Throwable e) {
+    private void handleUncaughtException(Thread thread, Throwable e) {
+        L.error(e.getMessage(), e);
         Crashlytics.logException(e);
-        Toast.makeText(getApplicationContext(), "Some thing went wrong", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(getApplicationContext(), SplashActivity.class);
-        intent.setFlags (Intent.FLAG_ACTIVITY_NEW_TASK); // required when starting from Application
-        startActivity (intent);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // required when starting from Application
+        startActivity(intent);
         System.exit(1);
     }
 
@@ -69,18 +71,15 @@ public class CorsaliteApplication extends com.orm.SugarApp {
         APP_TRACKER // Tracker used only in this app.
     }
 
-    HashMap<TrackerName, Tracker> mTrackers = new HashMap<TrackerName, Tracker>();
-
     public synchronized Tracker getTracker(TrackerName trackerId) {
-        try{
+        try {
             if (!mTrackers.containsKey(trackerId)) {
-
                 //analytics.setLocalDispatchPeriod(15);
-                Tracker t =  GoogleAnalytics.getInstance(this).newTracker(R.xml.app_tracker);
+                Tracker t = GoogleAnalytics.getInstance(this).newTracker(R.xml.app_tracker);
                 mTrackers.put(trackerId, t);
             }
             return mTrackers.get(trackerId);
-        }catch(Exception e){
+        } catch (Exception e) {
             return null;
         }
     }
