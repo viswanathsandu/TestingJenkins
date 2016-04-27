@@ -127,14 +127,13 @@
     <string name="file_exists">File already exists.</string>
 
 
-<!--Challenge Screen -->
+    <!--Challenge Screen -->
 
     <string name="participant">One more participants are still battling it out</string>
     <string name="check_result">Please wait to check result.</string>
     <string name="vc_hint"><font size="15">Virtual Currency</font></string>
     <string name="ques_hint"><font size="15">No of Questions</font></string>
     <string name="time_hint"><font size="15">Time in Mins</font></string>
-
 
 
     <!-- Screen names-->
@@ -160,4 +159,8 @@
         <item>My Posts</item>
         <item>Library</item>
     </string-array>
+
+    <string name="title_activity_crash_handler">CrashHandlerActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

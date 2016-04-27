@@ -5,7 +5,7 @@ import android.content.Intent;
 
 import com.crashlytics.android.Crashlytics;
 import com.education.corsalite.R;
-import com.education.corsalite.activities.SplashActivity;
+import com.education.corsalite.activities.CrashHandlerActivity;
 import com.education.corsalite.utils.L;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
@@ -48,7 +48,7 @@ public class CorsaliteApplication extends com.orm.SugarApp {
     private void handleUncaughtException(Thread thread, Throwable e) {
         L.error(e.getMessage(), e);
         Crashlytics.logException(e);
-        Intent intent = new Intent(getApplicationContext(), SplashActivity.class);
+        Intent intent = new Intent(getApplicationContext(), CrashHandlerActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // required when starting from Application
         startActivity(intent);
         System.exit(1);

@@ -49,4 +49,6 @@
     <color name="table_level_4">#628B40</color>
     <color name="table_level_5">#3AAB49</color>
 
+    <color name="black_overlay">#66000000</color>
+
 </resources>

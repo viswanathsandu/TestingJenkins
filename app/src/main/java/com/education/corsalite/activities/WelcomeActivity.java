@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.crashlytics.android.Crashlytics;
 import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
@@ -99,6 +100,8 @@ public class WelcomeActivity extends AbstractBaseActivity implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.redeem_welcome_btn:
+                // TODO : remove it after testing
+                Crashlytics.getInstance().crash();
                 redeem();
                 break;
             case R.id.profile_pic:

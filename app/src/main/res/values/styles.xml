@@ -227,6 +227,7 @@
         <item name="android:textColor">@color/text_black</item>
         <item name="android:textStyle">bold</item>
     </style>
+
     <style name="virtual_currency_data_text">
         <item name="fontPath">@string/roboto_regular</item>
         <item name="android:textSize">14sp</item>
@@ -331,12 +332,12 @@
     </style>
 
     <style name="TabLayoutStyle" parent="Widget.Design.TabLayout">
-            <item name="tabIndicatorColor">@color/blue</item>
-            <item name="tabTextAppearance">@style/TabTextAppearance</item>
-            <item name="tabSelectedTextColor">@color/text_black</item>
-            <item name="android:background">@android:color/white</item>
-            <item name="android:singleLine">true</item>
-            <item name="android:maxLines">1</item>
+        <item name="tabIndicatorColor">@color/blue</item>
+        <item name="tabTextAppearance">@style/TabTextAppearance</item>
+        <item name="tabSelectedTextColor">@color/text_black</item>
+        <item name="android:background">@android:color/white</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:maxLines">1</item>
 
     </style>
 
@@ -353,6 +354,18 @@
         <item name="android:paddingRight">10dp</item>
         <item name="android:layout_marginLeft">10dp</item>
         <item name="android:layout_marginRight">10dp</item>
+    </style>
+
+    <style name="FullscreenTheme" parent="AppTheme">
+        <item name="android:actionBarStyle">@style/FullscreenActionBarStyle</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="metaButtonBarStyle">?android:attr/buttonBarStyle</item>
+        <item name="metaButtonBarButtonStyle">?android:attr/buttonBarButtonStyle</item>
+    </style>
+
+    <style name="FullscreenActionBarStyle" parent="Widget.AppCompat.ActionBar">
+        <item name="android:background">@color/black_overlay</item>
     </style>
 
 </resources>
