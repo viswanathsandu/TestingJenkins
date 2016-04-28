@@ -73,28 +73,25 @@ public class ExamEngineGridAdapter extends BaseAdapter {
             btnCounter.setBackgroundResource(R.drawable.rounded_corners_gray);
             btnCounter.setTextColor(mActivity.getResources().getColor(R.color.dark_gray));
         } else {
-            switch (Constants.AnswerState.getEnum(mModelList.get(position).answerColorSelection)) {
-                case ANSWERED:
-                    btnCounter.setBackgroundResource(R.drawable.rounded_corners_green);
-                    btnCounter.setTextColor(mActivity.getResources().getColor(R.color.white));
-                    break;
-
-                case SKIPPED:
-                    btnCounter.setBackgroundResource(R.drawable.rounded_corners_red);
-                    btnCounter.setTextColor(mActivity.getResources().getColor(R.color.white));
-                    break;
-
-                case FLAGGED:
-                    btnCounter.setBackgroundResource(R.drawable.rounded_corners_yellow);
-                    btnCounter.setTextColor(mActivity.getResources().getColor(R.color.black));
-                    break;
-
-                case UNATTEMPTED:
-                    btnCounter.setBackgroundResource(R.drawable.rounded_corners_gray);
-                    btnCounter.setTextColor(mActivity.getResources().getColor(R.color.black));
-                    break;
+            if(mModelList.get(position).isFlagged) {
+                btnCounter.setBackgroundResource(R.drawable.rounded_corners_yellow);
+                btnCounter.setTextColor(mActivity.getResources().getColor(R.color.black));
+            } else {
+                switch (Constants.AnswerState.getEnum(mModelList.get(position).answerColorSelection)) {
+                    case ANSWERED:
+                        btnCounter.setBackgroundResource(R.drawable.rounded_corners_green);
+                        btnCounter.setTextColor(mActivity.getResources().getColor(R.color.white));
+                        break;
+                    case SKIPPED:
+                        btnCounter.setBackgroundResource(R.drawable.rounded_corners_red);
+                        btnCounter.setTextColor(mActivity.getResources().getColor(R.color.white));
+                        break;
+                    case UNATTEMPTED:
+                        btnCounter.setBackgroundResource(R.drawable.rounded_corners_gray);
+                        btnCounter.setTextColor(mActivity.getResources().getColor(R.color.black));
+                        break;
+                }
             }
-
             if (position == mActivity.selectedPosition) {
                 btnCounter.setPaintFlags(btnCounter.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
                 mActivity.previousQuestionPosition = position;
