@@ -69,7 +69,6 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     private TextView selectedSubjectTxt;
     private View selectedColorFilter;
     private ArrayList<Object> offlineContentList;
-    private boolean isNetworkConnected;
     private AlertDialog alertDialog;
 
     @Override
@@ -77,13 +76,11 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         super.onCreate(savedInstanceState);
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         RelativeLayout myView = (RelativeLayout) inflater.inflate(R.layout.activity_study_center, null);
-
         linearLayout = (LinearLayout) myView.findViewById(R.id.subjects_name_id);
         frameLayout.addView(myView);
         setUpViews(myView);
         setToolbarForStudyCenter();
         initUI();
-
         sendAnalytics(getString(R.string.screen_studycenter));
     }
 
@@ -223,7 +220,6 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         progressBar.setVisibility(View.VISIBLE);
     }
 
-
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -246,7 +242,6 @@ public class StudyCentreActivity extends AbstractBaseActivity {
     }
 
     private void getStudyCentreData(String courseId) {
-        isNetworkConnected = ApiManager.getInstance(this).isNetworkConnected();
         hideRecyclerView();
         progressBar.setVisibility(View.VISIBLE);
         ApiManager.getInstance(this).getStudyCentreData(LoginUserCache.getInstance().loginResponse.studentId,
@@ -265,7 +260,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                     public void success(List<StudyCenter> studyCenters, Response response) {
                         super.success(studyCenters, response);
                         progressBar.setVisibility(View.GONE);
-                        if (isNetworkConnected) {
+                        if (SystemUtils.isNetworkConnected(StudyCentreActivity.this)) {
                             if (studyCenters != null) {
                                 ApiCacheHolder.getInstance().setStudyCenterResponse(studyCenters);
                                 dbManager.saveReqRes(ApiCacheHolder.getInstance().studyCenter);
@@ -566,7 +561,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
             @Override
             public void onClick(View v) {
                 showList();
-                if (isNetworkConnected) {
+                if (SystemUtils.isNetworkConnected(StudyCentreActivity.this)) {
                     if (selectedSubjectTxt != null) {
                         selectedSubjectTxt.setSelected(false);
                     }

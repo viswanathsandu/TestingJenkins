@@ -97,11 +97,10 @@ public class ApiManager {
     }
 
     public boolean isApiOnline() {
-        L.info("Network Mode is " + AppConfig.NETWORK_MODE.getValue());
-        return AppConfig.NETWORK_MODE == NetworkMode.ONLINE;
+        return isNetworkConnected() && AppConfig.NETWORK_MODE == NetworkMode.ONLINE;
     }
 
-    public boolean isNetworkConnected() {
+    private boolean isNetworkConnected() {
         return SystemUtils.isNetworkConnected(context);
     }
 

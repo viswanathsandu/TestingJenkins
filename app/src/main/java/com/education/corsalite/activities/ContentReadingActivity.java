@@ -354,7 +354,6 @@ public class ContentReadingActivity extends AbstractBaseActivity {
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
-
                 case R.id.iv_forum:
                     operation = "Forum";
                     webviewContentReading.loadUrl("javascript:alert(copy())");
