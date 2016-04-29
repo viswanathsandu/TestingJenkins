@@ -91,6 +91,8 @@ import com.education.corsalite.views.GridViewInScrollView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.w3c.dom.Text;
+
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -1180,8 +1182,10 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             optionsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    localExamModelList.get(selectedPosition).selectedAnswers = getAnswerForNBlankType(listViews);
+                    String answersText = getAnswerForNBlankType(listViews);
+                    localExamModelList.get(selectedPosition).selectedAnswers = answersText;
                     testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.ANSWERED.getValue();
+                    testanswerPaper.testAnswers.get(selectedPosition).answerText = answersText;
                 }
             });
 
@@ -1240,8 +1244,10 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             case N_BLANK_SINGLE_SELECT:
             case N_BLANK_MULTI_SELECT:
                 if(testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty()) {
-                    testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.SKIPPED.getValue();
                     testanswerPaper.testAnswers.get(selectedPosition).answerText = null;
+                    testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = null;
+                    testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.SKIPPED.getValue();
+                    localExamModelList.get(selectedPosition).answerColorSelection = Constants.AnswerState.SKIPPED.getValue();
                 }
                 break;
             case SINGLE_SELECT_CHOICE:
@@ -1249,6 +1255,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 if(testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty()) {
                     testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = null;
                     testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.SKIPPED.getValue();
+                    localExamModelList.get(selectedPosition).answerColorSelection = Constants.AnswerState.SKIPPED.getValue();
                 }
                 break;
         }
@@ -1376,39 +1383,40 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
     private void setAnswerState() {
         localExamModelList.get(previousQuestionPosition).answerColorSelection = Constants.AnswerState.SKIPPED.getValue();
+        testanswerPaper.testAnswers.get(previousQuestionPosition).status = Constants.AnswerState.SKIPPED.getValue();
         switch (QuestionType.getQuestionType(localExamModelList.get(previousQuestionPosition).idQuestionType)) {
             case SINGLE_SELECT_CHOICE:
             case MULTI_SELECT_CHOICE:
                 if (selectedAnswerPosition != -1) {
                     localExamModelList.get(previousQuestionPosition).answerColorSelection = Constants.AnswerState.ANSWERED.getValue();
                     if(testanswerPaper != null && testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty()) {
-                        testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.ANSWERED.getValue();
+                        testanswerPaper.testAnswers.get(previousQuestionPosition).status = Constants.AnswerState.ANSWERED.getValue();
                     }
                 } else {
                     localExamModelList.get(previousQuestionPosition).answerColorSelection = Constants.AnswerState.SKIPPED.getValue();
                     if(testanswerPaper != null && testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty()) {
-                        testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.SKIPPED.getValue();
+                        testanswerPaper.testAnswers.get(previousQuestionPosition).status = Constants.AnswerState.SKIPPED.getValue();
                     }
                 }
                 break;
             case FILL_IN_THE_BLANK:
             case ALPHANUMERIC:
             case NUMERIC:
-                localExamModelList.get(previousQuestionPosition).answerColorSelection = Constants.AnswerState.ANSWERED.getValue();
                 if(testanswerPaper != null && testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty()) {
-                    testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.ANSWERED.getValue();
+                    testanswerPaper.testAnswers.get(previousQuestionPosition).status = Constants.AnswerState.ANSWERED.getValue();
+                    localExamModelList.get(previousQuestionPosition).answerColorSelection = Constants.AnswerState.ANSWERED.getValue();
+                }
+                break;
+            case N_BLANK_MULTI_SELECT:
+            case N_BLANK_SINGLE_SELECT:
+                if(testanswerPaper != null && testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty() && !TextUtils.isEmpty(testanswerPaper.testAnswers.get(previousQuestionPosition).answerText)) {
+                    testanswerPaper.testAnswers.get(previousQuestionPosition).status = Constants.AnswerState.ANSWERED.getValue();
+                    localExamModelList.get(previousQuestionPosition).answerColorSelection = Constants.AnswerState.ANSWERED.getValue();
                 }
                 break;
             case FRACTION:
                 break;
             case GRID:
-                break;
-            case N_BLANK_MULTI_SELECT:
-            case N_BLANK_SINGLE_SELECT:
-                if(testanswerPaper != null && testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty()) {
-                    testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.ANSWERED.getValue();
-                    localExamModelList.get(previousQuestionPosition).answerColorSelection = Constants.AnswerState.ANSWERED.getValue();
-                }
                 break;
             case PICK_A_SENTENCE:
                 break;
@@ -1418,7 +1426,6 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 break;
             default:
                 break;
-
         }
 
     }
