@@ -16,5 +16,6 @@
       android:visibility="gone"
       android:textSize="18sp"
       fontPath="@string/roboto_regular"
+      android:background="@color/white"
       android:text="No tests available for Offline"/>
 </RelativeLayout>

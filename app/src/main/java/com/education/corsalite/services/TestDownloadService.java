@@ -4,6 +4,7 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.text.TextUtils;
 
+import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
@@ -107,27 +108,33 @@ public class TestDownloadService extends IntentService {
 
     private void getTestQuestionPaper(final String testQuestionPaperId, final String testAnswerPaperId,
                                       final MockTest mockTest, final TestPaperIndex testPAperIndecies, final ScheduledTestList.ScheduledTestsArray scheduledTestsArray) {
-        ApiManager.getInstance(this).getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId,
-                new ApiCallback<List<ExamModel>>(this) {
-                    @Override
-                    public void success(List<ExamModel> examModels, Response response) {
-                        super.success(examModels, response);
-                        OfflineTestModel model = new OfflineTestModel();
-                        model.examModels = examModels;
-                        if (mockTest != null) {
-                            model.testType = Tests.MOCK;
-                            model.mockTest = mockTest;
-                        } else {
-                            model.testType = Tests.SCHEDULED;
-                            model.scheduledTest = scheduledTestsArray;
+        try {
+            ApiManager.getInstance(this).getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId,
+                    new ApiCallback<List<ExamModel>>(this) {
+                        @Override
+                        public void success(List<ExamModel> examModels, Response response) {
+                            super.success(examModels, response);
+                            OfflineTestModel model = new OfflineTestModel();
+                            model.examModels = examModels;
+                            if (mockTest != null) {
+                                model.testType = Tests.MOCK;
+                                model.mockTest = mockTest;
+                            } else {
+                                model.testType = Tests.SCHEDULED;
+                                model.scheduledTest = scheduledTestsArray;
+                            }
+                            model.baseTest = new BaseTest();
+                            model.baseTest.courseId = AbstractBaseActivity.selectedCourse.courseId + "";
+                            model.testPaperIndecies = testPAperIndecies;
+                            model.testQuestionPaperId = testQuestionPaperId;
+                            model.testAnswerPaperId = testAnswerPaperId;
+                            model.dateTime = System.currentTimeMillis();
+                            DbManager.getInstance(getApplicationContext()).saveOfflineTest(model);
                         }
-                        model.testPaperIndecies = testPAperIndecies;
-                        model.testQuestionPaperId = testQuestionPaperId;
-                        model.testAnswerPaperId = testAnswerPaperId;
-                        model.dateTime = System.currentTimeMillis();
-                        DbManager.getInstance(getApplicationContext()).saveOfflineTest(model);
-                    }
-                });
+                    });
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
     }
 
     private void loadTakeTest(Chapter chapter, String subjectName, String questionsCount, String subjectId){
