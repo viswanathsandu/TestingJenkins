@@ -1258,6 +1258,16 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     localExamModelList.get(selectedPosition).answerColorSelection = Constants.AnswerState.SKIPPED.getValue();
                 }
                 break;
+            case FILL_IN_THE_BLANK:
+            case NUMERIC:
+            case ALPHANUMERIC:
+                if(testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty()) {
+                    testanswerPaper.testAnswers.get(selectedPosition).answerText = null;
+                    testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = null;
+                    testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.SKIPPED.getValue();
+                    localExamModelList.get(selectedPosition).answerColorSelection = Constants.AnswerState.SKIPPED.getValue();
+                }
+                break;
         }
         loadQuestion(selectedPosition);
         resetExplanation();
@@ -1402,14 +1412,14 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             case FILL_IN_THE_BLANK:
             case ALPHANUMERIC:
             case NUMERIC:
-                if(testanswerPaper != null && testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty()) {
+                if(testanswerPaper != null && testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty() && !TextUtils.isEmpty(testanswerPaper.testAnswers.get(previousQuestionPosition).answerKeyId)) {
                     testanswerPaper.testAnswers.get(previousQuestionPosition).status = Constants.AnswerState.ANSWERED.getValue();
                     localExamModelList.get(previousQuestionPosition).answerColorSelection = Constants.AnswerState.ANSWERED.getValue();
                 }
                 break;
             case N_BLANK_MULTI_SELECT:
             case N_BLANK_SINGLE_SELECT:
-                if(testanswerPaper != null && testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty() && !TextUtils.isEmpty(testanswerPaper.testAnswers.get(previousQuestionPosition).answerText)) {
+                if(testanswerPaper != null && testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty() && !TextUtils.isEmpty(testanswerPaper.testAnswers.get(previousQuestionPosition).answerKeyId)) {
                     testanswerPaper.testAnswers.get(previousQuestionPosition).status = Constants.AnswerState.ANSWERED.getValue();
                     localExamModelList.get(previousQuestionPosition).answerColorSelection = Constants.AnswerState.ANSWERED.getValue();
                 }
