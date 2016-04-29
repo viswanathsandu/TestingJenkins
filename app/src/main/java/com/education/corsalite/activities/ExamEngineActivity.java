@@ -808,6 +808,21 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         finish();
     }
 
+    private void navigateToExamResultActivity(int totalQuestions, int correct, int wrong) {
+        AbstractBaseActivity.setSharedExamModels(localExamModelList);
+
+        Intent intent = new Intent(this, ExamResultActivity.class);
+        intent.putExtra("exam", "Chapter");
+        intent.putExtra("type", "Custom");
+        intent.putExtra("recommended_time", TimeUtils.getSecondsInTimeFormat(examDurationInSeconds));
+        intent.putExtra("time_taken", TimeUtils.getSecondsInTimeFormat(examDurationTakenInSeconds));
+        intent.putExtra("total_questions", totalQuestions);
+        intent.putExtra("correct", correct);
+        intent.putExtra("wrong", wrong);
+        startActivity(intent);
+        finish();
+    }
+
     private void openAdvancedExamResultSummary(String answerPaperId) {
         Intent intent = new Intent(this, WebviewActivity.class);
         L.info("URL : " + WebUrls.getExamResultsSummaryUrl() + answerPaperId);
@@ -824,23 +839,26 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         getEventbus().post(event);
     }
 
-    private void navigateToExamResultActivity(int totalQuestions, int correct, int wrong) {
-        AbstractBaseActivity.setSharedExamModels(localExamModelList);
+    private class MyWebViewClient extends WebViewClient {
 
-        Intent intent = new Intent(this, ExamResultActivity.class);
-        intent.putExtra("exam", "Chapter");
-        intent.putExtra("type", "Custom");
-        intent.putExtra("recommended_time", TimeUtils.getSecondsInTimeFormat(examDurationInSeconds));
-        intent.putExtra("time_taken", TimeUtils.getSecondsInTimeFormat(examDurationTakenInSeconds));
-        intent.putExtra("total_questions", totalQuestions);
-        intent.putExtra("correct", correct);
-        intent.putExtra("wrong", wrong);
-        startActivity(intent);
-        finish();
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            if (Uri.parse(url).getHost().equals("staging.corsalite.com")) {
+                return false;
+            }
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            startActivity(intent);
+            return true;
+        }
     }
 
     private void loadQuestion(int position) {
         isFlagged = false;
+        if(testanswerPaper != null && testanswerPaper.testAnswers != null && testanswerPaper.testAnswers.size() > position) {
+            if(!TextUtils.isEmpty(testanswerPaper.testAnswers.get(position).status) && testanswerPaper.testAnswers.get(position).status.equalsIgnoreCase(Constants.AnswerState.UNATTEMPTED.getValue())) {
+                testanswerPaper.testAnswers.get(position).status = Constants.AnswerState.SKIPPED.getValue();
+            }
+        }
         updateFlaggedQuestion(localExamModelList.get(position).isFlagged);
         tvSerialNo.setText("Q" + (position + 1) + ")");
         if (!TextUtils.isEmpty(localExamModelList.get(position).displayName) && !title.equalsIgnoreCase("Flagged Questions")) {
@@ -907,156 +925,68 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         }
     }
 
-    private class MyWebViewClient extends WebViewClient {
-
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            if (Uri.parse(url).getHost().equals("staging.corsalite.com")) {
-                return false;
-            }
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            startActivity(intent);
-            return true;
-        }
-    }
-
-    private void loadNBlankAnswer(QuestionType type, int position) {
+    private void loadSingleSelectChoiceAnswers(int position) {
         resetExplanation();
         answerLayout.removeAllViews();
+        answerLayout.setOrientation(LinearLayout.VERTICAL);
         List<AnswerChoiceModel> answerChoiceModels = localExamModelList.get(position).answerChoice;
-        if (answerChoiceModels == null || answerChoiceModels.isEmpty()) {
-            return;
+        final int size = answerChoiceModels.size();
+        final RadioButton[] optionRadioButtons = new RadioButton[size];
+        String preselectedAnswers = null;
+        if (!title.equalsIgnoreCase("Exercises") && !TextUtils.isEmpty(localExamModelList.get(selectedPosition).selectedAnswers)) {
+            preselectedAnswers = localExamModelList.get(selectedPosition).selectedAnswers;
         }
-        AnswerChoiceModel answerModel = answerChoiceModels.get(0);
-        String[] lists = answerModel.answerChoiceTextHtml.split(":");
-        final ListView[] listViews = new ListView[lists.length];
-        answerLayout.setOrientation(LinearLayout.HORIZONTAL);
-        for (int i = 0; i < lists.length; i++) {
-            String list = lists[i];
-            String[] data = list.split("~");
-            String header = data[0];
-            String[] items = data[1].split(",");
+        for (int i = 0; i < size; i++) {
+            final AnswerChoiceModel answerChoiceModel = answerChoiceModels.get(i);
             LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            LinearLayout container = (LinearLayout) inflater.inflate(R.layout.exam_engine_n_blank_answer, null);
-            TextView headerTxt = (TextView) container.findViewById(R.id.header_txt);
-            headerTxt.setText(header);
-            ListView optionsListView = (ListView) container.findViewById(R.id.options_listview);
-            optionsListView.setTag(header);
-            listViews[i] = optionsListView;
-            optionsListView.setChoiceMode(type == QuestionType.N_BLANK_SINGLE_SELECT
-                    ? AbsListView.CHOICE_MODE_SINGLE
-                    : AbsListView.CHOICE_MODE_MULTIPLE);
-            optionsListView.setAdapter(new ArrayAdapter<String>(this,
-                    android.R.layout.simple_list_item_multiple_choice, android.R.id.text1, items));
-            optionsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    localExamModelList.get(selectedPosition).selectedAnswers = getAnswerForNBlankType(listViews);
-                }
-            });
-
-            answerLayout.addView(container);
-        }
-        loadAnswersInToNBlankType(listViews, localExamModelList.get(selectedPosition).selectedAnswers);
-        setExplanationLayout();
-    }
-
-    private void clearNBlankAnswers(ListView[] listviews) {
-        for (ListView listview : listviews) {
-            for (int i = 0; i < listview.getAdapter().getCount(); i++) {
-                listview.setItemChecked(i, false);
+            LinearLayout container = (LinearLayout) inflater.inflate(R.layout.exam_engine_radio_btn, null);
+            TextView optionNumberTxt = (TextView) container.findViewById(R.id.option_number_txt);
+            optionNumberTxt.setText((i + 1) + "");
+            final RadioButton optionRBtn = (RadioButton) container.findViewById(R.id.option_radio_button);
+            optionRBtn.setId(Integer.valueOf(answerChoiceModel.idAnswerKey));
+            optionRBtn.setTag(answerChoiceModel);
+            if (!TextUtils.isEmpty(preselectedAnswers) && i == Integer.valueOf(preselectedAnswers)) {
+                optionRBtn.setChecked(true);
+                selectedAnswerPosition = Integer.valueOf(preselectedAnswers) + 1;
             }
-        }
-        localExamModelList.get(selectedPosition).selectedAnswers = "";
-    }
+            if (title.equalsIgnoreCase("Flagged Questions") || title.equalsIgnoreCase("View Answers")) {
+                if (!optionRBtn.isChecked()) {
+                    optionRBtn.setEnabled(false);
+                }
+                optionRBtn.setClickable(false);
+            }
+            optionRadioButtons[i] = optionRBtn;
+            WebView webview = (WebView) container.findViewById(R.id.webview);
+            webview.setScrollbarFadingEnabled(true);
+            webview.getSettings().setLoadsImagesAutomatically(true);
+            webview.getSettings().setJavaScriptEnabled(true);
+            webview.setWebChromeClient(new WebChromeClient());
+            webview.setWebViewClient(new MyWebViewClient());
+            webview.loadData(answerChoiceModel.answerChoiceTextHtml, "text/html; charset=UTF-8", null);
+            answerLayout.addView(container);
 
-    private void loadAnswersInToNBlankType(ListView[] listviews, String answer) {
-        if (listviews == null || TextUtils.isEmpty(answer)) {
-            return;
-        }
-        String[] lists = answer.split(":");
-        for (int i = 0; i < lists.length; i++) {
-            String[] data = lists[i].split("~");
-            String header = data[0];
-            List<String> items = Arrays.asList(data[1].split(","));
-            for (ListView listView : listviews) {
-                if (listView.getTag().equals(header)) {
-                    for (int j = 0; j < listView.getAdapter().getCount(); j++) {
-                        for (String item : items) {
-                            if (item.equals(listView.getAdapter().getItem(j))) {
-                                listView.setItemChecked(j, true);
+            try {
+                optionRBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        for (int j = 0; j < size; j++) {
+                            optionRadioButtons[j].setChecked(false);
+                            if (optionRadioButtons[j].getId() == Integer.valueOf(answerChoiceModel.idAnswerKey)) {
+                                selectedAnswerPosition = j + 1;
+                                localExamModelList.get(selectedPosition).selectedAnswers = String.valueOf(j);
+                                if(testanswerPaper != null && testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty()) {
+                                    testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = answerChoiceModel.idAnswerKey;
+                                    testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.ANSWERED.getValue();
+                                }
                             }
                         }
+                        ((RadioButton) v).setChecked(true);
+                        btnVerify.setEnabled(true);
                     }
-                }
+                });
+            } catch (Exception e) {
+                L.error(e.getMessage(), e);
             }
-        }
-    }
-
-    private String getAnswerForNBlankType(ListView[] listviews) {
-        String answer = "";
-        for (int i = 0; i < listviews.length; i++) {
-            String blankAnswer = "";
-            SparseBooleanArray checkedItems = listviews[i].getCheckedItemPositions();
-            for (int j = 0; j < checkedItems.size(); j++) {
-                int key = checkedItems.keyAt(j);
-                if (checkedItems.get(key)) {
-                    blankAnswer += blankAnswer.isEmpty() ? "" : ",";
-                    blankAnswer += listviews[i].getItemAtPosition(key);
-                }
-            }
-            if (!blankAnswer.isEmpty()) {
-                answer += answer.isEmpty() ? "" : ":";
-                answer += listviews[i].getTag() + "~" + blankAnswer;
-            }
-        }
-        return answer;
-    }
-
-    private void loadEditTextAnswer(QuestionType type, int position) {
-        resetExplanation();
-        answerLayout.removeAllViews();
-        List<AnswerChoiceModel> answerChoiceModels = localExamModelList.get(position).answerChoice;
-        String previousAnswer = "";
-        if (!title.equalsIgnoreCase("Exercises") && !TextUtils.isEmpty(localExamModelList.get(selectedPosition).selectedAnswers)) {
-            previousAnswer = localExamModelList.get(selectedPosition).selectedAnswers;
-        }
-        if (!answerChoiceModels.isEmpty()) {
-            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            LinearLayout container = (LinearLayout) inflater.inflate(R.layout.exam_engine_alphanumeric, null);
-            EditText answerTxt = (EditText) container.findViewById(R.id.answer_txt);
-            answerTxt.setText(previousAnswer);
-            switch (type) {
-                case ALPHANUMERIC:
-                case FILL_IN_THE_BLANK:
-                    answerTxt.setInputType(InputType.TYPE_CLASS_TEXT);
-                    break;
-                case NUMERIC:
-                    answerTxt.setInputType(InputType.TYPE_CLASS_NUMBER);
-                    answerTxt.setHint("Numeric");
-                    break;
-            }
-            answerTxt.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    localExamModelList.get(selectedPosition).selectedAnswers = s.toString();
-                    if(testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty()) {
-                        testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.ANSWERED.getValue();
-                        testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = localExamModelList.get(selectedPosition).answerChoice.get(0).idAnswerKey;
-                        testanswerPaper.testAnswers.get(selectedPosition).answerText = s.toString();
-                    }
-                    btnVerify.setEnabled(!s.toString().trim().isEmpty());
-                }
-            });
-            answerLayout.addView(container);
         }
         setExplanationLayout();
     }
@@ -1064,11 +994,10 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private void loadMultiSelectChoiceAnswers(int position) {
         resetExplanation();
         answerLayout.removeAllViews();
-
+        answerLayout.setOrientation(LinearLayout.VERTICAL);
         List<AnswerChoiceModel> answerChoiceModels = localExamModelList.get(position).answerChoice;
         final int size = answerChoiceModels.size();
         final CheckBox[] checkBoxes = new CheckBox[size];
-        final TextView[] tvSerial = new TextView[size];
 
         String[] preselectedAnswers = null;
         if (!title.equalsIgnoreCase("Exercises") &&
@@ -1171,92 +1100,159 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         setExplanationLayout();
     }
 
-    private void loadSingleSelectChoiceAnswers(int position) {
+    private void loadEditTextAnswer(QuestionType type, int position) {
         resetExplanation();
         answerLayout.removeAllViews();
+        answerLayout.setOrientation(LinearLayout.VERTICAL);
         List<AnswerChoiceModel> answerChoiceModels = localExamModelList.get(position).answerChoice;
-        final int size = answerChoiceModels.size();
-        final RadioButton[] optionRadioButtons = new RadioButton[size];
-        String preselectedAnswers = null;
+        String previousAnswer = "";
         if (!title.equalsIgnoreCase("Exercises") && !TextUtils.isEmpty(localExamModelList.get(selectedPosition).selectedAnswers)) {
-            preselectedAnswers = localExamModelList.get(selectedPosition).selectedAnswers;
+            previousAnswer = localExamModelList.get(selectedPosition).selectedAnswers;
         }
-        for (int i = 0; i < size; i++) {
-            final AnswerChoiceModel answerChoiceModel = answerChoiceModels.get(i);
+        if (!answerChoiceModels.isEmpty()) {
             LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            LinearLayout container = (LinearLayout) inflater.inflate(R.layout.exam_engine_radio_btn, null);
-            TextView optionNumberTxt = (TextView) container.findViewById(R.id.option_number_txt);
-            optionNumberTxt.setText((i + 1) + "");
-            final RadioButton optionRBtn = (RadioButton) container.findViewById(R.id.option_radio_button);
-            optionRBtn.setId(Integer.valueOf(answerChoiceModel.idAnswerKey));
-            optionRBtn.setTag(answerChoiceModel);
-            if (!TextUtils.isEmpty(preselectedAnswers) && i == Integer.valueOf(preselectedAnswers)) {
-                optionRBtn.setChecked(true);
-                selectedAnswerPosition = Integer.valueOf(preselectedAnswers) + 1;
+            LinearLayout container = (LinearLayout) inflater.inflate(R.layout.exam_engine_alphanumeric, null);
+            EditText answerTxt = (EditText) container.findViewById(R.id.answer_txt);
+            answerTxt.setText(previousAnswer);
+            switch (type) {
+                case ALPHANUMERIC:
+                case FILL_IN_THE_BLANK:
+                    answerTxt.setInputType(InputType.TYPE_CLASS_TEXT);
+                    break;
+                case NUMERIC:
+                    answerTxt.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    answerTxt.setHint("Numeric");
+                    break;
             }
-            if (title.equalsIgnoreCase("Flagged Questions") || title.equalsIgnoreCase("View Answers")) {
-                if (!optionRBtn.isChecked()) {
-                    optionRBtn.setEnabled(false);
+            answerTxt.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 }
-                optionRBtn.setClickable(false);
-            }
-            optionRadioButtons[i] = optionRBtn;
-            WebView webview = (WebView) container.findViewById(R.id.webview);
-            webview.setScrollbarFadingEnabled(true);
-            webview.getSettings().setLoadsImagesAutomatically(true);
-            webview.getSettings().setJavaScriptEnabled(true);
-            webview.setWebChromeClient(new WebChromeClient());
-            webview.setWebViewClient(new MyWebViewClient());
-            webview.loadData(answerChoiceModel.answerChoiceTextHtml, "text/html; charset=UTF-8", null);
-            answerLayout.addView(container);
 
-            try {
-                optionRBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        for (int j = 0; j < size; j++) {
-                            optionRadioButtons[j].setChecked(false);
-                            if (optionRadioButtons[j].getId() == Integer.valueOf(answerChoiceModel.idAnswerKey)) {
-                                selectedAnswerPosition = j + 1;
-                                localExamModelList.get(selectedPosition).selectedAnswers = String.valueOf(j);
-                                if(testanswerPaper != null && testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty()) {
-                                    testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = answerChoiceModel.idAnswerKey;
-                                    testanswerPaper.testAnswers.get(selectedPosition).status = "Answered";
-                                }
-                            }
-                        }
-                        ((RadioButton) v).setChecked(true);
-                        btnVerify.setEnabled(true);
+                @Override
+                public void afterTextChanged(Editable s) {
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    localExamModelList.get(selectedPosition).selectedAnswers = s.toString();
+                    if(testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty()) {
+                        testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.ANSWERED.getValue();
+                        testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = localExamModelList.get(selectedPosition).answerChoice.get(0).idAnswerKey;
+                        testanswerPaper.testAnswers.get(selectedPosition).answerText = s.toString();
                     }
-                });
-            } catch (Exception e) {
-                L.error(e.getMessage(), e);
-            }
+                    btnVerify.setEnabled(!s.toString().trim().isEmpty());
+                }
+            });
+            answerLayout.addView(container);
         }
         setExplanationLayout();
     }
 
-    private void clearAnswers() {
-        List<AnswerChoiceModel> answerChoiceModels = localExamModelList.get(selectedPosition).answerChoice;
-        int size = answerChoiceModels.size();
-        boolean isCompound;
-        if (localExamModelList.get(selectedPosition).idQuestionType.equalsIgnoreCase("1") ||
-                localExamModelList.get(selectedPosition).idQuestionType.equalsIgnoreCase("2")) {
-            isCompound = true;
-        } else {
-            isCompound = false;
-        }
-        if (!isCompound) {
+    private void loadNBlankAnswer(QuestionType type, int position) {
+        resetExplanation();
+        answerLayout.removeAllViews();
+        List<AnswerChoiceModel> answerChoiceModels = localExamModelList.get(position).answerChoice;
+        if (answerChoiceModels == null || answerChoiceModels.isEmpty()) {
             return;
         }
-        for (int i = 0; i < size; i++) {
-            ((CompoundButton) findViewById(Integer.valueOf(answerChoiceModels.get(i).idAnswerKey))).setChecked(false);
+        AnswerChoiceModel answerModel = answerChoiceModels.get(0);
+        String[] lists = answerModel.answerChoiceTextHtml.split(":");
+        final ListView[] listViews = new ListView[lists.length];
+        answerLayout.setOrientation(LinearLayout.HORIZONTAL);
+        for (int i = 0; i < lists.length; i++) {
+            String list = lists[i];
+            String[] data = list.split("~");
+            String header = data[0];
+            String[] items = data[1].split(",");
+            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LinearLayout container = (LinearLayout) inflater.inflate(R.layout.exam_engine_n_blank_answer, null);
+            TextView headerTxt = (TextView) container.findViewById(R.id.header_txt);
+            headerTxt.setText(header);
+            ListView optionsListView = (ListView) container.findViewById(R.id.options_listview);
+            optionsListView.setTag(header);
+            listViews[i] = optionsListView;
+            optionsListView.setChoiceMode(type == QuestionType.N_BLANK_SINGLE_SELECT
+                    ? AbsListView.CHOICE_MODE_SINGLE
+                    : AbsListView.CHOICE_MODE_MULTIPLE);
+            optionsListView.setAdapter(new ArrayAdapter<String>(this,
+                    android.R.layout.simple_list_item_multiple_choice, android.R.id.text1, items));
+            optionsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    localExamModelList.get(selectedPosition).selectedAnswers = getAnswerForNBlankType(listViews);
+                    testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.ANSWERED.getValue();
+                }
+            });
+
+            answerLayout.addView(container);
         }
-        localExamModelList.get(selectedPosition).selectedAnswers = null;
-        if(testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty()) {
-            testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = null;
-            testanswerPaper.testAnswers.get(selectedPosition).status = "Skipped";
+        loadAnswersInToNBlankType(listViews, localExamModelList.get(selectedPosition).selectedAnswers);
+        setExplanationLayout();
+    }
+
+    private void loadAnswersInToNBlankType(ListView[] listviews, String answer) {
+        if (listviews == null || TextUtils.isEmpty(answer)) {
+            return;
         }
+        String[] lists = answer.split(":");
+        for (int i = 0; i < lists.length; i++) {
+            String[] data = lists[i].split("~");
+            String header = data[0];
+            List<String> items = Arrays.asList(data[1].split(","));
+            for (ListView listView : listviews) {
+                if (listView.getTag().equals(header)) {
+                    for (int j = 0; j < listView.getAdapter().getCount(); j++) {
+                        for (String item : items) {
+                            if (item.equals(listView.getAdapter().getItem(j))) {
+                                listView.setItemChecked(j, true);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private String getAnswerForNBlankType(ListView[] listviews) {
+        String answer = "";
+        for (int i = 0; i < listviews.length; i++) {
+            String blankAnswer = "";
+            SparseBooleanArray checkedItems = listviews[i].getCheckedItemPositions();
+            for (int j = 0; j < checkedItems.size(); j++) {
+                int key = checkedItems.keyAt(j);
+                if (checkedItems.get(key)) {
+                    blankAnswer += blankAnswer.isEmpty() ? "" : ",";
+                    blankAnswer += listviews[i].getItemAtPosition(key);
+                }
+            }
+            if (!blankAnswer.isEmpty()) {
+                answer += answer.isEmpty() ? "" : ":";
+                answer += listviews[i].getTag() + "~" + blankAnswer;
+            }
+        }
+        return answer;
+    }
+
+    private void clearAnswers() {
+        localExamModelList.get(selectedPosition).selectedAnswers = "";
+        switch (QuestionType.getQuestionType(localExamModelList.get(selectedPosition).idQuestionType)) {
+            case N_BLANK_SINGLE_SELECT:
+            case N_BLANK_MULTI_SELECT:
+                if(testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty()) {
+                    testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.SKIPPED.getValue();
+                    testanswerPaper.testAnswers.get(selectedPosition).answerText = null;
+                }
+                break;
+            case SINGLE_SELECT_CHOICE:
+            case MULTI_SELECT_CHOICE:
+                if(testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty()) {
+                    testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = null;
+                    testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.SKIPPED.getValue();
+                }
+                break;
+        }
+        loadQuestion(selectedPosition);
         resetExplanation();
     }
 
@@ -1379,17 +1375,52 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void setAnswerState() {
-        if (selectedAnswerPosition != -1) {
-            localExamModelList.get(previousQuestionPosition).answerColorSelection = Constants.AnswerState.ANSWERED.getValue();
-            if(testanswerPaper != null && testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty()) {
-                testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.ANSWERED.getValue();
-            }
-        } else {
-            localExamModelList.get(previousQuestionPosition).answerColorSelection = Constants.AnswerState.SKIPPED.getValue();
-            if(testanswerPaper != null && testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty()) {
-                testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.SKIPPED.getValue();
-            }
+        localExamModelList.get(previousQuestionPosition).answerColorSelection = Constants.AnswerState.SKIPPED.getValue();
+        switch (QuestionType.getQuestionType(localExamModelList.get(previousQuestionPosition).idQuestionType)) {
+            case SINGLE_SELECT_CHOICE:
+            case MULTI_SELECT_CHOICE:
+                if (selectedAnswerPosition != -1) {
+                    localExamModelList.get(previousQuestionPosition).answerColorSelection = Constants.AnswerState.ANSWERED.getValue();
+                    if(testanswerPaper != null && testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty()) {
+                        testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.ANSWERED.getValue();
+                    }
+                } else {
+                    localExamModelList.get(previousQuestionPosition).answerColorSelection = Constants.AnswerState.SKIPPED.getValue();
+                    if(testanswerPaper != null && testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty()) {
+                        testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.SKIPPED.getValue();
+                    }
+                }
+                break;
+            case FILL_IN_THE_BLANK:
+            case ALPHANUMERIC:
+            case NUMERIC:
+                localExamModelList.get(previousQuestionPosition).answerColorSelection = Constants.AnswerState.ANSWERED.getValue();
+                if(testanswerPaper != null && testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty()) {
+                    testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.ANSWERED.getValue();
+                }
+                break;
+            case FRACTION:
+                break;
+            case GRID:
+                break;
+            case N_BLANK_MULTI_SELECT:
+            case N_BLANK_SINGLE_SELECT:
+                if(testanswerPaper != null && testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty()) {
+                    testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.ANSWERED.getValue();
+                    localExamModelList.get(previousQuestionPosition).answerColorSelection = Constants.AnswerState.ANSWERED.getValue();
+                }
+                break;
+            case PICK_A_SENTENCE:
+                break;
+            case WORD_PROPERTIES:
+                break;
+            case INVALID:
+                break;
+            default:
+                break;
+
         }
+
     }
 
     public class CounterClass extends CountDownTimer {
