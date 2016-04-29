@@ -1,5 +1,10 @@
 package com.education.corsalite.utils;
 
+import android.app.Activity;
+import android.content.Intent;
+
+import com.education.corsalite.activities.CrashHandlerActivity;
+import com.education.corsalite.models.responsemodels.StudyCenter;
 import com.education.corsalite.services.ApiClientService;
 
 /**
@@ -14,6 +19,9 @@ public class WebUrls {
     private final static String SMART_CLASS_URL = "smartclass/index";
     private final static String EXAM_RESULTS_SUMMARY_URL = "examination/examResultSummary/";
     private final static String COMPUTER_ADAPTIVE_TEST_URL = "examination/loadExam/0/0/%s";
+    private final static String HANDLER_URL_PATTERN = "handler";
+    private final static String STUDY_CENTER_URL_PATTERN = "student";
+
 
     public static String getForgotPasswordUrl() {
         return ApiClientService.getBaseUrl()+FORGOT_PASSWORD_URL;
@@ -41,5 +49,34 @@ public class WebUrls {
 
     public static String getComputerAdaptiveTestUrl(String examTemplateId) {
         return ApiClientService.getBaseUrl()+String.format(COMPUTER_ADAPTIVE_TEST_URL, examTemplateId);
+    }
+
+    public static boolean isHandler(String url) {
+        try {
+            return url.contains(ApiClientService.getBaseUrl() + HANDLER_URL_PATTERN);
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public static boolean isStudyCenter(String url) {
+        try {
+            return url.contains(ApiClientService.getBaseUrl() + STUDY_CENTER_URL_PATTERN);
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public static Intent getIntent(Activity activity, String url) {
+        try {
+            if (isHandler(url)) {
+                return new Intent(activity, CrashHandlerActivity.class);
+            } else if(isStudyCenter(url)) {
+                return new Intent(activity, StudyCenter.class);
+            }
+            return null;
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

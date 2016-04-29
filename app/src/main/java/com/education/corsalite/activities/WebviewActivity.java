@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 import com.education.corsalite.R;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.L;
+import com.education.corsalite.utils.WebUrls;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -104,14 +105,18 @@ public class WebviewActivity extends AbstractBaseActivity {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            if (url.contains(ApiClientService.getBaseUrl())) {
+            Intent intent = WebUrls.getIntent(WebviewActivity.this, url);
+            if(intent != null) {
+                startActivity(intent);
+                finish();
+                return true;
+            } else if(url.contains(ApiClientService.getBaseUrl()) && !WebUrls.isHandler(url)) {
                 if(!url.contains("?") || !url.contains("Header=0&Footer=0")) {
                     view.loadUrl(getUrlWithNoHeadersAndFooters(url));
                 }
                 return false;
             }
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            startActivity(intent);
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
             return true;
         }
 
