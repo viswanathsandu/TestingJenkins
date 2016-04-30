@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@color/white"
-    android:paddingStart="16dp"
-    android:paddingEnd="16dp">
+    android:orientation="vertical"
+    android:paddingEnd="16dp"
+    android:paddingStart="16dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,88 +15,76 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="?android:attr/listPreferredItemHeight"
             android:gravity="center_vertical"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp">
-
-            <Spinner
-                android:id="@+id/spinner_chapter_level"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="start|center_vertical">
-            </Spinner>
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/gray"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:minHeight="?android:attr/listPreferredItemHeight"
-            android:gravity="center_vertical"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp">
+            android:paddingEnd="8dp"
+            android:paddingStart="8dp">
 
             <TextView
-                android:text="No. of Questions"
-                android:textColor="@color/black"
+                style="?android:attr/spinnerItemStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.8"
-                style="?android:attr/spinnerItemStyle"/>
+                android:text="No. of Questions"
+                android:textColor="@color/black" />
 
             <EditText
                 android:id="@+id/edit_txt_chapter_test_setup_questions"
-                android:maxEms="2"
-                android:hint="00"
-                android:textColorHint="@color/text_gray"
-                android:textColor="@color/black"
+                style="?android:attr/spinnerItemStyle"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
+                android:hint="00"
                 android:inputType="numberDecimal"
-                style="?android:attr/spinnerItemStyle"/>
+                android:maxEms="2"
+                android:textColor="@color/black"
+                android:textColorHint="@color/text_gray" />
 
         </LinearLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/gray"/>
+            android:background="@color/gray" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="?android:attr/listPreferredItemHeight"
             android:gravity="center_vertical"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp">
+            android:minHeight="?android:attr/listPreferredItemHeight"
+            android:paddingEnd="8dp"
+            android:paddingStart="8dp">
 
             <TextView
-                android:text="Use Adaptive Learning"
-                android:textColor="@color/black"
+                style="?android:attr/spinnerItemStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                style="?android:attr/spinnerItemStyle"/>
+                android:text="Use Adaptive Learning"
+                android:textColor="@color/black" />
 
             <CheckBox
                 android:id="@+id/checkbox_adaptive_learning"
-                android:textColor="@color/black"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:textColor="@color/black" />
 
         </LinearLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/gray"/>
+            android:background="@color/gray" />
 
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/levels_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" />
+        </HorizontalScrollView>
     </LinearLayout>
 
 

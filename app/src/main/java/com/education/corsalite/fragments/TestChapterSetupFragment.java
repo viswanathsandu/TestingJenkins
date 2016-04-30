@@ -9,11 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.education.corsalite.R;
@@ -24,6 +24,7 @@ import com.education.corsalite.models.responsemodels.Chapter;
 import com.education.corsalite.models.responsemodels.TestCoverage;
 import com.education.corsalite.services.TestDownloadService;
 import com.education.corsalite.utils.Constants;
+import com.education.corsalite.utils.L;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -47,8 +48,8 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
     CheckBox mAdaptiveLearningCheckbox;
     @Bind(R.id.edit_txt_chapter_test_setup_questions)
     EditText mNoOfQuestionsEditTxt;
-    @Bind(R.id.spinner_chapter_level)
-    Spinner mChapterLevelSpinner;
+    @Bind(R.id.levels_layout)
+    LinearLayout levelsLayout;
 
     private Bundle mExtras;
     private boolean mIsAdaptiveLearningEnabled;
@@ -56,6 +57,7 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
     private List<TestCoverage> testCoverages;
     private Chapter chapter;
     private String subjectId;
+    private int levelCrossed;
 
     public static TestChapterSetupFragment newInstance(Bundle bundle) {
         TestChapterSetupFragment fragment = new TestChapterSetupFragment();
@@ -75,6 +77,7 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
         mChapterLevels = mExtras.getStringArrayList(EXTRAS_CHAPTER_LEVELS);
         subjectId = mExtras.getString(Constants.SELECTED_SUBJECTID, "");
         String chapterStr = mExtras.getString("chapter");
+        levelCrossed = mExtras.getInt(Constants.LEVEL_CROSSED, 0);
         if (chapterStr != null) {
             chapter = new Gson().fromJson(chapterStr, Chapter.class);
         }
@@ -97,22 +100,43 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 mIsAdaptiveLearningEnabled = isChecked;
-                Toast.makeText(getActivity(), "Adaptive : " + mIsAdaptiveLearningEnabled, Toast.LENGTH_SHORT).show();
             }
         });
         return rootView;
     }
 
     private void loadLevels() {
-        List<String> formattedChapterLevels = new ArrayList<>();
-        for (String level : mChapterLevels) {
-            formattedChapterLevels.add("Level " + level);
-        }
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, formattedChapterLevels);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mChapterLevelSpinner.setAdapter(adapter);
-        mChapterLevelSpinner.setOnItemSelectedListener(this);
+        try {
+            for (String level : mChapterLevels) {
+                View view = getActivity().getLayoutInflater().inflate(R.layout.level_checkbox, null);
+                TextView txt = (TextView) view.findViewById(R.id.level_txt);
+                txt.setText("Level " + level);
+                CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkbox);
+                checkBox.setTag("Level " + level);
+                if (level.equals(levelCrossed + "")) {
+                    checkBox.setChecked(true);
+                    if (testCoverages != null) {
+                        for (TestCoverage coverage : testCoverages) {
+                            if (coverage.level.equalsIgnoreCase(level + "")) {
+                                mNoOfQuestionsEditTxt.setText(coverage.questionCount);
+                                break;
+                            }
+                        }
+                    }
+                } else if (Integer.valueOf(level) > levelCrossed) {
+                    checkBox.setEnabled(false);
+                }
+                checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
+                    }
+                });
+                levelsLayout.addView(view);
+            }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
     }
 
     @OnClick({R.id.btn_cancel, R.id.btn_download, R.id.btn_next})

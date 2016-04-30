@@ -217,6 +217,7 @@ public class TestChapterFragment extends BaseFragment {
 
     private void setupTest() {
         mExtras.putStringArrayList(TestChapterSetupFragment.EXTRAS_CHAPTER_LEVELS, mChapterLevels);
+        mExtras.putInt(Constants.LEVEL_CROSSED, levelCrossed);
         if(testCoverages != null) {
             mExtras.putString(Constants.TEST_COVERAGE_LIST_GSON, new Gson().toJson(testCoverages));
         }
