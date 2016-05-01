@@ -130,9 +130,11 @@ public class FriendsListFragment extends BaseFragment implements SearchView.OnQu
 
     private void showFriendsList() {
         updateFriendsListStatus();
-        mAdapter = new FriendsAdapter(getActivity(), friendsData, mFriendsListCallback);
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), R.drawable.horizontal_line, true, true));
-        mRecyclerView.setAdapter(mAdapter);
+        if(friendsData != null && friendsData.friendsList != null) {
+            mAdapter = new FriendsAdapter(getActivity(), friendsData, mFriendsListCallback);
+            mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), R.drawable.horizontal_line, true, true));
+            mRecyclerView.setAdapter(mAdapter);
+        }
     }
 
     @Override

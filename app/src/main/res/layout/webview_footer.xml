@@ -5,6 +5,7 @@
     android:id="@+id/layout_webfooter"
     android:visibility="gone">
 
+    <!--Button should be used such that multi click on the button is enabled-->
     <Button
         android:layout_alignParentLeft="true"
         android:layout_width="48dp"

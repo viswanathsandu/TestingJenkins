@@ -161,7 +161,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp">
 
-        <Button
+        <com.education.corsalite.views.CustomButton
             android:id="@+id/view_answers_btn"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
@@ -171,7 +171,7 @@
             android:paddingRight="20dp"
             android:layout_marginLeft="10dp"/>
 
-        <Button
+        <com.education.corsalite.views.CustomButton
             android:id="@+id/exam_history_btn"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
@@ -181,7 +181,7 @@
             android:paddingRight="20dp"
             android:layout_marginLeft="10dp"/>
 
-        <Button
+        <com.education.corsalite.views.CustomButton
             android:id="@+id/course_analysis_btn"
             android:layout_width="wrap_content"
             android:layout_height="35dp"

@@ -36,7 +36,7 @@
                 android:padding="10dp"
                 android:visibility="gone">
 
-                <Button
+                <com.education.corsalite.views.CustomButton
                     android:id="@+id/redeem_btn"
                     fontPath="@string/roboto_medium"
                     android:layout_width="wrap_content"
@@ -84,7 +84,7 @@
                 android:padding="10dp"
                 android:visibility="gone">
 
-                <ImageButton
+                <com.education.corsalite.views.CustomImageButton
                     android:id="@+id/new_post_btn"
                     fontPath="@string/roboto_regular"
                     android:layout_width="wrap_content"
@@ -100,7 +100,7 @@
                 android:padding="10dp"
                 android:visibility="gone">
 
-                <Button
+                <com.education.corsalite.views.CustomButton
                     android:id="@+id/cancel_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -109,7 +109,7 @@
                     android:text="Cancel"
                     android:textColor="@color/text_black" />
 
-                <Button
+                <com.education.corsalite.views.CustomButton
                     android:id="@+id/add_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -118,7 +118,7 @@
                     android:textColor="@color/text_black"
                     android:visibility="visible" />
 
-                <Button
+                <com.education.corsalite.views.CustomButton
                     android:id="@+id/edit_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -137,7 +137,7 @@
                 android:padding="10dp"
                 android:visibility="gone">
 
-                <Button
+                <com.education.corsalite.views.CustomButton
                     android:id="@+id/start_btn"
                     fontPath="@string/roboto_medium"
                     android:layout_width="wrap_content"

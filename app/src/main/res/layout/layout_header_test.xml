@@ -22,7 +22,7 @@
         android:layout_height="1dp"
         android:layout_weight="1" />
 
-    <Button
+    <com.education.corsalite.views.CustomButton
         android:id="@+id/btn_header_test_cancel"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
@@ -32,7 +32,7 @@
         android:textColor="@color/white"
         android:textSize="16sp" />
 
-    <Button
+    <com.education.corsalite.views.CustomButton
         android:id="@+id/btn_header_test_next"
         android:layout_width="wrap_content"
         android:layout_height="30dp"

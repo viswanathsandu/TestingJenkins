@@ -53,7 +53,7 @@
         android:orientation="horizontal"
         android:layout_gravity="right">
 
-        <Button
+        <com.education.corsalite.views.CustomButton
             android:id="@+id/btn_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -64,7 +64,7 @@
             fontPath="@string/roboto_regular"
             android:textColor="@color/black" />
 
-        <Button
+        <com.education.corsalite.views.CustomButton
             android:id="@+id/btn_submit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

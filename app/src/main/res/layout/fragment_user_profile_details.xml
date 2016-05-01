@@ -168,7 +168,7 @@
             android:layout_height="wrap_content"
             style="@style/user_profile_heading_bold" />
 
-        <Button
+        <com.education.corsalite.views.CustomButton
             android:id="@+id/redeem_btn"
             android:layout_width="wrap_content"
             android:layout_height="35dp"

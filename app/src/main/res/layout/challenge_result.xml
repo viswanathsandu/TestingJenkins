@@ -89,7 +89,7 @@
         android:gravity="center_horizontal"
         android:orientation="horizontal">
 
-        <Button
+        <com.education.corsalite.views.CustomButton
             android:id="@+id/challenge_history_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -102,7 +102,7 @@
             android:textAlignment="center"
             android:textAllCaps="false" />
 
-        <Button
+        <com.education.corsalite.views.CustomButton
             android:id="@+id/exam_summary_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -115,7 +115,7 @@
             android:textAlignment="center"
             android:textAllCaps="false" />
 
-        <Button
+        <com.education.corsalite.views.CustomButton
             android:id="@+id/challenge_again_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -160,7 +160,7 @@
             android:textAllCaps="false"
             android:textColor="@color/text_white" />
 
-        <ImageButton
+        <com.education.corsalite.views.CustomImageButton
             android:id="@+id/refresh_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

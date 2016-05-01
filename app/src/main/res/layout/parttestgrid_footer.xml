@@ -6,7 +6,7 @@
     android:orientation="horizontal">
 
 
-    <Button
+    <com.education.corsalite.views.CustomButton
         android:id="@+id/btn_cancel"
         fontPath="@string/roboto_regular"
         android:layout_width="wrap_content"
@@ -18,7 +18,7 @@
         android:textAllCaps="false"
         android:textColor="@color/black" />
 
-    <Button
+    <com.education.corsalite.views.CustomButton
         android:id="@+id/btn_download"
         fontPath="@string/roboto_regular"
         android:layout_width="wrap_content"
@@ -30,7 +30,7 @@
         android:textAllCaps="false"
         android:textColor="@color/green" />
 
-    <Button
+    <com.education.corsalite.views.CustomButton
         android:id="@+id/btn_next"
         fontPath="@string/roboto_regular"
         android:layout_width="wrap_content"

@@ -1,12 +1,14 @@
 package com.education.corsalite.fragments;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
@@ -40,10 +42,9 @@ import retrofit.client.Response;
 
 public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
 
-    @Bind(R.id.start_btn) Button startBtn;
-    @Bind(R.id.accept_btn) Button acceptBtn;
-    @Bind(R.id.reject_btn) Button rejectBtn;
-    @Bind(R.id.refresh_btn) Button refreshBtn;
+    @Bind(R.id.start_btn) ImageButton startBtn;
+    @Bind(R.id.accept_btn) ImageButton acceptBtn;
+    @Bind(R.id.reject_btn) ImageButton rejectBtn;
     @Bind(R.id.course_txt) TextView courseTxt;
     @Bind(R.id.subject_txt) TextView subjectTxt;
     @Bind(R.id.chapter_txt) TextView chapterTxt;
@@ -78,6 +79,7 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
         View v = inflater.inflate(R.layout.fragment_challenge_test_request, container, false);
         ButterKnife.bind(this, v);
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         mChallengeTestRequestEvent = new Gson().fromJson(getArguments().getString("message"), ChallengeTestRequestEvent.class);
         return v;
     }
@@ -273,7 +275,7 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
         declinedTxt.setText(String.valueOf(declined));
         initiatedTxt.setText(String.valueOf(initiated));
         startBtn.setVisibility(mCurrentUser.role.equalsIgnoreCase("Challenger") ? View.VISIBLE : View.GONE);
-        startBtn.setClickable(accepted+declined == mChallengeUsers.size());
+        startBtn.setEnabled(accepted+declined == mChallengeUsers.size());
 
     }
 
