@@ -87,7 +87,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Redeem"
-                android:background="#A570B5"/>
+                android:background="@drawable/voilet_button_selector"/>
 
             <com.education.corsalite.views.CustomButton
                 android:id="@+id/studycenter_btn"
@@ -95,7 +95,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Study Center"
-                android:background="@color/green"/>
+                android:background="@drawable/green_button_selector"/>
 
             <com.education.corsalite.views.CustomButton
                 android:id="@+id/scheduled_tests_btn"
@@ -103,7 +103,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Scheduled Tests"
-                android:background="#00B8AB"/>
+                android:background="@drawable/schedule_test_selector"/>
 
             <com.education.corsalite.views.CustomButton
                 android:id="@+id/messages_btn"
