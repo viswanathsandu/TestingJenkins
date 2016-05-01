@@ -7,7 +7,6 @@ import android.content.Context;
 import android.support.v7.app.NotificationCompat;
 
 import com.education.corsalite.R;
-import com.education.corsalite.models.socket.response.ChallengeTestRequestEvent;
 
 public class NotificationsUtils {
 
@@ -28,8 +27,9 @@ public class NotificationsUtils {
         notificationManager.notify(id, notifyUser);
     }
 
-    public static void showchallengeNotification(Context context, ChallengeTestRequestEvent event) {
-
-
+    public static void cancelNotification(Context context, int notifyId) {
+        String ns = Context.NOTIFICATION_SERVICE;
+        NotificationManager manager = (NotificationManager) context.getSystemService(ns);
+        manager.cancel(notifyId);
     }
 }

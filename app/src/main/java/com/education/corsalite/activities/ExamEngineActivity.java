@@ -1246,16 +1246,20 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 if(testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty()) {
                     testanswerPaper.testAnswers.get(selectedPosition).answerText = null;
                     testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = null;
-                    testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.SKIPPED.getValue();
-                    localExamModelList.get(selectedPosition).answerColorSelection = Constants.AnswerState.SKIPPED.getValue();
+                    if(!title.equals("Exercises")) {
+                        testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.SKIPPED.getValue();
+                        localExamModelList.get(selectedPosition).answerColorSelection = Constants.AnswerState.SKIPPED.getValue();
+                    }
                 }
                 break;
             case SINGLE_SELECT_CHOICE:
             case MULTI_SELECT_CHOICE:
                 if(testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty()) {
                     testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = null;
-                    testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.SKIPPED.getValue();
-                    localExamModelList.get(selectedPosition).answerColorSelection = Constants.AnswerState.SKIPPED.getValue();
+                    if(!title.equals("Exercises")) {
+                        testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.SKIPPED.getValue();
+                        localExamModelList.get(selectedPosition).answerColorSelection = Constants.AnswerState.SKIPPED.getValue();
+                    }
                 }
                 break;
             case FILL_IN_THE_BLANK:
@@ -1264,8 +1268,10 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 if(testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty()) {
                     testanswerPaper.testAnswers.get(selectedPosition).answerText = null;
                     testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = null;
-                    testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.SKIPPED.getValue();
-                    localExamModelList.get(selectedPosition).answerColorSelection = Constants.AnswerState.SKIPPED.getValue();
+                    if(!title.equals("Exercises")) {
+                        testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.SKIPPED.getValue();
+                        localExamModelList.get(selectedPosition).answerColorSelection = Constants.AnswerState.SKIPPED.getValue();
+                    }
                 }
                 break;
         }
