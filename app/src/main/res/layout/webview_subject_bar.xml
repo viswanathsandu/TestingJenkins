@@ -4,12 +4,13 @@
     android:layout_height="50dp"
     android:background="@color/gray"
     android:orientation="horizontal"
-    android:padding="10dp">
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
 
     <LinearLayout
         android:id="@+id/color_bar"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:gravity="center_vertical|right"
@@ -20,8 +21,11 @@
             android:id="@+id/iv_exercise"
             android:layout_width="wrap_content"
             android:layout_height="45dp"
+            android:padding="5dp"
+            android:scaleType="center"
             android:layout_gravity="center_vertical"
             android:src="@drawable/ico_exercise"
+            android:visibility="gone"
             android:background="@drawable/image_button_selector"/>
 
         <ImageView
@@ -30,6 +34,8 @@
             android:layout_height="45dp"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="15dp"
+            android:scaleType="center"
+            android:padding="5dp"
             android:src="@drawable/ico_add_note"
             android:background="@drawable/image_button_selector"/>
 
@@ -37,6 +43,8 @@
             android:id="@+id/iv_forum"
             android:layout_width="45dp"
             android:layout_height="45dp"
+            android:padding="5dp"
+            android:scaleType="center"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="15dp"
             android:src="@drawable/ico_add_forum"
@@ -46,7 +54,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@id/color_bar"
         android:gravity="center_vertical"
@@ -101,8 +109,9 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
             <Spinner
                 android:id="@+id/sp_topic"

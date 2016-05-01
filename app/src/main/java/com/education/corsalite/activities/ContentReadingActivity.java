@@ -609,7 +609,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
 
     private void getExercise(int topicPosition) {
         if (SystemUtils.isNetworkConnected(this)) {
-            ivExercise.setEnabled(false);
+            ivExercise.setVisibility(View.GONE);
             String topicId = topicModelList.get(topicPosition).idTopic;
             if(offlineExercises != null && !offlineExercises.isEmpty() && offlineExercises.contains(new ExerciseOfflineModel(selectedCourse.courseId+"", topicId))) {
                 for(ExerciseOfflineModel model : offlineExercises) {
@@ -920,7 +920,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
 
     private void showExercise() {
         if (AbstractBaseActivity.getSharedExamModels() != null && !AbstractBaseActivity.getSharedExamModels().isEmpty()) {
-            ivExercise.setEnabled(true);
+            ivExercise.setVisibility(View.VISIBLE);
         }
     }
 

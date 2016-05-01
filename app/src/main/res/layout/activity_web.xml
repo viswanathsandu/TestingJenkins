@@ -65,7 +65,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="20dp"
                     android:layout_marginTop="20dp"
-                    android:background="@drawable/shape_rounded_corners_black_80"
+                    android:background="@drawable/selector_btn_dark_gray"
                     android:drawableLeft="@drawable/ico_video"
                     android:drawablePadding="5dp"
                     android:paddingBottom="5dp"
