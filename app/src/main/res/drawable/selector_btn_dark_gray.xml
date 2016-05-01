@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:state_selected="true">
-        <shape>
-            <padding android:bottom="2dp" android:left="2dp" android:right="2dp" android:top="2dp" />
-            <corners android:radius="5dp" />
-            <solid android:color="@color/dark_gray" />
-            <stroke android:width="2dp" android:color="@color/black" />
-        </shape>
-    </item>
+    <item android:drawable="@drawable/selector_btn_dark_gray_selected" android:state_pressed="true"/>
+    <item android:drawable="@drawable/selector_btn_dark_gray_unselected"/>
 
-    <item>
-        <shape>
-            <padding android:bottom="2dp" android:left="2dp" android:right="2dp" android:top="2dp" />
-            <corners android:radius="5dp" />
-            <solid android:color="@color/dark_gray" />
-        </shape>
-    </item>
+
 
 </selector>

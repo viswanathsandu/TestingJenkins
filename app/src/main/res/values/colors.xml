@@ -23,6 +23,7 @@
     <color name="flagged_yellow">#FFC117</color>
     <color name="black">#000000</color>
     <color name="dark_gray">#a9a9a9</color>
+    <color name="light_gray">#d3d1d1</color>
     <color name="cyan">#008B8B</color>
     <color name="light_40">#96F5F5F6</color>
     <color name="transparent">#00000000</color>
@@ -48,7 +49,10 @@
     <color name="table_level_3">#876D37</color>
     <color name="table_level_4">#628B40</color>
     <color name="table_level_5">#3AAB49</color>
-
     <color name="black_overlay">#66000000</color>
-
+    <color name="voilet">#A570B5</color>
+    <color name="voilet_light">#bd97c9</color>
+    <color name="schedule_test">#00B8AB</color>
+    <color name="schedule_test_clicked">#7dd8d1</color>
+    <color name="study_center_clicked">#7bd188</color>
 </resources>
