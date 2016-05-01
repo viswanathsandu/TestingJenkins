@@ -160,11 +160,13 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
 
     @OnClick(R.id.accept_btn)
     public void acceptTest() {
+        acceptBtn.setVisibility(View.GONE);
         updateChallengeStatus("Accepted");
     }
 
     @OnClick(R.id.reject_btn)
     public void rejectTest() {
+        rejectBtn.setVisibility(View.GONE);
         updateChallengeStatus("Declined");
     }
 
