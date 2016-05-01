@@ -19,115 +19,110 @@
         <ImageView
             android:id="@+id/iv_exercise"
             android:layout_width="wrap_content"
-            android:layout_height="35dp"
+            android:layout_height="45dp"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/ico_exercise" />
+            android:src="@drawable/ico_exercise"
+            android:background="@drawable/image_button_selector"/>
 
         <ImageView
             android:id="@+id/iv_editnotes"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="15dp"
-            android:src="@drawable/ico_add_note" />
+            android:src="@drawable/ico_add_note"
+            android:background="@drawable/image_button_selector"/>
 
         <ImageView
             android:id="@+id/iv_forum"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="15dp"
-            android:src="@drawable/ico_add_forum" />
+            android:src="@drawable/ico_add_forum"
+            android:background="@drawable/image_button_selector"/>
 
     </LinearLayout>
 
-    <HorizontalScrollView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
         android:layout_toLeftOf="@id/color_bar"
-        android:scrollbars="none">
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="15dp">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/subject_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:padding="10dp"
+                android:src="@drawable/ico_dropdown_black" />
+
+            <Spinner
+                android:id="@+id/sp_subject"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/subject_icon"
+                android:background="@null"
+                android:paddingLeft="10dp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/chapter_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:padding="10dp"
+                android:src="@drawable/ico_dropdown_black" />
+
+            <Spinner
+                android:id="@+id/sp_chapter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_toLeftOf="@id/chapter_icon"
+                android:background="@null"
+                android:paddingLeft="5dp" />
+
+        </RelativeLayout>
+
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingLeft="15dp">
+            android:orientation="horizontal">
 
-            <RelativeLayout
-                android:layout_width="150dp"
-                android:layout_height="wrap_content">
+            <Spinner
+                android:id="@+id/sp_topic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:background="@null"
+                android:dropDownSelector="@drawable/ico_dropdown_black"
+                android:paddingLeft="5dp"
+                android:spinnerMode="dropdown" />
 
-                <ImageView
-                    android:id="@+id/subject_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:padding="10dp"
-                    android:src="@drawable/ico_dropdown_black" />
-
-                <Spinner
-                    android:id="@+id/sp_subject"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@id/subject_icon"
-                    android:background="@null"
-                    android:paddingLeft="10dp" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="150dp"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/chapter_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:padding="10dp"
-                    android:src="@drawable/ico_dropdown_black" />
-
-                <Spinner
-                    android:id="@+id/sp_chapter"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_toLeftOf="@id/chapter_icon"
-                    android:background="@null"
-                    android:paddingLeft="5dp" />
-
-            </RelativeLayout>
-
-
-            <RelativeLayout
-                android:layout_width="150dp"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/topic_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:padding="10dp"
-                    android:src="@drawable/ico_dropdown_black" />
-
-                <Spinner
-                    android:id="@+id/sp_topic"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_toLeftOf="@id/topic_icon"
-                    android:background="@null"
-                    android:dropDownSelector="@drawable/ico_dropdown_black"
-                    android:paddingLeft="5dp"
-                    android:spinnerMode="dropdown" />
-
-            </RelativeLayout>
+            <ImageView
+                android:id="@+id/topic_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:src="@drawable/ico_dropdown_black" />
 
         </LinearLayout>
-    </HorizontalScrollView>
+
+    </LinearLayout>
 
 </RelativeLayout>

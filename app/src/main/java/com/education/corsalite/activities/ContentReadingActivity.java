@@ -644,7 +644,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
      * called when sptopic is selected
      */
     private void getContentData(int topicPosition) {
-
+        updateToolbarTitle();
         if (mViewSwitcher.indexOfChild(mViewSwitcher.getCurrentView()) == 1) {
             mViewSwitcher.showPrevious();
             notAvailableForOfflineTxt.setVisibility(View.GONE);
@@ -955,6 +955,16 @@ public class ContentReadingActivity extends AbstractBaseActivity {
 
                 }
             });
+        }
+    }
+
+    private void updateToolbarTitle() {
+        try {
+            String subjectName = ((SubjectModel) spSubject.getSelectedItem()).subjectName;
+            String chapterName = ((ChapterModel) spChapter.getSelectedItem()).chapterName;
+            setToolbarTitle(subjectName + "  -  " + chapterName);
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
         }
     }
 

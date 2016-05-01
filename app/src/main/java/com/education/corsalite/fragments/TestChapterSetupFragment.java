@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,7 @@ import com.education.corsalite.models.responsemodels.TestCoverage;
 import com.education.corsalite.services.TestDownloadService;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.L;
+import com.education.corsalite.views.InputFilterMinMax;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -58,6 +60,7 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
     private Chapter chapter;
     private String subjectId;
     private int levelCrossed;
+    private int questionCount;
 
     public static TestChapterSetupFragment newInstance(Bundle bundle) {
         TestChapterSetupFragment fragment = new TestChapterSetupFragment();
@@ -107,18 +110,20 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
 
     private void loadLevels() {
         try {
-            for (String level : mChapterLevels) {
+            for (final String level : mChapterLevels) {
                 View view = getActivity().getLayoutInflater().inflate(R.layout.level_checkbox, null);
                 TextView txt = (TextView) view.findViewById(R.id.level_txt);
                 txt.setText("Level " + level);
-                CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkbox);
+                final CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkbox);
                 checkBox.setTag("Level " + level);
                 if (level.equals(levelCrossed + "")) {
                     checkBox.setChecked(true);
                     if (testCoverages != null) {
                         for (TestCoverage coverage : testCoverages) {
                             if (coverage.level.equalsIgnoreCase(level + "")) {
-                                mNoOfQuestionsEditTxt.setText(coverage.questionCount);
+                                questionCount += Integer.valueOf(coverage.questionCount);
+                                mNoOfQuestionsEditTxt.setFilters(new InputFilter[]{new InputFilterMinMax("1", questionCount+"")});
+                                mNoOfQuestionsEditTxt.setText(questionCount+"");
                                 break;
                             }
                         }
@@ -129,7 +134,23 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
                 checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
+                        TestCoverage testCoverage = null;
+                        if (testCoverages != null) {
+                            for (TestCoverage coverage : testCoverages) {
+                                if (coverage.level.equalsIgnoreCase(level + "")) {
+                                    testCoverage = coverage;
+                                }
+                            }
+                        }
+                        if(testCoverage != null && checkBox.isEnabled()) {
+                            if (isChecked) {
+                                questionCount += Integer.valueOf(testCoverage.questionCount);
+                            } else {
+                                questionCount -= Integer.valueOf(testCoverage.questionCount);
+                            }
+                            mNoOfQuestionsEditTxt.setFilters(new InputFilter[]{new InputFilterMinMax("1", questionCount+"")});
+                            mNoOfQuestionsEditTxt.setText(questionCount + "");
+                        }
                     }
                 });
                 levelsLayout.addView(view);

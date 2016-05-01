@@ -39,12 +39,12 @@ public class SubjectAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return subjectModelList.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
     @Override

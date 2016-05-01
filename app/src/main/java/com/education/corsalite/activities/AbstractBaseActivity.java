@@ -243,10 +243,12 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         setToolbarTitle(getResources().getString(R.string.post));
     }
 
-    protected void setToolbarForExercise(String title) {
+    protected void setToolbarForExercise(String title, boolean showDrawer) {
         setToolbarTitle(title);
-        setDrawerIconInvisible();
-        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        if(!showDrawer) {
+            setDrawerIconInvisible();
+            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        }
     }
 
     protected void setToolbarForWebActivity(String title) {

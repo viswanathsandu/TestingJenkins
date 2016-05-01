@@ -229,7 +229,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private void getIntentData() {
         title = getIntent().getExtras().getString(Constants.TEST_TITLE, "");
         tvNavTitle.setText(title);
-        setToolbarForExercise(title);
+        setToolbarForExercise(title, title.equalsIgnoreCase("Exercises"));
         topic = getIntent().getExtras().getString(Constants.SELECTED_TOPIC, "");
         tvPageTitle.setText(topic);
         questionsCount = getIntent().getExtras().getString(Constants.QUESTIONS_COUNT, "");
