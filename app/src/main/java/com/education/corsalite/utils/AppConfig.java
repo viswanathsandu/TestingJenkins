@@ -116,6 +116,10 @@ public class AppConfig {
         return isEnabled(enableChallangeTest);
     }
 
+    public boolean isForumEnabled() {
+        return isEnabled(enableForum);
+    }
+
     private Boolean isEnabled(String text) {
         return (text != null && text.equalsIgnoreCase("true"));
     }
