@@ -723,7 +723,9 @@ public class ContentReadingActivity extends AbstractBaseActivity {
                 }
                 contentList = contents;
                 getWebData(contents, updatePosition);
-                String courseId = String.valueOf(selectedCourse.courseId);
+
+                // Used for caching the data
+                /*String courseId = String.valueOf(selectedCourse.courseId);
                 String courseName = selectedCourse.name;
                 String subjectId = subjectModelList.get(spSubject.getSelectedItemPosition()).idSubject;
                 String subjectName = subjectModelList.get(spSubject.getSelectedItemPosition()).subjectName;
@@ -733,7 +735,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
                 String topicName = topicModelList.get(spTopic.getSelectedItemPosition()).topicName;
                 String fileName;
 
-                /*List<OfflineContent> offlineContents = new ArrayList<>(contents.size());
+                List<OfflineContent> offlineContents = new ArrayList<>(contents.size());
                 OfflineContent offlineContent;
                 for (Content content : contents) {
                     if (TextUtils.isEmpty(content.type)) {

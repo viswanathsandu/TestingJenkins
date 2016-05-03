@@ -195,23 +195,33 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
 
     private void requestQuestionPaperDetails() {
         String noOfQuestions = mNoOfQuestionsEditTxt.getText().toString();
-        if (!TextUtils.isEmpty(noOfQuestions) && TextUtils.isDigitsOnly(noOfQuestions)) {
-            mExtras.putBoolean(Constants.ADAPIVE_LEAERNING, mIsAdaptiveLearningEnabled);
-            mExtras.putString(Constants.QUESTIONS_COUNT, noOfQuestions);
-            startActivity(ExamEngineActivity.getMyIntent(getActivity(), mExtras));
-            getActivity().finish();
-        } else {
+        if (TextUtils.isEmpty(noOfQuestions) || !TextUtils.isDigitsOnly(noOfQuestions)) {
             Toast.makeText(getActivity(), "Please select the number of questions", Toast.LENGTH_SHORT).show();
+            return;
+        } else if(questionCount == 0) {
+            Toast.makeText(getActivity(), "Please select the level", Toast.LENGTH_SHORT).show();
+            return;
         }
+        mExtras.putBoolean(Constants.ADAPIVE_LEAERNING, mIsAdaptiveLearningEnabled);
+        mExtras.putString(Constants.QUESTIONS_COUNT, noOfQuestions);
+        startActivity(ExamEngineActivity.getMyIntent(getActivity(), mExtras));
+        getActivity().finish();
     }
 
     private void downloadTakeTest(Chapter chapter) {
+        String noOfQuestions = mNoOfQuestionsEditTxt.getText().toString();
+        if (TextUtils.isEmpty(noOfQuestions) || !TextUtils.isDigitsOnly(noOfQuestions)) {
+            Toast.makeText(getActivity(), "Please select the number of questions", Toast.LENGTH_SHORT).show();
+            return;
+        } else if(questionCount == 0) {
+            Toast.makeText(getActivity(), "Please select the level", Toast.LENGTH_SHORT).show();
+            return;
+        }
         Intent exerciseIntent = new Intent(getActivity(), TestDownloadService.class);
         exerciseIntent.putExtra("subjectId", subjectId);
         exerciseIntent.putExtra("chapterId", chapter.idCourseSubjectchapter);
         exerciseIntent.putExtra("selectedTakeTest", new Gson().toJson(chapter));
         exerciseIntent.putExtra("courseId", AbstractBaseActivity.selectedCourse.courseId.toString());
-        String noOfQuestions = mNoOfQuestionsEditTxt.getText().toString();
         if (!TextUtils.isEmpty(noOfQuestions) && TextUtils.isDigitsOnly(noOfQuestions)) {
             exerciseIntent.putExtra("questions_count", noOfQuestions);
         }
