@@ -69,6 +69,7 @@
             android:name=".activities.WebviewActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="@string/title_activity_webview"
+            android:screenOrientation="sensorLandscape"
             android:theme="@style/UserProfileTheme" />
         <activity
             android:name=".activities.ContentReadingActivity"

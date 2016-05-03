@@ -2,7 +2,6 @@ package com.education.corsalite.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -48,7 +47,6 @@ public class WebviewActivity extends AbstractBaseActivity {
         setToolbarForWebActivity(title);
         if(title.equals(getString(R.string.forgot_password)) || title.equals(getString(R.string.computer_adaptive_test))) {
             setDrawerIconInvisible();
-            lockScreenOrientation();
         }
         pageUrl = bundle.getString(URL);
         if(!title.equals(getString(R.string.forgot_password))) {
@@ -136,9 +134,5 @@ public class WebviewActivity extends AbstractBaseActivity {
             L.info("Login page loading completed in webview");
             loadWebpage();
         }
-    }
-
-    private void lockScreenOrientation(){
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
     }
 }
