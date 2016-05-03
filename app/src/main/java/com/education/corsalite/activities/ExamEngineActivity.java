@@ -1315,7 +1315,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     if (j == 0) {
                         View titleLayout = getLayoutInflater().inflate(R.layout.grid_question_title_layout, null);
                         TextView titleTxt = (TextView) titleLayout.findViewById(R.id.title_txt);
-                        titleTxt.setText(topLabels[i]);
+                        titleTxt.setText(leftLabels[i]);
                         row.addView(titleLayout);
                     }
                     View checkBoxLayout = getLayoutInflater().inflate(R.layout.grid_question_checkbox_layout, null);
@@ -1368,6 +1368,9 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
     private void loadAnswersIntoGridType(CheckBox[][] checkboxes, String[] leftLabels, String[] topLabels, String answers) {
         try {
+            if(TextUtils.isEmpty(answers)) {
+                return;
+            }
             List<String> leftLabelsList = Arrays.asList(leftLabels);
             List<String> topLabelsList = Arrays.asList(topLabels);
             String[] answersArr = answers.split(",");
