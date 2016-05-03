@@ -18,29 +18,29 @@ public class AppConfig {
 
     private static AppConfig instance;
     @SerializedName("BaseUrl")
-    private String baseUrl;
-    public String stageUrl;
-    public String productionUrl;
-    public String stageSocketUrl;
-    public String productionSocketUrl;
-    public Boolean enableProduction;
+    private String baseUrl = "https://staging.corsalite.com/v1/webservices/";
+    public String stageUrl = "http://staging.corsalite.com/v1/webservices/";
+    public String productionUrl = "http://app.corsalite.com/ws/webservices/";
+    public String stageSocketUrl = "ws://staging.corsalite.com:9300";
+    public String productionSocketUrl = "ws://app.corsalite.com:9300";
+    public Boolean enableProduction = false;
     @SerializedName("SplashDuration")
-    public String splashDuration;
+    public String splashDuration = "2000";
     @SerializedName("EnableStudyCenter")
-    public String enableStudyCenter;
+    public String enableStudyCenter = "true";
     @SerializedName("EnableAnalytics")
-    public String enableAnalytics;
+    public String enableAnalytics = "true";
     @SerializedName("EnableSmartClass")
-    public String enableSmartClass;
+    public String enableSmartClass = "true";
     @SerializedName("EnableMyProfile")
-    public String enableMyProfile;
+    public String enableMyProfile = "true";
     @SerializedName("EnableOffline")
-    public String enableOffline;
+    public String enableOffline = "true";
     @SerializedName("EnableLogout")
-    public String enableLogout;
+    public String enableLogout = "true";
     @SerializedName("EnableChallengeTest")
-    public String enableChallangeTest;
-    public Boolean enableForum;
+    public String enableChallangeTest = "true";
+    public String enableForum = "true";
     public String idClientAppConfig;
     public String idUser;
 

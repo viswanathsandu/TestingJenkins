@@ -98,23 +98,27 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
                 @Override
                 public void success(ChallengeUserListResponse challengeUserListResponse, Response response) {
                     super.success(challengeUserListResponse, response);
-                    closeProgress();
-                    if(challengeUserListResponse != null && challengeUserListResponse.challengeUsersList != null) {
-                        mChallengeUsers = challengeUserListResponse.challengeUsersList;
-                        examId = challengeUserListResponse.examId;
-                        fillData();
-                        updateUI();
-                        L.info("Challenge Users : "+new Gson().toJson(mChallengeUsers));
-                    } else {
-                        ChallengeTestRequestDialogFragment.this.dismiss();
+                    if(getActivity() != null) {
+                        closeProgress();
+                        if (challengeUserListResponse != null && challengeUserListResponse.challengeUsersList != null) {
+                            mChallengeUsers = challengeUserListResponse.challengeUsersList;
+                            examId = challengeUserListResponse.examId;
+                            fillData();
+                            updateUI();
+                            L.info("Challenge Users : " + new Gson().toJson(mChallengeUsers));
+                        } else {
+                            ChallengeTestRequestDialogFragment.this.dismiss();
+                        }
                     }
                 }
 
                 @Override
                 public void failure(CorsaliteError error) {
                     super.failure(error);
-                    closeProgress();
-                    ChallengeTestRequestDialogFragment.this.dismiss();
+                    if(getActivity() != null) {
+                        closeProgress();
+                        ChallengeTestRequestDialogFragment.this.dismiss();
+                    }
                 }
             });
     }
@@ -123,17 +127,21 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
         for (ChallengeUser user : mChallengeUsers) {
             if(user.idStudent.equals(LoginUserCache.getInstance().getLongResponse().studentId)) {
                 mCurrentUser = user;
+                ((ChallengeActivity)getActivity()).challengeTestTimeDuration = mCurrentUser.duration;
                 courseTxt.setText(user.course);
                 subjectTxt.setText(user.subject);
                 chapterTxt.setText(user.chapter);
                 questionsTxt.setText(user.questionCount);
-                timeTxt.setText(user.duration);
+                if(!TextUtils.isEmpty(user.duration)) {
+                    timeTxt.setText(Integer.valueOf(user.duration)/60 + "");
+                }
                 virtualCurrencyTxt.setText(user.virtualCurrencyChallenged);
             }
         }
     }
 
     private void updateChallengeStatus(final String status) {
+        showProgress();
         ChallengeStatusRequest request = new ChallengeStatusRequest(LoginUserCache.getInstance().loginResponse.studentId,
                 mChallengeTestRequestEvent.challengeTestParentId, status);
         ApiManager.getInstance(getActivity()).postChallengeStatus(new Gson().toJson(request),
@@ -141,13 +149,25 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
                     @Override
                     public void success(CommonResponseModel commonResponseModel, Response response) {
                         super.success(commonResponseModel, response);
-                        postStatusEvent(status);
+                        if(getActivity() != null) {
+                            postStatusEvent(status);
+                            closeProgress();
+                            if (status.equals("Canceled")) {
+                                showToast("Challenge has been canceled");
+                                getActivity().finish();
+                            } else {
+                                loadChallengeTestDetails();
+                            }
+                        }
                     }
 
                     @Override
                     public void failure(CorsaliteError error) {
                         super.failure(error);
-                        showToast(error.message);
+                        if(getActivity() != null) {
+                            showToast(error.message);
+                            closeProgress();
+                        }
                     }
                 });
     }
@@ -158,18 +178,25 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
         event.challengerName = mCurrentUser.displayName;
         event.challengerStatus = status;
         WebSocketHelper.get(getActivity()).sendChallengeUpdateEvent(event);
+
     }
 
     @OnClick(R.id.accept_btn)
     public void acceptTest() {
         acceptBtn.setVisibility(View.GONE);
+        rejectBtn.setVisibility(View.VISIBLE);
         updateChallengeStatus("Accepted");
     }
 
     @OnClick(R.id.reject_btn)
     public void rejectTest() {
         rejectBtn.setVisibility(View.GONE);
-        updateChallengeStatus("Declined");
+        acceptBtn.setVisibility(View.VISIBLE);
+        if(mCurrentUser != null && mCurrentUser.role.equalsIgnoreCase("Challenger")) {
+            updateChallengeStatus("Canceled");
+        } else {
+            updateChallengeStatus("Declined");
+        }
     }
 
     @OnClick(R.id.refresh_btn)
@@ -263,7 +290,7 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
                     statusTxt.setBackgroundColor(getResources().getColor(R.color.blue));
                 }
             }
-            if(friend.status.equalsIgnoreCase("Initiated")) {
+            if(friend.role.equalsIgnoreCase("challenger")) {
                 initiated++;
             } else if(friend.status.equalsIgnoreCase("Accepted")) {
                 accepted++;
@@ -275,23 +302,27 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
         declinedTxt.setText(String.valueOf(declined));
         initiatedTxt.setText(String.valueOf(initiated));
         startBtn.setVisibility(mCurrentUser.role.equalsIgnoreCase("Challenger") ? View.VISIBLE : View.GONE);
-        startBtn.setEnabled(accepted+declined == mChallengeUsers.size());
+        startBtn.setEnabled(initiated+accepted+declined == mChallengeUsers.size());
 
     }
 
     public void onEventMainThread(ChallengeTestUpdateEvent event) {
-        for(ChallengeUser user : mChallengeUsers) {
-            if(user.displayName.equals(event.challengerName)) {
-                user.status = event.challengerStatus;
+        if(getActivity() != null) {
+            for (ChallengeUser user : mChallengeUsers) {
+                if (user.displayName.equals(event.challengerName)) {
+                    user.status = event.challengerStatus;
+                }
             }
+            updateUI();
         }
-        updateUI();
     }
 
     public void onEventMainThread(ChallengeTestStartEvent event) {
-        mTestQuestionPaperId = event.testQuestionPaperId;
-        sendChallengeStartRequestEvent();
-        ((ChallengeActivity)getActivity()).startChallengeTest(mTestQuestionPaperId, event.challengeTestParentId);
+        if(getActivity() != null) {
+            mTestQuestionPaperId = event.testQuestionPaperId;
+            sendChallengeStartRequestEvent();
+            ((ChallengeActivity) getActivity()).startChallengeTest(mTestQuestionPaperId, event.challengeTestParentId);
+        }
     }
 
 }

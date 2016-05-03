@@ -67,6 +67,14 @@ public class ChallengeUtils {
         }
     }
 
+    public void clearChallengeNotifications(ChallengeTestUpdateEvent event) {
+        try {
+            NotificationsUtils.cancelNotification(context, Integer.valueOf(event.challengeTestParentId));
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+    }
+
     private PendingIntent getChallengeUpdateIntent(ChallengeTestUpdateEvent event) {
         if(event != null && (TextUtils.isEmpty(event.challengeTestParentId) || TextUtils.isEmpty(event.challengerName))) {
             return null;

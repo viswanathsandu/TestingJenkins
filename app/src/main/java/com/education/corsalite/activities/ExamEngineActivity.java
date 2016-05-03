@@ -181,6 +181,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private String questionsCount = null;
     private String selectedSection;
     private String challengeTestId;
+    private String challengeTestTimeDuration;
     private String testQuestionPaperId = null;
     private ExamEngineGridAdapter gridAdapter;
     private MockSubjectsAdapter sectionsAdapter;
@@ -240,6 +241,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         isOffline = getIntent().getExtras().getBoolean(Constants.IS_OFFLINE, false);
         offlineModelDate = getIntent().getExtras().getLong("OfflineTestModel");
         challengeTestId = getIntent().getStringExtra("challenge_test_id");
+        challengeTestTimeDuration = getIntent().getStringExtra("challenge_test_time_duration");
         mIsAdaptiveTest = getIntent().getBooleanExtra(Constants.ADAPIVE_LEAERNING, false);
         String partTestGridElimentsJson = getIntent().getStringExtra(Constants.PARTTEST_GRIDMODELS);
         if(!TextUtils.isEmpty(partTestGridElimentsJson)) {
@@ -254,7 +256,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             loadMockTest();
         } else if (title.equalsIgnoreCase("Schedule Test")) {
             loadScheduledTest();
-        } else if (ischallengeTest()) {
+        } else if (ischallengeTest()) { // Challenge Test
             loadChallengeTest();
         } else if (title.equalsIgnoreCase("View Answers")) {
             loadViewAnswers();
@@ -762,7 +764,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                         if(!model.selectedAnswers.contains(",")) {
                             int selectedOption = -1;
                             selectedOption = Integer.parseInt(model.selectedAnswers);
-                            if (model.answerChoice.get(selectedOption).isCorrectAnswer.equals("Y")) {
+                            if (selectedOption > model.answerChoice.size() && model.answerChoice.get(selectedOption).isCorrectAnswer.equals("Y")) {
                                 success++;
                             } else {
                                 failure++;
@@ -784,6 +786,9 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                             }
                         }
                     } catch (NumberFormatException e) {
+                        L.error(e.getMessage(), e);
+                        failure++;
+                    } catch (Exception e) {
                         L.error(e.getMessage(), e);
                         failure++;
                     }
@@ -1454,6 +1459,9 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         @Override
         public void onFinish() {
             tv_timer.setText("TIME OVER");
+            if(ischallengeTest()) {
+                submitTest();
+            }
         }
 
         @Override
@@ -1671,9 +1679,14 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 webFooter.setVisibility(View.GONE);
             }
             renderQuestionLayout();
-            examDurationInSeconds = getExamDurationInSeconds(examModels);
+            if(TextUtils.isEmpty(challengeTestTimeDuration)) {
+                examDurationInSeconds = getExamDurationInSeconds(examModels);
+            } else {
+                examDurationInSeconds = Integer.valueOf(challengeTestTimeDuration);
+            }
             //dummy timer.. need to fetch time and interval from service
-            tv_timer.setText(TimeUtils.getSecondsInTimeFormat(examDurationInSeconds));
+
+            TimeUtils.getSecondsInTimeFormat(examDurationInSeconds);
             final CounterClass timer = new CounterClass(examDurationInSeconds * 1000, 1000);
             timer.start();
         } else {

@@ -50,13 +50,15 @@ public class SplashActivity extends AbstractBaseActivity {
     private void checkProduction() {
         final String enableProduction = AppPref.getInstance(SplashActivity.this).getValue("enable_production");
         AppConfig config = AppConfig.getInstance();
-        if(TextUtils.isEmpty(enableProduction)) {
-            AppPref.getInstance(SplashActivity.this).save("enable_production", config.enableProduction + "");
-        } else {
-            config.enableProduction = enableProduction.equalsIgnoreCase("true");
+        if(config != null) {
+            if (TextUtils.isEmpty(enableProduction)) {
+                AppPref.getInstance(SplashActivity.this).save("enable_production", config.enableProduction + "");
+            } else {
+                config.enableProduction = enableProduction.equalsIgnoreCase("true");
+            }
+            ApiClientService.setBaseUrl(config.enableProduction ? config.productionUrl : config.stageUrl);
+            ApiClientService.setSocketUrl(config.enableProduction ? config.productionSocketUrl : config.stageSocketUrl);
         }
-        ApiClientService.setBaseUrl(config.enableProduction ? config.productionUrl : config.stageUrl);
-        ApiClientService.setSocketUrl(config.enableProduction ? config.productionSocketUrl : config.stageSocketUrl);
     }
 
     private void checkAutoLogin() {

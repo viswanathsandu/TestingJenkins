@@ -4,12 +4,12 @@ import android.content.Context;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
 
 /**
  * Created by vissu on 5/1/16.
  */
-public class CustomImageButton extends Button implements View.OnClickListener {
+public class CustomImageButton extends ImageButton implements View.OnClickListener {
 
     private OnClickListener onClickListener;
     private boolean isClicked = false;

@@ -50,6 +50,7 @@ public class ChallengeActivity extends AbstractBaseActivity {
     public String mDisplayName = "";
     public String mChallengeTestId = "";
     public String mTestQuestionPaperId = "";
+    public String challengeTestTimeDuration = "";
     private String screenType = "NEW_CHALLENGE";
 
     @Override
@@ -204,6 +205,9 @@ public class ChallengeActivity extends AbstractBaseActivity {
         intent.putExtra(Constants.TEST_TITLE, "Challenge Test");
         intent.putExtra("test_question_paper_id", testQuestionPaperId);
         intent.putExtra("challenge_test_id", challngeTestId);
+        if(!TextUtils.isEmpty(challengeTestTimeDuration)) {
+            intent.putExtra("challenge_test_time_duration", challengeTestTimeDuration);
+        }
         startActivity(intent);
         finish();
     }

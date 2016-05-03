@@ -728,7 +728,15 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     public void onEventMainThread(ChallengeTestUpdateEvent event) {
-        ChallengeUtils.get(this).showChallengeUpdateNotification(event);
+        if(!TextUtils.isEmpty(event.challengerStatus) && event.challengerStatus.equalsIgnoreCase("Canceled")) {
+            ChallengeUtils.get(this).clearChallengeNotifications(event);
+            if(this instanceof ChallengeActivity) {
+                finish();
+                showToast("Challenger has cancelled the challenge");
+            }
+        } else if(!(this instanceof ChallengeActivity)) {
+            ChallengeUtils.get(this).showChallengeUpdateNotification(event);
+        }
     }
 
     public void onEventMainThread(ChallengeTestStartEvent event) {
