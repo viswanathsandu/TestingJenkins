@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
@@ -393,6 +394,42 @@ public class StudyCentreActivity extends AbstractBaseActivity {
         }
     }
 
+    private Drawable getSubjectColor(StudyCenter studyCenter) {
+        int blueChaptersCount = 0;
+        int redChaptersCount = 0;
+        int amberChaptersCount = 0;
+        int greenChaptersCount = 0;
+        try {
+            for (Chapter chapter : studyCenter.chapters) {
+                double totalMarks = Data.getDoubleWithTwoDecimals(chapter.totalTestedMarks);
+                double earnedMarks = Data.getDoubleWithTwoDecimals(chapter.earnedMarks);
+                double scoreRedPercentage = Data.getInt(chapter.scoreRed) * totalMarks / 100;
+                double scoreAmberPercentage = Data.getInt(chapter.scoreAmber) * totalMarks / 100;
+                if (earnedMarks == 0 && totalMarks == 0) {
+                    blueChaptersCount++;
+                } else if (earnedMarks < scoreRedPercentage) {
+                    redChaptersCount++;
+                } else if (earnedMarks < scoreAmberPercentage) {
+                    amberChaptersCount++;
+                } else {
+                    greenChaptersCount++;
+                }
+            }
+            if (redChaptersCount > 0) {
+                return getResources().getDrawable(R.drawable.redshape);
+            } else if (greenChaptersCount == studyCenter.chapters.size()) {
+                return getResources().getDrawable(R.drawable.greenshape);
+            } else if (blueChaptersCount == studyCenter.chapters.size()) {
+                return getResources().getDrawable(R.drawable.blueshape);
+            } else {
+                return getResources().getDrawable(R.drawable.ambershape);
+            }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+            return getResources().getDrawable(R.drawable.redshape);
+        }
+    }
+
     private void addSubjectsAndCreateViews(StudyCenter studyCenter) {
         String subject = studyCenter.SubjectName;
         subjects.add(subject);
@@ -408,6 +445,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
 
     private View getSubjectView(StudyCenter studyCenter, String subjectId, boolean isSelected) {
         View v = getView();
+        v.findViewById(R.id.subjectLayout).setBackgroundDrawable(getSubjectColor(studyCenter));
         TextView tv = (TextView) v.findViewById(R.id.subject);
         tv.setTypeface(Typeface.createFromAsset(getAssets(), getString(R.string.roboto_regular)));
         tv.setText(studyCenter.SubjectName);

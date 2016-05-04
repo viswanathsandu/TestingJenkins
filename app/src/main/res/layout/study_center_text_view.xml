@@ -1,27 +1,43 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/subjectLayout"
     android:layout_width="wrap_content"
-    android:layout_height="50dp"
-    android:orientation="horizontal"
-    android:paddingRight="10dp">
+    android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/subject"
-        style="@style/study_center_title_style"
+    <RelativeLayout
+        android:id="@+id/subjectLayout"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:background="@drawable/subject_selector"
-        android:ellipsize="end"
-        android:gravity="center_vertical"
-        android:maxWidth="150dp"
-        android:singleLine="true"
-        android:text="@string/subject1" />
+        android:layout_height="35dp"
+        android:layout_margin="5dp"
+        android:orientation="horizontal"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp">
 
-    <ImageView
-        android:id="@+id/arrow_img"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:padding="10dp"
-        android:src="@drawable/ico_dropdown_black" />
+        <TextView
+            android:id="@+id/subject"
+            style="@style/study_center_title_style"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:maxWidth="150dp"
+            android:singleLine="true"
+            android:text="@string/subject1"
+            android:textColor="@color/text_white"
+            android:background="@drawable/subject_selector"
+            android:paddingRight="35dp"
+            android:paddingLeft="10dp"
+            android:paddingBottom="2dp"
+            android:layout_centerVertical="true"/>
+
+        <ImageView
+            android:id="@+id/arrow_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:padding="10dp"
+            android:paddingRight="0dp"
+            android:src="@drawable/ico_dropdown_black"
+            android:tint="@color/white"
+            android:layout_centerVertical="true"
+            android:layout_alignRight="@+id/subject"/>
+    </RelativeLayout>
 </LinearLayout>
