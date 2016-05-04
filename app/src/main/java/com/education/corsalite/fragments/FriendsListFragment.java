@@ -50,7 +50,6 @@ public class FriendsListFragment extends BaseFragment implements SearchView.OnQu
 
     public FriendsListFragment(){}
 
-
     public static FriendsListFragment newInstance(ChallengeActivity.FriendsListCallback mFriendsListCallback) {
         FriendsListFragment fragment = new FriendsListFragment();
         Bundle args = new Bundle();
@@ -67,19 +66,13 @@ public class FriendsListFragment extends BaseFragment implements SearchView.OnQu
         mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_friends_list);
         mTextViewCancel = (TextView) view.findViewById(R.id.tv_friendlist_cancel);
         mTextViewNext = (TextView) view.findViewById(R.id.tv_friendlist_next);
-
         mRecyclerView.setHasFixedSize(true);
-
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-
         loadFriendsList();
-
         mFriendSearchView.setIconifiedByDefault(false);
-
         mFriendSearchView.setOnQueryTextListener(this);
         mFriendSearchView.setOnCloseListener(this);
-
         mTextViewNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,7 +81,6 @@ public class FriendsListFragment extends BaseFragment implements SearchView.OnQu
                 }
             }
         });
-
         mTextViewCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -190,9 +182,7 @@ public class FriendsListFragment extends BaseFragment implements SearchView.OnQu
         if (friendsData != null && friendsData.friendsList != null) {
             for (FriendsData.Friend friend : friendsData.friendsList) {
                 if (friend.idStudent.equals(LoginUserCache.getInstance().getLongResponse().studentId)) {
-                    if (getActivity() instanceof ChallengeActivity) {
-                        ((ChallengeActivity) getActivity()).mDisplayName = friend.displayName;
-                    }
+                    LoginUserCache.getInstance().loginResponse.displayName = friend.displayName;
                 }
             }
         }

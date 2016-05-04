@@ -43,7 +43,7 @@ public class ChallengeUtils {
     }
 
     private PendingIntent getChallengeRequestIntent(ChallengeTestRequestEvent event) {
-        if(event != null && (TextUtils.isEmpty(event.challengeTestParentId) || TextUtils.isEmpty(event.challengerName))) {
+        if(event != null && TextUtils.isEmpty(event.challengeTestParentId)) {
             return null;
         }
         Intent intent = new Intent(context, ChallengeActivity.class);

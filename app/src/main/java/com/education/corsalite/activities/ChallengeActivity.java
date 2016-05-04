@@ -11,17 +11,22 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.education.corsalite.R;
+import com.education.corsalite.api.ApiCallback;
+import com.education.corsalite.api.ApiManager;
+import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.fragments.ChallengeTestRequestDialogFragment;
 import com.education.corsalite.fragments.FriendsListFragment;
 import com.education.corsalite.fragments.TestSetupFragment;
 import com.education.corsalite.helpers.WebSocketHelper;
 import com.education.corsalite.models.responsemodels.CreateChallengeResponseModel;
 import com.education.corsalite.models.responsemodels.FriendsData;
+import com.education.corsalite.models.responsemodels.UserProfileResponse;
 import com.education.corsalite.models.socket.requests.NewChallengeTestRequestEvent;
 import com.education.corsalite.models.socket.response.ChallengeTestRequestEvent;
 import com.education.corsalite.models.socket.response.ChallengeTestStartEvent;
 import com.education.corsalite.models.socket.response.ChallengeTestUpdateEvent;
 import com.education.corsalite.utils.Constants;
+import com.education.corsalite.utils.L;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -29,6 +34,7 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
+import retrofit.client.Response;
 
 public class ChallengeActivity extends AbstractBaseActivity {
 
@@ -47,7 +53,6 @@ public class ChallengeActivity extends AbstractBaseActivity {
     @Bind(R.id.player4_txt) TextView player4_txt;
 
     private TestSetupCallback mTestSetupCallback;
-    public String mDisplayName = "";
     public String mChallengeTestId = "";
     public String mTestQuestionPaperId = "";
     public String challengeTestTimeDuration = "";
@@ -59,6 +64,7 @@ public class ChallengeActivity extends AbstractBaseActivity {
         setContentView(R.layout.activity_challenge);
         ButterKnife.bind(this);
         initListeners();
+        fetchDisplayName();
         loadCharecters();
         loadPlayers();
         Bundle bundle = getIntent().getExtras();
@@ -78,6 +84,20 @@ public class ChallengeActivity extends AbstractBaseActivity {
                 ChallengeTestUpdateEvent event = new Gson().fromJson(challengeTestRequestJson, ChallengeTestUpdateEvent.class);
                 showChallengeTestRequestFragment(getRequestEvent(event));
             }
+        }
+    }
+
+    private void fetchDisplayName() {
+        try {
+            ApiManager.getInstance(this).getUserProfile(LoginUserCache.getInstance().loginResponse.studentId,
+                    new ApiCallback<UserProfileResponse>(this) {
+                        @Override
+                        public void success(UserProfileResponse userProfileResponse, Response response) {
+                            LoginUserCache.getInstance().loginResponse.displayName = userProfileResponse.basicProfile.displayName;
+                        }
+                    });
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
         }
     }
 
@@ -178,19 +198,19 @@ public class ChallengeActivity extends AbstractBaseActivity {
         mChallengeTestId = model.challengeTestId;
         mTestQuestionPaperId = model.testQuestionPaperId;
         postChallengeTestStartEvent();
-        showChallengeRequestDialog(mDisplayName, mChallengeTestId);
+        showChallengeRequestDialog(mChallengeTestId);
     }
 
-    private void showChallengeRequestDialog(String challengerName, String chalengeTestParentId) {
+    private void showChallengeRequestDialog(String chalengeTestParentId) {
         ChallengeTestRequestEvent event = new ChallengeTestRequestEvent();
-        event.challengerName = challengerName;
+        event.challengerName = LoginUserCache.getInstance().loginResponse.displayName;
         event.challengeTestParentId = chalengeTestParentId;
         EventBus.getDefault().post(event);
     }
 
     private void postChallengeTestStartEvent() {
         NewChallengeTestRequestEvent event = new NewChallengeTestRequestEvent();
-        event.challengerName = mDisplayName;
+        event.challengerName = LoginUserCache.getInstance().loginResponse.displayName;
         event.challengeTestParentId = mChallengeTestId;
         WebSocketHelper.get(this).sendChallengeTestEvent(event);
     }

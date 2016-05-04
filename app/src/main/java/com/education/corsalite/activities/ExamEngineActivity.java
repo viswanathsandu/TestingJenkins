@@ -861,11 +861,13 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void openChallengeTestResults() {
-        Intent intent = new Intent(ExamEngineActivity.this, ChallengeResultActivity.class);
-        intent.putExtra("challenge_test_id", challengeTestId);
-        intent.putExtra("test_question_paper_id", testQuestionPaperId);
-        startActivity(intent);
-        finish();
+        if(this != null) {
+            Intent intent = new Intent(ExamEngineActivity.this, ChallengeResultActivity.class);
+            intent.putExtra("challenge_test_id", challengeTestId);
+            intent.putExtra("test_question_paper_id", testQuestionPaperId);
+            startActivity(intent);
+            finish();
+        }
     }
 
     private void navigateToExamResultActivity(int totalQuestions, int correct, int wrong) {

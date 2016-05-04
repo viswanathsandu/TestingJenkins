@@ -128,6 +128,7 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
             if(user.idStudent.equals(LoginUserCache.getInstance().getLongResponse().studentId)) {
                 mCurrentUser = user;
                 ((ChallengeActivity)getActivity()).challengeTestTimeDuration = mCurrentUser.duration;
+                LoginUserCache.getInstance().loginResponse.displayName = mCurrentUser.displayName;
                 courseTxt.setText(user.course);
                 subjectTxt.setText(user.subject);
                 chapterTxt.setText(user.chapter);
@@ -203,6 +204,9 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
     public void refreshTest() {
         ChallengeTestUpdateRequestEvent event = new ChallengeTestUpdateRequestEvent();
         event.setChallengeTestRequestEvent(mChallengeTestRequestEvent);
+        if(!TextUtils.isEmpty(event.challengerName) && mCurrentUser != null && !TextUtils.isEmpty(mCurrentUser.displayName)) {
+            event.challengerName = mCurrentUser.displayName;
+        }
         WebSocketHelper.get(getActivity()).sendChallengeUpdateEvent(event);
     }
 

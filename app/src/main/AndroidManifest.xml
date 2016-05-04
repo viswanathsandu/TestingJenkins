@@ -129,6 +129,7 @@
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:hardwareAccelerated="true"
             android:label=""
+            android:launchMode="singleInstance"
             android:theme="@style/UserProfileTheme" />
         <activity
             android:name=".activities.UsageAnalysisActivity"

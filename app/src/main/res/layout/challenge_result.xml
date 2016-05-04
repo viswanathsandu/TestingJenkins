@@ -32,41 +32,37 @@
             android:background="@color/text_red">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Participant"
-                android:textAllCaps="true"
                 android:textColor="@color/text_white"
                 android:gravity="center_horizontal"
                 fontPath="@string/roboto_medium"/>
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="SCORE"
-                android:textAllCaps="true"
+                android:text="Score"
                 android:textColor="@color/text_white"
                 android:gravity="center_horizontal"
                 fontPath="@string/roboto_medium"/>
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Participant"
-                android:textAllCaps="true"
+                android:text="Currency"
                 android:textColor="@color/text_white"
                 android:gravity="center_horizontal"
                 fontPath="@string/roboto_medium"/>
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Participant"
-                android:textAllCaps="true"
+                android:text="Result"
                 android:textColor="@color/text_white"
                 android:gravity="center_horizontal"
                 fontPath="@string/roboto_medium"/>
@@ -96,8 +92,8 @@
             android:layout_marginBottom="30dp"
             android:background="@drawable/button_selector"
             android:backgroundTint="@color/skyblue"
-            android:paddingLeft="5dip"
-            android:paddingRight="5dip"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
             android:text="Challenge history"
             android:textAlignment="center"
             android:textAllCaps="false" />
@@ -109,8 +105,8 @@
             android:layout_marginLeft="10dp"
             android:background="@drawable/button_selector"
             android:backgroundTint="@color/skyblue"
-            android:paddingLeft="5dip"
-            android:paddingRight="5dip"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
             android:text="Exam Summary"
             android:textAlignment="center"
             android:textAllCaps="false" />
@@ -122,8 +118,8 @@
             android:layout_marginLeft="10dp"
             android:background="@drawable/button_selector"
             android:backgroundTint="@color/green"
-            android:paddingLeft="5dip"
-            android:paddingRight="5dip"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
             android:text="Challenge Again"
             android:textAlignment="center"
             android:textAllCaps="false" />
