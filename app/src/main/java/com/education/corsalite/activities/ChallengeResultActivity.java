@@ -60,13 +60,22 @@ public class ChallengeResultActivity extends AbstractBaseActivity {
         RelativeLayout myView = (RelativeLayout) inflater.inflate(R.layout.challenge_result, null);
         frameLayout.addView(myView);
         ButterKnife.bind(this);
+        loadScreen();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        loadScreen();
+    }
+
+    private void loadScreen() {
         challengeTestId = getIntent().getStringExtra("challenge_test_id");
         testQuestionPaperId = getIntent().getStringExtra("test_question_paper_id");
         completeChallengeTest();
         resultsLayout.setVisibility(View.GONE);
         refreshLayout.setVisibility(View.VISIBLE);
     }
-
 
     private void completeChallengeTest() {
         ApiManager.getInstance(this).completeChallengeTest(challengeTestId, testQuestionPaperId, LoginUserCache.getInstance().loginResponse.studentId,

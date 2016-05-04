@@ -259,6 +259,16 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         RelativeLayout myView = (RelativeLayout) inflater.inflate(R.layout.activity_exercise, null);
         frameLayout.addView(myView);
         ButterKnife.bind(this);
+        loadExamEngine();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        loadExamEngine();
+    }
+
+    private void loadExamEngine() {
         toggleSlider();
         initWebView();
         initWebView1();
