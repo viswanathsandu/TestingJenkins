@@ -1342,7 +1342,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         String answersText = getAnswerForGridType(leftLabels, topLabels, checkboxes);
                         localExamModelList.get(selectedPosition).selectedAnswers = answersText;
-                        if(!answersText.isEmpty()) {
+                        if (!answersText.isEmpty()) {
                             testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.ANSWERED.getValue();
                         } else {
                             testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.SKIPPED.getValue();
@@ -1358,8 +1358,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         String answers = "";
         for (int i = 0; i < checkboxes.length; i++) {
             for (int j = 0; j < checkboxes[i].length; j++) {
-                if(checkboxes[i][j].isChecked()) {
-                    answers += (answers.isEmpty() ? "" : ",") + leftLabels[i]+"-"+topLabels[j];
+                if (checkboxes[i][j].isChecked()) {
+                    answers += (answers.isEmpty() ? "" : ",") + leftLabels[i] + "-" + topLabels[j];
                 }
             }
         }
@@ -1368,7 +1368,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
     private void loadAnswersIntoGridType(CheckBox[][] checkboxes, String[] leftLabels, String[] topLabels, String answers) {
         try {
-            if(TextUtils.isEmpty(answers)) {
+            if (TextUtils.isEmpty(answers)) {
                 return;
             }
             List<String> leftLabelsList = Arrays.asList(leftLabels);
@@ -1540,46 +1540,51 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void setAnswerState() {
-        localExamModelList.get(previousQuestionPosition).answerColorSelection = Constants.AnswerState.SKIPPED.getValue();
-        testanswerPaper.testAnswers.get(previousQuestionPosition).status = Constants.AnswerState.SKIPPED.getValue();
-        switch (QuestionType.getQuestionType(localExamModelList.get(previousQuestionPosition).idQuestionType)) {
-            case SINGLE_SELECT_CHOICE:
-            case MULTI_SELECT_CHOICE:
-                if (selectedAnswerPosition != -1) {
-                    localExamModelList.get(previousQuestionPosition).answerColorSelection = Constants.AnswerState.ANSWERED.getValue();
-                    if (testanswerPaper != null && testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty()) {
-                        testanswerPaper.testAnswers.get(previousQuestionPosition).status = Constants.AnswerState.ANSWERED.getValue();
+        try {
+            localExamModelList.get(previousQuestionPosition).answerColorSelection = Constants.AnswerState.SKIPPED.getValue();
+            testanswerPaper.testAnswers.get(previousQuestionPosition).status = Constants.AnswerState.SKIPPED.getValue();
+            switch (QuestionType.getQuestionType(localExamModelList.get(previousQuestionPosition).idQuestionType)) {
+                case SINGLE_SELECT_CHOICE:
+                case MULTI_SELECT_CHOICE:
+                    if (selectedAnswerPosition != -1) {
+                        localExamModelList.get(previousQuestionPosition).answerColorSelection = Constants.AnswerState.ANSWERED.getValue();
+                        if (testanswerPaper != null && testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty()) {
+                            testanswerPaper.testAnswers.get(previousQuestionPosition).status = Constants.AnswerState.ANSWERED.getValue();
+                        }
                     }
-                }
-                break;
-            case FILL_IN_THE_BLANK:
-            case ALPHANUMERIC:
-            case NUMERIC:
-            case N_BLANK_MULTI_SELECT:
-            case N_BLANK_SINGLE_SELECT:
-                if (testanswerPaper != null && testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty() && !TextUtils.isEmpty(testanswerPaper.testAnswers.get(previousQuestionPosition).answerKeyId)) {
-                    testanswerPaper.testAnswers.get(previousQuestionPosition).status = Constants.AnswerState.ANSWERED.getValue();
-                    localExamModelList.get(previousQuestionPosition).answerColorSelection = Constants.AnswerState.ANSWERED.getValue();
-                }
-                break;
-            case FRACTION:
-                break;
-            case GRID:
-                if (testanswerPaper != null && testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty() && !TextUtils.isEmpty(testanswerPaper.testAnswers.get(previousQuestionPosition).answerText)) {
-                    testanswerPaper.testAnswers.get(previousQuestionPosition).status = Constants.AnswerState.ANSWERED.getValue();
-                    localExamModelList.get(previousQuestionPosition).answerColorSelection = Constants.AnswerState.ANSWERED.getValue();
-                }
-                break;
-            case PICK_A_SENTENCE:
-                break;
-            case WORD_PROPERTIES:
-                break;
-            case INVALID:
-                break;
-            default:
-                break;
-        }
+                    break;
+                case FILL_IN_THE_BLANK:
+                case ALPHANUMERIC:
+                case NUMERIC:
+                case N_BLANK_MULTI_SELECT:
+                case N_BLANK_SINGLE_SELECT:
+                    if (testanswerPaper != null && testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty() && !TextUtils.isEmpty(testanswerPaper.testAnswers.get(previousQuestionPosition).answerKeyId)) {
+                        testanswerPaper.testAnswers.get(previousQuestionPosition).status = Constants.AnswerState.ANSWERED.getValue();
+                        localExamModelList.get(previousQuestionPosition).answerColorSelection = Constants.AnswerState.ANSWERED.getValue();
+                    }
+                    break;
+                case FRACTION:
+                    break;
+                case GRID:
+                    if (testanswerPaper != null && testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty() && !TextUtils.isEmpty(testanswerPaper.testAnswers.get(previousQuestionPosition).answerText)) {
+                        testanswerPaper.testAnswers.get(previousQuestionPosition).status = Constants.AnswerState.ANSWERED.getValue();
+                        localExamModelList.get(previousQuestionPosition).answerColorSelection = Constants.AnswerState.ANSWERED.getValue();
+                    }
+                    break;
+                case PICK_A_SENTENCE:
+                    break;
+                case WORD_PROPERTIES:
+                    break;
+                case INVALID:
+                    break;
+                default:
+                    break;
 
+            }
+
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
     }
 
     public class CounterClass extends CountDownTimer {
