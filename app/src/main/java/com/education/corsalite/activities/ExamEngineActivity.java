@@ -1244,20 +1244,27 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     : AbsListView.CHOICE_MODE_MULTIPLE);
             optionsListView.setAdapter(new ArrayAdapter<String>(this,
                     android.R.layout.simple_list_item_multiple_choice, android.R.id.text1, items));
-            optionsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            answerLayout.addView(container);
+        }
+        setupNBlankAnswerLogic(listViews);
+        loadAnswersInToNBlankType(listViews, localExamModelList.get(selectedPosition).selectedAnswers);
+        setExplanationLayout();
+    }
+
+    private void setupNBlankAnswerLogic(final ListView[] listviews) {
+        for(int i=0; i<listviews.length; i++) {
+            listviews[i].setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    String answersText = getAnswerForNBlankType(listViews);
+                    String answersText = getAnswerForNBlankType(listviews);
                     localExamModelList.get(selectedPosition).selectedAnswers = answersText;
-                    testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.ANSWERED.getValue();
+                    testanswerPaper.testAnswers.get(selectedPosition).status = answersText.isEmpty()
+                            ? Constants.AnswerState.SKIPPED.getValue()
+                            : Constants.AnswerState.ANSWERED.getValue();
                     testanswerPaper.testAnswers.get(selectedPosition).answerText = answersText;
                 }
             });
-
-            answerLayout.addView(container);
         }
-        loadAnswersInToNBlankType(listViews, localExamModelList.get(selectedPosition).selectedAnswers);
-        setExplanationLayout();
     }
 
     private void loadAnswersInToNBlankType(ListView[] listviews, String answer) {
@@ -1281,6 +1288,26 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 }
             }
         }
+    }
+
+    private String getAnswerForNBlankType(ListView[] listviews) {
+        String answer = "";
+        for (int i = 0; i < listviews.length; i++) {
+            String blankAnswer = "";
+            SparseBooleanArray checkedItems = listviews[i].getCheckedItemPositions();
+            for (int j = 0; j < checkedItems.size(); j++) {
+                int key = checkedItems.keyAt(j);
+                if (checkedItems.get(key)) {
+                    blankAnswer += blankAnswer.isEmpty() ? "" : ",";
+                    blankAnswer += listviews[i].getItemAtPosition(key);
+                }
+            }
+            if (!blankAnswer.isEmpty()) {
+                answer += answer.isEmpty() ? "" : ":";
+                answer += listviews[i].getTag() + "~" + blankAnswer;
+            }
+        }
+        return answer;
     }
 
     private void loadGridTypeAnswer(int position) {
@@ -1385,26 +1412,6 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         } catch (Exception e) {
             L.error(e.getMessage(), e);
         }
-    }
-
-    private String getAnswerForNBlankType(ListView[] listviews) {
-        String answer = "";
-        for (int i = 0; i < listviews.length; i++) {
-            String blankAnswer = "";
-            SparseBooleanArray checkedItems = listviews[i].getCheckedItemPositions();
-            for (int j = 0; j < checkedItems.size(); j++) {
-                int key = checkedItems.keyAt(j);
-                if (checkedItems.get(key)) {
-                    blankAnswer += blankAnswer.isEmpty() ? "" : ",";
-                    blankAnswer += listviews[i].getItemAtPosition(key);
-                }
-            }
-            if (!blankAnswer.isEmpty()) {
-                answer += answer.isEmpty() ? "" : ":";
-                answer += listviews[i].getTag() + "~" + blankAnswer;
-            }
-        }
-        return answer;
     }
 
     private void clearAnswers() {
@@ -1556,8 +1563,6 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 case FILL_IN_THE_BLANK:
                 case ALPHANUMERIC:
                 case NUMERIC:
-                case N_BLANK_MULTI_SELECT:
-                case N_BLANK_SINGLE_SELECT:
                     if (testanswerPaper != null && testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty() && !TextUtils.isEmpty(testanswerPaper.testAnswers.get(previousQuestionPosition).answerKeyId)) {
                         testanswerPaper.testAnswers.get(previousQuestionPosition).status = Constants.AnswerState.ANSWERED.getValue();
                         localExamModelList.get(previousQuestionPosition).answerColorSelection = Constants.AnswerState.ANSWERED.getValue();
@@ -1565,6 +1570,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     break;
                 case FRACTION:
                     break;
+                case N_BLANK_MULTI_SELECT:
+                case N_BLANK_SINGLE_SELECT:
                 case GRID:
                     if (testanswerPaper != null && testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty() && !TextUtils.isEmpty(testanswerPaper.testAnswers.get(previousQuestionPosition).answerText)) {
                         testanswerPaper.testAnswers.get(previousQuestionPosition).status = Constants.AnswerState.ANSWERED.getValue();
