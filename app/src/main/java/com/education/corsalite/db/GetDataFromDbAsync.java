@@ -30,7 +30,8 @@ public class GetDataFromDbAsync extends AsyncTask<String, Void, List<OfflineCont
         try {
             List<OfflineContent> currentUserResults = new ArrayList<>();
             for (OfflineContent content : responseList) {
-                if (content != null && content.isCurrentUser() && courseId.equals(content.courseId)) {
+                if (content != null && content.isCurrentUser() &&
+                        (courseId == null || courseId.equals(content.courseId))) {
                     currentUserResults.add(content);
                 }
             }

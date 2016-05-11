@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
@@ -18,6 +17,8 @@ import com.education.corsalite.activities.OfflineActivity;
 import com.education.corsalite.activities.VideoActivity;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.db.DbManager;
+import com.education.corsalite.db.SugarDbManager;
+import com.education.corsalite.enums.OfflineContentStatus;
 import com.education.corsalite.holders.IconTreeItemHolder;
 import com.education.corsalite.models.ExerciseOfflineModel;
 import com.education.corsalite.models.db.OfflineContent;
@@ -102,42 +103,28 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
     }
 
     private void getContentIndexResponse(final Course course) {
-        showProgress();
         emptyContentView.setVisibility(View.GONE);
-        DbManager.getInstance(getActivity().getApplicationContext()).getOfflineContentList(AbstractBaseActivity.selectedCourse.courseId + "",
-                new ApiCallback<List<OfflineContent>>(getActivity()) {
-                    @Override
-                    public void failure(CorsaliteError error) {
-                        super.failure(error);
-                        closeProgress();
-                    }
-
-                    @Override
-                    public void success(List<OfflineContent> offlineContentsList, Response response) {
-                        closeProgress();
-                        ArrayList<OfflineContent> offlineContents = new ArrayList<>(offlineContentsList);
-                        String savedData = AppPref.getInstance(getActivity()).getValue("DATA_IN_PROGRESS");
-                        ArrayList<OfflineContent> contents = new Gson().fromJson(savedData, new TypeToken<ArrayList<OfflineContent>>() {
-                        }.getType());
-                        if (contents != null) {
-                            offlineContents.addAll(contents);
-                            getTopicIds(contents);
-                        }
-                        offlineContentList = new ArrayList<>();
-                        for (OfflineContent offlineContent : offlineContents) {
-                            if (offlineContent.courseId.equalsIgnoreCase(course.courseId.toString())) {
-                                offlineContentList.add(offlineContent);
-                            }
-                        }
-                        offlineContentList = getSortedList(offlineContents);
-                        if (offlineContentList != null && !offlineContentList.isEmpty()) {
-                            initNodes();
-                        } else {
-                            mainNodeLayout.removeAllViews();
-                            emptyContentView.setVisibility(View.VISIBLE);
-                        }
-                    }
-                });
+        List<OfflineContent> offlineContents = SugarDbManager.get(getActivity()).getOfflineContents(AbstractBaseActivity.selectedCourse.courseId + "");
+        String savedData = AppPref.getInstance(getActivity()).getValue("DATA_IN_PROGRESS");
+        ArrayList<OfflineContent> contents = new Gson().fromJson(savedData, new TypeToken<ArrayList<OfflineContent>>() {
+        }.getType());
+        if (contents != null) {
+            offlineContents.addAll(contents);
+            getTopicIds(contents);
+        }
+        offlineContentList = new ArrayList<>();
+        for (OfflineContent offlineContent : offlineContents) {
+            if (offlineContent.courseId.equalsIgnoreCase(course.courseId.toString())) {
+                offlineContentList.add(offlineContent);
+            }
+        }
+        offlineContentList = getSortedList(offlineContents);
+        if (offlineContentList != null && !offlineContentList.isEmpty()) {
+            initNodes();
+        } else {
+            mainNodeLayout.removeAllViews();
+            emptyContentView.setVisibility(View.VISIBLE);
+        }
     }
 
     private List<OfflineContent> getSortedList(List<OfflineContent> contents) {
@@ -224,15 +211,21 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
                     break;
                 }
             }
+            boolean showProgress = false;
+            if(offlineContent.status != null &&
+                    (offlineContent.status.equals(OfflineContentStatus.WAITING)
+                            ||  offlineContent.status.equals(OfflineContentStatus.STARTED)
+                            ||  offlineContent.status.equals(OfflineContentStatus.IN_PROGRESS)
+                            ||  offlineContent.status.equals(OfflineContentStatus.FAILED))) {
+                showProgress = true;
+            }
             if (chapterRoot == null) {
-                boolean showProgress = contentIds != null && contentIds.contains(offlineContent.contentId);
                 int icon = getCorrespondingBGColor(offlineContent);
                 chapterRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(icon, offlineContent.chapterName, offlineContent.chapterId, "chapter", showProgress));
                 subjectRoot.addChild(chapterRoot);
             }
 
             TreeNode topicRoot = null;
-            boolean showProgress;
             for (TreeNode topicNode : chapterRoot.getChildren()) {
                 if (((IconTreeItemHolder.IconTreeItem) topicNode.getValue()).id.equalsIgnoreCase(offlineContent.topicId)) {
                     topicRoot = topicNode;
@@ -240,7 +233,6 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
                 }
             }
             if (topicRoot == null) {
-                showProgress = contentIds != null && contentIds.contains(offlineContent.contentId);
                 int icon = getCorrespondingBGColor(offlineContent);
                 topicRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(icon, offlineContent.topicName, offlineContent.topicId, "topic", showProgress));
                 chapterRoot.addChild(topicRoot);
@@ -266,7 +258,6 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
                 }
             }
             if (contentRoot == null) {
-                showProgress = contentIds != null && contentIds.contains(offlineContent.contentId);
                 if (offlineContent.fileName.endsWith(".mpg")) {
                     contentRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_video, offlineContent.fileName, offlineContent.contentId, "content", showProgress));
                 } else if (offlineContent.fileName.endsWith(".html")) {
@@ -362,7 +353,7 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
         new FileUtilities(getActivity()).delete(path);
 
         //Update database
-        DbManager.getInstance(getActivity().getApplicationContext()).deleteOfflineContent(removeList);
+        SugarDbManager.get(getActivity()).deleteOfflineContents(removeList);
 
         //Update treeview
         for (OfflineContent offlineContent : removeList) {
@@ -370,8 +361,9 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
         }
         mainNodeLayout.removeAllViews();
         if (offlineContentList.isEmpty()) {
-            Toast.makeText(getActivity(), "No offline content available ", Toast.LENGTH_SHORT).show();
+            emptyContentView.setVisibility(View.VISIBLE);
         } else {
+            emptyContentView.setVisibility(View.GONE);
             initNodes();
         }
     }
@@ -411,8 +403,8 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
         getActivity().startActivity(intent);
     }
 
-    private void startVideoActivity(String name, String mSubjectName, String mChapterName, String topicName, String contentName) {
-        String folderStructure = name + File.separator + mSubjectName + File.separator + mChapterName + File.separator + topicName;
+    private void startVideoActivity(String courseName, String mSubjectName, String mChapterName, String topicName, String contentName) {
+        String folderStructure = courseName + File.separator + mSubjectName + File.separator + mChapterName + File.separator + topicName;
         File SDCardRoot = Environment.getExternalStorageDirectory();
         File outDir = new File(SDCardRoot.getAbsolutePath() + File.separator + Constants.PARENT_FOLDER + File.separator + folderStructure);
         File file = new File(outDir.getAbsolutePath() + File.separator + Constants.VIDEO_FOLDER);

@@ -3,10 +3,10 @@ package com.education.corsalite.event;
 /**
  * Created by ayushjha on 16/12/15.
  */
-public class OfflineEventClass {
+public class OfflineActivityRefreshEvent {
     public String id;
 
-    public OfflineEventClass(String idContent) {
+    public OfflineActivityRefreshEvent(String idContent) {
         id = idContent;
     }
 }

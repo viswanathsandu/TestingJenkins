@@ -35,7 +35,6 @@ import com.education.corsalite.db.DbManager;
 import com.education.corsalite.event.ContentReadingEvent;
 import com.education.corsalite.event.ExerciseAnsEvent;
 import com.education.corsalite.event.ForumPostingEvent;
-import com.education.corsalite.event.OfflineEventClass;
 import com.education.corsalite.event.TakingTestEvent;
 import com.education.corsalite.event.UpdateUserEvents;
 import com.education.corsalite.fragments.ChallengeTestRequestDialogFragment;
@@ -78,7 +77,6 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     public static int selectedVideoPosition;
-    public static OfflineEventClass offlineEventClass;
     public static Course selectedCourse;
     private List<Course> courses;
     protected Toolbar toolbar;
@@ -642,10 +640,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     // this method will be overridden by the classes that subscribes from event bus
     public void onEvent(Course course) {
         selectedCourse = course;
-    }
-
-    public void onEvent(OfflineEventClass offlineEventClass) {
-        offlineEventClass = offlineEventClass;
     }
 
     public static void saveSessionCookie(Response response) {

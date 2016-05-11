@@ -10,8 +10,10 @@ android {
         applicationId "com.education.corsalite"
         minSdkVersion 15
         targetSdkVersion 20
-        versionCode 9000018
-        versionName "0.18"
+        versionCode 9000019
+        versionName "0.19"
+
+        multiDexEnabled false
     }
     buildTypes {
         release {
@@ -54,7 +56,7 @@ dependencies {
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.github.bumptech.glide:glide:3.6.1'
     compile 'uk.co.chrisjenx:calligraphy:2.1.0'
-    compile 'com.github.satyan:sugar:1.3'
+    compile 'com.github.satyan:sugar:1.5'
     compile 'com.github.bmelnychuk:atv:1.2.+'
     compile 'com.github.johnkil.print:print:1.2.2'
     compile 'de.greenrobot:eventbus:2.4.0'
@@ -63,4 +65,5 @@ dependencies {
     compile 'com.localytics.android:library:3.6.0'
     compile 'com.github.lzyzsd:circleprogress:1.1.0@aar'
     compile 'org.java-websocket:Java-WebSocket:1.3.0'
+    compile 'com.android.support:multidex:1.0.1'
 }

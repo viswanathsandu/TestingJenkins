@@ -10,7 +10,8 @@ import android.view.LayoutInflater;
 import android.widget.RelativeLayout;
 
 import com.education.corsalite.R;
-import com.education.corsalite.event.OfflineEventClass;
+import com.education.corsalite.event.OfflineActivityRefreshEvent;
+import com.education.corsalite.event.RefreshOfflineUiEvent;
 import com.education.corsalite.fragments.OfflineContentFragment;
 import com.education.corsalite.fragments.OfflineTestsFragment;
 import com.education.corsalite.models.responsemodels.Course;
@@ -48,6 +49,13 @@ public class OfflineActivity extends AbstractBaseActivity {
         tabLayout.setupWithViewPager(mViewPager);
     }
 
+    @SuppressWarnings("unused")
+    public void onEvent(RefreshOfflineUiEvent event) {
+        if(mViewPager != null && mViewPager.getAdapter() != null) {
+            mViewPager.getAdapter().notifyDataSetChanged();
+        }
+    }
+
     private void getIntentData(){
         selection = getIntent().getIntExtra("selection", 0);
     }
@@ -71,13 +79,11 @@ public class OfflineActivity extends AbstractBaseActivity {
         }
     }
 
-    @Override
-    public void onEvent(OfflineEventClass offlineEventClass) {
-        L.info("Saved data with this id: "+offlineEventClass.id);
+    public void onEventMainThread(OfflineActivityRefreshEvent offlineActivityRefreshEvent) {
+        L.info("Saved data with this id: "+ offlineActivityRefreshEvent.id);
         if(offlineEventListener!=null) {
-            offlineEventListener.onUpdateOfflineData(offlineEventClass.id);
+            offlineEventListener.onUpdateOfflineData(offlineActivityRefreshEvent.id);
         }
-        super.onEvent(offlineEventClass);
     }
 
     private class OfflineBaseTabAdapter extends FragmentPagerAdapter{

@@ -1,15 +1,11 @@
 package com.education.corsalite.models.db;
 
-import com.education.corsalite.models.responsemodels.BaseResponseModel;
-import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.orm.SugarRecord;
-
-import java.util.List;
 
 /**
  * Created by Girish on 30/09/15.
  */
-public class ContentIndexResponse extends SugarRecord<ContentIndexResponse> {
+public class ContentIndexResponse extends SugarRecord {
     public String contentIndexesJson;
     public String courseId;
     public String studentId;
