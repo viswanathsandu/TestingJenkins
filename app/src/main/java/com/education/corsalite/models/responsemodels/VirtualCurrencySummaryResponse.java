@@ -11,4 +11,7 @@ import java.util.List;
 public class VirtualCurrencySummaryResponse extends BaseResponseModel implements Serializable {
     @SerializedName("VirtualCurrencyTransaction")
     public List<VirtualCurrencyTransaction> virtualCurrencyTransaction;
+
+    public VirtualCurrencySummaryResponse() {
+    }
 }

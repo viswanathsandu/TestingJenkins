@@ -8,4 +8,6 @@ import com.google.gson.annotations.SerializedName;
 public class ChallengeStartResponseModel extends BaseResponseModel {
     @SerializedName("idTestQuestionPaper")
     public String testQuestionPaperId;
+
+    public ChallengeStartResponseModel() {}
 }

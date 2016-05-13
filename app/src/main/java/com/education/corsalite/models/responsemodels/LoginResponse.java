@@ -17,4 +17,6 @@ public class LoginResponse extends BaseResponseModel {
 
     // Is used for challenge test
     public String displayName = "";
+
+    public LoginResponse() {}
 }

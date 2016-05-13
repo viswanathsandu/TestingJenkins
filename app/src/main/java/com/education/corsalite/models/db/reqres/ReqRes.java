@@ -12,6 +12,8 @@ public class ReqRes<T> extends BaseModel{
 
     public T response;
 
+    public ReqRes() {}
+
     public void setResponse(T response) {
         this.response = response;
     }

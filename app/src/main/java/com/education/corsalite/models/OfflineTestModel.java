@@ -24,4 +24,6 @@ public class OfflineTestModel extends BaseModel {
     public BaseTest baseTest;
     public long dateTime;
     public int status = Constants.STATUS_START;
+
+    public OfflineTestModel() {}
 }

@@ -9,4 +9,7 @@ public class PostExamTemplate extends BaseResponseModel {
 
     @SerializedName("idExamTemplate")
     public String idExamTemplate;
+
+    public PostExamTemplate() {
+    }
 }

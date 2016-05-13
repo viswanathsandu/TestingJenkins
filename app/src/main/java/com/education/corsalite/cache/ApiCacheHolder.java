@@ -75,9 +75,9 @@ public class ApiCacheHolder {
         courses.request = new CourseRequest(studentId);
     }
 
-    public void setCoursesResponse(List<Course> response) {
+    public void setCoursesResponse(List<Course> courseList) {
         if(courses != null) {
-            courses.response = response;
+            courses.response = courseList;
         }
     }
 

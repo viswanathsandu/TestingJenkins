@@ -14,4 +14,6 @@ public class ChallengeCompleteResponseModel extends BaseResponseModel {
     public String idTestAnswerPaper;
     @SerializedName("challengeParentId")
     public String challengeTestId;
+
+    public ChallengeCompleteResponseModel() {}
 }

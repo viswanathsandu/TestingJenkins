@@ -31,7 +31,7 @@ import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.db.DbAdapter;
-import com.education.corsalite.db.DbManager;
+import com.education.corsalite.db.SugarDbManager;
 import com.education.corsalite.event.ContentReadingEvent;
 import com.education.corsalite.event.ExerciseAnsEvent;
 import com.education.corsalite.event.ForumPostingEvent;
@@ -85,7 +85,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     protected FrameLayout frameLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     public Dialog dialog;
-    protected DbManager dbManager;
+    protected SugarDbManager dbManager;
     protected AppPref appPref;
     private static List<ExamModel> sharedExamModels;
 
@@ -116,7 +116,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     private void initActivity() {
         DbAdapter.context = this;
-        dbManager = DbManager.getInstance(getApplicationContext());
+        dbManager = SugarDbManager.get(getApplicationContext());
         appPref = AppPref.getInstance(this);
     }
 

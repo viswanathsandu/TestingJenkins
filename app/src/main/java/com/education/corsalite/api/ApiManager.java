@@ -5,7 +5,7 @@ import android.content.res.AssetManager;
 
 import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.config.AppConfig;
-import com.education.corsalite.db.DbManager;
+import com.education.corsalite.db.SugarDbManager;
 import com.education.corsalite.enums.NetworkMode;
 import com.education.corsalite.models.MockTest;
 import com.education.corsalite.models.ScheduledTestList;
@@ -101,7 +101,7 @@ public class ApiManager {
         if (fetchFromDb || !isNetworkConnected()) {
             LoginReqRes reqRes = new LoginReqRes();
             reqRes.request = apiCacheHolder.loginRequest;
-            DbManager.getInstance(context).getResponse(reqRes, callback);
+            SugarDbManager.get(context).getResponse(reqRes, callback);
         } else if (isApiOnline() && isNetworkConnected()) {
             ApiClientService.get().login(loginId, passwordHash, callback);
         }
@@ -118,7 +118,7 @@ public class ApiManager {
         if (isApiOnline() && isNetworkConnected()) {
             ApiClientService.get().getCourses(studentId, callback);
         } else if (!isNetworkConnected()) {
-            DbManager.getInstance(context).getResponse(apiCacheHolder.courses, callback);
+            SugarDbManager.get(context).getResponse(apiCacheHolder.courses, callback);
         }
     }
 
@@ -169,7 +169,7 @@ public class ApiManager {
         if (isApiOnline() && isNetworkConnected()) {
             ApiClientService.get().getUserProfile(studentId, callback);
         } else if (!isNetworkConnected()) {
-            DbManager.getInstance(context).getResponse(apiCacheHolder.userProfile, callback);
+            SugarDbManager.get(context).getResponse(apiCacheHolder.userProfile, callback);
         }
     }
 
@@ -178,7 +178,7 @@ public class ApiManager {
         if (isApiOnline() && isNetworkConnected()) {
             ApiClientService.get().getVirtualCurrencyBalance(studentId, callback);
         } else if (!isNetworkConnected()) {
-            DbManager.getInstance(context).getResponse(apiCacheHolder.virtualCurrencyBalance, callback);
+            SugarDbManager.get(context).getResponse(apiCacheHolder.virtualCurrencyBalance, callback);
         }
     }
 
@@ -207,7 +207,7 @@ public class ApiManager {
         } else if (!isNetworkConnected()) {
             StudyCenterReqRes reqRes = new StudyCenterReqRes();
             reqRes.request = apiCacheHolder.studyCenterRequest;
-            DbManager.getInstance(context).getResponse(reqRes, callback);
+            SugarDbManager.get(context).getResponse(reqRes, callback);
         }
     }
 
@@ -216,7 +216,7 @@ public class ApiManager {
         if (isApiOnline() && isNetworkConnected()) {
             ApiClientService.get().getContentIndexData(courseID, studentId, callback);
         } else if (!isNetworkConnected()) {
-            DbManager.getInstance(context).getResponse(apiCacheHolder.contentIndex, callback);
+            SugarDbManager.get(context).getResponse(apiCacheHolder.contentIndex, callback);
         }
     }
 

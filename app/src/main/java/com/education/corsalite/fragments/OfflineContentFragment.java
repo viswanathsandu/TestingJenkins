@@ -15,14 +15,11 @@ import com.education.corsalite.activities.ContentReadingActivity;
 import com.education.corsalite.activities.ExamEngineActivity;
 import com.education.corsalite.activities.OfflineActivity;
 import com.education.corsalite.activities.VideoActivity;
-import com.education.corsalite.api.ApiCallback;
-import com.education.corsalite.db.DbManager;
 import com.education.corsalite.db.SugarDbManager;
 import com.education.corsalite.enums.OfflineContentStatus;
 import com.education.corsalite.holders.IconTreeItemHolder;
 import com.education.corsalite.models.ExerciseOfflineModel;
 import com.education.corsalite.models.db.OfflineContent;
-import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.utils.AppPref;
 import com.education.corsalite.utils.Constants;
@@ -43,7 +40,6 @@ import java.util.regex.Pattern;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import retrofit.client.Response;
 
 /**
  * Created by Aastha on 28/11/15.
@@ -80,26 +76,9 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
     }
 
     private void getExercises(final Course course) {
-        showProgress();
         emptyContentView.setVisibility(View.GONE);
-        DbManager.getInstance(getActivity().getApplicationContext()).getOfflineExerciseModels(course.courseId + "",
-                new ApiCallback<List<ExerciseOfflineModel>>(getActivity()) {
-                    @Override
-                    public void success(List<ExerciseOfflineModel> exerciseOfflineModels, Response response) {
-                        super.success(exerciseOfflineModels, response);
-                        offlineExercises = exerciseOfflineModels;
-                        closeProgress();
-                        getContentIndexResponse(course);
-                    }
-
-                    @Override
-                    public void failure(CorsaliteError error) {
-                        super.failure(error);
-                        closeProgress();
-                        offlineExercises = null;
-                        getContentIndexResponse(course);
-                    }
-                });
+        getContentIndexResponse(course);
+        offlineExercises = dbManager.getOfflineExerciseModels(course.courseId + "");
     }
 
     private void getContentIndexResponse(final Course course) {

@@ -7,4 +7,7 @@ import java.util.List;
  */
 public class MessageResponse extends BaseResponseModel{
     public List<Message> messages;
+
+    public MessageResponse() {
+    }
 }

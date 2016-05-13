@@ -1,16 +1,16 @@
 package com.education.corsalite.fragments;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.education.corsalite.db.DbManager;
+import com.education.corsalite.db.SugarDbManager;
 import com.education.corsalite.models.socket.response.ResponseEvent;
 
 import de.greenrobot.event.EventBus;
@@ -21,7 +21,7 @@ import de.greenrobot.event.EventBus;
 public abstract class BaseFragment extends Fragment {
     private Dialog dialog;
 
-    protected DbManager dbManager;
+    protected SugarDbManager dbManager;
 
     @Override
     public void onStart() {
@@ -38,7 +38,7 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        dbManager = DbManager.getInstance(getActivity().getApplicationContext());
+        dbManager = SugarDbManager.get(getActivity().getApplicationContext());
     }
 
     public void showToast(String message) {

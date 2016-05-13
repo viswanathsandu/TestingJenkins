@@ -9,4 +9,7 @@ public class PostQuestionPaper extends BaseResponseModel {
 
     @SerializedName("idTestQuestionPaper")
     public String idTestQuestionPaper;
+
+    public PostQuestionPaper() {
+    }
 }

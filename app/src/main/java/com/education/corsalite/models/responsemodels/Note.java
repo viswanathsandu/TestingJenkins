@@ -26,4 +26,7 @@ public class Note extends BaseResponseModel {
     public String idNotes;
     @SerializedName("NoteHtml")
     public String noteHtml;
+
+    public Note() {
+    }
 }

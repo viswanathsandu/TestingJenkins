@@ -18,4 +18,6 @@ public class UsageAnalysis extends BaseResponseModel{
     @SerializedName("pageUsagePercentage")
     public List<Integer> pageUsagePercentageList;
 
+    public UsageAnalysis() {
+    }
 }

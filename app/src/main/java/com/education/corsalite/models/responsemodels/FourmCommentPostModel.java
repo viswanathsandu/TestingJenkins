@@ -12,4 +12,7 @@ public class FourmCommentPostModel extends BaseResponseModel {
     public ForumPost post;
     @SerializedName("postDataReply")
     public List<ForumPost> commentPosts;
+
+    public FourmCommentPostModel() {
+    }
 }
