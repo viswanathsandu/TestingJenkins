@@ -217,16 +217,18 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
                 chapterRoot.addChild(topicRoot);
 
                 // Add exercise as the first item in topic
-                List<ExerciseOfflineModel> addedList = new ArrayList<>();
-                for (ExerciseOfflineModel exercise : offlineExercises) {
-                    if (exercise.topicId.equals(offlineContent.topicId)) {
-                        IconTreeItemHolder.IconTreeItem item = new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_exercise, "Exercise - " + exercise.topicId, exercise.topicId + "-" + exercise.courseId, "Exercise", false);
-                        item.setData(exercise);
-                        addedList.add(exercise);
-                        topicRoot.addChild(new TreeNode(item));
+                if(offlineExercises != null) {
+                    List<ExerciseOfflineModel> addedList = new ArrayList<>();
+                    for (ExerciseOfflineModel exercise : offlineExercises) {
+                        if (exercise.topicId.equals(offlineContent.topicId)) {
+                            IconTreeItemHolder.IconTreeItem item = new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_exercise, "Exercise - " + exercise.topicId, exercise.topicId + "-" + exercise.courseId, "Exercise", false);
+                            item.setData(exercise);
+                            addedList.add(exercise);
+                            topicRoot.addChild(new TreeNode(item));
+                        }
                     }
+                    offlineExercises.removeAll(addedList);
                 }
-                offlineExercises.removeAll(addedList);
             }
 
             TreeNode contentRoot = null;
