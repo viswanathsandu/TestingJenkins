@@ -290,15 +290,12 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
     private void storeDataInDb(String contentId, boolean isVideo) {
         List<OfflineContent> offlineContents = new ArrayList<>();
         OfflineContent offlineContent;
-        /* offlineContent = new OfflineContent(mCourseId, mCourseName, mSubjectId, mSubjectName, mChapterId, mChapterName,
-                topicModel.idTopic, topicModel.topicName, content.idContent, content.name, fileName); */
         offlineContent = new OfflineContent(mCourseId, mCourseName, mSubjectId, mSubjectName, mChapterId, mChapterName,
                 null, null, contentId, null, null);
         offlineContent.status = OfflineContentStatus.WAITING;
         offlineContents.add(offlineContent);
         AppPref.getInstance(SaveForOfflineActivity.this).save("DATA_IN_PROGRESS", null);
         SugarDbManager.get(this).saveOfflineContents(offlineContents);
-//        DbManager.getInstance(getApplicationContext()).saveOfflineContent(offlineContents);
     }
 
     private String getHtmlText(Content content) {

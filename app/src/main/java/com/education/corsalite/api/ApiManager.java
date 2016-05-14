@@ -227,6 +227,14 @@ public class ApiManager {
         }
     }
 
+    public List<Content> getContent(String idContent, String updateTime) {
+        apiCacheHolder.setContentRequest(idContent, updateTime);
+        if (isApiOnline()) {
+            return ApiClientService.get().getContentData(idContent, updateTime);
+        }
+        return new ArrayList<>();
+    }
+
     public void getExercise(String topicId, String courseId, String idStudent, String UpdateTime, ApiCallback<List<ExamModel>> callback) {
         if (isApiOnline()) {
             ApiClientService.get().getExerciseData(topicId, courseId, idStudent, UpdateTime, callback);

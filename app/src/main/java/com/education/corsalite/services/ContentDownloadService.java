@@ -73,34 +73,23 @@ public class ContentDownloadService extends IntentService {
             switch (content.status) {
                 case WAITING:
                 case FAILED:
-                    download(content);
+                    downloadSync(content);
                     break;
             }
         }
     }
 
-    private void download(final OfflineContent content) {
+    private void downloadSync(final OfflineContent content) {
         if (!TextUtils.isEmpty(content.contentId)) {
-            ApiManager.getInstance(this).getContent(content.contentId, "", new ApiCallback<List<Content>>(this) {
-                @Override
-                public void success(List<Content> contents, Response response) {
-                    super.success(contents, response);
-                    if (contents != null && !contents.isEmpty()) {
-                        updateOfflineContent(content, OfflineContentStatus.COMPLETED, contents.get(0));
-                        saveFileToDisk(content, getHtmlText(contents.get(0)), contents.get(0));
-                    } else {
-                        updateOfflineContent(content, OfflineContentStatus.FAILED, null);
-                    }
-                }
-
-                @Override
-                public void failure(CorsaliteError error) {
-                    super.failure(error);
-                    updateOfflineContent(content, OfflineContentStatus.FAILED, null);
-                }
-            });
+            List<Content> contents = ApiManager.getInstance(this).getContent(content.contentId, "");
+            if(contents != null && !contents.isEmpty()) {
+                updateOfflineContent(content, OfflineContentStatus.COMPLETED, contents.get(0));
+                saveFileToDisk(content, getHtmlText(contents.get(0)), contents.get(0));
+            } else {
+                updateOfflineContent(content, OfflineContentStatus.FAILED, null);
+            }
         } else {
-            // Download exercises
+            // download exercise
         }
     }
 
