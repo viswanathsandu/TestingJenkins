@@ -11,7 +11,6 @@ import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.activities.OfflineActivity;
 import com.education.corsalite.adapters.ExpandableListAdapter;
 import com.education.corsalite.api.ApiCallback;
-import com.education.corsalite.db.DbManager;
 import com.education.corsalite.models.OfflineTestModel;
 import com.education.corsalite.models.responsemodels.Course;
 
@@ -64,7 +63,7 @@ public class OfflineTestsFragment extends BaseFragment implements OfflineActivit
     }
 
     private void loadOfflineTests() {
-        DbManager.getInstance(getActivity().getApplicationContext()).getAllOfflineMockTests(AbstractBaseActivity.selectedCourse.courseId + "",
+        dbManager.getAllOfflineMockTests(AbstractBaseActivity.selectedCourse.courseId + "",
                 new ApiCallback<List<OfflineTestModel>>(getActivity()) {
                     @Override
                     public void success(List<OfflineTestModel> offlineTestModels, Response response) {
@@ -126,7 +125,7 @@ public class OfflineTestsFragment extends BaseFragment implements OfflineActivit
     @Override
     public void onDeleteOfflineTest(int position, String tag) {
         if (tag.equalsIgnoreCase("Mock Test")) {
-            DbManager.getInstance(getActivity().getApplicationContext()).deleteOfflineMockTest(mockTestModels.get(position));
+            dbManager.deleteOfflineMockTest(mockTestModels.get(position));
         } else if (tag.equalsIgnoreCase("Scheduled Test")) {
 
         } else if (tag.equalsIgnoreCase("Part Test")) {

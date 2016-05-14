@@ -37,6 +37,7 @@
             android:name="LOCALYTICS_APP_KEY"
             android:value="f34e80c23ff3d6eb90eedbb-e3eaf25c-a34c-11e5-a67e-003e57fecdee" />
 
+        <service android:name=".services.ContentDownloadService" />
         <service android:name=".services.VideoDownloadService" />
         <service android:name=".services.TestDownloadService" />
 

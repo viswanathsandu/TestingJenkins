@@ -9,11 +9,9 @@ public class ContentRequest extends AbstractBaseRequest {
     public String updateTime;
 
     public ContentRequest() {
-        super();
     }
 
     public ContentRequest(String idContents, String updateTime) {
-        super();
         this.idContents = idContents;
         this.updateTime = updateTime;
     }

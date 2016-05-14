@@ -3,15 +3,23 @@ package com.education.corsalite.models.responsemodels;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.db.IDomainEntity;
 import com.education.corsalite.utils.L;
+import com.orm.SugarRecord;
 
 /**
  * Created by vissu on 9/11/15.
  */
-public abstract class BaseModel implements IDomainEntity<BaseModel> {
+public class BaseModel extends SugarRecord implements IDomainEntity<BaseModel> {
     /*
     This is used to determine which user has saved the data
      */
-    private String userId = "";
+    public String userId = "";
+
+    /**
+     * This is specifically used to support lists in Sugar Db
+     */
+    public String reflectionJsonString = "";
+
+    public BaseModel() {}
 
     public void setUserId() {
         try {
@@ -19,10 +27,6 @@ public abstract class BaseModel implements IDomainEntity<BaseModel> {
         } catch (Exception e) {
             L.error(e.getMessage(), e);
         }
-    }
-
-    public String getUserID() {
-        return userId;
     }
 
     public boolean isCurrentUser() {

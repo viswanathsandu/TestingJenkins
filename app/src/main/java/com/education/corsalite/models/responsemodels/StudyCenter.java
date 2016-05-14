@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import com.education.corsalite.utils.Data;
 import com.google.gson.annotations.SerializedName;
+import com.orm.dsl.Ignore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,10 +13,15 @@ public class StudyCenter {
     public String SubjectName;
     public Integer idCourseSubject;
     @SerializedName("Chapters")
+    @Ignore
     public List<Chapter> chapters;
+    @Ignore
     public List<Chapter> redListChapters = new ArrayList<>();
+    @Ignore
     public List<Chapter> amberListChapters = new ArrayList<>();
+    @Ignore
     public List<Chapter> greenListChapters = new ArrayList<>();
+    @Ignore
     public List<Chapter> blueListChapters = new ArrayList<>();
 
     public void resetColoredLists() {

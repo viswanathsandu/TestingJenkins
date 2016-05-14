@@ -65,12 +65,11 @@ public class VideoDownloadService extends IntentService {
             fileOutput.close();
 
         } catch (final MalformedURLException e) {
-            e.printStackTrace();
+            L.error(e.getMessage(), e);
         } catch (final IOException e) {
-            e.printStackTrace();
+            L.error(e.getMessage(), e);
+        } catch (final Exception e) {
+            L.error(e.getMessage(), e);
         }
-        catch (final Exception e) {
-        }
-
     }
 }

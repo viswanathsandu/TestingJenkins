@@ -1,6 +1,7 @@
 package com.education.corsalite.models.responsemodels;
 
 import com.google.gson.annotations.SerializedName;
+import com.orm.dsl.Ignore;
 
 import java.util.List;
 
@@ -10,5 +11,6 @@ import java.util.List;
 public class ChallengeUserListResponse extends BaseModel {
     @SerializedName("idExam")
     public String examId;
+    @Ignore
     public List<ChallengeUser> challengeUsersList;
 }

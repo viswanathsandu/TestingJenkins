@@ -3,6 +3,7 @@ package com.education.corsalite.models.socket.response;
 import android.text.TextUtils;
 
 import com.google.gson.annotations.SerializedName;
+import com.orm.dsl.Ignore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,7 @@ public class UpdateLeaderBoardEvent {
     public String testQuestionPaperId;
     @SerializedName("LeaderBoardTxt")
     public String leaderBoardTxt;
+    @Ignore
     private List<LeaderBoardStudent> students;
 
     public UpdateLeaderBoardEvent(String event, String testQuestionPaperId, String leaderBoardText) {

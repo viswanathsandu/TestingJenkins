@@ -35,6 +35,7 @@ import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.db.DbManager;
+import com.education.corsalite.db.SugarDbManager;
 import com.education.corsalite.event.ContentReadingEvent;
 import com.education.corsalite.fragments.VideoListDialog;
 import com.education.corsalite.models.ChapterModel;
@@ -162,17 +163,9 @@ public class ContentReadingActivity extends AbstractBaseActivity {
     }
 
     private void loadOfflineExercises() {
-        DbManager.getInstance(this).getOfflineExerciseModels(AbstractBaseActivity.selectedCourse.courseId + "",
-                new ApiCallback<List<ExerciseOfflineModel>>(this) {
-                    @Override
-                    public void success(List<ExerciseOfflineModel> exerciseOfflineModels, Response response) {
-                        super.success(exerciseOfflineModels, response);
-                        if(exerciseOfflineModels != null && !exerciseOfflineModels.isEmpty()) {
-                            offlineExercises = exerciseOfflineModels;
-                            showExercise();
-                        }
-                    }
-                });
+        offlineExercises = dbManager.getOfflineExerciseModels(AbstractBaseActivity.selectedCourse.courseId+"");
+        showExercise();
+
     }
 
     @Override

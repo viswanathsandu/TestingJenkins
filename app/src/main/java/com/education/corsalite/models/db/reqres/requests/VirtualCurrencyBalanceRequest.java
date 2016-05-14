@@ -7,12 +7,9 @@ public class VirtualCurrencyBalanceRequest extends AbstractBaseRequest {
 
     public String studentId;
 
-    public VirtualCurrencyBalanceRequest() {
-        super();
-    }
+    public VirtualCurrencyBalanceRequest() {}
 
     public VirtualCurrencyBalanceRequest(String studentId) {
-        super();
         this.studentId = studentId;
     }
 

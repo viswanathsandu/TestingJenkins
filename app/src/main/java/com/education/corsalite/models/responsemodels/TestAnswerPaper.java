@@ -1,6 +1,7 @@
 package com.education.corsalite.models.responsemodels;
 
 import com.google.gson.annotations.SerializedName;
+import com.orm.dsl.Ignore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,7 @@ public class TestAnswerPaper {
     public String endTime;
     @SerializedName("Status")
     public String status;
+    @Ignore
     @SerializedName("testanswers")
     public List<TestAnswer> testAnswers = new ArrayList<>();
 }

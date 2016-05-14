@@ -1,5 +1,6 @@
 package com.education.corsalite.models.db;
 
+import com.education.corsalite.enums.OfflineContentStatus;
 import com.education.corsalite.models.responsemodels.BaseModel;
 
 /**
@@ -23,6 +24,9 @@ public class OfflineContent extends BaseModel {
     public String totalTestedMarks;
     public String scoreAmber;
     public String scoreRed;
+    public OfflineContentStatus status;
+
+    public OfflineContent() {}
 
     public OfflineContent(String courseId, String courseName, String subjectId, String subjectName,
                           String chapterId, String chapterName, String topicId, String topicName,
@@ -53,7 +57,10 @@ public class OfflineContent extends BaseModel {
             return false;
         if (chapterId != null ? !chapterId.equals(that.chapterId) : that.chapterId != null)
             return false;
-        if (topicId != null ? !topicId.equals(that.topicId) : that.topicId != null) return false;
+        if (topicId != null ? !topicId.equals(that.topicId) : that.topicId != null)
+            return false;
+        if(contentId == null && that.contentId == null)
+            return true;
         return !(contentId != null ? !contentId.equals(that.contentId) : that.contentId != null);
 
     }

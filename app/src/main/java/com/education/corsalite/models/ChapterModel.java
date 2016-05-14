@@ -2,6 +2,7 @@ package com.education.corsalite.models;
 
 import com.education.corsalite.models.responsemodels.BaseModel;
 import com.google.gson.annotations.SerializedName;
+import com.orm.dsl.Ignore;
 
 import java.io.Serializable;
 import java.util.List;
@@ -20,6 +21,7 @@ public class ChapterModel extends BaseModel implements Comparable<ChapterModel>,
     @SerializedName("ChapterSortOrder")
     public String chapterSortOrder;
 
+    @Ignore
     @SerializedName("topics")
     public List<TopicModel> topicMap;
 

@@ -2,6 +2,7 @@ package com.education.corsalite.app;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.multidex.MultiDex;
 
 import com.crashlytics.android.Crashlytics;
 import com.education.corsalite.R;
@@ -58,6 +59,7 @@ public class CorsaliteApplication extends com.orm.SugarApp {
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         loadFonts();
+        MultiDex.install(this);
     }
 
     private void loadFonts() {

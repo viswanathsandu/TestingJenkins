@@ -2,6 +2,7 @@ package com.education.corsalite.models.requestmodels;
 
 import com.education.corsalite.models.responsemodels.ExamDetail;
 import com.google.gson.annotations.SerializedName;
+import com.orm.dsl.Ignore;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ public class ExamDetailsRequest {
     public String updateTime;
     @SerializedName("idStudent")
     public String studentId;
+    @Ignore
     @SerializedName("ExamDetails")
     public List<ExamDetail> examDetails;
 

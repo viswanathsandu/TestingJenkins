@@ -40,6 +40,7 @@ import com.education.corsalite.models.responsemodels.UserProfileResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencyBalanceResponse;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.L;
+import com.education.corsalite.utils.SystemUtils;
 import com.education.corsalite.utils.WebUrls;
 import com.google.gson.Gson;
 
@@ -118,8 +119,12 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
         coursesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                coursesSpinner.performClick();
-                coursesSpinnerCLicked = true;
+                if(SystemUtils.isNetworkConnected(getActivity())) {
+                    coursesSpinner.performClick();
+                    coursesSpinnerCLicked = true;
+                } else {
+                    showToast("Default course can not be changed in offline");
+                }
             }
         });
         enrolledCoursesTxt.setOnClickListener(new View.OnClickListener() {

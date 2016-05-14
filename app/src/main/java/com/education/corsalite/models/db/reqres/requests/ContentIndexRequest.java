@@ -9,7 +9,6 @@ public class ContentIndexRequest extends AbstractBaseRequest {
     public String courseId;
 
     public ContentIndexRequest() {
-        super();
     }
 
     public ContentIndexRequest(String studentId, String courseId) {

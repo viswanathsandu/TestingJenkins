@@ -8,7 +8,7 @@ import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.db.DbManager;
+import com.education.corsalite.db.SugarDbManager;
 import com.education.corsalite.enums.Tests;
 import com.education.corsalite.helpers.ExamEngineHelper;
 import com.education.corsalite.listener.OnExamLoadCallback;
@@ -99,7 +99,7 @@ public class TestDownloadService extends IntentService {
                         super.success(examModels, response);
                         if(examModels != null && !examModels.isEmpty()) {
                             model.questions = examModels;
-                            DbManager.getInstance(getApplicationContext()).saveOfflineExerciseTest(model);
+                            SugarDbManager.get(getApplicationContext()).saveOfflineExerciseTest(model);
                         }
                     }
                 });
@@ -129,7 +129,7 @@ public class TestDownloadService extends IntentService {
                             model.testQuestionPaperId = testQuestionPaperId;
                             model.testAnswerPaperId = testAnswerPaperId;
                             model.dateTime = System.currentTimeMillis();
-                            DbManager.getInstance(getApplicationContext()).saveOfflineTest(model);
+                            SugarDbManager.get(getApplicationContext()).saveOfflineTest(model);
                         }
                     });
         } catch (Exception e) {
@@ -146,7 +146,7 @@ public class TestDownloadService extends IntentService {
                 model.testType = Tests.CHAPTER;
                 model.baseTest = test;
                 model.dateTime = System.currentTimeMillis();
-                DbManager.getInstance(TestDownloadService.this).saveOfflineTest(model);
+                SugarDbManager.get(TestDownloadService.this).saveOfflineTest(model);
             }
 
             @Override
@@ -168,7 +168,7 @@ public class TestDownloadService extends IntentService {
                     model.baseTest.subjectName = subjectName;
                 }
                 model.dateTime = System.currentTimeMillis();
-                DbManager.getInstance(TestDownloadService.this).saveOfflineTest(model);
+                SugarDbManager.get(TestDownloadService.this).saveOfflineTest(model);
                 L.info("Test Saved : "+model.getClass());
             }
 

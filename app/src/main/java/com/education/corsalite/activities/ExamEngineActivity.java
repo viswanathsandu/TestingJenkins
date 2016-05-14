@@ -758,7 +758,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
                 } else if (state == TestanswerPaperState.SUSPENDED) {
                     showToast("Exam has been suspended");
-                    DbManager.getInstance(ExamEngineActivity.this).updateOfflineTestModel(offlineModelDate, Constants.STATUS_SUSPENDED, System.currentTimeMillis());
+                    dbManager.updateOfflineTestModel(offlineModelDate, Constants.STATUS_SUSPENDED, System.currentTimeMillis());
                     finish();
                 } else if (state == TestanswerPaperState.COMPLETED) {
                     headerProgress.setVisibility(View.GONE);
@@ -768,7 +768,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     } else if (testAnswerPaperResponse != null && !TextUtils.isEmpty(testAnswerPaperResponse.testAnswerPaperId)) {
                         openAdvancedExamResultSummary(testAnswerPaperResponse.testAnswerPaperId);
                     }
-                    DbManager.getInstance(ExamEngineActivity.this).updateOfflineTestModel(offlineModelDate, Constants.STATUS_COMPLETED, System.currentTimeMillis());
+                    dbManager.updateOfflineTestModel(offlineModelDate, Constants.STATUS_COMPLETED, System.currentTimeMillis());
                 }
             }
         });
@@ -1892,7 +1892,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void loadOfflineMockTest(MockTest model) {
-        DbManager.getInstance(getApplicationContext()).getAllExamModels(AbstractBaseActivity.selectedCourse.courseId + "", model, new ApiCallback<OfflineTestModel>(this) {
+        dbManager.getAllExamModels(AbstractBaseActivity.selectedCourse.courseId + "", model, new ApiCallback<OfflineTestModel>(this) {
             @Override
             public void success(OfflineTestModel offlineModel, Response response) {
                 super.success(offlineModel, response);
@@ -1905,7 +1905,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void loadOfflineScheduledTest(ScheduledTestList.ScheduledTestsArray model) {
-        DbManager.getInstance(getApplicationContext()).getAllExamModels(AbstractBaseActivity.selectedCourse.courseId + "", model, new ApiCallback<List<ExamModel>>(this) {
+        dbManager.getAllExamModels(AbstractBaseActivity.selectedCourse.courseId + "", model, new ApiCallback<List<ExamModel>>(this) {
             @Override
             public void success(List<ExamModel> examModels, Response response) {
                 super.success(examModels, response);
@@ -1931,7 +1931,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void loadOfflineDefaultExam() {
-        DbManager.getInstance(this).getAllExamModels(AbstractBaseActivity.selectedCourse.courseId + "", subjectId, new ApiCallback<BaseTest>(this) {
+        dbManager.getAllExamModels(AbstractBaseActivity.selectedCourse.courseId + "", subjectId, new ApiCallback<BaseTest>(this) {
             @Override
             public void success(BaseTest baseTest, Response response) {
                 super.success(baseTest, response);

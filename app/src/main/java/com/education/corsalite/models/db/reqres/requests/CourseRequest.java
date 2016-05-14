@@ -7,12 +7,9 @@ public class CourseRequest extends AbstractBaseRequest {
 
     public String studentId;
 
-    public CourseRequest() {
-        super();
-    }
+    public CourseRequest() {}
 
     public CourseRequest(String studentId) {
-        super();
         this.studentId = studentId;
     }
 

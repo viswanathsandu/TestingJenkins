@@ -5,7 +5,7 @@ import android.content.res.AssetManager;
 
 import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.config.AppConfig;
-import com.education.corsalite.db.DbManager;
+import com.education.corsalite.db.SugarDbManager;
 import com.education.corsalite.enums.NetworkMode;
 import com.education.corsalite.models.MockTest;
 import com.education.corsalite.models.ScheduledTestList;
@@ -60,17 +60,9 @@ import com.education.corsalite.models.responsemodels.VirtualCurrencyBalanceRespo
 import com.education.corsalite.models.responsemodels.VirtualCurrencySummaryResponse;
 import com.education.corsalite.models.responsemodels.WelcomeDetails;
 import com.education.corsalite.services.ApiClientService;
-import com.education.corsalite.utils.FileUtils;
-import com.education.corsalite.utils.L;
-import com.education.corsalite.utils.MockUtils;
 import com.education.corsalite.utils.SystemUtils;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -109,23 +101,15 @@ public class ApiManager {
         if (fetchFromDb || !isNetworkConnected()) {
             LoginReqRes reqRes = new LoginReqRes();
             reqRes.request = apiCacheHolder.loginRequest;
-            DbManager.getInstance(context).getResponse(reqRes, callback);
+            SugarDbManager.get(context).getResponse(reqRes, callback);
         } else if (isApiOnline() && isNetworkConnected()) {
             ApiClientService.get().login(loginId, passwordHash, callback);
-        } else {
-            String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/login.json");
-            L.info("Response for 'api/login.json' is " + jsonResponse);
-            callback.success(new Gson().fromJson(jsonResponse, LoginResponse.class), MockUtils.getRetrofitResponse());
         }
     }
 
     public void logout(String update, ApiCallback<LogoutResponse> callback) {
         if (isApiOnline()) {
             ApiClientService.get().logout(new TypedString("Update=" + update), callback);
-        } else {
-            String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/logout.json");
-            L.info("Response for 'api/logout.json' is " + jsonResponse);
-            callback.success(new Gson().fromJson(jsonResponse, LogoutResponse.class), MockUtils.getRetrofitResponse());
         }
     }
 
@@ -134,21 +118,13 @@ public class ApiManager {
         if (isApiOnline() && isNetworkConnected()) {
             ApiClientService.get().getCourses(studentId, callback);
         } else if (!isNetworkConnected()) {
-            DbManager.getInstance(context).getResponse(apiCacheHolder.courses, callback);
-        } else {
-            String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/courses.json");
-            L.info("Response for 'api/courses.json' is " + jsonResponse);
-            callback.success(new Gson().fromJson(jsonResponse, List.class), MockUtils.getRetrofitResponse());
+            SugarDbManager.get(context).getResponse(apiCacheHolder.courses, callback);
         }
     }
 
     public void getUsageAnalysis(String userId, ApiCallback<UsageAnalysis> callback) {
         if (isApiOnline()) {
             ApiClientService.get().getUsageAnalysis(userId, callback);
-        } else {
-            String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/usage_analysis.json");
-            L.info("Response for 'api/usage_analysis.json' is " + jsonResponse);
-            callback.success(new Gson().fromJson(jsonResponse, UsageAnalysis.class), MockUtils.getRetrofitResponse());
         }
     }
 
@@ -158,25 +134,7 @@ public class ApiManager {
                                       ApiCallback<List<CourseAnalysis>> callback) {
         if (isApiOnline()) {
             ApiClientService.get().getCourseAnalysis(studentId, courseId, subjectId, groupLevel, breakUpByDate, durationInDays, returnAllRowsWithourPerfData, callback);
-        } else {
-            String jsonResponse = null;
-            if (groupLevel.equalsIgnoreCase("chapter")) {
-                jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/course_analysis_by_chapter.json");
-                L.info("Response for 'api/course_analysis_by_chapter.json' is " + jsonResponse);
-            } else if (groupLevel.equalsIgnoreCase("dates")) {
-                jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/course_analysis_by_date.json");
-                L.info("Response for 'api/course_analysis_by_dates.json' is " + jsonResponse);
-            }
-            JsonParser jsonParser = new JsonParser();
-            JsonArray analyticsarray = jsonParser.parse(jsonResponse).getAsJsonArray();
-            List<CourseAnalysis> courseAnalysisList = new ArrayList<>();
-            for (JsonElement aUser : analyticsarray) {
-                CourseAnalysis courseAnalysis = new Gson().fromJson(aUser, CourseAnalysis.class);
-                courseAnalysisList.add(courseAnalysis);
-            }
-            callback.success(courseAnalysisList, MockUtils.getRetrofitResponse());
         }
-
     }
 
     public void getCourseAnalysisAsPercentile(String studentId, String courseId, String subjectId,
@@ -185,18 +143,6 @@ public class ApiManager {
                                               ApiCallback<List<CourseAnalysisPercentile>> callback) {
         if (isApiOnline()) {
             ApiClientService.get().getCourseAnalysisPercentile(studentId, courseId, subjectId, groupLevel, breakUpByDate, durationInDays, returnAllRowsWithourPerfData, callback);
-        } else {
-            String jsonResponse = null;
-            jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/course_analysis_percentile.json");
-            L.info("Response for 'api/course_analysis_percentile.json' is " + jsonResponse);
-            JsonParser jsonParser = new JsonParser();
-            JsonArray analyticsarray = jsonParser.parse(jsonResponse).getAsJsonArray();
-            List<CourseAnalysisPercentile> courseAnalysisList = new ArrayList<>();
-            for (JsonElement aUser : analyticsarray) {
-                CourseAnalysisPercentile courseAnalysisPercentile = new Gson().fromJson(aUser, CourseAnalysisPercentile.class);
-                courseAnalysisList.add(courseAnalysisPercentile);
-            }
-            callback.success(courseAnalysisList, MockUtils.getRetrofitResponse());
         }
 
     }
@@ -204,17 +150,6 @@ public class ApiManager {
     public void getTestCoverage(String studentId, String courseId, ApiCallback<List<TestCoverage>> callback) {
         if (isApiOnline()) {
             ApiClientService.get().getTestCoverage(studentId, courseId, callback);
-        } else {
-            String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/test_coverage.json");
-            L.info("Response for 'api/test_coverage.json' is " + jsonResponse);
-            JsonParser jsonParser = new JsonParser();
-            JsonArray analyticsarray = jsonParser.parse(jsonResponse).getAsJsonArray();
-            List<TestCoverage> testCoverageList = new ArrayList<>();
-            for (JsonElement aUser : analyticsarray) {
-                TestCoverage testCoverage = new Gson().fromJson(aUser, TestCoverage.class);
-                testCoverageList.add(testCoverage);
-            }
-            callback.success(testCoverageList, MockUtils.getRetrofitResponse());
         }
     }
 
@@ -234,11 +169,7 @@ public class ApiManager {
         if (isApiOnline() && isNetworkConnected()) {
             ApiClientService.get().getUserProfile(studentId, callback);
         } else if (!isNetworkConnected()) {
-            DbManager.getInstance(context).getResponse(apiCacheHolder.userProfile, callback);
-        } else {
-            String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/user_profile.json");
-            L.info("Response for 'api/user_profile.json' is " + jsonResponse);
-            callback.success(new Gson().fromJson(jsonResponse, UserProfileResponse.class), MockUtils.getRetrofitResponse());
+            SugarDbManager.get(context).getResponse(apiCacheHolder.userProfile, callback);
         }
     }
 
@@ -247,41 +178,25 @@ public class ApiManager {
         if (isApiOnline() && isNetworkConnected()) {
             ApiClientService.get().getVirtualCurrencyBalance(studentId, callback);
         } else if (!isNetworkConnected()) {
-            DbManager.getInstance(context).getResponse(apiCacheHolder.virtualCurrencyBalance, callback);
-        } else {
-            String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/virtual_currency_balance.json");
-            L.info("Response for 'api/virtual_currency_balance.json' is " + jsonResponse);
-            callback.success(new Gson().fromJson(jsonResponse, VirtualCurrencyBalanceResponse.class), MockUtils.getRetrofitResponse());
+            SugarDbManager.get(context).getResponse(apiCacheHolder.virtualCurrencyBalance, callback);
         }
     }
 
     public void getVirtualCurrencyTransactions(String studentId, ApiCallback<VirtualCurrencySummaryResponse> callback) {
         if (isApiOnline()) {
             ApiClientService.get().getVirtualCurrencyTransactions(studentId, callback);
-        } else {
-            String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/virtual_currency_summary.json");
-            L.info("Response for 'api/virtual_currency_summary.json' is " + jsonResponse);
-            callback.success(new Gson().fromJson(jsonResponse, VirtualCurrencySummaryResponse.class), MockUtils.getRetrofitResponse());
         }
     }
 
     public void getMessages(String studentId, ApiCallback<List<Message>> callback) {
         if (isApiOnline()) {
             ApiClientService.get().getMessages(studentId, callback);
-        } else {
-            String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/messages.json");
-            L.info("Response for 'api/messages.json' is " + jsonResponse);
-            callback.success(new Gson().fromJson(jsonResponse, List.class), MockUtils.getRetrofitResponse());
         }
     }
 
     public void getExamHistory(String studentId, String beginRowNumber, String numRows, ApiCallback<List<ExamHistory>> callback) {
         if (isApiOnline()) {
             ApiClientService.get().getExamHistory(studentId, beginRowNumber, numRows, callback);
-        } else {
-            String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/exam_history.json");
-            L.info("Response for 'api/exam_history.json' is " + jsonResponse);
-            callback.success(new Gson().fromJson(jsonResponse, List.class), MockUtils.getRetrofitResponse());
         }
     }
 
@@ -292,11 +207,7 @@ public class ApiManager {
         } else if (!isNetworkConnected()) {
             StudyCenterReqRes reqRes = new StudyCenterReqRes();
             reqRes.request = apiCacheHolder.studyCenterRequest;
-            DbManager.getInstance(context).getResponse(reqRes, callback);
-        } else {
-            String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/studycentre.json");
-            System.out.print("Response for 'api/studycentre.json' is " + jsonResponse);
-            callback.success(new Gson().fromJson(jsonResponse, List.class), MockUtils.getRetrofitResponse());
+            SugarDbManager.get(context).getResponse(reqRes, callback);
         }
     }
 
@@ -305,13 +216,7 @@ public class ApiManager {
         if (isApiOnline() && isNetworkConnected()) {
             ApiClientService.get().getContentIndexData(courseID, studentId, callback);
         } else if (!isNetworkConnected()) {
-            DbManager.getInstance(context).getResponse(apiCacheHolder.contentIndex, callback);
-        } else {
-            String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/content_index.json");
-            Type listType = new TypeToken<ArrayList<ContentIndex>>() {
-            }.getType();
-            List<ContentIndex> contentIndexes = new Gson().fromJson(jsonResponse, listType);
-            callback.success(contentIndexes, MockUtils.getRetrofitResponse());
+            SugarDbManager.get(context).getResponse(apiCacheHolder.contentIndex, callback);
         }
     }
 
@@ -319,26 +224,20 @@ public class ApiManager {
         apiCacheHolder.setContentRequest(idContents, UpdateTime);
         if (isApiOnline()) {
             ApiClientService.get().getContentData(idContents, UpdateTime, callback);
-        } else {
-            String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/content_data.json");
-            System.out.print("Response for 'api/content_data.json' is " + jsonResponse);
-            Type listType = new TypeToken<ArrayList<Content>>() {
-            }.getType();
-            List<Content> contents = new Gson().fromJson(jsonResponse, listType);
-            callback.success(contents, MockUtils.getRetrofitResponse());
         }
+    }
+
+    public List<Content> getContent(String idContent, String updateTime) {
+        apiCacheHolder.setContentRequest(idContent, updateTime);
+        if (isApiOnline()) {
+            return ApiClientService.get().getContentData(idContent, updateTime);
+        }
+        return new ArrayList<>();
     }
 
     public void getExercise(String topicId, String courseId, String idStudent, String UpdateTime, ApiCallback<List<ExamModel>> callback) {
         if (isApiOnline()) {
             ApiClientService.get().getExerciseData(topicId, courseId, idStudent, UpdateTime, callback);
-        } else {
-            String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/exercise.json");
-            System.out.print("Response for 'api/exercise.json' is " + jsonResponse);
-            Type listType = new TypeToken<ArrayList<ExamModel>>() {
-            }.getType();
-            List<ExamModel> examModels = new Gson().fromJson(jsonResponse, listType);
-            callback.success(examModels, MockUtils.getRetrofitResponse());
         }
     }
 
@@ -387,13 +286,6 @@ public class ApiManager {
     public void getNotes(String studentId, String mSubjectId, String mChapterId, String mTopicId, ApiCallback<List<Note>> callback) {
         if (isApiOnline()) {
             ApiClientService.get().getNotes(studentId, mSubjectId, mChapterId, mTopicId, callback);
-        } else {
-            String jsonResponse = FileUtils.loadJSONFromAsset(assets, "api/notes.json");
-            System.out.print("Response for 'api/notes.json' is " + jsonResponse);
-            Type listType = new TypeToken<ArrayList<Note>>() {
-            }.getType();
-            List<Note> notes = new Gson().fromJson(jsonResponse, listType);
-            callback.success(notes, MockUtils.getRetrofitResponse());
         }
     }
 

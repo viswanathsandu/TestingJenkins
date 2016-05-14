@@ -19,10 +19,11 @@ import android.widget.Toast;
 import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
-import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.db.DbManager;
-import com.education.corsalite.event.OfflineEventClass;
+import com.education.corsalite.db.SugarDbManager;
+import com.education.corsalite.enums.OfflineContentStatus;
+import com.education.corsalite.event.OfflineActivityRefreshEvent;
+import com.education.corsalite.event.RefreshDownloadsEvent;
 import com.education.corsalite.holders.CheckedItemViewHolder;
 import com.education.corsalite.holders.IconTreeItemHolder;
 import com.education.corsalite.models.ChapterModel;
@@ -35,6 +36,7 @@ import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.services.ApiClientService;
+import com.education.corsalite.services.ContentDownloadService;
 import com.education.corsalite.services.TestDownloadService;
 import com.education.corsalite.services.VideoDownloadService;
 import com.education.corsalite.utils.AppPref;
@@ -51,6 +53,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
+import de.greenrobot.event.EventBus;
 import retrofit.client.Response;
 
 /**
@@ -118,6 +121,7 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
 
     private void loopCheckedViews() {
         offlineExerciseModels = new ArrayList<>();
+        String contentName = "";
         String videoContentId = "";
         String htmlContentId = "";
         if (dialog == null) {
@@ -141,6 +145,7 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
                         ContentModel contentModel = topicModel.contentMap.get(contentCount);
                         if (innerMostNode.isSelected()) {
                             contentText += "\t\t" + innerMostNode.getValue().toString() + "\n";
+                            contentName = contentModel.contentName;
                             if (contentModel.type.equals(Constants.VIDEO_FILE)) {
                                 videoContentId += contentModel.idContent + ",";
                             } else if (contentModel.type.equals(Constants.HTML_FILE)) {
@@ -160,6 +165,7 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
                                     contentModel.contentName
                                             + (contentModel.type.isEmpty() ? "" : ".")
                                             + contentModel.type);
+                            offlineContent.status = OfflineContentStatus.WAITING;
                             offlineContents.add(offlineContent);
                         }
                         contentCount++;
@@ -171,21 +177,21 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
             }
         }
 
-        Collections.sort(offlineContents,                                     //List name ex: ArrayList<AnalyticsModel>
-                new Comparator<OfflineContent>() {                                                                 //Class AnalyticsModel
-                    public int compare(OfflineContent ord1,
-                                       OfflineContent ord2) {
-
+        Collections.sort(offlineContents,
+                new Comparator<OfflineContent>() {
+                    public int compare(OfflineContent ord1, OfflineContent ord2) {
                         return ord1.chapterName.compareToIgnoreCase(ord2.chapterName);
-
                     }
                 });
-
-        AppPref.getInstance(this).save("DATA_IN_PROGRESS", new Gson().toJson(offlineContents));
-        setUpDialogLogic(method(htmlContentId), method(videoContentId));
+        setUpDialogLogic(offlineContents);
     }
 
-    private void setUpDialogLogic(final String htmlContentId, final String videoContentID) {
+    // store the in-progress in db
+    private void storeInProgressItemsInDb(List<OfflineContent> offlineContents) {
+        SugarDbManager.get(this).saveOfflineContents(offlineContents);
+    }
+
+    private void setUpDialogLogic(final List<OfflineContent> offlineContents) {
         dialog.show();
         Button downloadBtn = (Button) dialog.findViewById(R.id.ok);
         Button cancelBtn = (Button) dialog.findViewById(R.id.cancel);
@@ -193,10 +199,13 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
         downloadBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startDownload(htmlContentId.trim(), videoContentID.trim(), exercisesCheckBox.isChecked());
+                storeInProgressItemsInDb(offlineContents);
+                EventBus.getDefault().post(new RefreshDownloadsEvent());
+                startService(new Intent(SaveForOfflineActivity.this, ContentDownloadService.class));
+                dialog.dismiss();
+                finish();
             }
         });
-
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -205,7 +214,7 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
         });
     }
 
-    private void startDownload(String htmlContentId, String videoContentId, boolean downloadExercises) {
+    private void startDownload(String htmlContentId, String videoContentId) {
         String finalContentIds = "";
         if (!htmlContentId.isEmpty()) {
             finalContentIds += htmlContentId;
@@ -221,7 +230,12 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
             Toast.makeText(SaveForOfflineActivity.this, getResources().getString(R.string.select_content_toast), Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(SaveForOfflineActivity.this, getResources().getString(R.string.content_downloaded_toast), Toast.LENGTH_SHORT).show();
-            getContent(finalContentIds);
+            if(!TextUtils.isEmpty(htmlContentId)) {
+                getContent(htmlContentId, false);
+            }
+            if(!TextUtils.isEmpty(videoContentId)) {
+                getContent(videoContentId, true);
+            }
             dialog.dismiss();
             finish();
         }
@@ -240,20 +254,9 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
         return str;
     }
 
-    private void getContent(String contentId) {
-        ApiManager.getInstance(this).getContent(contentId, "", new ApiCallback<List<Content>>(this) {
-            @Override
-            public void failure(CorsaliteError error) {
-                super.failure(error);
-            }
-
-            @Override
-            public void success(List<Content> contents, Response response) {
-                super.success(contents, response);
-                ApiCacheHolder.getInstance().setContentResponse(contents);
-                storeDataInDb(contents);
-            }
-        });
+    private void getContent(String contentId, boolean isVideo) {
+        storeDataInDb(contentId, isVideo);
+        EventBus.getDefault().post(new RefreshDownloadsEvent());
     }
 
     private void saveFileToDisk(final String htmlText, final Content content) {
@@ -268,7 +271,7 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
         } else {
             String htmlUrl = fileUtilities.write(content.name + "." + Constants.HTML_FILE, htmlText, folderStructure);
             if (htmlUrl != null) {
-                getEventbus().post(new OfflineEventClass(content.idContent));
+                getEventbus().post(new OfflineActivityRefreshEvent(content.idContent));
                 showToast(getString(R.string.file_saved));
             } else {
                 showToast(getString(R.string.file_save_failed));
@@ -284,27 +287,15 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
         startService(intent);
     }
 
-    private void storeDataInDb(List<Content> contents) {
-        String fileName = "";
-        List<OfflineContent> offlineContents = new ArrayList<OfflineContent>(contents.size());
+    private void storeDataInDb(String contentId, boolean isVideo) {
+        List<OfflineContent> offlineContents = new ArrayList<>();
         OfflineContent offlineContent;
-        for (Content content : contents) {
-            if (TextUtils.isEmpty(content.type)) {
-                fileName = content.name + ".html";
-            } else if (content.type.equalsIgnoreCase("html")) {
-                fileName = content.name + "." + content.type;
-            } else if (content.type.equalsIgnoreCase("mpg")) {
-                fileName = content.name.replace("./", ApiClientService.getBaseUrl()) + "." + content.type;
-            }
-            TopicModel topicModel = topicModelHashMap.get(content.idContent);
-            offlineContent = new OfflineContent(mCourseId, mCourseName, mSubjectId, mSubjectName,
-                    mChapterId, mChapterName, topicModel.idTopic, topicModel.topicName, content.idContent, content.name, fileName);
-            offlineContents.add(offlineContent);
-            saveFileToDisk(getHtmlText(content), content);
-        }
+        offlineContent = new OfflineContent(mCourseId, mCourseName, mSubjectId, mSubjectName, mChapterId, mChapterName,
+                null, null, contentId, null, null);
+        offlineContent.status = OfflineContentStatus.WAITING;
+        offlineContents.add(offlineContent);
         AppPref.getInstance(SaveForOfflineActivity.this).save("DATA_IN_PROGRESS", null);
-        DbManager.getInstance(getApplicationContext()).saveOfflineContent(offlineContents);
-
+        SugarDbManager.get(this).saveOfflineContents(offlineContents);
     }
 
     private String getHtmlText(Content content) {

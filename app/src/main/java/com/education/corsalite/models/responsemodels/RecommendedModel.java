@@ -27,4 +27,7 @@ public class RecommendedModel extends BaseResponseModel {
     public String accuracy;
     @SerializedName("Speed")
     public String speed;
+
+    public RecommendedModel() {
+    }
 }

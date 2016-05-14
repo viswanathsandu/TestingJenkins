@@ -1,6 +1,7 @@
 package com.education.corsalite.models.requestmodels;
 
 import com.google.gson.annotations.SerializedName;
+import com.orm.dsl.Ignore;
 
 import java.util.List;
 
@@ -27,6 +28,7 @@ public class ExamTemplateConfig {
     public String complexityTo;
     @SerializedName("Duration")
     public String duration = "300";
+    @Ignore
     @SerializedName("ExamTemplateChapter")
     public List<ExamTemplateChapter> examTemplateChapter;
 }
