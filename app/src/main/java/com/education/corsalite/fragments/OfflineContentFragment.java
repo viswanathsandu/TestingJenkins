@@ -21,13 +21,10 @@ import com.education.corsalite.holders.IconTreeItemHolder;
 import com.education.corsalite.models.ExerciseOfflineModel;
 import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.models.responsemodels.Course;
-import com.education.corsalite.utils.AppPref;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.Data;
 import com.education.corsalite.utils.FileUtilities;
 import com.education.corsalite.utils.L;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.unnamed.b.atv.model.TreeNode;
 import com.unnamed.b.atv.view.AndroidTreeView;
 
@@ -83,14 +80,7 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
 
     private void getContentIndexResponse(final Course course) {
         emptyContentView.setVisibility(View.GONE);
-        List<OfflineContent> offlineContents = SugarDbManager.get(getActivity()).getOfflineContents(AbstractBaseActivity.selectedCourse.courseId + "");
-        String savedData = AppPref.getInstance(getActivity()).getValue("DATA_IN_PROGRESS");
-        ArrayList<OfflineContent> contents = new Gson().fromJson(savedData, new TypeToken<ArrayList<OfflineContent>>() {
-        }.getType());
-        if (contents != null) {
-            offlineContents.addAll(contents);
-            getTopicIds(contents);
-        }
+        List<OfflineContent> offlineContents = SugarDbManager.get(getActivity()).getOfflineContents(null);
         offlineContentList = new ArrayList<>();
         for (OfflineContent offlineContent : offlineContents) {
             if (offlineContent.courseId.equalsIgnoreCase(course.courseId.toString())) {
@@ -179,7 +169,7 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
 
             }
             if (subjectRoot == null) {
-                subjectRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_subject_white, offlineContent.subjectName, offlineContent.subjectId, "subject", false));
+                subjectRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_subject_white, offlineContent.subjectName, offlineContent.subjectId, "subject", false, 0));
                 root.addChild(subjectRoot);
             }
 
@@ -200,7 +190,7 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
             }
             if (chapterRoot == null) {
                 int icon = getCorrespondingBGColor(offlineContent);
-                chapterRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(icon, offlineContent.chapterName, offlineContent.chapterId, "chapter", showProgress));
+                chapterRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(icon, offlineContent.chapterName, offlineContent.chapterId, "chapter", showProgress, 0));
                 subjectRoot.addChild(chapterRoot);
             }
 
@@ -213,7 +203,7 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
             }
             if (topicRoot == null) {
                 int icon = getCorrespondingBGColor(offlineContent);
-                topicRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(icon, offlineContent.topicName, offlineContent.topicId, "topic", showProgress));
+                topicRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(icon, offlineContent.topicName, offlineContent.topicId, "topic", showProgress, 0));
                 chapterRoot.addChild(topicRoot);
 
                 // Add exercise as the first item in topic
@@ -221,7 +211,7 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
                     List<ExerciseOfflineModel> addedList = new ArrayList<>();
                     for (ExerciseOfflineModel exercise : offlineExercises) {
                         if (exercise.topicId.equals(offlineContent.topicId)) {
-                            IconTreeItemHolder.IconTreeItem item = new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_exercise, "Exercise - " + exercise.topicId, exercise.topicId + "-" + exercise.courseId, "Exercise", false);
+                            IconTreeItemHolder.IconTreeItem item = new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_exercise, "Exercise - " + exercise.topicId, exercise.topicId + "-" + exercise.courseId, "Exercise", false, 0);
                             item.setData(exercise);
                             addedList.add(exercise);
                             topicRoot.addChild(new TreeNode(item));
@@ -240,9 +230,9 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
             }
             if (contentRoot == null) {
                 if (offlineContent.fileName.endsWith(".mpg")) {
-                    contentRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_video, offlineContent.fileName, offlineContent.contentId, "content", showProgress));
+                    contentRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_video, offlineContent.fileName, offlineContent.contentId, "content", showProgress, offlineContent.progress));
                 } else if (offlineContent.fileName.endsWith(".html")) {
-                    contentRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_topic, offlineContent.fileName, offlineContent.contentId, "content", showProgress));
+                    contentRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_topic, offlineContent.fileName, offlineContent.contentId, "content", showProgress, 0));
                 }
                 topicRoot.addChild(contentRoot);
             }

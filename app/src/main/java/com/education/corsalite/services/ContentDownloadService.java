@@ -2,6 +2,7 @@ package com.education.corsalite.services;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.widget.Toast;
@@ -32,6 +33,11 @@ import com.education.corsalite.models.responsemodels.TestPaperIndex;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.FileUtilities;
 import com.education.corsalite.utils.L;
+import com.thin.downloadmanager.DefaultRetryPolicy;
+import com.thin.downloadmanager.DownloadManager;
+import com.thin.downloadmanager.DownloadRequest;
+import com.thin.downloadmanager.DownloadStatusListenerV1;
+import com.thin.downloadmanager.ThinDownloadManager;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -52,6 +58,7 @@ import retrofit.client.Response;
 public class ContentDownloadService extends IntentService {
 
     private List<OfflineContent> offlineContents = new ArrayList<>();
+    private DownloadManager downloadManager = new ThinDownloadManager();
 
     public ContentDownloadService() {
         super("ContentDownloadService");
@@ -83,10 +90,12 @@ public class ContentDownloadService extends IntentService {
         if (!TextUtils.isEmpty(content.contentId)) {
             List<Content> contents = ApiManager.getInstance(this).getContent(content.contentId, "");
             if(contents != null && !contents.isEmpty()) {
-                updateOfflineContent(content, OfflineContentStatus.COMPLETED, contents.get(0));
+                if(content.fileName.endsWith("html")) {
+                    updateOfflineContent(OfflineContentStatus.COMPLETED, contents.get(0), 100);
+                }
                 saveFileToDisk(content, getHtmlText(contents.get(0)), contents.get(0));
             } else {
-                updateOfflineContent(content, OfflineContentStatus.FAILED, null);
+                updateOfflineContent(OfflineContentStatus.FAILED, null, 0);
             }
         } else {
             // download exercise
@@ -95,13 +104,14 @@ public class ContentDownloadService extends IntentService {
 
     private void saveFileToDisk(OfflineContent offlineContent, final String htmlText, final Content content) {
         FileUtilities fileUtilities = new FileUtilities(this);
-        final String folderStructure = offlineContent.courseName + File.separator + offlineContent.subjectName + File.separator + offlineContent.chapterName + File.separator +
-                offlineContent.contentName + File.separator + offlineContent.topicName;
+        final String folderStructure = offlineContent.courseName + File.separator
+                                        + offlineContent.subjectName + File.separator
+                                        + offlineContent.chapterName + File.separator
+                                        + offlineContent.topicName;
         L.info("File Path : " + folderStructure);
         if (content.type.equalsIgnoreCase(Constants.VIDEO_FILE)) {
-            downloadVideoFile(content.name+"."+content.type,
-                            ApiClientService.getBaseUrl() + htmlText.replaceFirst("./", ""),
-                            folderStructure);
+            String downloadPath = getDestinationPath(content, folderStructure);
+            downloadVideo(content, ApiClientService.getBaseUrl() + htmlText.replaceFirst("./", ""), downloadPath);
         } else if (TextUtils.isEmpty(htmlText) || htmlText.endsWith(Constants.HTML_FILE)) {
             Toast.makeText(this, getString(R.string.file_exists), Toast.LENGTH_SHORT).show();
         } else {
@@ -113,6 +123,61 @@ public class ContentDownloadService extends IntentService {
                 Toast.makeText(this, getString(R.string.file_save_failed), Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private String getDestinationPath(Content content, String folderStructure) {
+        String destinationPath = "";
+        try {
+            File SDCardRoot = Environment.getExternalStorageDirectory();
+            File outDir = new File(SDCardRoot.getAbsolutePath() + File.separator + Constants.PARENT_FOLDER + File.separator + folderStructure);
+            if (!outDir.exists()) {
+                outDir.mkdirs();
+            }
+            File file = new File(outDir.getAbsolutePath() + File.separator + Constants.VIDEO_FOLDER);
+            if (!file.exists())
+                file.mkdir();
+            File newFile = new File(file, content.name + "." + content.type);
+            newFile.createNewFile();
+            destinationPath = newFile.getAbsolutePath();
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+        L.info("Video Downloaing Url : "+destinationPath);
+        return destinationPath;
+    }
+
+    private void downloadVideo(final Content content, String videoUrl, String downloadLocation) {
+        Uri downloadUri = Uri.parse(videoUrl);
+        Uri destinationUri = Uri.parse(downloadLocation);
+        DownloadRequest downloadRequest = new DownloadRequest(downloadUri)
+                .addCustomHeader("Auth-Token", "YourTokenApiKey")
+                .setRetryPolicy(new DefaultRetryPolicy())
+                .setDestinationURI(destinationUri).setPriority(DownloadRequest.Priority.HIGH)
+                .setDownloadContext(getApplicationContext())//Optional
+                .setStatusListener(new DownloadStatusListenerV1() {
+                    int preProgress = -1;
+                    @Override
+                    public void onDownloadComplete(DownloadRequest downloadRequest) {
+                        updateOfflineContent(OfflineContentStatus.COMPLETED, content, 100);
+                        L.info("Downloader : completed");
+                    }
+
+                    @Override
+                    public void onDownloadFailed(DownloadRequest downloadRequest, int errorCode, String errorMessage) {
+                        updateOfflineContent(OfflineContentStatus.FAILED, content, 0);
+                        L.info("Downloader : failed");
+                    }
+
+                    @Override
+                    public void onProgress(DownloadRequest downloadRequest, long totalBytes, long downloadedBytes, int progress) {
+                        if(preProgress != progress) {
+                            updateOfflineContent(OfflineContentStatus.IN_PROGRESS, content, progress);
+                            L.info("Downloader : In progress - "+progress);
+                            preProgress = progress;
+                        }
+                    }
+                });
+        downloadManager.add(downloadRequest);
     }
 
     private void downloadVideoFile(String fileName,String download_file_path,String folderStructure){
@@ -153,29 +218,30 @@ public class ContentDownloadService extends IntentService {
 
     }
 
-    private void updateOfflineContent(OfflineContent offlineContent, OfflineContentStatus status, Content content) {
-        if(offlineContent != null && content != null) {
-            if (!TextUtils.isEmpty(content.idContent) && !TextUtils.isEmpty(offlineContent.contentId) && offlineContent.contentId.equalsIgnoreCase(content.idContent)) {
-                String fileName = "";
-                if (TextUtils.isEmpty(content.type)) {
-                    fileName = content.name + ".html";
-                } else if (content.type.equalsIgnoreCase("html")) {
-                    fileName = content.name + "." + content.type;
-                } else if (content.type.equalsIgnoreCase("mpg")) {
-                    fileName = content.name.replace("./", ApiClientService.getBaseUrl()) + "." + content.type;
-                }
-                if (content != null) {
-                    offlineContent.fileName = fileName;
-                    offlineContent.contentName = content.name;
-                    offlineContent.contentId = content.idContent;
-                }
-                offlineContent.status = status;
-                SugarDbManager.get(getApplicationContext()).saveOfflineContent(offlineContent);
-            }
-        }
-    }
+//    private void updateOfflineContent(OfflineContent offlineContent, OfflineContentStatus status, Content content) {
+//        if(offlineContent != null && content != null) {
+//            if (!TextUtils.isEmpty(content.idContent) && !TextUtils.isEmpty(offlineContent.contentId) && offlineContent.contentId.equalsIgnoreCase(content.idContent)) {
+//                String fileName = "";
+//                if (TextUtils.isEmpty(content.type)) {
+//                    fileName = content.name + ".html";
+//                } else if (content.type.equalsIgnoreCase("html")) {
+//                    fileName = content.name + "." + content.type;
+//                } else if (content.type.equalsIgnoreCase("mpg")) {
+//                    fileName = content.name.replace("./", ApiClientService.getBaseUrl()) + "." + content.type;
+//                }
+//                if (content != null) {
+//                    offlineContent.fileName = fileName;
+//                    offlineContent.contentName = content.name;
+//                    offlineContent.contentId = content.idContent;
+//                }
+//                offlineContent.status = status;
+//                SugarDbManager.get(getApplicationContext()).saveOfflineContent(offlineContent);
+//            }
+//        }
+//    }
 
-    private void updateOfflineContent(final OfflineContentStatus status, final Content content) {
+    private void updateOfflineContent(final OfflineContentStatus status, final Content content, final int progress) {
+        if(content == null) return;
         List<OfflineContent> offlineContents = SugarDbManager.get(this).getOfflineContents(null);
         for (OfflineContent offlineContent : offlineContents) {
             if (!TextUtils.isEmpty(content.idContent) && !TextUtils.isEmpty(offlineContent.contentId) && offlineContent.contentId.equalsIgnoreCase(content.idContent)) {
@@ -191,6 +257,7 @@ public class ContentDownloadService extends IntentService {
                     offlineContent.fileName = fileName;
                     offlineContent.contentName = content.name;
                     offlineContent.contentId = content.idContent;
+                    offlineContent.progress = progress;
                 }
                 offlineContent.status = status;
                 List<OfflineContent> offlineUpdatedContents = new ArrayList<OfflineContent>();

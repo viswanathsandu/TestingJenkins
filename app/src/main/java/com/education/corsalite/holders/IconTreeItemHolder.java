@@ -65,6 +65,7 @@ public class IconTreeItemHolder extends TreeNode.BaseNodeViewHolder<IconTreeItem
         progressBar = (ProgressBar)view.findViewById(R.id.pb_content);
         if(value.showProgress){
             progressBar.setVisibility(View.VISIBLE);
+            progressBar.setProgress(value.progress);
         }else {
             progressBar.setVisibility(View.GONE);
         }
@@ -98,14 +99,16 @@ public class IconTreeItemHolder extends TreeNode.BaseNodeViewHolder<IconTreeItem
         public String text;
         public String id;
         public String tag;
+        public int progress;
         public boolean showProgress;
         public Object data;
 
-        public IconTreeItem(int icon, String text,String id,String tag,boolean showProgress) {
+        public IconTreeItem(int icon, String text,String id,String tag,boolean showProgress, int progress) {
             this.icon = icon;
             this.text = text;
             this.id = id;
             this.tag = tag;
+            this.progress = progress;
             this.showProgress = showProgress;
         }
 
