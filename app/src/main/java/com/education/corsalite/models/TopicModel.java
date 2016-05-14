@@ -2,6 +2,7 @@ package com.education.corsalite.models;
 
 import com.education.corsalite.models.responsemodels.BaseModel;
 import com.google.gson.annotations.SerializedName;
+import com.orm.dsl.Ignore;
 
 import java.io.Serializable;
 import java.util.List;
@@ -18,6 +19,7 @@ public class TopicModel extends BaseModel implements Comparable<TopicModel>, Ser
     public String topicStatus;
     @SerializedName("TopicSortOrder")
     public String topicSortOrder;
+    @Ignore
     @SerializedName("contents")
     public List<ContentModel> contentMap;
     public boolean checked;

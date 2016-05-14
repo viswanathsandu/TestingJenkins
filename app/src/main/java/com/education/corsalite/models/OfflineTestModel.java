@@ -6,6 +6,7 @@ import com.education.corsalite.models.responsemodels.BaseModel;
 import com.education.corsalite.models.responsemodels.ExamModel;
 import com.education.corsalite.models.responsemodels.TestPaperIndex;
 import com.education.corsalite.utils.Constants;
+import com.orm.dsl.Ignore;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ public class OfflineTestModel extends BaseModel {
 
     public Tests testType;
     public MockTest mockTest;
+    @Ignore
     public List<ExamModel> examModels;
     public ScheduledTestList.ScheduledTestsArray scheduledTest;
     public String testQuestionPaperId;

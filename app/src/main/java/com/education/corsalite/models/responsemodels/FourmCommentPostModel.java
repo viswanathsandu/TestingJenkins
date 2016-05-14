@@ -1,6 +1,7 @@
 package com.education.corsalite.models.responsemodels;
 
 import com.google.gson.annotations.SerializedName;
+import com.orm.dsl.Ignore;
 
 import java.util.List;
 
@@ -10,6 +11,7 @@ import java.util.List;
 public class FourmCommentPostModel extends BaseResponseModel {
     @SerializedName("postData")
     public ForumPost post;
+    @Ignore
     @SerializedName("postDataReply")
     public List<ForumPost> commentPosts;
 

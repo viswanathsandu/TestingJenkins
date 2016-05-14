@@ -3,6 +3,7 @@ package com.education.corsalite.models;
 import com.education.corsalite.models.responsemodels.BaseModel;
 import com.education.corsalite.models.responsemodels.ExamModel;
 import com.education.corsalite.utils.L;
+import com.orm.dsl.Ignore;
 
 import java.util.List;
 
@@ -12,6 +13,7 @@ import java.util.List;
 public class ExerciseOfflineModel extends BaseModel {
     public String topicId;
     public String courseId;
+    @Ignore
     public List<ExamModel> questions;
 
     public ExerciseOfflineModel(){}

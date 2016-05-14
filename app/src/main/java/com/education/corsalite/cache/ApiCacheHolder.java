@@ -8,6 +8,7 @@ import com.education.corsalite.models.db.reqres.StudyCenterReqRes;
 import com.education.corsalite.models.db.reqres.UserProfileReqRes;
 import com.education.corsalite.models.db.reqres.VirtualCurrencyBalanceReqRes;
 import com.education.corsalite.models.db.reqres.requests.ContentIndexRequest;
+import com.education.corsalite.models.db.reqres.requests.ContentRequest;
 import com.education.corsalite.models.db.reqres.requests.CourseRequest;
 import com.education.corsalite.models.db.reqres.requests.LoginRequest;
 import com.education.corsalite.models.db.reqres.requests.StudyCenterRequest;
@@ -107,7 +108,7 @@ public class ApiCacheHolder {
 
     public void setContentRequest(String idContents, String updateTime) {
         contentReqIndex = new ContentReqRes();
-        contentReqIndex.request = new ContentIndexRequest(idContents, updateTime);
+        contentReqIndex.request = new ContentRequest(idContents, updateTime);
     }
 
     public void setContentResponse(List<Content> response) {

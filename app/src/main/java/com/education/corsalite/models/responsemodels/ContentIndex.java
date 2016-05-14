@@ -2,6 +2,7 @@ package com.education.corsalite.models.responsemodels;
 
 import com.education.corsalite.models.SubjectModel;
 import com.google.gson.annotations.SerializedName;
+import com.orm.dsl.Ignore;
 
 import java.io.Serializable;
 import java.util.List;
@@ -17,7 +18,7 @@ public class ContentIndex extends BaseModel implements Serializable {
     public String courseName;
     @SerializedName("CourseStatus")
     public String courseStatus;
-
+    @Ignore
     @SerializedName("Subjects")
     public List<SubjectModel> subjectModelList;
 }

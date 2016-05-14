@@ -2,14 +2,15 @@ package com.education.corsalite.models.db.reqres;
 
 import com.education.corsalite.models.db.reqres.requests.AbstractBaseRequest;
 import com.education.corsalite.models.responsemodels.BaseModel;
+import com.orm.dsl.Ignore;
 
 /**
  * Created by vissu on 11/28/15.
  */
-public class ReqRes<T> extends BaseModel{
+public class ReqRes<P extends AbstractBaseRequest, T> extends BaseModel{
 
-    public AbstractBaseRequest request;
-
+    public P request;
+    @Ignore
     public T response;
 
     public ReqRes() {}

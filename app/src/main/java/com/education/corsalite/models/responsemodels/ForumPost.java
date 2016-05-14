@@ -1,6 +1,7 @@
 package com.education.corsalite.models.responsemodels;
 
 import com.google.gson.annotations.SerializedName;
+import com.orm.dsl.Ignore;
 
 import java.util.List;
 
@@ -42,6 +43,7 @@ public class ForumPost {
     public String IsLiked;
     @SerializedName("postData")
     public ForumPost postData;
+    @Ignore
     @SerializedName("postDataReply")
     public List<ForumPost> postDataReplyList;
 

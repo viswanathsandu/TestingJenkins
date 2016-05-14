@@ -2,6 +2,7 @@ package com.education.corsalite.models.responsemodels;
 
 import com.education.corsalite.utils.Constants;
 import com.google.gson.annotations.SerializedName;
+import com.orm.dsl.Ignore;
 
 import java.io.Serializable;
 import java.util.List;
@@ -41,6 +42,7 @@ public class ExamModel extends BaseModel implements Serializable, Comparable {
     public String comment;
     @SerializedName("Complexity")
     public String complexity;
+    @Ignore
     @SerializedName("AnswerChoice")
     public List<AnswerChoiceModel> answerChoice;
     public boolean isFlagged = false;

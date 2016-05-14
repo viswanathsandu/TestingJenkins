@@ -2,11 +2,6 @@ package com.education.corsalite.db;
 
 import android.content.Context;
 
-import com.education.corsalite.api.ApiCallback;
-import com.education.corsalite.models.db.reqres.ReqRes;
-
-import java.util.List;
-
 /**
  * Created by vissu on 9/16/15.
  */
@@ -31,35 +26,35 @@ public class DbManager {
     /**
      * User Profile Db stuff
      */
-    public <T> void saveReqRes(final ReqRes<T> reqres) {
-        if (reqres == null) {
-            return;
-        }
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                synchronized (this) {
-                    List<? extends ReqRes> reqResList = dbService.Get(reqres.getClass());
-                    if (reqResList != null && !reqResList.isEmpty()) {
-                        for (ReqRes reqresItem : reqResList) {
-                            if (reqresItem.isRequestSame(reqres)) {
-                                reqresItem.setUserId();
-                                reqresItem.response = reqres.response;
-                                dbService.Save(reqresItem);
-                                return;
-                            }
-                        }
-                    }
-                    reqres.setUserId();
-                    dbService.Save(reqres);
-                }
-            }
-        }).start();
-    }
-
-    public <T> void getResponse(ReqRes<T> reqres, ApiCallback<T> callback) {
-        new GetFromDbAsync<T>(dbService, reqres, callback).execute();
-    }
+//    public <T> void saveReqRes(final ReqRes<T> reqres) {
+//        if (reqres == null) {
+//            return;
+//        }
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                synchronized (this) {
+//                    List<? extends ReqRes> reqResList = dbService.Get(reqres.getClass());
+//                    if (reqResList != null && !reqResList.isEmpty()) {
+//                        for (ReqRes reqresItem : reqResList) {
+//                            if (reqresItem.isRequestSame(reqres)) {
+//                                reqresItem.setUserId();
+//                                reqresItem.response = reqres.response;
+//                                dbService.Save(reqresItem);
+//                                return;
+//                            }
+//                        }
+//                    }
+//                    reqres.setUserId();
+//                    dbService.Save(reqres);
+//                }
+//            }
+//        }).start();
+//    }
+//
+//    public <T> void getResponse(ReqRes<T> reqres, ApiCallback<T> callback) {
+//        new GetFromDbAsync<T>(dbService, reqres, callback).execute();
+//    }
 
 //    @Deprecated
 //    public void updateOfflineTestModel(final long date, final int status, final long examTakenTime) {

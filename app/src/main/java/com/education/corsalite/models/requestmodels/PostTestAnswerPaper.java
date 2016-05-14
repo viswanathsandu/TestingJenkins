@@ -1,6 +1,7 @@
 package com.education.corsalite.models.requestmodels;
 
 import com.google.gson.annotations.SerializedName;
+import com.orm.dsl.Ignore;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class PostTestAnswerPaper {
     public String endTime;
     @SerializedName("Status")
     public String status;
+    @Ignore
     @SerializedName("testanswers")
     public List<TestAnswers> testAnswersList;
 }
