@@ -13,7 +13,6 @@ import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.services.ApiClientService;
-import com.education.corsalite.services.ContentDownloadService;
 import com.education.corsalite.utils.AppConfig;
 import com.education.corsalite.utils.AppPref;
 
@@ -33,8 +32,6 @@ public class SplashActivity extends AbstractBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         AppConfig.loadAppconfig(SplashActivity.this);
-        // Start download service if its not started
-        startService(new Intent(this, ContentDownloadService.class));
         checkProduction();
         new CountDownTimer(AppConfig.getInstance().getSplashDuration(), 100) {
             @Override

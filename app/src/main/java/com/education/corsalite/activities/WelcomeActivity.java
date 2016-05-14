@@ -20,6 +20,7 @@ import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.responsemodels.WelcomeDetails;
 import com.education.corsalite.services.ApiClientService;
+import com.education.corsalite.services.ContentDownloadService;
 import com.education.corsalite.utils.L;
 
 import butterknife.Bind;
@@ -52,6 +53,8 @@ public class WelcomeActivity extends AbstractBaseActivity implements View.OnClic
         setToolbarForWelcomeScreen();
         setListeners();
         getWelcomeDetails();
+        // Start download service if its not started
+        startService(new Intent(this, ContentDownloadService.class));
     }
 
     private void getWelcomeDetails() {

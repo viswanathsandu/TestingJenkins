@@ -25,6 +25,7 @@ public class OfflineContent extends BaseModel {
     public String scoreAmber;
     public String scoreRed;
     public int progress = 0;
+    public int downloadId;
     public OfflineContentStatus status;
 
     public OfflineContent() {}

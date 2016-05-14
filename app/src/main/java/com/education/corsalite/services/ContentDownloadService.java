@@ -78,6 +78,13 @@ public class ContentDownloadService extends IntentService {
     private void startDownload() {
         for (OfflineContent content : offlineContents) {
             switch (content.status) {
+                case STARTED:
+                case IN_PROGRESS:
+                    if(downloadManager.query(content.downloadId) != DownloadManager.STATUS_SUCCESSFUL
+                            && downloadManager.query(content.downloadId) != DownloadManager.STATUS_RUNNING) {
+                        downloadSync(content);
+                    }
+                    break;
                 case WAITING:
                 case FAILED:
                     downloadSync(content);
@@ -111,7 +118,7 @@ public class ContentDownloadService extends IntentService {
         L.info("File Path : " + folderStructure);
         if (content.type.equalsIgnoreCase(Constants.VIDEO_FILE)) {
             String downloadPath = getDestinationPath(content, folderStructure);
-            downloadVideo(content, ApiClientService.getBaseUrl() + htmlText.replaceFirst("./", ""), downloadPath);
+            downloadVideo(offlineContent, content, ApiClientService.getBaseUrl() + htmlText.replaceFirst("./", ""), downloadPath);
         } else if (TextUtils.isEmpty(htmlText) || htmlText.endsWith(Constants.HTML_FILE)) {
             Toast.makeText(this, getString(R.string.file_exists), Toast.LENGTH_SHORT).show();
         } else {
@@ -146,7 +153,7 @@ public class ContentDownloadService extends IntentService {
         return destinationPath;
     }
 
-    private void downloadVideo(final Content content, String videoUrl, String downloadLocation) {
+    private void downloadVideo(OfflineContent offlineContent, final Content content, String videoUrl, String downloadLocation) {
         Uri downloadUri = Uri.parse(videoUrl);
         Uri destinationUri = Uri.parse(downloadLocation);
         DownloadRequest downloadRequest = new DownloadRequest(downloadUri)
@@ -177,7 +184,7 @@ public class ContentDownloadService extends IntentService {
                         }
                     }
                 });
-        downloadManager.add(downloadRequest);
+        updateDownloadIdForOfflinecontent(offlineContent, downloadManager.add(downloadRequest));
     }
 
     private void downloadVideoFile(String fileName,String download_file_path,String folderStructure){
@@ -239,6 +246,16 @@ public class ContentDownloadService extends IntentService {
 //            }
 //        }
 //    }
+
+    private void updateDownloadIdForOfflinecontent(OfflineContent content, int downloadId) {
+        List<OfflineContent> offlineContents = SugarDbManager.get(this).getOfflineContents(null);
+        for (OfflineContent offlineContent : offlineContents) {
+            if(offlineContent.getId() == content.getId()) {
+                offlineContent.downloadId = downloadId;
+                SugarDbManager.get(getApplicationContext()).saveOfflineContent(offlineContent);
+            }
+        }
+    }
 
     private void updateOfflineContent(final OfflineContentStatus status, final Content content, final int progress) {
         if(content == null) return;
