@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -52,6 +53,8 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
     EditText mNoOfQuestionsEditTxt;
     @Bind(R.id.levels_layout)
     LinearLayout levelsLayout;
+    @Bind(R.id.btn_download)
+    Button downloadButton;
 
     private Bundle mExtras;
     private boolean mIsAdaptiveLearningEnabled;
@@ -94,7 +97,7 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_chapter_test_setup, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_chapter_test_setup, container, false);
         ButterKnife.bind(this, rootView);
         loadLevels();
         getDialog().setTitle("Test Option");
@@ -103,6 +106,7 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 mIsAdaptiveLearningEnabled = isChecked;
+                downloadButton.setVisibility(isChecked ? View.GONE : View.VISIBLE);
             }
         });
         return rootView;
