@@ -78,6 +78,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     public static int selectedVideoPosition;
     public static Course selectedCourse;
+    private static List<ExamModel> sharedExamModels;
     private List<Course> courses;
     protected Toolbar toolbar;
     private NavigationView navigationView;
@@ -87,7 +88,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     public Dialog dialog;
     protected SugarDbManager dbManager;
     protected AppPref appPref;
-    private static List<ExamModel> sharedExamModels;
 
     public List<FriendsData.Friend> selectedFriends = new ArrayList<>();
 
@@ -530,6 +530,9 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                         showToast(getResources().getString(R.string.logout_successful));
                         LoginUserCache.getInstance().clearCache();
                         deleteSessionCookie();
+                        AbstractBaseActivity.selectedCourse = null;
+                        AbstractBaseActivity.selectedVideoPosition= 0;
+                        AbstractBaseActivity.sharedExamModels = null;
                         Intent intent = new Intent(AbstractBaseActivity.this, LoginActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP);
 

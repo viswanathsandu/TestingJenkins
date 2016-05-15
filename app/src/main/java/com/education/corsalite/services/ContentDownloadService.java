@@ -68,6 +68,9 @@ public class ContentDownloadService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         L.info("onHandleIntent called");
         fetchOfflineContents();
+        // TODO : remove it after implementing the content download
+//        downloadContent("https://staging.corsalite.com/v1/webservices/ContentIndex?idStudent=1599&idCourse=10",
+//                "/storage/emulated/0/Corsalite/test_content_download.html");
     }
 
     private void fetchOfflineContents() {
@@ -153,11 +156,45 @@ public class ContentDownloadService extends IntentService {
         return destinationPath;
     }
 
+    // TODO : need to implement it further
+    private void downloadContent(String url, String downloadLocation) {
+        Uri downloadUri = Uri.parse(url);
+        Uri destinationUri = Uri.parse(downloadLocation);
+        DownloadRequest downloadRequest = new DownloadRequest(downloadUri)
+                .addCustomHeader("cookie", ApiClientService.getSetCookie())
+                .addCustomHeader("Accept-Encoding", "gzip")
+                .addCustomHeader("Accept", "application/json")
+                .setRetryPolicy(new DefaultRetryPolicy())
+                .setDestinationURI(destinationUri).setPriority(DownloadRequest.Priority.HIGH)
+                .setDownloadContext(getApplicationContext())//Optional
+                .setStatusListener(new DownloadStatusListenerV1() {
+                    int preProgress = -1;
+                    @Override
+                    public void onDownloadComplete(DownloadRequest downloadRequest) {
+                        L.info("Downloader : completed");
+                    }
+
+                    @Override
+                    public void onDownloadFailed(DownloadRequest downloadRequest, int errorCode, String errorMessage) {
+                        L.info("Downloader : failed with error code : "+errorCode+"\t message : "+errorMessage);
+                    }
+
+                    @Override
+                    public void onProgress(DownloadRequest downloadRequest, long totalBytes, long downloadedBytes, int progress) {
+                        if(preProgress != progress) {
+                            L.info("Downloader : In progress - "+progress);
+                            preProgress = progress;
+                        }
+                    }
+                });
+        downloadManager.add(downloadRequest);
+    }
+
     private void downloadVideo(OfflineContent offlineContent, final Content content, String videoUrl, String downloadLocation) {
         Uri downloadUri = Uri.parse(videoUrl);
         Uri destinationUri = Uri.parse(downloadLocation);
         DownloadRequest downloadRequest = new DownloadRequest(downloadUri)
-                .addCustomHeader("Auth-Token", "YourTokenApiKey")
+                .addCustomHeader("cookie", ApiClientService.getSetCookie())
                 .setRetryPolicy(new DefaultRetryPolicy())
                 .setDestinationURI(destinationUri).setPriority(DownloadRequest.Priority.HIGH)
                 .setDownloadContext(getApplicationContext())//Optional

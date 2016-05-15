@@ -81,8 +81,8 @@ public class SplashActivity extends AbstractBaseActivity {
                 isLoginApiFinished = true;
                 if (error != null && !TextUtils.isEmpty(error.message)) {
                     showToast(error.message);
-                    navigateToNextScreen();
                 }
+                navigateToNextScreen();
             }
 
             @Override
