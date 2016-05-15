@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +45,7 @@ public class PartTestDialog extends BaseDialogFragment {
     @Bind(R.id.tv_all) TextView tvAll;
     @Bind(R.id.parttest_recyclerView) RecyclerView recyclerView;
     @Bind(R.id.checkbox_adaptive_learning) CheckBox catCheckBox;
+    @Bind(R.id.btn_download) Button downloadBtn;
 
     private int idCourseSubject;
     private String subjectName;
@@ -184,5 +186,6 @@ public class PartTestDialog extends BaseDialogFragment {
     @OnCheckedChanged(R.id.checkbox_adaptive_learning)
     public void onCatCheckChanged() {
         mIsAdaptiveTest = catCheckBox.isChecked();
+        downloadBtn.setVisibility(mIsAdaptiveTest ? View.GONE : View.VISIBLE);
     }
 }
