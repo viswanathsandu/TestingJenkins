@@ -25,7 +25,7 @@ import com.education.corsalite.activities.ExamEngineActivity;
 import com.education.corsalite.activities.NotesActivity;
 import com.education.corsalite.activities.OfflineActivity;
 import com.education.corsalite.activities.SaveForOfflineActivity;
-import com.education.corsalite.activities.StudyCentreActivity;
+import com.education.corsalite.activities.StudyCenterActivity;
 import com.education.corsalite.activities.TestStartActivity;
 import com.education.corsalite.enums.Tests;
 import com.education.corsalite.models.responsemodels.Chapter;
@@ -46,11 +46,11 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
     public static final String SUBJECT = "subject";
     private List<Chapter> chapters;
     private String key;
-    private StudyCentreActivity studyCentreActivity;
+    private StudyCenterActivity studyCenterActivity;
 
-    public GridRecyclerAdapter(List<Chapter> chapters, StudyCentreActivity studyCentreActivity, String key) {
+    public GridRecyclerAdapter(List<Chapter> chapters, StudyCenterActivity studyCenterActivity, String key) {
         this.chapters = chapters;
-        this.studyCentreActivity = studyCentreActivity;
+        this.studyCenterActivity = studyCenterActivity;
         this.key = key;
     }
 
@@ -62,7 +62,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
 
     @Override
     public void onBindViewHolder(final StudyCenterSubjectViewHolder holder, final int position) {
-        Resources r = studyCentreActivity.getResources();
+        Resources r = studyCenterActivity.getResources();
         final Chapter chapter = chapters.get(position);
         String label = chapter.chapterName;
         if (chapter.isChapterOffline) {
@@ -77,7 +77,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
             holder.gridLayoutGray.setVisibility(View.GONE);
             holder.textView.setText(label);
             holder.timeSpent.setText(getDateFromMillis(chapter.timeSpent));
-            holder.level.setText(studyCentreActivity.getResources().getString(R.string.level_text) + " " + (chapter.passedComplexity + 1));
+            holder.level.setText(studyCenterActivity.getResources().getString(R.string.level_text) + " " + (chapter.passedComplexity + 1));
             holder.gridLayout.setBackgroundDrawable(getColorDrawable(holder, chapter));
             holder.rootGridLayout.setBackgroundDrawable(getColorDrawable(holder, chapter));
             int totalTopics = Data.getInt(chapter.totalTopics);
@@ -97,11 +97,11 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         } else {
             holder.gridLayoutGray.setVisibility(View.VISIBLE);
             holder.gridLayout.setVisibility(View.GONE);
-            holder.gridLayoutGray.setBackgroundDrawable(studyCentreActivity.getResources().getDrawable(R.drawable.grayshape));
-            holder.rootGridLayout.setBackgroundDrawable(studyCentreActivity.getResources().getDrawable(R.drawable.grayshape));
+            holder.gridLayoutGray.setBackgroundDrawable(studyCenterActivity.getResources().getDrawable(R.drawable.grayshape));
+            holder.rootGridLayout.setBackgroundDrawable(studyCenterActivity.getResources().getDrawable(R.drawable.grayshape));
             holder.textViewGray.setText(label);
             holder.timeSpentGray.setText(getDateFromMillis(chapter.timeSpent));
-            holder.levelGray.setText(studyCentreActivity.getResources().getString(R.string.level_text) + " " + (chapter.passedComplexity + 1));
+            holder.levelGray.setText(studyCenterActivity.getResources().getString(R.string.level_text) + " " + (chapter.passedComplexity + 1));
             int totalTopics = Data.getInt(chapter.totalTopics);
             int completedTopics = Data.getInt(chapter.completedTopics);
             int percentage = (completedTopics != 0)
@@ -114,7 +114,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
             holder.gridLayoutGray.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(studyCentreActivity, studyCentreActivity.getResources().getString(R.string.study_center_offline_click_text), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(studyCenterActivity, studyCenterActivity.getResources().getString(R.string.study_center_offline_click_text), Toast.LENGTH_SHORT).show();
                 }
             });
             holder.timeSpentGray.getCompoundDrawables()[0] = holder.timeSpentGray.getCompoundDrawables()[0].mutate();
@@ -133,7 +133,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
 
     private void getAlertDialog(View v, StudyCenterSubjectViewHolder holder, Chapter chapter) {
         AlertDialog.Builder builder = new AlertDialog.Builder(holder.gridLayout.getContext());
-        LayoutInflater li = (LayoutInflater) studyCentreActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater li = (LayoutInflater) studyCenterActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View dialogView = li.inflate(R.layout.layout_list_item_view_popup, null);
         builder.setView(dialogView);
         AlertDialog dialog = builder.create();
@@ -195,61 +195,61 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
     }
 
     private void startFlaggedQuestionView(Chapter chapter) {
-        Intent exerciseIntent = new Intent(studyCentreActivity, ExamEngineActivity.class);
+        Intent exerciseIntent = new Intent(studyCenterActivity, ExamEngineActivity.class);
 
         exerciseIntent.putExtra(Constants.TEST_TITLE, "Flagged Questions");
         exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
-        exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, studyCentreActivity.getSelectedSubjectId());
+        exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, studyCenterActivity.getSelectedSubjectId());
         exerciseIntent.putExtra(Constants.SELECTED_SUBJECT, key);
         exerciseIntent.putExtra(Constants.SELECTED_CHAPTERID, chapter.idCourseSubjectchapter);
-        studyCentreActivity.startActivity(exerciseIntent);
+        studyCenterActivity.startActivity(exerciseIntent);
     }
 
     private void startTakeTest(Chapter chapter) {
-        if(SystemUtils.isNetworkConnected(studyCentreActivity)) {
-            Intent exerciseIntent = new Intent(studyCentreActivity, TestStartActivity.class);
+        if(SystemUtils.isNetworkConnected(studyCenterActivity)) {
+            Intent exerciseIntent = new Intent(studyCenterActivity, TestStartActivity.class);
             exerciseIntent.putExtra(TestStartActivity.KEY_TEST_TYPE, Tests.CHAPTER.getType());
             exerciseIntent.putExtra(Constants.TEST_TITLE, key);
             exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
-            exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, studyCentreActivity.getSelectedSubjectId());
+            exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, studyCenterActivity.getSelectedSubjectId());
             exerciseIntent.putExtra(Constants.SELECTED_SUBJECT, key);
             exerciseIntent.putExtra(Constants.SELECTED_CHAPTERID, chapter.idCourseSubjectchapter);
             exerciseIntent.putExtra(Constants.SELECTED_CHAPTER_NAME, chapter.chapterName);
             exerciseIntent.putExtra(Constants.LEVEL_CROSSED, chapter.passedComplexity);
             exerciseIntent.putExtra("chapter", new Gson().toJson(chapter));
-            studyCentreActivity.startActivity(exerciseIntent);
+            studyCenterActivity.startActivity(exerciseIntent);
         }else {
-            Intent exerciseIntent = new Intent(studyCentreActivity, OfflineActivity.class);
+            Intent exerciseIntent = new Intent(studyCenterActivity, OfflineActivity.class);
             exerciseIntent.putExtra("selection", 1);
-            studyCentreActivity.startActivity(exerciseIntent);
+            studyCenterActivity.startActivity(exerciseIntent);
         }
 
     }
 
     private void startNotesActivity(Chapter chapter) {
-        Intent intent = new Intent(studyCentreActivity, NotesActivity.class);
+        Intent intent = new Intent(studyCenterActivity, NotesActivity.class);
         putIntentExtras(chapter, intent, COURSE_ID, SUBJECT_ID, CHAPTER_ID);
-        studyCentreActivity.startActivity(intent);
+        studyCenterActivity.startActivity(intent);
     }
 
     private void startOfflineActivity(Chapter chapter) {
-        Intent intent = new Intent(studyCentreActivity, SaveForOfflineActivity.class);
+        Intent intent = new Intent(studyCenterActivity, SaveForOfflineActivity.class);
         putIntentExtras(chapter, intent, COURSE_ID, SUBJECT_ID, CHAPTER_ID);
         intent.putExtra("chapterName", chapter.chapterName);
         intent.putExtra("courseName", AbstractBaseActivity.selectedCourse.name.toString());
         intent.putExtra(SUBJECT, key);
-        studyCentreActivity.startActivity(intent);
+        studyCenterActivity.startActivity(intent);
     }
 
     private void startContentActivity(Chapter chapter) {
-        Intent intent = new Intent(studyCentreActivity, ContentReadingActivity.class);
+        Intent intent = new Intent(studyCenterActivity, ContentReadingActivity.class);
         putIntentExtras(chapter, intent, COURSE_ID, SUBJECT_ID, CHAPTER_ID);
-        studyCentreActivity.startActivity(intent);
+        studyCenterActivity.startActivity(intent);
     }
 
     private void putIntentExtras(Chapter chapter, Intent intent, String courseId, String subjectId, String chapterId) {
         intent.putExtra(courseId, AbstractBaseActivity.selectedCourse.courseId.toString());
-        intent.putExtra(subjectId, studyCentreActivity.getSelectedSubjectId());
+        intent.putExtra(subjectId, studyCenterActivity.getSelectedSubjectId());
         intent.putExtra(chapterId, chapter.idCourseSubjectchapter);
     }
 
@@ -266,13 +266,13 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         double scoreRedPercentage = Data.getInt(chapter.scoreRed) * totalMarks / 100;
         double scoreAmberPercentage = Data.getInt(chapter.scoreAmber) * totalMarks / 100;
         if (earnedMarks == 0 && totalMarks == 0) {
-            return studyCentreActivity.getResources().getDrawable(R.drawable.blueshape);
+            return studyCenterActivity.getResources().getDrawable(R.drawable.blueshape);
         } else if (earnedMarks < scoreRedPercentage) {
-            return studyCentreActivity.getResources().getDrawable(R.drawable.redshape);
+            return studyCenterActivity.getResources().getDrawable(R.drawable.redshape);
         } else if (earnedMarks < scoreAmberPercentage) {
-            return studyCentreActivity.getResources().getDrawable(R.drawable.ambershape);
+            return studyCenterActivity.getResources().getDrawable(R.drawable.ambershape);
         } else {
-            return studyCentreActivity.getResources().getDrawable(R.drawable.greenshape);
+            return studyCenterActivity.getResources().getDrawable(R.drawable.greenshape);
         }
     }
 

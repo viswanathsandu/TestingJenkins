@@ -51,7 +51,7 @@ import retrofit.client.Response;
 /**
  * Created by ayush on 25/09/15.
  */
-public class StudyCentreActivity extends AbstractBaseActivity {
+public class StudyCenterActivity extends AbstractBaseActivity {
 
     private GridRecyclerAdapter mAdapter;
     private RecyclerView recyclerView;
@@ -261,7 +261,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                     public void success(List<StudyCenter> studyCenters, Response response) {
                         super.success(studyCenters, response);
                         progressBar.setVisibility(View.GONE);
-                        if (SystemUtils.isNetworkConnected(StudyCentreActivity.this)) {
+                        if (SystemUtils.isNetworkConnected(StudyCenterActivity.this)) {
                             if (studyCenters != null) {
                                 ApiCacheHolder.getInstance().setStudyCenterResponse(studyCenters);
                                 dbManager.saveReqRes(ApiCacheHolder.getInstance().studyCenter);
@@ -589,7 +589,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
             @Override
             public void onClick(View v) {
                 showList();
-                if (SystemUtils.isNetworkConnected(StudyCentreActivity.this)) {
+                if (SystemUtils.isNetworkConnected(StudyCenterActivity.this)) {
                     if (selectedSubjectTxt != null) {
                         selectedSubjectTxt.setSelected(false);
                     }
@@ -600,7 +600,7 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                         key = text;
                         for (StudyCenter studyCenter : mCourseData.StudyCenter) {
                             if (key.equalsIgnoreCase(studyCenter.SubjectName)) {
-                                StudyCentreActivity.this.studyCenter = studyCenter;
+                                StudyCenterActivity.this.studyCenter = studyCenter;
                                 setUpStudyCentreData(studyCenter);
                                 mAdapter.updateData(getChaptersForSubject(), text);
                                 mAdapter.notifyDataSetChanged();
@@ -619,9 +619,9 @@ public class StudyCentreActivity extends AbstractBaseActivity {
                         key = text;
                         for (StudyCenter studyCenter : mCourseData.StudyCenter) {
                             if (key.equalsIgnoreCase(studyCenter.SubjectName)) {
-                                StudyCentreActivity.this.studyCenter = studyCenter;
+                                StudyCenterActivity.this.studyCenter = studyCenter;
                                 setUpStudyCentreData(studyCenter);
-                                List<OfflineContent> offlineContents = SugarDbManager.get(StudyCentreActivity.this).getOfflineContents(AbstractBaseActivity.selectedCourse.courseId + "");
+                                List<OfflineContent> offlineContents = SugarDbManager.get(StudyCenterActivity.this).getOfflineContents(AbstractBaseActivity.selectedCourse.courseId + "");
                                 for (Chapter chapter : getChaptersForSubject()) {
                                     boolean idMatchFound = false;
                                     for (OfflineContent offlineContent : offlineContents) {

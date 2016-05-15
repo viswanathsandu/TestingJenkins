@@ -89,7 +89,7 @@
             android:label="@string/title_activity_currency"
             android:theme="@style/UserProfileTheme" />
         <activity
-            android:name=".activities.StudyCentreActivity"
+            android:name=".activities.StudyCenterActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="Study Center"
             android:theme="@style/UserProfileTheme" />

@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 
 import com.education.corsalite.activities.CrashHandlerActivity;
-import com.education.corsalite.models.responsemodels.StudyCenter;
+import com.education.corsalite.activities.StudyCenterActivity;
 import com.education.corsalite.services.ApiClientService;
 
 /**
@@ -72,7 +72,7 @@ public class WebUrls {
             if (isHandler(url)) {
                 return new Intent(activity, CrashHandlerActivity.class);
             } else if(isStudyCenter(url)) {
-                return new Intent(activity, StudyCenter.class);
+                return new Intent(activity, StudyCenterActivity.class);
             }
             return null;
         } catch (Exception e) {

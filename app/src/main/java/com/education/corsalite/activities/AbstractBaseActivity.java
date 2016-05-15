@@ -414,7 +414,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     protected void loadStudyCenterScreen() {
-        Intent intent = new Intent(AbstractBaseActivity.this, StudyCentreActivity.class);
+        Intent intent = new Intent(AbstractBaseActivity.this, StudyCenterActivity.class);
         startActivity(intent);
         finish();
     }
