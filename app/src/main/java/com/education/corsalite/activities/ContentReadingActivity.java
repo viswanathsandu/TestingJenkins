@@ -916,6 +916,8 @@ public class ContentReadingActivity extends AbstractBaseActivity {
     private void showExercise() {
         if (AbstractBaseActivity.getSharedExamModels() != null && !AbstractBaseActivity.getSharedExamModels().isEmpty()) {
             ivExercise.setVisibility(View.VISIBLE);
+        } else {
+            ivExercise.setVisibility(View.GONE);
         }
     }
 
