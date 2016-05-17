@@ -35,6 +35,7 @@ import com.education.corsalite.db.SugarDbManager;
 import com.education.corsalite.event.ContentReadingEvent;
 import com.education.corsalite.event.ExerciseAnsEvent;
 import com.education.corsalite.event.ForumPostingEvent;
+import com.education.corsalite.event.NetworkStatusChangeEvent;
 import com.education.corsalite.event.TakingTestEvent;
 import com.education.corsalite.event.UpdateUserEvents;
 import com.education.corsalite.fragments.ChallengeTestRequestDialogFragment;
@@ -118,6 +119,20 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         DbAdapter.context = this;
         dbManager = SugarDbManager.get(getApplicationContext());
         appPref = AppPref.getInstance(this);
+    }
+
+    protected void refreshScreen() {
+        Intent currentIntent = getIntent();
+        finish();
+        startActivity(currentIntent);
+        overridePendingTransition(0, 0);
+    }
+
+    public void onEventMainThread(NetworkStatusChangeEvent event) {
+        showToast(event.isconnected ? "Netowrk connection restored" : "Network connection failure");
+        if(!(this instanceof ExamEngineActivity || this instanceof ChallengeActivity)) {
+            refreshScreen();
+        }
     }
 
     @Override
