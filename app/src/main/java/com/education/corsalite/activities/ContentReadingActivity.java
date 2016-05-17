@@ -34,7 +34,6 @@ import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.db.DbManager;
 import com.education.corsalite.db.SugarDbManager;
 import com.education.corsalite.event.ContentReadingEvent;
 import com.education.corsalite.fragments.VideoListDialog;

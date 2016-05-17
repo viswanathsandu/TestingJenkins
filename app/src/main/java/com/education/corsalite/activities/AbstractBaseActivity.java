@@ -30,7 +30,6 @@ import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.db.DbAdapter;
 import com.education.corsalite.db.SugarDbManager;
 import com.education.corsalite.event.ContentReadingEvent;
 import com.education.corsalite.event.ExerciseAnsEvent;
@@ -116,7 +115,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     private void initActivity() {
-        DbAdapter.context = this;
         dbManager = SugarDbManager.get(getApplicationContext());
         appPref = AppPref.getInstance(this);
     }
