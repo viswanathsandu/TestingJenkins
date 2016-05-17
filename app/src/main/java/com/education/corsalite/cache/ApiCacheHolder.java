@@ -32,14 +32,19 @@ public class ApiCacheHolder {
     private static ApiCacheHolder instance;
 
     public LoginRequest loginRequest = null;
-    public LoginReqRes login;
+    public LoginReqRes login = null;
+    public UserProfileRequest userProfileRequest = null;
     public UserProfileReqRes userProfile;
-    public CoursesReqRes courses;
+    public CourseRequest courseRequest = null;
+    public CoursesReqRes courses = null;
     public StudyCenterRequest studyCenterRequest = null;
-    public StudyCenterReqRes studyCenter;
-    public ContentIndexReqRes contentIndex;
+    public StudyCenterReqRes studyCenter = null;
+    public ContentIndexRequest contentIndexRequest = null;
+    public ContentIndexReqRes contentIndex = null;
+    public ContentRequest contentRequest = null;
     public ContentReqRes contentReqIndex;
-    public VirtualCurrencyBalanceReqRes virtualCurrencyBalance;
+    public VirtualCurrencyBalanceRequest virtualCurrencyBalanceRequest = null;
+    public VirtualCurrencyBalanceReqRes virtualCurrencyBalance = null;
 
     public static ApiCacheHolder getInstance() {
         if(instance == null) {
@@ -61,23 +66,25 @@ public class ApiCacheHolder {
     }
 
     public void setUserProfileRequest(String studentId) {
-        userProfile = new UserProfileReqRes();
-        userProfile.request = new UserProfileRequest(studentId);
+        userProfileRequest = new UserProfileRequest(studentId);
     }
 
     public void setUserProfileRespose(UserProfileResponse response) {
-        if(userProfile != null) {
+        if(userProfileRequest != null && response != null) {
+            userProfile = new UserProfileReqRes();
+            userProfile.request = userProfileRequest;
             userProfile.response = response;
         }
     }
 
     public void setCoursesRequest(String studentId) {
-        courses = new CoursesReqRes();
-        courses.request = new CourseRequest(studentId);
+        courseRequest= new CourseRequest(studentId);
     }
 
     public void setCoursesResponse(List<Course> courseList) {
-        if(courses != null) {
+        if(courseRequest != null && courseList != null) {
+            courses = new CoursesReqRes();
+            courses.request = courseRequest;
             courses.response = courseList;
         }
     }
@@ -96,34 +103,36 @@ public class ApiCacheHolder {
 
 
     public void setContentIndexRequest(String studentId, String courseId) {
-        contentIndex = new ContentIndexReqRes();
-        contentIndex.request = new ContentIndexRequest(studentId, courseId);
+        contentIndexRequest = new ContentIndexRequest(studentId, courseId);
     }
 
     public void setcontentIndexResponse(List<ContentIndex> response) {
-        if(contentIndex != null) {
+        if(contentIndexRequest != null && response != null) {
+            contentIndex = new ContentIndexReqRes();
+            contentIndex.request = contentIndexRequest;
             contentIndex.response = response;
         }
     }
 
     public void setContentRequest(String idContents, String updateTime) {
-        contentReqIndex = new ContentReqRes();
-        contentReqIndex.request = new ContentRequest(idContents, updateTime);
+        contentRequest = new ContentRequest(idContents, updateTime);
     }
 
     public void setContentResponse(List<Content> response) {
-        if(contentReqIndex != null) {
+        if(contentRequest != null && response != null) {
+            contentReqIndex = new ContentReqRes();
+            contentReqIndex.request = contentRequest;
             contentReqIndex.response = response;
         }
     }
 
     public void setVirtualCurrencyBalanceRequest(String studentId) {
-        virtualCurrencyBalance = new VirtualCurrencyBalanceReqRes();
-        virtualCurrencyBalance.request = new VirtualCurrencyBalanceRequest(studentId);
+        virtualCurrencyBalanceRequest = new VirtualCurrencyBalanceRequest(studentId);
     }
 
     public void setVirtualCurrencyBalanceResponse(VirtualCurrencyBalanceResponse response) {
-        if(virtualCurrencyBalance != null) {
+        if(virtualCurrencyBalanceRequest != null && response != null) {
+            virtualCurrencyBalance.request = virtualCurrencyBalanceRequest;
             virtualCurrencyBalance.response = response;
         }
     }

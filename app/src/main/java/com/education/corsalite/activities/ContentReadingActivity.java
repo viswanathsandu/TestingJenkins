@@ -72,32 +72,19 @@ import retrofit.client.Response;
  */
 public class ContentReadingActivity extends AbstractBaseActivity {
 
-    @Bind(R.id.iv_editnotes)
-    ImageView ivEditNotes;
-    @Bind(R.id.iv_forum)
-    ImageView ivForum;
-    @Bind(R.id.webView_content_reading)
-    WebView webviewContentReading;
-    @Bind(R.id.sp_subject)
-    Spinner spSubject;
-    @Bind(R.id.sp_chapter)
-    Spinner spChapter;
-    @Bind(R.id.sp_topic)
-    Spinner spTopic;
-    @Bind(R.id.iv_exercise)
-    ImageView ivExercise;
-    @Bind(R.id.vs_container)
-    ViewSwitcher mViewSwitcher;
-    @Bind(R.id.footer_layout)
-    RelativeLayout webFooter;
-    @Bind(R.id.btn_next)
-    Button btnNext;
-    @Bind(R.id.btn_previous)
-    Button btnPrevious;
-    @Bind(R.id.tv_video)
-    TextView tvVideo;
-    @Bind(R.id.not_available_offline_txt)
-    TextView notAvailableForOfflineTxt;
+    @Bind(R.id.iv_editnotes) ImageView ivEditNotes;
+    @Bind(R.id.iv_forum) ImageView ivForum;
+    @Bind(R.id.webView_content_reading) WebView webviewContentReading;
+    @Bind(R.id.sp_subject) Spinner spSubject;
+    @Bind(R.id.sp_chapter) Spinner spChapter;
+    @Bind(R.id.sp_topic) Spinner spTopic;
+    @Bind(R.id.iv_exercise) ImageView ivExercise;
+    @Bind(R.id.vs_container) ViewSwitcher mViewSwitcher;
+    @Bind(R.id.footer_layout) RelativeLayout webFooter;
+    @Bind(R.id.btn_next) Button btnNext;
+    @Bind(R.id.btn_previous) Button btnPrevious;
+    @Bind(R.id.tv_video) TextView tvVideo;
+    @Bind(R.id.not_available_offline_txt) TextView notAvailableForOfflineTxt;
 
     private List<ContentIndex> contentIndexList;
     private List<SubjectModel> subjectModelList;
@@ -165,7 +152,6 @@ public class ContentReadingActivity extends AbstractBaseActivity {
     private void loadOfflineExercises() {
         offlineExercises = dbManager.getOfflineExerciseModels(AbstractBaseActivity.selectedCourse.courseId+"");
         showExercise();
-
     }
 
     @Override
