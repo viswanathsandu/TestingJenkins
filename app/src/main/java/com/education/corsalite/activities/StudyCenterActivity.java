@@ -452,11 +452,9 @@ public class StudyCenterActivity extends AbstractBaseActivity {
     }
 
     private void setListener(final View v, ImageView imageView, final StudyCenter studyCenter) {
-
-        imageView.setOnClickListener(new View.OnClickListener() {
+        v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 showAlertDialog(v, studyCenter);
             }
         });
