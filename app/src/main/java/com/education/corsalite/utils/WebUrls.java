@@ -22,7 +22,6 @@ public class WebUrls {
     private final static String HANDLER_URL_PATTERN = "handler";
     private final static String STUDY_CENTER_URL_PATTERN = "student";
 
-
     public static String getForgotPasswordUrl() {
         return ApiClientService.getBaseUrl()+FORGOT_PASSWORD_URL;
     }

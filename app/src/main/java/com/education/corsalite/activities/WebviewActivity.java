@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.CookieManager;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
@@ -61,6 +62,7 @@ public class WebviewActivity extends AbstractBaseActivity {
         if (!TextUtils.isEmpty(pageUrl)) {
             webview.getSettings().setJavaScriptEnabled(true);
             webview.setWebViewClient(new MyWebViewClient());
+            webview.setWebChromeClient(new WebChromeClient());
             webview.loadUrl(getUrlWithNoHeadersAndFooters(pageUrl));
             L.info("Load Url : "+getUrlWithNoHeadersAndFooters(pageUrl));
         }

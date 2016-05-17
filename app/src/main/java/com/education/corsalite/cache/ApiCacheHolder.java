@@ -132,6 +132,7 @@ public class ApiCacheHolder {
 
     public void setVirtualCurrencyBalanceResponse(VirtualCurrencyBalanceResponse response) {
         if(virtualCurrencyBalanceRequest != null && response != null) {
+            virtualCurrencyBalance = new VirtualCurrencyBalanceReqRes();
             virtualCurrencyBalance.request = virtualCurrencyBalanceRequest;
             virtualCurrencyBalance.response = response;
         }
