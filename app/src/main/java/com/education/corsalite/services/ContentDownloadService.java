@@ -181,7 +181,7 @@ public class ContentDownloadService extends IntentService {
 
                     @Override
                     public void onProgress(DownloadRequest downloadRequest, long totalBytes, long downloadedBytes, int progress) {
-                        if(preProgress != progress) {
+                        if(progress - preProgress >= 5) {
                             L.info("Downloader : In progress - "+progress);
                             preProgress = progress;
                         }

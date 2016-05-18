@@ -156,11 +156,12 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         notes.setText(TextUtils.isEmpty(chapter.notesCount) ? "0" : chapter.notesCount);
         TextView completedTopics = (TextView) dialogView.findViewById(R.id.completed_topics);
         completedTopics.setText(String.format("%.2f", getCompletedTopicsPercentage(chapter)) + "%");
+        TextView saveOfflineText = (TextView) dialogView.findViewById(R.id.offline_content);
+        saveOfflineText.setVisibility(SystemUtils.isNetworkConnected(dialog.getContext()) ? View.VISIBLE : View.GONE);
         dialogView.findViewById(R.id.take_test).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                // startExerciseActivity(chapter);
                 startTakeTest(chapter);
             }
         });
