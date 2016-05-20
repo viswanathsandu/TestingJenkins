@@ -19,7 +19,6 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -34,7 +33,6 @@ import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.db.SugarDbManager;
 import com.education.corsalite.event.ContentReadingEvent;
 import com.education.corsalite.fragments.VideoListDialog;
 import com.education.corsalite.models.ChapterModel;
@@ -341,11 +339,11 @@ public class ContentReadingActivity extends AbstractBaseActivity {
                     webviewContentReading.loadUrl("javascript:alert(copy())");
                     break;
                 case R.id.btn_next:
-                    mContentIdPosition = mContentIdPosition + 1;
+                    mContentIdPosition += 1;
                     loadNext();
                     break;
                 case R.id.btn_previous:
-                    mContentIdPosition = mContentIdPosition - 1;
+                    mContentIdPosition -= 1;
                     loadPrevious();
                     break;
                 case R.id.tv_video:
@@ -384,7 +382,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
     }
 
     private void loadNext() {
-        if (mContentIdPosition >= contentModelList.size()) {
+//        if (mContentIdPosition >= contentModelList.size()) {
             int nextTopicPosition = spTopic.getSelectedItemPosition() + 1;
             if (nextTopicPosition >= topicModelList.size()) {
                 int nextChapterPosition = spChapter.getSelectedItemPosition() + 1;
@@ -401,39 +399,39 @@ public class ContentReadingActivity extends AbstractBaseActivity {
             } else {
                 spTopic.setSelection(nextTopicPosition);
             }
-        } else {
-            // check if local file exists
-            try {
-                if (loadwebifFileExists(contentModelList.get(mContentIdPosition).contentName + "." +
-                        contentModelList.get(mContentIdPosition).type)) {
-                    if (mViewSwitcher.getNextView() instanceof RelativeLayout) {
-                        mViewSwitcher.showNext();
-                    }
-                    return;
-                }
-            } catch (Exception e) {
-                L.error(e.getMessage(), e);
-            }
-            if (SystemUtils.isNetworkConnected(this)) {
-                // check if exists in content list
-                if (contentList != null && contentList.size() > 0) {
-                    for (Content content : contentList) {
-                        if (content.idContent.equalsIgnoreCase(contentModelList.get(mContentIdPosition).idContent)) {
-                            String text = content.type.equalsIgnoreCase(Constants.VIDEO_FILE)
-                                    ? content.url
-                                    : getHtmlcontent(content.contentHtml);
-                            L.info(text);
-                            loadWeb(text);
-                            return;
-                        }
-                    }
-                }
-                getContent(contentModelList.get(mContentIdPosition).idContent, false);
-            } else {
-                mViewSwitcher.showPrevious();
-                notAvailableForOfflineTxt.setVisibility(View.VISIBLE);
-            }
-        }
+//        } else {
+//            // check if local file exists
+//            try {
+//                if (loadwebifFileExists(contentModelList.get(mContentIdPosition).contentName + "." +
+//                        contentModelList.get(mContentIdPosition).type)) {
+//                    if (mViewSwitcher.getNextView() instanceof RelativeLayout) {
+//                        mViewSwitcher.showNext();
+//                    }
+//                    return;
+//                }
+//            } catch (Exception e) {
+//                L.error(e.getMessage(), e);
+//            }
+//            if (SystemUtils.isNetworkConnected(this)) {
+//                // check if exists in content list
+//                if (contentList != null && contentList.size() > 0) {
+//                    for (Content content : contentList) {
+//                        if (content.idContent.equalsIgnoreCase(contentModelList.get(mContentIdPosition).idContent)) {
+//                            String text = content.type.equalsIgnoreCase(Constants.VIDEO_FILE)
+//                                    ? content.url
+//                                    : getHtmlcontent(content.contentHtml);
+//                            L.info(text);
+//                            loadWeb(text);
+//                            return;
+//                        }
+//                    }
+//                }
+//                getContent(contentModelList.get(mContentIdPosition).idContent, false);
+//            } else {
+//                mViewSwitcher.showPrevious();
+//                notAvailableForOfflineTxt.setVisibility(View.VISIBLE);
+//            }
+//        }
     }
 
     private String getHtmlcontent(String content) {
@@ -456,7 +454,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
     }
 
     private void loadPrevious() {
-        if (mContentIdPosition < 0) {
+//        if (mContentIdPosition < 0) {
             int previousTopicPosition = spTopic.getSelectedItemPosition() - 1;
             if (previousTopicPosition < 0) {
                 int previousChapterPosition = spChapter.getSelectedItemPosition() - 1;
@@ -473,36 +471,36 @@ public class ContentReadingActivity extends AbstractBaseActivity {
             } else {
                 spTopic.setSelection(previousTopicPosition);
             }
-        } else {
-            try {
-                if (loadwebifFileExists(contentModelList.get(mContentIdPosition).contentName + "." +
-                        contentModelList.get(mContentIdPosition).type)) {
-                    if (mViewSwitcher.getNextView() instanceof RelativeLayout) {
-                        mViewSwitcher.showNext();
-                    }
-                    return;
-                }
-            } catch (Exception e) {
-                L.error(e.getMessage(), e);
-            }
-            // check if exists in content list
-            if (contentList != null && contentList.size() > 0) {
-                for (Content content : contentList) {
-                    if (content.idContent.equalsIgnoreCase(contentModelList.get(mContentIdPosition).idContent)) {
-                        String text = content.type.equalsIgnoreCase(Constants.VIDEO_FILE) ?
-                                content.url : getHtmlcontent(content.contentHtml);
-                        loadWeb(text);
-                        return;
-                    }
-                }
-            }
-            if (SystemUtils.isNetworkConnected(this)) {
-                getContent(contentModelList.get(mContentIdPosition).idContent, false);
-            } else {
-                mViewSwitcher.showPrevious();
-                notAvailableForOfflineTxt.setVisibility(View.VISIBLE);
-            }
-        }
+//        } else {
+//            try {
+//                if (loadwebifFileExists(contentModelList.get(mContentIdPosition).contentName + "." +
+//                        contentModelList.get(mContentIdPosition).type)) {
+//                    if (mViewSwitcher.getNextView() instanceof RelativeLayout) {
+//                        mViewSwitcher.showNext();
+//                    }
+//                    return;
+//                }
+//            } catch (Exception e) {
+//                L.error(e.getMessage(), e);
+//            }
+//            // check if exists in content list
+//            if (contentList != null && contentList.size() > 0) {
+//                for (Content content : contentList) {
+//                    if (content.idContent.equalsIgnoreCase(contentModelList.get(mContentIdPosition).idContent)) {
+//                        String text = content.type.equalsIgnoreCase(Constants.VIDEO_FILE) ?
+//                                content.url : getHtmlcontent(content.contentHtml);
+//                        loadWeb(text);
+//                        return;
+//                    }
+//                }
+//            }
+//            if (SystemUtils.isNetworkConnected(this)) {
+//                getContent(contentModelList.get(mContentIdPosition).idContent, false);
+//            } else {
+//                mViewSwitcher.showPrevious();
+//                notAvailableForOfflineTxt.setVisibility(View.VISIBLE);
+//            }
+//        }
     }
 
     private class MyWebViewClient extends WebViewClient {

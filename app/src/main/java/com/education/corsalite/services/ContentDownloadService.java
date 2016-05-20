@@ -194,7 +194,6 @@ public class ContentDownloadService extends IntentService {
                     .setDestinationURI(destinationUri).setPriority(DownloadRequest.Priority.HIGH)
                     .setDownloadContext(getApplicationContext())//Optional
                     .setStatusListener(new DownloadStatusListenerV1() {
-                        int preProgress = -1;
 
                         @Override
                         public void onDownloadComplete(DownloadRequest downloadRequest) {
@@ -209,11 +208,11 @@ public class ContentDownloadService extends IntentService {
                         }
 
                         public void onProgress(DownloadRequest downloadRequest, long totalBytes, long downloadedBytes, int progress) {
-                            if (progress - preProgress >= 10 || progress == 100) {
+                            if (progress != 0 && progress % 50 == 100) {
+                                // TODO : this needs to be handled properly
                                 updateOfflineContent(OfflineContentStatus.IN_PROGRESS, content, progress);
-                                L.info("Downloader : In progress - " + progress);
-                                preProgress = progress;
                             }
+                            L.info("Downloader : In progress - " + progress);
                         }
                     });
             updateDownloadIdForOfflinecontent(offlineContent, downloadManager.add(downloadRequest));

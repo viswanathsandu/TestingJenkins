@@ -42,6 +42,7 @@ import com.education.corsalite.services.VideoDownloadService;
 import com.education.corsalite.utils.AppPref;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.FileUtilities;
+import com.education.corsalite.utils.L;
 import com.google.gson.Gson;
 import com.unnamed.b.atv.model.TreeNode;
 import com.unnamed.b.atv.view.AndroidTreeView;
@@ -120,70 +121,74 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
     }
 
     private void loopCheckedViews() {
-        offlineExerciseModels = new ArrayList<>();
-        String contentName = "";
-        String videoContentId = "";
-        String htmlContentId = "";
-        if (dialog == null) {
-            dialog = getDisplayDialog();
-        }
-        dialog.setTitle(getResources().getString(R.string.offline_dialog_title_text));
-        LinearLayout subjectLayout = (LinearLayout) dialog.findViewById(R.id.subject_layout);
-        subjectLayout.removeAllViews();
-        subjectLayout.addView(getTextView(root.getChildren().get(0).getValue().toString()));
-        LinearLayout topicLayout = (LinearLayout) dialog.findViewById(R.id.topic_layout);
-        topicLayout.removeAllViews();
-        List<OfflineContent> offlineContents = new ArrayList<>();
-        for (TreeNode n : root.getChildren()) {
-            int topicCount = 0;
-            for (TreeNode innerNode : n.getChildren()) {
-                TopicModel topicModel = topicModelList.get(topicCount);
-                if (innerNode.isSelected()) {
-                    String contentText = "";
-                    int contentCount = 0;
-                    for (TreeNode innerMostNode : innerNode.getChildren()) {
-                        ContentModel contentModel = topicModel.contentMap.get(contentCount);
-                        if (innerMostNode.isSelected()) {
-                            contentText += "\t\t" + innerMostNode.getValue().toString() + "\n";
-                            contentName = contentModel.contentName;
-                            if (contentModel.type.equals(Constants.VIDEO_FILE)) {
-                                videoContentId += contentModel.idContent + ",";
-                            } else if (contentModel.type.equals(Constants.HTML_FILE)) {
-                                htmlContentId += contentModel.idContent + ",";
-                            } else {
-                                ExerciseOfflineModel model = new ExerciseOfflineModel(
-                                        AbstractBaseActivity.selectedCourse.courseId + "", topicModel.idTopic);
-                                if (!offlineExerciseModels.contains(model)) {
-                                    offlineExerciseModels.add(model);
-                                }
-                            }
-                            OfflineContent offlineContent = new OfflineContent(mCourseId, mCourseName,
-                                    mSubjectId, mSubjectName,
-                                    mChapterId, mChapterName,
-                                    topicModel.idTopic, topicModel.topicName,
-                                    contentModel.idContent, contentModel.contentName,
-                                    contentModel.contentName
-                                            + (contentModel.type.isEmpty() ? "" : ".")
-                                            + contentModel.type);
-                            offlineContent.status = OfflineContentStatus.WAITING;
-                            offlineContents.add(offlineContent);
-                        }
-                        contentCount++;
-                    }
-                    String finalNodeValue = innerNode.getValue().toString() + "\n" + contentText;
-                    topicLayout.addView(getTextView("\t" + finalNodeValue));
-                }
-                topicCount++;
+        try {
+            offlineExerciseModels = new ArrayList<>();
+            String contentName = "";
+            String videoContentId = "";
+            String htmlContentId = "";
+            if (dialog == null) {
+                dialog = getDisplayDialog();
             }
-        }
-
-        Collections.sort(offlineContents,
-                new Comparator<OfflineContent>() {
-                    public int compare(OfflineContent ord1, OfflineContent ord2) {
-                        return ord1.chapterName.compareToIgnoreCase(ord2.chapterName);
+            dialog.setTitle(getResources().getString(R.string.offline_dialog_title_text));
+            LinearLayout subjectLayout = (LinearLayout) dialog.findViewById(R.id.subject_layout);
+            subjectLayout.removeAllViews();
+            subjectLayout.addView(getTextView(root.getChildren().get(0).getValue().toString()));
+            LinearLayout topicLayout = (LinearLayout) dialog.findViewById(R.id.topic_layout);
+            topicLayout.removeAllViews();
+            List<OfflineContent> offlineContents = new ArrayList<>();
+            for (TreeNode n : root.getChildren()) {
+                int topicCount = 0;
+                for (TreeNode innerNode : n.getChildren()) {
+                    TopicModel topicModel = topicModelList.get(topicCount);
+                    if (innerNode.isSelected()) {
+                        String contentText = "";
+                        int contentCount = 0;
+                        for (TreeNode innerMostNode : innerNode.getChildren()) {
+                            ContentModel contentModel = topicModel.contentMap.get(contentCount);
+                            if (innerMostNode.isSelected()) {
+                                contentText += "\t\t" + innerMostNode.getValue().toString() + "\n";
+                                contentName = contentModel.contentName;
+                                if (contentModel.type.equals(Constants.VIDEO_FILE)) {
+                                    videoContentId += contentModel.idContent + ",";
+                                } else if (contentModel.type.equals(Constants.HTML_FILE)) {
+                                    htmlContentId += contentModel.idContent + ",";
+                                } else {
+                                    ExerciseOfflineModel model = new ExerciseOfflineModel(
+                                            AbstractBaseActivity.selectedCourse.courseId + "", topicModel.idTopic);
+                                    if (!offlineExerciseModels.contains(model)) {
+                                        offlineExerciseModels.add(model);
+                                    }
+                                }
+                                OfflineContent offlineContent = new OfflineContent(mCourseId, mCourseName,
+                                        mSubjectId, mSubjectName,
+                                        mChapterId, mChapterName,
+                                        topicModel.idTopic, topicModel.topicName,
+                                        contentModel.idContent, contentModel.contentName,
+                                        contentModel.contentName
+                                                + (contentModel.type.isEmpty() ? "" : ".")
+                                                + contentModel.type);
+                                offlineContent.status = OfflineContentStatus.WAITING;
+                                offlineContents.add(offlineContent);
+                            }
+                            contentCount++;
+                        }
+                        String finalNodeValue = innerNode.getValue().toString() + "\n" + contentText;
+                        topicLayout.addView(getTextView("\t" + finalNodeValue));
                     }
-                });
-        setUpDialogLogic(offlineContents);
+                    topicCount++;
+                }
+            }
+
+            Collections.sort(offlineContents,
+                    new Comparator<OfflineContent>() {
+                        public int compare(OfflineContent ord1, OfflineContent ord2) {
+                            return ord1.chapterName.compareToIgnoreCase(ord2.chapterName);
+                        }
+                    });
+            setUpDialogLogic(offlineContents);
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
     }
 
     // store the in-progress in db
