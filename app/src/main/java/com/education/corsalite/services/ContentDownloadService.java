@@ -40,12 +40,6 @@ import com.thin.downloadmanager.DownloadStatusListenerV1;
 import com.thin.downloadmanager.ThinDownloadManager;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -181,7 +175,7 @@ public class ContentDownloadService extends IntentService {
 
                     @Override
                     public void onProgress(DownloadRequest downloadRequest, long totalBytes, long downloadedBytes, int progress) {
-                        if(progress - preProgress >= 5) {
+                        if(progress - preProgress >= 10 || progress == 100) {
                             L.info("Downloader : In progress - "+progress);
                             preProgress = progress;
                         }
@@ -191,75 +185,42 @@ public class ContentDownloadService extends IntentService {
     }
 
     private void downloadVideo(OfflineContent offlineContent, final Content content, String videoUrl, String downloadLocation) {
-        Uri downloadUri = Uri.parse(videoUrl);
-        Uri destinationUri = Uri.parse(downloadLocation);
-        DownloadRequest downloadRequest = new DownloadRequest(downloadUri)
-                .addCustomHeader("cookie", ApiClientService.getSetCookie())
-                .setRetryPolicy(new DefaultRetryPolicy())
-                .setDestinationURI(destinationUri).setPriority(DownloadRequest.Priority.HIGH)
-                .setDownloadContext(getApplicationContext())//Optional
-                .setStatusListener(new DownloadStatusListenerV1() {
-                    int preProgress = -1;
-                    @Override
-                    public void onDownloadComplete(DownloadRequest downloadRequest) {
-                        updateOfflineContent(OfflineContentStatus.COMPLETED, content, 100);
-                        L.info("Downloader : completed");
-                    }
-
-                    @Override
-                    public void onDownloadFailed(DownloadRequest downloadRequest, int errorCode, String errorMessage) {
-                        updateOfflineContent(OfflineContentStatus.FAILED, content, 0);
-                        L.info("Downloader : failed");
-                    }
-
-                    @Override
-                    public void onProgress(DownloadRequest downloadRequest, long totalBytes, long downloadedBytes, int progress) {
-                        if(preProgress != progress) {
-                            updateOfflineContent(OfflineContentStatus.IN_PROGRESS, content, progress);
-                            L.info("Downloader : In progress - "+progress);
-                            preProgress = progress;
-                        }
-                    }
-                });
-        updateDownloadIdForOfflinecontent(offlineContent, downloadManager.add(downloadRequest));
-    }
-
-    private void downloadVideoFile(String fileName,String download_file_path,String folderStructure){
         try {
-            URL url = new URL(download_file_path);
-            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            Uri downloadUri = Uri.parse(videoUrl);
+            Uri destinationUri = Uri.parse(downloadLocation);
+            DownloadRequest downloadRequest = new DownloadRequest(downloadUri)
+                    .addCustomHeader("cookie", ApiClientService.getSetCookie())
+                    .setRetryPolicy(new DefaultRetryPolicy())
+                    .setDestinationURI(destinationUri).setPriority(DownloadRequest.Priority.HIGH)
+                    .setDownloadContext(getApplicationContext())//Optional
+                    .setStatusListener(new DownloadStatusListenerV1() {
+                        int preProgress = -1;
 
-            urlConnection.setRequestMethod("GET");
-            urlConnection.setDoOutput(true);
-            urlConnection.connect();
+                        @Override
+                        public void onDownloadComplete(DownloadRequest downloadRequest) {
+                            updateOfflineContent(OfflineContentStatus.COMPLETED, content, 100);
+                            L.info("Downloader : completed");
+                        }
 
-            File SDCardRoot = Environment.getExternalStorageDirectory();
-            File outDir = new File(SDCardRoot.getAbsolutePath() + File.separator + Constants.PARENT_FOLDER + File.separator +folderStructure);
-            if (!outDir.exists()) {
-                outDir.mkdirs();
-            }
-            File file = new File(outDir.getAbsolutePath() + File.separator + Constants.VIDEO_FOLDER);
-            if(!file.exists())
-                file.mkdir();
-            File newFile = new File(file,fileName);
-            newFile.createNewFile();
-            FileOutputStream fileOutput = new FileOutputStream(newFile);
-            InputStream inputStream = urlConnection.getInputStream();
-            byte[] buffer = new byte[1024];
-            int bufferLength ;
-            while ( (bufferLength = inputStream.read(buffer)) > 0 ) {
-                fileOutput.write(buffer, 0, bufferLength);
-            }
-            fileOutput.close();
+                        @Override
+                        public void onDownloadFailed(DownloadRequest downloadRequest, int errorCode, String errorMessage) {
+                            updateOfflineContent(OfflineContentStatus.FAILED, content, 0);
+                            L.info("Downloader : failed");
+                        }
 
-        } catch (final MalformedURLException e) {
+                        public void onProgress(DownloadRequest downloadRequest, long totalBytes, long downloadedBytes, int progress) {
+                            if (progress - preProgress >= 10 || progress == 100) {
+                                updateOfflineContent(OfflineContentStatus.IN_PROGRESS, content, progress);
+                                L.info("Downloader : In progress - " + progress);
+                                preProgress = progress;
+                            }
+                        }
+                    });
+            updateDownloadIdForOfflinecontent(offlineContent, downloadManager.add(downloadRequest));
+        } catch (Exception e) {
             L.error(e.getMessage(), e);
-        } catch (final IOException e) {
-            L.error(e.getMessage(), e);
-        } catch (final Exception e) {
-            L.error(e.getMessage(), e);
+            updateOfflineContent(OfflineContentStatus.FAILED, content, 0);
         }
-
     }
 
 //    private void updateOfflineContent(OfflineContent offlineContent, OfflineContentStatus status, Content content) {
