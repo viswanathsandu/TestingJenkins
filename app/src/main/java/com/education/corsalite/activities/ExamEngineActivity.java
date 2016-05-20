@@ -3,7 +3,6 @@ package com.education.corsalite.activities;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -17,8 +16,6 @@ import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.SparseBooleanArray;
-import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -45,7 +42,6 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
-import com.bumptech.glide.Glide;
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.ExamEngineGridAdapter;
 import com.education.corsalite.adapters.MockSubjectsAdapter;
@@ -93,15 +89,11 @@ import com.education.corsalite.views.GridViewInScrollView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import org.w3c.dom.Text;
-
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -1686,20 +1678,28 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         } else {
             selectedCourseId = selectedCourse.courseId.toString();
         }
-        ApiManager.getInstance(this).getStandardExamsByCourse(selectedCourseId, entityId,
-                new ApiCallback<List<Exam>>(this) {
-                    @Override
-                    public void success(List<Exam> examModelses, Response response) {
-                        super.success(examModelses, response);
-                        if (examModelses != null && !examModelses.isEmpty()) {
-                            postCustomExamTemplate(examModelses);
-                        } else {
-                            showToast("No data found.");
-                            headerProgress.setVisibility(View.GONE);
-                            tvEmptyLayout.setVisibility(View.VISIBLE);
+        if(getIntent().hasExtra(Constants.PARTTEST_EXAMMODEL)) {
+            String examJson  = getIntent().getExtras().getString(Constants.PARTTEST_EXAMMODEL);
+            Exam exam = new Gson().fromJson(examJson, Exam.class);
+            List<Exam> exams = new ArrayList<>();
+            exams.add(exam);
+            postCustomExamTemplate(exams);
+        } else {
+            ApiManager.getInstance(this).getStandardExamsByCourse(selectedCourseId, entityId,
+                    new ApiCallback<List<Exam>>(this) {
+                        @Override
+                        public void success(List<Exam> examModelses, Response response) {
+                            super.success(examModelses, response);
+                            if (examModelses != null && !examModelses.isEmpty()) {
+                                postCustomExamTemplate(examModelses);
+                            } else {
+                                showToast("No data found.");
+                                headerProgress.setVisibility(View.GONE);
+                                tvEmptyLayout.setVisibility(View.VISIBLE);
+                            }
                         }
-                    }
-                });
+                    });
+        }
     }
 
     private void postCustomExamTemplate(List<Exam> examsList) {

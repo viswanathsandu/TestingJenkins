@@ -452,9 +452,9 @@ public class ApiManager {
         }
     }
 
-    public void getPartTestGrid(String studentId, String courseId, String subjectId, ApiCallback<PartTestModel> callback) {
+    public void getPartTestGrid(String studentId, String courseId, String subjectId, String idExam, ApiCallback<PartTestModel> callback) {
         if (isApiOnline()) {
-            ApiClientService.get().getPartTestGrid(studentId, courseId, subjectId, callback);
+            ApiClientService.get().getPartTestGrid(studentId, courseId, subjectId, idExam, callback);
         }
     }
 

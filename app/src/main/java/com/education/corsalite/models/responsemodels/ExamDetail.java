@@ -19,5 +19,4 @@ public class ExamDetail extends BaseModel implements Serializable {
     @SerializedName("DaysRemaining")
     public Integer daysRemaining;
 
-
 }

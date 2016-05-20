@@ -274,7 +274,7 @@ public interface ICorsaliteApi {
     void getChallengeResults(@Query("idChallengeTest") String idChallengeTest, ApiCallback<List<ChallengeUser>> callback);
 
     @GET("/PartTestGrid")
-    void getPartTestGrid(@Query("idStudent") String studentId, @Query("idCourse") String courseId, @Query("idSubject") String subjectId, ApiCallback<PartTestModel> callback);
+    void getPartTestGrid(@Query("idStudent") String studentId, @Query("idCourse") String courseId, @Query("idSubject") String subjectId, @Query("idExam") String idExam, ApiCallback<PartTestModel> callback);
 
     @GET("/ClientAppConfig")
     void getAppConfig(@Query("idUser") String studentId, ApiCallback<AppConfig> callback);
