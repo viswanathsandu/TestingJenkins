@@ -452,7 +452,9 @@ public class StudyCenterActivity extends AbstractBaseActivity {
             selectedSubjectTxt = tv;
         }
         setListener(tv, studyCenter.SubjectName);
-        subjectViews.add(tv);
+        if(subjectViews != null) {
+            subjectViews.add(tv);
+        }
         return v;
     }
 
