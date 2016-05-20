@@ -275,13 +275,13 @@ public class StudyCenterActivity extends AbstractBaseActivity {
                                 setUpStudyCentreData(studyCenter);
                                 initDataAdapter(subjects.get(0));
                                 updateSelected(allColorLayout);
-                                if(subjectViews != null && !subjectViews.isEmpty()) {
-                                    subjectViews.get(0).performClick();
-                                }
                             } else {
                                 hideRecyclerView();
                             }
                             getOfflineStudyCenterData(studyCenters, true);
+                            if(subjectViews != null && !subjectViews.isEmpty()) {
+                                subjectViews.get(0).performClick();
+                            }
                         } else {
                             getOfflineStudyCenterData(studyCenters, false);
                         }
@@ -622,11 +622,11 @@ public class StudyCenterActivity extends AbstractBaseActivity {
                     key = text;
                     if (mCourseData != null && mCourseData.StudyCenter != null) {
                         key = text;
+                        List<OfflineContent> offlineContents = dbManager.getOfflineContents(AbstractBaseActivity.selectedCourse.courseId + "");
                         for (StudyCenter studyCenter : mCourseData.StudyCenter) {
                             if (key.equalsIgnoreCase(studyCenter.SubjectName)) {
                                 StudyCenterActivity.this.studyCenter = studyCenter;
                                 setUpStudyCentreData(studyCenter);
-                                List<OfflineContent> offlineContents = dbManager.getOfflineContents(AbstractBaseActivity.selectedCourse.courseId + "");
                                 for (Chapter chapter : getChaptersForSubject()) {
                                     boolean idMatchFound = false;
                                     for (OfflineContent offlineContent : offlineContents) {
