@@ -49,6 +49,15 @@ public class SugarDbManager {
         }
     }
 
+    public <T extends BaseModel> void save(List<T> objects) {
+        if(objects != null) {
+            for(T object : objects) {
+                object.reflectionJsonString = new Gson().toJson(object);
+            }
+            SugarRecord.saveInTx(objects);
+        }
+    }
+
     public <T extends BaseModel> List<T> fetchRecords(Class<T> type) {
         List<T> results = new ArrayList<>();
         try {
@@ -85,24 +94,42 @@ public class SugarDbManager {
         return results;
     }
 
-    public void saveOfflineContent(OfflineContent content) {
+//    public void saveOfflineContent(OfflineContent content) {
+//        try {
+//            List<OfflineContent> offlineContents = fetchRecords(OfflineContent.class);
+//            for (OfflineContent offlineContent : offlineContents) {
+//                if (offlineContent.equals(content)) {
+//                    offlineContent.delete();
+//                }
+//            }
+//            save(content);
+//        } catch (Exception e) {
+//            L.error(e.getMessage(), e);
+//        }
+//    }
+
+    private Long getOfflineContentId(OfflineContent content) {
         try {
             List<OfflineContent> offlineContents = fetchRecords(OfflineContent.class);
             for (OfflineContent offlineContent : offlineContents) {
                 if (offlineContent.equals(content)) {
-                    offlineContent.delete();
+                    return offlineContent.getId();
                 }
             }
-            save(content);
         } catch (Exception e) {
             L.error(e.getMessage(), e);
         }
+        return null;
     }
 
     public void saveOfflineContents(List<OfflineContent> offlineContents) {
         for (OfflineContent content : offlineContents) {
-            saveOfflineContent(content);
+            Long id = getOfflineContentId(content);
+            if(id != null) {
+                content.setId(id);
+            }
         }
+        save(offlineContents);
     }
 
     public void deleteOfflineContent(OfflineContent offlineContent) {

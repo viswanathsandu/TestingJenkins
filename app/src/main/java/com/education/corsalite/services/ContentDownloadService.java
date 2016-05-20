@@ -53,6 +53,7 @@ public class ContentDownloadService extends IntentService {
 
     private List<OfflineContent> offlineContents = new ArrayList<>();
     private DownloadManager downloadManager = new ThinDownloadManager();
+    private SugarDbManager dbManager;
 
     public ContentDownloadService() {
         super("ContentDownloadService");
@@ -61,6 +62,9 @@ public class ContentDownloadService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         L.info("onHandleIntent called");
+        if(dbManager == null) {
+            dbManager = SugarDbManager.get(getApplicationContext());
+        }
         fetchOfflineContents();
         // TODO : remove it after implementing the content download
 //        downloadContent("https://staging.corsalite.com/v1/webservices/ContentIndex?idStudent=1599&idCourse=10",
@@ -68,7 +72,8 @@ public class ContentDownloadService extends IntentService {
     }
 
     private void fetchOfflineContents() {
-        offlineContents = SugarDbManager.get(getApplicationContext()).getOfflineContents(null);
+        L.info("SUGAR : Fetching offline contents");
+        offlineContents = dbManager.getOfflineContents(null);
         startDownload();
     }
 
@@ -208,11 +213,13 @@ public class ContentDownloadService extends IntentService {
                         }
 
                         public void onProgress(DownloadRequest downloadRequest, long totalBytes, long downloadedBytes, int progress) {
-                            if (progress != 0 && progress % 50 == 100) {
+                            if (progress != 0 && progress % 50 == 0) {
                                 // TODO : this needs to be handled properly
                                 updateOfflineContent(OfflineContentStatus.IN_PROGRESS, content, progress);
+                                L.info("Downloader : In progress - " + progress + "Update DB");
+                            } else if(progress % 10 == 0){
+                                L.info("Downloader : In progress - " + progress);
                             }
-                            L.info("Downloader : In progress - " + progress);
                         }
                     });
             updateDownloadIdForOfflinecontent(offlineContent, downloadManager.add(downloadRequest));
@@ -245,18 +252,18 @@ public class ContentDownloadService extends IntentService {
 //    }
 
     private void updateDownloadIdForOfflinecontent(OfflineContent content, int downloadId) {
-        List<OfflineContent> offlineContents = SugarDbManager.get(this).getOfflineContents(null);
+        List<OfflineContent> offlineContents = dbManager.getOfflineContents(null);
         for (OfflineContent offlineContent : offlineContents) {
             if(offlineContent.getId() == content.getId()) {
                 offlineContent.downloadId = downloadId;
-                SugarDbManager.get(getApplicationContext()).saveOfflineContent(offlineContent);
             }
         }
+        dbManager.saveOfflineContents(offlineContents);
     }
 
     private void updateOfflineContent(final OfflineContentStatus status, final Content content, final int progress) {
         if(content == null) return;
-        List<OfflineContent> offlineContents = SugarDbManager.get(this).getOfflineContents(null);
+        List<OfflineContent> offlineContents = dbManager.getOfflineContents(null);
         for (OfflineContent offlineContent : offlineContents) {
             if (!TextUtils.isEmpty(content.idContent) && !TextUtils.isEmpty(offlineContent.contentId) && offlineContent.contentId.equalsIgnoreCase(content.idContent)) {
                 String fileName = "";
@@ -274,11 +281,9 @@ public class ContentDownloadService extends IntentService {
                     offlineContent.progress = progress;
                 }
                 offlineContent.status = status;
-                List<OfflineContent> offlineUpdatedContents = new ArrayList<OfflineContent>();
-                offlineUpdatedContents.add(offlineContent);
-                SugarDbManager.get(ContentDownloadService.this).saveOfflineContents(offlineUpdatedContents);
             }
         }
+        dbManager.saveOfflineContents(offlineContents);
     }
 
     private String getHtmlText(Content content) {
@@ -308,7 +313,7 @@ public class ContentDownloadService extends IntentService {
                             super.success(examModels, response);
                             if (examModels != null && !examModels.isEmpty()) {
                                 model.questions = examModels;
-                                SugarDbManager.get(getApplicationContext()).saveOfflineExerciseTest(model);
+                                dbManager.saveOfflineExerciseTest(model);
                             }
                         }
                     });
@@ -337,7 +342,7 @@ public class ContentDownloadService extends IntentService {
                             model.testQuestionPaperId = testQuestionPaperId;
                             model.testAnswerPaperId = testAnswerPaperId;
                             model.dateTime = System.currentTimeMillis();
-                            SugarDbManager.get(getApplicationContext()).saveOfflineTest(model);
+                            dbManager.saveOfflineTest(model);
                         }
                     });
         } catch (Exception e) {
@@ -354,7 +359,7 @@ public class ContentDownloadService extends IntentService {
                 model.testType = Tests.CHAPTER;
                 model.baseTest = test;
                 model.dateTime = System.currentTimeMillis();
-                SugarDbManager.get(ContentDownloadService.this).saveOfflineTest(model);
+                dbManager.saveOfflineTest(model);
             }
 
             @Override
@@ -376,7 +381,7 @@ public class ContentDownloadService extends IntentService {
                     model.baseTest.subjectName = subjectName;
                 }
                 model.dateTime = System.currentTimeMillis();
-                SugarDbManager.get(ContentDownloadService.this).saveOfflineTest(model);
+                dbManager.saveOfflineTest(model);
                 L.info("Test Saved : " + model.getClass());
             }
 

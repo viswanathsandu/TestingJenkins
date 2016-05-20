@@ -20,9 +20,7 @@ import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.db.SugarDbManager;
 import com.education.corsalite.enums.OfflineContentStatus;
-import com.education.corsalite.event.OfflineActivityRefreshEvent;
 import com.education.corsalite.event.RefreshDownloadsEvent;
 import com.education.corsalite.holders.CheckedItemViewHolder;
 import com.education.corsalite.holders.IconTreeItemHolder;
@@ -32,22 +30,17 @@ import com.education.corsalite.models.ExerciseOfflineModel;
 import com.education.corsalite.models.SubjectModel;
 import com.education.corsalite.models.TopicModel;
 import com.education.corsalite.models.db.OfflineContent;
-import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
-import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.services.ContentDownloadService;
 import com.education.corsalite.services.TestDownloadService;
-import com.education.corsalite.services.VideoDownloadService;
 import com.education.corsalite.utils.AppPref;
 import com.education.corsalite.utils.Constants;
-import com.education.corsalite.utils.FileUtilities;
 import com.education.corsalite.utils.L;
 import com.google.gson.Gson;
 import com.unnamed.b.atv.model.TreeNode;
 import com.unnamed.b.atv.view.AndroidTreeView;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -193,7 +186,7 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
 
     // store the in-progress in db
     private void storeInProgressItemsInDb(List<OfflineContent> offlineContents) {
-        SugarDbManager.get(this).saveOfflineContents(offlineContents);
+        dbManager.saveOfflineContents(offlineContents);
     }
 
     private void setUpDialogLogic(final List<OfflineContent> offlineContents) {
@@ -264,34 +257,6 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
         EventBus.getDefault().post(new RefreshDownloadsEvent());
     }
 
-    private void saveFileToDisk(final String htmlText, final Content content) {
-        TopicModel topicModel = topicModelHashMap.get(content.idContent);
-        FileUtilities fileUtilities = new FileUtilities(this);
-        final String folderStructure = selectedCourse.name + File.separator + mSubjectName + File.separator +
-                mChapterName + File.separator + topicModel.topicName;
-        if (content.type.equalsIgnoreCase(Constants.VIDEO_FILE)) {
-            downloadVideo(content.name + "." + Constants.VIDEO_FILE, ApiClientService.getBaseUrl() + htmlText.replaceFirst("./", ""), folderStructure);
-        } else if (TextUtils.isEmpty(htmlText) || htmlText.endsWith(Constants.HTML_FILE)) {
-            showToast(getString(R.string.file_exists));
-        } else {
-            String htmlUrl = fileUtilities.write(content.name + "." + Constants.HTML_FILE, htmlText, folderStructure);
-            if (htmlUrl != null) {
-                getEventbus().post(new OfflineActivityRefreshEvent(content.idContent));
-                showToast(getString(R.string.file_saved));
-            } else {
-                showToast(getString(R.string.file_save_failed));
-            }
-        }
-    }
-
-    private void downloadVideo(String fileName, String download_file_path, String folderStructure) {
-        Intent intent = new Intent(this, VideoDownloadService.class);
-        intent.putExtra("fileName", fileName);
-        intent.putExtra("download_file_path", download_file_path);
-        intent.putExtra("folderStructure", folderStructure);
-        startService(intent);
-    }
-
     private void storeDataInDb(String contentId, boolean isVideo) {
         List<OfflineContent> offlineContents = new ArrayList<>();
         OfflineContent offlineContent;
@@ -300,21 +265,8 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
         offlineContent.status = OfflineContentStatus.WAITING;
         offlineContents.add(offlineContent);
         AppPref.getInstance(SaveForOfflineActivity.this).save("DATA_IN_PROGRESS", null);
-        SugarDbManager.get(this).saveOfflineContents(offlineContents);
+        dbManager.saveOfflineContents(offlineContents);
     }
-
-    private String getHtmlText(Content content) {
-        String text = content.type.equalsIgnoreCase(Constants.VIDEO_FILE) ?
-                content.url :
-                "<script type='text/javascript'>" +
-                        "function copy() {" +
-                        "    var t = (document.all) ? document.selection.createRange().text : document.getSelection();" +
-                        "    return t;" +
-                        "}" +
-                        "</script>" + content.contentHtml;
-        return text;
-    }
-
 
     private void getBundleData() {
         Bundle bundle = getIntent().getExtras();

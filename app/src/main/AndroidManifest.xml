@@ -38,7 +38,6 @@
             android:value="f34e80c23ff3d6eb90eedbb-e3eaf25c-a34c-11e5-a67e-003e57fecdee" />
 
         <service android:name=".services.ContentDownloadService" />
-        <service android:name=".services.VideoDownloadService" />
         <service android:name=".services.TestDownloadService" />
 
         <receiver
@@ -139,7 +138,7 @@
             android:hardwareAccelerated="true"
             android:label=""
             android:screenOrientation="sensorLandscape"
-            android:launchMode="singleInstance"
+            android:launchMode="singleTask"
             android:theme="@style/UserProfileTheme" />
         <activity
             android:name=".activities.UsageAnalysisActivity"
@@ -156,7 +155,7 @@
             android:name=".activities.ChallengeActivity"
             android:label="@string/title_activity_challenge"
             android:screenOrientation="sensorLandscape"
-            android:launchMode="singleInstance"
+            android:launchMode="singleTask"
             android:windowSoftInputMode="stateHidden">
             <meta-data
                 android:name="android.app.searchable"

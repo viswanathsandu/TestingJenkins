@@ -29,7 +29,6 @@ import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.db.SugarDbManager;
 import com.education.corsalite.fragments.MockTestDialog;
 import com.education.corsalite.fragments.PartTestDialog;
 import com.education.corsalite.models.db.OfflineContent;
@@ -60,6 +59,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
     private CourseData mCourseData;
     private LinearLayout linearLayout;
     private ArrayList<String> subjects;
+    private ArrayList<View> subjectViews;
     private List<Chapter> allChapters = new ArrayList<>();
     private View redView;
     private View blueView;
@@ -91,6 +91,12 @@ public class StudyCenterActivity extends AbstractBaseActivity {
         if (mAdapter != null) {
             recyclerView.invalidate();
         }
+    }
+
+    @Override
+    public void onEvent(Course course) {
+        super.onEvent(course);
+        getStudyCentreData(course.courseId.toString());
     }
 
     private void setUpViews(RelativeLayout myView) {
@@ -236,12 +242,6 @@ public class StudyCenterActivity extends AbstractBaseActivity {
         progressBar.setVisibility(View.GONE);
     }
 
-    @Override
-    public void onEvent(Course course) {
-        super.onEvent(course);
-        getStudyCentreData(course.courseId.toString());
-    }
-
     private void getStudyCentreData(String courseId) {
         hideRecyclerView();
         progressBar.setVisibility(View.VISIBLE);
@@ -275,6 +275,9 @@ public class StudyCenterActivity extends AbstractBaseActivity {
                                 setUpStudyCentreData(studyCenter);
                                 initDataAdapter(subjects.get(0));
                                 updateSelected(allColorLayout);
+                                if(subjectViews != null && !subjectViews.isEmpty()) {
+                                    subjectViews.get(0).performClick();
+                                }
                             } else {
                                 hideRecyclerView();
                             }
@@ -287,30 +290,30 @@ public class StudyCenterActivity extends AbstractBaseActivity {
     }
 
     private void getOfflineStudyCenterData(final List<StudyCenter> studyCenters, final boolean saveForOffline) {
-        List<OfflineContent> offlineContents = SugarDbManager.get(this).getOfflineContents(AbstractBaseActivity.selectedCourse.courseId + "");
-        if (studyCenter != null && studyCenter.chapters != null) {
-            for (Chapter chapter : studyCenter.chapters) {
-                boolean idMatchFound = false;
-                for (OfflineContent offlineContent : offlineContents) {
-                    if (chapter.idCourseSubjectchapter.equals(offlineContent.chapterId)) {
-                        idMatchFound = true;
+        if (saveForOffline) {
+            List<OfflineContent> offlineContents = dbManager.getOfflineContents(AbstractBaseActivity.selectedCourse.courseId + "");
+            if (studyCenter != null && studyCenter.chapters != null) {
+                for (Chapter chapter : studyCenter.chapters) {
+                    boolean idMatchFound = false;
+                    for (OfflineContent offlineContent : offlineContents) {
+                        if (chapter.idCourseSubjectchapter.equals(offlineContent.chapterId)) {
+                            idMatchFound = true;
+                        }
+                        offlineContent.earnedMarks = chapter.earnedMarks;
+                        offlineContent.totalTestedMarks = chapter.totalTestedMarks;
+                        offlineContent.scoreAmber = chapter.scoreAmber;
+                        offlineContent.scoreRed = chapter.scoreRed;
                     }
-                    offlineContent.earnedMarks = chapter.earnedMarks;
-                    offlineContent.totalTestedMarks = chapter.totalTestedMarks;
-                    offlineContent.scoreAmber = chapter.scoreAmber;
-                    offlineContent.scoreRed = chapter.scoreRed;
-                }
-                if (!saveForOffline) {
-                    if (idMatchFound) {
-                        chapter.isChapterOffline = true;
-                    } else {
-                        chapter.isChapterOffline = false;
+                    if (!saveForOffline) {
+                        if (idMatchFound) {
+                            chapter.isChapterOffline = true;
+                        } else {
+                            chapter.isChapterOffline = false;
+                        }
                     }
                 }
             }
-        }
-        if (saveForOffline) {
-            SugarDbManager.get(getApplicationContext()).saveOfflineContents(offlineContents);
+            dbManager.saveOfflineContents(offlineContents);
         } else {
             mCourseData = new CourseData();
             mCourseData.StudyCenter = studyCenters;
@@ -342,6 +345,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
     private void setupSubjects(CourseData courseData) {
         linearLayout.removeAllViews();
         subjects = new ArrayList<String>();
+        subjectViews = new ArrayList<>();
         for (StudyCenter studyCenter : courseData.StudyCenter) {
             addSubjectsAndCreateViews(studyCenter);
         }
@@ -448,6 +452,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
             selectedSubjectTxt = tv;
         }
         setListener(tv, studyCenter.SubjectName);
+        subjectViews.add(tv);
         return v;
     }
 
@@ -619,7 +624,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
                             if (key.equalsIgnoreCase(studyCenter.SubjectName)) {
                                 StudyCenterActivity.this.studyCenter = studyCenter;
                                 setUpStudyCentreData(studyCenter);
-                                List<OfflineContent> offlineContents = SugarDbManager.get(StudyCenterActivity.this).getOfflineContents(AbstractBaseActivity.selectedCourse.courseId + "");
+                                List<OfflineContent> offlineContents = dbManager.getOfflineContents(AbstractBaseActivity.selectedCourse.courseId + "");
                                 for (Chapter chapter : getChaptersForSubject()) {
                                     boolean idMatchFound = false;
                                     for (OfflineContent offlineContent : offlineContents) {
@@ -632,7 +637,6 @@ public class StudyCenterActivity extends AbstractBaseActivity {
                                     } else {
                                         chapter.isChapterOffline = false;
                                     }
-                                    idMatchFound = false;
                                 }
                                 mAdapter.updateData(getChaptersForSubject(), text);
                                 mAdapter.notifyDataSetChanged();
