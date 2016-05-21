@@ -279,11 +279,11 @@ public class StudyCenterActivity extends AbstractBaseActivity {
                                 hideRecyclerView();
                             }
                             getOfflineStudyCenterData(studyCenters, true);
-                            if(subjectViews != null && !subjectViews.isEmpty()) {
-                                subjectViews.get(0).performClick();
-                            }
                         } else {
                             getOfflineStudyCenterData(studyCenters, false);
+                        }
+                        if(subjectViews != null && !subjectViews.isEmpty()) {
+                            subjectViews.get(0).performClick();
                         }
                     }
                 });
