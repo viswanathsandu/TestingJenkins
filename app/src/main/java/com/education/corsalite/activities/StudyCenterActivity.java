@@ -290,29 +290,29 @@ public class StudyCenterActivity extends AbstractBaseActivity {
     }
 
     private void getOfflineStudyCenterData(final List<StudyCenter> studyCenters, final boolean saveForOffline) {
-        if (saveForOffline) {
-            List<OfflineContent> offlineContents = dbManager.getOfflineContents(AbstractBaseActivity.selectedCourse.courseId + "");
-            if (studyCenter != null && studyCenter.chapters != null) {
-                for (Chapter chapter : studyCenter.chapters) {
-                    boolean idMatchFound = false;
-                    for (OfflineContent offlineContent : offlineContents) {
-                        if (chapter.idCourseSubjectchapter.equals(offlineContent.chapterId)) {
-                            idMatchFound = true;
-                        }
-                        offlineContent.earnedMarks = chapter.earnedMarks;
-                        offlineContent.totalTestedMarks = chapter.totalTestedMarks;
-                        offlineContent.scoreAmber = chapter.scoreAmber;
-                        offlineContent.scoreRed = chapter.scoreRed;
+        List<OfflineContent> offlineContents = dbManager.getOfflineContents(AbstractBaseActivity.selectedCourse.courseId + "");
+        if (studyCenter != null && studyCenter.chapters != null) {
+            for (Chapter chapter : studyCenter.chapters) {
+                boolean idMatchFound = false;
+                for (OfflineContent offlineContent : offlineContents) {
+                    if (chapter.idCourseSubjectchapter.equals(offlineContent.chapterId)) {
+                        idMatchFound = true;
                     }
-                    if (!saveForOffline) {
-                        if (idMatchFound) {
-                            chapter.isChapterOffline = true;
-                        } else {
-                            chapter.isChapterOffline = false;
-                        }
+                    offlineContent.earnedMarks = chapter.earnedMarks;
+                    offlineContent.totalTestedMarks = chapter.totalTestedMarks;
+                    offlineContent.scoreAmber = chapter.scoreAmber;
+                    offlineContent.scoreRed = chapter.scoreRed;
+                }
+                if (!saveForOffline) {
+                    if (idMatchFound) {
+                        chapter.isChapterOffline = true;
+                    } else {
+                        chapter.isChapterOffline = false;
                     }
                 }
             }
+        }
+        if (saveForOffline) {
             dbManager.saveOfflineContents(offlineContents);
         } else {
             mCourseData = new CourseData();

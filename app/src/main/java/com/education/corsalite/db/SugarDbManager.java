@@ -108,9 +108,8 @@ public class SugarDbManager {
 //        }
 //    }
 
-    private Long getOfflineContentId(OfflineContent content) {
+    private Long getOfflineContentId(List<OfflineContent> offlineContents, OfflineContent content) {
         try {
-            List<OfflineContent> offlineContents = fetchRecords(OfflineContent.class);
             for (OfflineContent offlineContent : offlineContents) {
                 if (offlineContent.equals(content)) {
                     return offlineContent.getId();
@@ -123,8 +122,9 @@ public class SugarDbManager {
     }
 
     public void saveOfflineContents(List<OfflineContent> offlineContents) {
+        List<OfflineContent> offlineContentsInDb = fetchRecords(OfflineContent.class);
         for (OfflineContent content : offlineContents) {
-            Long id = getOfflineContentId(content);
+            Long id = getOfflineContentId(offlineContentsInDb, content);
             if(id != null) {
                 content.setId(id);
             }

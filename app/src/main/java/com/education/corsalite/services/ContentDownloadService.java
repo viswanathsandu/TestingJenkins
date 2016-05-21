@@ -199,7 +199,7 @@ public class ContentDownloadService extends IntentService {
                     .setDestinationURI(destinationUri).setPriority(DownloadRequest.Priority.HIGH)
                     .setDownloadContext(getApplicationContext())//Optional
                     .setStatusListener(new DownloadStatusListenerV1() {
-
+                        int preProgress = 0;
                         @Override
                         public void onDownloadComplete(DownloadRequest downloadRequest) {
                             updateOfflineContent(OfflineContentStatus.COMPLETED, content, 100);
@@ -217,7 +217,8 @@ public class ContentDownloadService extends IntentService {
                                 // TODO : this needs to be handled properly
                                 updateOfflineContent(OfflineContentStatus.IN_PROGRESS, content, progress);
                                 L.info("Downloader : In progress - " + progress + "Update DB");
-                            } else if(progress % 10 == 0){
+                            } else if(progress % 10 == 0 && preProgress != progress){
+                                preProgress = progress;
                                 L.info("Downloader : In progress - " + progress);
                             }
                         }
@@ -253,17 +254,22 @@ public class ContentDownloadService extends IntentService {
 
     private void updateDownloadIdForOfflinecontent(OfflineContent content, int downloadId) {
         List<OfflineContent> offlineContents = dbManager.getOfflineContents(null);
+        List<OfflineContent> results = new ArrayList<>();
         for (OfflineContent offlineContent : offlineContents) {
             if(offlineContent.getId() == content.getId()) {
                 offlineContent.downloadId = downloadId;
+                results.add(offlineContent);
             }
         }
-        dbManager.saveOfflineContents(offlineContents);
+        if(results != null && !results.isEmpty()) {
+            dbManager.saveOfflineContents(offlineContents);
+        }
     }
 
     private void updateOfflineContent(final OfflineContentStatus status, final Content content, final int progress) {
         if(content == null) return;
         List<OfflineContent> offlineContents = dbManager.getOfflineContents(null);
+        List<OfflineContent> results = new ArrayList<>();
         for (OfflineContent offlineContent : offlineContents) {
             if (!TextUtils.isEmpty(content.idContent) && !TextUtils.isEmpty(offlineContent.contentId) && offlineContent.contentId.equalsIgnoreCase(content.idContent)) {
                 String fileName = "";
@@ -281,9 +287,12 @@ public class ContentDownloadService extends IntentService {
                     offlineContent.progress = progress;
                 }
                 offlineContent.status = status;
+                results.add(offlineContent);
             }
         }
-        dbManager.saveOfflineContents(offlineContents);
+        if(results != null && !results.isEmpty()) {
+            dbManager.saveOfflineContents(results);
+        }
     }
 
     private String getHtmlText(Content content) {
