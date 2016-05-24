@@ -26,7 +26,7 @@ import com.education.corsalite.holders.CheckedItemViewHolder;
 import com.education.corsalite.holders.IconTreeItemHolder;
 import com.education.corsalite.models.ChapterModel;
 import com.education.corsalite.models.ContentModel;
-import com.education.corsalite.models.ExerciseOfflineModel;
+import com.education.corsalite.models.db.ExerciseOfflineModel;
 import com.education.corsalite.models.SubjectModel;
 import com.education.corsalite.models.TopicModel;
 import com.education.corsalite.models.db.OfflineContent;

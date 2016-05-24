@@ -37,7 +37,7 @@ import com.education.corsalite.event.ContentReadingEvent;
 import com.education.corsalite.fragments.VideoListDialog;
 import com.education.corsalite.models.ChapterModel;
 import com.education.corsalite.models.ContentModel;
-import com.education.corsalite.models.ExerciseOfflineModel;
+import com.education.corsalite.models.db.ExerciseOfflineModel;
 import com.education.corsalite.models.SubjectModel;
 import com.education.corsalite.models.TopicModel;
 import com.education.corsalite.models.responsemodels.Content;

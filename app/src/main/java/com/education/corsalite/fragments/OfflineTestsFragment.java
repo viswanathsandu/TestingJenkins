@@ -11,7 +11,7 @@ import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.activities.OfflineActivity;
 import com.education.corsalite.adapters.ExpandableListAdapter;
 import com.education.corsalite.api.ApiCallback;
-import com.education.corsalite.models.OfflineTestModel;
+import com.education.corsalite.models.db.OfflineTestObjectModel;
 import com.education.corsalite.models.responsemodels.Course;
 
 import java.util.ArrayList;
@@ -30,12 +30,12 @@ public class OfflineTestsFragment extends BaseFragment implements OfflineActivit
     ExpandableListView rvOfflineTests;
     @Bind(R.id.no_test_txt)
     View emptyTestsView;
-    private List<OfflineTestModel> mockTestModels;
-    private List<OfflineTestModel> scheduledTestModels;
-    private List<OfflineTestModel> chaptersList;
-    private List<OfflineTestModel> partTestList;
+    private List<OfflineTestObjectModel> mockTestModels;
+    private List<OfflineTestObjectModel> scheduledTestModels;
+    private List<OfflineTestObjectModel> chaptersList;
+    private List<OfflineTestObjectModel> partTestList;
     private ArrayList<String> allTests;
-    private HashMap<String, List<OfflineTestModel>> offlineTests;
+    private HashMap<String, List<OfflineTestObjectModel>> offlineTests;
     private ExpandableListAdapter adapter;
 
     @Override
@@ -64,13 +64,13 @@ public class OfflineTestsFragment extends BaseFragment implements OfflineActivit
 
     private void loadOfflineTests() {
         dbManager.getAllOfflineMockTests(AbstractBaseActivity.selectedCourse.courseId + "",
-                new ApiCallback<List<OfflineTestModel>>(getActivity()) {
+                new ApiCallback<List<OfflineTestObjectModel>>(getActivity()) {
                     @Override
-                    public void success(List<OfflineTestModel> offlineTestModels, Response response) {
-                        super.success(offlineTestModels, response);
-                        if (offlineTestModels != null && !offlineTestModels.isEmpty()) {
+                    public void success(List<OfflineTestObjectModel> offlineTestObjectModels, Response response) {
+                        super.success(offlineTestObjectModels, response);
+                        if (offlineTestObjectModels != null && !offlineTestObjectModels.isEmpty()) {
                             emptyTestsView.setVisibility(View.GONE);
-                            separateTestModel(offlineTestModels);
+                            separateTestModel(offlineTestObjectModels);
                             offlineTests.put("Mock Test", mockTestModels);
                             offlineTests.put("Scheduled Test", scheduledTestModels);
                             offlineTests.put("Take Test", chaptersList);
@@ -83,12 +83,12 @@ public class OfflineTestsFragment extends BaseFragment implements OfflineActivit
                 });
     }
 
-    private void separateTestModel(List<OfflineTestModel> offlineTestModels) {
+    private void separateTestModel(List<OfflineTestObjectModel> offlineTestObjectModels) {
         mockTestModels = new ArrayList<>();
         scheduledTestModels = new ArrayList<>();
         chaptersList = new ArrayList<>();
         partTestList = new ArrayList<>();
-        for (OfflineTestModel model : offlineTestModels) {
+        for (OfflineTestObjectModel model : offlineTestObjectModels) {
             if (model != null && model.testType != null) {
                 switch (model.testType) {
                     case MOCK:

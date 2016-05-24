@@ -21,4 +21,6 @@ public class BaseTest extends BaseModel {
     public String questionsCount;
     @Ignore
     public List<ExamModel> questions;
+
+    public BaseTest() {}
 }

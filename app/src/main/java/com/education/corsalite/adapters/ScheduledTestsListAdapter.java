@@ -8,7 +8,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
-import com.education.corsalite.models.ScheduledTestList;
+import com.education.corsalite.models.db.ScheduledTestList;
+import com.education.corsalite.models.db.ScheduledTestsArray;
 import com.education.corsalite.utils.L;
 
 import java.text.SimpleDateFormat;
@@ -45,7 +46,7 @@ public class ScheduledTestsListAdapter extends AbstractRecycleViewAdapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((ScheduledTestDataHolder) holder).bindData(position, (ScheduledTestList.ScheduledTestsArray) getItem(position));
+        ((ScheduledTestDataHolder) holder).bindData(position, (ScheduledTestsArray) getItem(position));
     }
 
     public class ScheduledTestDataHolder extends RecyclerView.ViewHolder {
@@ -61,7 +62,7 @@ public class ScheduledTestsListAdapter extends AbstractRecycleViewAdapter {
             ButterKnife.bind(this, view);
         }
 
-        public void bindData(final int position, final ScheduledTestList.ScheduledTestsArray mockTest) {
+        public void bindData(final int position, final ScheduledTestsArray mockTest) {
             tvName.setText(mockTest.examName);
             try {
                 Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(mockTest.startTime);

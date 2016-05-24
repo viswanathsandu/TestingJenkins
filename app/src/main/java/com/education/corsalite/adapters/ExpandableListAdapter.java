@@ -17,9 +17,9 @@ import com.education.corsalite.activities.ExamEngineActivity;
 import com.education.corsalite.activities.StartMockTestActivity;
 import com.education.corsalite.activities.TestStartActivity;
 import com.education.corsalite.enums.Tests;
-import com.education.corsalite.models.MockTest;
-import com.education.corsalite.models.OfflineTestModel;
-import com.education.corsalite.models.ScheduledTestList;
+import com.education.corsalite.models.db.MockTest;
+import com.education.corsalite.models.db.OfflineTestObjectModel;
+import com.education.corsalite.models.db.ScheduledTestsArray;
 import com.education.corsalite.models.responsemodels.Chapter;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.L;
@@ -39,10 +39,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private Context context;
     private List<String> headers; // header titles
     // child data in format of header title, child title
-    private HashMap<String, List<OfflineTestModel>> childs;
+    private HashMap<String, List<OfflineTestObjectModel>> childs;
 
     public ExpandableListAdapter(Context context, List<String> listDataHeader,
-                                 HashMap<String, List<OfflineTestModel>> listChildData) {
+                                 HashMap<String, List<OfflineTestObjectModel>> listChildData) {
         this.context = context;
         this.headers = listDataHeader;
         this.childs = listChildData;
@@ -83,7 +83,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             LayoutInflater infalInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.offline_test_child_item, null);
         }
-        OfflineTestModel model = childs.get(this.headers.get(groupPosition)).get(childPosition);
+        OfflineTestObjectModel model = childs.get(this.headers.get(groupPosition)).get(childPosition);
         TextView txtListChild = (TextView) convertView.findViewById(R.id.mock_test_txt);
         TextView textViewTime = (TextView) convertView.findViewById(R.id.mock_test_time_txt);
         TextView textViewStatus = (TextView) convertView.findViewById(R.id.test_status);
@@ -201,7 +201,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         return true;
     }
 
-    private void startMockTest(OfflineTestModel model) {
+    private void startMockTest(OfflineTestObjectModel model) {
         if (model.status != Constants.STATUS_COMPLETED) {
             Intent intent = new Intent(context, StartMockTestActivity.class);
             intent.putExtra("Test_Instructions", new Gson().toJson(model.testPaperIndecies));
@@ -210,24 +210,24 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             intent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
             intent.putExtra(Constants.IS_OFFLINE, true);
             intent.putExtra("mock_test_data_json", new Gson().toJson(model.mockTest));
-            intent.putExtra("OfflineTestModel", model.dateTime);
+            intent.putExtra("OfflineTestObjectModel", model.dateTime);
             context.startActivity(intent);
         } else {
             Toast.makeText(context, "You have already taken the test.", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void startScheduleTest(OfflineTestModel model) {
+    private void startScheduleTest(OfflineTestObjectModel model) {
         if (model.status != Constants.STATUS_COMPLETED) {
             try {
-                ScheduledTestList.ScheduledTestsArray exam = model.scheduledTest;
+                ScheduledTestsArray exam = model.scheduledTest;
                 SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 long startTimeInMillis = df.parse(exam.startTime).getTime();
                 if (startTimeInMillis < System.currentTimeMillis() + 1000 * 60) {
                     Intent intent = new Intent(context, ExamEngineActivity.class);
                     intent.putExtra(Constants.TEST_TITLE, "Scheduled Test");
                     intent.putExtra("test_question_paper_id", exam.testQuestionPaperId);
-                    intent.putExtra("OfflineTestModel", model.dateTime);
+                    intent.putExtra("OfflineTestObjectModel", model.dateTime);
                     context.startActivity(intent);
                     return;
                 }
@@ -240,7 +240,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         }
     }
 
-    private void startTakeTest(OfflineTestModel model) {
+    private void startTakeTest(OfflineTestObjectModel model) {
         if (model.status != Constants.STATUS_COMPLETED) {
             Chapter chapter = model.baseTest.chapter;
             String subjectId = model.baseTest.subjectId;
@@ -253,14 +253,14 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             exerciseIntent.putExtra(Constants.LEVEL_CROSSED, chapter.passedComplexity);
             exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, subjectId);
             exerciseIntent.putExtra(Constants.IS_OFFLINE, true);
-            exerciseIntent.putExtra("OfflineTestModel", model.dateTime);
+            exerciseIntent.putExtra("OfflineTestObjectModel", model.dateTime);
             context.startActivity(exerciseIntent);
         } else {
             Toast.makeText(context, "You have already taken the test.", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void startPartTest(OfflineTestModel model) {
+    private void startPartTest(OfflineTestObjectModel model) {
         if (model.status != Constants.STATUS_COMPLETED) {
             String subjectName = model.baseTest.subjectName;
             String subjectId = model.baseTest.subjectId;
@@ -271,16 +271,16 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, subjectId);
             exerciseIntent.putExtra(Constants.SELECTED_TOPIC, subjectName);
             exerciseIntent.putExtra(Constants.IS_OFFLINE, true);
-            exerciseIntent.putExtra("OfflineTestModel", model.dateTime);
+            exerciseIntent.putExtra("OfflineTestObjectModel", model.dateTime);
             context.startActivity(exerciseIntent);
         } else {
             Toast.makeText(context, "You have already taken the test.", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private Status getRejectedStatus(List<OfflineTestModel> offlineTestModels) {
+    private Status getRejectedStatus(List<OfflineTestObjectModel> offlineTestObjectModels) {
         Status status = new Status();
-        for (OfflineTestModel model : offlineTestModels) {
+        for (OfflineTestObjectModel model : offlineTestObjectModels) {
             if (model.status == Constants.STATUS_COMPLETED) {
                 ++status.statusCorrect;
             } else if (model.status == Constants.STATUS_START) {

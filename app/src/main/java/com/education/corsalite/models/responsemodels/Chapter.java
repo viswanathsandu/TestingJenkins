@@ -2,7 +2,7 @@ package com.education.corsalite.models.responsemodels;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Chapter {
+public class Chapter extends BaseModel {
     @SerializedName("ChapterName")
     public String chapterName;
     @SerializedName("TotalTopics")
@@ -31,5 +31,7 @@ public class Chapter {
     public String notesCount;
 
     public boolean isChapterOffline = true;
+
+    public Chapter() {}
 
 }

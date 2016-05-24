@@ -1,7 +1,7 @@
 package com.education.corsalite.api;
 
-import com.education.corsalite.models.MockTest;
-import com.education.corsalite.models.ScheduledTestList;
+import com.education.corsalite.models.db.MockTest;
+import com.education.corsalite.models.db.ScheduledTestList;
 import com.education.corsalite.models.responsemodels.ChallengeCompleteResponseModel;
 import com.education.corsalite.models.responsemodels.ChallengeStartResponseModel;
 import com.education.corsalite.models.responsemodels.ChallengeUser;

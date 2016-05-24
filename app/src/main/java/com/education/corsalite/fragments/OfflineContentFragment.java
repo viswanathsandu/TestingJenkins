@@ -18,7 +18,7 @@ import com.education.corsalite.activities.VideoActivity;
 import com.education.corsalite.db.SugarDbManager;
 import com.education.corsalite.enums.OfflineContentStatus;
 import com.education.corsalite.holders.IconTreeItemHolder;
-import com.education.corsalite.models.ExerciseOfflineModel;
+import com.education.corsalite.models.db.ExerciseOfflineModel;
 import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.utils.Constants;

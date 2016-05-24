@@ -18,10 +18,10 @@ import com.education.corsalite.enums.Tests;
 import com.education.corsalite.event.OfflineActivityRefreshEvent;
 import com.education.corsalite.helpers.ExamEngineHelper;
 import com.education.corsalite.listener.OnExamLoadCallback;
-import com.education.corsalite.models.ExerciseOfflineModel;
-import com.education.corsalite.models.MockTest;
-import com.education.corsalite.models.OfflineTestModel;
-import com.education.corsalite.models.ScheduledTestList;
+import com.education.corsalite.models.db.ExerciseOfflineModel;
+import com.education.corsalite.models.db.MockTest;
+import com.education.corsalite.models.db.OfflineTestObjectModel;
+import com.education.corsalite.models.db.ScheduledTestsArray;
 import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.models.examengine.BaseTest;
 import com.education.corsalite.models.responsemodels.Chapter;
@@ -329,14 +329,14 @@ public class ContentDownloadService extends IntentService {
         }
     }
 
-    private void getTestQuestionPaper(final String testQuestionPaperId, final String testAnswerPaperId, final MockTest mockTest, final TestPaperIndex testPAperIndecies, final ScheduledTestList.ScheduledTestsArray scheduledTestsArray) {
+    private void getTestQuestionPaper(final String testQuestionPaperId, final String testAnswerPaperId, final MockTest mockTest, final TestPaperIndex testPAperIndecies, final ScheduledTestsArray scheduledTestsArray) {
         try {
             ApiManager.getInstance(this).getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId,
                     new ApiCallback<List<ExamModel>>(this) {
                         @Override
                         public void success(List<ExamModel> examModels, Response response) {
                             super.success(examModels, response);
-                            OfflineTestModel model = new OfflineTestModel();
+                            OfflineTestObjectModel model = new OfflineTestObjectModel();
                             model.examModels = examModels;
                             if (mockTest != null) {
                                 model.testType = Tests.MOCK;
@@ -364,7 +364,7 @@ public class ContentDownloadService extends IntentService {
         helper.loadTakeTest(chapter, subjectName, subjectId, questionsCount, new OnExamLoadCallback() {
             @Override
             public void onSuccess(BaseTest test) {
-                OfflineTestModel model = new OfflineTestModel();
+                OfflineTestObjectModel model = new OfflineTestObjectModel();
                 model.testType = Tests.CHAPTER;
                 model.baseTest = test;
                 model.dateTime = System.currentTimeMillis();
@@ -382,7 +382,7 @@ public class ContentDownloadService extends IntentService {
         helper.loadPartTest(subjectName, subjectId, elements, new OnExamLoadCallback() {
             @Override
             public void onSuccess(BaseTest test) {
-                OfflineTestModel model = new OfflineTestModel();
+                OfflineTestObjectModel model = new OfflineTestObjectModel();
                 model.testType = Tests.PART;
                 model.baseTest = test;
                 if (test != null) {

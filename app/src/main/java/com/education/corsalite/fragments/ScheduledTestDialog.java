@@ -30,7 +30,8 @@ import com.education.corsalite.adapters.ScheduledTestsListAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.models.ScheduledTestList;
+import com.education.corsalite.models.db.ScheduledTestList;
+import com.education.corsalite.models.db.ScheduledTestsArray;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.services.TestDownloadService;
 import com.education.corsalite.utils.Constants;
@@ -140,7 +141,7 @@ public class ScheduledTestDialog extends DialogFragment implements ScheduledTest
         startScheduleTest(mScheduledTestList.MockTest.get(position));
     }
 
-    private void startScheduleTest(ScheduledTestList.ScheduledTestsArray exam) {
+    private void startScheduleTest(ScheduledTestsArray exam) {
         try {
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             long startTimeInMillis = df.parse(exam.startTime).getTime();
@@ -159,7 +160,7 @@ public class ScheduledTestDialog extends DialogFragment implements ScheduledTest
 
     @Override
     public void onSchedledDownload(int position) {
-        ScheduledTestList.ScheduledTestsArray exam = mScheduledTestList.MockTest.get(position);
+        ScheduledTestsArray exam = mScheduledTestList.MockTest.get(position);
         Intent intent = new Intent(getActivity(), TestDownloadService.class);
         intent.putExtra("testQuestionPaperId",exam.testQuestionPaperId);
         String scheduleTestStr = new Gson().toJson(exam);

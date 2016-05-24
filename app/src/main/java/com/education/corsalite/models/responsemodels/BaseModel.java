@@ -17,7 +17,7 @@ public class BaseModel extends SugarRecord implements IDomainEntity<BaseModel> {
     /**
      * This is specifically used to support lists in Sugar Db
      */
-    public String reflectionJsonString = "";
+    public String reflectionJsonString = null;
 
     public BaseModel() {}
 

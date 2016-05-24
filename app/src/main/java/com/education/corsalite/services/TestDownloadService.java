@@ -12,10 +12,10 @@ import com.education.corsalite.db.SugarDbManager;
 import com.education.corsalite.enums.Tests;
 import com.education.corsalite.helpers.ExamEngineHelper;
 import com.education.corsalite.listener.OnExamLoadCallback;
-import com.education.corsalite.models.ExerciseOfflineModel;
-import com.education.corsalite.models.MockTest;
-import com.education.corsalite.models.OfflineTestModel;
-import com.education.corsalite.models.ScheduledTestList;
+import com.education.corsalite.models.db.ExerciseOfflineModel;
+import com.education.corsalite.models.db.MockTest;
+import com.education.corsalite.models.db.OfflineTestObjectModel;
+import com.education.corsalite.models.db.ScheduledTestsArray;
 import com.education.corsalite.models.examengine.BaseTest;
 import com.education.corsalite.models.responsemodels.Chapter;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
@@ -38,12 +38,15 @@ import retrofit.client.Response;
  */
 public class TestDownloadService extends IntentService {
 
+    SugarDbManager dbManager;
+
     public TestDownloadService() {
         super("TestDownloadService");
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        dbManager = SugarDbManager.get(getApplicationContext());
         TestPaperIndex testPaperIndicies = new Gson().fromJson(intent.getStringExtra("Test_Instructions"), TestPaperIndex.class);
         String testQuestionPaperId = intent.getStringExtra("testQuestionPaperId");
         String testAnswerPaperId = intent.getStringExtra("testAnswerPaperId");
@@ -71,7 +74,7 @@ public class TestDownloadService extends IntentService {
             MockTest mockTest = new Gson().fromJson(mockTestStr, MockTest.class);
             getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, mockTest, testPaperIndicies, null);
         } else if (scheduledTestStr != null) {
-            ScheduledTestList.ScheduledTestsArray scheduledTest = new Gson().fromJson(scheduledTestStr, ScheduledTestList.ScheduledTestsArray.class);
+            ScheduledTestsArray scheduledTest = new Gson().fromJson(scheduledTestStr, ScheduledTestsArray.class);
             getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, null, null, scheduledTest);
         } else if(takeTestStr != null){
             Chapter chapter = new Gson().fromJson(takeTestStr,Chapter.class);
@@ -99,7 +102,7 @@ public class TestDownloadService extends IntentService {
                         super.success(examModels, response);
                         if(examModels != null && !examModels.isEmpty()) {
                             model.questions = examModels;
-                            SugarDbManager.get(getApplicationContext()).saveOfflineExerciseTest(model);
+                            dbManager.saveOfflineExerciseTest(model);
                         }
                     }
                 });
@@ -107,14 +110,14 @@ public class TestDownloadService extends IntentService {
     }
 
     private void getTestQuestionPaper(final String testQuestionPaperId, final String testAnswerPaperId,
-                                      final MockTest mockTest, final TestPaperIndex testPAperIndecies, final ScheduledTestList.ScheduledTestsArray scheduledTestsArray) {
+                                      final MockTest mockTest, final TestPaperIndex testPAperIndecies, final ScheduledTestsArray scheduledTestsArray) {
         try {
             ApiManager.getInstance(this).getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId,
                     new ApiCallback<List<ExamModel>>(this) {
                         @Override
                         public void success(List<ExamModel> examModels, Response response) {
                             super.success(examModels, response);
-                            OfflineTestModel model = new OfflineTestModel();
+                            OfflineTestObjectModel model = new OfflineTestObjectModel();
                             model.examModels = examModels;
                             if (mockTest != null) {
                                 model.testType = Tests.MOCK;
@@ -129,7 +132,7 @@ public class TestDownloadService extends IntentService {
                             model.testQuestionPaperId = testQuestionPaperId;
                             model.testAnswerPaperId = testAnswerPaperId;
                             model.dateTime = System.currentTimeMillis();
-                            SugarDbManager.get(getApplicationContext()).saveOfflineTest(model);
+                            dbManager.saveOfflineTest(model);
                         }
                     });
         } catch (Exception e) {
@@ -142,11 +145,11 @@ public class TestDownloadService extends IntentService {
         helper.loadTakeTest(chapter, subjectName, subjectId, questionsCount, new OnExamLoadCallback() {
             @Override
             public void onSuccess(BaseTest test) {
-                OfflineTestModel model = new OfflineTestModel();
+                OfflineTestObjectModel model = new OfflineTestObjectModel();
                 model.testType = Tests.CHAPTER;
                 model.baseTest = test;
                 model.dateTime = System.currentTimeMillis();
-                SugarDbManager.get(TestDownloadService.this).saveOfflineTest(model);
+                dbManager.saveOfflineTest(model);
             }
 
             @Override
@@ -160,7 +163,7 @@ public class TestDownloadService extends IntentService {
         helper.loadPartTest(subjectName, subjectId, elements, new OnExamLoadCallback() {
             @Override
             public void onSuccess(BaseTest test) {
-                OfflineTestModel model = new OfflineTestModel();
+                OfflineTestObjectModel model = new OfflineTestObjectModel();
                 model.testType = Tests.PART;
                 model.baseTest = test;
                 if(test!= null) {
@@ -168,7 +171,7 @@ public class TestDownloadService extends IntentService {
                     model.baseTest.subjectName = subjectName;
                 }
                 model.dateTime = System.currentTimeMillis();
-                SugarDbManager.get(TestDownloadService.this).saveOfflineTest(model);
+                dbManager.saveOfflineTest(model);
                 L.info("Test Saved : "+model.getClass());
             }
 

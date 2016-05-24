@@ -25,7 +25,7 @@ import com.education.corsalite.adapters.MockTestsListAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.models.MockTest;
+import com.education.corsalite.models.db.MockTest;
 import com.education.corsalite.models.requestmodels.PostQuestionPaperRequest;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.PostQuestionPaper;

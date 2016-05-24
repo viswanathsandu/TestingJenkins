@@ -3,7 +3,7 @@
 //import android.os.AsyncTask;
 //
 //import com.education.corsalite.api.ApiCallback;
-//import com.education.corsalite.models.OfflineTestModel;
+//import com.education.corsalite.models.db.OfflineTestObjectModel;
 //import com.education.corsalite.utils.MockUtils;
 //
 //import java.util.ArrayList;
@@ -12,11 +12,11 @@
 ///**
 // * Created by madhuri on 2/28/16.
 // */
-//public class GetOfflineTestFromDb extends AsyncTask<String, Void, List<OfflineTestModel>> {
+//public class GetOfflineTestFromDb extends AsyncTask<String, Void, List<OfflineTestObjectModel>> {
 //
 //    private DbService dbService;
 //    private String courseId;
-//    private ApiCallback<List<OfflineTestModel>> callback;
+//    private ApiCallback<List<OfflineTestObjectModel>> callback;
 //
 //    public GetOfflineTestFromDb(String courseId, DbService dbService, ApiCallback callback) {
 //        this.dbService = dbService;
@@ -25,11 +25,11 @@
 //    }
 //
 //    @Override
-//    protected List<OfflineTestModel> doInBackground(String... params) {
-//        List<OfflineTestModel> responseList = dbService.Get(OfflineTestModel.class);
+//    protected List<OfflineTestObjectModel> doInBackground(String... params) {
+//        List<OfflineTestObjectModel> responseList = dbService.Get(OfflineTestObjectModel.class);
 //        try {
-//            List<OfflineTestModel> currentUserResults = new ArrayList<>();
-//            for (OfflineTestModel test : responseList) {
+//            List<OfflineTestObjectModel> currentUserResults = new ArrayList<>();
+//            for (OfflineTestObjectModel test : responseList) {
 //                if (test != null && test.isCurrentUser() && courseId.equals(test.baseTest.courseId)) {
 //                    currentUserResults.add(test);
 //                }
@@ -41,7 +41,7 @@
 //    }
 //
 //    @Override
-//    protected void onPostExecute(List<OfflineTestModel> response) {
+//    protected void onPostExecute(List<OfflineTestObjectModel> response) {
 //        super.onPostExecute(response);
 //        callback.success(response, MockUtils.getRetrofitResponse());
 //    }

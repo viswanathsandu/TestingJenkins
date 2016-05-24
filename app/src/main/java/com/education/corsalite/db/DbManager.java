@@ -62,12 +62,12 @@
 ////            @Override
 ////            public void run() {
 ////                synchronized (this) {
-////                    List<OfflineTestModel> offlinecontentList = dbService.Get(OfflineTestModel.class);
-////                    for (OfflineTestModel savedOfflineContent : offlinecontentList) {
+////                    List<OfflineTestObjectModel> offlinecontentList = dbService.Get(OfflineTestObjectModel.class);
+////                    for (OfflineTestObjectModel savedOfflineContent : offlinecontentList) {
 ////                        if (date == savedOfflineContent.dateTime) {
 ////                            savedOfflineContent.dateTime = examTakenTime;
 ////                            savedOfflineContent.status = status;
-////                            dbService.Update(OfflineTestModel.class, savedOfflineContent);
+////                            dbService.Update(OfflineTestObjectModel.class, savedOfflineContent);
 ////                        }
 ////                    }
 ////                }
@@ -76,7 +76,7 @@
 ////    }
 //
 ////    @Deprecated
-////    public void saveOfflineTest(final OfflineTestModel model) {
+////    public void saveOfflineTest(final OfflineTestObjectModel model) {
 ////        new Thread(new Runnable() {
 ////            @Override
 ////            public void run() {
@@ -135,10 +135,10 @@
 //
 ////    @Deprecated
 ////    public void getAllExamModels(String courseId, final String subjectId, final ApiCallback<BaseTest> callback) {
-////        new GetOfflineTestFromDb(courseId, dbService, new ApiCallback<List<OfflineTestModel>>(context) {
-////            public void success(List<OfflineTestModel> offlineTestModels, Response response) {
+////        new GetOfflineTestFromDb(courseId, dbService, new ApiCallback<List<OfflineTestObjectModel>>(context) {
+////            public void success(List<OfflineTestObjectModel> offlineTestModels, Response response) {
 ////                super.success(offlineTestModels, response);
-////                for (OfflineTestModel model : offlineTestModels) {
+////                for (OfflineTestObjectModel model : offlineTestModels) {
 ////                    try {
 ////                        if (model != null && model.baseTest.subjectId.equalsIgnoreCase(subjectId) && model.isCurrentUser()) {
 ////                            callback.success(model.baseTest, response);
@@ -155,21 +155,21 @@
 ////    }
 //
 ////    @Deprecated
-////    public void deleteOfflineMockTest(OfflineTestModel model) {
-////        dbService.Delete(OfflineTestModel.class, model);
+////    public void deleteOfflineMockTest(OfflineTestObjectModel model) {
+////        dbService.Delete(OfflineTestObjectModel.class, model);
 ////    }
 ////
 ////    @Deprecated
-////    public void getAllOfflineMockTests(String courseId, ApiCallback<List<OfflineTestModel>> callback) {
+////    public void getAllOfflineMockTests(String courseId, ApiCallback<List<OfflineTestObjectModel>> callback) {
 ////        new GetOfflineTestFromDb(courseId, dbService, callback).execute();
 ////    }
 //
 ////    @Deprecated
-////    public void getAllExamModels(String courseId, final MockTest mockTest, final ApiCallback<OfflineTestModel> callback) {
-////        new GetOfflineTestFromDb(courseId, dbService, new ApiCallback<List<OfflineTestModel>>(context) {
-////            public void success(List<OfflineTestModel> offlineTestModels, Response response) {
+////    public void getAllExamModels(String courseId, final MockTest mockTest, final ApiCallback<OfflineTestObjectModel> callback) {
+////        new GetOfflineTestFromDb(courseId, dbService, new ApiCallback<List<OfflineTestObjectModel>>(context) {
+////            public void success(List<OfflineTestObjectModel> offlineTestModels, Response response) {
 ////                super.success(offlineTestModels, response);
-////                for (OfflineTestModel model : offlineTestModels) {
+////                for (OfflineTestObjectModel model : offlineTestModels) {
 ////                    if (model != null && model.mockTest != null && !TextUtils.isEmpty(model.mockTest.examTemplateId)
 ////                            && model.mockTest.examTemplateId.equalsIgnoreCase(mockTest.examTemplateId)
 ////                            && model.isCurrentUser()) {
@@ -182,10 +182,10 @@
 //
 ////    @Deprecated
 ////    public void getAllExamModels(String courseId, final ScheduledTestList.ScheduledTestsArray scheduledTest, final ApiCallback<List<ExamModel>> callback) {
-////        new GetOfflineTestFromDb(courseId, dbService, new ApiCallback<List<OfflineTestModel>>(context) {
-////            public void success(List<OfflineTestModel> offlineTestModels, Response response) {
+////        new GetOfflineTestFromDb(courseId, dbService, new ApiCallback<List<OfflineTestObjectModel>>(context) {
+////            public void success(List<OfflineTestObjectModel> offlineTestModels, Response response) {
 ////                super.success(offlineTestModels, response);
-////                for (OfflineTestModel model : offlineTestModels) {
+////                for (OfflineTestObjectModel model : offlineTestModels) {
 ////                    if (model != null && model.scheduledTest != null && !TextUtils.isEmpty(model.scheduledTest.testQuestionPaperId)
 ////                            && model.scheduledTest.testQuestionPaperId.equalsIgnoreCase(scheduledTest.testQuestionPaperId)
 ////                            && model.isCurrentUser()) {

@@ -54,9 +54,9 @@ import com.education.corsalite.event.ExerciseAnsEvent;
 import com.education.corsalite.fragments.FullQuestionDialog;
 import com.education.corsalite.fragments.LeaderBoardFragment;
 import com.education.corsalite.helpers.WebSocketHelper;
-import com.education.corsalite.models.MockTest;
-import com.education.corsalite.models.OfflineTestModel;
-import com.education.corsalite.models.ScheduledTestList;
+import com.education.corsalite.models.db.MockTest;
+import com.education.corsalite.models.db.OfflineTestObjectModel;
+import com.education.corsalite.models.db.ScheduledTestsArray;
 import com.education.corsalite.models.examengine.BaseTest;
 import com.education.corsalite.models.requestmodels.ExamTemplateChapter;
 import com.education.corsalite.models.requestmodels.ExamTemplateConfig;
@@ -292,7 +292,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         chapterId = getIntent().getExtras().getString(Constants.SELECTED_CHAPTERID);
         topicIds = getIntent().getExtras().getString(Constants.SELECTED_TOPICID);
         isOffline = getIntent().getExtras().getBoolean(Constants.IS_OFFLINE, false);
-        offlineModelDate = getIntent().getExtras().getLong("OfflineTestModel");
+        offlineModelDate = getIntent().getExtras().getLong("OfflineTestObjectModel");
         challengeTestId = getIntent().getStringExtra("challenge_test_id");
         challengeTestTimeDuration = getIntent().getStringExtra("challenge_test_time_duration");
         mIsAdaptiveTest = getIntent().getBooleanExtra(Constants.ADAPIVE_LEAERNING, false);
@@ -355,7 +355,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private void loadScheduledTest() {
         if (isOffline) {
             String testJson = getIntent().getExtras().getString("mock_test_data_json");
-            ScheduledTestList.ScheduledTestsArray model = new Gson().fromJson(testJson, ScheduledTestList.ScheduledTestsArray.class);
+            ScheduledTestsArray model = new Gson().fromJson(testJson, ScheduledTestsArray.class);
             loadOfflineScheduledTest(model);
         } else {
             imvFlag.setVisibility(View.VISIBLE);
@@ -1891,9 +1891,9 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void loadOfflineMockTest(MockTest model) {
-        dbManager.getAllExamModels(AbstractBaseActivity.selectedCourse.courseId + "", model, new ApiCallback<OfflineTestModel>(this) {
+        dbManager.getAllExamModels(AbstractBaseActivity.selectedCourse.courseId + "", model, new ApiCallback<OfflineTestObjectModel>(this) {
             @Override
-            public void success(OfflineTestModel offlineModel, Response response) {
+            public void success(OfflineTestObjectModel offlineModel, Response response) {
                 super.success(offlineModel, response);
                 headerProgress.setVisibility(View.GONE);
                 testQuestionPaperId = offlineModel.testQuestionPaperId;
@@ -1903,7 +1903,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         });
     }
 
-    private void loadOfflineScheduledTest(ScheduledTestList.ScheduledTestsArray model) {
+    private void loadOfflineScheduledTest(ScheduledTestsArray model) {
         dbManager.getAllExamModels(AbstractBaseActivity.selectedCourse.courseId + "", model, new ApiCallback<List<ExamModel>>(this) {
             @Override
             public void success(List<ExamModel> examModels, Response response) {

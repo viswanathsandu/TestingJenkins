@@ -4,10 +4,10 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.education.corsalite.api.ApiCallback;
-import com.education.corsalite.models.ExerciseOfflineModel;
-import com.education.corsalite.models.MockTest;
-import com.education.corsalite.models.OfflineTestModel;
-import com.education.corsalite.models.ScheduledTestList;
+import com.education.corsalite.models.db.ExerciseOfflineModel;
+import com.education.corsalite.models.db.MockTest;
+import com.education.corsalite.models.db.OfflineTestObjectModel;
+import com.education.corsalite.models.db.ScheduledTestsArray;
 import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.models.db.reqres.LoginReqRes;
 import com.education.corsalite.models.db.reqres.ReqRes;
@@ -64,10 +64,11 @@ public class SugarDbManager {
             if (type != null) {
                 List<T> allList = SugarRecord.listAll(type);
                 for (T t : allList) {
-                    T object = new Gson().fromJson(t.reflectionJsonString, type);
-                    object.setId(t.getId());
-                    results.add(object);
-
+                    if(t.reflectionJsonString != null) {
+                        T object = new Gson().fromJson(t.reflectionJsonString, type);
+                        object.setId(t.getId());
+                        results.add(object);
+                    }
                 }
             }
         } catch(Exception e) {
@@ -201,8 +202,8 @@ public class SugarDbManager {
 
     public void updateOfflineTestModel(final long date, final int status, final long examTakenTime) {
         try {
-            List<OfflineTestModel> offlinecontentList = fetchRecords(OfflineTestModel.class);
-            for (OfflineTestModel savedOfflineContent : offlinecontentList) {
+            List<OfflineTestObjectModel> offlinecontentList = fetchRecords(OfflineTestObjectModel.class);
+            for (OfflineTestObjectModel savedOfflineContent : offlinecontentList) {
                 if (date == savedOfflineContent.dateTime) {
                     savedOfflineContent.dateTime = examTakenTime;
                     savedOfflineContent.status = status;
@@ -214,7 +215,7 @@ public class SugarDbManager {
         }
     }
 
-    public void saveOfflineTest(final OfflineTestModel model) {
+    public void saveOfflineTest(final OfflineTestObjectModel model) {
         try {
             model.setUserId();
             save(model);
@@ -258,8 +259,8 @@ public class SugarDbManager {
 
     public void getAllExamModels(String courseId, final String subjectId, final ApiCallback<BaseTest> callback) {
         try {
-            List<OfflineTestModel> responseList = fetchRecords(OfflineTestModel.class);
-            for (OfflineTestModel test : responseList) {
+            List<OfflineTestObjectModel> responseList = fetchRecords(OfflineTestObjectModel.class);
+            for (OfflineTestObjectModel test : responseList) {
                 if (test != null && test.isCurrentUser() && courseId.equals(test.baseTest.courseId)) {
                     if (test != null && test.baseTest.subjectId.equalsIgnoreCase(subjectId) && test.isCurrentUser()) {
                         callback.success(test.baseTest, MockUtils.getRetrofitResponse());
@@ -274,10 +275,10 @@ public class SugarDbManager {
         }
     }
 
-    public void getAllExamModels(String courseId, final MockTest mockTest, final ApiCallback<OfflineTestModel> callback) {
+    public void getAllExamModels(String courseId, final MockTest mockTest, final ApiCallback<OfflineTestObjectModel> callback) {
         try {
-            List<OfflineTestModel> responseList = fetchRecords(OfflineTestModel.class);
-            for (OfflineTestModel test : responseList) {
+            List<OfflineTestObjectModel> responseList = fetchRecords(OfflineTestObjectModel.class);
+            for (OfflineTestObjectModel test : responseList) {
                 if (test != null && test.isCurrentUser() && courseId.equals(test.baseTest.courseId)) {
                     if (test != null && test.mockTest != null && !TextUtils.isEmpty(test.mockTest.examTemplateId)
                             && test.mockTest.examTemplateId.equalsIgnoreCase(mockTest.examTemplateId)
@@ -294,10 +295,10 @@ public class SugarDbManager {
         }
     }
 
-    public void getAllExamModels(String courseId, final ScheduledTestList.ScheduledTestsArray scheduledTest, final ApiCallback<List<ExamModel>> callback) {
+    public void getAllExamModels(String courseId, final ScheduledTestsArray scheduledTest, final ApiCallback<List<ExamModel>> callback) {
         try {
-            List<OfflineTestModel> responseList = fetchRecords(OfflineTestModel.class);
-            for (OfflineTestModel test : responseList) {
+            List<OfflineTestObjectModel> responseList = fetchRecords(OfflineTestObjectModel.class);
+            for (OfflineTestObjectModel test : responseList) {
                 if (test != null && test.isCurrentUser() && courseId.equals(test.baseTest.courseId)) {
                     if (test != null && test.scheduledTest != null && !TextUtils.isEmpty(test.scheduledTest.testQuestionPaperId)
                             && test.scheduledTest.testQuestionPaperId.equalsIgnoreCase(scheduledTest.testQuestionPaperId)
@@ -314,15 +315,15 @@ public class SugarDbManager {
         }
     }
 
-    public void deleteOfflineMockTest(OfflineTestModel model) {
+    public void deleteOfflineMockTest(OfflineTestObjectModel model) {
         model.delete();
     }
 
-    public void getAllOfflineMockTests(String courseId, ApiCallback<List<OfflineTestModel>> callback) {
-        List<OfflineTestModel> currentUserResults = new ArrayList<>();
+    public void getAllOfflineMockTests(String courseId, ApiCallback<List<OfflineTestObjectModel>> callback) {
+        List<OfflineTestObjectModel> currentUserResults = new ArrayList<>();
         try {
-            List<OfflineTestModel> responseList = fetchRecords(OfflineTestModel.class);
-            for (OfflineTestModel test : responseList) {
+            List<OfflineTestObjectModel> responseList = fetchRecords(OfflineTestObjectModel.class);
+            for (OfflineTestObjectModel test : responseList) {
                 if (test != null && test.isCurrentUser() && courseId.equals(test.baseTest.courseId)) {
                     currentUserResults.add(test);
                 }

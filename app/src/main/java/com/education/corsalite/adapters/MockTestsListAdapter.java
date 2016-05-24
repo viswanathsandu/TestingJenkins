@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
-import com.education.corsalite.models.MockTest;
+import com.education.corsalite.models.db.MockTest;
 
 import java.util.List;
 
