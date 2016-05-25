@@ -10,8 +10,8 @@ android {
         applicationId "com.education.corsalite"
         minSdkVersion 15
         targetSdkVersion 20
-        versionCode 9000023
-        versionName "0.24"
+        versionCode 9000025
+        versionName "0.25"
 
         multiDexEnabled false
     }
