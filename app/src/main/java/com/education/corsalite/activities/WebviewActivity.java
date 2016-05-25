@@ -18,6 +18,7 @@ import com.education.corsalite.R;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.WebUrls;
+import com.education.corsalite.views.CorsaliteWebViewClient;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -25,11 +26,15 @@ import butterknife.ButterKnife;
 public class WebviewActivity extends AbstractBaseActivity {
 
     private final String URL = "URL";
-    @Bind(R.id.webview) WebView webview;
-    @Bind(R.id.login_webview) WebView loginWebview;
-    @Bind(R.id.progress_bar_tab)ProgressBar mProgressBar;
+    @Bind(R.id.webview)
+    WebView webview;
+    @Bind(R.id.login_webview)
+    WebView loginWebview;
+    @Bind(R.id.progress_bar_tab)
+    ProgressBar mProgressBar;
 
     private String pageUrl = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,19 +43,20 @@ public class WebviewActivity extends AbstractBaseActivity {
         frameLayout.addView(myView);
         ButterKnife.bind(this);
         Bundle bundle = getIntent().getExtras();
-        if(bundle.containsKey("clear_cookies")) {
+        if (bundle.containsKey("clear_cookies")) {
             webview.clearCache(true);
-            loginWebview.clearCache(true);;
+            loginWebview.clearCache(true);
+            ;
             CookieManager cookieManager = CookieManager.getInstance();
             cookieManager.removeSessionCookie();
         }
         String title = bundle.getString(LoginActivity.TITLE, "Corsalite");
         setToolbarForWebActivity(title);
-        if(title.equals(getString(R.string.forgot_password)) || title.equals(getString(R.string.computer_adaptive_test))) {
+        if (title.equals(getString(R.string.forgot_password)) || title.equals(getString(R.string.computer_adaptive_test))) {
             setDrawerIconInvisible();
         }
         pageUrl = bundle.getString(URL);
-        if(!title.equals(getString(R.string.forgot_password))) {
+        if (!title.equals(getString(R.string.forgot_password))) {
             loginIntoWebview();
         } else {
             loadWebpage();
@@ -61,10 +67,10 @@ public class WebviewActivity extends AbstractBaseActivity {
     private void loadWebpage() {
         if (!TextUtils.isEmpty(pageUrl)) {
             webview.getSettings().setJavaScriptEnabled(true);
-            webview.setWebViewClient(new MyWebViewClient());
+            webview.setWebViewClient(new MyWebViewClient(this));
             webview.setWebChromeClient(new WebChromeClient());
             webview.loadUrl(getUrlWithNoHeadersAndFooters(pageUrl));
-            L.info("Load Url : "+getUrlWithNoHeadersAndFooters(pageUrl));
+            L.info("Load Url : " + getUrlWithNoHeadersAndFooters(pageUrl));
         }
     }
 
@@ -77,9 +83,9 @@ public class WebviewActivity extends AbstractBaseActivity {
 
     private String getLoginUrl() {
         String loginUrl = String.format("%swebservices/AuthToken?LoginID=%s&PasswordHash=%s",
-                                        ApiClientService.getBaseUrl(),
-                                        appPref.getValue("loginId"),
-                                        appPref.getValue("passwordHash"));
+                ApiClientService.getBaseUrl(),
+                appPref.getValue("loginId"),
+                appPref.getValue("passwordHash"));
         return loginUrl;
     }
 
@@ -93,25 +99,32 @@ public class WebviewActivity extends AbstractBaseActivity {
     }
 
     private String getUrlWithNoHeadersAndFooters(String url) {
-        if(!url.contains("?")) {
+        if (!url.contains("?")) {
             url += "?Header=0&Footer=0";
-        } else if(!url.contains("Header=0&Footer=0")) {
+        } else if (!url.contains("Header=0&Footer=0")) {
             url += "Header=0&Footer=0";
         }
         return url;
     }
 
-    private class MyWebViewClient extends WebViewClient {
+    private class MyWebViewClient extends CorsaliteWebViewClient {
+
+        public MyWebViewClient(Context context) {
+            super(context);
+        }
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            if (checkNetconnection(view, url)) {
+                return true;
+            }
             Intent intent = WebUrls.getIntent(WebviewActivity.this, url);
-            if(intent != null) {
+            if (intent != null) {
                 startActivity(intent);
                 finish();
                 return true;
-            } else if(url.contains(ApiClientService.getBaseUrl()) && !WebUrls.isHandler(url)) {
-                if(!url.contains("?") || !url.contains("Header=0&Footer=0")) {
+            } else if (url.contains(ApiClientService.getBaseUrl()) && !WebUrls.isHandler(url)) {
+                if (!url.contains("?") || !url.contains("Header=0&Footer=0")) {
                     view.loadUrl(getUrlWithNoHeadersAndFooters(url));
                 }
                 return false;
@@ -122,10 +135,12 @@ public class WebviewActivity extends AbstractBaseActivity {
 
         @Override
         public void onPageFinished(WebView view, String url) {
-            super.onPageFinished(view, url);
-            L.info("Finished Loading URL : "+url);
-            mProgressBar.setVisibility(View.GONE);
-            webview.setVisibility(View.VISIBLE);
+            if (!checkNetconnection(view, url)) {
+                super.onPageFinished(view, url);
+                L.info("Finished Loading URL : " + url);
+                mProgressBar.setVisibility(View.GONE);
+                webview.setVisibility(View.VISIBLE);
+            }
         }
     }
 

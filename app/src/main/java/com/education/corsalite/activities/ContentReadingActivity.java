@@ -192,6 +192,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
             @Override
             public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
                 selectedText = message;
+                selectedText = selectedText.replace("'", "&#39;");
                 if(operation.equals("Note")) {
                     addToNote(selectedText);
                 } else if(operation.equals("Forum")) {

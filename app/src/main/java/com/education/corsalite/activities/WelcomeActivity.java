@@ -53,9 +53,8 @@ public class WelcomeActivity extends AbstractBaseActivity implements View.OnClic
         setToolbarForWelcomeScreen();
         setListeners();
         getWelcomeDetails();
-        // TODO : Enable this after testing
         // Start download service if its not started
-//        startService(new Intent(this, ContentDownloadService.class));
+        startService(new Intent(this, ContentDownloadService.class));
     }
 
     private void getWelcomeDetails() {
