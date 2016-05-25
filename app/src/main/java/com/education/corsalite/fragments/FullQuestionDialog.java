@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -29,6 +28,7 @@ import com.education.corsalite.models.responsemodels.AnswerChoiceModel;
 import com.education.corsalite.models.responsemodels.ExamModel;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.Constants;
+import com.education.corsalite.views.CorsaliteWebViewClient;
 
 import java.util.Collections;
 import java.util.List;
@@ -91,11 +91,17 @@ public class FullQuestionDialog extends DialogFragment {
         }
     }
 
-    private class MyWebViewClient extends WebViewClient {
+    private class MyWebViewClient extends CorsaliteWebViewClient {
+        public MyWebViewClient(Context context) {
+            super(context);
+        }
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            if (Uri.parse(url).getHost().equals("staging.corsalite.com")) {
+            if (checkNetconnection(view, url)) {
+                return true;
+            }
+            if (Uri.parse(url).getHost().contains("corsalite.com")) {
                 return false;
             }
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
@@ -124,7 +130,7 @@ public class FullQuestionDialog extends DialogFragment {
             optionWebView.getSettings().setJavaScriptEnabled(true);
             optionWebView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
             optionWebView.setWebChromeClient(new WebChromeClient());
-            optionWebView.setWebViewClient(new MyWebViewClient());
+            optionWebView.setWebViewClient(new MyWebViewClient(getActivity()));
 
             optionWebView.loadData(examModel.paragraphHtml, "text/html; charset=UTF-8", null);
 
@@ -155,7 +161,7 @@ public class FullQuestionDialog extends DialogFragment {
             optionWebView.getSettings().setJavaScriptEnabled(true);
             optionWebView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
             optionWebView.setWebChromeClient(new WebChromeClient());
-            optionWebView.setWebViewClient(new MyWebViewClient());
+            optionWebView.setWebViewClient(new MyWebViewClient(getActivity()));
 
             optionWebView.loadData(examModel.questionHtml, "text/html; charset=UTF-8", null);
             LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -222,7 +228,7 @@ public class FullQuestionDialog extends DialogFragment {
             optionWebView.getSettings().setJavaScriptEnabled(true);
             optionWebView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
             optionWebView.setWebChromeClient(new WebChromeClient());
-            optionWebView.setWebViewClient(new MyWebViewClient());
+            optionWebView.setWebViewClient(new MyWebViewClient(getActivity()));
 
             optionWebView.loadData(answerChoiceModel.answerChoiceTextHtml, "text/html; charset=UTF-8", null);
             p = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1.0f);
@@ -279,7 +285,7 @@ public class FullQuestionDialog extends DialogFragment {
             optionWebView.getSettings().setJavaScriptEnabled(true);
             optionWebView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
             optionWebView.setWebChromeClient(new WebChromeClient());
-            optionWebView.setWebViewClient(new MyWebViewClient());
+            optionWebView.setWebViewClient(new MyWebViewClient(getActivity()));
 
             if (answerChoiceModel.answerChoiceTextHtml.startsWith("./") && answerChoiceModel.answerChoiceTextHtml.endsWith(".html")) {
                 answerChoiceModel.answerChoiceTextHtml = answerChoiceModel.answerChoiceTextHtml.replace("./", ApiClientService.getBaseUrl());

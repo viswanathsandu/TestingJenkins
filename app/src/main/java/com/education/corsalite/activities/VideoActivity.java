@@ -1,14 +1,11 @@
 package com.education.corsalite.activities;
 
 import android.content.Context;
-import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.VideoView;
@@ -82,19 +79,6 @@ public class VideoActivity extends AbstractBaseActivity {
             mediaControls = new MediaController(this);
         }
         videoViewRelative.setMediaController(mediaControls);
-    }
-
-    private class MyWebViewClient extends WebViewClient {
-
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            if (Uri.parse(url).getHost().contains("corsalite.com")) {
-                return false;
-            }
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            startActivity(intent);
-            return true;
-        }
     }
 
     private void loadWeb(final int selectedPosition) {

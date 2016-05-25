@@ -1,5 +1,6 @@
 package com.education.corsalite.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.AppPref;
 import com.education.corsalite.utils.L;
+import com.education.corsalite.views.CorsaliteWebViewClient;
 
 /**
  * Created by madhuri on 4/23/16.
@@ -34,9 +36,9 @@ public class DetailsWebviewFragment extends BaseFragment {
         RelativeLayout myView = (RelativeLayout) inflater.inflate(R.layout.activity_webview, null, false);
         mWebView = (WebView) myView.findViewById(R.id.webview);
         loginWebview = (WebView) myView.findViewById(R.id.login_webview);
-         mUrlPattern = getArguments().getString(URL_PATTERN_EXTRAS);
-        if(!TextUtils.isEmpty(mUrlPattern)) {
-            mUrl = String.format(mUrlPattern, AbstractBaseActivity.selectedCourse.courseId+"");
+        mUrlPattern = getArguments().getString(URL_PATTERN_EXTRAS);
+        if (!TextUtils.isEmpty(mUrlPattern)) {
+            mUrl = String.format(mUrlPattern, AbstractBaseActivity.selectedCourse.courseId + "");
         }
         appPref = AppPref.getInstance(getActivity());
         loadLoginUrl();
@@ -56,8 +58,8 @@ public class DetailsWebviewFragment extends BaseFragment {
     }
 
     public void onEvent(Course course) {
-        if(!TextUtils.isEmpty(mUrlPattern)) {
-            mUrl = String.format(mUrlPattern, AbstractBaseActivity.selectedCourse.courseId+"");
+        if (!TextUtils.isEmpty(mUrlPattern)) {
+            mUrl = String.format(mUrlPattern, AbstractBaseActivity.selectedCourse.courseId + "");
             loadLoginUrl();
         }
     }
@@ -95,13 +97,26 @@ public class DetailsWebviewFragment extends BaseFragment {
 
     private void loadWebpage() {
         mWebView.getSettings().setJavaScriptEnabled(true);
-        mWebView.setWebViewClient(new MyWebViewClient());
-        if(!TextUtils.isEmpty(mUrl)) {
+        mWebView.setWebViewClient(new MyWebViewClient(getActivity()));
+        if (!TextUtils.isEmpty(mUrl)) {
             mWebView.loadUrl(mUrl);
         }
     }
 
-    private class MyWebViewClient extends WebViewClient {
+    private class MyWebViewClient extends CorsaliteWebViewClient {
+
+        public MyWebViewClient(Context context) {
+            super(context);
+        }
+
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            if (checkNetconnection(view, url)) {
+                return true;
+            }
+            return super.shouldOverrideUrlLoading(view, url);
+        }
+
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);

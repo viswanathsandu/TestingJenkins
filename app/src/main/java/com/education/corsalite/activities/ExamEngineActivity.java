@@ -23,7 +23,6 @@ import android.webkit.JavascriptInterface;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -85,6 +84,7 @@ import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.SystemUtils;
 import com.education.corsalite.utils.TimeUtils;
 import com.education.corsalite.utils.WebUrls;
+import com.education.corsalite.views.CorsaliteWebViewClient;
 import com.education.corsalite.views.GridViewInScrollView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -530,7 +530,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         webviewQuestion.setWebChromeClient(new WebChromeClient());
         webviewParagraph.setWebChromeClient(new WebChromeClient());
         // Load the URLs inside the WebView, not in the external web browser
-        txtAnswerExp.setWebViewClient(new MyWebViewClient());
+        txtAnswerExp.setWebViewClient(new MyWebViewClient(this));
     }
 
     private void initWebView1() {
@@ -570,7 +570,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             }
         }, "android");
         // Load the URLs inside the WebView, not in the external web browser
-        webviewParagraph.setWebViewClient(new MyWebViewClient());
+        webviewParagraph.setWebViewClient(new MyWebViewClient(this));
     }
 
     private void initWebView() {
@@ -610,7 +610,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             }
         }, "android");
         // Load the URLs inside the WebView, not in the external web browser
-        webviewQuestion.setWebViewClient(new MyWebViewClient());
+        webviewQuestion.setWebViewClient(new MyWebViewClient(this));
     }
 
     private void initFlaggedWebView() {
@@ -650,7 +650,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             }
         }, "android");
         // Load the URLs inside the WebView, not in the external web browser
-        webViewFlaggedAnswer.setWebViewClient(new MyWebViewClient());
+        webViewFlaggedAnswer.setWebViewClient(new MyWebViewClient(this));
     }
 
     public void inflateUI(int position) {
@@ -902,10 +902,17 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         getEventbus().post(event);
     }
 
-    private class MyWebViewClient extends WebViewClient {
+    private class MyWebViewClient extends CorsaliteWebViewClient {
+
+        public MyWebViewClient(Context context) {
+            super(context);
+        }
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            if (checkNetconnection(view, url)) {
+                return true;
+            }
             if (Uri.parse(url).getHost().equals("staging.corsalite.com")) {
                 return false;
             }
@@ -1031,7 +1038,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             webview.getSettings().setLoadsImagesAutomatically(true);
             webview.getSettings().setJavaScriptEnabled(true);
             webview.setWebChromeClient(new WebChromeClient());
-            webview.setWebViewClient(new MyWebViewClient());
+            webview.setWebViewClient(new MyWebViewClient(this));
             webview.loadData(answerChoiceModel.answerChoiceTextHtml, "text/html; charset=UTF-8", null);
             answerLayout.addView(container);
 
@@ -1100,7 +1107,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             optionWebView.getSettings().setJavaScriptEnabled(true);
             optionWebView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
             optionWebView.setWebChromeClient(new WebChromeClient());
-            optionWebView.setWebViewClient(new MyWebViewClient());
+            optionWebView.setWebViewClient(new MyWebViewClient(this));
             if (answerChoiceModel.answerChoiceTextHtml.startsWith("./") && answerChoiceModel.answerChoiceTextHtml.endsWith(".html")) {
                 answerChoiceModel.answerChoiceTextHtml = answerChoiceModel.answerChoiceTextHtml.replace("./", ApiClientService.getBaseUrl());
                 optionWebView.loadUrl(answerChoiceModel.answerChoiceTextHtml);

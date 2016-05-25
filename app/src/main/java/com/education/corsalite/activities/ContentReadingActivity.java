@@ -14,7 +14,6 @@ import android.webkit.JavascriptInterface;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -37,9 +36,9 @@ import com.education.corsalite.event.ContentReadingEvent;
 import com.education.corsalite.fragments.VideoListDialog;
 import com.education.corsalite.models.ChapterModel;
 import com.education.corsalite.models.ContentModel;
-import com.education.corsalite.models.db.ExerciseOfflineModel;
 import com.education.corsalite.models.SubjectModel;
 import com.education.corsalite.models.TopicModel;
+import com.education.corsalite.models.db.ExerciseOfflineModel;
 import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
@@ -50,6 +49,7 @@ import com.education.corsalite.utils.FileUtilities;
 import com.education.corsalite.utils.FileUtils;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.SystemUtils;
+import com.education.corsalite.views.CorsaliteWebViewClient;
 
 import java.io.File;
 import java.io.Serializable;
@@ -214,7 +214,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
             }
         }, "android");
         // Load the URLs inside the WebView, not in the external web browser
-        webviewContentReading.setWebViewClient(new MyWebViewClient());
+        webviewContentReading.setWebViewClient(new MyWebViewClient(this));
     }
 
     private void addToNote(String htmlText) {
@@ -504,11 +504,19 @@ public class ContentReadingActivity extends AbstractBaseActivity {
 //        }
     }
 
-    private class MyWebViewClient extends WebViewClient {
+    private class MyWebViewClient extends CorsaliteWebViewClient {
+
+        public MyWebViewClient(Context context) {
+            super(context);
+        }
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            if (Uri.parse(url).getHost().equals("staging.corsalite.com")) {
+            if (checkNetconnection(view, url)) {
+                return true;
+            }
+            // TODO : need to handle it for production
+            if (Uri.parse(url).getHost().contains("corsalite.com")) {
                 return false;
             }
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
@@ -518,7 +526,6 @@ public class ContentReadingActivity extends AbstractBaseActivity {
     }
 
     private void getWebData(List<Content> mContentResponse, boolean updatePosition) {
-
         try {
             int count = 0;
             int listSize = mContentResponse.size();
