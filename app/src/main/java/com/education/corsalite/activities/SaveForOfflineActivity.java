@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -26,9 +25,9 @@ import com.education.corsalite.holders.CheckedItemViewHolder;
 import com.education.corsalite.holders.IconTreeItemHolder;
 import com.education.corsalite.models.ChapterModel;
 import com.education.corsalite.models.ContentModel;
-import com.education.corsalite.models.db.ExerciseOfflineModel;
 import com.education.corsalite.models.SubjectModel;
 import com.education.corsalite.models.TopicModel;
+import com.education.corsalite.models.db.ExerciseOfflineModel;
 import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
@@ -178,26 +177,30 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
                             return ord1.chapterName.compareToIgnoreCase(ord2.chapterName);
                         }
                     });
-            setUpDialogLogic(offlineContents);
+            setUpDialogLogic(offlineContents, offlineExerciseModels);
         } catch (Exception e) {
             L.error(e.getMessage(), e);
         }
     }
 
     // store the in-progress in db
-    private void storeInProgressItemsInDb(List<OfflineContent> offlineContents) {
-        dbManager.saveOfflineContents(offlineContents);
+    private void storeInProgressItemsInDb(List<OfflineContent> offlineContents, List<ExerciseOfflineModel> offlineExerciseModels) {
+        if(offlineContents != null && !offlineContents.isEmpty()) {
+            dbManager.saveOfflineContents(offlineContents);
+        }
+        if(offlineExerciseModels != null && !offlineExerciseModels.isEmpty()) {
+            dbManager.saveOfflineExerciseTests(offlineExerciseModels);
+        }
     }
 
-    private void setUpDialogLogic(final List<OfflineContent> offlineContents) {
+    private void setUpDialogLogic(final List<OfflineContent> offlineContents, final List<ExerciseOfflineModel> offlineExerciseModels) {
         dialog.show();
         Button downloadBtn = (Button) dialog.findViewById(R.id.ok);
         Button cancelBtn = (Button) dialog.findViewById(R.id.cancel);
-        final CheckBox exercisesCheckBox = (CheckBox) dialog.findViewById(R.id.exercises_ckb);
         downloadBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                storeInProgressItemsInDb(offlineContents);
+                storeInProgressItemsInDb(offlineContents, offlineExerciseModels);
                 EventBus.getDefault().post(new RefreshDownloadsEvent());
                 startService(new Intent(SaveForOfflineActivity.this, ContentDownloadService.class));
                 dialog.dismiss();
@@ -221,9 +224,8 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
             finalContentIds += COMMA_STRING + videoContentId;
         }
 
-        if (offlineExerciseModels.size() > 0) downloadExercises();
-        /*if(downloadExercises) {
-        }*/
+        if (offlineExerciseModels.size() > 0)
+            downloadExercises();
         if (finalContentIds.isEmpty()) {
             Toast.makeText(SaveForOfflineActivity.this, getResources().getString(R.string.select_content_toast), Toast.LENGTH_SHORT).show();
         } else {

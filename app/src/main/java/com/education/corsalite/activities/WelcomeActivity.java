@@ -18,6 +18,7 @@ import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.WelcomeDetails;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.services.ContentDownloadService;
@@ -53,8 +54,15 @@ public class WelcomeActivity extends AbstractBaseActivity implements View.OnClic
         setToolbarForWelcomeScreen();
         setListeners();
         getWelcomeDetails();
+    }
+
+    @Override
+    public void onEvent(Course course) {
+        super.onEvent(course);
         // Start download service if its not started
-        startService(new Intent(this, ContentDownloadService.class));
+        if(!ContentDownloadService.isIntentServiceRunning) {
+            startService(new Intent(this, ContentDownloadService.class));
+        }
     }
 
     private void getWelcomeDetails() {

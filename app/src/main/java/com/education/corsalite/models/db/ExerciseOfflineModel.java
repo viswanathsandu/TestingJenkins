@@ -13,6 +13,8 @@ import java.util.List;
 public class ExerciseOfflineModel extends BaseModel {
     public String topicId;
     public String courseId;
+    public int progress = 0;
+
     @Ignore
     public List<ExamModel> questions;
 

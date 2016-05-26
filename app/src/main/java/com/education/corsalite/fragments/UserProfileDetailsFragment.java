@@ -142,7 +142,9 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
         editProfilePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showEditProfilePicDialogFragment();
+                showToast("Under Development");
+//                showEditProfilePicDialogFragment();
+
             }
         });
         coursesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

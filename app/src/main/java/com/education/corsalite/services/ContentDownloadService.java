@@ -20,13 +20,12 @@ import com.education.corsalite.helpers.ExamEngineHelper;
 import com.education.corsalite.listener.OnExamLoadCallback;
 import com.education.corsalite.models.db.ExerciseOfflineModel;
 import com.education.corsalite.models.db.MockTest;
+import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.models.db.OfflineTestObjectModel;
 import com.education.corsalite.models.db.ScheduledTestsArray;
-import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.models.examengine.BaseTest;
 import com.education.corsalite.models.responsemodels.Chapter;
 import com.education.corsalite.models.responsemodels.Content;
-import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.ExamModel;
 import com.education.corsalite.models.responsemodels.PartTestGridElement;
 import com.education.corsalite.models.responsemodels.TestPaperIndex;
@@ -51,7 +50,9 @@ import retrofit.client.Response;
  */
 public class ContentDownloadService extends IntentService {
 
+    public static boolean isIntentServiceRunning = false;
     private List<OfflineContent> offlineContents = new ArrayList<>();
+    private List<ExerciseOfflineModel> offlineExercises = new ArrayList<>();
     private DownloadManager downloadManager = new ThinDownloadManager();
     private SugarDbManager dbManager;
 
@@ -62,6 +63,7 @@ public class ContentDownloadService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         L.info("onHandleIntent called");
+        isIntentServiceRunning = true;
         if(dbManager == null) {
             dbManager = SugarDbManager.get(getApplicationContext());
         }
@@ -74,6 +76,7 @@ public class ContentDownloadService extends IntentService {
     private void fetchOfflineContents() {
         L.info("SUGAR : Fetching offline contents");
         offlineContents = dbManager.getOfflineContents(null);
+        offlineExercises = dbManager.getOfflineExerciseModels(null);
         startDownload();
     }
 
@@ -106,9 +109,8 @@ public class ContentDownloadService extends IntentService {
             } else {
                 updateOfflineContent(OfflineContentStatus.FAILED, null, 0);
             }
-        } else {
-            // download exercise
         }
+        downloadExercises();
     }
 
     private void saveFileToDisk(OfflineContent offlineContent, final String htmlText, final Content content) {
@@ -230,28 +232,6 @@ public class ContentDownloadService extends IntentService {
         }
     }
 
-//    private void updateOfflineContent(OfflineContent offlineContent, OfflineContentStatus status, Content content) {
-//        if(offlineContent != null && content != null) {
-//            if (!TextUtils.isEmpty(content.idContent) && !TextUtils.isEmpty(offlineContent.contentId) && offlineContent.contentId.equalsIgnoreCase(content.idContent)) {
-//                String fileName = "";
-//                if (TextUtils.isEmpty(content.type)) {
-//                    fileName = content.name + ".html";
-//                } else if (content.type.equalsIgnoreCase("html")) {
-//                    fileName = content.name + "." + content.type;
-//                } else if (content.type.equalsIgnoreCase("mpg")) {
-//                    fileName = content.name.replace("./", ApiClientService.getBaseUrl()) + "." + content.type;
-//                }
-//                if (content != null) {
-//                    offlineContent.fileName = fileName;
-//                    offlineContent.contentName = content.name;
-//                    offlineContent.contentId = content.idContent;
-//                }
-//                offlineContent.status = status;
-//                SugarDbManager.get(getApplicationContext()).saveOfflineContent(offlineContent);
-//            }
-//        }
-//    }
-
     private void updateDownloadIdForOfflinecontent(OfflineContent content, int downloadId) {
         List<OfflineContent> offlineContents = dbManager.getOfflineContents(null);
         List<OfflineContent> results = new ArrayList<>();
@@ -307,25 +287,20 @@ public class ContentDownloadService extends IntentService {
         return text;
     }
 
-    private void downloadExercises(List<ExerciseOfflineModel> models) {
-        for (final ExerciseOfflineModel model : models) {
-            ApiManager.getInstance(this).getExercise(model.topicId, model.courseId, LoginUserCache.getInstance().loginResponse.studentId, null,
-                    new ApiCallback<List<ExamModel>>(this) {
-                        @Override
-                        public void failure(CorsaliteError error) {
-                            super.failure(error);
-                            L.error("Failed to save exercise for topic model" + model.topicId);
-                        }
-
-                        @Override
-                        public void success(List<ExamModel> examModels, Response response) {
-                            super.success(examModels, response);
-                            if (examModels != null && !examModels.isEmpty()) {
-                                model.questions = examModels;
-                                dbManager.saveOfflineExerciseTest(model);
-                            }
-                        }
-                    });
+    private void downloadExercises() {
+        try {
+            for (final ExerciseOfflineModel model : offlineExercises) {
+                List<ExamModel> examModels = ApiManager.getInstance(this).getExercise(model.topicId, model.courseId, LoginUserCache.getInstance().loginResponse.studentId, null);
+                if (examModels != null && !examModels.isEmpty()) {
+                    model.progress = 100;
+                    model.questions = examModels;
+                    dbManager.saveOfflineExerciseTest(model);
+                } else {
+                    dbManager.deleteOfflineExercise(model);
+                }
+            }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
         }
     }
 

@@ -241,6 +241,13 @@ public class ApiManager {
         }
     }
 
+    public List<ExamModel> getExercise(String topicId, String courseId, String idStudent, String UpdateTime) {
+        if (isApiOnline()) {
+            return ApiClientService.get().getExerciseData(topicId, courseId, idStudent, UpdateTime);
+        }
+        return new ArrayList<>();
+    }
+
     public void getFlaggedQuestions(String studentId, String subjectId, String chapterId, String UpdateTime, ApiCallback<List<ExamModel>> callback) {
         if (isApiOnline()) {
             ApiClientService.get().getFlaggedQuestions(studentId, subjectId, chapterId, UpdateTime, callback);
