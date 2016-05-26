@@ -6,9 +6,9 @@ import android.text.TextUtils;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.models.db.ExerciseOfflineModel;
 import com.education.corsalite.models.db.MockTest;
+import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.models.db.OfflineTestObjectModel;
 import com.education.corsalite.models.db.ScheduledTestsArray;
-import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.models.db.reqres.LoginReqRes;
 import com.education.corsalite.models.db.reqres.ReqRes;
 import com.education.corsalite.models.db.reqres.requests.AbstractBaseRequest;
@@ -164,12 +164,16 @@ public class SugarDbManager {
                 List<? extends ReqRes> reqResList = fetchRecords(reqres.getClass());
                 if (reqResList != null && !reqResList.isEmpty()) {
                     for (ReqRes reqresItem : reqResList) {
-                        if (reqresItem.isCurrentUser() || reqresItem instanceof LoginReqRes) {
+                        if (reqresItem instanceof LoginReqRes) {
                             if (reqresItem != null && reqresItem.isRequestSame(reqres)) {
                                 s = reqresItem.response;
                                 callback.success((T) s, MockUtils.getRetrofitResponse());
                                 return;
                             }
+                        } else if (reqresItem != null && reqresItem.isRequestSame(reqres)) {
+                            s = reqresItem.response;
+                            callback.success((T) s, MockUtils.getRetrofitResponse());
+                            return;
                         }
                     }
                 } else {
