@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.education.corsalite.R;
 import com.education.corsalite.models.responsemodels.ExamHistory;
+import com.education.corsalite.utils.L;
 
 import java.util.List;
 
@@ -52,20 +53,12 @@ public class ExamHistoryAdapter extends AbstractRecycleViewAdapter {
     public class ExamHistoryViewHolder extends RecyclerView.ViewHolder {
 
         View parent;
-        @Bind(R.id.tv_examhistory_date)
-        TextView examHistoryDate;
-        @Bind(R.id.tv_time)
-        TextView time;
-        @Bind(R.id.tv_exam)
-        TextView exam;
-        @Bind(R.id.tv_type)
-        TextView type;
-        @Bind(R.id.tv_rank)
-        TextView rank;
-        @Bind(R.id.tv_status)
-        TextView status;
-        @Bind(R.id.tv_action)
-        TextView action;
+        @Bind(R.id.tv_examhistory_date) TextView examHistoryDate;
+        @Bind(R.id.tv_score) TextView score;
+        @Bind(R.id.tv_exam) TextView exam;
+        @Bind(R.id.tv_type) TextView type;
+        @Bind(R.id.tv_rank) TextView rank;
+        @Bind(R.id.tv_status) TextView status;
 
         public ExamHistoryViewHolder(View view) {
             super(view);
@@ -80,15 +73,24 @@ public class ExamHistoryAdapter extends AbstractRecycleViewAdapter {
             } else {
                 parent.setBackgroundColor(inflater.getContext().getResources().getColor(R.color.white));
             }
-            if (!TextUtils.isEmpty(examHistory.dateTime) && examHistory.dateTime.contains(" ")) {
-                this.examHistoryDate.setText(examHistory.dateTime.split(" ")[0]);
-                this.time.setText(examHistory.dateTime.split(" ")[1]);
-            }
+            this.examHistoryDate.setText(examHistory.getTime());
             this.exam.setText(examHistory.examName);
             this.type.setText(examHistory.testType);
             this.rank.setText(examHistory.rank);
-            this.status.setText(examHistory.status);
-
+            if(!TextUtils.isEmpty(examHistory.totalScore)) {
+                if(examHistory.totalScore.equalsIgnoreCase("Suspended")) {
+                    this.status.setText("Suspended");
+                } else {
+                    this.status.setText("Completed");
+                    int scoreInt = -1;
+                    try {
+                        scoreInt = (int) (Double.parseDouble(examHistory.totalScore));
+                    } catch (Exception e) {
+                        L.error(e.getMessage(), e);
+                    }
+                    this.score.setText(scoreInt == -1 ? "-" : scoreInt+"");
+                }
+            }
             parent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

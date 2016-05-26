@@ -18,16 +18,7 @@
         style="@style/virtual_currency_header_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:padding="15dp"
-        android:text="Time" />
-
-    <TextView
-        style="@style/virtual_currency_header_text"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="2"
+        android:layout_weight="3"
         android:gravity="center"
         android:padding="15dp"
         android:text="Exam" />
@@ -46,19 +37,20 @@
         style="@style/virtual_currency_header_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="0.7"
+        android:layout_weight="1"
         android:gravity="center"
         android:padding="15dp"
-        android:text="Rank" />
+        android:text="Score" />
+
 
     <TextView
         style="@style/virtual_currency_header_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_weight="0.7"
         android:gravity="center"
         android:padding="15dp"
-        android:text="Action" />
+        android:text="Rank" />
 
     <TextView
         style="@style/virtual_currency_header_text"
