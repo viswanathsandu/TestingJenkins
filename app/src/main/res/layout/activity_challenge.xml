@@ -135,4 +135,19 @@
         android:layout_height="420dp"
         android:layout_centerHorizontal="true" />
 
+    <TextView
+        android:id="@+id/tvInviteFriends"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:text="INVITE FRIENDS"
+        android:padding="20dp"
+        android:textColor="#FFF409"
+        android:textStyle="bold"
+        android:textSize="40dp"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        fontPath="@string/roboto_bold"
+        android:visibility="gone"
+        android:background="#E6001C"/>
+
 </RelativeLayout>

@@ -49,7 +49,7 @@
         </receiver>
         <receiver
             android:name=".receivers.NetworkChangeBroadcastReceiver"
-            android:label="NetworkChangeReceiver" >
+            android:label="NetworkChangeReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
                 <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
@@ -137,8 +137,8 @@
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:hardwareAccelerated="true"
             android:label=""
-            android:screenOrientation="sensorLandscape"
             android:launchMode="singleTask"
+            android:screenOrientation="sensorLandscape"
             android:theme="@style/UserProfileTheme" />
         <activity
             android:name=".activities.UsageAnalysisActivity"
@@ -154,8 +154,8 @@
         <activity
             android:name=".activities.ChallengeActivity"
             android:label="@string/title_activity_challenge"
-            android:screenOrientation="sensorLandscape"
             android:launchMode="singleTask"
+            android:screenOrientation="sensorLandscape"
             android:windowSoftInputMode="stateHidden">
             <meta-data
                 android:name="android.app.searchable"
@@ -191,7 +191,8 @@
             android:name=".activities.CrashHandlerActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_crash_handler"
-            android:theme="@style/FullscreenTheme"></activity>
+            android:theme="@style/FullscreenTheme" />
+        <activity android:name=".activities.InviteFriendsActivity"></activity>
     </application>
 
 </manifest>

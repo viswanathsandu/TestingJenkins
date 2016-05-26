@@ -72,6 +72,7 @@
     <string name="roboto_light">fonts/Roboto-Light.ttf</string>
     <string name="roboto_medium">fonts/Roboto-Medium.ttf</string>
     <string name="roboto_bold">fonts/Roboto-Bold.ttf</string>
+    <string name="material_icon_font">fonts/material-icon-font.ttf</string>
 
     <!--Menu Drawer-->
     <string name="my_groups">My Groups</string>
