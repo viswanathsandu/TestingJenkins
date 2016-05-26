@@ -205,7 +205,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     protected void setToolbarForExamHistory() {
-        toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
+        toolbar.findViewById(R.id.spinner_layout).setVisibility(View.GONE);
         setToolbarTitle(getResources().getString(R.string.exam_history));
     }
 
