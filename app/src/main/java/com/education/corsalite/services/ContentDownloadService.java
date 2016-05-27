@@ -8,27 +8,15 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.education.corsalite.R;
-import com.education.corsalite.activities.AbstractBaseActivity;
-import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.db.SugarDbManager;
 import com.education.corsalite.enums.OfflineContentStatus;
-import com.education.corsalite.enums.Tests;
 import com.education.corsalite.event.OfflineActivityRefreshEvent;
-import com.education.corsalite.helpers.ExamEngineHelper;
-import com.education.corsalite.listener.OnExamLoadCallback;
 import com.education.corsalite.models.db.ExerciseOfflineModel;
-import com.education.corsalite.models.db.MockTest;
 import com.education.corsalite.models.db.OfflineContent;
-import com.education.corsalite.models.db.OfflineTestObjectModel;
-import com.education.corsalite.models.db.ScheduledTestsArray;
-import com.education.corsalite.models.examengine.BaseTest;
-import com.education.corsalite.models.responsemodels.Chapter;
 import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ExamModel;
-import com.education.corsalite.models.responsemodels.PartTestGridElement;
-import com.education.corsalite.models.responsemodels.TestPaperIndex;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.FileUtilities;
 import com.education.corsalite.utils.L;
@@ -43,7 +31,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
-import retrofit.client.Response;
 
 /**
  * Created by Viswanath on 2/5/2016.
@@ -302,76 +289,5 @@ public class ContentDownloadService extends IntentService {
         } catch (Exception e) {
             L.error(e.getMessage(), e);
         }
-    }
-
-    private void getTestQuestionPaper(final String testQuestionPaperId, final String testAnswerPaperId, final MockTest mockTest, final TestPaperIndex testPAperIndecies, final ScheduledTestsArray scheduledTestsArray) {
-        try {
-            ApiManager.getInstance(this).getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId,
-                    new ApiCallback<List<ExamModel>>(this) {
-                        @Override
-                        public void success(List<ExamModel> examModels, Response response) {
-                            super.success(examModels, response);
-                            OfflineTestObjectModel model = new OfflineTestObjectModel();
-                            model.examModels = examModels;
-                            if (mockTest != null) {
-                                model.testType = Tests.MOCK;
-                                model.mockTest = mockTest;
-                            } else {
-                                model.testType = Tests.SCHEDULED;
-                                model.scheduledTest = scheduledTestsArray;
-                            }
-                            model.baseTest = new BaseTest();
-                            model.baseTest.courseId = AbstractBaseActivity.selectedCourse.courseId + "";
-                            model.testPaperIndecies = testPAperIndecies;
-                            model.testQuestionPaperId = testQuestionPaperId;
-                            model.testAnswerPaperId = testAnswerPaperId;
-                            model.dateTime = System.currentTimeMillis();
-                            dbManager.saveOfflineTest(model);
-                        }
-                    });
-        } catch (Exception e) {
-            L.error(e.getMessage(), e);
-        }
-    }
-
-    private void loadTakeTest(Chapter chapter, String subjectName, String questionsCount, String subjectId) {
-        ExamEngineHelper helper = new ExamEngineHelper(this);
-        helper.loadTakeTest(chapter, subjectName, subjectId, questionsCount, new OnExamLoadCallback() {
-            @Override
-            public void onSuccess(BaseTest test) {
-                OfflineTestObjectModel model = new OfflineTestObjectModel();
-                model.testType = Tests.CHAPTER;
-                model.baseTest = test;
-                model.dateTime = System.currentTimeMillis();
-                dbManager.saveOfflineTest(model);
-            }
-
-            @Override
-            public void OnFailure(String message) {
-            }
-        });
-    }
-
-    private void loadPartTest(final String subjectName, final String subjectId, List<PartTestGridElement> elements) {
-        ExamEngineHelper helper = new ExamEngineHelper(this);
-        helper.loadPartTest(subjectName, subjectId, elements, new OnExamLoadCallback() {
-            @Override
-            public void onSuccess(BaseTest test) {
-                OfflineTestObjectModel model = new OfflineTestObjectModel();
-                model.testType = Tests.PART;
-                model.baseTest = test;
-                if (test != null) {
-                    model.baseTest.subjectId = subjectId;
-                    model.baseTest.subjectName = subjectName;
-                }
-                model.dateTime = System.currentTimeMillis();
-                dbManager.saveOfflineTest(model);
-                L.info("Test Saved : " + model.getClass());
-            }
-
-            @Override
-            public void OnFailure(String message) {
-            }
-        });
     }
 }

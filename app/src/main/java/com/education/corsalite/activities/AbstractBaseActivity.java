@@ -233,7 +233,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     protected void setToolbarForVideo(List<ContentModel> videos, int position) {
         findViewById(R.id.toolbar_title).setVisibility(View.GONE);
         toolbar.findViewById(R.id.video_layout).setVisibility(View.VISIBLE);
-        setDrawerIconInvisible();
+        hideDrawerIcon();
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         showVideoInToolbar(videos, position);
     }
@@ -248,7 +248,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
         setToolbarTitle(getResources().getString(R.string.forum));
         loadCoursesList();
-
     }
 
     protected void setToolbarForPost() {
@@ -259,7 +258,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     protected void setToolbarForExercise(String title, boolean showDrawer) {
         setToolbarTitle(title);
         if(!showDrawer) {
-            setDrawerIconInvisible();
+            hideDrawerIcon();
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         }
     }
@@ -268,8 +267,12 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         setToolbarTitle(title);
     }
 
-    protected void setDrawerIconInvisible() {
+    protected void hideDrawerIcon() {
         actionBarDrawerToggle.setDrawerIndicatorEnabled(false);
+    }
+
+    protected void showDrawerIcon() {
+        actionBarDrawerToggle.setDrawerIndicatorEnabled(true);
     }
 
     private void initNavigationDrawer() {

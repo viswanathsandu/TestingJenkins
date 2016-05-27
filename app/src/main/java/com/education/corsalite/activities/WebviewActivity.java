@@ -32,7 +32,7 @@ public class WebviewActivity extends AbstractBaseActivity {
     WebView loginWebview;
     @Bind(R.id.progress_bar_tab)
     ProgressBar mProgressBar;
-
+    private boolean handleBackClick = false;
     private String pageUrl = "";
 
     @Override
@@ -53,7 +53,7 @@ public class WebviewActivity extends AbstractBaseActivity {
         String title = bundle.getString(LoginActivity.TITLE, "Corsalite");
         setToolbarForWebActivity(title);
         if (title.equals(getString(R.string.forgot_password)) || title.equals(getString(R.string.computer_adaptive_test))) {
-            setDrawerIconInvisible();
+            hideDrawerIcon();
         }
         pageUrl = bundle.getString(URL);
         if (!title.equals(getString(R.string.forgot_password))) {
@@ -91,7 +91,7 @@ public class WebviewActivity extends AbstractBaseActivity {
 
     @Override
     public void onBackPressed() {
-        if (webview.canGoBack()) {
+        if (webview.canGoBack() && !handleBackClick) {
             webview.goBack();
         } else {
             finish();
@@ -136,6 +136,11 @@ public class WebviewActivity extends AbstractBaseActivity {
         @Override
         public void onPageFinished(WebView view, String url) {
             if (!checkNetconnection(view, url)) {
+                handleBackClick = url.contains("examination/examSubmit");
+                if(handleBackClick) {
+                    showDrawerIcon();
+                    view.clearHistory();
+                }
                 super.onPageFinished(view, url);
                 L.info("Finished Loading URL : " + url);
                 mProgressBar.setVisibility(View.GONE);

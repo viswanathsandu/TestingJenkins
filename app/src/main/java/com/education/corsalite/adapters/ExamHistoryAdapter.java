@@ -78,9 +78,7 @@ public class ExamHistoryAdapter extends AbstractRecycleViewAdapter {
             this.type.setText(examHistory.testType);
             this.rank.setText(examHistory.rank);
             if(!TextUtils.isEmpty(examHistory.totalScore)) {
-                if(examHistory.totalScore.equalsIgnoreCase("Suspended")) {
-                    this.status.setText("Suspended");
-                } else {
+                if(examHistory.totalScore.contains(".")) {
                     this.status.setText("Completed");
                     int scoreInt = -1;
                     try {
@@ -89,6 +87,8 @@ public class ExamHistoryAdapter extends AbstractRecycleViewAdapter {
                         L.error(e.getMessage(), e);
                     }
                     this.score.setText(scoreInt == -1 ? "-" : scoreInt+"");
+                } else {
+                    this.status.setText(examHistory.totalScore);
                 }
             }
             parent.setOnClickListener(new View.OnClickListener() {
