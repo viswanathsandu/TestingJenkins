@@ -74,7 +74,8 @@
                     android:paddingTop="5dp"
                     android:text="Watch Videos"
                     android:textColor="@color/white"
-                    android:gravity="center_vertical"/>
+                    android:gravity="center_vertical"
+                    android:visibility="gone" />
 
             </RelativeLayout>
         </ViewSwitcher>

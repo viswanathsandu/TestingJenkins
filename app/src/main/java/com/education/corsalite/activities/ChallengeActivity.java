@@ -74,12 +74,6 @@ public class ChallengeActivity extends AbstractBaseActivity {
         if(!TextUtils.isEmpty(screenType)) {
             if(screenType.equalsIgnoreCase("NEW_CHALLENGE")) {
                 inviteFriends.setVisibility(View.VISIBLE);
-                inviteFriends.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                    }
-                });
                // getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, FriendsListFragment.newInstance(mFriendsListCallback), "FriendsList").commit();
             } else if(screenType.equalsIgnoreCase("REQUEST")) {
                 String challengeTestRequestJson = bundle.getString("challenge_test_request_json");

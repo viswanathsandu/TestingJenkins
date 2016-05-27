@@ -42,6 +42,7 @@ import com.education.corsalite.fragments.ScheduledTestDialog;
 import com.education.corsalite.helpers.WebSocketHelper;
 import com.education.corsalite.models.ContentModel;
 import com.education.corsalite.models.requestmodels.LogoutModel;
+import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.ExamModel;
@@ -656,6 +657,30 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     // this method will be overridden by the classes that subscribes from event bus
     public void onEvent(Course course) {
         selectedCourse = course;
+        getContentIndex(selectedCourse.courseId+"", LoginUserCache.getInstance().loginResponse.studentId);
+    }
+
+    private void getContentIndex(String courseId, String studentId) {
+        ApiManager.getInstance(this).getContentIndex(courseId, studentId,
+                new ApiCallback<List<ContentIndex>>(this) {
+                    @Override
+                    public void failure(CorsaliteError error) {
+                        super.failure(error);
+                        if (error != null && !TextUtils.isEmpty(error.message)) {
+                            L.info(error.message);
+
+                        }
+                    }
+
+                    @Override
+                    public void success(List<ContentIndex> mContentIndexs, Response response) {
+                        super.success(mContentIndexs, response);
+                        if (mContentIndexs != null) {
+                            ApiCacheHolder.getInstance().setcontentIndexResponse(mContentIndexs);
+                            dbManager.saveReqRes(ApiCacheHolder.getInstance().contentIndex);
+                        }
+                    }
+                });
     }
 
     public static void saveSessionCookie(Response response) {

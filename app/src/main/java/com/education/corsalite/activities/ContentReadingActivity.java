@@ -69,19 +69,32 @@ import retrofit.client.Response;
  */
 public class ContentReadingActivity extends AbstractBaseActivity {
 
-    @Bind(R.id.iv_editnotes) ImageView ivEditNotes;
-    @Bind(R.id.iv_forum) ImageView ivForum;
-    @Bind(R.id.webView_content_reading) WebView webviewContentReading;
-    @Bind(R.id.sp_subject) Spinner spSubject;
-    @Bind(R.id.sp_chapter) Spinner spChapter;
-    @Bind(R.id.sp_topic) Spinner spTopic;
-    @Bind(R.id.iv_exercise) ImageView ivExercise;
-    @Bind(R.id.vs_container) ViewSwitcher mViewSwitcher;
-    @Bind(R.id.footer_layout) RelativeLayout webFooter;
-    @Bind(R.id.btn_next) Button btnNext;
-    @Bind(R.id.btn_previous) Button btnPrevious;
-    @Bind(R.id.tv_video) TextView tvVideo;
-    @Bind(R.id.not_available_offline_txt) TextView notAvailableForOfflineTxt;
+    @Bind(R.id.iv_editnotes)
+    ImageView ivEditNotes;
+    @Bind(R.id.iv_forum)
+    ImageView ivForum;
+    @Bind(R.id.webView_content_reading)
+    WebView webviewContentReading;
+    @Bind(R.id.sp_subject)
+    Spinner spSubject;
+    @Bind(R.id.sp_chapter)
+    Spinner spChapter;
+    @Bind(R.id.sp_topic)
+    Spinner spTopic;
+    @Bind(R.id.iv_exercise)
+    ImageView ivExercise;
+    @Bind(R.id.vs_container)
+    ViewSwitcher mViewSwitcher;
+    @Bind(R.id.footer_layout)
+    RelativeLayout webFooter;
+    @Bind(R.id.btn_next)
+    Button btnNext;
+    @Bind(R.id.btn_previous)
+    Button btnPrevious;
+    @Bind(R.id.tv_video)
+    TextView tvVideo;
+    @Bind(R.id.not_available_offline_txt)
+    TextView notAvailableForOfflineTxt;
 
     private List<ContentIndex> contentIndexList;
     private List<SubjectModel> subjectModelList;
@@ -147,7 +160,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
     }
 
     private void loadOfflineExercises() {
-        offlineExercises = dbManager.getOfflineExerciseModels(AbstractBaseActivity.selectedCourse.courseId+"");
+        offlineExercises = dbManager.getOfflineExerciseModels(AbstractBaseActivity.selectedCourse.courseId + "");
         showExercise();
     }
 
@@ -193,9 +206,9 @@ public class ContentReadingActivity extends AbstractBaseActivity {
             public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
                 selectedText = message;
                 selectedText = selectedText.replace("'", "&#39;");
-                if(operation.equals("Note")) {
+                if (operation.equals("Note")) {
                     addToNote(selectedText);
-                } else if(operation.equals("Forum")) {
+                } else if (operation.equals("Forum")) {
                     addToForum(selectedText);
                 }
                 result.confirm();
@@ -383,125 +396,61 @@ public class ContentReadingActivity extends AbstractBaseActivity {
     }
 
     private void loadNext() {
-//        if (mContentIdPosition >= contentModelList.size()) {
-            int nextTopicPosition = spTopic.getSelectedItemPosition() + 1;
-            if (nextTopicPosition >= topicModelList.size()) {
-                int nextChapterPosition = spChapter.getSelectedItemPosition() + 1;
-                if (nextChapterPosition >= chapterModelList.size()) {
-                    int nextSubjectPosition = spSubject.getSelectedItemPosition() + 1;
-                    if (nextSubjectPosition >= subjectModelList.size()) {
-                        btnNext.setVisibility(View.GONE);
-                    } else {
-                        spSubject.setSelection(nextSubjectPosition);
-                    }
+
+        int nextTopicPosition = spTopic.getSelectedItemPosition() + 1;
+        if (nextTopicPosition >= topicModelList.size()) {
+            int nextChapterPosition = spChapter.getSelectedItemPosition() + 1;
+            if (nextChapterPosition >= chapterModelList.size()) {
+                int nextSubjectPosition = spSubject.getSelectedItemPosition() + 1;
+                if (nextSubjectPosition >= subjectModelList.size()) {
+                    btnNext.setVisibility(View.GONE);
                 } else {
-                    spChapter.setSelection(nextChapterPosition);
+                    spSubject.setSelection(nextSubjectPosition);
                 }
             } else {
-                spTopic.setSelection(nextTopicPosition);
+                spChapter.setSelection(nextChapterPosition);
             }
-//        } else {
-//            // check if local file exists
-//            try {
-//                if (loadwebifFileExists(contentModelList.get(mContentIdPosition).contentName + "." +
-//                        contentModelList.get(mContentIdPosition).type)) {
-//                    if (mViewSwitcher.getNextView() instanceof RelativeLayout) {
-//                        mViewSwitcher.showNext();
-//                    }
-//                    return;
-//                }
-//            } catch (Exception e) {
-//                L.error(e.getMessage(), e);
-//            }
-//            if (SystemUtils.isNetworkConnected(this)) {
-//                // check if exists in content list
-//                if (contentList != null && contentList.size() > 0) {
-//                    for (Content content : contentList) {
-//                        if (content.idContent.equalsIgnoreCase(contentModelList.get(mContentIdPosition).idContent)) {
-//                            String text = content.type.equalsIgnoreCase(Constants.VIDEO_FILE)
-//                                    ? content.url
-//                                    : getHtmlcontent(content.contentHtml);
-//                            L.info(text);
-//                            loadWeb(text);
-//                            return;
-//                        }
-//                    }
-//                }
-//                getContent(contentModelList.get(mContentIdPosition).idContent, false);
-//            } else {
-//                mViewSwitcher.showPrevious();
-//                notAvailableForOfflineTxt.setVisibility(View.VISIBLE);
-//            }
-//        }
+        } else {
+            spTopic.setSelection(nextTopicPosition);
+        }
     }
 
     private String getHtmlcontent(String content) {
-       String htmlContent = "<!DOCTYPE html>" +
-                            "<html>" +
-                                "<head>" +
-                                    "<script type='text/javascript' src='file:///android_asset/jquery/jquery-latest.js'></script>" +
-                                    "<script type='text/javascript' src='file:///android_asset/jquery/jquery.selection.js'></script>" +
-                                    "<script>" +
-                                        "function copy() {" +
-                                            "return $.selection('html');" +
-                                        "}" +
-                                    "</script>" +
-                                "</head>" +
-                                "<body>"
-                                        + content +
-                                "</body>" +
-                            "</html>";
+        String htmlContent = "<!DOCTYPE html>" +
+                "<html>" +
+                "<head>" +
+                "<script type='text/javascript' src='file:///android_asset/jquery/jquery-latest.js'></script>" +
+                "<script type='text/javascript' src='file:///android_asset/jquery/jquery.selection.js'></script>" +
+                "<script>" +
+                "function copy() {" +
+                "return $.selection('html');" +
+                "}" +
+                "</script>" +
+                "</head>" +
+                "<body>"
+                + content +
+                "</body>" +
+                "</html>";
         return htmlContent;
     }
 
     private void loadPrevious() {
-//        if (mContentIdPosition < 0) {
-            int previousTopicPosition = spTopic.getSelectedItemPosition() - 1;
-            if (previousTopicPosition < 0) {
-                int previousChapterPosition = spChapter.getSelectedItemPosition() - 1;
-                if (previousChapterPosition < 0) {
-                    int previousSubjectPosition = spSubject.getSelectedItemPosition() - 1;
-                    if (previousSubjectPosition < 0) {
-                        btnPrevious.setVisibility(View.GONE);
-                    } else {
-                        spSubject.setSelection(previousSubjectPosition);
-                    }
+        int previousTopicPosition = spTopic.getSelectedItemPosition() - 1;
+        if (previousTopicPosition < 0) {
+            int previousChapterPosition = spChapter.getSelectedItemPosition() - 1;
+            if (previousChapterPosition < 0) {
+                int previousSubjectPosition = spSubject.getSelectedItemPosition() - 1;
+                if (previousSubjectPosition < 0) {
+                    btnPrevious.setVisibility(View.GONE);
                 } else {
-                    spChapter.setSelection(previousChapterPosition);
+                    spSubject.setSelection(previousSubjectPosition);
                 }
             } else {
-                spTopic.setSelection(previousTopicPosition);
+                spChapter.setSelection(previousChapterPosition);
             }
-//        } else {
-//            try {
-//                if (loadwebifFileExists(contentModelList.get(mContentIdPosition).contentName + "." +
-//                        contentModelList.get(mContentIdPosition).type)) {
-//                    if (mViewSwitcher.getNextView() instanceof RelativeLayout) {
-//                        mViewSwitcher.showNext();
-//                    }
-//                    return;
-//                }
-//            } catch (Exception e) {
-//                L.error(e.getMessage(), e);
-//            }
-//            // check if exists in content list
-//            if (contentList != null && contentList.size() > 0) {
-//                for (Content content : contentList) {
-//                    if (content.idContent.equalsIgnoreCase(contentModelList.get(mContentIdPosition).idContent)) {
-//                        String text = content.type.equalsIgnoreCase(Constants.VIDEO_FILE) ?
-//                                content.url : getHtmlcontent(content.contentHtml);
-//                        loadWeb(text);
-//                        return;
-//                    }
-//                }
-//            }
-//            if (SystemUtils.isNetworkConnected(this)) {
-//                getContent(contentModelList.get(mContentIdPosition).idContent, false);
-//            } else {
-//                mViewSwitcher.showPrevious();
-//                notAvailableForOfflineTxt.setVisibility(View.VISIBLE);
-//            }
-//        }
+        } else {
+            spTopic.setSelection(previousTopicPosition);
+        }
     }
 
     private class MyWebViewClient extends CorsaliteWebViewClient {
@@ -533,7 +482,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
                 String contentId = mContentResponse.get(i).idContent;
                 String contentType = mContentResponse.get(i).type + "";
                 String text = contentType.equalsIgnoreCase(Constants.VIDEO_FILE) ?
-                        mContentResponse.get(i).url :getHtmlcontent(mContentResponse.get(i).contentHtml);
+                        mContentResponse.get(i).url : getHtmlcontent(mContentResponse.get(i).contentHtml);
                 if (mContentId.isEmpty()) {
                     if (!TextUtils.isEmpty(text) && count == 0) {
                         count = count + 1;
@@ -595,9 +544,9 @@ public class ContentReadingActivity extends AbstractBaseActivity {
         if (SystemUtils.isNetworkConnected(this)) {
             ivExercise.setVisibility(View.GONE);
             String topicId = topicModelList.get(topicPosition).idTopic;
-            if(offlineExercises != null && !offlineExercises.isEmpty() && offlineExercises.contains(new ExerciseOfflineModel(selectedCourse.courseId+"", topicId))) {
-                for(ExerciseOfflineModel model : offlineExercises) {
-                    if(model.topicId.equals(topicId) && model.courseId.equals(selectedCourse.courseId+"")) {
+            if (offlineExercises != null && !offlineExercises.isEmpty() && offlineExercises.contains(new ExerciseOfflineModel(selectedCourse.courseId + "", topicId))) {
+                for (ExerciseOfflineModel model : offlineExercises) {
+                    if (model.topicId.equals(topicId) && model.courseId.equals(selectedCourse.courseId + "")) {
                         AbstractBaseActivity.setSharedExamModels(model.questions);
                         showExercise();
                     }
@@ -957,12 +906,16 @@ public class ContentReadingActivity extends AbstractBaseActivity {
     }
 
     private void showVideoDialog() {
-        VideoListDialog videoListDialog = new VideoListDialog();
-        Bundle bundle = new Bundle();
-        bundle.putString("title", topicModelList.get(spTopic.getSelectedItemPosition()).topicName);
-        bundle.putSerializable("videolist", (Serializable) videoModelList);
-        videoListDialog.setArguments(bundle);
-        videoListDialog.show(getFragmentManager(), "videoListDialog");
+        try {
+            VideoListDialog videoListDialog = new VideoListDialog();
+            Bundle bundle = new Bundle();
+            bundle.putString("title", topicModelList.get(spTopic.getSelectedItemPosition()).topicName);
+            bundle.putSerializable("videolist", (Serializable) videoModelList);
+            videoListDialog.setArguments(bundle);
+            videoListDialog.show(getFragmentManager(), "videoListDialog");
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
     }
 
     @Override
