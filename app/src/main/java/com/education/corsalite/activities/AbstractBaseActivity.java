@@ -121,10 +121,11 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     protected void refreshScreen() {
-        Intent currentIntent = getIntent();
-        finish();
-        startActivity(currentIntent);
-        overridePendingTransition(0, 0);
+        onCreate(null);
+//        Intent currentIntent = getIntent();
+//        finish();
+//        startActivity(currentIntent);
+//        overridePendingTransition(0, 0);
     }
 
     public void onEventMainThread(NetworkStatusChangeEvent event) {
