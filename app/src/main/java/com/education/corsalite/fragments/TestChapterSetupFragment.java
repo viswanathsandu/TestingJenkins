@@ -172,7 +172,6 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
                 break;
             case R.id.btn_download:
                 downloadTakeTest(chapter);
-                getActivity().finish();
                 break;
             case R.id.btn_next:
                 requestQuestionPaperDetails();
@@ -232,6 +231,7 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
         exerciseIntent.putExtra("entityId", LoginUserCache.getInstance().loginResponse.entitiyId);
         getActivity().startService(exerciseIntent);
         Toast.makeText(getActivity(), "Downloading test paper in background", Toast.LENGTH_SHORT).show();
+        getActivity().finish();
     }
 }
 
