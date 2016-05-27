@@ -15,6 +15,7 @@ import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.fragments.ChallengeTestRequestDialogFragment;
+import com.education.corsalite.fragments.FriendsListFragment;
 import com.education.corsalite.fragments.TestSetupFragment;
 import com.education.corsalite.helpers.WebSocketHelper;
 import com.education.corsalite.models.responsemodels.CreateChallengeResponseModel;
@@ -73,8 +74,8 @@ public class ChallengeActivity extends AbstractBaseActivity {
         }
         if(!TextUtils.isEmpty(screenType)) {
             if(screenType.equalsIgnoreCase("NEW_CHALLENGE")) {
-                inviteFriends.setVisibility(View.VISIBLE);
-               // getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, FriendsListFragment.newInstance(mFriendsListCallback), "FriendsList").commit();
+                //inviteFriends.setVisibility(View.VISIBLE);
+                getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, FriendsListFragment.newInstance(mFriendsListCallback), "FriendsList").commit();
             } else if(screenType.equalsIgnoreCase("REQUEST")) {
                 String challengeTestRequestJson = bundle.getString("challenge_test_request_json");
                 ChallengeTestRequestEvent event = new Gson().fromJson(challengeTestRequestJson, ChallengeTestRequestEvent.class);
