@@ -316,28 +316,28 @@
         android:gravity="center_horizontal"
         android:orientation="horizontal">
 
-        <com.corsalite.tabletapp.views.CustomImageButton
+        <com.education.corsalite.views.CustomImageButton
             android:id="@+id/refresh_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/image_button_selector"
             android:src="@drawable/ico_refresh" />
 
-        <com.corsalite.tabletapp.views.CustomImageButton
+        <com.education.corsalite.views.CustomImageButton
             android:id="@+id/reject_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/image_button_selector"
             android:src="@drawable/ico_reject" />
 
-        <com.corsalite.tabletapp.views.CustomImageButton
+        <com.education.corsalite.views.CustomImageButton
             android:id="@+id/accept_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/image_button_selector"
             android:src="@drawable/ico_accept" />
 
-        <com.corsalite.tabletapp.views.CustomImageButton
+        <com.education.corsalite.views.CustomImageButton
             android:id="@+id/start_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

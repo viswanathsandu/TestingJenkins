@@ -8,10 +8,10 @@
     {
       "client_info": {
         "mobilesdk_app_id": "1:943958301575:android:0c1365ebfed30e4b",
-        "client_id": "android:com.corsalite.tabletapp",
+        "client_id": "android:com.education.corsalite",
         "client_type": 1,
         "android_client_info": {
-          "package_name": "com.corsalite.tabletapp"
+          "package_name": "com.education.corsalite"
         }
       },
       "oauth_client": [],

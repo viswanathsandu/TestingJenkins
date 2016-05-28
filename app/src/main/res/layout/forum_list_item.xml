@@ -112,7 +112,7 @@
             android:orientation="horizontal"
             android:paddingTop="10dp">
 
-            <com.corsalite.tabletapp.views.CustomButton
+            <com.education.corsalite.views.CustomButton
                 android:id="@+id/bookmark_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="35dp"
@@ -121,7 +121,7 @@
                 android:text="bookmark"
                 android:textColor="@color/text_white" />
 
-            <com.corsalite.tabletapp.views.CustomButton
+            <com.education.corsalite.views.CustomButton
                 android:id="@+id/like_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="35dp"
@@ -131,7 +131,7 @@
                 android:text="like"
                 android:textColor="@color/text_white" />
 
-            <com.corsalite.tabletapp.views.CustomButton
+            <com.education.corsalite.views.CustomButton
                 android:id="@+id/comment_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="35dp"

@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <com.corsalite.tabletapp.views.CustomButton
+    <com.education.corsalite.views.CustomButton
         android:id="@+id/btn_view_full_question"
         android:layout_width="match_parent"
         android:layout_height="40dp"
@@ -133,7 +133,7 @@
         android:orientation="horizontal"
         android:gravity="center_horizontal">
 
-        <com.corsalite.tabletapp.views.CustomButton
+        <com.education.corsalite.views.CustomButton
             android:id="@+id/btn_suspend"
             android:layout_width="80dp"
             android:layout_height="40dp"
@@ -142,7 +142,7 @@
             android:padding="5dp"
             android:text="Suspend" />
 
-        <com.corsalite.tabletapp.views.CustomButton
+        <com.education.corsalite.views.CustomButton
             android:id="@+id/btn_save"
             android:layout_width="80dp"
             android:layout_height="40dp"
@@ -151,7 +151,7 @@
             android:padding="5dp"
             android:text="Save" />
 
-        <com.corsalite.tabletapp.views.CustomButton
+        <com.education.corsalite.views.CustomButton
             android:id="@+id/btn_submit"
             android:layout_width="80dp"
             android:layout_height="40dp"

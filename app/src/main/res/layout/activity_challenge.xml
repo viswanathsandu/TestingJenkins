@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/challenge_test_bg"
     android:fitsSystemWindows="true"
-    tools:context="com.corsalite.tabletapp.activities.ChallengeActivity">
+    tools:context="com.education.corsalite.activities.ChallengeActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

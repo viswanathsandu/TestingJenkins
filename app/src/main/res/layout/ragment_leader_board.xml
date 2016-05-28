@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"/>
 
-        <com.corsalite.tabletapp.views.CustomImageButton
+        <com.education.corsalite.views.CustomImageButton
             android:id="@+id/close_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -26,7 +26,7 @@
             android:padding="5dp"/>
     </RelativeLayout>
 
-    <com.corsalite.tabletapp.views.CustomImageButton
+    <com.education.corsalite.views.CustomImageButton
         android:id="@+id/leader_board_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
