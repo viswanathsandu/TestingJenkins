@@ -10,8 +10,8 @@ android {
         applicationId "com.education.corsalite"
         minSdkVersion 15
         targetSdkVersion 20
-        versionCode 27
-        versionName "0.0.27"
+        versionCode 28
+        versionName "0.0.28"
 
         multiDexEnabled false
     }
@@ -27,7 +27,15 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
 
+    productFlavors {
+        prod {
+            applicationId "com.corsalite.androidapp"
+        }
+        staging {
+            applicationId "com.corsalite.androidapp.staging"
+        }
     }
 }
 
