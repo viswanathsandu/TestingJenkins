@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true">
 
-            <com.education.corsalite.views.CustomButton
+            <com.corsalite.tabletapp.views.CustomButton
                 android:id="@+id/bCancel"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
@@ -38,7 +38,7 @@
                 android:textColor="@color/white"
                 android:textSize="16sp"  />
 
-            <com.education.corsalite.views.CustomButton
+            <com.corsalite.tabletapp.views.CustomButton
                 android:id="@+id/bStart"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"

@@ -21,7 +21,7 @@
         android:orientation="horizontal"
         android:gravity="right"
         android:paddingTop="10dp">
-        <com.education.corsalite.views.CustomButton
+        <com.corsalite.tabletapp.views.CustomButton
             android:id="@+id/delete_btn"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
@@ -29,7 +29,7 @@
             android:background="@drawable/delete_button_selector"
             android:textColor="@color/text_white" />
 
-        <com.education.corsalite.views.CustomButton
+        <com.corsalite.tabletapp.views.CustomButton
             android:id="@+id/edit_btn"
             android:layout_width="wrap_content"
             android:layout_height="35dp"

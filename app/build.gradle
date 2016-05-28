@@ -7,7 +7,7 @@ android {
     buildToolsVersion "23.0.3"
 
     defaultConfig {
-        applicationId "com.education.corsalite"
+        applicationId "com.corsalite.tabletapp"
         minSdkVersion 15
         targetSdkVersion 20
         versionCode 27

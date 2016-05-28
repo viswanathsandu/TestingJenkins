@@ -16,7 +16,7 @@
         android:layout_alignParentRight="true"
         android:orientation="horizontal">
 
-        <com.education.corsalite.views.CustomButton
+        <com.corsalite.tabletapp.views.CustomButton
             android:id="@+id/btn_slider_test"
             android:layout_width="30dp"
             android:layout_height="50dp"
@@ -48,7 +48,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
-                <com.education.corsalite.views.CustomImageButton
+                <com.corsalite.tabletapp.views.CustomImageButton
                     android:id="@+id/info_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -73,7 +73,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <com.education.corsalite.views.GridViewInScrollView
+                    <com.corsalite.tabletapp.views.GridViewInScrollView
                         android:id="@+id/gv_test"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

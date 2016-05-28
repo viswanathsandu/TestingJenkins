@@ -1,0 +1,91 @@
+package com.corsalite.tabletapp.fragments;
+
+import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.corsalite.tabletapp.R;
+import com.corsalite.tabletapp.adapters.MessageAdapter;
+import com.corsalite.tabletapp.api.ApiCallback;
+import com.corsalite.tabletapp.api.ApiManager;
+import com.corsalite.tabletapp.cache.LoginUserCache;
+import com.corsalite.tabletapp.models.responsemodels.CorsaliteError;
+import com.corsalite.tabletapp.models.responsemodels.Message;
+
+import java.util.List;
+
+import retrofit.client.Response;
+
+/**
+ * Created by Girish on 12/09/15.
+ */
+public class MessageTabFragment extends BaseFragment {
+
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private LinearLayout layoutEmpty;
+    private TextView tvNoData;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View v = inflater.inflate(R.layout.fragment_message, container, false);
+        mRecyclerView = (RecyclerView) v.findViewById(R.id.userdetail_recyclerView);
+        layoutEmpty = (LinearLayout) v.findViewById(R.id.layout_empty);
+        tvNoData = (TextView)v.findViewById(R.id.tv_no_data);
+
+        tvNoData.setText("No Message Found");
+        tvNoData.setTextAppearance(getActivity(),R.style.user_profile_text);
+
+        //mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setVisibility(View.VISIBLE);
+        layoutEmpty.setVisibility(View.GONE);
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        getMessage(inflater);
+        return v;
+    }
+
+    private void getMessage(final LayoutInflater inflater) {
+        ApiManager.getInstance(getActivity()).getMessages(LoginUserCache.getInstance().loginResponse.studentId,
+                new ApiCallback<List<Message>>(getActivity()) {
+                    @Override
+                    public void failure(CorsaliteError error) {
+                        super.failure(error);
+                        if(error!= null && !TextUtils.isEmpty(error.message)) {
+                            showToast(error.message);
+                        }
+                        hideRecyclerView();
+                    }
+
+                    @Override
+                    public void success(List<Message> messages, Response response) {
+                        super.success(messages, response);
+                        if (messages != null && messages.size() > 0) {
+                            mAdapter = new MessageAdapter(messages, inflater);
+                            mRecyclerView.setAdapter(mAdapter);
+                        } else {
+                            hideRecyclerView();
+                        }
+                    }
+                });
+    }
+
+    private void hideRecyclerView() {
+        layoutEmpty.setVisibility(View.VISIBLE);
+    }
+
+}

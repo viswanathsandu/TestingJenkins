@@ -24,7 +24,7 @@
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp">
 
-        <com.education.corsalite.views.CustomButton
+        <com.corsalite.tabletapp.views.CustomButton
             android:id="@+id/btn_date_picker_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
             android:layout_gravity="center"
             android:text="Cancel"/>
 
-        <com.education.corsalite.views.CustomButton
+        <com.corsalite.tabletapp.views.CustomButton
             android:id="@+id/btn_date_picker_save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

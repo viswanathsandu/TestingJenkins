@@ -4,11 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.education.corsalite.activities.VirtualCurrencyActivity">
+    tools:context="com.corsalite.tabletapp.activities.VirtualCurrencyActivity">
 
     <fragment
         android:id="@+id/currencyFragment"
-        android:name="com.education.corsalite.fragments.VirtualCurrencyFragment"
+        android:name="com.corsalite.tabletapp.fragments.VirtualCurrencyFragment"
         android:layout_gravity="center_horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

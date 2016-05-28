@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.education.corsalite">
+    package="com.corsalite.tabletapp">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
-        android:name=".app.CorsaliteApplication"
+        android:name="com.corsalite.tabletapp.app.CorsaliteApplication"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@drawable/ic_launcher"
@@ -29,7 +29,7 @@
             android:value="true" />
         <meta-data
             android:name="DOMAIN_PACKAGE_NAME"
-            android:value="com.education.corsalite.models.db" />
+            android:value="com.corsalite.tabletapp.models.db" />
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="94f6d0edefb49d0f21836a7acf733f25afe4cc72" />
@@ -37,8 +37,8 @@
             android:name="LOCALYTICS_APP_KEY"
             android:value="f34e80c23ff3d6eb90eedbb-e3eaf25c-a34c-11e5-a67e-003e57fecdee" />
 
-        <service android:name=".services.ContentDownloadService" />
-        <service android:name=".services.TestDownloadService" />
+        <service android:name="com.corsalite.tabletapp.services.ContentDownloadService" />
+        <service android:name="com.corsalite.tabletapp.services.TestDownloadService" />
 
         <receiver
             android:name="com.localytics.android.ReferralReceiver"
@@ -48,7 +48,7 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name=".receivers.NetworkChangeBroadcastReceiver"
+            android:name="com.corsalite.tabletapp.receivers.NetworkChangeBroadcastReceiver"
             android:label="NetworkChangeReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
@@ -57,7 +57,7 @@
         </receiver>
 
         <activity
-            android:name=".activities.SplashActivity"
+            android:name="com.corsalite.tabletapp.activities.SplashActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:theme="@style/AppTheme">
             <intent-filter>
@@ -67,73 +67,73 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.LoginActivity"
+            android:name="com.corsalite.tabletapp.activities.LoginActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize" />
         <activity
-            android:name=".activities.UserProfileActivity"
+            android:name="com.corsalite.tabletapp.activities.UserProfileActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:theme="@style/UserProfileTheme" />
         <activity
-            android:name=".activities.WebviewActivity"
+            android:name="com.corsalite.tabletapp.activities.WebviewActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="@string/title_activity_webview"
             android:screenOrientation="sensorLandscape"
             android:theme="@style/UserProfileTheme" />
         <activity
-            android:name=".activities.ContentReadingActivity"
+            android:name="com.corsalite.tabletapp.activities.ContentReadingActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label=""
             android:theme="@style/UserProfileTheme" />
         <activity
-            android:name=".activities.VideoActivity"
+            android:name="com.corsalite.tabletapp.activities.VideoActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:hardwareAccelerated="true"
             android:label=""
             android:theme="@style/UserProfileTheme" />
         <activity
-            android:name=".activities.VirtualCurrencyActivity"
+            android:name="com.corsalite.tabletapp.activities.VirtualCurrencyActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="@string/title_activity_currency"
             android:theme="@style/UserProfileTheme" />
         <activity
-            android:name=".activities.StudyCenterActivity"
+            android:name="com.corsalite.tabletapp.activities.StudyCenterActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="Study Center"
             android:theme="@style/UserProfileTheme" />
         <activity
-            android:name=".activities.PostDetailsActivity"
+            android:name="com.corsalite.tabletapp.activities.PostDetailsActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="Comments"
             android:theme="@style/UserProfileTheme" />
         <activity
-            android:name=".activities.AnalyticsActivity"
+            android:name="com.corsalite.tabletapp.activities.AnalyticsActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="Analytics"
             android:screenOrientation="sensorLandscape"
             android:theme="@style/UserProfileTheme" />
         <activity
-            android:name=".activities.NewAnalyticsActivity"
+            android:name="com.corsalite.tabletapp.activities.NewAnalyticsActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="Analytics"
             android:screenOrientation="sensorLandscape"
             android:theme="@style/UserProfileTheme" />
         <activity
-            android:name=".activities.OfflineActivity"
+            android:name="com.corsalite.tabletapp.activities.OfflineActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="Offline Content"
             android:theme="@style/UserProfileTheme" />
         <activity
-            android:name=".activities.NotesActivity"
+            android:name="com.corsalite.tabletapp.activities.NotesActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="Notes"
             android:theme="@style/UserProfileTheme" />
         <activity
-            android:name=".activities.ExamHistoryActivity"
+            android:name="com.corsalite.tabletapp.activities.ExamHistoryActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="ExamHistory"
             android:screenOrientation="sensorLandscape" />
         <activity
-            android:name=".activities.ExamEngineActivity"
+            android:name="com.corsalite.tabletapp.activities.ExamEngineActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:hardwareAccelerated="true"
             android:label=""
@@ -141,18 +141,18 @@
             android:screenOrientation="sensorLandscape"
             android:theme="@style/UserProfileTheme" />
         <activity
-            android:name=".activities.UsageAnalysisActivity"
+            android:name="com.corsalite.tabletapp.activities.UsageAnalysisActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:hardwareAccelerated="true"
             android:label="Usage Analysis"
             android:theme="@style/UserProfileTheme" />
         <activity
-            android:name=".activities.SaveForOfflineActivity"
+            android:name="com.corsalite.tabletapp.activities.SaveForOfflineActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:label="Notes"
             android:theme="@style/UserProfileTheme" />
         <activity
-            android:name=".activities.ChallengeActivity"
+            android:name="com.corsalite.tabletapp.activities.ChallengeActivity"
             android:label="@string/title_activity_challenge"
             android:launchMode="singleTask"
             android:screenOrientation="sensorLandscape"
@@ -162,37 +162,37 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity
-            android:name=".activities.ChallengeResultActivity"
+            android:name="com.corsalite.tabletapp.activities.ChallengeResultActivity"
             android:label="@string/title_activity_challenge"
             android:screenOrientation="sensorLandscape" />
         <activity
-            android:name=".activities.ExamResultActivity"
+            android:name="com.corsalite.tabletapp.activities.ExamResultActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".activities.TestStartActivity"
+            android:name="com.corsalite.tabletapp.activities.TestStartActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:screenOrientation="sensorLandscape"
             android:theme="@style/UserProfileTheme" />
         <activity
-            android:name=".activities.ForumActivity"
+            android:name="com.corsalite.tabletapp.activities.ForumActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:theme="@style/UserProfileTheme" />
         <activity
-            android:name=".activities.EditorActivity"
+            android:name="com.corsalite.tabletapp.activities.EditorActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:theme="@style/UserProfileTheme" />
         <activity
-            android:name=".activities.StartMockTestActivity"
+            android:name="com.corsalite.tabletapp.activities.StartMockTestActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:theme="@style/AppTheme" />
-        <activity android:name=".activities.WelcomeActivity" />
+        <activity android:name="com.corsalite.tabletapp.activities.WelcomeActivity" />
         <activity
-            android:name=".activities.CrashHandlerActivity"
+            android:name="com.corsalite.tabletapp.activities.CrashHandlerActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_crash_handler"
             android:theme="@style/FullscreenTheme" />
-        <activity android:name=".activities.InviteFriendsActivity"></activity>
+        <activity android:name="com.corsalite.tabletapp.activities.InviteFriendsActivity"></activity>
     </application>
 
 </manifest>
