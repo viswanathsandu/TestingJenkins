@@ -1,5 +1,7 @@
 package com.education.corsalite.models.responsemodels;
 
+import android.text.TextUtils;
+
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.db.IDomainEntity;
 import com.education.corsalite.utils.L;
@@ -19,11 +21,14 @@ public class BaseModel extends SugarRecord implements IDomainEntity<BaseModel> {
      */
     public String reflectionJsonString = null;
 
-    public BaseModel() {}
+    public BaseModel() {
+    }
 
     public void setUserId() {
         try {
-            userId = LoginUserCache.getInstance().loginResponse.userId;
+            if (LoginUserCache.getInstance().loginResponse != null && !TextUtils.isEmpty(LoginUserCache.getInstance().loginResponse.userId)) {
+                userId = LoginUserCache.getInstance().loginResponse.userId;
+            }
         } catch (Exception e) {
             L.error(e.getMessage(), e);
         }
@@ -31,10 +36,12 @@ public class BaseModel extends SugarRecord implements IDomainEntity<BaseModel> {
 
     public boolean isCurrentUser() {
         try {
-            return userId.equalsIgnoreCase(LoginUserCache.getInstance().loginResponse.userId);
+            if (!TextUtils.isEmpty(userId) && LoginUserCache.getInstance().loginResponse != null && TextUtils.isEmpty(LoginUserCache.getInstance().loginResponse.userId)) {
+                return userId.equalsIgnoreCase(LoginUserCache.getInstance().loginResponse.userId);
+            }
         } catch (Exception e) {
             L.error(e.getMessage(), e);
-            return false;
         }
+        return false;
     }
 }
