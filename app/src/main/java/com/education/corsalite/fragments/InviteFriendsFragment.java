@@ -1,16 +1,18 @@
 package com.education.corsalite.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
+import com.education.corsalite.activities.AddFriendsActivity;
 import com.education.corsalite.activities.ChallengeActivity;
 import com.education.corsalite.adapters.DividerItemDecoration;
 import com.education.corsalite.adapters.FriendsAdapter;
@@ -34,24 +36,21 @@ import retrofit.client.Response;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class FriendsListFragment extends BaseFragment implements SearchView.OnQueryTextListener, SearchView.OnCloseListener {
+public class InviteFriendsFragment extends BaseFragment implements SearchView.OnQueryTextListener, SearchView.OnCloseListener {
 
     private static final String ARG_CALLBACK = "ARG_CALLBACK";
-    private SearchView mFriendSearchView;
     private RecyclerView mRecyclerView;
     private FriendsAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private TextView mTextViewCancel;
-    private TextView mTextViewNext;
     private ChallengeActivity.FriendsListCallback mFriendsListCallback;
 
     private Set<String> challengeFriendsId = new HashSet<>();
     private FriendsData friendsData;
 
-    public FriendsListFragment(){}
+    public InviteFriendsFragment(){}
 
-    public static FriendsListFragment newInstance(ChallengeActivity.FriendsListCallback mFriendsListCallback) {
-        FriendsListFragment fragment = new FriendsListFragment();
+    public static InviteFriendsFragment newInstance(ChallengeActivity.FriendsListCallback mFriendsListCallback) {
+        InviteFriendsFragment fragment = new InviteFriendsFragment();
         Bundle args = new Bundle();
         fragment.mFriendsListCallback = mFriendsListCallback;
         fragment.setArguments(args);
@@ -61,39 +60,40 @@ public class FriendsListFragment extends BaseFragment implements SearchView.OnQu
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_friends_list, container, false);
-        mFriendSearchView = (SearchView) view.findViewById(R.id.sv_friend_search);
+        View view = inflater.inflate(R.layout.fragment_invite_friends, container, false);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_friends_list);
-        mTextViewCancel = (TextView) view.findViewById(R.id.tv_friendlist_cancel);
-        mTextViewNext = (TextView) view.findViewById(R.id.tv_friendlist_next);
         mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(getActivity());
+        mLayoutManager = new GridLayoutManager(getActivity(), 4);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        loadFriendsList();
-        mFriendSearchView.setIconifiedByDefault(false);
-        mFriendSearchView.setOnQueryTextListener(this);
-        mFriendSearchView.setOnCloseListener(this);
-        mTextViewNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mAdapter.getSelectedFriends() != null && mAdapter.getSelectedFriends().size() > 0) {
-                    mFriendsListCallback.onNextClick(mAdapter.getSelectedFriends());
-                }
-            }
-        });
-        mTextViewCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().finish();
-            }
-        });
+        setListeners();
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        loadFriendsList();
         WebSocketHelper.get(getActivity()).sendGetUserListEvent();
+    }
+
+    private void setListeners() {
+        if(getActivity() instanceof AbstractBaseActivity) {
+            Toolbar toolbar = ((AbstractBaseActivity) getActivity()).toolbar;
+            toolbar.findViewById(R.id.add_friends_btn).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(getActivity(), AddFriendsActivity.class));
+                }
+            });
+            toolbar.findViewById(R.id.next_btn).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mAdapter.getSelectedFriends() != null && mAdapter.getSelectedFriends().size() > 0) {
+                        mFriendsListCallback.onNextClick(mAdapter.getSelectedFriends());
+                    }
+                }
+            });
+        }
     }
 
     private void loadFriendsList() {
@@ -106,7 +106,7 @@ public class FriendsListFragment extends BaseFragment implements SearchView.OnQu
                     public void success(FriendsData friendsData, Response response) {
                         super.success(friendsData, response);
                         if (friendsData != null) {
-                            FriendsListFragment.this.friendsData = friendsData;
+                            InviteFriendsFragment.this.friendsData = friendsData;
                             showFriendsList();
                             fetchDisplayName();
                         }
@@ -172,7 +172,6 @@ public class FriendsListFragment extends BaseFragment implements SearchView.OnQu
     }
 
     public void onEventMainThread(ChallengeUserList event) {
-        showToast("User list event");
         challengeFriendsId = event.users;
         showFriendsList();
         L.info("Websocket : " + new Gson().toJson(event.users));

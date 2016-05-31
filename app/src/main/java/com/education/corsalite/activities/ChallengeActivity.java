@@ -1,11 +1,14 @@
 package com.education.corsalite.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -15,7 +18,7 @@ import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.fragments.ChallengeTestRequestDialogFragment;
-import com.education.corsalite.fragments.FriendsListFragment;
+import com.education.corsalite.fragments.InviteFriendsFragment;
 import com.education.corsalite.fragments.TestSetupFragment;
 import com.education.corsalite.helpers.WebSocketHelper;
 import com.education.corsalite.models.responsemodels.CreateChallengeResponseModel;
@@ -51,7 +54,6 @@ public class ChallengeActivity extends AbstractBaseActivity {
     @Bind(R.id.player2_txt) TextView player2_txt;
     @Bind(R.id.player3_txt) TextView player3_txt;
     @Bind(R.id.player4_txt) TextView player4_txt;
-    @Bind(R.id.tvInviteFriends) TextView inviteFriends;
 
     private TestSetupCallback mTestSetupCallback;
     public String mChallengeTestId = "";
@@ -62,7 +64,11 @@ public class ChallengeActivity extends AbstractBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_challenge);
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        RelativeLayout myView = (RelativeLayout) inflater.inflate(R.layout.activity_challenge, null);
+        frameLayout.addView(myView);
+        setToolbarForChallengeTest(true);
+
         ButterKnife.bind(this);
         initListeners();
         fetchDisplayName();
@@ -74,8 +80,7 @@ public class ChallengeActivity extends AbstractBaseActivity {
         }
         if(!TextUtils.isEmpty(screenType)) {
             if(screenType.equalsIgnoreCase("NEW_CHALLENGE")) {
-                //inviteFriends.setVisibility(View.VISIBLE);
-                getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, FriendsListFragment.newInstance(mFriendsListCallback), "FriendsList").commit();
+                getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, InviteFriendsFragment.newInstance(mFriendsListCallback), "FriendsList").commit();
             } else if(screenType.equalsIgnoreCase("REQUEST")) {
                 String challengeTestRequestJson = bundle.getString("challenge_test_request_json");
                 ChallengeTestRequestEvent event = new Gson().fromJson(challengeTestRequestJson, ChallengeTestRequestEvent.class);

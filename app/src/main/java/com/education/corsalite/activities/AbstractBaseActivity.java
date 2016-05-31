@@ -81,7 +81,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     public static Course selectedCourse;
     private static List<ExamModel> sharedExamModels;
     private List<Course> courses;
-    protected Toolbar toolbar;
+    public Toolbar toolbar;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
     protected FrameLayout frameLayout;
@@ -174,6 +174,15 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         setToolbarTitle(getResources().getString(R.string.analytics));
         showVirtualCurrency();
         loadCoursesList();
+    }
+
+    protected void setToolbarForChallengeTest(boolean showButtons) {
+        toolbar.findViewById(R.id.spinner_layout).setVisibility(View.GONE);
+        if(showButtons) {
+            toolbar.findViewById(R.id.challenge_buttons_layout).setVisibility(View.VISIBLE);
+        }
+        toolbar.setBackgroundColor(getResources().getColor(R.color.red));
+        setToolbarTitle(getResources().getString(R.string.challenge_your_friends));
     }
 
     protected void setToolbarForPostcomments() {

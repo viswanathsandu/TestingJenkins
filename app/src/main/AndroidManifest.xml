@@ -192,6 +192,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_crash_handler"
             android:theme="@style/FullscreenTheme" />
+        <activity android:name=".activities.AddFriendsActivity"></activity>
     </application>
 
 </manifest>

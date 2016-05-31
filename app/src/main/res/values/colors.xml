@@ -55,4 +55,5 @@
     <color name="schedule_test">#00B8AB</color>
     <color name="schedule_test_clicked">#7dd8d1</color>
     <color name="study_center_clicked">#7bd188</color>
+    <color name="challenge_tile_color">#bbffffff</color>
 </resources>

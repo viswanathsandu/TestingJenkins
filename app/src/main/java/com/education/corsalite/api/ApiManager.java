@@ -11,6 +11,7 @@ import com.education.corsalite.models.db.MockTest;
 import com.education.corsalite.models.db.ScheduledTestList;
 import com.education.corsalite.models.db.reqres.LoginReqRes;
 import com.education.corsalite.models.db.reqres.StudyCenterReqRes;
+import com.education.corsalite.models.requestmodels.AddRemoveFriendRequest;
 import com.education.corsalite.models.requestmodels.Bookmark;
 import com.education.corsalite.models.requestmodels.CreateChallengeRequest;
 import com.education.corsalite.models.requestmodels.ForumLikeRequest;
@@ -269,6 +270,26 @@ public class ApiManager {
     public void getFriendsList(String userId, String courseId, ApiCallback<FriendsData> callback) {
         if (isApiOnline()) {
             ApiClientService.get().getFriendsList(userId, courseId, callback);
+        }
+    }
+
+    public void searchFriends(String userId, String courseId, String searchKey, ApiCallback<List<FriendsData.Friend>> callback) {
+        if (isApiOnline()) {
+            ApiClientService.get().searchFriends(userId, courseId, searchKey, callback);
+        }
+    }
+
+    public void addFriend(String userId, String friendUserId, ApiCallback<CommonResponseModel> callback) {
+        if(isApiOnline()) {
+            AddRemoveFriendRequest request = new AddRemoveFriendRequest(userId, friendUserId, "AddFriend");
+            ApiClientService.get().addRemoveFriend(new TypedString("Update=" + new Gson().toJson(request)), callback);
+        }
+    }
+
+    public void unFriend(String userId, String friendUserId, ApiCallback<CommonResponseModel> callback) {
+        if(isApiOnline()) {
+            AddRemoveFriendRequest request = new AddRemoveFriendRequest(userId, friendUserId, "UnFriend");
+            ApiClientService.get().addRemoveFriend(new TypedString("Update=" + new Gson().toJson(request)), callback);
         }
     }
 

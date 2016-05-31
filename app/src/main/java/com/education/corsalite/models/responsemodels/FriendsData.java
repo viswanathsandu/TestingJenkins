@@ -27,6 +27,8 @@ public class FriendsData extends BaseModel {
         public String displayName;
         @SerializedName("EmailID")
         public String emailID;
+        @SerializedName("friendRequest")
+        public String friendRequest;
         public boolean isOnline = false;
         public String status = "";
     }

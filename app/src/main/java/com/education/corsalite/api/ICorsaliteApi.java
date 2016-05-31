@@ -127,6 +127,16 @@ public interface ICorsaliteApi {
                         @Query("idCourse") String courseId,
                         ApiCallback<FriendsData> callback);
 
+    @GET("/SearchFriends")
+    void searchFriends(@Query("idUser") String userId,
+                        @Query("idCourse") String courseId,
+                        @Query("searchKey") String searchKey,
+                        ApiCallback<List<FriendsData.Friend>> callback);
+
+    @Headers("Content-Type:application/x-www-form-urlencoded")
+    @POST("/FriendRequest")
+    void addRemoveFriend(@Body TypedString update, ApiCallback<CommonResponseModel> callback);
+
     @GET("/GetTestCoverage")
     void getTestCoverage(@Query("idStudent") String studentId,
                          @Query("idCourse") String courseId,

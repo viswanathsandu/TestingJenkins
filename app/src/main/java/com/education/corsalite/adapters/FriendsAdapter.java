@@ -70,6 +70,8 @@ public class FriendsAdapter extends AbstractRecycleViewAdapter {
         TextView tvName;
         @Bind(R.id.tv_friend_email)
         TextView tvEmail;
+        @Bind(R.id.status_view) View statusView;
+        @Bind(R.id.tile_view) View tileView;
         View parent;
 
         public FriendViewHolder(View itemView) {
@@ -81,12 +83,13 @@ public class FriendsAdapter extends AbstractRecycleViewAdapter {
         public void bindData(final int position, final FriendsData.Friend clickedFriend) {
             tvName.setText(clickedFriend.displayName);
             tvEmail.setText(clickedFriend.emailID);
-            ivActionBtn.setVisibility(clickedFriend.isOnline ? View.VISIBLE : View.GONE);
-            if (selectedFriends.contains(clickedFriend)) {
-                ivActionBtn.setImageResource(android.R.drawable.ic_delete);
-            } else {
-                ivActionBtn.setImageResource(android.R.drawable.ic_input_add);
-            }
+            statusView.setBackgroundColor(mActivity.getResources().getColor(clickedFriend.isOnline ? R.color.green : R.color.gray));
+//            ivActionBtn.setVisibility(clickedFriend.isOnline ? View.VISIBLE : View.GONE);
+//            if (selectedFriends.contains(clickedFriend)) {
+//                ivActionBtn.setImageResource(android.R.drawable.ic_delete);
+//            } else {
+//                ivActionBtn.setImageResource(android.R.drawable.ic_input_add);
+//            }
             if (!TextUtils.isEmpty(clickedFriend.photoUrl)) {
                 Glide.with(mActivity).load(ApiClientService.getBaseUrl() + clickedFriend.photoUrl.replaceFirst("./", "")).into(ivProfilePic);
             }
@@ -95,12 +98,14 @@ public class FriendsAdapter extends AbstractRecycleViewAdapter {
                     @Override
                     public void onClick(View view) {
                         if (selectedFriends.contains(clickedFriend)) {
+                            tileView.setBackgroundColor(mActivity.getResources().getColor(R.color.challenge_tile_color));
                             ivActionBtn.setImageResource(android.R.drawable.ic_input_add);
                             selectedFriends.remove(clickedFriend);
                             if (mFriendsListCallback != null) {
                                 mFriendsListCallback.onFriendRemoved(clickedFriend);
                             }
                         } else if (selectedFriends.size() < 4) {
+                            tileView.setBackgroundColor(mActivity.getResources().getColor(R.color.green));
                             ivActionBtn.setImageResource(android.R.drawable.ic_delete);
                             selectedFriends.add(clickedFriend);
                             if (mFriendsListCallback != null) {
