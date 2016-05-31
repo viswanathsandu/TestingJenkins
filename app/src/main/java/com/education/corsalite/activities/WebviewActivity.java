@@ -1,13 +1,16 @@
 package com.education.corsalite.activities;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.CookieManager;
+import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -68,7 +71,51 @@ public class WebviewActivity extends AbstractBaseActivity {
         if (!TextUtils.isEmpty(pageUrl)) {
             webview.getSettings().setJavaScriptEnabled(true);
             webview.setWebViewClient(new MyWebViewClient(this));
-            webview.setWebChromeClient(new WebChromeClient());
+//            webview.setWebChromeClient(new WebChromeClient());
+            webview.setWebChromeClient(new WebChromeClient() {
+                @Override
+                public boolean onJsAlert(WebView view, String url, String message, final android.webkit.JsResult result)
+                {
+                    new AlertDialog.Builder(WebviewActivity.this)
+                            .setTitle(view.getTitle())
+                            .setMessage(message)
+                            .setPositiveButton(android.R.string.ok,
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            result.confirm();
+                                        }
+                                    })
+                            .setCancelable(false)
+                            .create()
+                            .show();
+
+                    return true;
+                };
+
+                @Override
+                public boolean onJsConfirm(WebView view, String url, String message, final JsResult result) {
+                    AlertDialog.Builder b = new AlertDialog.Builder(view.getContext())
+                            .setTitle(view.getTitle())
+                            .setMessage(message)
+                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    result.confirm();
+                                }
+                            })
+                            .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    result.cancel();
+                                }
+                            });
+
+                    b.show();
+
+                    // Indicate that we're handling this manually
+                    return true;
+                }
+            });
             webview.loadUrl(getUrlWithNoHeadersAndFooters(pageUrl));
             L.info("Load Url : " + getUrlWithNoHeadersAndFooters(pageUrl));
         }
