@@ -68,7 +68,8 @@ public class ContentDownloadService extends IntentService {
     }
 
     private void startDownload() {
-        for (OfflineContent content : offlineContents) {
+        List<OfflineContent> offlineContentsList = new ArrayList<>(offlineContents);
+        for (OfflineContent content : offlineContentsList) {
             switch (content.status) {
                 case STARTED:
                 case IN_PROGRESS:
@@ -85,7 +86,7 @@ public class ContentDownloadService extends IntentService {
         }
     }
 
-    private void downloadSync(final OfflineContent content) {
+    private void downloadSync(OfflineContent content) {
         if (!TextUtils.isEmpty(content.contentId)) {
             List<Content> contents = ApiManager.getInstance(this).getContent(content.contentId, "");
             if(contents != null && !contents.isEmpty()) {
@@ -100,7 +101,7 @@ public class ContentDownloadService extends IntentService {
         downloadExercises();
     }
 
-    private void saveFileToDisk(OfflineContent offlineContent, final String htmlText, final Content content) {
+    private void saveFileToDisk(OfflineContent offlineContent, String htmlText, Content content) {
         FileUtilities fileUtilities = new FileUtilities(this);
         final String folderStructure = offlineContent.courseName + File.separator
                                         + offlineContent.subjectName + File.separator
@@ -233,7 +234,7 @@ public class ContentDownloadService extends IntentService {
         }
     }
 
-    private void updateOfflineContent(final OfflineContentStatus status, final Content content, final int progress) {
+    private void updateOfflineContent(OfflineContentStatus status, Content content, int progress) {
         if(content == null) return;
         List<OfflineContent> results = new ArrayList<>();
         for (OfflineContent offlineContent : offlineContents) {
@@ -277,7 +278,8 @@ public class ContentDownloadService extends IntentService {
         try {
             List<ExerciseOfflineModel> resultsToSave = new ArrayList<>();
             List<ExerciseOfflineModel> resultsToDelete = new ArrayList<>();
-            for (final ExerciseOfflineModel model : offlineExercises) {
+            List<ExerciseOfflineModel> offlineExerciseList = new ArrayList<>(offlineExercises);
+            for (ExerciseOfflineModel model : offlineExerciseList) {
                 List<ExamModel> examModels = ApiManager.getInstance(this).getExercise(model.topicId, model.courseId, LoginUserCache.getInstance().loginResponse.studentId, null);
                 if (examModels != null && !examModels.isEmpty()) {
                     model.progress = 100;

@@ -439,7 +439,6 @@ public class SugarDbManager {
         }
     }
 
-
     // Cached data
     private List<OfflineContent> getCahcedOfflineContents() {
         if(cachedOfflineContents == null) {

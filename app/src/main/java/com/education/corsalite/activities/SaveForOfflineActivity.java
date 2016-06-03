@@ -200,9 +200,10 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
         downloadBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                stopService(new Intent(getApplicationContext(), ContentDownloadService.class));
                 storeInProgressItemsInDb(offlineContents, offlineExerciseModels);
                 EventBus.getDefault().post(new RefreshDownloadsEvent());
-                startService(new Intent(SaveForOfflineActivity.this, ContentDownloadService.class));
+                startService(new Intent(getApplicationContext(), ContentDownloadService.class));
                 dialog.dismiss();
                 finish();
             }

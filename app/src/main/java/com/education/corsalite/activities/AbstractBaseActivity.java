@@ -477,9 +477,9 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     protected void showVirtualCurrency() {
+        final TextView textView = (TextView) toolbar.findViewById(R.id.tv_virtual_currency);
+        final ProgressBar progressBar = (ProgressBar) toolbar.findViewById(R.id.ProgressBar);
         try {
-            final TextView textView = (TextView) toolbar.findViewById(R.id.tv_virtual_currency);
-            final ProgressBar progressBar = (ProgressBar) toolbar.findViewById(R.id.ProgressBar);
             progressBar.setVisibility(View.VISIBLE);
             toolbar.findViewById(R.id.currency_layout).setVisibility(View.VISIBLE);
             toolbar.findViewById(R.id.currency_layout).setOnClickListener(new View.OnClickListener() {
@@ -489,6 +489,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
+
             ApiManager.getInstance(this).getVirtualCurrencyBalance(LoginUserCache.getInstance().loginResponse.studentId, new ApiCallback<VirtualCurrencyBalanceResponse>(this) {
                 @Override
                 public void success(VirtualCurrencyBalanceResponse virtualCurrencyBalanceResponse, Response response) {
@@ -506,6 +507,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             });
         } catch (Exception e) {
             L.error(e.getMessage(), e);
+            progressBar.setVisibility(View.GONE);
         }
     }
 
@@ -779,7 +781,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     public void onEventMainThread(ChallengeTestUpdateEvent event) {
         if(!TextUtils.isEmpty(event.challengerStatus) && event.challengerStatus.equalsIgnoreCase("Canceled")) {
-            ChallengeUtils.get(this).clearChallengeNotifications(event);
+            ChallengeUtils.get(this).clearChallengeNotifications(event.challengeTestParentId);
             if(this instanceof ChallengeActivity) {
                 finish();
                 showToast("Challenger has cancelled the challenge");
@@ -792,6 +794,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     public void onEventMainThread(ChallengeTestStartEvent event) {
         if(!(this instanceof ExamEngineActivity) && !ChallengeUtils.get(this).challengeStarted) {
             ChallengeUtils.get(this).challengeStarted = true;
+            ChallengeUtils.get(this).clearChallengeNotifications(event.challengeTestParentId);
             Intent intent = new Intent(this, ExamEngineActivity.class);
             intent.putExtra(Constants.TEST_TITLE, "Challenge Test");
             intent.putExtra("test_question_paper_id", event.testQuestionPaperId);

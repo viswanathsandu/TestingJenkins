@@ -74,9 +74,9 @@ public class ChallengeUtils {
         }
     }
 
-    public void clearChallengeNotifications(ChallengeTestUpdateEvent event) {
+    public void clearChallengeNotifications(String challengeId) {
         try {
-            NotificationsUtils.cancelNotification(context, Integer.valueOf(event.challengeTestParentId));
+            NotificationsUtils.cancelNotification(context, Integer.valueOf(challengeId));
         } catch (Exception e) {
             L.error(e.getMessage(), e);
         }
