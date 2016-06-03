@@ -8,10 +8,13 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.education.corsalite.activities.ChallengeActivity;
+import com.education.corsalite.models.responsemodels.ChallengeUser;
 import com.education.corsalite.models.socket.response.ChallengeTestRequestEvent;
 import com.education.corsalite.models.socket.response.ChallengeTestUpdateEvent;
 import com.education.corsalite.utils.L;
 import com.google.gson.Gson;
+
+import java.util.List;
 
 /**
  * Created by vissu on 4/23/16.
@@ -21,6 +24,10 @@ public class ChallengeUtils {
     private int requestCode = 0;
     private static ChallengeUtils instance;
     private Context context;
+
+    List<ChallengeUser> challengeUsers;
+    public boolean challengeStarted = false;
+    public boolean challengeCompleted = false;
 
     public static ChallengeUtils get(Context context) {
         if(instance == null) {
@@ -58,8 +65,8 @@ public class ChallengeUtils {
     public void showChallengeUpdateNotification(ChallengeTestUpdateEvent event) {
         try {
             Bundle extras = new Bundle();
-            String title = extras.getString("title", "Challenge Request");
-            String subTitle = extras.getString("sub_title", "from" + event.challengerName);
+            String title = extras.getString("title", "Challenge");
+            String subTitle = extras.getString("sub_title", event.challengerName + " has " + event.challengerStatus);
             Toast.makeText(context, "Notification : " + title, Toast.LENGTH_SHORT).show();
             NotificationsUtils.NotifyUser(context, Integer.valueOf(event.challengeTestParentId), title, subTitle, getChallengeUpdateIntent(event));
         } catch (Exception e) {

@@ -790,7 +790,8 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     public void onEventMainThread(ChallengeTestStartEvent event) {
-        if(!(this instanceof ExamEngineActivity)) {
+        if(!(this instanceof ExamEngineActivity) && !ChallengeUtils.get(this).challengeStarted) {
+            ChallengeUtils.get(this).challengeStarted = true;
             Intent intent = new Intent(this, ExamEngineActivity.class);
             intent.putExtra(Constants.TEST_TITLE, "Challenge Test");
             intent.putExtra("test_question_paper_id", event.testQuestionPaperId);

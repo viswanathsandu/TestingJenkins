@@ -116,9 +116,9 @@ public class ContentDownloadService extends IntentService {
             String htmlUrl = fileUtilities.write(content.name + "." + Constants.HTML_FILE, htmlText, folderStructure);
             if (htmlUrl != null) {
                 EventBus.getDefault().post(new OfflineActivityRefreshEvent(content.idContent));
-                Toast.makeText(this, getString(R.string.file_saved), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, getString(R.string.file_saved), Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(this, getString(R.string.file_save_failed), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, getString(R.string.file_save_failed), Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -186,7 +186,7 @@ public class ContentDownloadService extends IntentService {
                     .addCustomHeader("cookie", ApiClientService.getSetCookie())
                     .setRetryPolicy(new DefaultRetryPolicy())
                     .setDestinationURI(destinationUri).setPriority(DownloadRequest.Priority.HIGH)
-                    .setDownloadContext(getApplicationContext())//Optional
+                    .setDownloadContext(getApplicationContext()) //Optional
                     .setStatusListener(new DownloadStatusListenerV1() {
                         int preProgress = 0;
                         @Override
@@ -235,7 +235,6 @@ public class ContentDownloadService extends IntentService {
 
     private void updateOfflineContent(final OfflineContentStatus status, final Content content, final int progress) {
         if(content == null) return;
-        List<OfflineContent> offlineContents = dbManager.getOfflineContents(null);
         List<OfflineContent> results = new ArrayList<>();
         for (OfflineContent offlineContent : offlineContents) {
             if (!TextUtils.isEmpty(content.idContent) && !TextUtils.isEmpty(offlineContent.contentId) && offlineContent.contentId.equalsIgnoreCase(content.idContent)) {
@@ -276,16 +275,20 @@ public class ContentDownloadService extends IntentService {
 
     private void downloadExercises() {
         try {
+            List<ExerciseOfflineModel> resultsToSave = new ArrayList<>();
+            List<ExerciseOfflineModel> resultsToDelete = new ArrayList<>();
             for (final ExerciseOfflineModel model : offlineExercises) {
                 List<ExamModel> examModels = ApiManager.getInstance(this).getExercise(model.topicId, model.courseId, LoginUserCache.getInstance().loginResponse.studentId, null);
                 if (examModels != null && !examModels.isEmpty()) {
                     model.progress = 100;
                     model.questions = examModels;
-                    dbManager.saveOfflineExerciseTest(model);
+                    resultsToSave.add(model);
                 } else {
-                    dbManager.deleteOfflineExercise(model);
+                    resultsToDelete.add(model);
                 }
             }
+            dbManager.saveOfflineExerciseTests(resultsToSave);
+
         } catch (Exception e) {
             L.error(e.getMessage(), e);
         }
