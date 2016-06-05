@@ -12,7 +12,6 @@ android {
         targetSdkVersion 20
         versionCode 9000033
         versionName "0.0.33"
-
         multiDexEnabled false
     }
     buildTypes {
