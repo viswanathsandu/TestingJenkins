@@ -38,6 +38,8 @@ import de.greenrobot.event.EventBus;
 public class ContentDownloadService extends IntentService {
 
     public static boolean isIntentServiceRunning = false;
+    private static boolean isDownloadInProgress = false;
+    public static int downloandInProgress = 0;
     private List<OfflineContent> offlineContents = new ArrayList<>();
     private List<ExerciseOfflineModel> offlineExercises = new ArrayList<>();
     private DownloadManager downloadManager = new ThinDownloadManager();
@@ -45,6 +47,10 @@ public class ContentDownloadService extends IntentService {
 
     public ContentDownloadService() {
         super("ContentDownloadService");
+    }
+
+    public static boolean isDownloadInProgress() {
+        return downloandInProgress > 0;
     }
 
     @Override
@@ -88,6 +94,7 @@ public class ContentDownloadService extends IntentService {
 
     private void downloadSync(OfflineContent content) {
         if (!TextUtils.isEmpty(content.contentId)) {
+            downloandInProgress++;
             List<Content> contents = ApiManager.getInstance(this).getContent(content.contentId, "");
             if(contents != null && !contents.isEmpty()) {
                 if(content.fileName.endsWith("html")) {
@@ -97,6 +104,7 @@ public class ContentDownloadService extends IntentService {
             } else {
                 updateOfflineContent(OfflineContentStatus.FAILED, null, 0);
             }
+            downloandInProgress--;
         }
         downloadExercises();
     }
@@ -147,6 +155,7 @@ public class ContentDownloadService extends IntentService {
 
     // TODO : need to implement it further
     private void downloadContent(String url, String downloadLocation) {
+        downloandInProgress++;
         Uri downloadUri = Uri.parse(url);
         Uri destinationUri = Uri.parse(downloadLocation);
         DownloadRequest downloadRequest = new DownloadRequest(downloadUri)
@@ -161,11 +170,13 @@ public class ContentDownloadService extends IntentService {
                     @Override
                     public void onDownloadComplete(DownloadRequest downloadRequest) {
                         L.info("Downloader : completed");
+                        downloandInProgress--;
                     }
 
                     @Override
                     public void onDownloadFailed(DownloadRequest downloadRequest, int errorCode, String errorMessage) {
                         L.info("Downloader : failed with error code : "+errorCode+"\t message : "+errorMessage);
+                        downloandInProgress--;
                     }
 
                     @Override
@@ -181,6 +192,7 @@ public class ContentDownloadService extends IntentService {
 
     private void downloadVideo(OfflineContent offlineContent, final Content content, String videoUrl, String downloadLocation) {
         try {
+            downloandInProgress++;
             Uri downloadUri = Uri.parse(videoUrl);
             Uri destinationUri = Uri.parse(downloadLocation);
             DownloadRequest downloadRequest = new DownloadRequest(downloadUri)
@@ -194,12 +206,14 @@ public class ContentDownloadService extends IntentService {
                         public void onDownloadComplete(DownloadRequest downloadRequest) {
                             updateOfflineContent(OfflineContentStatus.COMPLETED, content, 100);
                             L.info("Downloader : completed");
+                            downloandInProgress--;
                         }
 
                         @Override
                         public void onDownloadFailed(DownloadRequest downloadRequest, int errorCode, String errorMessage) {
                             updateOfflineContent(OfflineContentStatus.FAILED, content, 0);
                             L.info("Downloader : failed");
+                            downloandInProgress--;
                         }
 
                         public void onProgress(DownloadRequest downloadRequest, long totalBytes, long downloadedBytes, int progress) {

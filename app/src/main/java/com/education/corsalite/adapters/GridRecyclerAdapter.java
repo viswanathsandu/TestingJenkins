@@ -29,6 +29,7 @@ import com.education.corsalite.activities.StudyCenterActivity;
 import com.education.corsalite.activities.TestStartActivity;
 import com.education.corsalite.enums.Tests;
 import com.education.corsalite.models.responsemodels.Chapter;
+import com.education.corsalite.services.ContentDownloadService;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.Data;
 import com.education.corsalite.utils.SystemUtils;
@@ -183,7 +184,11 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                startOfflineActivity(chapter);
+                if(!ContentDownloadService.isDownloadInProgress()) {
+                    startOfflineActivity(chapter);
+                } else {
+                    studyCenterActivity.showToast("Currently downloads are in progress.\n Try again.");
+                }
             }
         });
         dialogView.findViewById(R.id.flagged_questions).setOnClickListener(new View.OnClickListener() {
