@@ -308,7 +308,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             loadExerciseTest();
         } else if (title.equalsIgnoreCase("Mock Test")) {
             loadMockTest();
-        } else if (title.equalsIgnoreCase("Schedule Test")) {
+        } else if (title.equalsIgnoreCase("Scheduled Test")) {
             loadScheduledTest();
         } else if (ischallengeTest()) { // Challenge Test
             loadChallengeTest();

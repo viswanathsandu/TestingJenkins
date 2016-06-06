@@ -148,7 +148,7 @@ public class ScheduledTestDialog extends DialogFragment implements ScheduledTest
             long startTimeInMillis = df.parse(exam.startTime).getTime();
             if (startTimeInMillis < System.currentTimeMillis() + 1000*60) {
                 Intent intent = new Intent(getActivity(), ExamEngineActivity.class);
-                intent.putExtra(Constants.TEST_TITLE, "Schedule Test");
+                intent.putExtra(Constants.TEST_TITLE, "Scheduled Test");
                 intent.putExtra("test_question_paper_id", exam.testQuestionPaperId);
                 startActivity(intent);
                 return;
