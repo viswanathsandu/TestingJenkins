@@ -29,7 +29,7 @@
             android:value="true" />
         <meta-data
             android:name="DOMAIN_PACKAGE_NAME"
-            android:value="com.education.corsalite.models.db" />
+            android:value="com.education.corsalite.models" />
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="94f6d0edefb49d0f21836a7acf733f25afe4cc72" />
@@ -39,6 +39,10 @@
 
         <service android:name=".services.ContentDownloadService" />
         <service android:name=".services.TestDownloadService" />
+        <receiver
+            android:name=".receivers.NotifyReceiver"
+            android:enabled="true"
+            android:exported="true" />
 
         <receiver
             android:name="com.localytics.android.ReferralReceiver"

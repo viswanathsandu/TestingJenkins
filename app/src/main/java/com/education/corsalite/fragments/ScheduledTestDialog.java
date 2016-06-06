@@ -119,9 +119,10 @@ public class ScheduledTestDialog extends DialogFragment implements ScheduledTest
 
     private void examStartedNotification(String examId, String examName, Date scheduledTime) {
         long delay = 0;
-        if(System.currentTimeMillis() < scheduledTime.getTime()) {
-            delay = scheduledTime.getTime() - System.currentTimeMillis();
+        if(System.currentTimeMillis() > scheduledTime.getTime()) {
+            return;
         }
+        delay = scheduledTime.getTime() - System.currentTimeMillis();
         Intent broadCastIntent = new Intent(this.getActivity(), NotifyReceiver.class);
         broadCastIntent.putExtra("title", examName);
         broadCastIntent.putExtra("sub_title", "Exam started at "+new SimpleDateFormat("hh:mm a").format(scheduledTime));
@@ -147,7 +148,7 @@ public class ScheduledTestDialog extends DialogFragment implements ScheduledTest
             long startTimeInMillis = df.parse(exam.startTime).getTime();
             if (startTimeInMillis < System.currentTimeMillis() + 1000*60) {
                 Intent intent = new Intent(getActivity(), ExamEngineActivity.class);
-                intent.putExtra(Constants.TEST_TITLE, "Scheduled Test");
+                intent.putExtra(Constants.TEST_TITLE, "Schedule Test");
                 intent.putExtra("test_question_paper_id", exam.testQuestionPaperId);
                 startActivity(intent);
                 return;

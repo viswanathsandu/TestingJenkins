@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by madhuri on 2/20/16.
  */
-public class TestPaperIndex extends BaseModel{
+public class TestPaperIndex extends BaseModel {
     @Ignore
     @SerializedName("ExamDetails")
     public List<ExamDetails> examDetails;

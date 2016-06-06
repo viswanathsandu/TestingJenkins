@@ -41,6 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Email"
+                android:textColor="@color/black"
                 android:maxLines="1"/>
 
         </android.support.design.widget.TextInputLayout>
@@ -57,6 +58,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Password"
+                android:textColor="@color/black"
                 android:drawableRight="@drawable/view"
                 android:drawablePadding="6dp"
                 android:inputType="textPassword"

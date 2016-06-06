@@ -85,7 +85,7 @@ public class SugarDbManager {
             cachedOfflineContents.add((OfflineContent) object);
         } else if(object instanceof OfflineTestObjectModel) {
             if(object.getId() != null && object.getId() > 0) {
-                for (int i=0; i< cachedOfflineTestObjects.size(); i++) {
+                for (int i=0; i< getCachedOfflineTestObjectModles().size(); i++) {
                     if (cachedOfflineTestObjects.get(i).getId().equals(object.getId())) {
                         cachedOfflineTestObjects.set(i, (OfflineTestObjectModel) object);
                         return;
@@ -271,8 +271,7 @@ public class SugarDbManager {
 
     public void updateOfflineTestModel(final long date, final int status, final long examTakenTime) {
         try {
-            List<OfflineTestObjectModel> offlinecontentList = getCahcedOfflineTestObjectModles();
-            for (OfflineTestObjectModel savedOfflineContent : offlinecontentList) {
+            for (OfflineTestObjectModel savedOfflineContent : getCachedOfflineTestObjectModles()) {
                 if (date == savedOfflineContent.dateTime) {
                     savedOfflineContent.dateTime = examTakenTime;
                     savedOfflineContent.status = status;
@@ -293,8 +292,7 @@ public class SugarDbManager {
     }
 
     public void saveOfflineExerciseTests(List<ExerciseOfflineModel> offlineExercises) {
-        List<ExerciseOfflineModel> offlineExercisesInDb = getCahcedExerciseTests();
-        for (ExerciseOfflineModel exercise : offlineExercisesInDb) {
+        for (ExerciseOfflineModel exercise : getCahcedExerciseTests()) {
             Long id = getOfflineexerciseId(offlineExercises, exercise);
             if(id != null) {
                 exercise.setId(id);
@@ -363,7 +361,7 @@ public class SugarDbManager {
 
     public void getAllExamModels(String courseId, final String subjectId, final ApiCallback<BaseTest> callback) {
         try {
-            List<OfflineTestObjectModel> responseList = getCahcedOfflineTestObjectModles();
+            List<OfflineTestObjectModel> responseList = getCachedOfflineTestObjectModles();
             for (OfflineTestObjectModel test : responseList) {
                 if (test != null && courseId.equals(test.baseTest.courseId)) {
                     if (test != null && test.baseTest.subjectId.equalsIgnoreCase(subjectId)) {
@@ -381,7 +379,7 @@ public class SugarDbManager {
 
     public void getAllExamModels(String courseId, final MockTest mockTest, final ApiCallback<OfflineTestObjectModel> callback) {
         try {
-            List<OfflineTestObjectModel> responseList = getCahcedOfflineTestObjectModles();
+            List<OfflineTestObjectModel> responseList = getCachedOfflineTestObjectModles();
             for (OfflineTestObjectModel test : responseList) {
                 if (test != null && courseId.equals(test.baseTest.courseId)) {
                     if (test != null && test.mockTest != null && !TextUtils.isEmpty(test.mockTest.examTemplateId)
@@ -400,7 +398,7 @@ public class SugarDbManager {
 
     public void getAllExamModels(String courseId, final ScheduledTestsArray scheduledTest, final ApiCallback<List<ExamModel>> callback) {
         try {
-            List<OfflineTestObjectModel> responseList = getCahcedOfflineTestObjectModles();
+            List<OfflineTestObjectModel> responseList = getCachedOfflineTestObjectModles();
             for (OfflineTestObjectModel test : responseList) {
                 if (test != null && courseId.equals(test.baseTest.courseId)) {
                     if (test != null && test.scheduledTest != null && !TextUtils.isEmpty(test.scheduledTest.testQuestionPaperId)
@@ -424,7 +422,7 @@ public class SugarDbManager {
     public void getAllOfflineMockTests(String courseId, ApiCallback<List<OfflineTestObjectModel>> callback) {
         List<OfflineTestObjectModel> currentUserResults = new ArrayList<>();
         try {
-            List<OfflineTestObjectModel> responseList = getCahcedOfflineTestObjectModles();
+            List<OfflineTestObjectModel> responseList = getCachedOfflineTestObjectModles();
             for (OfflineTestObjectModel test : responseList) {
                 if (test != null && courseId.equals(test.baseTest.courseId)) {
                     currentUserResults.add(test);
@@ -454,9 +452,12 @@ public class SugarDbManager {
         return cachedOfflineExercises;
     }
 
-    private List<OfflineTestObjectModel> getCahcedOfflineTestObjectModles() {
+    private List<OfflineTestObjectModel> getCachedOfflineTestObjectModles() {
         if(cachedOfflineTestObjects == null) {
             cachedOfflineTestObjects = fetchRecords(OfflineTestObjectModel.class);
+        }
+        if(cachedOfflineTestObjects == null) {
+            cachedOfflineTestObjects = new ArrayList<>();
         }
         return cachedOfflineTestObjects;
     }
