@@ -68,6 +68,7 @@
         </activity>
         <activity
             android:name=".activities.LoginActivity"
+            android:theme="@style/AppTheme"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize" />
         <activity
             android:name=".activities.UserProfileActivity"
