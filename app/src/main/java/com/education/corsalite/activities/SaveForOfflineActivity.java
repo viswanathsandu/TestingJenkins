@@ -387,13 +387,7 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
         headerProgress.setVisibility(View.GONE);
         TreeNode subjectName = new TreeNode(chapters.chapterName).setViewHolder(new CheckedItemViewHolder(this, false));
         topicModelList = (ArrayList<TopicModel>) chapters.topicMap;
-        Collections.sort(topicModelList,
-            new Comparator<TopicModel>() {                                                                 //Class AnalyticsModel
-                public int compare(TopicModel ord1,
-                                   TopicModel ord2) {
-                    return ord1.topicName.compareToIgnoreCase(ord2.topicName);
-                }
-            });
+        Collections.sort(topicModelList);
 
         for (int i = 0; i < chapters.topicMap.size(); i++) {
             addTopic(chapters.topicMap.get(i), subjectName, dialog);
