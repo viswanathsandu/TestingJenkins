@@ -24,6 +24,12 @@ public class NotifyReceiver extends BroadcastReceiver {
         int id = extras.getInt("id", 0);
         Toast.makeText(context, "Notification : "+title, Toast.LENGTH_SHORT).show();
         NotificationsUtils.NotifyUser(context, id, title, subTitle, getScheduledExamActivityIntent(context, testQuestionPaperId));
+
+        // start the test
+        Intent examIntent = new Intent(context, ExamEngineActivity.class);
+        examIntent.putExtra(Constants.TEST_TITLE, "Scheduled Test");
+        examIntent.putExtra("test_question_paper_id", testQuestionPaperId);
+        context.startActivity(examIntent);
     }
 
     private PendingIntent getScheduledExamActivityIntent(Context context, String examTemplateId) {

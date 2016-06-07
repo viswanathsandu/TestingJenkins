@@ -293,6 +293,7 @@ public class ContentDownloadService extends IntentService {
             List<ExerciseOfflineModel> resultsToSave = new ArrayList<>();
             List<ExerciseOfflineModel> resultsToDelete = new ArrayList<>();
             List<ExerciseOfflineModel> offlineExerciseList = new ArrayList<>(offlineExercises);
+            downloandInProgress += offlineExerciseList.size();
             for (ExerciseOfflineModel model : offlineExerciseList) {
                 List<ExamModel> examModels = ApiManager.getInstance(this).getExercise(model.topicId, model.courseId, LoginUserCache.getInstance().loginResponse.studentId, null);
                 if (examModels != null && !examModels.isEmpty()) {
@@ -304,7 +305,7 @@ public class ContentDownloadService extends IntentService {
                 }
             }
             dbManager.saveOfflineExerciseTests(resultsToSave);
-
+            downloandInProgress -= offlineExerciseList.size();
         } catch (Exception e) {
             L.error(e.getMessage(), e);
         }
