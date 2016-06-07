@@ -63,10 +63,13 @@ public class SugarDbManager {
         try {
             if (objects != null) {
                 for (T object : objects) {
-                    object.reflectionJsonString = new Gson().toJson(object);
-                    updateChachedData(object);
+                    save(object);
+                    // TODO : this needs to be handled properly such that outofmemory issues won't occur
+                    /* object.reflectionJsonString = new Gson().toJson(object);
+                    updateChachedData(object); */
                 }
-                SugarRecord.saveInTx(objects);
+                // TODO : this needs to be handled properly such that outofmemory issues won't occur
+                // SugarRecord.saveInTx(objects);
             }
         } catch (Exception e) {
             L.error(e.getMessage(), e);
