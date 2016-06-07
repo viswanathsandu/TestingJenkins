@@ -71,10 +71,10 @@ public class OfflineTestsFragment extends BaseFragment implements OfflineActivit
                         if (offlineTestObjectModels != null && !offlineTestObjectModels.isEmpty()) {
                             emptyTestsView.setVisibility(View.GONE);
                             separateTestModel(offlineTestObjectModels);
-                            offlineTests.put("Mock Test", mockTestModels);
-                            offlineTests.put("Scheduled Test", scheduledTestModels);
                             offlineTests.put("Take Test", chaptersList);
                             offlineTests.put("Part Test", partTestList);
+                            offlineTests.put("Scheduled Test", scheduledTestModels);
+                            offlineTests.put("Mock Test", mockTestModels);
                             initNodes();
                         } else {
                             emptyTestsView.setVisibility(View.VISIBLE);
@@ -84,24 +84,24 @@ public class OfflineTestsFragment extends BaseFragment implements OfflineActivit
     }
 
     private void separateTestModel(List<OfflineTestObjectModel> offlineTestObjectModels) {
-        mockTestModels = new ArrayList<>();
-        scheduledTestModels = new ArrayList<>();
         chaptersList = new ArrayList<>();
         partTestList = new ArrayList<>();
+        scheduledTestModels = new ArrayList<>();
+        mockTestModels = new ArrayList<>();
         for (OfflineTestObjectModel model : offlineTestObjectModels) {
             if (model != null && model.testType != null) {
                 switch (model.testType) {
-                    case MOCK:
-                        mockTestModels.add(model);
-                        break;
-                    case SCHEDULED:
-                        scheduledTestModels.add(model);
-                        break;
                     case CHAPTER:
                         chaptersList.add(model);
                         break;
                     case PART:
                         partTestList.add(model);
+                        break;
+                    case SCHEDULED:
+                        scheduledTestModels.add(model);
+                        break;
+                    case MOCK:
+                        mockTestModels.add(model);
                         break;
                 }
             }

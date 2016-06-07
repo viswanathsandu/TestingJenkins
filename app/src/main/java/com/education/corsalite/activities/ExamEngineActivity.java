@@ -222,6 +222,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private String subjectId = null;
     private String chapterId = null;
     private String topicIds = null;
+    private Long dbRowId = null;
     private String questionsCount = null;
     private String selectedSection;
     private String challengeTestId;
@@ -293,6 +294,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         chapterId = getIntent().getExtras().getString(Constants.SELECTED_CHAPTERID);
         topicIds = getIntent().getExtras().getString(Constants.SELECTED_TOPICID);
         isOffline = getIntent().getExtras().getBoolean(Constants.IS_OFFLINE, false);
+        dbRowId = getIntent().getExtras().getLong(Constants.DB_ROW_ID);
         offlineModelDate = getIntent().getExtras().getLong("OfflineTestObjectModel");
         challengeTestId = getIntent().getStringExtra("challenge_test_id");
         challengeTestTimeDuration = getIntent().getStringExtra("challenge_test_time_duration");
@@ -1907,7 +1909,12 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void loadOfflineMockTest(MockTest model) {
-        dbManager.getAllExamModels(AbstractBaseActivity.selectedCourse.courseId + "", model, new ApiCallback<OfflineTestObjectModel>(this) {
+        if(dbRowId == null || dbRowId <= 0) {
+            showToast("Not available for offline");
+            finish();
+            return;
+        }
+        dbManager.getMockExamModels(dbRowId, new ApiCallback<OfflineTestObjectModel>(this) {
             @Override
             public void success(OfflineTestObjectModel offlineModel, Response response) {
                 super.success(offlineModel, response);
@@ -1920,7 +1927,12 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void loadOfflineScheduledTest(ScheduledTestsArray model) {
-        dbManager.getAllExamModels(AbstractBaseActivity.selectedCourse.courseId + "", model, new ApiCallback<List<ExamModel>>(this) {
+        if(dbRowId == null || dbRowId <= 0) {
+            showToast("Not available for offline");
+            finish();
+            return;
+        }
+        dbManager.getAllExamModels(dbRowId, new ApiCallback<List<ExamModel>>(this) {
             @Override
             public void success(List<ExamModel> examModels, Response response) {
                 super.success(examModels, response);
@@ -1946,7 +1958,12 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void loadOfflineDefaultExam() {
-        dbManager.getAllExamModels(AbstractBaseActivity.selectedCourse.courseId + "", subjectId, new ApiCallback<BaseTest>(this) {
+        if(dbRowId == null || dbRowId <= 0) {
+            showToast("Not available for offline");
+            finish();
+            return;
+        }
+        dbManager.getExamModel(dbRowId, new ApiCallback<BaseTest>(this) {
             @Override
             public void success(BaseTest baseTest, Response response) {
                 super.success(baseTest, response);

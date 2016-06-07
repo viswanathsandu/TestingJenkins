@@ -209,6 +209,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             intent.putExtra(Constants.TEST_TITLE, "Mock Test");
             intent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
             intent.putExtra(Constants.IS_OFFLINE, true);
+            intent.putExtra(Constants.DB_ROW_ID, model.getId());
             intent.putExtra("mock_test_data_json", new Gson().toJson(model.mockTest));
             intent.putExtra("OfflineTestObjectModel", model.dateTime);
             context.startActivity(intent);
@@ -228,6 +229,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                     intent.putExtra(Constants.TEST_TITLE, "Scheduled Test");
                     intent.putExtra("test_question_paper_id", exam.testQuestionPaperId);
                     intent.putExtra("OfflineTestObjectModel", model.dateTime);
+                    intent.putExtra(Constants.DB_ROW_ID, model.getId());
                     context.startActivity(intent);
                     return;
                 }
@@ -252,6 +254,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             exerciseIntent.putExtra(Constants.SELECTED_CHAPTER_NAME, chapter.chapterName);
             exerciseIntent.putExtra(Constants.LEVEL_CROSSED, chapter.passedComplexity);
             exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, subjectId);
+            exerciseIntent.putExtra(Constants.DB_ROW_ID, model.getId());
             exerciseIntent.putExtra(Constants.IS_OFFLINE, true);
             exerciseIntent.putExtra("OfflineTestObjectModel", model.dateTime);
             context.startActivity(exerciseIntent);
@@ -270,6 +273,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
             exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, subjectId);
             exerciseIntent.putExtra(Constants.SELECTED_TOPIC, subjectName);
+            exerciseIntent.putExtra(Constants.DB_ROW_ID, model.getId());
             exerciseIntent.putExtra(Constants.IS_OFFLINE, true);
             exerciseIntent.putExtra("OfflineTestObjectModel", model.dateTime);
             context.startActivity(exerciseIntent);

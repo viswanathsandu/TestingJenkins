@@ -20,6 +20,7 @@ public class Constants {
     public static final String SELECTED_POSITION =  "selectedPosition";
     public static final String SELECTED_SUBJECT =  "selectedSubject";
     public static final String SELECTED_SUBJECTID =  "selectedSubjectId";
+    public static final String DB_ROW_ID=  "dbRowId";
     public static final String SELECTED_CHAPTER =  "selectedChapter";
     public static final String SELECTED_CHAPTERID =  "selectedChapterId";
     public static final String SELECTED_CHAPTER_NAME =  "selectedChapterName";

@@ -5,10 +5,8 @@ import android.text.TextUtils;
 
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.models.db.ExerciseOfflineModel;
-import com.education.corsalite.models.db.MockTest;
 import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.models.db.OfflineTestObjectModel;
-import com.education.corsalite.models.db.ScheduledTestsArray;
 import com.education.corsalite.models.db.reqres.LoginReqRes;
 import com.education.corsalite.models.db.reqres.ReqRes;
 import com.education.corsalite.models.db.reqres.requests.AbstractBaseRequest;
@@ -385,6 +383,7 @@ public class SugarDbManager {
                 if (test != null && courseId.equals(test.baseTest.courseId)) {
                     if (test != null && test.baseTest.subjectId.equalsIgnoreCase(subjectId)) {
                         callback.success(test.baseTest, MockUtils.getRetrofitResponse());
+                        return;
                     }
                 }
             }
@@ -396,14 +395,31 @@ public class SugarDbManager {
         }
     }
 
-    public void getAllExamModels(String courseId, final MockTest mockTest, final ApiCallback<OfflineTestObjectModel> callback) {
+    public void getExamModel(Long dbRowId, final ApiCallback<BaseTest> callback) {
         try {
             List<OfflineTestObjectModel> responseList = getCachedOfflineTestObjectModles();
             for (OfflineTestObjectModel test : responseList) {
-                if (test != null && courseId.equals(test.baseTest.courseId)) {
-                    if (test != null && test.mockTest != null && !TextUtils.isEmpty(test.mockTest.examTemplateId)
-                            && test.mockTest.examTemplateId.equalsIgnoreCase(mockTest.examTemplateId)) {
+                if (test != null && dbRowId.equals(test.getId())) {
+                    callback.success(test.baseTest, MockUtils.getRetrofitResponse());
+                    return;
+                }
+            }
+        } catch (Exception e) {
+            CorsaliteError error = new CorsaliteError();
+            error.message = "No data found";
+            callback.failure(error);
+            L.error(e.getMessage(), e);
+        }
+    }
+
+    public void getMockExamModels(Long dbRowId, final ApiCallback<OfflineTestObjectModel> callback) {
+        try {
+            List<OfflineTestObjectModel> responseList = getCachedOfflineTestObjectModles();
+            for (OfflineTestObjectModel test : responseList) {
+                if (test != null && dbRowId.equals(test.getId())) {
+                    if (test != null && test.mockTest != null && !TextUtils.isEmpty(test.mockTest.examTemplateId)) {
                         callback.success(test, MockUtils.getRetrofitResponse());
+                        return;
                     }
                 }
             }
@@ -415,14 +431,14 @@ public class SugarDbManager {
         }
     }
 
-    public void getAllExamModels(String courseId, final ScheduledTestsArray scheduledTest, final ApiCallback<List<ExamModel>> callback) {
+    public void getAllExamModels(Long dbRowId, final ApiCallback<List<ExamModel>> callback) {
         try {
             List<OfflineTestObjectModel> responseList = getCachedOfflineTestObjectModles();
             for (OfflineTestObjectModel test : responseList) {
-                if (test != null && courseId.equals(test.baseTest.courseId)) {
-                    if (test != null && test.scheduledTest != null && !TextUtils.isEmpty(test.scheduledTest.testQuestionPaperId)
-                            && test.scheduledTest.testQuestionPaperId.equalsIgnoreCase(scheduledTest.testQuestionPaperId)) {
+                if (test != null && dbRowId.equals(test.getId())) {
+                    if (test != null && test.scheduledTest != null && !TextUtils.isEmpty(test.scheduledTest.testQuestionPaperId)) {
                         callback.success(test.examModels, MockUtils.getRetrofitResponse());
+                        return;
                     }
                 }
             }
