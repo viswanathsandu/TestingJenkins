@@ -47,35 +47,47 @@ public class SugarDbManager {
     }
 
     public <T extends BaseModel> void save(T object) {
-        if(object != null) {
-            object.reflectionJsonString = new Gson().toJson(object);
-            object.setUserId();
-            object.save();
-            updateChachedData(object);
+        try {
+            if (object != null) {
+                object.reflectionJsonString = new Gson().toJson(object);
+                object.setUserId();
+                object.save();
+                updateChachedData(object);
+            }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
         }
     }
 
     public <T extends BaseModel> void save(List<T> objects) {
-        if(objects != null) {
-            for(T object : objects) {
-                object.reflectionJsonString = new Gson().toJson(object);
-                updateChachedData(object);
+        try {
+            if (objects != null) {
+                for (T object : objects) {
+                    object.reflectionJsonString = new Gson().toJson(object);
+                    updateChachedData(object);
+                }
+                SugarRecord.saveInTx(objects);
             }
-            SugarRecord.saveInTx(objects);
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
         }
     }
 
     public <T extends BaseModel> void delete(T object) {
-        if(object != null) {
-            object.delete();
-            deleteFromCachedData(object);
+        try {
+            if (object != null) {
+                object.delete();
+                deleteFromCachedData(object);
+            }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
         }
     }
 
     private <T extends BaseModel> void updateChachedData(T object) {
-        if(object instanceof OfflineContent) {
-            if(object.getId() != null && object.getId() > 0) {
-                for (int i=0; i< cachedOfflineContents.size(); i++) {
+        if (object instanceof OfflineContent) {
+            if (object.getId() != null && object.getId() > 0) {
+                for (int i = 0; i < cachedOfflineContents.size(); i++) {
                     if (cachedOfflineContents.get(i).getId().equals(object.getId())) {
                         cachedOfflineContents.set(i, (OfflineContent) object);
                         return;
@@ -83,9 +95,9 @@ public class SugarDbManager {
                 }
             }
             cachedOfflineContents.add((OfflineContent) object);
-        } else if(object instanceof OfflineTestObjectModel) {
-            if(object.getId() != null && object.getId() > 0) {
-                for (int i=0; i< getCachedOfflineTestObjectModles().size(); i++) {
+        } else if (object instanceof OfflineTestObjectModel) {
+            if (object.getId() != null && object.getId() > 0) {
+                for (int i = 0; i < getCachedOfflineTestObjectModles().size(); i++) {
                     if (cachedOfflineTestObjects.get(i).getId().equals(object.getId())) {
                         cachedOfflineTestObjects.set(i, (OfflineTestObjectModel) object);
                         return;
@@ -93,9 +105,9 @@ public class SugarDbManager {
                 }
             }
             cachedOfflineTestObjects.add((OfflineTestObjectModel) object);
-        } else if(object instanceof ExerciseOfflineModel) {
-            if(object.getId() != null && object.getId() > 0) {
-                for (int i=0; i< cachedOfflineExercises.size(); i++) {
+        } else if (object instanceof ExerciseOfflineModel) {
+            if (object.getId() != null && object.getId() > 0) {
+                for (int i = 0; i < cachedOfflineExercises.size(); i++) {
                     if (cachedOfflineExercises.get(i).getId().equals(object.getId())) {
                         cachedOfflineExercises.set(i, (ExerciseOfflineModel) object);
                         return;
@@ -107,27 +119,27 @@ public class SugarDbManager {
     }
 
     private <T extends BaseModel> void deleteFromCachedData(T object) {
-        if(object instanceof OfflineContent) {
-            if(object.getId() != null && object.getId() > 0) {
-                for (int i=0; i< cachedOfflineContents.size(); i++) {
+        if (object instanceof OfflineContent) {
+            if (object.getId() != null && object.getId() > 0) {
+                for (int i = 0; i < cachedOfflineContents.size(); i++) {
                     if (cachedOfflineContents.get(i).getId().equals(object.getId())) {
                         cachedOfflineContents.remove(i);
                         return;
                     }
                 }
             }
-        } else if(object instanceof OfflineTestObjectModel) {
-            if(object.getId() != null && object.getId() > 0) {
-                for (int i=0; i< cachedOfflineTestObjects.size(); i++) {
+        } else if (object instanceof OfflineTestObjectModel) {
+            if (object.getId() != null && object.getId() > 0) {
+                for (int i = 0; i < cachedOfflineTestObjects.size(); i++) {
                     if (cachedOfflineTestObjects.get(i).getId().equals(object.getId())) {
                         cachedOfflineTestObjects.remove(i);
                         return;
                     }
                 }
             }
-        } else if(object instanceof ExerciseOfflineModel) {
-            if(object.getId() != null && object.getId() > 0) {
-                for (int i=0; i< cachedOfflineExercises.size(); i++) {
+        } else if (object instanceof ExerciseOfflineModel) {
+            if (object.getId() != null && object.getId() > 0) {
+                for (int i = 0; i < cachedOfflineExercises.size(); i++) {
                     if (cachedOfflineExercises.get(i).getId().equals(object.getId())) {
                         cachedOfflineExercises.remove(i);
                         return;
@@ -143,16 +155,16 @@ public class SugarDbManager {
             if (type != null) {
                 List<T> allList = SugarRecord.listAll(type);
                 for (T t : allList) {
-                    if(t.reflectionJsonString != null) {
+                    if (t.reflectionJsonString != null) {
                         T object = new Gson().fromJson(t.reflectionJsonString, type);
                         object.setId(t.getId());
-                        if(TextUtils.isEmpty(object.userId) || object.isCurrentUser()) {
+                        if (TextUtils.isEmpty(object.userId) || object.isCurrentUser()) {
                             results.add(object);
                         }
                     }
                 }
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             L.error(e.getMessage(), e);
         }
         return results;
@@ -193,7 +205,7 @@ public class SugarDbManager {
         List<OfflineContent> offlineContentsInDb = getCahcedOfflineContents();
         for (OfflineContent content : offlineContents) {
             Long id = getOfflineContentId(offlineContentsInDb, content);
-            if(id != null) {
+            if (id != null) {
                 content.setId(id);
             }
         }
@@ -235,7 +247,7 @@ public class SugarDbManager {
         save(reqres);
     }
 
-    public <P extends AbstractBaseRequest, T> void getResponse(ReqRes<P,T> reqres, ApiCallback<T> callback) {
+    public <P extends AbstractBaseRequest, T> void getResponse(ReqRes<P, T> reqres, ApiCallback<T> callback) {
         Object s = null;
         try {
             if (reqres != null) {
@@ -294,7 +306,7 @@ public class SugarDbManager {
     public void saveOfflineExerciseTests(List<ExerciseOfflineModel> offlineExercises) {
         for (ExerciseOfflineModel exercise : getCahcedExerciseTests()) {
             Long id = getOfflineexerciseId(offlineExercises, exercise);
-            if(id != null) {
+            if (id != null) {
                 exercise.setId(id);
             }
         }
@@ -303,7 +315,7 @@ public class SugarDbManager {
 
     private Long getOfflineexerciseId(List<ExerciseOfflineModel> offlineExercises, ExerciseOfflineModel exercise) {
         try {
-            for (ExerciseOfflineModel offlineExercise: offlineExercises) {
+            for (ExerciseOfflineModel offlineExercise : offlineExercises) {
                 if (offlineExercise.equals(exercise)) {
                     return offlineExercise.getId();
                 }
@@ -317,7 +329,7 @@ public class SugarDbManager {
 
     public void saveOfflineExerciseTest(ExerciseOfflineModel exercise) {
         try {
-            if(exercise != null && exercise.getId() != null) {
+            if (exercise != null && exercise.getId() != null) {
                 save(exercise);
             } else {
                 List<ExerciseOfflineModel> offlineExercisesInDb = getCahcedExerciseTests();
@@ -345,7 +357,7 @@ public class SugarDbManager {
         List<ExerciseOfflineModel> offlineExercises = new ArrayList<>();
         try {
             List<ExerciseOfflineModel> offlineTestModels = getCahcedExerciseTests();
-            if(TextUtils.isEmpty(courseId)) {
+            if (TextUtils.isEmpty(courseId)) {
                 return offlineTestModels;
             }
             for (ExerciseOfflineModel model : offlineTestModels) {
@@ -439,24 +451,24 @@ public class SugarDbManager {
 
     // Cached data
     private List<OfflineContent> getCahcedOfflineContents() {
-        if(cachedOfflineContents == null) {
+        if (cachedOfflineContents == null) {
             cachedOfflineContents = fetchRecords(OfflineContent.class);
         }
         return cachedOfflineContents;
     }
 
     private List<ExerciseOfflineModel> getCahcedExerciseTests() {
-        if(cachedOfflineExercises == null) {
+        if (cachedOfflineExercises == null) {
             cachedOfflineExercises = fetchRecords(ExerciseOfflineModel.class);
         }
         return cachedOfflineExercises;
     }
 
     private List<OfflineTestObjectModel> getCachedOfflineTestObjectModles() {
-        if(cachedOfflineTestObjects == null) {
+        if (cachedOfflineTestObjects == null) {
             cachedOfflineTestObjects = fetchRecords(OfflineTestObjectModel.class);
         }
-        if(cachedOfflineTestObjects == null) {
+        if (cachedOfflineTestObjects == null) {
             cachedOfflineTestObjects = new ArrayList<>();
         }
         return cachedOfflineTestObjects;
