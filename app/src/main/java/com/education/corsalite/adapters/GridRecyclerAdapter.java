@@ -187,7 +187,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
                 if(!ContentDownloadService.isDownloadInProgress()) {
                     startOfflineActivity(chapter);
                 } else {
-                    studyCenterActivity.showToast("Currently downloads are in progress.\n Try again.");
+                    studyCenterActivity.showToast("Currently downloads are in progress. Try again.");
                 }
             }
         });

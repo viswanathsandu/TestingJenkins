@@ -198,7 +198,7 @@ public class ContentDownloadService extends IntentService {
             DownloadRequest downloadRequest = new DownloadRequest(downloadUri)
                     .addCustomHeader("cookie", ApiClientService.getSetCookie())
                     .setRetryPolicy(new DefaultRetryPolicy())
-                    .setDestinationURI(destinationUri).setPriority(DownloadRequest.Priority.HIGH)
+                    .setDestinationURI(destinationUri).setPriority(DownloadRequest.Priority.NORMAL)
                     .setDownloadContext(getApplicationContext()) //Optional
                     .setStatusListener(new DownloadStatusListenerV1() {
                         int preProgress = 0;
@@ -217,8 +217,8 @@ public class ContentDownloadService extends IntentService {
                         }
 
                         public void onProgress(DownloadRequest downloadRequest, long totalBytes, long downloadedBytes, int progress) {
-                            if (progress != 0 && progress % 50 == 0) {
-                                // TODO : this needs to be handled properly
+                            if (progress != 0 && progress % 50 == 0  && preProgress != progress) {
+                                preProgress = progress;
                                 updateOfflineContent(OfflineContentStatus.IN_PROGRESS, content, progress);
                                 L.info("Downloader : In progress - " + progress + "Update DB");
                             } else if(progress % 10 == 0 && preProgress != progress){

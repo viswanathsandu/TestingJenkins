@@ -81,6 +81,7 @@ import com.education.corsalite.models.socket.requests.UpdateLeaderBoardEvent;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.L;
+import com.education.corsalite.utils.NetworkUtils;
 import com.education.corsalite.utils.SystemUtils;
 import com.education.corsalite.utils.TimeUtils;
 import com.education.corsalite.utils.WebUrls;
@@ -423,7 +424,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private void loadExerciseTest() {
         imvFlag.setVisibility(View.INVISIBLE);
         localExamModelList = AbstractBaseActivity.getSharedExamModels();
-        webFooter.setVisibility(localExamModelList.isEmpty() ? View.GONE : View.VISIBLE);
+        webFooter.setVisibility((localExamModelList == null || localExamModelList.isEmpty()) ? View.GONE : View.VISIBLE);
         btnVerify.setVisibility(View.VISIBLE);
         imvRefresh.setVisibility(View.GONE);
         timerLayout.setVisibility(View.GONE);
@@ -776,7 +777,11 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         alert.setPositiveButton("Stop Exam", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                updateTestAnswerPaper(TestanswerPaperState.SUSPENDED);
+                if(SystemUtils.isNetworkConnected(ExamEngineActivity.this)) {
+                    updateTestAnswerPaper(TestanswerPaperState.SUSPENDED);
+                } else {
+                    finish();
+                }
             }
         });
         alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

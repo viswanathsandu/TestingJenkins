@@ -52,9 +52,12 @@ public class SugarDbManager {
                 object.reflectionJsonString = new Gson().toJson(object);
                 object.setUserId();
                 object.save();
+                object.reflectionJsonString = ""; // clear the memory
                 updateChachedData(object);
             }
         } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        } catch (OutOfMemoryError e) {
             L.error(e.getMessage(), e);
         }
     }
@@ -74,6 +77,28 @@ public class SugarDbManager {
         } catch (Exception e) {
             L.error(e.getMessage(), e);
         }
+    }
+
+    public <T extends BaseModel> List<T> fetchRecords(Class<T> type) {
+        List<T> results = new ArrayList<>();
+        try {
+            if (type != null) {
+                List<T> allList = SugarRecord.listAll(type);
+                for (T t : allList) {
+                    if (t.reflectionJsonString != null) {
+                        T object = new Gson().fromJson(t.reflectionJsonString, type);
+                        object.setId(t.getId());
+                        if (TextUtils.isEmpty(object.userId) || object.isCurrentUser()) {
+                            results.add(object);
+                        }
+                    }
+                    t.reflectionJsonString = ""; // clear memory
+                }
+            }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+        return results;
     }
 
     public <T extends BaseModel> void delete(T object) {
@@ -150,27 +175,6 @@ public class SugarDbManager {
                 }
             }
         }
-    }
-
-    public <T extends BaseModel> List<T> fetchRecords(Class<T> type) {
-        List<T> results = new ArrayList<>();
-        try {
-            if (type != null) {
-                List<T> allList = SugarRecord.listAll(type);
-                for (T t : allList) {
-                    if (t.reflectionJsonString != null) {
-                        T object = new Gson().fromJson(t.reflectionJsonString, type);
-                        object.setId(t.getId());
-                        if (TextUtils.isEmpty(object.userId) || object.isCurrentUser()) {
-                            results.add(object);
-                        }
-                    }
-                }
-            }
-        } catch (Exception e) {
-            L.error(e.getMessage(), e);
-        }
-        return results;
     }
 
     public List<OfflineContent> getOfflineContents(String courseId) {

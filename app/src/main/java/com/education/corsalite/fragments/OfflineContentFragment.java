@@ -80,7 +80,7 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
 
     private void getContentIndexResponse(final Course course) {
         emptyContentView.setVisibility(View.GONE);
-        List<OfflineContent> offlineContents = SugarDbManager.get(getActivity()).getOfflineContents(null);
+        List<OfflineContent> offlineContents = SugarDbManager.get(getActivity().getApplicationContext()).getOfflineContents(null);
         offlineContentList = new ArrayList<>();
         for (OfflineContent offlineContent : offlineContents) {
             if (offlineContent.courseId.equalsIgnoreCase(course.courseId.toString())) {
