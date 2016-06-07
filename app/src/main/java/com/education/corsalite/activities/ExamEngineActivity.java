@@ -323,6 +323,10 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         return title.equalsIgnoreCase("Challenge Test");
     }
 
+    private boolean isScheduledTest() {
+        return title.equalsIgnoreCase("Scheduled Test");
+    }
+
     private void loadDefaultExam() {
         imvFlag.setVisibility(View.VISIBLE);
         if (getIntent().hasExtra(Constants.SELECTED_SUBJECT)) {
@@ -1612,7 +1616,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         @Override
         public void onFinish() {
             tv_timer.setText("TIME OVER");
-            if (ischallengeTest()) {
+            if (ischallengeTest() || isScheduledTest()) {
                 submitTest();
             }
         }
