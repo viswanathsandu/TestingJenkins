@@ -10,6 +10,7 @@
         <item name="colorControlActivated">@color/green</item>
         <item name="colorControlHighlight">@color/green</item>
         <item name="android:textColorHint">@color/dark_gray</item>
+        <item name="android:windowSoftInputMode">stateHidden</item>
     </style>
 
     <!-- Base application theme. -->
@@ -20,6 +21,7 @@
         <item name="android:colorPrimaryDark">@color/user_profile_statusbar</item>
         <item name="android:spinnerDropDownItemStyle">@style/spinnerItemStyle</item>
         <item name="android:textColorSecondary">@color/white</item>
+        <item name="android:windowSoftInputMode">stateHidden</item>
     </style>
 
 </resources>

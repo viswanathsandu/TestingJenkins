@@ -169,6 +169,7 @@
         <activity
             android:name=".activities.ChallengeResultActivity"
             android:label="@string/title_activity_challenge"
+            android:windowSoftInputMode="stateHidden"
             android:screenOrientation="sensorLandscape" />
         <activity
             android:name=".activities.ExamResultActivity"
