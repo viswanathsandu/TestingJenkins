@@ -380,7 +380,11 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_smart_class).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadSmartClass();
+                if (SystemUtils.isNetworkConnected(AbstractBaseActivity.this)) {
+                    loadSmartClass();
+                } else {
+                    showToast("Smart class requires network connection");
+                }
                 drawerLayout.closeDrawers();
             }
         });
@@ -396,8 +400,12 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_analytics).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Localytics.tagEvent("Analytics");
-                startActivity(new Intent(AbstractBaseActivity.this, NewAnalyticsActivity.class));
+                if (SystemUtils.isNetworkConnected(AbstractBaseActivity.this)) {
+                    Localytics.tagEvent("Analytics");
+                    startActivity(new Intent(AbstractBaseActivity.this, NewAnalyticsActivity.class));
+                } else {
+                    showToast("Analytics requires network connection");
+                }
                 drawerLayout.closeDrawers();
             }
         });
@@ -414,8 +422,13 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_challenge_your_friends).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Localytics.tagEvent(getString(R.string.challenge_your_friends));
-                startActivity(new Intent(AbstractBaseActivity.this, ChallengeActivity.class));
+                if (SystemUtils.isNetworkConnected(AbstractBaseActivity.this)) {
+                    Localytics.tagEvent(getString(R.string.challenge_your_friends));
+                    startActivity(new Intent(AbstractBaseActivity.this, ChallengeActivity.class));
+                } else {
+                    showToast("Challenge Test requires network connection");
+                }
+                drawerLayout.closeDrawers();
             }
         });
 
