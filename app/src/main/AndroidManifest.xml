@@ -192,13 +192,15 @@
             android:name=".activities.StartMockTestActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:theme="@style/AppTheme" />
-        <activity android:name=".activities.WelcomeActivity" />
+        <activity android:name=".activities.WelcomeActivity"
+            android:theme="@style/UserProfileTheme"
+            android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"/>
         <activity
             android:name=".activities.CrashHandlerActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_crash_handler"
             android:theme="@style/FullscreenTheme" />
-        <activity android:name=".activities.AddFriendsActivity"></activity>
+        <activity android:name=".activities.AddFriendsActivity"/>
     </application>
 
 </manifest>

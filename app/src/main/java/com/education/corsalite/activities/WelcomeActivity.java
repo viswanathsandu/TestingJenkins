@@ -41,7 +41,7 @@ public class WelcomeActivity extends AbstractBaseActivity implements View.OnClic
     @Bind(R.id.profile_pic)ImageView profilePic;
     @Bind(R.id.vc_totalcount)TextView vcTotal;
     @Bind(R.id.vc_lastsessioncount)TextView vcLastSession;
-
+    private boolean loadContent=true;
     private boolean closeApp = false;
 
     @Override
@@ -60,9 +60,14 @@ public class WelcomeActivity extends AbstractBaseActivity implements View.OnClic
     public void onEvent(Course course) {
         super.onEvent(course);
         // Start download service if its not started
-        if(!ContentDownloadService.isIntentServiceRunning) {
-            stopService(new Intent(getApplicationContext(), ContentDownloadService.class));
+        stopService(new Intent(getApplicationContext(), ContentDownloadService.class));
+        if(loadContent) {
             startService(new Intent(getApplicationContext(), ContentDownloadService.class));
+            if (!ContentDownloadService.isIntentServiceRunning) {
+                stopService(new Intent(getApplicationContext(), ContentDownloadService.class));
+                startService(new Intent(getApplicationContext(), ContentDownloadService.class));
+            }
+            loadContent = false;
         }
     }
 
