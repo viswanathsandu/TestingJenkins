@@ -134,6 +134,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     public void onEventMainThread(NetworkStatusChangeEvent event) {
         showToast(event.isconnected ? "Netowrk connection restored" : "Network connection failure");
+        L.info("WIFICONNECT : "+event.isconnected);
         if(!(this instanceof ExamEngineActivity || this instanceof ChallengeActivity)) {
             refreshScreen();
         }
