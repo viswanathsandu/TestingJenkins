@@ -13,6 +13,7 @@ import com.education.corsalite.adapters.ExpandableListAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.models.db.OfflineTestObjectModel;
 import com.education.corsalite.models.responsemodels.Course;
+import com.education.corsalite.utils.L;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -63,24 +64,28 @@ public class OfflineTestsFragment extends BaseFragment implements OfflineActivit
     }
 
     private void loadOfflineTests() {
-        dbManager.getAllOfflineMockTests(AbstractBaseActivity.selectedCourse.courseId + "",
-                new ApiCallback<List<OfflineTestObjectModel>>(getActivity()) {
-                    @Override
-                    public void success(List<OfflineTestObjectModel> offlineTestObjectModels, Response response) {
-                        super.success(offlineTestObjectModels, response);
-                        if (offlineTestObjectModels != null && !offlineTestObjectModels.isEmpty()) {
-                            emptyTestsView.setVisibility(View.GONE);
-                            separateTestModel(offlineTestObjectModels);
-                            offlineTests.put("Take Test", chaptersList);
-                            offlineTests.put("Part Test", partTestList);
-                            offlineTests.put("Scheduled Test", scheduledTestModels);
-                            offlineTests.put("Mock Test", mockTestModels);
-                            initNodes();
-                        } else {
-                            emptyTestsView.setVisibility(View.VISIBLE);
+        try {
+            dbManager.getAllOfflineMockTests(AbstractBaseActivity.selectedCourse.courseId + "",
+                    new ApiCallback<List<OfflineTestObjectModel>>(getActivity()) {
+                        @Override
+                        public void success(List<OfflineTestObjectModel> offlineTestObjectModels, Response response) {
+                            super.success(offlineTestObjectModels, response);
+                            if (offlineTestObjectModels != null && !offlineTestObjectModels.isEmpty()) {
+                                emptyTestsView.setVisibility(View.GONE);
+                                separateTestModel(offlineTestObjectModels);
+                                offlineTests.put("Take Test", chaptersList);
+                                offlineTests.put("Part Test", partTestList);
+                                offlineTests.put("Scheduled Test", scheduledTestModels);
+                                offlineTests.put("Mock Test", mockTestModels);
+                                initNodes();
+                            } else {
+                                emptyTestsView.setVisibility(View.VISIBLE);
+                            }
                         }
-                    }
-                });
+                    });
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
     }
 
     private void separateTestModel(List<OfflineTestObjectModel> offlineTestObjectModels) {

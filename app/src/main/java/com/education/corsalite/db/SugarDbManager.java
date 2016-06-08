@@ -474,7 +474,7 @@ public class SugarDbManager {
 
     // Cached data
     private List<OfflineContent> getCahcedOfflineContents() {
-        if (cachedOfflineContents == null) {
+        if (cachedOfflineContents == null || cachedOfflineContents.isEmpty()) {
             cachedOfflineContents = fetchRecords(OfflineContent.class);
         }
         return cachedOfflineContents;
