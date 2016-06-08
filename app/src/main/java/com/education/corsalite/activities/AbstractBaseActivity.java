@@ -49,6 +49,7 @@ import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.ExamModel;
 import com.education.corsalite.models.responsemodels.FriendsData;
+import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencyBalanceResponse;
 import com.education.corsalite.models.socket.response.ChallengeTestRequestEvent;
@@ -91,6 +92,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     public Dialog dialog;
     protected SugarDbManager dbManager;
     protected AppPref appPref;
+    private boolean isLoginApiRunningInBAckground = false;
 
     public List<FriendsData.Friend> selectedFriends = new ArrayList<>();
 
@@ -123,11 +125,11 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     protected void refreshScreen() {
-        onCreate(null);
-//        Intent currentIntent = getIntent();
-//        finish();
-//        startActivity(currentIntent);
-//        overridePendingTransition(0, 0);
+        if(SystemUtils.isNetworkConnected(this)) {
+            relogin();
+        } else {
+            recreate();
+        }
     }
 
     public void onEventMainThread(NetworkStatusChangeEvent event) {
@@ -148,6 +150,47 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         EventBus.getDefault().unregister(this);
         super.onStop();
     }
+
+    private void relogin() {
+        if(isLoginApiRunningInBAckground) {
+           return;
+        }
+        isLoginApiRunningInBAckground = true;
+        showProgress();
+        final String username = appPref.getValue("loginId");
+        final String passwordHash =  appPref.getValue("passwordHash");
+        if(!TextUtils.isEmpty(username) && !TextUtils.isEmpty(passwordHash)) {
+            ApiManager.getInstance(this).login(username, passwordHash, new ApiCallback<LoginResponse>(this) {
+                @Override
+                public void failure(CorsaliteError error) {
+                    super.failure(error);
+                    closeProgress();
+                    isLoginApiRunningInBAckground = false;
+                    if (error != null && !TextUtils.isEmpty(error.message)) {
+                        showToast(error.message);
+                    }
+                }
+
+                @Override
+                public void success(LoginResponse loginResponse, Response response) {
+                    super.success(loginResponse, response);
+                    closeProgress();
+                    if (loginResponse.isSuccessful()) {
+                        isLoginApiRunningInBAckground = false;
+                        dbManager.saveReqRes(ApiCacheHolder.getInstance().login);
+                        appPref.save("loginId", username);
+                        appPref.save("passwordHash", passwordHash);
+                        startWebSocket();
+                        recreate();
+                    } else {
+                        showToast(getResources().getString(R.string.login_failed));
+                    }
+                }
+            }, false);
+
+        }
+    }
+
 
     public List<Course> getCourses() {
         return courses;
@@ -329,9 +372,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         if (config == null) {
             return;
         }
-
         navigationView.findViewById(R.id.navigation_welcome).setVisibility(View.VISIBLE);
-
         if (config.isMyProfileEnabled()) {
             navigationView.findViewById(R.id.navigation_profile).setVisibility(View.VISIBLE);
         }
