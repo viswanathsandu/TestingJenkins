@@ -86,6 +86,7 @@ public class ApiCacheHolder {
             courses = new CoursesReqRes();
             courses.request = courseRequest;
             courses.response = courseList;
+            courseRequest = null;
         }
     }
 

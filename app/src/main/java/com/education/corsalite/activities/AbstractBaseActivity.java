@@ -181,13 +181,15 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                         dbManager.saveReqRes(ApiCacheHolder.getInstance().login);
                         appPref.save("loginId", username);
                         appPref.save("passwordHash", passwordHash);
-                        startWebSocket();
+                        if(SystemUtils.isNetworkConnected(AbstractBaseActivity.this)) {
+                            startWebSocket();
+                        }
                         recreate();
                     } else {
                         showToast(getResources().getString(R.string.login_failed));
                     }
                 }
-            }, false);
+            }, !SystemUtils.isNetworkConnected(this));
 
         }
     }
@@ -668,6 +670,8 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             @Override
             public void failure(CorsaliteError error) {
                 super.failure(error);
+                L.error(error.message);
+                showToast("Failed to fetch courses");
             }
 
             @Override
