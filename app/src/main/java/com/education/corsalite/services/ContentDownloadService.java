@@ -192,9 +192,15 @@ public class ContentDownloadService extends IntentService {
 
     private void downloadVideo(OfflineContent offlineContent, final Content content, String videoUrl, String downloadLocation) {
         try {
-            downloandInProgress++;
             Uri downloadUri = Uri.parse(videoUrl);
             Uri destinationUri = Uri.parse(downloadLocation);
+            if(TextUtils.isEmpty(videoUrl) || TextUtils.isEmpty(downloadLocation)
+                    || downloadUri == null || destinationUri == null
+                    || TextUtils.isEmpty(downloadUri.getPath())
+                    || TextUtils.isEmpty(destinationUri.getPath())) {
+                return;
+            }
+            downloandInProgress++;
             DownloadRequest downloadRequest = new DownloadRequest(downloadUri)
                     .addCustomHeader("cookie", ApiClientService.getSetCookie())
                     .setRetryPolicy(new DefaultRetryPolicy())
