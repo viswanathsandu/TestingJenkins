@@ -96,10 +96,12 @@ public class DetailsWebviewFragment extends BaseFragment {
     }
 
     private void loadWebpage() {
-        mWebView.getSettings().setJavaScriptEnabled(true);
-        mWebView.setWebViewClient(new MyWebViewClient(getActivity()));
-        if (!TextUtils.isEmpty(mUrl)) {
-            mWebView.loadUrl(mUrl);
+        if(isAdded()) {
+            mWebView.getSettings().setJavaScriptEnabled(true);
+            mWebView.setWebViewClient(new MyWebViewClient(getActivity()));
+            if (!TextUtils.isEmpty(mUrl)) {
+                mWebView.loadUrl(mUrl);
+            }
         }
     }
 
@@ -121,7 +123,9 @@ public class DetailsWebviewFragment extends BaseFragment {
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
             L.info("Finished Loading URL : " + url);
-            mWebView.setVisibility(View.VISIBLE);
+            if(isAdded()) {
+                mWebView.setVisibility(View.VISIBLE);
+            }
         }
     }
 }
