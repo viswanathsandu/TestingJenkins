@@ -9,6 +9,8 @@ import com.education.corsalite.db.SugarDbManager;
 import com.education.corsalite.enums.NetworkMode;
 import com.education.corsalite.models.db.MockTest;
 import com.education.corsalite.models.db.ScheduledTestList;
+import com.education.corsalite.models.db.reqres.ContentIndexReqRes;
+import com.education.corsalite.models.db.reqres.CoursesReqRes;
 import com.education.corsalite.models.db.reqres.LoginReqRes;
 import com.education.corsalite.models.db.reqres.StudyCenterReqRes;
 import com.education.corsalite.models.requestmodels.AddRemoveFriendRequest;
@@ -119,7 +121,9 @@ public class ApiManager {
         if (isApiOnline() && isNetworkConnected()) {
             ApiClientService.get().getCourses(studentId, callback);
         } else if (!isNetworkConnected()) {
-            SugarDbManager.get(context).getResponse(apiCacheHolder.courses, callback);
+            CoursesReqRes reqRes = new CoursesReqRes();
+            reqRes.request = apiCacheHolder.courseRequest;
+            SugarDbManager.get(context).getResponse(reqRes, callback);
         }
     }
 
@@ -217,7 +221,9 @@ public class ApiManager {
         if (isApiOnline() && isNetworkConnected()) {
             ApiClientService.get().getContentIndexData(courseID, studentId, callback);
         } else if (!isNetworkConnected()) {
-            SugarDbManager.get(context).getResponse(apiCacheHolder.contentIndex, callback);
+            ContentIndexReqRes reqRes = new ContentIndexReqRes();
+            reqRes.request = apiCacheHolder.contentIndexRequest;
+            SugarDbManager.get(context).getResponse(reqRes, callback);
         }
     }
 
