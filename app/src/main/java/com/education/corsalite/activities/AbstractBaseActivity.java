@@ -617,7 +617,10 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     private void logout() {
         try {
-            WebSocketHelper.get(this).disconnectWebSocket();
+            if(!SystemUtils.isNetworkConnected(this)) {
+                logoutAccount();
+                return;
+            }
             LogoutModel logout = new LogoutModel();
             logout.AuthToken = LoginUserCache.getInstance().getLongResponse().authtoken;
             appPref.remove("loginId");
@@ -626,13 +629,14 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 @Override
                 public void failure(CorsaliteError error) {
                     super.failure(error);
-                    logoutAccount();
+                    showToast(getResources().getString(R.string.logout_failed));
                 }
 
                 @Override
                 public void success(LogoutResponse logoutResponse, Response response) {
                     if (logoutResponse.isSuccessful()) {
                         showToast(getResources().getString(R.string.logout_successful));
+                        WebSocketHelper.get(AbstractBaseActivity.this).disconnectWebSocket();
                         logoutAccount();
                     }
                 }
