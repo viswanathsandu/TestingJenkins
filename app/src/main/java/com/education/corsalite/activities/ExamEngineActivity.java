@@ -360,6 +360,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void loadScheduledTest() {
+        btnSuspend.setVisibility(View.GONE);
+        btnSave.setVisibility(View.GONE);
         if (isOffline) {
             String testJson = getIntent().getExtras().getString("mock_test_data_json");
             ScheduledTestsArray model = new Gson().fromJson(testJson, ScheduledTestsArray.class);

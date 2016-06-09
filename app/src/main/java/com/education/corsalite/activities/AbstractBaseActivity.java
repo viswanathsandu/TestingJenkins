@@ -153,7 +153,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     private void relogin() {
-        if(isLoginApiRunningInBAckground) {
+        if(isLoginApiRunningInBAckground || this instanceof LoginActivity || this instanceof SplashActivity) {
            return;
         }
         isLoginApiRunningInBAckground = true;
@@ -626,35 +626,33 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 @Override
                 public void failure(CorsaliteError error) {
                     super.failure(error);
-                    showToast(getResources().getString(R.string.logout_failed));
+                    logoutAccount();
                 }
 
                 @Override
                 public void success(LogoutResponse logoutResponse, Response response) {
                     if (logoutResponse.isSuccessful()) {
                         showToast(getResources().getString(R.string.logout_successful));
-                        LoginUserCache.getInstance().clearCache();
-                        deleteSessionCookie();
-                        AbstractBaseActivity.selectedCourse = null;
-                        AbstractBaseActivity.selectedVideoPosition= 0;
-                        AbstractBaseActivity.sharedExamModels = null;
-                        Intent intent = new Intent(AbstractBaseActivity.this, LoginActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-                        startActivity(intent);
-                        finish();
+                        logoutAccount();
                     }
                 }
             });
         } catch (Exception e) {
             L.error(e.getMessage(), e);
-            LoginUserCache.getInstance().clearCache();
-            deleteSessionCookie();
-            Intent intent = new Intent(AbstractBaseActivity.this, LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-            finish();
+            logoutAccount();
         }
+    }
+
+    private void logoutAccount() {
+        LoginUserCache.getInstance().clearCache();
+        deleteSessionCookie();
+        AbstractBaseActivity.selectedCourse = null;
+        AbstractBaseActivity.selectedVideoPosition= 0;
+        AbstractBaseActivity.sharedExamModels = null;
+        Intent intent = new Intent(AbstractBaseActivity.this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
     }
 
     private void loadCoursesList() {
