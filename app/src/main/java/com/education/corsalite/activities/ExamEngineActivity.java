@@ -222,6 +222,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private String subjectId = null;
     private String chapterId = null;
     private String topicIds = null;
+    private String chapterName=null;
     private Long dbRowId = null;
     private String questionsCount = null;
     private String selectedSection;
@@ -283,9 +284,15 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void getIntentData() {
+        chapterName = getIntent().getExtras().getString(Constants.SELECTED_CHAPTER_NAME);
         title = getIntent().getExtras().getString(Constants.TEST_TITLE, "");
         tvNavTitle.setText(title);
-        setToolbarForExercise(title, title.equalsIgnoreCase("Exercises"));
+        if(chapterName!=null){
+            setToolbarForExercise(title + " - " + chapterName, title.equalsIgnoreCase("Exercises"));
+        }else{
+            setToolbarForExercise(title, title.equalsIgnoreCase("Exercises"));
+        }
+
         topic = getIntent().getExtras().getString(Constants.SELECTED_TOPIC, "");
         tvPageTitle.setText(topic);
         questionsCount = getIntent().getExtras().getString(Constants.QUESTIONS_COUNT, "");
@@ -305,6 +312,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             }.getType();
             partTestGridElements = new Gson().fromJson(partTestGridElimentsJson, listType);
         }
+
+        L.debug("-------------------------------------------------> CHECK FOR TITLE " + title);
         if (title.equalsIgnoreCase("Flagged Questions")) {
             loadFlaggedQuestions();
         } else if (title.equalsIgnoreCase("Exercises")) {
@@ -320,6 +329,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         } else { // TakeTest or PartTest
             loadDefaultExam();
         }
+
     }
 
     private boolean ischallengeTest() {
@@ -334,6 +344,9 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         imvFlag.setVisibility(View.VISIBLE);
         if (getIntent().hasExtra(Constants.SELECTED_SUBJECT)) {
             topic = getIntent().getExtras().getString(Constants.SELECTED_SUBJECT);
+            if(chapterName!=null){
+                topic = topic + " - " + chapterName;
+            }
             tvPageTitle.setText(topic);
         }
         if (isOffline) {
