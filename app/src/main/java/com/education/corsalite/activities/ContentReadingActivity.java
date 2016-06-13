@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -117,6 +119,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
     private String htmlFileText = "";
     private long eventStartTime;
     private long eventEndDate;
+    DrawerLayout drawerL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,6 +131,19 @@ public class ContentReadingActivity extends AbstractBaseActivity {
         frameLayout.addView(myView);
         ButterKnife.bind(this);
         setToolbarForContentReading();
+
+
+         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerL.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+                drawerL.openDrawer(GravityCompat.START);
+            }
+        });
+
+        drawerL = (DrawerLayout) findViewById(R.id.drawer);
+        drawerL.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+
         initWebView();
 
         Bundle bundle = getIntent().getExtras();
@@ -156,6 +172,28 @@ public class ContentReadingActivity extends AbstractBaseActivity {
         }
         eventStartTime = System.currentTimeMillis();
         setListeners();
+
+        drawerL.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                drawerL.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+
+            }
+        });
 
     }
 
@@ -301,7 +339,6 @@ public class ContentReadingActivity extends AbstractBaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
         switch (id) {
             case R.id.action_read_offline:
                 saveFileToDisk();
@@ -924,4 +961,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
         postContentReadingEvent();
         super.onBackPressed();
     }
+
+
+
 }
