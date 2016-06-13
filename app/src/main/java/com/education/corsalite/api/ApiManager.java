@@ -13,6 +13,8 @@ import com.education.corsalite.models.db.reqres.ContentIndexReqRes;
 import com.education.corsalite.models.db.reqres.CoursesReqRes;
 import com.education.corsalite.models.db.reqres.LoginReqRes;
 import com.education.corsalite.models.db.reqres.StudyCenterReqRes;
+import com.education.corsalite.models.db.reqres.UserProfileReqRes;
+import com.education.corsalite.models.db.reqres.WelcomeReqRes;
 import com.education.corsalite.models.requestmodels.AddRemoveFriendRequest;
 import com.education.corsalite.models.requestmodels.Bookmark;
 import com.education.corsalite.models.requestmodels.CreateChallengeRequest;
@@ -169,12 +171,26 @@ public class ApiManager {
             ApiClientService.get().getPostDetails(userId, postId, callback);
         }
     }
+
+    public void getWelcomeDetails(String idStudent, ApiCallback<WelcomeDetails> callback) {
+        apiCacheHolder.setWelcomeRequest(idStudent);
+        if (isApiOnline() && isNetworkConnected()) {
+            ApiClientService.get().getWelcomeDetails(idStudent, callback);
+        } else if(!isNetworkConnected()) {
+            WelcomeReqRes reqRes = new WelcomeReqRes();
+            reqRes.request = apiCacheHolder.welcomeRequest;
+            SugarDbManager.get(context).getResponse(reqRes, callback);
+        }
+    }
+
     public void getUserProfile(String studentId, ApiCallback<UserProfileResponse> callback) {
         apiCacheHolder.setUserProfileRequest(studentId);
         if (isApiOnline() && isNetworkConnected()) {
             ApiClientService.get().getUserProfile(studentId, callback);
         } else if (!isNetworkConnected()) {
-            SugarDbManager.get(context).getResponse(apiCacheHolder.userProfile, callback);
+            UserProfileReqRes reqRes = new UserProfileReqRes();
+            reqRes.request = apiCacheHolder.userProfileRequest;
+            SugarDbManager.get(context).getResponse(reqRes, callback);
         }
     }
 
@@ -441,12 +457,6 @@ public class ApiManager {
     public void getTestPaperIndex(String questionPaperId, String answerPpaerId, String allPosts, ApiCallback<TestPaperIndex> callback) {
         if (isApiOnline()) {
             ApiClientService.get().getTestPaperIndex(questionPaperId, answerPpaerId, allPosts, callback);
-        }
-    }
-
-    public void getWelcomeDetails(String idStudent, ApiCallback<WelcomeDetails> callback) {
-        if (isApiOnline()) {
-            ApiClientService.get().getWelcomeDetails(idStudent, callback);
         }
     }
 

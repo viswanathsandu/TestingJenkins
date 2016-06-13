@@ -7,6 +7,7 @@ import com.education.corsalite.models.db.reqres.LoginReqRes;
 import com.education.corsalite.models.db.reqres.StudyCenterReqRes;
 import com.education.corsalite.models.db.reqres.UserProfileReqRes;
 import com.education.corsalite.models.db.reqres.VirtualCurrencyBalanceReqRes;
+import com.education.corsalite.models.db.reqres.WelcomeReqRes;
 import com.education.corsalite.models.db.reqres.requests.ContentIndexRequest;
 import com.education.corsalite.models.db.reqres.requests.ContentRequest;
 import com.education.corsalite.models.db.reqres.requests.CourseRequest;
@@ -14,6 +15,7 @@ import com.education.corsalite.models.db.reqres.requests.LoginRequest;
 import com.education.corsalite.models.db.reqres.requests.StudyCenterRequest;
 import com.education.corsalite.models.db.reqres.requests.UserProfileRequest;
 import com.education.corsalite.models.db.reqres.requests.VirtualCurrencyBalanceRequest;
+import com.education.corsalite.models.db.reqres.requests.WelcomeRequest;
 import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.Course;
@@ -21,6 +23,7 @@ import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.models.responsemodels.StudyCenter;
 import com.education.corsalite.models.responsemodels.UserProfileResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencyBalanceResponse;
+import com.education.corsalite.models.responsemodels.WelcomeDetails;
 
 import java.util.List;
 
@@ -33,6 +36,8 @@ public class ApiCacheHolder {
 
     public LoginRequest loginRequest = null;
     public LoginReqRes login = null;
+    public WelcomeRequest welcomeRequest = null;
+    public WelcomeReqRes welcome;
     public UserProfileRequest userProfileRequest = null;
     public UserProfileReqRes userProfile;
     public CourseRequest courseRequest = null;
@@ -74,6 +79,18 @@ public class ApiCacheHolder {
             userProfile = new UserProfileReqRes();
             userProfile.request = userProfileRequest;
             userProfile.response = response;
+        }
+    }
+
+    public void setWelcomeRequest(String studentId) {
+        welcomeRequest = new WelcomeRequest(studentId);
+    }
+
+    public void setWelcomeRespose(WelcomeDetails response) {
+        if(welcomeRequest != null && response != null) {
+            welcome = new WelcomeReqRes();
+            welcome.request = welcomeRequest;
+            welcome.response = response;
         }
     }
 

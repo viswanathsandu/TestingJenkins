@@ -17,6 +17,7 @@ import com.crashlytics.android.Crashlytics;
 import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
+import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.WelcomeDetails;
@@ -77,6 +78,8 @@ public class WelcomeActivity extends AbstractBaseActivity implements View.OnClic
                 public void success(WelcomeDetails welcomeDetails, Response response) {
                     super.success(welcomeDetails, response);
                     if (welcomeDetails != null) {
+                        ApiCacheHolder.getInstance().setWelcomeRespose(welcomeDetails);
+                        dbManager.saveReqRes(ApiCacheHolder.getInstance().welcome);
                         LoginUserCache.getInstance().setWelcomeDetails(welcomeDetails);
                         if (!isDestroyed() && !TextUtils.isEmpty(welcomeDetails.photoUrl)) {
                             Glide.with(WelcomeActivity.this).load(ApiClientService.getBaseUrl() + welcomeDetails.photoUrl.replaceFirst("./", "")).into(profilePic);
