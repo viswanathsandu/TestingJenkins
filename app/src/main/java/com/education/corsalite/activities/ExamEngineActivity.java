@@ -17,6 +17,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.webkit.JavascriptInterface;
@@ -81,7 +82,6 @@ import com.education.corsalite.models.socket.requests.UpdateLeaderBoardEvent;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.L;
-import com.education.corsalite.utils.NetworkUtils;
 import com.education.corsalite.utils.SystemUtils;
 import com.education.corsalite.utils.TimeUtils;
 import com.education.corsalite.utils.WebUrls;
@@ -94,6 +94,7 @@ import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -283,15 +284,9 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void getIntentData() {
-        String chapterName = getIntent().getExtras().getString(Constants.SELECTED_CHAPTER_NAME);
         title = getIntent().getExtras().getString(Constants.TEST_TITLE, "");
         tvNavTitle.setText(title);
-        if(chapterName!=null){
-            setToolbarForExercise(title + " - " + chapterName, title.equalsIgnoreCase("Exercises"));
-        }else{
-            setToolbarForExercise(title, title.equalsIgnoreCase("Exercises"));
-        }
-
+        setToolbarForExercise(title, title.equalsIgnoreCase("Exercises"));
         topic = getIntent().getExtras().getString(Constants.SELECTED_TOPIC, "");
         tvPageTitle.setText(topic);
         questionsCount = getIntent().getExtras().getString(Constants.QUESTIONS_COUNT, "");
@@ -311,7 +306,20 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             }.getType();
             partTestGridElements = new Gson().fromJson(partTestGridElimentsJson, listType);
         }
+
         if (title.equalsIgnoreCase("Flagged Questions")) {
+            String newTitle=title;
+            if(getIntent().getExtras().containsKey(Constants.SELECTED_CHAPTER_NAME)){
+                String chapterName = getIntent().getExtras().getString(Constants.SELECTED_CHAPTER_NAME);
+                if(chapterName!=null){
+                    enableAllWidgets(title + " - " + chapterName);
+                }
+            }else if(getIntent().getExtras().containsKey(Constants.SELECTED_SUBJECT)){
+                topic = getIntent().getExtras().getString(Constants.SELECTED_SUBJECT);
+                if(topic!=null){
+                    enableAllWidgets(title + " - " + topic);
+                }
+            }
             loadFlaggedQuestions();
         } else if (title.equalsIgnoreCase("Exercises")) {
             loadExerciseTest();
@@ -445,9 +453,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
     private void loadFlaggedQuestions() {
         imvFlag.setVisibility(View.VISIBLE);
-        tvPageTitle.setText(title);
-        Bundle args = getIntent().getExtras();
-
+//        tvPageTitle.setText(title);
         getFlaggedQuestion(true);
         navigatorLayout.setVisibility(View.GONE);
         tvClearAnswer.setVisibility(View.GONE);
@@ -1061,6 +1067,26 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             webview.setWebChromeClient(new WebChromeClient());
             webview.setWebViewClient(new MyWebViewClient(this));
             webview.loadData(answerChoiceModel.answerChoiceTextHtml, "text/html; charset=UTF-8", null);
+            webview.setOnTouchListener(new View.OnTouchListener() {
+                private static final int MAX_CLICK_DURATION = 200;
+                private long startClickTime;
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN: {
+                            startClickTime = Calendar.getInstance().getTimeInMillis();
+                            break;
+                        }
+                        case MotionEvent.ACTION_UP: {
+                            long clickDuration = Calendar.getInstance().getTimeInMillis() - startClickTime;
+                            if(clickDuration < MAX_CLICK_DURATION) {
+                                optionRBtn.performClick();
+                            }
+                        }
+                    }
+                    return true;
+                }
+            });
             answerLayout.addView(container);
 
             try {
@@ -1129,6 +1155,26 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             optionWebView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
             optionWebView.setWebChromeClient(new WebChromeClient());
             optionWebView.setWebViewClient(new MyWebViewClient(this));
+            optionWebView.setOnTouchListener(new View.OnTouchListener() {
+                private static final int MAX_CLICK_DURATION = 200;
+                private long startClickTime;
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN: {
+                            startClickTime = Calendar.getInstance().getTimeInMillis();
+                            break;
+                        }
+                        case MotionEvent.ACTION_UP: {
+                            long clickDuration = Calendar.getInstance().getTimeInMillis() - startClickTime;
+                            if(clickDuration < MAX_CLICK_DURATION) {
+                                optionCheckbox.performClick();
+                            }
+                        }
+                    }
+                    return true;
+                }
+            });
             if (answerChoiceModel.answerChoiceTextHtml.startsWith("./") && answerChoiceModel.answerChoiceTextHtml.endsWith(".html")) {
                 answerChoiceModel.answerChoiceTextHtml = answerChoiceModel.answerChoiceTextHtml.replace("./", ApiClientService.getBaseUrl());
                 optionWebView.loadUrl(answerChoiceModel.answerChoiceTextHtml);

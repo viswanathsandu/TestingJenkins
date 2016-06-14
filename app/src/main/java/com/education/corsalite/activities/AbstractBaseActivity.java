@@ -314,12 +314,19 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     protected void setToolbarForExercise(String title, boolean showDrawer) {
         setToolbarTitle(title);
+        if(!showDrawer) {
+            hideDrawerIcon();
+            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        }
+    }
+
+    protected void enableAllWidgets(String title){
+        setToolbarTitle(title);
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
+        showVirtualCurrency();
         loadCoursesList();
-//        if(!showDrawer) {
-//            hideDrawerIcon();
-//            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-//        }
+        showDrawerIcon();
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
     }
 
     protected void setToolbarForWebActivity(String title) {
