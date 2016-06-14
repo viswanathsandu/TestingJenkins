@@ -81,6 +81,8 @@ public class ContentReadingActivity extends AbstractBaseActivity {
     Spinner spChapter;
     @Bind(R.id.sp_topic)
     Spinner spTopic;
+    @Bind(R.id.topic_icon)
+    ImageView topicSpinnerArrow;
     @Bind(R.id.iv_exercise)
     ImageView ivExercise;
     @Bind(R.id.vs_container)
@@ -336,6 +338,8 @@ public class ContentReadingActivity extends AbstractBaseActivity {
         btnPrevious.setOnClickListener(mClickListener);
         tvVideo.setOnClickListener(mClickListener);
         ivExercise.setOnClickListener(mClickListener);
+        topicSpinnerArrow.setOnClickListener(mClickListener);
+
     }
 
     private String operation = "";
@@ -362,6 +366,9 @@ public class ContentReadingActivity extends AbstractBaseActivity {
                     break;
                 case R.id.tv_video:
                     showVideoDialog();
+                    break;
+                case R.id.topic_icon:
+                    spTopic.performClick();
                     break;
                 case R.id.iv_exercise:
                     Intent intent = new Intent(ContentReadingActivity.this, ExamEngineActivity.class);
