@@ -81,7 +81,6 @@ import com.education.corsalite.models.socket.requests.UpdateLeaderBoardEvent;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.L;
-import com.education.corsalite.utils.NetworkUtils;
 import com.education.corsalite.utils.SystemUtils;
 import com.education.corsalite.utils.TimeUtils;
 import com.education.corsalite.utils.WebUrls;
@@ -315,9 +314,9 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             loadFlaggedQuestions();
         } else if (title.equalsIgnoreCase("Exercises")) {
             loadExerciseTest();
-        } else if (title.equalsIgnoreCase("Mock Test")) {
+        } else if (isMockTest()) {
             loadMockTest();
-        } else if (title.equalsIgnoreCase("Scheduled Test")) {
+        } else if (isScheduledTest()) {
             loadScheduledTest();
         } else if (ischallengeTest()) { // Challenge Test
             loadChallengeTest();
@@ -334,6 +333,10 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
     private boolean isScheduledTest() {
         return title.equalsIgnoreCase("Scheduled Test");
+    }
+
+    private boolean isMockTest() {
+        return title.equalsIgnoreCase("Mock Test");
     }
 
     private void loadDefaultExam() {
@@ -1633,7 +1636,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         @Override
         public void onFinish() {
             tv_timer.setText("TIME OVER");
-            if (ischallengeTest() || isScheduledTest()) {
+            if (ischallengeTest() || isScheduledTest() || isMockTest()) {
                 submitTest();
             }
         }
