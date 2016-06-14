@@ -309,6 +309,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         if (title.equalsIgnoreCase("Flagged Questions")) {
             loadFlaggedQuestions();
         } else if (title.equalsIgnoreCase("Exercises")) {
+            setToolbarForExercise("Excercise" + " - " + topic, title.equalsIgnoreCase("Exercises"));
             loadExerciseTest();
         } else if (title.equalsIgnoreCase("Mock Test")) {
             loadMockTest();
@@ -333,7 +334,9 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
     private void loadDefaultExam() {
         imvFlag.setVisibility(View.VISIBLE);
-        if (getIntent().hasExtra(Constants.SELECTED_SUBJECT)) {
+        if(getIntent().hasExtra(Constants.SELECTED_CHAPTER_NAME)){
+            setToolbarForExercise("Exercise - " + getIntent().getExtras().getString(Constants.SELECTED_CHAPTER_NAME), title.equalsIgnoreCase("Exercises"));
+        }else if (getIntent().hasExtra(Constants.SELECTED_SUBJECT)) {
             topic = getIntent().getExtras().getString(Constants.SELECTED_SUBJECT);
             tvPageTitle.setText(topic);
         }
