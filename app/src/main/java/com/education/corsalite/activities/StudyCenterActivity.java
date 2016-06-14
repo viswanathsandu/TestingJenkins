@@ -552,6 +552,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
         exerciseIntent.putExtra(Constants.TEST_TITLE, "Flagged Questions");
         exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
         exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, studyCenter.idCourseSubject + "");
+        exerciseIntent.putExtra(Constants.SELECTED_CHAPTER_NAME,key);
         exerciseIntent.putExtra(Constants.SELECTED_SUBJECT, key);
         startActivity(exerciseIntent);
     }

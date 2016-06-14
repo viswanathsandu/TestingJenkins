@@ -283,9 +283,15 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void getIntentData() {
+        String chapterName = getIntent().getExtras().getString(Constants.SELECTED_CHAPTER_NAME);
         title = getIntent().getExtras().getString(Constants.TEST_TITLE, "");
         tvNavTitle.setText(title);
-        setToolbarForExercise(title, title.equalsIgnoreCase("Exercises"));
+        if(chapterName!=null){
+            setToolbarForExercise(title + " - " + chapterName, title.equalsIgnoreCase("Exercises"));
+        }else{
+            setToolbarForExercise(title, title.equalsIgnoreCase("Exercises"));
+        }
+
         topic = getIntent().getExtras().getString(Constants.SELECTED_TOPIC, "");
         tvPageTitle.setText(topic);
         questionsCount = getIntent().getExtras().getString(Constants.QUESTIONS_COUNT, "");
@@ -440,6 +446,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private void loadFlaggedQuestions() {
         imvFlag.setVisibility(View.VISIBLE);
         tvPageTitle.setText(title);
+        Bundle args = getIntent().getExtras();
+
         getFlaggedQuestion(true);
         navigatorLayout.setVisibility(View.GONE);
         tvClearAnswer.setVisibility(View.GONE);

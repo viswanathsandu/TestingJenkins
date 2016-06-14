@@ -202,8 +202,8 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
 
     private void startFlaggedQuestionView(Chapter chapter) {
         Intent exerciseIntent = new Intent(studyCenterActivity, ExamEngineActivity.class);
-
         exerciseIntent.putExtra(Constants.TEST_TITLE, "Flagged Questions");
+        exerciseIntent.putExtra(Constants.SELECTED_CHAPTER_NAME,chapter.chapterName);
         exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
         exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, studyCenterActivity.getSelectedSubjectId());
         exerciseIntent.putExtra(Constants.SELECTED_SUBJECT, key);

@@ -314,10 +314,12 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     protected void setToolbarForExercise(String title, boolean showDrawer) {
         setToolbarTitle(title);
-        if(!showDrawer) {
-            hideDrawerIcon();
-            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-        }
+        toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
+        loadCoursesList();
+//        if(!showDrawer) {
+//            hideDrawerIcon();
+//            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+//        }
     }
 
     protected void setToolbarForWebActivity(String title) {
