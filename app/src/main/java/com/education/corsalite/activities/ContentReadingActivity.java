@@ -121,7 +121,6 @@ public class ContentReadingActivity extends AbstractBaseActivity {
     private String htmlFileText = "";
     private long eventStartTime;
     private long eventEndDate;
-    DrawerLayout drawerL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,13 +137,11 @@ public class ContentReadingActivity extends AbstractBaseActivity {
          toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                drawerL.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-                drawerL.openDrawer(GravityCompat.START);
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+                drawerLayout.openDrawer(GravityCompat.START);
             }
         });
-
-        drawerL = (DrawerLayout) findViewById(R.id.drawer);
-        drawerL.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
         initWebView();
 
@@ -175,7 +172,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
         eventStartTime = System.currentTimeMillis();
         setListeners();
 
-        drawerL.addDrawerListener(new DrawerLayout.DrawerListener() {
+        drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
 
@@ -188,7 +185,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
 
             @Override
             public void onDrawerClosed(View drawerView) {
-                drawerL.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             }
 
             @Override

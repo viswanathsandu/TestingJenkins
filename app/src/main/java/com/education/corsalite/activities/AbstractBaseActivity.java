@@ -87,7 +87,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     private List<Course> courses;
     public Toolbar toolbar;
     private NavigationView navigationView;
-    private DrawerLayout drawerLayout;
+    protected DrawerLayout drawerLayout;
     protected FrameLayout frameLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     public Dialog dialog;
@@ -362,7 +362,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
             @Override
             public void onDrawerOpened(View drawerView) {
-
                 super.onDrawerOpened(drawerView);
             }
         };
