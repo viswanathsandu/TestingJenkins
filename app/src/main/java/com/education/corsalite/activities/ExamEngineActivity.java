@@ -706,7 +706,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         }
         if (selectedPosition == localExamModelList.size() - 1) {
             btnPrevious.setVisibility(View.VISIBLE);
-            btnNext.setVisibility(View.GONE);
+//            btnNext.setVisibility(View.GONE);
             return;
         }
         btnPrevious.setVisibility(View.VISIBLE);
@@ -718,10 +718,14 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.btn_next:
+                    if (selectedPosition == localExamModelList.size() - 1) {
+                        showSubmitTestAlert();
+                    }else{
+                        updateTestAnswerPaper(TestanswerPaperState.STARTED);
+                        previousQuestionPosition = selectedPosition;
+                        inflateUI(selectedPosition + 1);
+                    }
                     hideKeyboard();
-                    updateTestAnswerPaper(TestanswerPaperState.STARTED);
-                    previousQuestionPosition = selectedPosition;
-                    inflateUI(selectedPosition + 1);
                     break;
                 case R.id.btn_previous:
                     hideKeyboard();
