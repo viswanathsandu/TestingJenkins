@@ -94,7 +94,7 @@
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:hardwareAccelerated="true"
             android:label=""
-            android:theme="@style/UserProfileTheme" />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".activities.VirtualCurrencyActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
