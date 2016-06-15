@@ -50,7 +50,6 @@ import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.enums.QuestionType;
 import com.education.corsalite.enums.TestanswerPaperState;
-import com.education.corsalite.enums.Tests;
 import com.education.corsalite.event.ExerciseAnsEvent;
 import com.education.corsalite.fragments.FullQuestionDialog;
 import com.education.corsalite.fragments.LeaderBoardFragment;
@@ -220,7 +219,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private String webQuestion = "";
     private String enteredAnswer = ""; // for alphanumeric
     private String title = "";
-    private String topic = "";
+    private String topicName = "";
     private String subjectId = null;
     private String chapterId = null;
     private String topicIds = null;
@@ -290,8 +289,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         title = getIntent().getExtras().getString(Constants.TEST_TITLE, "");
         tvNavTitle.setText(title);
         setToolbarForExercise(title, title.equalsIgnoreCase("Exercises"));
-        topic = getIntent().getExtras().getString(Constants.SELECTED_TOPIC, "");
-        tvPageTitle.setText(topic);
+        topicName = getIntent().getExtras().getString(Constants.SELECTED_TOPIC_NAME, "");
+        tvPageTitle.setText(topicName);
         questionsCount = getIntent().getExtras().getString(Constants.QUESTIONS_COUNT, "");
         selectedPosition = getIntent().getExtras().getInt(Constants.SELECTED_POSITION);
         subjectId = getIntent().getExtras().getString(Constants.SELECTED_SUBJECTID);
@@ -322,7 +321,9 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             }
             loadFlaggedQuestions();
         } else if (title.equalsIgnoreCase("Exercises")) {
-            setToolbarForExercise("Exercise" + " - " + topic, true);
+            if(!TextUtils.isEmpty(topicName)){
+                setToolbarForExercise(title + " - " + topicName, true);
+            }
             loadExerciseTest();
         } else if (isMockTest()) {
             loadMockTest();
@@ -332,9 +333,12 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             loadChallengeTest();
         } else if (title.equalsIgnoreCase("View Answers")) {
             loadViewAnswers();
-        } else if(title.equalsIgnoreCase(Tests.CHAPTER.toString())) { // TakeTest or PartTest
+        } else if(title.equalsIgnoreCase("Take Test")) { // TakeTest
+            if(!TextUtils.isEmpty(subjectName) && !TextUtils.isEmpty(chapterName)){
+                setToolbarForExercise(subjectName + " - " + chapterName, true);
+            }
             loadDefaultExam();
-        } else { // TakeTest or PartTest
+        } else { // PartTest
             loadDefaultExam();
         }
     }
@@ -353,9 +357,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
     private void loadDefaultExam() {
         imvFlag.setVisibility(View.VISIBLE);
-        if (getIntent().hasExtra(Constants.SELECTED_SUBJECT_NAME)) {
-            topic = getIntent().getExtras().getString(Constants.SELECTED_SUBJECT_NAME);
-            tvPageTitle.setText(topic);
+        if (!TextUtils.isEmpty(subjectName) && !TextUtils.isEmpty(chapterName)) {
+            tvPageTitle.setText(subjectName + " - " + chapterName);
         }
         if (isOffline) {
             loadOfflineDefaultExam();
@@ -1973,7 +1976,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private void showFullQuestionDialog() {
         FullQuestionDialog fullQuestionDialog = new FullQuestionDialog();
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.SELECTED_TOPIC, topic);
+        bundle.putString(Constants.SELECTED_TOPIC_NAME, topicName);
         fullQuestionDialog.setArguments(bundle);
         fullQuestionDialog.show(getFragmentManager(), "fullQuestionDialog");
     }

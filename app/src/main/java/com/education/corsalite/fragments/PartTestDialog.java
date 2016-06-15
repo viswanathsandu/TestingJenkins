@@ -217,7 +217,7 @@ public class PartTestDialog extends BaseDialogFragment {
         intent.putExtra(Constants.TEST_TITLE, "Part Test - " + subjectName);
         intent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
         intent.putExtra(Constants.SELECTED_SUBJECTID, idCourseSubject + "");
-        intent.putExtra(Constants.SELECTED_TOPIC, subjectName);
+        intent.putExtra(Constants.SELECTED_TOPIC_NAME, subjectName);
         intent.putExtra(Constants.ADAPIVE_LEAERNING, mIsAdaptiveTest);
         if(selectedExam != null) {
             intent.putExtra(Constants.PARTTEST_EXAMMODEL, new Gson().toJson(selectedExam));
