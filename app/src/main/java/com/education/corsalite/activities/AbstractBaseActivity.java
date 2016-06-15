@@ -308,26 +308,21 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         loadCoursesList();
     }
 
-    protected void setToolbarForPost() {
-        toolbar.findViewById(R.id.new_post1).setVisibility(View.VISIBLE);
-        setToolbarTitle(getResources().getString(R.string.post));
-    }
-
     protected void setToolbarForExercise(String title, boolean showDrawer) {
         setToolbarTitle(title);
+        showVirtualCurrency();
         if(!showDrawer) {
             hideDrawerIcon();
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         }
     }
 
-    protected void enableAllWidgets(String title){
-        setToolbarTitle(title);
+    protected void setToolbarForFlaggedQuestions(String title) {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
+        toolbar.findViewById(R.id.spinner_courses).setVisibility(View.GONE);
+        setToolbarTitle(title);
         showVirtualCurrency();
-        loadCoursesList();
         showDrawerIcon();
-        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
     }
 
     protected void setToolbarForWebActivity(String title) {

@@ -66,7 +66,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
     private View yellowView;
     private View greenView;
     private LinearLayout allColorLayout;
-    private String key;
+    private String mSubjectName;
     private TextView selectedSubjectTxt;
     private View selectedColorFilter;
     private ArrayList<Object> offlineContentList;
@@ -113,7 +113,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
             @Override
             public void onClick(View v) {
                 if (studyCenter != null && studyCenter.redListChapters != null) {
-                    mAdapter.updateData(studyCenter.redListChapters, key);
+                    mAdapter.updateData(studyCenter.redListChapters, mSubjectName);
                     mAdapter.notifyDataSetChanged();
                     updateSelected(redView);
                 }
@@ -123,7 +123,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
             @Override
             public void onClick(View v) {
                 if (studyCenter != null && studyCenter.blueListChapters != null) {
-                    mAdapter.updateData(studyCenter.blueListChapters, key);
+                    mAdapter.updateData(studyCenter.blueListChapters, mSubjectName);
                     mAdapter.notifyDataSetChanged();
                     updateSelected(blueView);
                 }
@@ -133,7 +133,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
             @Override
             public void onClick(View v) {
                 if (studyCenter != null && studyCenter.amberListChapters != null) {
-                    mAdapter.updateData(studyCenter.amberListChapters, key);
+                    mAdapter.updateData(studyCenter.amberListChapters, mSubjectName);
                     mAdapter.notifyDataSetChanged();
                     updateSelected(yellowView);
                 }
@@ -143,7 +143,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
             @Override
             public void onClick(View v) {
                 if (studyCenter != null && studyCenter.greenListChapters != null) {
-                    mAdapter.updateData(studyCenter.greenListChapters, key);
+                    mAdapter.updateData(studyCenter.greenListChapters, mSubjectName);
                     mAdapter.notifyDataSetChanged();
                     updateSelected(greenView);
                 }
@@ -154,7 +154,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
             @Override
             public void onClick(View v) {
                 if (studyCenter != null && studyCenter.chapters != null) {
-                    mAdapter.updateData(studyCenter.chapters, key);
+                    mAdapter.updateData(studyCenter.chapters, mSubjectName);
                     mAdapter.notifyDataSetChanged();
                     updateSelected(allColorLayout);
                 }
@@ -172,15 +172,15 @@ public class StudyCenterActivity extends AbstractBaseActivity {
 
     private void initDataAdapter(String subject) {
         showList();
-        key = subject;
+        mSubjectName = subject;
         allChapters = getChaptersForSubject();
-        mAdapter = new GridRecyclerAdapter(allChapters, this, key);
+        mAdapter = new GridRecyclerAdapter(allChapters, this, mSubjectName);
         recyclerView.setAdapter(mAdapter);
     }
 
     private List<Chapter> getChaptersForSubject() {
         for (StudyCenter studyCenter : mCourseData.StudyCenter) {
-            if (studyCenter.SubjectName.equals(key)) {
+            if (studyCenter.SubjectName.equals(mSubjectName)) {
                 return studyCenter.chapters;
             }
         }
@@ -270,7 +270,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
                             }
                             if (mCourseData != null && mCourseData.StudyCenter != null && !mCourseData.StudyCenter.isEmpty()) {
                                 setupSubjects(mCourseData);
-                                key = mCourseData.StudyCenter.get(0).SubjectName;
+                                mSubjectName = mCourseData.StudyCenter.get(0).SubjectName;
                                 studyCenter = mCourseData.StudyCenter.get(0);
                                 setUpStudyCentreData(studyCenter);
                                 initDataAdapter(subjects.get(0));
@@ -317,7 +317,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
         } else {
             mCourseData = new CourseData();
             mCourseData.StudyCenter = studyCenters;
-            key = mCourseData.StudyCenter.get(getIndex(studyCenters)).SubjectName;
+            mSubjectName = mCourseData.StudyCenter.get(getIndex(studyCenters)).SubjectName;
             studyCenter = mCourseData.StudyCenter.get(getIndex(studyCenters));
             setupSubjects(mCourseData);
             initDataAdapter(subjects.get(getIndex(studyCenters)));
@@ -326,11 +326,11 @@ public class StudyCenterActivity extends AbstractBaseActivity {
 
     private int getIndex(List<StudyCenter> studyCenters) {
         int i = 0;
-        if (key == null) {
+        if (mSubjectName == null) {
             return 0;
         }
         for (StudyCenter studyCenter : studyCenters) {
-            if (key.equals(studyCenter.SubjectName)) {
+            if (mSubjectName.equals(studyCenter.SubjectName)) {
                 break;
             }
             i++;
@@ -362,7 +362,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
         try {
             resetColorsVisibility();
             studyCenter.resetColoredLists();
-            if (key.equalsIgnoreCase(studyCenter.SubjectName)) {
+            if (mSubjectName.equalsIgnoreCase(studyCenter.SubjectName)) {
                 for (Chapter chapter : studyCenter.chapters) {
                     double totalMarks = Data.getDoubleWithTwoDecimals(chapter.totalTestedMarks);
                     double earnedMarks = Data.getDoubleWithTwoDecimals(chapter.earnedMarks);
@@ -552,8 +552,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
         exerciseIntent.putExtra(Constants.TEST_TITLE, "Flagged Questions");
         exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
         exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, studyCenter.idCourseSubject + "");
-        exerciseIntent.putExtra(Constants.SELECTED_CHAPTER_NAME,key);
-        exerciseIntent.putExtra(Constants.SELECTED_SUBJECT, key);
+        exerciseIntent.putExtra(Constants.SELECTED_SUBJECT_NAME, mSubjectName);
         startActivity(exerciseIntent);
     }
 
@@ -601,11 +600,11 @@ public class StudyCenterActivity extends AbstractBaseActivity {
                     }
                     selectedSubjectTxt = textView;
                     selectedSubjectTxt.setSelected(true);
-                    key = text;
+                    mSubjectName = text;
                     if (mCourseData != null && mCourseData.StudyCenter != null) {
-                        key = text;
+                        mSubjectName = text;
                         for (StudyCenter studyCenter : mCourseData.StudyCenter) {
-                            if (key.equalsIgnoreCase(studyCenter.SubjectName)) {
+                            if (mSubjectName.equalsIgnoreCase(studyCenter.SubjectName)) {
                                 StudyCenterActivity.this.studyCenter = studyCenter;
                                 setUpStudyCentreData(studyCenter);
                                 mAdapter.updateData(getChaptersForSubject(), text);
@@ -620,12 +619,12 @@ public class StudyCenterActivity extends AbstractBaseActivity {
                     }
                     selectedSubjectTxt = textView;
                     selectedSubjectTxt.setSelected(true);
-                    key = text;
+                    mSubjectName = text;
                     if (mCourseData != null && mCourseData.StudyCenter != null) {
-                        key = text;
+                        mSubjectName = text;
                         List<OfflineContent> offlineContents = dbManager.getOfflineContents(AbstractBaseActivity.selectedCourse.courseId + "");
                         for (StudyCenter studyCenter : mCourseData.StudyCenter) {
-                            if (key.equalsIgnoreCase(studyCenter.SubjectName)) {
+                            if (mSubjectName.equalsIgnoreCase(studyCenter.SubjectName)) {
                                 StudyCenterActivity.this.studyCenter = studyCenter;
                                 setUpStudyCentreData(studyCenter);
                                 for (Chapter chapter : getChaptersForSubject()) {
