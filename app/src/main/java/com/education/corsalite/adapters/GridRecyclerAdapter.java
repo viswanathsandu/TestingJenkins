@@ -46,13 +46,13 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
     public static final String TOPIC_ID = "topicId";
     public static final String SUBJECT = "subject";
     private List<Chapter> chapters;
-    private String key;
+    private String mSubjectName;
     private StudyCenterActivity studyCenterActivity;
 
-    public GridRecyclerAdapter(List<Chapter> chapters, StudyCenterActivity studyCenterActivity, String key) {
+    public GridRecyclerAdapter(List<Chapter> chapters, StudyCenterActivity studyCenterActivity, String subjectName) {
         this.chapters = chapters;
         this.studyCenterActivity = studyCenterActivity;
-        this.key = key;
+        this.mSubjectName = subjectName;
     }
 
     @Override
@@ -129,7 +129,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
 
     public void updateData(List<Chapter> chapters, String key) {
         this.chapters = chapters;
-        this.key = key;
+        this.mSubjectName = key;
     }
 
     private void getAlertDialog(View v, StudyCenterSubjectViewHolder holder, Chapter chapter) {
@@ -202,11 +202,11 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
 
     private void startFlaggedQuestionView(Chapter chapter) {
         Intent exerciseIntent = new Intent(studyCenterActivity, ExamEngineActivity.class);
-
+        exerciseIntent.putExtra(Constants.SELECTED_CHAPTER_NAME,chapter.chapterName);
         exerciseIntent.putExtra(Constants.TEST_TITLE, "Flagged Questions");
         exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
         exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, studyCenterActivity.getSelectedSubjectId());
-        exerciseIntent.putExtra(Constants.SELECTED_SUBJECT, key);
+        exerciseIntent.putExtra(Constants.SELECTED_SUBJECT_NAME, mSubjectName);
         exerciseIntent.putExtra(Constants.SELECTED_CHAPTERID, chapter.idCourseSubjectchapter);
         studyCenterActivity.startActivity(exerciseIntent);
     }
@@ -215,10 +215,10 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         if(SystemUtils.isNetworkConnected(studyCenterActivity)) {
             Intent exerciseIntent = new Intent(studyCenterActivity, TestStartActivity.class);
             exerciseIntent.putExtra(TestStartActivity.KEY_TEST_TYPE, Tests.CHAPTER.getType());
-            exerciseIntent.putExtra(Constants.TEST_TITLE, key);
+            exerciseIntent.putExtra(Constants.TEST_TITLE, "Take Test");
             exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
             exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, studyCenterActivity.getSelectedSubjectId());
-            exerciseIntent.putExtra(Constants.SELECTED_SUBJECT, key);
+            exerciseIntent.putExtra(Constants.SELECTED_SUBJECT_NAME, mSubjectName);
             exerciseIntent.putExtra(Constants.SELECTED_CHAPTERID, chapter.idCourseSubjectchapter);
             exerciseIntent.putExtra(Constants.SELECTED_CHAPTER_NAME, chapter.chapterName);
             exerciseIntent.putExtra(Constants.LEVEL_CROSSED, chapter.passedComplexity);
@@ -243,7 +243,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         putIntentExtras(chapter, intent, COURSE_ID, SUBJECT_ID, CHAPTER_ID);
         intent.putExtra("chapterName", chapter.chapterName);
         intent.putExtra("courseName", AbstractBaseActivity.selectedCourse.name.toString());
-        intent.putExtra(SUBJECT, key);
+        intent.putExtra(SUBJECT, mSubjectName);
         studyCenterActivity.startActivity(intent);
     }
 

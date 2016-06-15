@@ -219,10 +219,12 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private String webQuestion = "";
     private String enteredAnswer = ""; // for alphanumeric
     private String title = "";
-    private String topic = "";
+    private String topicName = "";
     private String subjectId = null;
     private String chapterId = null;
     private String topicIds = null;
+    private String chapterName = null;
+    private String subjectName = null;
     private Long dbRowId = null;
     private String questionsCount = null;
     private String selectedSection;
@@ -287,13 +289,15 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         title = getIntent().getExtras().getString(Constants.TEST_TITLE, "");
         tvNavTitle.setText(title);
         setToolbarForExercise(title, title.equalsIgnoreCase("Exercises"));
-        topic = getIntent().getExtras().getString(Constants.SELECTED_TOPIC, "");
-        tvPageTitle.setText(topic);
+        topicName = getIntent().getExtras().getString(Constants.SELECTED_TOPIC_NAME, "");
+        tvPageTitle.setText(topicName);
         questionsCount = getIntent().getExtras().getString(Constants.QUESTIONS_COUNT, "");
         selectedPosition = getIntent().getExtras().getInt(Constants.SELECTED_POSITION);
         subjectId = getIntent().getExtras().getString(Constants.SELECTED_SUBJECTID);
         chapterId = getIntent().getExtras().getString(Constants.SELECTED_CHAPTERID);
         topicIds = getIntent().getExtras().getString(Constants.SELECTED_TOPICID);
+        chapterName = getIntent().getExtras().getString(Constants.SELECTED_CHAPTER_NAME);
+        subjectName = getIntent().getExtras().getString(Constants.SELECTED_SUBJECT_NAME);
         isOffline = getIntent().getExtras().getBoolean(Constants.IS_OFFLINE, false);
         dbRowId = getIntent().getExtras().getLong(Constants.DB_ROW_ID);
         offlineModelDate = getIntent().getExtras().getLong("OfflineTestObjectModel");
@@ -306,20 +310,35 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             }.getType();
             partTestGridElements = new Gson().fromJson(partTestGridElimentsJson, listType);
         }
+
         if (title.equalsIgnoreCase("Flagged Questions")) {
+            if(!TextUtils.isEmpty(chapterName)) {
+                setToolbarForFlaggedQuestions(title + " - " + chapterName);
+            } else if(!TextUtils.isEmpty(subjectName)){
+                setToolbarForFlaggedQuestions(title + " - " + subjectName);
+            } else {
+                setToolbarForFlaggedQuestions(title);
+            }
             loadFlaggedQuestions();
         } else if (title.equalsIgnoreCase("Exercises")) {
-            setToolbarForExercise("Excercise" + " - " + topic, title.equalsIgnoreCase("Exercises"));
+            if(!TextUtils.isEmpty(topicName)){
+                setToolbarForExercise(title + " - " + topicName, true);
+            }
             loadExerciseTest();
         } else if (isMockTest()) {
             loadMockTest();
-        } else if (title.equalsIgnoreCase("Scheduled Test")) {
+        } else if (isScheduledTest()) {
             loadScheduledTest();
         } else if (ischallengeTest()) {
             loadChallengeTest();
         } else if (title.equalsIgnoreCase("View Answers")) {
             loadViewAnswers();
-        } else { // TakeTest or PartTest
+        } else if(title.equalsIgnoreCase("Take Test")) { // TakeTest
+            if(!TextUtils.isEmpty(subjectName) && !TextUtils.isEmpty(chapterName)){
+                setToolbarForExercise(subjectName + " - " + chapterName, true);
+            }
+            loadDefaultExam();
+        } else { // PartTest
             loadDefaultExam();
         }
     }
@@ -338,12 +357,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
     private void loadDefaultExam() {
         imvFlag.setVisibility(View.VISIBLE);
-        if(getIntent().hasExtra(Constants.SELECTED_CHAPTER_NAME)){
-            setToolbarForExercise("Exercise - " + getIntent().getExtras().getString(Constants.SELECTED_CHAPTER_NAME), title.equalsIgnoreCase("Exercises"));
-        }
-        if (getIntent().hasExtra(Constants.SELECTED_SUBJECT)) {
-            topic = getIntent().getExtras().getString(Constants.SELECTED_SUBJECT);
-            tvPageTitle.setText(topic);
+        if (!TextUtils.isEmpty(subjectName) && !TextUtils.isEmpty(chapterName)) {
+            tvPageTitle.setText(subjectName + " - " + chapterName);
         }
         if (isOffline) {
             loadOfflineDefaultExam();
@@ -447,8 +462,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void loadFlaggedQuestions() {
+        headerLayout.setVisibility(View.GONE);
         imvFlag.setVisibility(View.VISIBLE);
-        tvPageTitle.setText(title);
         getFlaggedQuestion(true);
         navigatorLayout.setVisibility(View.GONE);
         tvClearAnswer.setVisibility(View.GONE);
@@ -1961,7 +1976,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private void showFullQuestionDialog() {
         FullQuestionDialog fullQuestionDialog = new FullQuestionDialog();
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.SELECTED_TOPIC, topic);
+        bundle.putString(Constants.SELECTED_TOPIC_NAME, topicName);
         fullQuestionDialog.setArguments(bundle);
         fullQuestionDialog.show(getFragmentManager(), "fullQuestionDialog");
     }

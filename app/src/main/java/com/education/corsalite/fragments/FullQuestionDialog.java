@@ -82,8 +82,8 @@ public class FullQuestionDialog extends DialogFragment {
     }
 
     private void getAvailableArguments() {
-        if(getArguments().getString(Constants.SELECTED_TOPIC) != null) {
-            tvModule.setText(getArguments().getString(Constants.SELECTED_TOPIC));
+        if(getArguments().getString(Constants.SELECTED_TOPIC_NAME) != null) {
+            tvModule.setText(getArguments().getString(Constants.SELECTED_TOPIC_NAME));
         }
         localExamModelList = ((ExamEngineActivity)getActivity()).getLocalExamModelList();
         if(localExamModelList != null && localExamModelList.size() > 0) {
