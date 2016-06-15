@@ -50,6 +50,7 @@ import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.enums.QuestionType;
 import com.education.corsalite.enums.TestanswerPaperState;
+import com.education.corsalite.enums.Tests;
 import com.education.corsalite.event.ExerciseAnsEvent;
 import com.education.corsalite.fragments.FullQuestionDialog;
 import com.education.corsalite.fragments.LeaderBoardFragment;
@@ -223,6 +224,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private String subjectId = null;
     private String chapterId = null;
     private String topicIds = null;
+    private String chapterName = null;
+    private String subjectName = null;
     private Long dbRowId = null;
     private String questionsCount = null;
     private String selectedSection;
@@ -294,6 +297,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         subjectId = getIntent().getExtras().getString(Constants.SELECTED_SUBJECTID);
         chapterId = getIntent().getExtras().getString(Constants.SELECTED_CHAPTERID);
         topicIds = getIntent().getExtras().getString(Constants.SELECTED_TOPICID);
+        chapterName = getIntent().getExtras().getString(Constants.SELECTED_CHAPTER_NAME);
+        subjectName = getIntent().getExtras().getString(Constants.SELECTED_SUBJECT_NAME);
         isOffline = getIntent().getExtras().getBoolean(Constants.IS_OFFLINE, false);
         dbRowId = getIntent().getExtras().getLong(Constants.DB_ROW_ID);
         offlineModelDate = getIntent().getExtras().getLong("OfflineTestObjectModel");
@@ -306,19 +311,29 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             }.getType();
             partTestGridElements = new Gson().fromJson(partTestGridElimentsJson, listType);
         }
+
         if (title.equalsIgnoreCase("Flagged Questions")) {
+            if(!TextUtils.isEmpty(chapterName)) {
+                setToolbarForFlaggedQuestions(title + " - " + chapterName);
+            } else if(!TextUtils.isEmpty(subjectName)){
+                setToolbarForFlaggedQuestions(title + " - " + subjectName);
+            } else {
+                setToolbarForFlaggedQuestions(title);
+            }
             loadFlaggedQuestions();
         } else if (title.equalsIgnoreCase("Exercises")) {
-            setToolbarForExercise("Excercise" + " - " + topic, title.equalsIgnoreCase("Exercises"));
+            setToolbarForExercise("Exercise" + " - " + topic, true);
             loadExerciseTest();
         } else if (isMockTest()) {
             loadMockTest();
-        } else if (title.equalsIgnoreCase("Scheduled Test")) {
+        } else if (isScheduledTest()) {
             loadScheduledTest();
         } else if (ischallengeTest()) {
             loadChallengeTest();
         } else if (title.equalsIgnoreCase("View Answers")) {
             loadViewAnswers();
+        } else if(title.equalsIgnoreCase(Tests.CHAPTER.toString())) { // TakeTest or PartTest
+            loadDefaultExam();
         } else { // TakeTest or PartTest
             loadDefaultExam();
         }
@@ -338,11 +353,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
     private void loadDefaultExam() {
         imvFlag.setVisibility(View.VISIBLE);
-        if(getIntent().hasExtra(Constants.SELECTED_CHAPTER_NAME)){
-            setToolbarForExercise("Exercise - " + getIntent().getExtras().getString(Constants.SELECTED_CHAPTER_NAME), title.equalsIgnoreCase("Exercises"));
-        }
-        if (getIntent().hasExtra(Constants.SELECTED_SUBJECT)) {
-            topic = getIntent().getExtras().getString(Constants.SELECTED_SUBJECT);
+        if (getIntent().hasExtra(Constants.SELECTED_SUBJECT_NAME)) {
+            topic = getIntent().getExtras().getString(Constants.SELECTED_SUBJECT_NAME);
             tvPageTitle.setText(topic);
         }
         if (isOffline) {
@@ -447,8 +459,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void loadFlaggedQuestions() {
+        headerLayout.setVisibility(View.GONE);
         imvFlag.setVisibility(View.VISIBLE);
-        tvPageTitle.setText(title);
         getFlaggedQuestion(true);
         navigatorLayout.setVisibility(View.GONE);
         tvClearAnswer.setVisibility(View.GONE);
