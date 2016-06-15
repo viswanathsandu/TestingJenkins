@@ -701,16 +701,19 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.btn_next:
+                    hideKeyboard();
                     updateTestAnswerPaper(TestanswerPaperState.STARTED);
                     previousQuestionPosition = selectedPosition;
                     inflateUI(selectedPosition + 1);
                     break;
                 case R.id.btn_previous:
+                    hideKeyboard();
                     updateTestAnswerPaper(TestanswerPaperState.STARTED);
                     previousQuestionPosition = selectedPosition;
                     inflateUI(selectedPosition - 1);
                     break;
                 case R.id.btn_verify:
+                    hideKeyboard();
                     verifyAnswer();
                     break;
                 case R.id.tv_clearanswer:
