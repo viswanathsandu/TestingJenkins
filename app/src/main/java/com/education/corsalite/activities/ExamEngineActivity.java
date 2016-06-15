@@ -322,12 +322,13 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             }
             loadFlaggedQuestions();
         } else if (title.equalsIgnoreCase("Exercises")) {
+            setToolbarForExercise("Excercise" + " - " + topic, title.equalsIgnoreCase("Exercises"));
             loadExerciseTest();
         } else if (isMockTest()) {
             loadMockTest();
         } else if (isScheduledTest()) {
             loadScheduledTest();
-        } else if (ischallengeTest()) { // Challenge Test
+        } else if (ischallengeTest()) {
             loadChallengeTest();
         } else if (title.equalsIgnoreCase("View Answers")) {
             loadViewAnswers();
@@ -350,6 +351,9 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
     private void loadDefaultExam() {
         imvFlag.setVisibility(View.VISIBLE);
+        if(getIntent().hasExtra(Constants.SELECTED_CHAPTER_NAME)){
+            setToolbarForExercise("Exercise - " + getIntent().getExtras().getString(Constants.SELECTED_CHAPTER_NAME), title.equalsIgnoreCase("Exercises"));
+        }
         if (getIntent().hasExtra(Constants.SELECTED_SUBJECT)) {
             topic = getIntent().getExtras().getString(Constants.SELECTED_SUBJECT);
             tvPageTitle.setText(topic);
@@ -714,16 +718,19 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.btn_next:
+                    hideKeyboard();
                     updateTestAnswerPaper(TestanswerPaperState.STARTED);
                     previousQuestionPosition = selectedPosition;
                     inflateUI(selectedPosition + 1);
                     break;
                 case R.id.btn_previous:
+                    hideKeyboard();
                     updateTestAnswerPaper(TestanswerPaperState.STARTED);
                     previousQuestionPosition = selectedPosition;
                     inflateUI(selectedPosition - 1);
                     break;
                 case R.id.btn_verify:
+                    hideKeyboard();
                     verifyAnswer();
                     break;
                 case R.id.tv_clearanswer:

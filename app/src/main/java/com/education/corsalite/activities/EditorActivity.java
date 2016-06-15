@@ -38,12 +38,14 @@ import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.DefaultForumResponse;
 import com.education.corsalite.models.responsemodels.DefaultNoteResponse;
 import com.education.corsalite.utils.L;
+import com.education.corsalite.views.CustomButton;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import butterknife.Bind;
 import retrofit.client.Response;
 
 /**
@@ -58,6 +60,7 @@ public class EditorActivity extends AbstractBaseActivity {
     private EditText titleTxt;
     private CheckBox isAuthorOnlyCkb;
     private View progress;
+    private CustomButton edit_btn;
 
     private String type;
     private String operation;
@@ -90,6 +93,7 @@ public class EditorActivity extends AbstractBaseActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         toolbar.setTitleTextColor(0xFFFFFFFF);
+        edit_btn = (CustomButton)findViewById(R.id.edit_btn);
 
         type = getIntent().getExtras().getString("type", "Note");
         Bundle bundle = getIntent().getExtras();
@@ -112,22 +116,21 @@ public class EditorActivity extends AbstractBaseActivity {
         getSupportActionBar().setTitle(operation+" "+type);
         initUi();
         loadWebview();
+
+        edit_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                webview.loadUrl("javascript:getUpdatedHtml()");
+            }
+        });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.new_post_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
-                break;
-            case R.id.edit_btn:
-                webview.loadUrl("javascript:getUpdatedHtml()");
                 break;
         }
         return super.onOptionsItemSelected(item);
