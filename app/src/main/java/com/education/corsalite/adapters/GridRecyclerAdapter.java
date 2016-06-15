@@ -202,8 +202,8 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
 
     private void startFlaggedQuestionView(Chapter chapter) {
         Intent exerciseIntent = new Intent(studyCenterActivity, ExamEngineActivity.class);
-        exerciseIntent.putExtra(Constants.TEST_TITLE, "Flagged Questions");
         exerciseIntent.putExtra(Constants.SELECTED_CHAPTER_NAME,chapter.chapterName);
+        exerciseIntent.putExtra(Constants.TEST_TITLE, "Flagged Questions");
         exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
         exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, studyCenterActivity.getSelectedSubjectId());
         exerciseIntent.putExtra(Constants.SELECTED_SUBJECT, key);
@@ -215,7 +215,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         if(SystemUtils.isNetworkConnected(studyCenterActivity)) {
             Intent exerciseIntent = new Intent(studyCenterActivity, TestStartActivity.class);
             exerciseIntent.putExtra(TestStartActivity.KEY_TEST_TYPE, Tests.CHAPTER.getType());
-            exerciseIntent.putExtra(Constants.TEST_TITLE, key);
+            exerciseIntent.putExtra(Constants.TEST_TITLE, key + " - " + chapter.chapterName);
             exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
             exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, studyCenterActivity.getSelectedSubjectId());
             exerciseIntent.putExtra(Constants.SELECTED_SUBJECT, key);
