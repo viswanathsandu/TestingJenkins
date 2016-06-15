@@ -17,6 +17,7 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
@@ -86,7 +87,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     private List<Course> courses;
     public Toolbar toolbar;
     private NavigationView navigationView;
-    private DrawerLayout drawerLayout;
+    protected DrawerLayout drawerLayout;
     protected FrameLayout frameLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     public Dialog dialog;
@@ -307,17 +308,21 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         loadCoursesList();
     }
 
-    protected void setToolbarForPost() {
-        toolbar.findViewById(R.id.new_post1).setVisibility(View.VISIBLE);
-        setToolbarTitle(getResources().getString(R.string.post));
-    }
-
     protected void setToolbarForExercise(String title, boolean showDrawer) {
         setToolbarTitle(title);
+        showVirtualCurrency();
         if(!showDrawer) {
             hideDrawerIcon();
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         }
+    }
+
+    protected void setToolbarForFlaggedQuestions(String title) {
+        toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
+        toolbar.findViewById(R.id.spinner_courses).setVisibility(View.GONE);
+        setToolbarTitle(title);
+        showVirtualCurrency();
+        showDrawerIcon();
     }
 
     protected void setToolbarForWebActivity(String title) {
@@ -361,7 +366,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
             @Override
             public void onDrawerOpened(View drawerView) {
-
                 super.onDrawerOpened(drawerView);
             }
         };
@@ -889,5 +893,16 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     protected void startWebSocket() {
         WebSocketHelper.get(this).connectWebSocket();
+    }
+
+    public void hideKeyboard() {
+        // Check if no view has focus:
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager inputManager = (InputMethodManager) this
+                    .getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputManager.hideSoftInputFromWindow(view.getWindowToken(),
+                    InputMethodManager.HIDE_NOT_ALWAYS);
+        }
     }
 }

@@ -17,6 +17,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.webkit.JavascriptInterface;
@@ -49,6 +50,7 @@ import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.enums.QuestionType;
 import com.education.corsalite.enums.TestanswerPaperState;
+import com.education.corsalite.enums.Tests;
 import com.education.corsalite.event.ExerciseAnsEvent;
 import com.education.corsalite.fragments.FullQuestionDialog;
 import com.education.corsalite.fragments.LeaderBoardFragment;
@@ -81,7 +83,6 @@ import com.education.corsalite.models.socket.requests.UpdateLeaderBoardEvent;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.L;
-import com.education.corsalite.utils.NetworkUtils;
 import com.education.corsalite.utils.SystemUtils;
 import com.education.corsalite.utils.TimeUtils;
 import com.education.corsalite.utils.WebUrls;
@@ -94,6 +95,7 @@ import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -222,7 +224,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private String subjectId = null;
     private String chapterId = null;
     private String topicIds = null;
-    private String chapterName=null;
+    private String chapterName = null;
+    private String subjectName = null;
     private Long dbRowId = null;
     private String questionsCount = null;
     private String selectedSection;
@@ -284,7 +287,6 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void getIntentData() {
-        chapterName = getIntent().getExtras().getString(Constants.SELECTED_CHAPTER_NAME);
         title = getIntent().getExtras().getString(Constants.TEST_TITLE, "");
         tvNavTitle.setText(title);
         if(chapterName!=null){
@@ -300,6 +302,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         subjectId = getIntent().getExtras().getString(Constants.SELECTED_SUBJECTID);
         chapterId = getIntent().getExtras().getString(Constants.SELECTED_CHAPTERID);
         topicIds = getIntent().getExtras().getString(Constants.SELECTED_TOPICID);
+        chapterName = getIntent().getExtras().getString(Constants.SELECTED_CHAPTER_NAME);
+        subjectName = getIntent().getExtras().getString(Constants.SELECTED_SUBJECT_NAME);
         isOffline = getIntent().getExtras().getBoolean(Constants.IS_OFFLINE, false);
         dbRowId = getIntent().getExtras().getLong(Constants.DB_ROW_ID);
         offlineModelDate = getIntent().getExtras().getLong("OfflineTestObjectModel");
@@ -313,23 +317,31 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             partTestGridElements = new Gson().fromJson(partTestGridElimentsJson, listType);
         }
 
-        L.debug("-------------------------------------------------> CHECK FOR TITLE " + title);
         if (title.equalsIgnoreCase("Flagged Questions")) {
+            if(!TextUtils.isEmpty(chapterName)) {
+                setToolbarForFlaggedQuestions(title + " - " + chapterName);
+            } else if(!TextUtils.isEmpty(subjectName)){
+                setToolbarForFlaggedQuestions(title + " - " + subjectName);
+            } else {
+                setToolbarForFlaggedQuestions(title);
+            }
             loadFlaggedQuestions();
         } else if (title.equalsIgnoreCase("Exercises")) {
+            setToolbarForExercise("Exercise" + " - " + topic, true);
             loadExerciseTest();
-        } else if (title.equalsIgnoreCase("Mock Test")) {
+        } else if (isMockTest()) {
             loadMockTest();
-        } else if (title.equalsIgnoreCase("Scheduled Test")) {
+        } else if (isScheduledTest()) {
             loadScheduledTest();
-        } else if (ischallengeTest()) { // Challenge Test
+        } else if (ischallengeTest()) {
             loadChallengeTest();
         } else if (title.equalsIgnoreCase("View Answers")) {
             loadViewAnswers();
+        } else if(title.equalsIgnoreCase(Tests.CHAPTER.toString())) { // TakeTest or PartTest
+            loadDefaultExam();
         } else { // TakeTest or PartTest
             loadDefaultExam();
         }
-
     }
 
     private boolean ischallengeTest() {
@@ -340,13 +352,14 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         return title.equalsIgnoreCase("Scheduled Test");
     }
 
+    private boolean isMockTest() {
+        return title.equalsIgnoreCase("Mock Test");
+    }
+
     private void loadDefaultExam() {
         imvFlag.setVisibility(View.VISIBLE);
-        if (getIntent().hasExtra(Constants.SELECTED_SUBJECT)) {
-            topic = getIntent().getExtras().getString(Constants.SELECTED_SUBJECT);
-            if(chapterName!=null){
-                topic = topic + " - " + chapterName;
-            }
+        if (getIntent().hasExtra(Constants.SELECTED_SUBJECT_NAME)) {
+            topic = getIntent().getExtras().getString(Constants.SELECTED_SUBJECT_NAME);
             tvPageTitle.setText(topic);
         }
         if (isOffline) {
@@ -451,8 +464,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void loadFlaggedQuestions() {
+        headerLayout.setVisibility(View.GONE);
         imvFlag.setVisibility(View.VISIBLE);
-        tvPageTitle.setText(title);
         getFlaggedQuestion(true);
         navigatorLayout.setVisibility(View.GONE);
         tvClearAnswer.setVisibility(View.GONE);
@@ -697,7 +710,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         }
         if (selectedPosition == localExamModelList.size() - 1) {
             btnPrevious.setVisibility(View.VISIBLE);
-            btnNext.setVisibility(View.GONE);
+//            btnNext.setVisibility(View.GONE);
             return;
         }
         btnPrevious.setVisibility(View.VISIBLE);
@@ -709,16 +722,23 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.btn_next:
-                    updateTestAnswerPaper(TestanswerPaperState.STARTED);
-                    previousQuestionPosition = selectedPosition;
-                    inflateUI(selectedPosition + 1);
+                    if (selectedPosition == localExamModelList.size() - 1) {
+                        showSubmitTestAlert();
+                    }else{
+                        updateTestAnswerPaper(TestanswerPaperState.STARTED);
+                        previousQuestionPosition = selectedPosition;
+                        inflateUI(selectedPosition + 1);
+                    }
+                    hideKeyboard();
                     break;
                 case R.id.btn_previous:
+                    hideKeyboard();
                     updateTestAnswerPaper(TestanswerPaperState.STARTED);
                     previousQuestionPosition = selectedPosition;
                     inflateUI(selectedPosition - 1);
                     break;
                 case R.id.btn_verify:
+                    hideKeyboard();
                     verifyAnswer();
                     break;
                 case R.id.tv_clearanswer:
@@ -1066,6 +1086,26 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             webview.setWebChromeClient(new WebChromeClient());
             webview.setWebViewClient(new MyWebViewClient(this));
             webview.loadData(answerChoiceModel.answerChoiceTextHtml, "text/html; charset=UTF-8", null);
+            webview.setOnTouchListener(new View.OnTouchListener() {
+                private static final int MAX_CLICK_DURATION = 200;
+                private long startClickTime;
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN: {
+                            startClickTime = Calendar.getInstance().getTimeInMillis();
+                            break;
+                        }
+                        case MotionEvent.ACTION_UP: {
+                            long clickDuration = Calendar.getInstance().getTimeInMillis() - startClickTime;
+                            if(clickDuration < MAX_CLICK_DURATION) {
+                                optionRBtn.performClick();
+                            }
+                        }
+                    }
+                    return true;
+                }
+            });
             answerLayout.addView(container);
 
             try {
@@ -1134,6 +1174,26 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             optionWebView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
             optionWebView.setWebChromeClient(new WebChromeClient());
             optionWebView.setWebViewClient(new MyWebViewClient(this));
+            optionWebView.setOnTouchListener(new View.OnTouchListener() {
+                private static final int MAX_CLICK_DURATION = 200;
+                private long startClickTime;
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN: {
+                            startClickTime = Calendar.getInstance().getTimeInMillis();
+                            break;
+                        }
+                        case MotionEvent.ACTION_UP: {
+                            long clickDuration = Calendar.getInstance().getTimeInMillis() - startClickTime;
+                            if(clickDuration < MAX_CLICK_DURATION) {
+                                optionCheckbox.performClick();
+                            }
+                        }
+                    }
+                    return true;
+                }
+            });
             if (answerChoiceModel.answerChoiceTextHtml.startsWith("./") && answerChoiceModel.answerChoiceTextHtml.endsWith(".html")) {
                 answerChoiceModel.answerChoiceTextHtml = answerChoiceModel.answerChoiceTextHtml.replace("./", ApiClientService.getBaseUrl());
                 optionWebView.loadUrl(answerChoiceModel.answerChoiceTextHtml);
@@ -1638,7 +1698,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         @Override
         public void onFinish() {
             tv_timer.setText("TIME OVER");
-            if (ischallengeTest() || isScheduledTest()) {
+            if (ischallengeTest() || isScheduledTest() || isMockTest()) {
                 submitTest();
             }
         }
