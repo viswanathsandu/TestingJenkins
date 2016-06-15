@@ -24,7 +24,7 @@ public class Constants {
     public static final String SELECTED_CHAPTER =  "selectedChapter";
     public static final String SELECTED_CHAPTERID =  "selectedChapterId";
     public static final String SELECTED_CHAPTER_NAME =  "selectedChapterName";
-    public static final String SELECTED_TOPIC =  "selectedTopic";
+    public static final String SELECTED_TOPIC_NAME =  "selectedTopic";
     public static final String SELECTED_TOPICID =  "selectedTopicId";
     public static final String LEVEL_CROSSED =  "level_crossed";
     public static final String PART_TEST_GRID_DATA =  "partTestGridData";

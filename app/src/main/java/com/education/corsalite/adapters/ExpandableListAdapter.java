@@ -272,7 +272,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             exerciseIntent.putExtra(Constants.TEST_TITLE, "Part Test - " + subjectName);
             exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
             exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, subjectId);
-            exerciseIntent.putExtra(Constants.SELECTED_TOPIC, subjectName);
+            exerciseIntent.putExtra(Constants.SELECTED_TOPIC_NAME, subjectName);
             exerciseIntent.putExtra(Constants.DB_ROW_ID, model.getId());
             exerciseIntent.putExtra(Constants.IS_OFFLINE, true);
             exerciseIntent.putExtra("OfflineTestObjectModel", model.dateTime);

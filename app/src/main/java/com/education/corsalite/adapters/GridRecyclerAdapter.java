@@ -215,7 +215,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         if(SystemUtils.isNetworkConnected(studyCenterActivity)) {
             Intent exerciseIntent = new Intent(studyCenterActivity, TestStartActivity.class);
             exerciseIntent.putExtra(TestStartActivity.KEY_TEST_TYPE, Tests.CHAPTER.getType());
-            exerciseIntent.putExtra(Constants.TEST_TITLE, mSubjectName);
+            exerciseIntent.putExtra(Constants.TEST_TITLE, "Take Test");
             exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
             exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, studyCenterActivity.getSelectedSubjectId());
             exerciseIntent.putExtra(Constants.SELECTED_SUBJECT_NAME, mSubjectName);

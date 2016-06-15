@@ -400,7 +400,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
                     break;
                 case R.id.iv_exercise:
                     Intent intent = new Intent(ContentReadingActivity.this, ExamEngineActivity.class);
-                    intent.putExtra(Constants.SELECTED_TOPIC, topicModelList.get(spTopic.getSelectedItemPosition()).topicName);
+                    intent.putExtra(Constants.SELECTED_TOPIC_NAME, topicModelList.get(spTopic.getSelectedItemPosition()).topicName);
                     intent.putExtra(Constants.TEST_TITLE, "Exercises");
                     intent.putExtra(Constants.SELECTED_POSITION, 0);
                     startActivity(intent);
