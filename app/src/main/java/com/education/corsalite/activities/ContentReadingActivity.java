@@ -174,14 +174,10 @@ public class ContentReadingActivity extends AbstractBaseActivity {
 
         drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
-            public void onDrawerSlide(View drawerView, float slideOffset) {
-
-            }
+            public void onDrawerSlide(View drawerView, float slideOffset) {}
 
             @Override
-            public void onDrawerOpened(View drawerView) {
-
-            }
+            public void onDrawerOpened(View drawerView) {}
 
             @Override
             public void onDrawerClosed(View drawerView) {
@@ -189,9 +185,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
             }
 
             @Override
-            public void onDrawerStateChanged(int newState) {
-
-            }
+            public void onDrawerStateChanged(int newState) {}
         });
 
     }
@@ -965,7 +959,4 @@ public class ContentReadingActivity extends AbstractBaseActivity {
         postContentReadingEvent();
         super.onBackPressed();
     }
-
-
-
 }
