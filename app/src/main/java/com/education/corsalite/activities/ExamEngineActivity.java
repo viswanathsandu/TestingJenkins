@@ -310,11 +310,11 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             loadFlaggedQuestions();
         } else if (title.equalsIgnoreCase("Exercises")) {
             loadExerciseTest();
-        } else if (title.equalsIgnoreCase("Mock Test")) {
+        } else if (isMockTest()) {
             loadMockTest();
         } else if (title.equalsIgnoreCase("Scheduled Test")) {
             loadScheduledTest();
-        } else if (ischallengeTest()) { // Challenge Test
+        } else if (ischallengeTest()) {
             loadChallengeTest();
         } else if (title.equalsIgnoreCase("View Answers")) {
             loadViewAnswers();
@@ -329,6 +329,10 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
     private boolean isScheduledTest() {
         return title.equalsIgnoreCase("Scheduled Test");
+    }
+
+    private boolean isMockTest() {
+        return title.equalsIgnoreCase("Mock Test");
     }
 
     private void loadDefaultExam() {
@@ -1666,7 +1670,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         @Override
         public void onFinish() {
             tv_timer.setText("TIME OVER");
-            if (ischallengeTest() || isScheduledTest()) {
+            if (ischallengeTest() || isScheduledTest() || isMockTest()) {
                 submitTest();
             }
         }
