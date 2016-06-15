@@ -336,7 +336,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         imvFlag.setVisibility(View.VISIBLE);
         if(getIntent().hasExtra(Constants.SELECTED_CHAPTER_NAME)){
             setToolbarForExercise("Exercise - " + getIntent().getExtras().getString(Constants.SELECTED_CHAPTER_NAME), title.equalsIgnoreCase("Exercises"));
-        }else if (getIntent().hasExtra(Constants.SELECTED_SUBJECT)) {
+        }
+        if (getIntent().hasExtra(Constants.SELECTED_SUBJECT)) {
             topic = getIntent().getExtras().getString(Constants.SELECTED_SUBJECT);
             tvPageTitle.setText(topic);
         }
