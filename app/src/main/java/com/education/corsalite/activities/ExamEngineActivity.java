@@ -78,6 +78,7 @@ import com.education.corsalite.models.responsemodels.TestAnswer;
 import com.education.corsalite.models.responsemodels.TestAnswerPaper;
 import com.education.corsalite.models.responsemodels.TestAnswerPaperResponse;
 import com.education.corsalite.models.responsemodels.TestPaperIndex;
+import com.education.corsalite.models.responsemodels.TestQuestionPaperResponse;
 import com.education.corsalite.models.socket.requests.UpdateLeaderBoardEvent;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.Constants;
@@ -311,7 +312,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             partTestGridElements = new Gson().fromJson(partTestGridElimentsJson, listType);
         }
 
-        if (title.equalsIgnoreCase("Flagged Questions")) {
+        if (isFlaggedQuestionsScreen()) {
             if(!TextUtils.isEmpty(chapterName)) {
                 setToolbarForFlaggedQuestions(title + " - " + chapterName);
             } else if(!TextUtils.isEmpty(subjectName)){
@@ -329,9 +330,9 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             loadMockTest();
         } else if (isScheduledTest()) {
             loadScheduledTest();
-        } else if (ischallengeTest()) {
+        } else if (isChallengeTest()) {
             loadChallengeTest();
-        } else if (title.equalsIgnoreCase("View Answers")) {
+        } else if (isViewAnswersScreen()) {
             loadViewAnswers();
         } else if(title.equalsIgnoreCase("Take Test")) { // TakeTest
             if(!TextUtils.isEmpty(subjectName) && !TextUtils.isEmpty(chapterName)){
@@ -343,7 +344,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         }
     }
 
-    private boolean ischallengeTest() {
+    private boolean isChallengeTest() {
         return title.equalsIgnoreCase("Challenge Test");
     }
 
@@ -353,6 +354,14 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
     private boolean isMockTest() {
         return title.equalsIgnoreCase("Mock Test");
+    }
+
+    private boolean isFlaggedQuestionsScreen() {
+        return title.equalsIgnoreCase("Flagged Questions");
+    }
+
+    private boolean isViewAnswersScreen() {
+        return title.equalsIgnoreCase("View Answers");
     }
 
     private void loadDefaultExam() {
@@ -720,7 +729,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.btn_next:
-                    if (selectedPosition == localExamModelList.size() - 1) {
+                    if (selectedPosition == localExamModelList.size() - 1 && !isFlaggedQuestionsScreen() && !isViewAnswersScreen() && !title.equalsIgnoreCase("Exercises")) {
                         showSubmitTestAlert();
                     }else{
                         updateTestAnswerPaper(TestanswerPaperState.STARTED);
@@ -794,7 +803,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 } else if (state == TestanswerPaperState.COMPLETED) {
                     headerProgress.setVisibility(View.GONE);
                     mViewSwitcher.showNext();
-                    if (ischallengeTest()) {
+                    if (isChallengeTest()) {
                         openChallengeTestResults();
                     } else if (testAnswerPaperResponse != null && !TextUtils.isEmpty(testAnswerPaperResponse.testAnswerPaperId)) {
                         openAdvancedExamResultSummary(testAnswerPaperResponse.testAnswerPaperId);
@@ -975,7 +984,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         }
         updateFlaggedQuestion(localExamModelList.get(position).isFlagged);
         tvSerialNo.setText("Q" + (position + 1) + ")");
-        if (!TextUtils.isEmpty(localExamModelList.get(position).displayName) && !title.equalsIgnoreCase("Flagged Questions")) {
+        if (!TextUtils.isEmpty(localExamModelList.get(position).displayName) && !isFlaggedQuestionsScreen()) {
             tvLevel.setText(localExamModelList.get(position).displayName.split("\\s+")[0].toUpperCase(Locale.ENGLISH));
         }
         if (TextUtils.isEmpty(localExamModelList.get(position).paragraphHtml)) {
@@ -1070,7 +1079,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 optionRBtn.setChecked(true);
                 selectedAnswerPosition = Integer.valueOf(preselectedAnswers) + 1;
             }
-            if (title.equalsIgnoreCase("Flagged Questions") || title.equalsIgnoreCase("View Answers")) {
+            if (isFlaggedQuestionsScreen() || isViewAnswersScreen()) {
                 if (!optionRBtn.isChecked()) {
                     optionRBtn.setEnabled(false);
                 }
@@ -1160,7 +1169,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             checkBoxes[i].setId(Integer.valueOf(answerChoiceModel.idAnswerKey));
             checkBoxes[i].setTag(answerChoiceModel);
 
-            if (title.equalsIgnoreCase("Flagged Questions") || title.equalsIgnoreCase("View Answers")) {
+            if (isFlaggedQuestionsScreen() || isViewAnswersScreen()) {
                 checkBoxes[i].setEnabled(false);
                 checkBoxes[i].setClickable(false);
             }
@@ -1547,7 +1556,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void setFlaggedQuestionLayout(String correctAnswers) {
-        if (title.equalsIgnoreCase("Flagged Questions")) {
+        if (isFlaggedQuestionsScreen()) {
             flaggedLayout.setVisibility(View.VISIBLE);
         } else {
             flaggedLayout.setVisibility(View.GONE);
@@ -1559,7 +1568,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private void resetExplanation() {
         selectedAnswerPosition = -1;
         btnVerify.setEnabled(false);
-        if (title.equalsIgnoreCase("View Answers")) {
+        if (isViewAnswersScreen()) {
             explanationLayout.setVisibility(View.VISIBLE);
             flaggedLayout.setVisibility(View.VISIBLE);
             layoutChoice.setVisibility(View.VISIBLE);
@@ -1696,7 +1705,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         @Override
         public void onFinish() {
             tv_timer.setText("TIME OVER");
-            if (ischallengeTest() || isScheduledTest() || isMockTest()) {
+            if (isChallengeTest() || isScheduledTest() || isMockTest()) {
                 submitTest();
             }
         }
@@ -1899,11 +1908,12 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
     private void getTestQuestionPaper(String testAnswerPaperId) {
         ApiManager.getInstance(this).getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId,
-                new ApiCallback<List<ExamModel>>(this) {
+                new ApiCallback<TestQuestionPaperResponse>(this) {
                     @Override
-                    public void success(List<ExamModel> examModels, Response response) {
-                        super.success(examModels, response);
-                        showQuestionPaper(examModels);
+                    public void success(TestQuestionPaperResponse questionPaperResponse, Response response) {
+                        super.success(questionPaperResponse, response);
+                        if(questionPaperResponse != null)
+                        showQuestionPaper(questionPaperResponse.questions);
                     }
                 });
     }
@@ -2050,7 +2060,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
     @Override
     public void onBackPressed() {
-        if (!title.equalsIgnoreCase("Exercises") && !title.equalsIgnoreCase("Flagged Questions") && !title.equalsIgnoreCase("View Answers")) {
+        if (!title.equalsIgnoreCase("Exercises") && !isFlaggedQuestionsScreen() && !isViewAnswersScreen()) {
             showToast("Click on Suspend button to stop the exam");
         } else {
             super.onBackPressed();

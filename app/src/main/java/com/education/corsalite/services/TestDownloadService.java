@@ -22,6 +22,7 @@ import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.ExamModel;
 import com.education.corsalite.models.responsemodels.PartTestGridElement;
 import com.education.corsalite.models.responsemodels.TestPaperIndex;
+import com.education.corsalite.models.responsemodels.TestQuestionPaperResponse;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.L;
 import com.google.gson.Gson;
@@ -113,12 +114,14 @@ public class TestDownloadService extends IntentService {
                                       final MockTest mockTest, final TestPaperIndex testPAperIndecies, final ScheduledTestsArray scheduledTestsArray) {
         try {
             ApiManager.getInstance(this).getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId,
-                    new ApiCallback<List<ExamModel>>(this) {
+                    new ApiCallback<TestQuestionPaperResponse>(this) {
                         @Override
-                        public void success(List<ExamModel> examModels, Response response) {
-                            super.success(examModels, response);
+                        public void success(TestQuestionPaperResponse questionPaperResponse, Response response) {
+                            super.success(questionPaperResponse, response);
                             OfflineTestObjectModel model = new OfflineTestObjectModel();
-                            model.examModels = examModels;
+                            if(questionPaperResponse != null) {
+                                model.examModels = questionPaperResponse.questions;
+                            }
                             if (mockTest != null) {
                                 model.testType = Tests.MOCK;
                                 model.mockTest = mockTest;

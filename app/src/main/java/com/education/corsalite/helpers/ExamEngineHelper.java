@@ -18,10 +18,10 @@ import com.education.corsalite.models.requestmodels.PostCustomExamTemplate;
 import com.education.corsalite.models.requestmodels.PostQuestionPaperRequest;
 import com.education.corsalite.models.responsemodels.Chapter;
 import com.education.corsalite.models.responsemodels.Exam;
-import com.education.corsalite.models.responsemodels.ExamModel;
 import com.education.corsalite.models.responsemodels.PartTestGridElement;
 import com.education.corsalite.models.responsemodels.PostExamTemplate;
 import com.education.corsalite.models.responsemodels.PostQuestionPaper;
+import com.education.corsalite.models.responsemodels.TestQuestionPaperResponse;
 import com.education.corsalite.utils.L;
 import com.google.gson.Gson;
 
@@ -185,12 +185,12 @@ public class ExamEngineHelper {
 
     private void getTestQuestionPaper(String testQuestionPaperId, String testAnswerPaperId, final OnExamLoadCallback callback) {
         ApiManager.getInstance(mActivity).getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId,
-                new ApiCallback<List<ExamModel>>(mActivity) {
+                new ApiCallback<TestQuestionPaperResponse>(mActivity) {
                     @Override
-                    public void success(List<ExamModel> examModels, Response response) {
-                        super.success(examModels, response);
-                        if (examModels != null) {
-                            test.questions = examModels;
+                    public void success(TestQuestionPaperResponse questionPaperResponse, Response response) {
+                        super.success(questionPaperResponse, response);
+                        if (questionPaperResponse != null && questionPaperResponse.questions != null) {
+                            test.questions = questionPaperResponse.questions;
                             callback.onSuccess(test);
                         } else {
                             callback.OnFailure("Sorry, couldn't fetch the test from server");
