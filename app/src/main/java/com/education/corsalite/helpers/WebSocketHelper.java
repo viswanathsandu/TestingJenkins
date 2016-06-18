@@ -24,6 +24,7 @@ import com.google.gson.Gson;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
+import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -58,7 +59,10 @@ public class WebSocketHelper {
             uri = new URI(ApiClientService.getSocketUrl());
             L.info("Websocket", "Url : "+ApiClientService.getSocketUrl());
         } catch (URISyntaxException e) {
-            e.printStackTrace();
+            L.error(e.getMessage(), e);
+            return;
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
             return;
         }
         mWebSocketClient = new WebSocketClient(uri) {
@@ -89,7 +93,15 @@ public class WebSocketHelper {
                 isWebsocketConnected = false;
             }
         };
-        mWebSocketClient.connect();
+        try {
+            mWebSocketClient.connect();
+        } catch (AssertionError e) {
+            L.error(e.getMessage(), e);
+            return;
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+            return;
+        }
     }
 
     public void disconnectWebSocket() {

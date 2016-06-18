@@ -76,7 +76,9 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
     @Override
     public void onResume() {
         super.onResume();
-        refreshData();
+        if (AbstractBaseActivity.selectedCourse != null && AbstractBaseActivity.selectedCourse.courseId != null) {
+            refreshData();
+        }
     }
 
     private void setUI() {

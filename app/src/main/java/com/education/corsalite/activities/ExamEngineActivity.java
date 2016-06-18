@@ -241,6 +241,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private List<String> sections;
     private TestAnswerPaper testanswerPaper = new TestAnswerPaper();
 
+    private long timeSpent = 0;
+
     public static Intent getMyIntent(Context context, @Nullable Bundle extras) {
         Intent intent = new Intent(context, ExamEngineActivity.class);
         if (extras != null) {

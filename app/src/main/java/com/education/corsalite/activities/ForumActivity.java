@@ -58,8 +58,7 @@ public class ForumActivity extends AbstractBaseActivity {
     @Override
     public void onEvent(Course course) {
         super.onEvent(course);
-        adapter.notifyDataSetChanged();
-        mViewPager.invalidate();
+        refreshData();
     }
 
     public void refreshData() {
