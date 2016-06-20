@@ -900,6 +900,17 @@ public class ContentReadingActivity extends AbstractBaseActivity {
         topicModelList = new ArrayList<>(chapterModelList.get(chapterPosition).topicMap);
         Collections.sort(topicModelList);
         if (topicModelList != null) {
+            if(offlineExercises!=null){
+                for(TopicModel t : topicModelList){
+                    for(ExerciseOfflineModel e: offlineExercises){
+                        if(e.topicId.equals(t.idTopic)){
+                            L.debug("--> Topic available for offline="+ t.topicName);
+                        }
+                    }
+                }
+            }
+
+
             final TopicAdapter topicAdapter = new TopicAdapter(topicModelList, this);
             spTopic.setAdapter(topicAdapter);
 
@@ -927,6 +938,8 @@ public class ContentReadingActivity extends AbstractBaseActivity {
 
                 }
             });
+        }else{
+            L.debug("--> Topic list size is null");
         }
     }
 
