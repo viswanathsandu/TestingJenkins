@@ -253,6 +253,10 @@ public interface ICorsaliteApi {
     @POST("/UserEvents")
     void postUserEvents(@Body TypedString insert, ApiCallback<UserEventsResponse> callback);
 
+//    @Headers("Content-Type:application/x-www-form-urlencoded")
+//    @POST("/EventLog")
+//    void postUserEvents(@Body TypedString insert, ApiCallback<UserEventsResponse> callback);
+
     @Headers("Content-Type:application/x-www-form-urlencoded")
     @POST("/LikeForum")
     void addForumLike(@Body TypedString insert, ApiCallback<CommonResponseModel> callback);

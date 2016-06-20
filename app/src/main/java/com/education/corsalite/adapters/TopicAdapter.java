@@ -62,6 +62,15 @@ public class TopicAdapter extends BaseAdapter {
         ImageView imageView = (ImageView)itemView.findViewById(R.id.selected_item);
         textView.setText(topicModelList.get(position).topicName);
         imageView.setVisibility(position == selectedPosition ? View.VISIBLE : View.INVISIBLE);
+
+        if(topicModelList.get(position)!=null){
+            if(topicModelList.get(position).isAvailableForOffline){
+                itemView.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+            }else{
+                itemView.setBackgroundColor(mContext.getResources().getColor(R.color.gray));
+            }
+        }
+
         return itemView;
     }
 
