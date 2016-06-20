@@ -5,11 +5,15 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.education.corsalite.activities.ExamEngineActivity;
+import com.education.corsalite.event.ScheduledTestStartEvent;
 import com.education.corsalite.notifications.NotificationsUtils;
 import com.education.corsalite.utils.Constants;
+
+import de.greenrobot.event.EventBus;
 
 public class NotifyReceiver extends BroadcastReceiver {
 
@@ -25,11 +29,11 @@ public class NotifyReceiver extends BroadcastReceiver {
         Toast.makeText(context, "Notification : "+title, Toast.LENGTH_SHORT).show();
         NotificationsUtils.NotifyUser(context, id, title, subTitle, getScheduledExamActivityIntent(context, testQuestionPaperId));
 
-        // start the test
-        Intent examIntent = new Intent(context, ExamEngineActivity.class);
-        examIntent.putExtra(Constants.TEST_TITLE, "Scheduled Test");
-        examIntent.putExtra("test_question_paper_id", testQuestionPaperId);
-        context.startActivity(examIntent);
+        if(!TextUtils.isEmpty(testQuestionPaperId)) {
+            ScheduledTestStartEvent event = new ScheduledTestStartEvent();
+            event.testQuestionPaperId = testQuestionPaperId;
+            EventBus.getDefault().post(event);
+        }
     }
 
     private PendingIntent getScheduledExamActivityIntent(Context context, String examTemplateId) {

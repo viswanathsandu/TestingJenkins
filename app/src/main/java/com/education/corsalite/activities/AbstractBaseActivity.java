@@ -38,6 +38,7 @@ import com.education.corsalite.event.ContentReadingEvent;
 import com.education.corsalite.event.ExerciseAnsEvent;
 import com.education.corsalite.event.ForumPostingEvent;
 import com.education.corsalite.event.NetworkStatusChangeEvent;
+import com.education.corsalite.event.ScheduledTestStartEvent;
 import com.education.corsalite.event.TakingTestEvent;
 import com.education.corsalite.event.UpdateUserEvents;
 import com.education.corsalite.fragments.ChallengeTestRequestDialogFragment;
@@ -889,6 +890,14 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         if(this instanceof ChallengeActivity) {
             finish();
         }
+    }
+
+    public void onEventMainThread(ScheduledTestStartEvent event) {
+        // start the test
+        Intent examIntent = new Intent(this, ExamEngineActivity.class);
+        examIntent.putExtra(Constants.TEST_TITLE, "Scheduled Test");
+        examIntent.putExtra("test_question_paper_id", event.testQuestionPaperId);
+        startActivity(examIntent);
     }
 
     protected void startWebSocket() {

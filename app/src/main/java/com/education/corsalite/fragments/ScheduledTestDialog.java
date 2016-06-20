@@ -102,8 +102,14 @@ public class ScheduledTestDialog extends DialogFragment implements ScheduledTest
 
     private void examAdvancedNotification(String examId, String examName, Date scheduledTime) {
         long delay = 0;
-        if(System.currentTimeMillis() < scheduledTime.getTime()) {
-            delay = scheduledTime.getTime() - System.currentTimeMillis();
+        if(System.currentTimeMillis() > scheduledTime.getTime()) {
+            return;
+        }
+        delay = scheduledTime.getTime() - System.currentTimeMillis();
+        if(scheduledTime.getTime() - 15*60*60*1000 > System.currentTimeMillis()) {
+            delay -= 15*60*60*1000;
+        } else {
+            delay = 0;
         }
         Intent broadCastIntent = new Intent(this.getActivity(), NotifyReceiver.class);
         broadCastIntent.putExtra("title", examName);
@@ -122,12 +128,11 @@ public class ScheduledTestDialog extends DialogFragment implements ScheduledTest
         if(System.currentTimeMillis() > scheduledTime.getTime()) {
             return;
         }
-        delay = scheduledTime.getTime() - System.currentTimeMillis();
         Intent broadCastIntent = new Intent(this.getActivity(), NotifyReceiver.class);
         broadCastIntent.putExtra("title", examName);
         broadCastIntent.putExtra("sub_title", "Exam started at "+new SimpleDateFormat("hh:mm a").format(scheduledTime));
         broadCastIntent.putExtra("test_question_paper_id", examId);
-        broadCastIntent.putExtra("id", Data.getInt(examId)+10);
+        broadCastIntent.putExtra("id", Data.getInt(examId));
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this.getActivity(), (int)System.currentTimeMillis(),
                                 broadCastIntent, PendingIntent.FLAG_ONE_SHOT);
         AlarmManager alarmManager = (AlarmManager)this.getActivity().getSystemService(Context.ALARM_SERVICE);
