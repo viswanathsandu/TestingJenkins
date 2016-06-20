@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.education.corsalite.R;
 import com.education.corsalite.models.TopicModel;
+import com.education.corsalite.utils.SystemUtils;
 
 import java.util.List;
 
@@ -63,13 +64,16 @@ public class TopicAdapter extends BaseAdapter {
         textView.setText(topicModelList.get(position).topicName);
         imageView.setVisibility(position == selectedPosition ? View.VISIBLE : View.INVISIBLE);
 
-        if(topicModelList.get(position)!=null){
-            if(topicModelList.get(position).isAvailableForOffline){
-                itemView.setBackgroundColor(mContext.getResources().getColor(R.color.white));
-            }else{
-                itemView.setBackgroundColor(mContext.getResources().getColor(R.color.gray));
+        if(!SystemUtils.isNetworkConnected(mContext)){
+            if(topicModelList.get(position)!=null){
+                if(topicModelList.get(position).isAvailableForOffline){
+                    itemView.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+                }else{
+                    itemView.setBackgroundColor(mContext.getResources().getColor(R.color.gray));
+                }
             }
         }
+
 
         return itemView;
     }
