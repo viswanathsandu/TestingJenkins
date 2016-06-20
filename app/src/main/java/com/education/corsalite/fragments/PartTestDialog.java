@@ -118,8 +118,8 @@ public class PartTestDialog extends BaseDialogFragment {
 
     private void loadPartTest(final String selectedExamId) {
         showProgress();
-        ApiManager.getInstance(getActivity()).getPartTestGrid(LoginUserCache.getInstance().loginResponse.studentId,
-                AbstractBaseActivity.selectedCourse.courseId.toString(), idCourseSubject + "",
+        ApiManager.getInstance(getActivity()).getPartTestGrid(LoginUserCache.getInstance().getStudentId(),
+                AbstractBaseActivity.getSelectedCourseId(), idCourseSubject + "",
                 selectedExamId, new ApiCallback<PartTestModel>(getActivity()) {
                     @Override
                     public void failure(CorsaliteError error) {
@@ -215,7 +215,7 @@ public class PartTestDialog extends BaseDialogFragment {
     private void startPartTest() {
         Intent intent = new Intent(getActivity(), ExamEngineActivity.class);
         intent.putExtra(Constants.TEST_TITLE, "Part Test - " + subjectName);
-        intent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
+        intent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.getSelectedCourseId());
         intent.putExtra(Constants.SELECTED_SUBJECTID, idCourseSubject + "");
         intent.putExtra(Constants.SELECTED_TOPIC_NAME, subjectName);
         intent.putExtra(Constants.ADAPIVE_LEAERNING, mIsAdaptiveTest);
@@ -231,7 +231,7 @@ public class PartTestDialog extends BaseDialogFragment {
     private void downloadPartTest() {
         Intent intent = new Intent(getActivity(), TestDownloadService.class);
         intent.putExtra("selectedPartTest", subjectName);
-        intent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
+        intent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.getSelectedCourseId());
         intent.putExtra("subjectId", idCourseSubject + "");
         if (adapter != null && adapter.getListData() != null) {
             intent.putExtra(Constants.PARTTEST_GRIDMODELS, new Gson().toJson(adapter.getListData()));

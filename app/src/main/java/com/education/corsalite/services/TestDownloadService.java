@@ -90,7 +90,7 @@ public class TestDownloadService extends IntentService {
 
     private void downloadExercises(List<ExerciseOfflineModel> models) {
         for(final ExerciseOfflineModel model : models) {
-            ApiManager.getInstance(this).getExercise(model.topicId, model.courseId, LoginUserCache.getInstance().loginResponse.studentId, null,
+            ApiManager.getInstance(this).getExercise(model.topicId, model.courseId, LoginUserCache.getInstance().getStudentId(), null,
                 new ApiCallback<List<ExamModel>>(this) {
                     @Override
                     public void failure(CorsaliteError error) {
@@ -130,7 +130,7 @@ public class TestDownloadService extends IntentService {
                                 model.scheduledTest = scheduledTestsArray;
                             }
                             model.baseTest = new BaseTest();
-                            model.baseTest.courseId = AbstractBaseActivity.selectedCourse.courseId + "";
+                            model.baseTest.courseId = AbstractBaseActivity.getSelectedCourseId();
                             model.testPaperIndecies = testPAperIndecies;
                             model.testQuestionPaperId = testQuestionPaperId;
                             model.testAnswerPaperId = testAnswerPaperId;

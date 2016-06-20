@@ -108,7 +108,7 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
         });
         setToolbarForOfflineContentReading();
         getBundleData();
-        getContentIndex(mCourseId, LoginUserCache.getInstance().loginResponse.studentId);
+        getContentIndex(mCourseId, LoginUserCache.getInstance().getStudentId());
         initNodes();
     }
 
@@ -146,7 +146,7 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
                                     htmlContentId += contentModel.idContent + ",";
                                 } else {
                                     ExerciseOfflineModel model = new ExerciseOfflineModel(
-                                            AbstractBaseActivity.selectedCourse.courseId + "", topicModel.idTopic);
+                                            AbstractBaseActivity.getSelectedCourseId(), topicModel.idTopic);
                                     if (!offlineExerciseModels.contains(model)) {
                                         offlineExerciseModels.add(model);
                                     }

@@ -57,7 +57,7 @@ public class UsageAnalysisFragment extends Fragment {
     }
 
     private void init(){
-        ApiManager.getInstance(getActivity()).getUsageAnalysis(LoginUserCache.getInstance().loginResponse.userId,
+        ApiManager.getInstance(getActivity()).getUsageAnalysis(LoginUserCache.getInstance().getUserId(),
                 new ApiCallback<UsageAnalysis>(getActivity()) {
                     @Override
                     public void failure(CorsaliteError error) {

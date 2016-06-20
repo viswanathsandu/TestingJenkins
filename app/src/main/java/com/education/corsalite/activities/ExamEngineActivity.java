@@ -1599,7 +1599,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private void postAnswer(ExamModel model) {
         PostExerciseRequestModel postExerciseRequestModel = new PostExerciseRequestModel();
         postExerciseRequestModel.updateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-        postExerciseRequestModel.idStudent = LoginUserCache.getInstance().loginResponse.studentId;
+        postExerciseRequestModel.idStudent = LoginUserCache.getInstance().getStudentId();
         postExerciseRequestModel.idQuestion = model.idQuestion;
         postExerciseRequestModel.studentAnswerChoice = selectedAnswerPosition + "";
         postExerciseRequestModel.score = getScore(model) + "";
@@ -1724,7 +1724,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         if (TextUtils.isEmpty(subjectId)) {
             return;
         }
-        ApiManager.getInstance(this).getFlaggedQuestions(LoginUserCache.getInstance().loginResponse.studentId,
+        ApiManager.getInstance(this).getFlaggedQuestions(LoginUserCache.getInstance().getStudentId(),
                 subjectId,
                 chapterId, "", new ApiCallback<List<ExamModel>>(this) {
                     @Override
@@ -1773,12 +1773,12 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private void getStandardExamByCourse() {
         String entityId;
         String selectedCourseId;
-        entityId = LoginUserCache.getInstance().loginResponse.entitiyId;
+        entityId = LoginUserCache.getInstance().getEntityId();
 
         if (getIntent().hasExtra(Constants.SELECTED_COURSE)) {
             selectedCourseId = getIntent().getExtras().getString(Constants.SELECTED_COURSE);
         } else {
-            selectedCourseId = selectedCourse.courseId.toString();
+            selectedCourseId = getSelectedCourseId();
         }
         if(getIntent().hasExtra(Constants.PARTTEST_EXAMMODEL)) {
             String examJson  = getIntent().getExtras().getString(Constants.PARTTEST_EXAMMODEL);
@@ -1840,9 +1840,9 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                             if (mIsAdaptiveTest) {
                                 startComputerAdaptiveTest(postExamTemplate.idExamTemplate);
                             } else {
-                                postQuestionPaper(LoginUserCache.getInstance().loginResponse.entitiyId,
+                                postQuestionPaper(LoginUserCache.getInstance().getEntityId(),
                                         postExamTemplate.idExamTemplate,
-                                        LoginUserCache.getInstance().loginResponse.studentId);
+                                        LoginUserCache.getInstance().getStudentId());
                             }
                         }
                     }
@@ -1954,12 +1954,12 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void initTestAnswerPaper(List<ExamModel> questions) {
-        testanswerPaper.studentId = LoginUserCache.getInstance().loginResponse.studentId;
+        testanswerPaper.studentId = LoginUserCache.getInstance().getStudentId();
         testanswerPaper.testQuestionPaperId = testQuestionPaperId;
         testanswerPaper.startTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
         examDurationInSeconds = getExamDurationInSeconds(localExamModelList);
         testanswerPaper.endTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(System.currentTimeMillis() + examDurationInSeconds));
-        testanswerPaper.entityId = LoginUserCache.getInstance().loginResponse.entitiyId;
+        testanswerPaper.entityId = LoginUserCache.getInstance().getEntityId();
         testanswerPaper.status = "Started"; // Started | Suspended | Completed
         testanswerPaper.testAnswers = new ArrayList<>();
 
@@ -1972,15 +1972,17 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
     private long getExamDurationInSeconds(List<ExamModel> models) {
         long examDuration = 0;
-        for (ExamModel model : models) {
-            long duration = 0;
-            try {
-                duration = Integer.valueOf(model.recommendedTime);
-            } catch (Exception e) {
-                L.error(e.getMessage(), e);
-                duration = 0;
+        if(models != null) {
+            for (ExamModel model : models) {
+                long duration = 0;
+                try {
+                    duration = Integer.valueOf(model.recommendedTime);
+                } catch (Exception e) {
+                    L.error(e.getMessage(), e);
+                    duration = 0;
+                }
+                examDuration += duration;
             }
-            examDuration += duration;
         }
         return examDuration;
     }

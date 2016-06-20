@@ -192,7 +192,7 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
     private void saveDefaultCourse(Course course) {
         if (course != null) {
             String update = new Gson().toJson(new Defaultcourserequest(
-                    LoginUserCache.getInstance().loginResponse.studentId, course.courseId + ""));
+                    LoginUserCache.getInstance().getStudentId(), course.courseId + ""));
             showProgress();
             ApiManager.getInstance(getActivity()).updateDefaultCourse(update, new ApiCallback<DefaultCourseResponse>(getActivity()) {
                 @Override
@@ -221,7 +221,7 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
 
     private void fetchUserProfileData() {
         showProgress();
-        ApiManager.getInstance(getActivity()).getUserProfile(LoginUserCache.getInstance().loginResponse.studentId,
+        ApiManager.getInstance(getActivity()).getUserProfile(LoginUserCache.getInstance().getStudentId(),
                 new ApiCallback<UserProfileResponse>(getActivity()) {
                     @Override
                     public void failure(CorsaliteError error) {
@@ -273,7 +273,7 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
     }
 
     private void fetchVirtualCurrencyBalance() {
-        ApiManager.getInstance(getActivity()).getVirtualCurrencyBalance(LoginUserCache.getInstance().loginResponse.studentId,
+        ApiManager.getInstance(getActivity()).getVirtualCurrencyBalance(LoginUserCache.getInstance().getStudentId(),
                 new ApiCallback<VirtualCurrencyBalanceResponse>(getActivity()) {
                     @Override
                     public void failure(CorsaliteError error) {

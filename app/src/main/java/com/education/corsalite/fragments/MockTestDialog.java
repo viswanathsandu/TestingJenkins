@@ -80,21 +80,21 @@ public class MockTestDialog extends DialogFragment implements MockTestsListAdapt
     @Override
     public void onMockTestSelected(int position) {
         MockTest test = mMockTestList.get(position);
-        postQuestionPaper(LoginUserCache.getInstance().loginResponse.entitiyId,
-                test.examTemplateId, LoginUserCache.getInstance().loginResponse.studentId, test.subjectId, false);
+        postQuestionPaper(LoginUserCache.getInstance().getEntityId(),
+                test.examTemplateId, LoginUserCache.getInstance().getStudentId(), test.subjectId, false);
     }
 
     @Override
     public void onMockTestDownload(int position) {
         selectedMockTest = mMockTestList.get(position);
-        postQuestionPaper(LoginUserCache.getInstance().loginResponse.entitiyId,
-                selectedMockTest.examTemplateId, LoginUserCache.getInstance().loginResponse.studentId, selectedMockTest.subjectId, true);
+        postQuestionPaper(LoginUserCache.getInstance().getEntityId(),
+                selectedMockTest.examTemplateId, LoginUserCache.getInstance().getStudentId(), selectedMockTest.subjectId, true);
     }
 
     private void loadMockTests() {
         ApiManager.getInstance(getActivity()).getMockTests(
-                AbstractBaseActivity.selectedCourse.courseId.toString(),
-                LoginUserCache.getInstance().loginResponse.studentId,
+                AbstractBaseActivity.getSelectedCourseId(),
+                LoginUserCache.getInstance().getStudentId(),
                 new ApiCallback<List<MockTest>>(getActivity()) {
 
                     @Override

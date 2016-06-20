@@ -146,7 +146,7 @@ public class EditorActivity extends AbstractBaseActivity {
             forumHeaderLayout.setVisibility(View.GONE);
         } else if (type.equals("Forum")) {
             forumHeaderLayout.setVisibility(View.VISIBLE);
-            getContentIndex(AbstractBaseActivity.selectedCourse.courseId + "", LoginUserCache.getInstance().loginResponse.studentId);
+            getContentIndex(AbstractBaseActivity.getSelectedCourseId(), LoginUserCache.getInstance().getStudentId());
         }
         isAuthorOnlyCkb = (CheckBox) findViewById(R.id.is_author_only_ckb);
         if (isAuthorOnly.equals("Y")) {
@@ -269,9 +269,9 @@ public class EditorActivity extends AbstractBaseActivity {
         if (!TextUtils.isEmpty(postId)) {
             post.idUserPost = postId;
         }
-        post.studentId = LoginUserCache.getInstance().loginResponse.studentId;
-        post.userId = LoginUserCache.getInstance().loginResponse.userId;
-        post.courseId = AbstractBaseActivity.selectedCourse.courseId.toString();
+        post.studentId = LoginUserCache.getInstance().getStudentId();
+        post.userId = LoginUserCache.getInstance().getUserId();
+        post.courseId = AbstractBaseActivity.getSelectedCourseId();
         post.idCourseSubject = mSubjectModelList.get(subjectSpinner.getSelectedItemPosition()).idSubject;
         post.idCourseSubjectChapter = mChapterModelList.get(chapterSpinner.getSelectedItemPosition()).idChapter;
         post.topicId = mTopicModelList.get(topicSpinner.getSelectedItemPosition()).idTopic;

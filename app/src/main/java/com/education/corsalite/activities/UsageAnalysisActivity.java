@@ -60,7 +60,7 @@ public class UsageAnalysisActivity extends AbstractBaseActivity {
     }
 
     private void init(){
-        ApiManager.getInstance(this).getUsageAnalysis(LoginUserCache.getInstance().loginResponse.userId,
+        ApiManager.getInstance(this).getUsageAnalysis(LoginUserCache.getInstance().getUserId(),
                 new ApiCallback<UsageAnalysis>(this) {
                     @Override
                     public void failure(CorsaliteError error) {

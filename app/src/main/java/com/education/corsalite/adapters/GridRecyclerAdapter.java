@@ -204,7 +204,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         Intent exerciseIntent = new Intent(studyCenterActivity, ExamEngineActivity.class);
         exerciseIntent.putExtra(Constants.SELECTED_CHAPTER_NAME,chapter.chapterName);
         exerciseIntent.putExtra(Constants.TEST_TITLE, "Flagged Questions");
-        exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
+        exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.getSelectedCourseId());
         exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, studyCenterActivity.getSelectedSubjectId());
         exerciseIntent.putExtra(Constants.SELECTED_SUBJECT_NAME, mSubjectName);
         exerciseIntent.putExtra(Constants.SELECTED_CHAPTERID, chapter.idCourseSubjectchapter);
@@ -216,7 +216,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
             Intent exerciseIntent = new Intent(studyCenterActivity, TestStartActivity.class);
             exerciseIntent.putExtra(TestStartActivity.KEY_TEST_TYPE, Tests.CHAPTER.getType());
             exerciseIntent.putExtra(Constants.TEST_TITLE, "Take Test");
-            exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
+            exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.getSelectedCourseId());
             exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, studyCenterActivity.getSelectedSubjectId());
             exerciseIntent.putExtra(Constants.SELECTED_SUBJECT_NAME, mSubjectName);
             exerciseIntent.putExtra(Constants.SELECTED_CHAPTERID, chapter.idCourseSubjectchapter);
@@ -242,7 +242,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         Intent intent = new Intent(studyCenterActivity, SaveForOfflineActivity.class);
         putIntentExtras(chapter, intent, COURSE_ID, SUBJECT_ID, CHAPTER_ID);
         intent.putExtra("chapterName", chapter.chapterName);
-        intent.putExtra("courseName", AbstractBaseActivity.selectedCourse.name.toString());
+        intent.putExtra("courseName", AbstractBaseActivity.getSelectedCourseName());
         intent.putExtra(SUBJECT, mSubjectName);
         studyCenterActivity.startActivity(intent);
     }
@@ -254,7 +254,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
     }
 
     private void putIntentExtras(Chapter chapter, Intent intent, String courseId, String subjectId, String chapterId) {
-        intent.putExtra(courseId, AbstractBaseActivity.selectedCourse.courseId.toString());
+        intent.putExtra(courseId, AbstractBaseActivity.getSelectedCourseId());
         intent.putExtra(subjectId, studyCenterActivity.getSelectedSubjectId());
         intent.putExtra(chapterId, chapter.idCourseSubjectchapter);
     }

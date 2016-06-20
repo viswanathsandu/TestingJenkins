@@ -123,7 +123,7 @@ public class NotesActivity extends AbstractBaseActivity {
     }
 
     private void getStudyCentreData(String courseId) {
-        ApiManager.getInstance(this).getStudyCentreData(LoginUserCache.getInstance().loginResponse.studentId,
+        ApiManager.getInstance(this).getStudyCentreData(LoginUserCache.getInstance().getStudentId(),
                 courseId, new ApiCallback<List<StudyCenter>>(this) {
                     @Override
                     public void failure(CorsaliteError error) {
@@ -203,7 +203,7 @@ public class NotesActivity extends AbstractBaseActivity {
     }
 
     private void getNotesData() {
-        ApiManager.getInstance(this).getNotes(LoginUserCache.getInstance().loginResponse.studentId, mSubjectId, mChapterId, mTopicId, new ApiCallback<List<Note>>(this) {
+        ApiManager.getInstance(this).getNotes(LoginUserCache.getInstance().getStudentId(), mSubjectId, mChapterId, mTopicId, new ApiCallback<List<Note>>(this) {
             @Override
             public void failure(CorsaliteError error) {
                 super.failure(error);

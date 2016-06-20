@@ -160,7 +160,7 @@ public class NotesAdapter extends AbstractRecycleViewAdapter {
                         Bundle bundle = new Bundle();
                         bundle.putString("type", "Note");
                         bundle.putString("operation", "Edit");
-                        bundle.putString("student_id", LoginUserCache.getInstance().loginResponse.studentId);
+                        bundle.putString("student_id", LoginUserCache.getInstance().getStudentId());
                         bundle.putString("topic_id", noteObj.topicId);
                         bundle.putString("content_id", noteObj.contentId);
                         bundle.putString("notes_id", noteObj.idNotes);

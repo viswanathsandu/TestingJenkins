@@ -122,7 +122,7 @@ public class TestChapterFragment extends BaseFragment {
 
     private void fetchDataFromServer() {
         showProgress();
-        ApiManager.getInstance(getActivity()).getTestCoverage(LoginUserCache.getInstance().loginResponse.studentId, AbstractBaseActivity.selectedCourse.courseId.toString(), subjectId, chapterID,
+        ApiManager.getInstance(getActivity()).getTestCoverage(LoginUserCache.getInstance().getStudentId(), AbstractBaseActivity.getSelectedCourseId(), subjectId, chapterID,
             new ApiCallback<List<TestCoverage>>(getActivity()) {
                 @Override
                 public void failure(CorsaliteError error) {

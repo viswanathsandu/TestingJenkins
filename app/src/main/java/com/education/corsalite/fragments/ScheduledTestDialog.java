@@ -178,7 +178,7 @@ public class ScheduledTestDialog extends DialogFragment implements ScheduledTest
     private void loadScheduledTests() {
         showProgress();
         ApiManager.getInstance(getActivity()).getScheduledTestsList(
-                LoginUserCache.getInstance().loginResponse.studentId,
+                LoginUserCache.getInstance().getStudentId(),
                 new ApiCallback<ScheduledTestList>(getActivity()) {
 
                     @Override

@@ -108,7 +108,7 @@ public class TestScheduledFragment extends BaseFragment implements AdapterView.O
     }
 
     private void getScheduledTests() {
-        ApiManager.getInstance(getActivity()).getScheduledTests(LoginUserCache.getInstance().loginResponse.studentId,
+        ApiManager.getInstance(getActivity()).getScheduledTests(LoginUserCache.getInstance().getStudentId(),
                 new ApiCallback<List<ScheduledTest>>(getActivity()) {
                     @Override
                     public void failure(CorsaliteError error) {

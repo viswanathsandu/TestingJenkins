@@ -61,7 +61,7 @@ public class MessageTabFragment extends BaseFragment {
     }
 
     private void getMessage(final LayoutInflater inflater) {
-        ApiManager.getInstance(getActivity()).getMessages(LoginUserCache.getInstance().loginResponse.studentId,
+        ApiManager.getInstance(getActivity()).getMessages(LoginUserCache.getInstance().getStudentId(),
                 new ApiCallback<List<Message>>(getActivity()) {
                     @Override
                     public void failure(CorsaliteError error) {

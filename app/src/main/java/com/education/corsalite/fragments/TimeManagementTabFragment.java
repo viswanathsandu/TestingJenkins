@@ -77,8 +77,8 @@ public class TimeManagementTabFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if(AbstractBaseActivity.selectedCourse != null) {
-            onEvent(AbstractBaseActivity.selectedCourse);
+        if(AbstractBaseActivity.getSelectedCourse() != null) {
+            onEvent(AbstractBaseActivity.getSelectedCourse());
         }
     }
 
@@ -99,7 +99,7 @@ public class TimeManagementTabFragment extends Fragment {
     }
 
     private void drawGraph(String courseId) {
-        ApiManager.getInstance(getActivity()).getCourseAnalysisData(LoginUserCache.getInstance().loginResponse.studentId,
+        ApiManager.getInstance(getActivity()).getCourseAnalysisData(LoginUserCache.getInstance().getStudentId(),
                 courseId, null, "Subject", "None", "30", "true",
                 new ApiCallback<List<CourseAnalysis>>(getActivity()) {
                     @Override
@@ -136,7 +136,7 @@ public class TimeManagementTabFragment extends Fragment {
                 });
 
 
-        ApiManager.getInstance(getActivity()).getCourseAnalysisData(LoginUserCache.getInstance().loginResponse.studentId,
+        ApiManager.getInstance(getActivity()).getCourseAnalysisData(LoginUserCache.getInstance().getStudentId(),
                 courseId, null, "Chapter", "None", "30", "true",
                 new ApiCallback<List<CourseAnalysis>>(getActivity()) {
                     @Override

@@ -24,7 +24,6 @@ import com.google.gson.Gson;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
-import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -120,7 +119,7 @@ public class WebSocketHelper {
             if(mContext == null || !SystemUtils.isNetworkConnected(mContext)) {
                 return;
             }
-            if (LoginUserCache.getInstance().loginResponse != null) {
+            if (LoginUserCache.getInstance().getLongResponse() != null) {
                 connectWebSocket();
             }
         } catch (Exception e) {
@@ -176,13 +175,13 @@ public class WebSocketHelper {
 
     // send('{"event":"subscribe", "idStudent":"<id>"}');
     public void sendSubscribeEvent() {
-        SubscribeEvent event = new SubscribeEvent(LoginUserCache.getInstance().loginResponse.studentId);
+        SubscribeEvent event = new SubscribeEvent(LoginUserCache.getInstance().getStudentId());
         sendEvent(new Gson().toJson(event));
     }
 
     // send('{"event":"getuserslist", "idStudent":"<id>"}');
     public void sendGetUserListEvent() {
-        UserListEvent event = new UserListEvent(LoginUserCache.getInstance().loginResponse.studentId);
+        UserListEvent event = new UserListEvent(LoginUserCache.getInstance().getStudentId());
         sendEvent(new Gson().toJson(event));
     }
 

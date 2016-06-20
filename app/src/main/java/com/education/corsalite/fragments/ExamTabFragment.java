@@ -86,7 +86,7 @@ public class ExamTabFragment extends BaseFragment implements ExamAdapter.IAddExa
         examDetailList.add(position, examDetail);
         mAdapter.notifyItemChanged(position);
         String update = new Gson().toJson(new ExamDetailsRequest(
-                LoginUserCache.getInstance().loginResponse.studentId, examDetail));
+                LoginUserCache.getInstance().getStudentId(), examDetail));
         ApiManager.getInstance(getActivity()).updateExamDetails(update, new ApiCallback<UpdateExamDetailsResponse>(getActivity()) {
             @Override
             public void failure(CorsaliteError error) {

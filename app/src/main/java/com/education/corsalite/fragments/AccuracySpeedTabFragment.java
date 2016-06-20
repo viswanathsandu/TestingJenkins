@@ -133,8 +133,8 @@ public class AccuracySpeedTabFragment extends Fragment   {
     @Override
     public void onResume() {
         super.onResume();
-        if(AbstractBaseActivity.selectedCourse != null) {
-            onEvent(AbstractBaseActivity.selectedCourse);
+        if(!AbstractBaseActivity.getSelectedCourseId().isEmpty()) {
+            onEvent(AbstractBaseActivity.getSelectedCourse());
         }
     }
 
@@ -154,7 +154,7 @@ public class AccuracySpeedTabFragment extends Fragment   {
     }
 
     private void drawGraphs(String courseId) {
-        ApiManager.getInstance(getActivity()).getCourseAnalysisData(LoginUserCache.getInstance().loginResponse.studentId,
+        ApiManager.getInstance(getActivity()).getCourseAnalysisData(LoginUserCache.getInstance().getStudentId(),
                 courseId, null, "Chapter", "Month", "365", "true",
                 new ApiCallback<List<CourseAnalysis>>(getActivity()) {
                     @Override
@@ -184,7 +184,7 @@ public class AccuracySpeedTabFragment extends Fragment   {
                     }
                 });
 
-        ApiManager.getInstance(getActivity()).getCourseAnalysisData(LoginUserCache.getInstance().loginResponse.studentId,
+        ApiManager.getInstance(getActivity()).getCourseAnalysisData(LoginUserCache.getInstance().getStudentId(),
                 courseId, null, "Subject", "Month", "365", "true",
                 new ApiCallback<List<CourseAnalysis>>(getActivity()) {
                     @Override

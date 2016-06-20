@@ -56,8 +56,8 @@ public class TestCoverageTabFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if(AbstractBaseActivity.selectedCourse != null) {
-            onEvent(AbstractBaseActivity.selectedCourse);
+        if(AbstractBaseActivity.getSelectedCourse() != null) {
+            onEvent(AbstractBaseActivity.getSelectedCourse());
         }
     }
 
@@ -76,7 +76,7 @@ public class TestCoverageTabFragment extends Fragment {
     }
 
     private void fetchDataFromServer(String courseId) {
-        ApiManager.getInstance(getActivity()).getTestCoverage(LoginUserCache.getInstance().loginResponse.studentId,
+        ApiManager.getInstance(getActivity()).getTestCoverage(LoginUserCache.getInstance().getStudentId(),
                 courseId, new ApiCallback<List<TestCoverage>>(getActivity()) {
             @Override
             public void failure(CorsaliteError error) {

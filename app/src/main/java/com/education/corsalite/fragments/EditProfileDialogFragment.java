@@ -101,8 +101,8 @@ public class EditProfileDialogFragment extends BaseDialogFragment {
     private UserProfileModel getUserData() {
         UserProfileModel model = new UserProfileModel();
         model.updateTime =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-        model.userId = LoginUserCache.getInstance().loginResponse.userId;
-        model.studentId = LoginUserCache.getInstance().loginResponse.studentId;
+        model.userId = LoginUserCache.getInstance().getUserId();
+        model.studentId = LoginUserCache.getInstance().getStudentId();
         if(!TextUtils.isEmpty(usernameTxt.getText().toString())) {
             model.displayName = usernameTxt.getText().toString();
         }

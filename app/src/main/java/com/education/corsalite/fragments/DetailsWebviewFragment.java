@@ -38,7 +38,7 @@ public class DetailsWebviewFragment extends BaseFragment {
         loginWebview = (WebView) myView.findViewById(R.id.login_webview);
         mUrlPattern = getArguments().getString(URL_PATTERN_EXTRAS);
         if (!TextUtils.isEmpty(mUrlPattern)) {
-            mUrl = String.format(mUrlPattern, AbstractBaseActivity.selectedCourse.courseId + "");
+            mUrl = String.format(mUrlPattern, AbstractBaseActivity.getSelectedCourseId());
         }
         appPref = AppPref.getInstance(getActivity());
         loadLoginUrl();
@@ -59,7 +59,7 @@ public class DetailsWebviewFragment extends BaseFragment {
 
     public void onEvent(Course course) {
         if (!TextUtils.isEmpty(mUrlPattern)) {
-            mUrl = String.format(mUrlPattern, AbstractBaseActivity.selectedCourse.courseId + "");
+            mUrl = String.format(mUrlPattern, AbstractBaseActivity.getSelectedCourseId());
             loadLoginUrl();
         }
     }

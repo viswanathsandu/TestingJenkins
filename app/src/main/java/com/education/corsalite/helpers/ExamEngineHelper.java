@@ -54,7 +54,7 @@ public class ExamEngineHelper {
         test.subjectId = subjectId;
         test.chapter = chapter;
         test.subjectName = subjectName;
-        test.courseId = AbstractBaseActivity.selectedCourse.courseId.toString();
+        test.courseId = AbstractBaseActivity.getSelectedCourseId();
         test.questionsCount = questionsCount;
         getStandardExamByCourse(callback);
     }
@@ -69,7 +69,7 @@ public class ExamEngineHelper {
         test = new PartTest();
         test.subjectId = subjectId;
         test.subjectName = subjectName;
-        test.courseId = AbstractBaseActivity.selectedCourse.courseId.toString();
+        test.courseId = AbstractBaseActivity.getSelectedCourseId();
         getStandardExamByCourse(callback);
     }
 
@@ -78,7 +78,7 @@ public class ExamEngineHelper {
             callback.OnFailure("Illegal test object found");
             return;
         }
-        String entityId = LoginUserCache.getInstance().loginResponse.entitiyId;
+        String entityId = LoginUserCache.getInstance().getEntityId();
         String selectedCourseId = test.courseId;
         ApiManager.getInstance(mActivity).getStandardExamsByCourse(selectedCourseId, entityId,
                 new ApiCallback<List<Exam>>(mActivity) {
@@ -154,10 +154,10 @@ public class ExamEngineHelper {
     private void postQuestionPaper(String examTemplateId, final OnExamLoadCallback callback) {
         PostQuestionPaperRequest postQuestionPaper = new PostQuestionPaperRequest();
         postQuestionPaper.idCollegeBatch = "";
-        postQuestionPaper.idEntity = LoginUserCache.getInstance().loginResponse.entitiyId;
+        postQuestionPaper.idEntity = LoginUserCache.getInstance().getEntityId();
         postQuestionPaper.idExamTemplate = examTemplateId;
         postQuestionPaper.idSubject = "";
-        postQuestionPaper.idStudent = LoginUserCache.getInstance().loginResponse.studentId;
+        postQuestionPaper.idStudent = LoginUserCache.getInstance().getStudentId();
 
         ApiManager.getInstance(mActivity).postQuestionPaper(new Gson().toJson(postQuestionPaper),
                 new ApiCallback<PostQuestionPaper>(mActivity) {

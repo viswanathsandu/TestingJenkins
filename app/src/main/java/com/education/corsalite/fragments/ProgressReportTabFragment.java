@@ -87,8 +87,8 @@ public class ProgressReportTabFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if(AbstractBaseActivity.selectedCourse != null) {
-            onEvent(AbstractBaseActivity.selectedCourse);
+        if(AbstractBaseActivity.getSelectedCourse() != null) {
+            onEvent(AbstractBaseActivity.getSelectedCourse());
         }
     }
 
@@ -117,7 +117,7 @@ public class ProgressReportTabFragment extends Fragment {
         }
     }
     private void drawGraph(String courseId) {
-        ApiManager.getInstance(getActivity()).getCourseAnalysisData(LoginUserCache.getInstance().loginResponse.studentId,
+        ApiManager.getInstance(getActivity()).getCourseAnalysisData(LoginUserCache.getInstance().getStudentId(),
                 courseId, null, "Subject", "Month", "365", "true",
                 new ApiCallback<List<CourseAnalysis>>(getActivity()) {
                     @Override
@@ -149,7 +149,7 @@ public class ProgressReportTabFragment extends Fragment {
                     }
                 });
 
-        ApiManager.getInstance(getActivity()).getCourseAnalysisData(LoginUserCache.getInstance().loginResponse.studentId,
+        ApiManager.getInstance(getActivity()).getCourseAnalysisData(LoginUserCache.getInstance().getStudentId(),
                 courseId, null, "None", "Month", "365", "true",
                 new ApiCallback<List<CourseAnalysis>>(getActivity()) {
                     @Override
@@ -178,7 +178,7 @@ public class ProgressReportTabFragment extends Fragment {
 
         //Build Percentile Graph
 
-        ApiManager.getInstance(getActivity()).getCourseAnalysisAsPercentile(LoginUserCache.getInstance().loginResponse.studentId,
+        ApiManager.getInstance(getActivity()).getCourseAnalysisAsPercentile(LoginUserCache.getInstance().getStudentId(),
                 courseId, null, "Subject", "Month", "365", "true",
                 new ApiCallback<List<CourseAnalysisPercentile>>(getActivity()) {
                     @Override
@@ -208,7 +208,7 @@ public class ProgressReportTabFragment extends Fragment {
                     }
                 });
 
-        ApiManager.getInstance(getActivity()).getCourseAnalysisAsPercentile(LoginUserCache.getInstance().loginResponse.studentId,
+        ApiManager.getInstance(getActivity()).getCourseAnalysisAsPercentile(LoginUserCache.getInstance().getStudentId(),
                 courseId, null, "Test", "Month", "365", "true",
                 new ApiCallback<List<CourseAnalysisPercentile>>(getActivity()) {
                     @Override

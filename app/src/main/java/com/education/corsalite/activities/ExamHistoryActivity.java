@@ -60,7 +60,7 @@ public class ExamHistoryActivity extends AbstractBaseActivity implements ExamHis
     }
 
     private void getExamHistory() {
-        ApiManager.getInstance(this).getExamHistory(LoginUserCache.getInstance().loginResponse.studentId,
+        ApiManager.getInstance(this).getExamHistory(LoginUserCache.getInstance().getStudentId(),
                 null, null,
                 new ApiCallback<List<ExamHistory>>(this) {
             @Override

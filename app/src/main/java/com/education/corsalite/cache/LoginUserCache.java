@@ -1,5 +1,7 @@
 package com.education.corsalite.cache;
 
+import android.text.TextUtils;
+
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.models.responsemodels.WelcomeDetails;
 import com.squareup.okhttp.Request;
@@ -10,7 +12,7 @@ import com.squareup.okhttp.Request;
 public class LoginUserCache {
 
     private static LoginUserCache instance;
-    public LoginResponse loginResponse;
+    private LoginResponse loginResponse;
     public WelcomeDetails welcomeDetails;
     // This will be used in okhttp interceptor
     public Request loginRequest;
@@ -39,5 +41,40 @@ public class LoginUserCache {
 
     public void clearCache() {
         this.loginResponse = null;
+    }
+
+    public String getStudentId() {
+        if(loginResponse != null && !TextUtils.isEmpty(loginResponse.studentId)) {
+            return loginResponse.studentId;
+        }
+        return "";
+    }
+
+    public String getUserId() {
+        if(loginResponse != null && !TextUtils.isEmpty(loginResponse.userId)) {
+            return loginResponse.userId;
+        }
+        return "";
+    }
+
+    public String getEntityId() {
+        if(loginResponse != null && !TextUtils.isEmpty(loginResponse.entitiyId)) {
+            return loginResponse.entitiyId;
+        }
+        return "";
+    }
+
+    public String getAuthtoken() {
+        if(loginResponse != null && !TextUtils.isEmpty(loginResponse.authtoken)) {
+            return loginResponse.authtoken;
+        }
+        return "";
+    }
+
+    public String getDisplayName() {
+        if(loginResponse != null && !TextUtils.isEmpty(loginResponse.displayName)) {
+            return loginResponse.displayName;
+        }
+        return "";
     }
 }

@@ -224,11 +224,11 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
         exerciseIntent.putExtra("subjectId", subjectId);
         exerciseIntent.putExtra("chapterId", chapter.idCourseSubjectchapter);
         exerciseIntent.putExtra("selectedTakeTest", new Gson().toJson(chapter));
-        exerciseIntent.putExtra("courseId", AbstractBaseActivity.selectedCourse.courseId.toString());
+        exerciseIntent.putExtra("courseId", AbstractBaseActivity.getSelectedCourseId());
         if (!TextUtils.isEmpty(noOfQuestions) && TextUtils.isDigitsOnly(noOfQuestions)) {
             exerciseIntent.putExtra("questions_count", noOfQuestions);
         }
-        exerciseIntent.putExtra("entityId", LoginUserCache.getInstance().loginResponse.entitiyId);
+        exerciseIntent.putExtra("entityId", LoginUserCache.getInstance().getEntityId());
         getActivity().startService(exerciseIntent);
         Toast.makeText(getActivity(), "Downloading test paper in background", Toast.LENGTH_SHORT).show();
         getActivity().finish();

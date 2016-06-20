@@ -98,8 +98,8 @@ public class InviteFriendsFragment extends BaseFragment implements SearchView.On
 
     private void loadFriendsList() {
         ApiManager.getInstance(getActivity()).getFriendsList(
-                LoginUserCache.getInstance().loginResponse.userId,
-                AbstractBaseActivity.selectedCourse.courseId.toString(),
+                LoginUserCache.getInstance().getUserId(),
+                AbstractBaseActivity.getSelectedCourseId(),
                 new ApiCallback<FriendsData>(getActivity()) {
 
                     @Override
@@ -181,7 +181,7 @@ public class InviteFriendsFragment extends BaseFragment implements SearchView.On
         if (friendsData != null && friendsData.friendsList != null) {
             for (FriendsData.Friend friend : friendsData.friendsList) {
                 if (friend.idStudent.equals(LoginUserCache.getInstance().getLongResponse().studentId)) {
-                    LoginUserCache.getInstance().loginResponse.displayName = friend.displayName;
+                    LoginUserCache.getInstance().getLongResponse().displayName = friend.displayName;
                 }
             }
         }

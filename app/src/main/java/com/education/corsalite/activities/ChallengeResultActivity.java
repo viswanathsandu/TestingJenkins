@@ -78,7 +78,7 @@ public class ChallengeResultActivity extends AbstractBaseActivity {
     }
 
     private void completeChallengeTest() {
-        ApiManager.getInstance(this).completeChallengeTest(challengeTestId, testQuestionPaperId, LoginUserCache.getInstance().loginResponse.studentId,
+        ApiManager.getInstance(this).completeChallengeTest(challengeTestId, testQuestionPaperId, LoginUserCache.getInstance().getStudentId(),
                 new ApiCallback<ChallengeCompleteResponseModel>(this) {
                     @Override
                     public void failure(CorsaliteError error) {
@@ -125,7 +125,7 @@ public class ChallengeResultActivity extends AbstractBaseActivity {
     }
 
     private void updateChallengeStatus(final String status) {
-        ChallengeStatusRequest request = new ChallengeStatusRequest(LoginUserCache.getInstance().loginResponse.studentId,
+        ChallengeStatusRequest request = new ChallengeStatusRequest(LoginUserCache.getInstance().getStudentId(),
                 challengeTestId, status);
         ApiManager.getInstance(this).postChallengeStatus(new Gson().toJson(request),
                 new ApiCallback<CommonResponseModel>(this) {
@@ -163,7 +163,7 @@ public class ChallengeResultActivity extends AbstractBaseActivity {
             if(!user.status.equals("Completed")) {
                 pendingUsers++;
             }
-            if(user.idStudent.equalsIgnoreCase(LoginUserCache.getInstance().loginResponse.studentId)) {
+            if(user.idStudent.equalsIgnoreCase(LoginUserCache.getInstance().getStudentId())) {
                 mCurrentUser = user;
             }
         }

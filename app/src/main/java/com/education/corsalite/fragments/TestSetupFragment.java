@@ -96,7 +96,7 @@ public class TestSetupFragment extends BaseFragment {
         ButterKnife.bind(this, view);
         loadContent();
         loadExams();
-        titleTv.setText(AbstractBaseActivity.selectedCourse.name.toString());
+        titleTv.setText(AbstractBaseActivity.getSelectedCourseName());
         return view;
     }
 
@@ -150,7 +150,7 @@ public class TestSetupFragment extends BaseFragment {
         CreateChallengeRequest request = new CreateChallengeRequest();
         request.subjectId = subjectList.get(selectSubjSpinner.getSelectedItemPosition() - 1).idSubject;
         request.chapterId = chapterList.get(selectChapSpinner.getSelectedItemPosition() - 1).idChapter;
-        request.courseId = AbstractBaseActivity.selectedCourse.courseId+"";
+        request.courseId = AbstractBaseActivity.getSelectedCourseId();
         int durationInMins = 0;
         try {
             durationInMins = Integer.parseInt(timeInMinsEdit.getText().toString());
@@ -165,7 +165,7 @@ public class TestSetupFragment extends BaseFragment {
             return;
         }
         request.examId = examsList.get(examsSpinner.getSelectedItemPosition() - 1).examId;
-        request.studentId = LoginUserCache.getInstance().loginResponse.studentId;
+        request.studentId = LoginUserCache.getInstance().getStudentId();
         ChallengeFriend friend = new ChallengeFriend();
         List<FriendsData.Friend> selectedFriends = ((ChallengeActivity)getActivity()).selectedFriends;
         if(selectedFriends != null) {
@@ -249,7 +249,7 @@ public class TestSetupFragment extends BaseFragment {
     private void loadContent() {
         showProgress();
         ApiManager.getInstance(getActivity()).getContentIndex(
-                AbstractBaseActivity.selectedCourse.courseId.toString(), LoginUserCache.getInstance().loginResponse.studentId,
+                AbstractBaseActivity.getSelectedCourseId(), LoginUserCache.getInstance().getStudentId(),
                 new ApiCallback<List<ContentIndex>>(getActivity()) {
 
                     @Override
@@ -271,7 +271,7 @@ public class TestSetupFragment extends BaseFragment {
     }
 
     private void loadExams() {
-        ApiManager.getInstance(getActivity()).getStandardExamsByCourse(AbstractBaseActivity.selectedCourse.courseId+"", LoginUserCache.getInstance().loginResponse.entitiyId,
+        ApiManager.getInstance(getActivity()).getStandardExamsByCourse(AbstractBaseActivity.getSelectedCourseId(), LoginUserCache.getInstance().getEntityId(),
                 new ApiCallback<List<Exam>>(getActivity()) {
                     @Override
                     public void success(List<Exam> exams, Response response) {
@@ -312,7 +312,7 @@ public class TestSetupFragment extends BaseFragment {
 
     private void showSubjects(final List<ContentIndex> contentIndexList) {
         for (int i = 0; i < contentIndexList.size(); i++) {
-            if (contentIndexList.get(i).idCourse.equalsIgnoreCase(AbstractBaseActivity.selectedCourse.courseId.toString())) {
+            if (contentIndexList.get(i).idCourse.equalsIgnoreCase(AbstractBaseActivity.getSelectedCourseId())) {
                 subjectList = contentIndexList.get(i).subjectModelList;
             }
         }

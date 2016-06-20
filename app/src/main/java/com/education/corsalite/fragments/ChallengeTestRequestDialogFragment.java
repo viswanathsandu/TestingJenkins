@@ -93,7 +93,7 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
     private void loadChallengeTestDetails() {
         showProgress();
         ApiManager.getInstance(getActivity()).getChallengeTestDetails(
-                mChallengeTestRequestEvent.challengeTestParentId, AbstractBaseActivity.selectedCourse.courseId+"",
+                mChallengeTestRequestEvent.challengeTestParentId, AbstractBaseActivity.getSelectedCourseId(),
             new ApiCallback<ChallengeUserListResponse>(getActivity()) {
                 @Override
                 public void success(ChallengeUserListResponse challengeUserListResponse, Response response) {
@@ -128,7 +128,9 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
             if(user.idStudent.equals(LoginUserCache.getInstance().getLongResponse().studentId)) {
                 mCurrentUser = user;
                 ((ChallengeActivity)getActivity()).challengeTestTimeDuration = mCurrentUser.duration;
-                LoginUserCache.getInstance().loginResponse.displayName = mCurrentUser.displayName;
+                if(LoginUserCache.getInstance().getLongResponse() != null) {
+                    LoginUserCache.getInstance().getLongResponse().displayName = mCurrentUser.displayName;
+                }
                 courseTxt.setText(user.course);
                 subjectTxt.setText(user.subject);
                 chapterTxt.setText(user.chapter);
@@ -143,7 +145,7 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
 
     private void updateChallengeStatus(final String status) {
         showProgress();
-        ChallengeStatusRequest request = new ChallengeStatusRequest(LoginUserCache.getInstance().loginResponse.studentId,
+        ChallengeStatusRequest request = new ChallengeStatusRequest(LoginUserCache.getInstance().getStudentId(),
                 mChallengeTestRequestEvent.challengeTestParentId, status);
         ApiManager.getInstance(getActivity()).postChallengeStatus(new Gson().toJson(request),
                 new ApiCallback<CommonResponseModel>(getActivity()) {

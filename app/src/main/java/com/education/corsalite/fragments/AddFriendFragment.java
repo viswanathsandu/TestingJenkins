@@ -83,8 +83,8 @@ public class AddFriendFragment extends BaseFragment implements SearchView.OnQuer
         }
         this.searchKey = searchKey;
         ApiManager.getInstance(getActivity()).searchFriends(
-                LoginUserCache.getInstance().loginResponse.userId,
-                AbstractBaseActivity.selectedCourse.courseId.toString(),
+                LoginUserCache.getInstance().getUserId(),
+                AbstractBaseActivity.getSelectedCourseId(),
                 searchKey,
                 new ApiCallback<List<FriendsData.Friend>>(getActivity()) {
 
@@ -166,7 +166,7 @@ public class AddFriendFragment extends BaseFragment implements SearchView.OnQuer
         if (friends != null ) {
             for (FriendsData.Friend friend : friends) {
                 if (friend.idStudent.equals(LoginUserCache.getInstance().getLongResponse().studentId)) {
-                    LoginUserCache.getInstance().loginResponse.displayName = friend.displayName;
+                    LoginUserCache.getInstance().getLongResponse().displayName = friend.displayName;
                 }
             }
         }
@@ -175,7 +175,7 @@ public class AddFriendFragment extends BaseFragment implements SearchView.OnQuer
     @Override
     public void addFriend(FriendsData.Friend friend) {
         showProgress();
-        ApiManager.getInstance(getActivity()).addFriend(LoginUserCache.getInstance().loginResponse.userId, friend.idUser,
+        ApiManager.getInstance(getActivity()).addFriend(LoginUserCache.getInstance().getUserId(), friend.idUser,
                 new ApiCallback<CommonResponseModel>(getActivity()) {
             @Override
             public void failure(CorsaliteError error) {
@@ -205,7 +205,7 @@ public class AddFriendFragment extends BaseFragment implements SearchView.OnQuer
     @Override
     public void removeFriend(FriendsData.Friend friend) {
         showProgress();
-        ApiManager.getInstance(getActivity()).unFriend(LoginUserCache.getInstance().loginResponse.userId, friend.idUser,
+        ApiManager.getInstance(getActivity()).unFriend(LoginUserCache.getInstance().getUserId(), friend.idUser,
                 new ApiCallback<CommonResponseModel>(getActivity()) {
             @Override
             public void failure(CorsaliteError error) {

@@ -83,7 +83,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     public static int selectedVideoPosition;
-    public static Course selectedCourse;
+    private static Course selectedCourse;
     private static List<ExamModel> sharedExamModels;
     private List<Course> courses;
     public Toolbar toolbar;
@@ -94,7 +94,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     public Dialog dialog;
     protected SugarDbManager dbManager;
     protected AppPref appPref;
-    private boolean isLoginApiRunningInBAckground = false;
+    private boolean isLoginApiRunningInBackground = false;
 
     public List<FriendsData.Friend> selectedFriends = new ArrayList<>();
 
@@ -106,6 +106,24 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     public static List<ExamModel> getSharedExamModels() {
         return sharedExamModels;
+    }
+
+    public static Course getSelectedCourse() {
+        return selectedCourse;
+    }
+
+    public static String getSelectedCourseId() {
+        if(selectedCourse != null && selectedCourse.courseId != null) {
+            return selectedCourse.courseId.toString();
+        }
+        return "";
+    }
+
+    public static String getSelectedCourseName() {
+        if(selectedCourse != null && selectedCourse.name != null) {
+            return selectedCourse.name;
+        }
+        return "";
     }
 
     @Override
@@ -155,10 +173,10 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     private void relogin() {
-        if(isLoginApiRunningInBAckground || this instanceof LoginActivity || this instanceof SplashActivity) {
+        if(isLoginApiRunningInBackground || this instanceof LoginActivity || this instanceof SplashActivity) {
            return;
         }
-        isLoginApiRunningInBAckground = true;
+        isLoginApiRunningInBackground = true;
         showProgress();
         final String username = appPref.getValue("loginId");
         final String passwordHash =  appPref.getValue("passwordHash");
@@ -168,7 +186,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 public void failure(CorsaliteError error) {
                     super.failure(error);
                     closeProgress();
-                    isLoginApiRunningInBAckground = false;
+                    isLoginApiRunningInBackground = false;
                     if (error != null && !TextUtils.isEmpty(error.message)) {
                         showToast(error.message);
                     }
@@ -179,7 +197,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     super.success(loginResponse, response);
                     closeProgress();
                     if (loginResponse.isSuccessful()) {
-                        isLoginApiRunningInBAckground = false;
+                        isLoginApiRunningInBackground = false;
                         dbManager.saveReqRes(ApiCacheHolder.getInstance().login);
                         appPref.save("loginId", username);
                         appPref.save("passwordHash", passwordHash);
@@ -554,7 +572,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 }
             });
 
-            ApiManager.getInstance(this).getVirtualCurrencyBalance(LoginUserCache.getInstance().loginResponse.studentId, new ApiCallback<VirtualCurrencyBalanceResponse>(this) {
+            ApiManager.getInstance(this).getVirtualCurrencyBalance(LoginUserCache.getInstance().getStudentId(), new ApiCallback<VirtualCurrencyBalanceResponse>(this) {
                 @Override
                 public void success(VirtualCurrencyBalanceResponse virtualCurrencyBalanceResponse, Response response) {
                     super.success(virtualCurrencyBalanceResponse, response);
@@ -667,11 +685,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     private void loadCoursesList() {
-
-        if (LoginUserCache.getInstance().loginResponse == null || LoginUserCache.getInstance().loginResponse.studentId == null) {
-            return;
-        }
-        ApiManager.getInstance(this).getCourses(LoginUserCache.getInstance().loginResponse.studentId, new ApiCallback<List<Course>>(this) {
+        ApiManager.getInstance(this).getCourses(LoginUserCache.getInstance().getStudentId(), new ApiCallback<List<Course>>(this) {
             @Override
             public void failure(CorsaliteError error) {
                 super.failure(error);
@@ -759,7 +773,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     // this method will be overridden by the classes that subscribes from event bus
     public void onEvent(Course course) {
         selectedCourse = course;
-        getContentIndex(selectedCourse.courseId+"", LoginUserCache.getInstance().loginResponse.studentId);
+        getContentIndex(selectedCourse.courseId+"", LoginUserCache.getInstance().getStudentId());
     }
 
     private void getContentIndex(String courseId, String studentId) {

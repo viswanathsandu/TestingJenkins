@@ -65,7 +65,7 @@ public class OfflineTestsFragment extends BaseFragment implements OfflineActivit
 
     private void loadOfflineTests() {
         try {
-            dbManager.getAllOfflineMockTests(AbstractBaseActivity.selectedCourse.courseId + "",
+            dbManager.getAllOfflineMockTests(AbstractBaseActivity.getSelectedCourseId(),
                     new ApiCallback<List<OfflineTestObjectModel>>(getActivity()) {
                         @Override
                         public void success(List<OfflineTestObjectModel> offlineTestObjectModels, Response response) {

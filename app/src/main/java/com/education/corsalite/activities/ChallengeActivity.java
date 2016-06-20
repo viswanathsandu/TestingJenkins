@@ -95,11 +95,11 @@ public class ChallengeActivity extends AbstractBaseActivity {
 
     private void fetchDisplayName() {
         try {
-            ApiManager.getInstance(this).getUserProfile(LoginUserCache.getInstance().loginResponse.studentId,
+            ApiManager.getInstance(this).getUserProfile(LoginUserCache.getInstance().getStudentId(),
                     new ApiCallback<UserProfileResponse>(this) {
                         @Override
                         public void success(UserProfileResponse userProfileResponse, Response response) {
-                            LoginUserCache.getInstance().loginResponse.displayName = userProfileResponse.basicProfile.displayName;
+                            LoginUserCache.getInstance().getLongResponse().displayName = userProfileResponse.basicProfile.displayName;
                         }
                     });
         } catch (Exception e) {
@@ -209,14 +209,14 @@ public class ChallengeActivity extends AbstractBaseActivity {
 
     private void showChallengeRequestDialog(String chalengeTestParentId) {
         ChallengeTestRequestEvent event = new ChallengeTestRequestEvent();
-        event.challengerName = LoginUserCache.getInstance().loginResponse.displayName;
+        event.challengerName = LoginUserCache.getInstance().getDisplayName();
         event.challengeTestParentId = chalengeTestParentId;
         EventBus.getDefault().post(event);
     }
 
     private void postChallengeTestStartEvent() {
         NewChallengeTestRequestEvent event = new NewChallengeTestRequestEvent();
-        event.challengerName = LoginUserCache.getInstance().loginResponse.displayName;
+        event.challengerName = LoginUserCache.getInstance().getDisplayName();
         event.challengeTestParentId = mChallengeTestId;
         WebSocketHelper.get(this).sendChallengeTestEvent(event);
     }

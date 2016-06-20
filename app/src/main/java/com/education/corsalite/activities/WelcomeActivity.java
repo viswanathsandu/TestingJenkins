@@ -73,7 +73,7 @@ public class WelcomeActivity extends AbstractBaseActivity implements View.OnClic
 
     private void getWelcomeDetails() {
         try {
-            ApiManager.getInstance(this).getWelcomeDetails(LoginUserCache.getInstance().loginResponse.studentId, new ApiCallback<WelcomeDetails>(WelcomeActivity.this) {
+            ApiManager.getInstance(this).getWelcomeDetails(LoginUserCache.getInstance().getStudentId(), new ApiCallback<WelcomeDetails>(WelcomeActivity.this) {
                 @Override
                 public void success(WelcomeDetails welcomeDetails, Response response) {
                     super.success(welcomeDetails, response);

@@ -245,7 +245,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
     private void getStudyCentreData(String courseId) {
         hideRecyclerView();
         progressBar.setVisibility(View.VISIBLE);
-        ApiManager.getInstance(this).getStudyCentreData(LoginUserCache.getInstance().loginResponse.studentId,
+        ApiManager.getInstance(this).getStudyCentreData(LoginUserCache.getInstance().getStudentId(),
                 courseId, new ApiCallback<List<StudyCenter>>(this) {
                     @Override
                     public void failure(CorsaliteError error) {
@@ -290,7 +290,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
     }
 
     private void getOfflineStudyCenterData(final List<StudyCenter> studyCenters, final boolean saveForOffline) {
-        List<OfflineContent> offlineContents = dbManager.getOfflineContents(AbstractBaseActivity.selectedCourse.courseId + "");
+        List<OfflineContent> offlineContents = dbManager.getOfflineContents(AbstractBaseActivity.getSelectedCourseId());
         if (studyCenter != null && studyCenter.chapters != null) {
             for (Chapter chapter : studyCenter.chapters) {
                 boolean idMatchFound = false;
@@ -493,7 +493,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
     private void startContentActivity(StudyCenter studyCenter) {
         if (studyCenter != null && studyCenter.chapters != null && !studyCenter.chapters.isEmpty()) {
             Intent intent = new Intent(this, ContentReadingActivity.class);
-            intent.putExtra("courseId", AbstractBaseActivity.selectedCourse.courseId.toString() + "");
+            intent.putExtra("courseId", AbstractBaseActivity.getSelectedCourseId());
             intent.putExtra("subjectId", studyCenter.idCourseSubject + "");
             intent.putExtra("chapterId", studyCenter.chapters.get(0).idCourseSubjectchapter + "");
             startActivity(intent);
@@ -550,7 +550,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
     private void startFlaggedQuestionView(StudyCenter studyCenter) {
         Intent exerciseIntent = new Intent(this, ExamEngineActivity.class);
         exerciseIntent.putExtra(Constants.TEST_TITLE, "Flagged Questions");
-        exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
+        exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.getSelectedCourseId());
         exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, studyCenter.idCourseSubject + "");
         exerciseIntent.putExtra(Constants.SELECTED_SUBJECT_NAME, mSubjectName);
         startActivity(exerciseIntent);
@@ -558,7 +558,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
 
     private void startNotesActivity(StudyCenter studyCenter) {
         Intent intent = new Intent(this, NotesActivity.class);
-        intent.putExtra("courseId", AbstractBaseActivity.selectedCourse.courseId.toString());
+        intent.putExtra("courseId", AbstractBaseActivity.getSelectedCourseId());
         intent.putExtra(GridRecyclerAdapter.SUBJECT_ID, studyCenter.idCourseSubject + "");
         startActivity(intent);
     }
@@ -622,7 +622,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
                     mSubjectName = text;
                     if (mCourseData != null && mCourseData.StudyCenter != null) {
                         mSubjectName = text;
-                        List<OfflineContent> offlineContents = dbManager.getOfflineContents(AbstractBaseActivity.selectedCourse.courseId + "");
+                        List<OfflineContent> offlineContents = dbManager.getOfflineContents(AbstractBaseActivity.getSelectedCourseId());
                         for (StudyCenter studyCenter : mCourseData.StudyCenter) {
                             if (mSubjectName.equalsIgnoreCase(studyCenter.SubjectName)) {
                                 StudyCenterActivity.this.studyCenter = studyCenter;

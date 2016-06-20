@@ -135,7 +135,7 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
         }.getType();
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String jsonObject = gson.toJson(contentIndexList, contentIndexType);
-        DbManager.getInstance(getActivity()).saveContentIndexList(jsonObject, courseId, LoginUserCache.getInstance().loginResponse.studentId);
+        DbManager.getInstance(getActivity()).saveContentIndexList(jsonObject, courseId, LoginUserCache.getInstance().getStudentId());
     }*/
 
     private void updateContentIndexResponses(String contentId) {
@@ -365,7 +365,7 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
 
     private void startContentActivity(String topicId, String chapterId, String subjectId, String contentId, String contentName) {
         Intent intent = new Intent(getActivity(), ContentReadingActivity.class);
-        intent.putExtra("courseId", AbstractBaseActivity.selectedCourse.courseId.toString());
+        intent.putExtra("courseId", AbstractBaseActivity.getSelectedCourseId());
         intent.putExtra("subjectId", subjectId);
         intent.putExtra("chapterId", chapterId);
         intent.putExtra("topicId", topicId);

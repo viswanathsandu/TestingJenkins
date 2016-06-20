@@ -207,7 +207,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             intent.putExtra("Test_Instructions", new Gson().toJson(model.testPaperIndecies));
             intent.putExtra("test_question_paper_id", model.testQuestionPaperId);
             intent.putExtra(Constants.TEST_TITLE, "Mock Test");
-            intent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
+            intent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.getSelectedCourseId());
             intent.putExtra(Constants.IS_OFFLINE, true);
             intent.putExtra(Constants.DB_ROW_ID, model.getId());
             intent.putExtra("mock_test_data_json", new Gson().toJson(model.mockTest));
@@ -249,7 +249,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             Intent exerciseIntent = new Intent(context, ExamEngineActivity.class);
             exerciseIntent.putExtra(TestStartActivity.KEY_TEST_TYPE, Tests.CHAPTER.getType());
             exerciseIntent.putExtra(Constants.TEST_TITLE, chapter.chapterName);
-            exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
+            exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.getSelectedCourseId());
             exerciseIntent.putExtra(Constants.SELECTED_CHAPTERID, chapter.idCourseSubjectchapter);
             exerciseIntent.putExtra(Constants.SELECTED_CHAPTER_NAME, chapter.chapterName);
             exerciseIntent.putExtra(Constants.LEVEL_CROSSED, chapter.passedComplexity);
@@ -270,7 +270,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             Intent exerciseIntent = new Intent(context, ExamEngineActivity.class);
             exerciseIntent.putExtra(TestStartActivity.KEY_TEST_TYPE, Tests.PART.getType());
             exerciseIntent.putExtra(Constants.TEST_TITLE, "Part Test - " + subjectName);
-            exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.selectedCourse.courseId.toString());
+            exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.getSelectedCourseId());
             exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, subjectId);
             exerciseIntent.putExtra(Constants.SELECTED_TOPIC_NAME, subjectName);
             exerciseIntent.putExtra(Constants.DB_ROW_ID, model.getId());

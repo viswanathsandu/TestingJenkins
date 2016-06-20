@@ -76,7 +76,7 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
     @Override
     public void onResume() {
         super.onResume();
-        if (AbstractBaseActivity.selectedCourse != null && AbstractBaseActivity.selectedCourse.courseId != null) {
+        if (!AbstractBaseActivity.getSelectedCourseId().isEmpty()) {
             refreshData();
         }
     }
@@ -126,22 +126,22 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
 
     private void loadForumLibrary() {
         showProgress();
-        ApiManager.getInstance(getActivity()).getMyComments(AbstractBaseActivity.selectedCourse.courseId + "",
-                LoginUserCache.getInstance().loginResponse.userId, "forumLibrary",
+        ApiManager.getInstance(getActivity()).getMyComments(AbstractBaseActivity.getSelectedCourseId(),
+                LoginUserCache.getInstance().getUserId(), "forumLibrary",
                 postsCallback);
     }
 
     private void loadForumPosts() {
         showProgress();
-        ApiManager.getInstance(getActivity()).getAllPosts(AbstractBaseActivity.selectedCourse.courseId + "",
-                LoginUserCache.getInstance().loginResponse.userId, "AllPosts", "", "",
+        ApiManager.getInstance(getActivity()).getAllPosts(AbstractBaseActivity.getSelectedCourseId(),
+                LoginUserCache.getInstance().getUserId(), "AllPosts", "", "",
                 postsCallback);
     }
 
     private void loadForumMyPosts() {
         showProgress();
-        ApiManager.getInstance(getActivity()).getMyPosts(AbstractBaseActivity.selectedCourse.courseId + "",
-                LoginUserCache.getInstance().loginResponse.userId,
+        ApiManager.getInstance(getActivity()).getMyPosts(AbstractBaseActivity.getSelectedCourseId(),
+                LoginUserCache.getInstance().getUserId(),
                 postsCallback);
     }
 
@@ -183,7 +183,7 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
             startActivity(intent);
         } else {
             Bundle bundle = new Bundle();
-            bundle.putString("user_id", LoginUserCache.getInstance().loginResponse.userId);
+            bundle.putString("user_id", LoginUserCache.getInstance().getUserId());
             bundle.putString("post_id", item.idUserPost);
             Intent intent = new Intent(getActivity(), PostDetailsActivity.class);
             intent.putExtras(bundle);
@@ -201,7 +201,7 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
             bookmark.bookmarkdelete = "N";
         }
         bookmark.idUserPost = forumPost.idUserPost;
-        bookmark.idUser = LoginUserCache.getInstance().loginResponse.userId;
+        bookmark.idUser = LoginUserCache.getInstance().getUserId();
         showProgress();
         ApiManager.getInstance(getActivity()).postBookmark(bookmark, new ApiCallback<CommonResponseModel>(getActivity()) {
             @Override

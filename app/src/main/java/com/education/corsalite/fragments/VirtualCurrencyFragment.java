@@ -49,7 +49,7 @@ public class VirtualCurrencyFragment extends BaseFragment {
     }
 
     private void getTransactionHistory(final LayoutInflater inflater) {
-        ApiManager.getInstance(getActivity()).getVirtualCurrencyTransactions(LoginUserCache.getInstance().loginResponse.studentId,
+        ApiManager.getInstance(getActivity()).getVirtualCurrencyTransactions(LoginUserCache.getInstance().getStudentId(),
                 new ApiCallback<VirtualCurrencySummaryResponse>(getActivity()) {
                     @Override
                     public void failure(CorsaliteError error) {

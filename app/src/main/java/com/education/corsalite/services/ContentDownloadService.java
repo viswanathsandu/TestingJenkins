@@ -301,7 +301,7 @@ public class ContentDownloadService extends IntentService {
             List<ExerciseOfflineModel> offlineExerciseList = new ArrayList<>(offlineExercises);
             downloandInProgress += offlineExerciseList.size();
             for (ExerciseOfflineModel model : offlineExerciseList) {
-                List<ExamModel> examModels = ApiManager.getInstance(this).getExercise(model.topicId, model.courseId, LoginUserCache.getInstance().loginResponse.studentId, null);
+                List<ExamModel> examModels = ApiManager.getInstance(this).getExercise(model.topicId, model.courseId, LoginUserCache.getInstance().getStudentId(), null);
                 if (examModels != null && !examModels.isEmpty()) {
                     model.progress = 100;
                     model.questions = examModels;

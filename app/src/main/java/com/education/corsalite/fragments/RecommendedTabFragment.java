@@ -97,8 +97,8 @@ public class RecommendedTabFragment extends Fragment implements RecommendationsA
     @Override
     public void onResume() {
         super.onResume();
-        if (AbstractBaseActivity.selectedCourse != null) {
-            onEvent(AbstractBaseActivity.selectedCourse);
+        if (AbstractBaseActivity.getSelectedCourse() != null) {
+            onEvent(AbstractBaseActivity.getSelectedCourse());
         }
     }
 
@@ -127,8 +127,8 @@ public class RecommendedTabFragment extends Fragment implements RecommendationsA
         if(startIndex == 0) {
             topbarLayout.removeAllViews();
         }
-        ApiManager.getInstance(getActivity()).getRecommendedReading(LoginUserCache.getInstance().loginResponse.studentId,
-                AbstractBaseActivity.selectedCourse.courseId+"", startIndex+"", noOfRows+"",
+        ApiManager.getInstance(getActivity()).getRecommendedReading(LoginUserCache.getInstance().getStudentId(),
+                AbstractBaseActivity.getSelectedCourseId(), startIndex+"", noOfRows+"",
                 new ApiCallback<List<RecommendedModel>>(getActivity()) {
                     @Override
                     public void failure(CorsaliteError error) {

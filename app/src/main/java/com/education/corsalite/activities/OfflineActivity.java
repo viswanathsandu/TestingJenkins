@@ -132,7 +132,7 @@ public class OfflineActivity extends AbstractBaseActivity {
     @Override
     public void onBackPressed() {
         if (offlineEventListener != null) {
-            offlineEventListener.onUpdateOfflineData(selectedCourse.courseId.toString());
+            offlineEventListener.onUpdateOfflineData(getSelectedCourseId());
         }
         super.onBackPressed();
     }

@@ -26,8 +26,8 @@ public class BaseModel extends SugarRecord implements IDomainEntity<BaseModel> {
 
     public void setUserId() {
         try {
-            if (LoginUserCache.getInstance().loginResponse != null && !TextUtils.isEmpty(LoginUserCache.getInstance().loginResponse.userId)) {
-                userId = LoginUserCache.getInstance().loginResponse.userId;
+            if (!TextUtils.isEmpty(LoginUserCache.getInstance().getUserId())) {
+                userId = LoginUserCache.getInstance().getUserId();
             }
         } catch (Exception e) {
             L.error(e.getMessage(), e);
@@ -36,8 +36,8 @@ public class BaseModel extends SugarRecord implements IDomainEntity<BaseModel> {
 
     public boolean isCurrentUser() {
         try {
-            if (!TextUtils.isEmpty(userId) && LoginUserCache.getInstance().loginResponse != null && !TextUtils.isEmpty(LoginUserCache.getInstance().loginResponse.userId)) {
-                return userId.equalsIgnoreCase(LoginUserCache.getInstance().loginResponse.userId);
+            if (!TextUtils.isEmpty(userId) && !TextUtils.isEmpty(LoginUserCache.getInstance().getUserId())) {
+                return userId.equalsIgnoreCase(LoginUserCache.getInstance().getUserId());
             }
         } catch (Exception e) {
             L.error(e.getMessage(), e);

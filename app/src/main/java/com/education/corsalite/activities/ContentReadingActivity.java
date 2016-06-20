@@ -126,7 +126,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        studentId = LoginUserCache.getInstance().loginResponse.studentId;
+        studentId = LoginUserCache.getInstance().getStudentId();
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         LinearLayout myView = (LinearLayout) inflater.inflate(R.layout.activity_web, null);
         frameLayout.addView(myView);
@@ -191,7 +191,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
     }
 
     private void loadOfflineExercises() {
-        offlineExercises = dbManager.getOfflineExerciseModels(AbstractBaseActivity.selectedCourse.courseId + "");
+        offlineExercises = dbManager.getOfflineExerciseModels(AbstractBaseActivity.getSelectedCourseId());
         showExercise();
     }
 
@@ -352,7 +352,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
 
     private void startNotesActivity() {
         Intent intent = new Intent(this, NotesActivity.class);
-        intent.putExtra(GridRecyclerAdapter.COURSE_ID, AbstractBaseActivity.selectedCourse.courseId.toString());
+        intent.putExtra(GridRecyclerAdapter.COURSE_ID, AbstractBaseActivity.getSelectedCourseId().toString());
         intent.putExtra(GridRecyclerAdapter.SUBJECT_ID, subjectModelList.get(spSubject.getSelectedItemPosition()).idSubject);
         intent.putExtra(GridRecyclerAdapter.CHAPTER_ID, chapterModelList.get(spChapter.getSelectedItemPosition()).idChapter);
         intent.putExtra(GridRecyclerAdapter.TOPIC_ID, topicModelList.get(spTopic.getSelectedItemPosition()).idTopic);
@@ -411,7 +411,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
 
     private void saveFileToDisk() {
         FileUtilities fileUtilities = new FileUtilities(this);
-        String folderStructure = selectedCourse.name + File.separator +
+        String folderStructure = getSelectedCourseName() + File.separator +
                 subjectModelList.get(spSubject.getSelectedItemPosition()).subjectName + File.separator +
                 chapterModelList.get(spChapter.getSelectedItemPosition()).chapterName + File.separator +
                 topicModelList.get(spTopic.getSelectedItemPosition()).topicName;
@@ -579,15 +579,15 @@ public class ContentReadingActivity extends AbstractBaseActivity {
         if (SystemUtils.isNetworkConnected(this)) {
             ivExercise.setVisibility(View.GONE);
             String topicId = topicModelList.get(topicPosition).idTopic;
-            if (offlineExercises != null && !offlineExercises.isEmpty() && offlineExercises.contains(new ExerciseOfflineModel(selectedCourse.courseId + "", topicId))) {
+            if (offlineExercises != null && !offlineExercises.isEmpty() && offlineExercises.contains(new ExerciseOfflineModel(getSelectedCourseId(), topicId))) {
                 for (ExerciseOfflineModel model : offlineExercises) {
-                    if (model.topicId.equals(topicId) && model.courseId.equals(selectedCourse.courseId + "")) {
+                    if (model.topicId.equals(topicId) && model.courseId.equals(getSelectedCourseId())) {
                         AbstractBaseActivity.setSharedExamModels(model.questions);
                         showExercise();
                     }
                 }
             } else {
-                ApiManager.getInstance(this).getExercise(topicModelList.get(topicPosition).idTopic, selectedCourse.courseId.toString(),
+                ApiManager.getInstance(this).getExercise(topicModelList.get(topicPosition).idTopic, getSelectedCourseId(),
                         studentId, "", new ApiCallback<List<ExamModel>>(this) {
                             @Override
                             public void success(List<ExamModel> examModels, Response response) {
@@ -752,7 +752,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
     private File getgetFile(String fileName) {
         root = Environment.getExternalStorageDirectory();
         File file;
-        String folderStructure = selectedCourse.name + File.separator +
+        String folderStructure = getSelectedCourseName() + File.separator +
                 subjectModelList.get(spSubject.getSelectedItemPosition()).subjectName + File.separator +
                 chapterModelList.get(spChapter.getSelectedItemPosition()).chapterName + File.separator +
                 topicModelList.get(spTopic.getSelectedItemPosition()).topicName;
