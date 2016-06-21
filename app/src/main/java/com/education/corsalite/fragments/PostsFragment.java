@@ -152,7 +152,7 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
     @Override
     public void onLikeClicked(final int position) {
         final ForumPost forumPost = mPostAdapter.getItem(position);
-        ApiManager.getInstance(getActivity()).addForumLike(new ForumLikeRequest(forumPost.idUser, forumPost.idUserPost),
+        ApiManager.getInstance(getActivity()).addForumLike(new ForumLikeRequest(LoginUserCache.getInstance().getUserId(), forumPost.idUserPost),
                 new ApiCallback<CommonResponseModel>(getActivity()) {
                     @Override
                     public void success(CommonResponseModel baseResponseModel, Response response) {
