@@ -13,7 +13,7 @@ public class TestQuestionPaperResponse extends BaseResponseModel {
     @SerializedName("QuestionsDetails")
     public List<ExamModel> questions;
     @SerializedName("ExamDetails")
-    public List<QuestionPaperExamDetails> examDetailsList;
+    public QuestionPaperExamDetails examDetails;
 
     public TestQuestionPaperResponse() {}
 

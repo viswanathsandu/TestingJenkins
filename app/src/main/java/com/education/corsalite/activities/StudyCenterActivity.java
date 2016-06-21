@@ -29,7 +29,6 @@ import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.fragments.MockTestDialog;
 import com.education.corsalite.fragments.PartTestDialog;
 import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.models.responsemodels.Chapter;
@@ -571,17 +570,6 @@ public class StudyCenterActivity extends AbstractBaseActivity {
             bundle.putString("SubjectName", studyCenter.SubjectName);
             dialog.setArguments(bundle);
             dialog.show(getSupportFragmentManager(), "PartTestDialog");
-        } else {
-            Intent exerciseIntent = new Intent(this, OfflineActivity.class);
-            exerciseIntent.putExtra("selection", 1);
-            startActivity(exerciseIntent);
-        }
-    }
-
-    private void showMockTestsDialog() {
-        if (SystemUtils.isNetworkConnected(this)) {
-            MockTestDialog dialog = new MockTestDialog();
-            dialog.show(getFragmentManager(), "MockTestsListDialog");
         } else {
             Intent exerciseIntent = new Intent(this, OfflineActivity.class);
             exerciseIntent.putExtra("selection", 1);

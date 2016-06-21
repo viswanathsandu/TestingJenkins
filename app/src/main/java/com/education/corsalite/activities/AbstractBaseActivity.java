@@ -42,6 +42,7 @@ import com.education.corsalite.event.ScheduledTestStartEvent;
 import com.education.corsalite.event.TakingTestEvent;
 import com.education.corsalite.event.UpdateUserEvents;
 import com.education.corsalite.fragments.ChallengeTestRequestDialogFragment;
+import com.education.corsalite.fragments.MockTestDialog;
 import com.education.corsalite.fragments.ScheduledTestDialog;
 import com.education.corsalite.helpers.WebSocketHelper;
 import com.education.corsalite.models.ContentModel;
@@ -423,6 +424,15 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         if (config.isLogoutEnabled()) {
             navigationView.findViewById(R.id.navigation_logout).setVisibility(View.VISIBLE);
         }
+        if(config.isScheduledTestsEnabled()) {
+            navigationView.findViewById(R.id.navigation_scheduled_tests).setVisibility(View.VISIBLE);
+        }
+        if(config.isMockTestsEnabled()) {
+            navigationView.findViewById(R.id.navigation_mock_tests).setVisibility(View.VISIBLE);
+        }
+        if(config.isExamHistoryEnabled()) {
+            navigationView.findViewById(R.id.navigation_exam_history).setVisibility(View.VISIBLE);
+        }
     }
 
     private void setNavigationClickListeners() {
@@ -501,6 +511,34 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             }
         });
 
+        navigationView.findViewById(R.id.navigation_exam_history).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (SystemUtils.isNetworkConnected(AbstractBaseActivity.this)) {
+                    Localytics.tagEvent(getString(R.string.exam_history));
+                    startActivity(new Intent(AbstractBaseActivity.this, ExamHistoryActivity.class));
+                } else {
+                    showToast("Exam history requires network connection");
+                }
+            }
+        });
+
+        navigationView.findViewById(R.id.navigation_scheduled_tests).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Localytics.tagEvent(getString(R.string.menu_scheduled_test));
+                showScheduledTestsDialog();
+            }
+        });
+
+        navigationView.findViewById(R.id.navigation_mock_tests).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Localytics.tagEvent(getString(R.string.menu_mock_test));
+                showMockTestsDialog();
+            }
+        });
+
         navigationView.findViewById(R.id.navigation_forum).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -535,6 +573,18 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         finish();
     }
 
+    protected void showMockTestsDialog() {
+        if (SystemUtils.isNetworkConnected(this)) {
+            MockTestDialog dialog = new MockTestDialog();
+            dialog.show(getFragmentManager(), "MockTestsListDialog");
+        } else {
+            Intent exerciseIntent = new Intent(this, OfflineActivity.class);
+            exerciseIntent.putExtra("selection", 1);
+            startActivity(exerciseIntent);
+        }
+    }
+
+
     protected void showScheduledTestsDialog() {
         if (SystemUtils.isNetworkConnected(this)) {
             ScheduledTestDialog dialog = new ScheduledTestDialog();
@@ -559,6 +609,9 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     protected void showVirtualCurrency() {
+        if(!AppConfig.getInstance().isVirtualCurrencyEnabled()) {
+            return;
+        }
         final TextView textView = (TextView) toolbar.findViewById(R.id.tv_virtual_currency);
         final ProgressBar progressBar = (ProgressBar) toolbar.findViewById(R.id.ProgressBar);
         try {

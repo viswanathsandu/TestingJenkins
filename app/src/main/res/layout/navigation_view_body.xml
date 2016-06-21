@@ -35,9 +35,9 @@
                 style="@style/navigation_drawer_element" />
 
             <TextView
-                android:id="@+id/navigation_smart_class"
-                android:drawableLeft="@drawable/ico_sidemenu_smartclass"
-                android:text="Smart Class"
+                android:id="@+id/navigation_forum"
+                android:text="@string/forum"
+                android:drawableLeft="@drawable/ico_forum"
                 style="@style/navigation_drawer_element" />
 
             <TextView
@@ -53,15 +53,33 @@
                 style="@style/navigation_drawer_element" />
 
             <TextView
+                android:id="@+id/navigation_smart_class"
+                android:drawableLeft="@drawable/ico_sidemenu_smartclass"
+                android:text="Smart Class"
+                style="@style/navigation_drawer_element" />
+
+            <TextView
+                android:id="@+id/navigation_scheduled_tests"
+                android:text="@string/menu_scheduled_test"
+                android:drawableLeft="@drawable/ico_scheduled_tests"
+                style="@style/navigation_drawer_element" />
+
+            <TextView
+                android:id="@+id/navigation_mock_tests"
+                android:text="@string/menu_mock_test"
+                android:drawableLeft="@drawable/ico_mock_tests"
+                style="@style/navigation_drawer_element" />
+
+            <TextView
                 android:id="@+id/navigation_challenge_your_friends"
                 android:text="@string/challenge_your_friends"
                 android:drawableLeft="@drawable/ico_challenge"
                 style="@style/navigation_drawer_element" />
 
             <TextView
-                android:id="@+id/navigation_forum"
-                android:text="@string/forum"
-                android:drawableLeft="@drawable/ico_forum"
+                android:id="@+id/navigation_exam_history"
+                android:text="@string/menu_exam_history"
+                android:drawableLeft="@drawable/ico_exam_history"
                 style="@style/navigation_drawer_element" />
 
             <TextView

@@ -26,6 +26,7 @@ public class AppConfig {
     public Boolean enableProduction = false;
     @SerializedName("SplashDuration")
     public String splashDuration = "2000";
+    public String enableVirtualCurrency = "true";
     @SerializedName("EnableStudyCenter")
     public String enableStudyCenter = "true";
     @SerializedName("EnableAnalytics")
@@ -41,6 +42,9 @@ public class AppConfig {
     @SerializedName("EnableChallengeTest")
     public String enableChallangeTest = "true";
     public String enableForum = "true";
+    public String enableScheduleTests = "true";
+    public String enablemockTests = "true";
+    public String enableExamHistory = "true";
     public String idClientAppConfig;
     public String idUser;
 
@@ -88,6 +92,10 @@ public class AppConfig {
         enableProduction = false;
     }
 
+    public boolean isVirtualCurrencyEnabled() {
+        return isEnabled(enableVirtualCurrency);
+    }
+
     public boolean isStudyCenterEnabled() {
         return isEnabled(enableStudyCenter);
     }
@@ -114,6 +122,18 @@ public class AppConfig {
 
     public boolean isChallengeTestEnabled() {
         return isEnabled(enableChallangeTest);
+    }
+
+    public boolean isScheduledTestsEnabled() {
+        return isEnabled(enableScheduleTests);
+    }
+
+    public boolean isMockTestsEnabled() {
+        return isEnabled(enablemockTests);
+    }
+
+    public boolean isExamHistoryEnabled() {
+        return isEnabled(enableExamHistory);
     }
 
     public boolean isForumEnabled() {

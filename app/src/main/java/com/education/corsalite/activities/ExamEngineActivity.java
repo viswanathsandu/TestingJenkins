@@ -1917,6 +1917,14 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                         if(questionPaperResponse != null)
                         showQuestionPaper(questionPaperResponse.questions);
                     }
+
+                    @Override
+                    public void failure(CorsaliteError error) {
+                        super.failure(error);
+                        L.error("error : "+new Gson().toJson(error));
+                        showToast("Failed to start exam");
+                        finish();
+                    }
                 });
     }
 

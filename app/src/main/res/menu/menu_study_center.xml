@@ -13,12 +13,14 @@
     <item
         android:id="@+id/action_scheduled_test"
         app:showAsAction="never"
-        android:title="@string/menu_scheduled_test" />
+        android:title="@string/menu_scheduled_test"
+        android:visible="false"/>
 
     <item
         android:id="@+id/action_mock_test"
         app:showAsAction="never"
-        android:title="@string/menu_mock_test" />
+        android:title="@string/menu_mock_test"
+        android:visible="false"/>
 
     <item
         android:id="@+id/action_challenge_your_friends"
@@ -29,7 +31,8 @@
     <item
         android:id="@+id/action_exam_history"
         app:showAsAction="never"
-        android:title="@string/menu_exam_history" />
+        android:title="@string/menu_exam_history"
+        android:visible="false"/>
 
     <item
         android:id="@+id/action_recommended_reading"
