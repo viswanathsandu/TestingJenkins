@@ -939,8 +939,6 @@ public class ContentReadingActivity extends AbstractBaseActivity {
 
                 }
             });
-        }else{
-            L.debug("--> Topic list size is null");
         }
     }
 

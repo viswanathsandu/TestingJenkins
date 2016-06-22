@@ -67,9 +67,9 @@ public class TopicAdapter extends BaseAdapter {
         if(!SystemUtils.isNetworkConnected(mContext)){
             if(topicModelList.get(position)!=null){
                 if(topicModelList.get(position).isAvailableForOffline){
-                    itemView.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+                    textView.setTextColor(mContext.getResources().getColor(android.R.color.black));
                 }else{
-                    itemView.setBackgroundColor(mContext.getResources().getColor(R.color.gray));
+                    textView.setTextColor(mContext.getResources().getColor(R.color.gray));
                 }
             }
         }

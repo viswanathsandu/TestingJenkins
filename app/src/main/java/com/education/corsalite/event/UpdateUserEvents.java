@@ -29,7 +29,6 @@ public class UpdateUserEvents {
                     super.success(userEventsResponse, response);
                 }
             });
-        }else {
         }
     }
 
