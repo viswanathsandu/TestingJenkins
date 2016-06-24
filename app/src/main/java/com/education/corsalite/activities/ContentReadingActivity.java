@@ -41,6 +41,7 @@ import com.education.corsalite.models.ContentModel;
 import com.education.corsalite.models.SubjectModel;
 import com.education.corsalite.models.TopicModel;
 import com.education.corsalite.models.db.ExerciseOfflineModel;
+import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
@@ -900,6 +901,17 @@ public class ContentReadingActivity extends AbstractBaseActivity {
         topicModelList = new ArrayList<>(chapterModelList.get(chapterPosition).topicMap);
         Collections.sort(topicModelList);
         if (topicModelList != null) {
+            List<OfflineContent> offlineCList = dbManager.getOfflineContents(AbstractBaseActivity.getSelectedCourseId());
+            if(offlineCList!=null){
+                for(TopicModel t: topicModelList){
+                    for(OfflineContent c: offlineCList){
+                        if(c.topicId.equalsIgnoreCase(t.idTopic)){
+                            t.isAvailableForOffline=true;
+                        }
+                    }
+                }
+            }
+
             final TopicAdapter topicAdapter = new TopicAdapter(topicModelList, this);
             spTopic.setAdapter(topicAdapter);
 
