@@ -27,11 +27,8 @@ public class UpdateUserEvents {
                 @Override
                 public void success(UserEventsResponse userEventsResponse, Response response) {
                     super.success(userEventsResponse, response);
-
                 }
             });
-        }else {
-
         }
     }
 
