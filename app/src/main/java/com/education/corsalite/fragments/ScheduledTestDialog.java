@@ -38,6 +38,7 @@ import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.Data;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.receivers.NotifyReceiver;
+import com.education.corsalite.utils.TimeUtils;
 import com.google.gson.Gson;
 
 import java.text.ParseException;
@@ -102,11 +103,11 @@ public class ScheduledTestDialog extends DialogFragment implements ScheduledTest
 
     private void examAdvancedNotification(String examId, String examName, Date scheduledTime) {
         long delay = 0;
-        if(System.currentTimeMillis() > scheduledTime.getTime()) {
+        if(TimeUtils.currentTimeInMillis() > scheduledTime.getTime()) {
             return;
         }
-        delay = scheduledTime.getTime() - System.currentTimeMillis();
-        if(scheduledTime.getTime() - 15*60*60*1000 > System.currentTimeMillis()) {
+        delay = scheduledTime.getTime() - TimeUtils.currentTimeInMillis();
+        if(scheduledTime.getTime() - 15*60*60*1000 > TimeUtils.currentTimeInMillis()) {
             delay -= 15*60*60*1000;
         } else {
             delay = 0;
@@ -125,9 +126,10 @@ public class ScheduledTestDialog extends DialogFragment implements ScheduledTest
 
     private void examStartedNotification(String examId, String examName, Date scheduledTime) {
         long delay = 0;
-        if(System.currentTimeMillis() > scheduledTime.getTime()) {
+        if(TimeUtils.currentTimeInMillis() > scheduledTime.getTime()) {
             return;
         }
+        delay = scheduledTime.getTime() - TimeUtils.currentTimeInMillis();
         Intent broadCastIntent = new Intent(this.getActivity(), NotifyReceiver.class);
         broadCastIntent.putExtra("title", examName);
         broadCastIntent.putExtra("sub_title", "Exam started at "+new SimpleDateFormat("hh:mm a").format(scheduledTime));

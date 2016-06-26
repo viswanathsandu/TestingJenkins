@@ -163,6 +163,7 @@ public class LoginActivity extends AbstractBaseActivity {
         if(response != null) {
             LoginUserCache.getInstance().setLoginResponse(response);
             startWebSocket();
+            AppConfig.loadAppConfigFromService(this, LoginUserCache.getInstance().getUserId());
             if(!fetchLocal) {
                 showToast(getResources().getString(R.string.login_successful));
             }

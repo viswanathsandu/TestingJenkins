@@ -26,11 +26,11 @@ public class AppConfig {
     public Boolean enableProduction = false;
     @SerializedName("SplashDuration")
     public String splashDuration = "2000";
-    public String enableVirtualCurrency = "true";
+    public String enableVirtualCurrency = "false";
     @SerializedName("EnableStudyCenter")
     public String enableStudyCenter = "true";
     @SerializedName("EnableAnalytics")
-    public String enableAnalytics = "true";
+    public String enableAnalytics = "false";
     @SerializedName("EnableSmartClass")
     public String enableSmartClass = "true";
     @SerializedName("EnableMyProfile")

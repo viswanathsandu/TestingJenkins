@@ -1,13 +1,19 @@
 package com.education.corsalite.utils;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 /**
  * Created by vissu on 1/29/16.
  */
 public class TimeUtils {
+
+    public static long currentTimeInMillis() {
+        return Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTimeInMillis();
+    }
 
     public static String getSecondsInTimeFormat(long seconds) {
         long hours = TimeUnit.SECONDS.toHours(seconds);

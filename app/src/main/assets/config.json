@@ -6,9 +6,9 @@
   "productionSocketUrl":"ws://app.corsalite.com:9300",
   "enableProduction":false,
   "SplashDuration":2000, // in milli seconds
-  "enableVirtualCurrency":true,
+  "enableVirtualCurrency":false,
   "EnableStudyCenter": true,
-  "EnableAnalytics":true,
+  "EnableAnalytics":false,
   "EnableSmartClass":true,
   "EnableMyProfile":true,
   "EnableOffline":true,
