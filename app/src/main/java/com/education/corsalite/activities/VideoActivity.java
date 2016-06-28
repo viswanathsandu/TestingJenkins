@@ -11,6 +11,8 @@ import android.widget.MediaController;
 import android.widget.VideoView;
 import android.widget.ViewSwitcher;
 
+import com.devbrackets.android.exomedia.listener.OnPreparedListener;
+import com.devbrackets.android.exomedia.ui.widget.EMVideoView;
 import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
@@ -30,8 +32,7 @@ import retrofit.client.Response;
  */
 public class VideoActivity extends AbstractBaseActivity {
 
-    @Bind(R.id.vs_container) ViewSwitcher viewSwitcher;
-    @Bind(R.id.videoViewRelative) VideoView videoViewRelative;
+    @Bind(R.id.video_view) EMVideoView videoViewRelative;
 
     List<ContentModel> mContentModels;
     int selectedPosition = 0;
@@ -75,35 +76,33 @@ public class VideoActivity extends AbstractBaseActivity {
 
     private void initVideoView() {
         //set the media controller buttons
-        if (mediaControls == null) {
-            mediaControls = new MediaController(this);
-        }
-        videoViewRelative.setMediaController(mediaControls);
+//        if (mediaControls == null) {
+//            mediaControls = new MediaController(this);
+//        }
+//        videoViewRelative.setMediaController(mediaControls);
     }
 
     private void loadWeb(final int selectedPosition) {
         // Initialize the WebView
         try {
             //set the uri of the video to be played
-            videoViewRelative.setVideoURI(Uri.parse(Constants.VIDEO_PREFIX_URL + contents.get(selectedPosition).url.replace("./", "")));
+            Uri videoUri = Uri.parse(Constants.VIDEO_PREFIX_URL + contents.get(selectedPosition).url.replace("./", ""));
+            videoViewRelative.setVideoURI(videoUri);
             videoViewRelative.requestFocus();
             //we also set an setOnPreparedListener in order to know when the video file is ready for playback
-            videoViewRelative.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-
-                public void onPrepared(MediaPlayer mediaPlayer) {
+            videoViewRelative.setOnPreparedListener(new OnPreparedListener() {
+                @Override
+                public void onPrepared() {
                     // close the progress bar and play the video
-                    videoViewRelative.seekTo(selectedPosition);
-                    if (selectedPosition == 0) {
+//                    videoViewRelative.seekTo(selectedPosition);
+//                    if (selectedPosition == 0) {
                         videoViewRelative.start();
-                    } else {
-                        //if we come from a resumed activity, video playback will be paused
-                        videoViewRelative.pause();
-                    }
+//                    } else {
+//                        //if we come from a resumed activity, video playback will be paused
+//                        videoViewRelative.pause();
+//                    }
                 }
             });
-            if (viewSwitcher.indexOfChild(viewSwitcher.getCurrentView()) == 0) {
-                viewSwitcher.showNext();
-            }
         } catch (Exception e) {
             Log.e("Error", e.getMessage());
             e.printStackTrace();
@@ -140,18 +139,12 @@ public class VideoActivity extends AbstractBaseActivity {
             @Override
             public void failure(CorsaliteError error) {
                 super.failure(error);
-                if (viewSwitcher.indexOfChild(viewSwitcher.getCurrentView()) == 0) {
-                    viewSwitcher.showNext();
-                }
             }
 
             @Override
             public void success(List<Content> contentList, Response response) {
                 super.success(contents, response);
                 contents = contentList;
-                if (viewSwitcher.indexOfChild(viewSwitcher.getCurrentView()) == 0) {
-                    viewSwitcher.showNext();
-                }
                 onEvent(selectedPosition);
             }
         });

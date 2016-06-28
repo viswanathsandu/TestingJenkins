@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:background="@drawable/rounded_corners_gray"
+    android:orientation="horizontal"
+    android:padding="20dp">
+
+
+    <ImageView
+        android:id="@+id/type_img"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_marginLeft="20dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/crash_handler" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="20dp"
+        android:orientation="vertical"
+        android:gravity="center_vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                fontPath="@string/roboto_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Type : "
+                android:textColor="@color/text_gray" />
+
+            <TextView
+                android:id="@+id/type_txt"
+                fontPath="@string/roboto_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Reading"
+                android:textColor="@color/text_black" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                fontPath="@string/roboto_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Description : "
+                android:textColor="@color/text_gray" />
+
+            <TextView
+                android:id="@+id/desc_txt"
+                fontPath="@string/roboto_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Description"
+                android:textColor="@color/text_black" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                fontPath="@string/roboto_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Due Date : "
+                android:textColor="@color/text_gray"
+                />
+
+            <TextView
+                android:id="@+id/duedate_txt"
+                fontPath="@string/roboto_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="--/--/----"
+                android:textColor="@color/text_black" />
+
+            <TextView
+                fontPath="@string/roboto_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Over due : "
+                android:textColor="@color/text_gray"
+                android:layout_marginLeft="30dp"/>
+
+            <TextView
+                android:id="@+id/overdue_txt"
+                fontPath="@string/roboto_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="65"
+                android:textColor="@color/text_black" />
+
+            <TextView
+                fontPath="@string/roboto_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total Points : "
+                android:textColor="@color/text_gray"
+                android:layout_marginLeft="30dp"/>
+
+            <TextView
+                android:id="@+id/total_points_txt"
+                fontPath="@string/roboto_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="6.000"
+                android:textColor="@color/text_black" />
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

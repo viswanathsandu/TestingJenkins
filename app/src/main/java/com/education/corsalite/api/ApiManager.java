@@ -31,6 +31,7 @@ import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.CourseAnalysis;
 import com.education.corsalite.models.responsemodels.CourseAnalysisPercentile;
 import com.education.corsalite.models.responsemodels.CreateChallengeResponseModel;
+import com.education.corsalite.models.responsemodels.CurriculumResponseModel;
 import com.education.corsalite.models.responsemodels.DefaultCourseResponse;
 import com.education.corsalite.models.responsemodels.DefaultForumResponse;
 import com.education.corsalite.models.responsemodels.DefaultNoteResponse;
@@ -518,6 +519,12 @@ public class ApiManager {
     public void getRecommendedReading(String studentId, String courseId, String beginRowNumber, String rowCount, ApiCallback<List<RecommendedModel>> callback) {
         if (isApiOnline()) {
             ApiClientService.get().getRecommendedReading(studentId, courseId, beginRowNumber, rowCount, callback);
+        }
+    }
+
+    public void getCurriculumData(String studentId, String courseId, String entityId, String pageType, String sortBy, ApiCallback<CurriculumResponseModel> callback) {
+        if(isApiOnline()) {
+            ApiClientService.get().getCurriculumData(studentId, courseId, entityId, pageType, sortBy, callback);
         }
     }
 }

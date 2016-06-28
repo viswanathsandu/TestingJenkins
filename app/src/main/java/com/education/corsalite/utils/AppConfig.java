@@ -31,6 +31,7 @@ public class AppConfig {
     public String enableStudyCenter = "true";
     @SerializedName("EnableAnalytics")
     public String enableAnalytics = "false";
+    public String enableCurriculum = "true";
     @SerializedName("EnableSmartClass")
     public String enableSmartClass = "true";
     @SerializedName("EnableMyProfile")
@@ -100,9 +101,14 @@ public class AppConfig {
         return isEnabled(enableStudyCenter);
     }
 
+    public boolean isCurriculumEnabled() {
+        return isEnabled(enableCurriculum);
+    }
+
     public boolean isAnalyticsEnabled() {
         return isEnabled(enableAnalytics);
     }
+
 
     public boolean isSmartClassEnabled() {
         return isEnabled(enableSmartClass);

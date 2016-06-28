@@ -272,6 +272,13 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         loadCoursesList();
     }
 
+    protected void setToolbarForCurriculumScreen() {
+        toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
+        setToolbarTitle("Curriculum");
+        loadCoursesList();
+    }
+
+
     protected void setToolbarForTestIndexScreen() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.GONE);
         setToolbarTitle("Test Instructions");
@@ -309,6 +316,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     protected void setToolbarForVideo(List<ContentModel> videos, int position) {
+        findViewById(R.id.toolbar).setVisibility(View.GONE);
         findViewById(R.id.toolbar_title).setVisibility(View.GONE);
         toolbar.findViewById(R.id.video_layout).setVisibility(View.VISIBLE);
         hideDrawerIcon();
@@ -412,6 +420,9 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         if (config.isAnalyticsEnabled()) {
             navigationView.findViewById(R.id.navigation_analytics).setVisibility(View.VISIBLE);
         }
+        if (config.isCurriculumEnabled()) {
+            navigationView.findViewById(R.id.navigation_curriculum).setVisibility(View.VISIBLE);
+        }
         if (config.isOfflineEnabled()) {
             navigationView.findViewById(R.id.navigation_offline).setVisibility(View.VISIBLE);
         }
@@ -485,6 +496,15 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 } else {
                     showToast("Analytics requires network connection");
                 }
+                drawerLayout.closeDrawers();
+            }
+        });
+
+        navigationView.findViewById(R.id.navigation_curriculum).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Localytics.tagEvent("Curriculum");
+                startActivity(new Intent(AbstractBaseActivity.this, CurriculumActivity.class));
                 drawerLayout.closeDrawers();
             }
         });

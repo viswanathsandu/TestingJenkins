@@ -1,28 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:EMVideoView="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ViewSwitcher
-        android:id="@+id/vs_container"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/black">
 
-        <RelativeLayout
+        <com.devbrackets.android.exomedia.ui.widget.EMVideoView
+            android:id="@+id/video_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            EMVideoView:useDefaultControls="true" />
 
-            <VideoView
-                android:id="@+id/videoViewRelative"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true" />
-
-        </RelativeLayout>
-
-    </ViewSwitcher>
+    </LinearLayout>
 </LinearLayout>

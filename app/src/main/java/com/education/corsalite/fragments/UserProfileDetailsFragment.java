@@ -142,8 +142,8 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
         editProfilePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showToast("Under Development");
-//                showEditProfilePicDialogFragment();
+//                showToast("Under Development");
+                showEditProfilePicDialogFragment();
 
             }
         });
@@ -262,7 +262,11 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
         if (profile.photoUrl != null && !profile.photoUrl.isEmpty()) {
             try {
                 URL url = new URL(new URL(ApiClientService.getBaseUrl()), profile.photoUrl);
-                Glide.with(getActivity()).load(url).into(profilePicImg);
+                Glide.with(getActivity())
+                        .load(url)
+                        .placeholder(getResources().getDrawable(R.drawable.user))
+                        .error(getResources().getDrawable(R.drawable.user))
+                        .into(profilePicImg);
             } catch (MalformedURLException e) {
                 L.error(e.getMessage(), e);
             }

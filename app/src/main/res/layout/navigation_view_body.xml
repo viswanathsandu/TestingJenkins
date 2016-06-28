@@ -47,6 +47,12 @@
                 style="@style/navigation_drawer_element" />
 
             <TextView
+                android:id="@+id/navigation_curriculum"
+                android:drawableLeft="@drawable/ico_sidemenu_analytics"
+                android:text="Curriculum"
+                style="@style/navigation_drawer_element" />
+
+            <TextView
                 android:id="@+id/navigation_offline"
                 android:drawableLeft="@drawable/ico_sidemenu_offline"
                 android:text="Offline"

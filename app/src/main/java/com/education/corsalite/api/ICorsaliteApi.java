@@ -13,6 +13,7 @@ import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.CourseAnalysis;
 import com.education.corsalite.models.responsemodels.CourseAnalysisPercentile;
 import com.education.corsalite.models.responsemodels.CreateChallengeResponseModel;
+import com.education.corsalite.models.responsemodels.CurriculumResponseModel;
 import com.education.corsalite.models.responsemodels.DefaultCourseResponse;
 import com.education.corsalite.models.responsemodels.DefaultForumResponse;
 import com.education.corsalite.models.responsemodels.DefaultNoteResponse;
@@ -295,4 +296,7 @@ public interface ICorsaliteApi {
 
     @GET("/recommendedreading")
     void getRecommendedReading(@Query("idStudent") String studentId, @Query("idCourse") String courseId, @Query("BeginRowNumber") String beginRowNumber, @Query("RowCount") String rowCount, ApiCallback<List<RecommendedModel>> callback);
+
+    @GET("/curriculum")
+    void getCurriculumData(@Query("idStudent") String studentId, @Query("idCourse") String courseId, @Query("idEntity") String entityId, @Query("pageType") String pageType, @Query("soryBy") String sortBy, ApiCallback<CurriculumResponseModel> callback);
 }
