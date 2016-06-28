@@ -199,6 +199,7 @@ public class EditProfilePicDialogFragment extends DialogFragment {
             image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
             byte[] b = baos.toByteArray();
             model.photoBase64Data = Base64.encodeToString(b, Base64.DEFAULT);
+            model.photoBase64Data = model.photoBase64Data.replace("+","%2B");
         }else{
             model.photoBase64Data = null;
         }
