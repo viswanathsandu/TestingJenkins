@@ -846,10 +846,9 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     // this method will be overridden by the classes that subscribes from event bus
     public void onEvent(Course course) {
         selectedCourse = course;
-        getContentIndex(selectedCourse.courseId+"", LoginUserCache.getInstance().getStudentId());
     }
 
-    private void getContentIndex(String courseId, String studentId) {
+    protected void getContentIndex(String courseId, String studentId) {
         ApiManager.getInstance(this).getContentIndex(courseId, studentId,
                 new ApiCallback<List<ContentIndex>>(this) {
                     @Override

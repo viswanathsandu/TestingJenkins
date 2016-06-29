@@ -544,7 +544,8 @@ public class ContentReadingActivity extends AbstractBaseActivity {
         }
     }
 
-    private void getContentIndex(String courseId, String studentId) {
+    @Override
+    protected void getContentIndex(String courseId, String studentId) {
         if (mViewSwitcher.indexOfChild(mViewSwitcher.getCurrentView()) == 1) {
             mViewSwitcher.showPrevious();
             notAvailableForOfflineTxt.setVisibility(View.GONE);

@@ -4,10 +4,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +20,6 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.activities.LoginActivity;
@@ -38,14 +39,11 @@ import com.education.corsalite.models.responsemodels.DefaultCourseResponse;
 import com.education.corsalite.models.responsemodels.ExamDetail;
 import com.education.corsalite.models.responsemodels.UserProfileResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencyBalanceResponse;
-import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.SystemUtils;
 import com.education.corsalite.utils.WebUrls;
 import com.google.gson.Gson;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 
 import butterknife.Bind;
@@ -261,13 +259,19 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
     private void showProfileData(BasicProfile profile) {
         if (profile.photoUrl != null && !profile.photoUrl.isEmpty()) {
             try {
-                URL url = new URL(new URL(ApiClientService.getBaseUrl()), profile.photoUrl);
-                Glide.with(getActivity())
-                        .load(url)
-                        .placeholder(getResources().getDrawable(R.drawable.user))
-                        .error(getResources().getDrawable(R.drawable.user))
-                        .into(profilePicImg);
-            } catch (MalformedURLException e) {
+
+                byte[] decodedString = Base64.decode(profile.photoBase64EncodedString, Base64.DEFAULT);
+                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                profilePicImg.setImageBitmap(decodedByte);
+
+//                URL url = new URL(new URL(ApiClientService.getBaseUrl()), profile.photoUrl);
+//                Glide.with(getActivity())
+//                        .load(url)
+//                        .signature(new StringSignature(System.currentTimeMillis()+""))
+//                        .placeholder(getResources().getDrawable(R.drawable.user))
+//                        .error(getResources().getDrawable(R.drawable.user))
+//                        .into(profilePicImg);
+            } catch (Exception e) {
                 L.error(e.getMessage(), e);
             }
         }

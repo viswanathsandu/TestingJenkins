@@ -301,7 +301,8 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
         }
     }
 
-    private void getContentIndex(String courseId, String studentId) {
+    @Override
+    protected void getContentIndex(String courseId, String studentId) {
         ApiManager.getInstance(this).getContentIndex(courseId, studentId,
                 new ApiCallback<List<ContentIndex>>(this) {
                     @Override

@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.JavascriptInterface;
@@ -45,7 +44,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import butterknife.Bind;
 import retrofit.client.Response;
 
 /**
@@ -352,7 +350,8 @@ public class EditorActivity extends AbstractBaseActivity {
         });
     }
 
-    private void getContentIndex(String courseId, String studentId) {
+    @Override
+    protected void getContentIndex(String courseId, String studentId) {
         showProgress();
         ApiManager.getInstance(EditorActivity.this).getContentIndex(courseId, studentId,
                 new ApiCallback<List<ContentIndex>>(EditorActivity.this) {

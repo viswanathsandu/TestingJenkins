@@ -13,6 +13,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.signature.StringSignature;
 import com.crashlytics.android.Crashlytics;
 import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
@@ -24,6 +26,7 @@ import com.education.corsalite.models.responsemodels.WelcomeDetails;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.services.ContentDownloadService;
 import com.education.corsalite.utils.L;
+import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -60,6 +63,7 @@ public class WelcomeActivity extends AbstractBaseActivity implements View.OnClic
     @Override
     public void onEvent(Course course) {
         super.onEvent(course);
+        getContentIndex(getSelectedCourseId(), LoginUserCache.getInstance().getStudentId());
         // Start download service if its not started
         stopService(new Intent(getApplicationContext(), ContentDownloadService.class));
         if(loadContent) {
@@ -82,11 +86,19 @@ public class WelcomeActivity extends AbstractBaseActivity implements View.OnClic
                         dbManager.saveReqRes(ApiCacheHolder.getInstance().welcome);
                         LoginUserCache.getInstance().setWelcomeDetails(welcomeDetails);
                         if (!isDestroyed() && !TextUtils.isEmpty(welcomeDetails.photoUrl)) {
-                            Glide.with(WelcomeActivity.this)
+
+                            Picasso.with(WelcomeActivity.this)
                                     .load(ApiClientService.getBaseUrl() + welcomeDetails.photoUrl.replaceFirst("./", ""))
                                     .placeholder(getResources().getDrawable(R.drawable.profile_pic))
                                     .error(getResources().getDrawable(R.drawable.profile_pic))
                                     .into(profilePic);
+
+//                            Glide.with(WelcomeActivity.this)
+//                                    .load(ApiClientService.getBaseUrl() + welcomeDetails.photoUrl.replaceFirst("./", ""))
+//                                    .signature(new StringSignature(System.currentTimeMillis()+""))
+//                                    .placeholder(getResources().getDrawable(R.drawable.profile_pic))
+//                                    .error(getResources().getDrawable(R.drawable.profile_pic))
+//                                    .into(profilePic);
                         }
                         if (!TextUtils.isEmpty(welcomeDetails.firstName) && !TextUtils.isEmpty(welcomeDetails.lastName)) {
                             fullName.setText(welcomeDetails.firstName + " " + welcomeDetails.lastName);

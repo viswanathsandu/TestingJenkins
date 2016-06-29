@@ -22,5 +22,7 @@ public class BasicProfile  implements Serializable {
     public String emailId;
     @SerializedName("EnrolledCourses")
     public String enrolledCourses;
+    @SerializedName("PhotoUrlEncoded")
+    public String photoBase64EncodedString;
 
 }
