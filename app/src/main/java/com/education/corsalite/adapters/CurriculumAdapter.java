@@ -51,28 +51,30 @@ public class CurriculumAdapter extends RecyclerView.Adapter<CurriculumAdapter.Cu
         holder.overdueTxt.setText(entity.overDueDays);
         holder.totalPointsTxt.setText(entity.points);
         Drawable typeImgDrawable = null;
-        switch (CurriculumEntityType.getCurriculumEntityType(entity.recType)) {
-            case READING:
-                typeImgDrawable = mActivity.getResources().getDrawable(R.drawable.reading_ico);
-                break;
-            case CUSTOM_EXERCISE:
-                typeImgDrawable = mActivity.getResources().getDrawable(R.drawable.custome_exercise);
-                break;
-            case SCHEDULED_EXAM:
-                typeImgDrawable = mActivity.getResources().getDrawable(R.drawable.scheduled_test);
-                break;
-            case PRACTIVE_TEST:
-                typeImgDrawable = mActivity.getResources().getDrawable(R.drawable.practive_test);
-                break;
-            case REVISION_TEST:
-                typeImgDrawable = mActivity.getResources().getDrawable(R.drawable.revision_test);
-                break;
-            case SCHEDULED_TEST:
-                typeImgDrawable = mActivity.getResources().getDrawable(R.drawable.scheduled_test);
-                break;
+        CurriculumEntityType type = CurriculumEntityType.getCurriculumEntityType(entity.recType);
+        if (type != null) {
+            switch (type) {
+                case READING:
+                    typeImgDrawable = mActivity.getResources().getDrawable(R.drawable.reading_ico);
+                    break;
+                case CUSTOM_EXERCISE:
+                    typeImgDrawable = mActivity.getResources().getDrawable(R.drawable.custome_exercise);
+                    break;
+                case SCHEDULED_EXAM:
+                    typeImgDrawable = mActivity.getResources().getDrawable(R.drawable.scheduled_test);
+                    break;
+                case PRACTIVE_TEST:
+                    typeImgDrawable = mActivity.getResources().getDrawable(R.drawable.practive_test);
+                    break;
+                case REVISION_TEST:
+                    typeImgDrawable = mActivity.getResources().getDrawable(R.drawable.revision_test);
+                    break;
+                case SCHEDULED_TEST:
+                    typeImgDrawable = mActivity.getResources().getDrawable(R.drawable.scheduled_test);
+                    break;
+            }
         }
-
-        if(typeImgDrawable != null) {
+        if (typeImgDrawable != null) {
             holder.typeImg.setImageDrawable(typeImgDrawable);
         }
     }
