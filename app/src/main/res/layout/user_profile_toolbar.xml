@@ -17,9 +17,27 @@
         android:singleLine="true"
         android:text="@string/app_name" />
 
+    <LinearLayout
+        android:id="@+id/video_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left|center_vertical"
+        android:padding="10dp"
+        android:visibility="gone"
+        android:background="@color/black">
+
+        <Spinner
+            android:id="@+id/spinner_video"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:background="@color/black"/>
+    </LinearLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/black">
 
         <LinearLayout
             android:id="@+id/challenge_buttons_layout"
@@ -42,12 +60,12 @@
 
         </LinearLayout>
 
-
         <LinearLayout
             android:id="@+id/action_buttons_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:background="@color/black"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -66,21 +84,6 @@
                     android:background="@drawable/yellowshape_selector"
                     android:text="REDEEM"
                     android:textColor="@color/black" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/video_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="left|center_vertical"
-                android:padding="10dp"
-                android:visibility="gone">
-
-                <Spinner
-                    android:id="@+id/spinner_video"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="left" />
             </LinearLayout>
 
             <LinearLayout
@@ -104,6 +107,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="right|center_vertical"
                 android:padding="10dp"
+                android:background="@color/black"
                 android:visibility="gone">
 
                 <com.education.corsalite.views.CustomImageButton
@@ -120,6 +124,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="right|center_vertical"
                 android:padding="10dp"
+                android:background="@color/black"
                 android:visibility="gone">
 
                 <com.education.corsalite.views.CustomButton
@@ -157,6 +162,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="right|center_vertical"
                 android:padding="10dp"
+                android:background="@color/black"
                 android:visibility="gone">
 
                 <com.education.corsalite.views.CustomButton
@@ -168,6 +174,7 @@
                     android:text="Start"
                     android:textColor="@color/black" />
             </LinearLayout>
+
         </LinearLayout>
 
         <LinearLayout
@@ -178,6 +185,7 @@
             android:gravity="right|center_vertical"
             android:layout_centerVertical="true"
             android:orientation="horizontal"
+            android:background="@color/black"
             android:visibility="gone">
 
             <LinearLayout

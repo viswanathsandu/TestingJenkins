@@ -17,7 +17,7 @@ import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.models.ContentModel;
 import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
-import com.education.corsalite.utils.Constants;
+import com.education.corsalite.services.ApiClientService;
 
 import java.util.List;
 
@@ -85,7 +85,7 @@ public class VideoActivity extends AbstractBaseActivity {
         // Initialize the WebView
         try {
             //set the uri of the video to be played
-            videoViewRelative.setVideoURI(Uri.parse(Constants.VIDEO_PREFIX_URL + contents.get(selectedPosition).url.replace("./", "")));
+            videoViewRelative.setVideoURI(Uri.parse(ApiClientService.getBaseUrl() + contents.get(selectedPosition).url.replace("./", "")));
             videoViewRelative.requestFocus();
             //we also set an setOnPreparedListener in order to know when the video file is ready for playback
             videoViewRelative.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -104,6 +104,7 @@ public class VideoActivity extends AbstractBaseActivity {
             if (viewSwitcher.indexOfChild(viewSwitcher.getCurrentView()) == 0) {
                 viewSwitcher.showNext();
             }
+
         } catch (Exception e) {
             Log.e("Error", e.getMessage());
             e.printStackTrace();

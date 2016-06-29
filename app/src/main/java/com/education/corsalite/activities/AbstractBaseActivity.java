@@ -316,11 +316,8 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     protected void setToolbarForVideo(List<ContentModel> videos, int position) {
-        findViewById(R.id.toolbar).setVisibility(View.GONE);
         findViewById(R.id.toolbar_title).setVisibility(View.GONE);
         toolbar.findViewById(R.id.video_layout).setVisibility(View.VISIBLE);
-        hideDrawerIcon();
-        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         showVideoInToolbar(videos, position);
     }
 
@@ -782,11 +779,9 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     public void showVideoInToolbar(final List<ContentModel> videos, int selectedPosition) {
         Spinner videoSpinner = (Spinner) toolbar.findViewById(R.id.spinner_video);
         if (videoSpinner == null) return;
-        videoSpinner.setBackgroundColor(Color.WHITE);
         ArrayAdapter<ContentModel> dataAdapter = new ArrayAdapter<>(this, R.layout.spinner_title_textview, videos);
         dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         videoSpinner.setAdapter(dataAdapter);
-
         videoSpinner.setSelection(selectedPosition);
         videoSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

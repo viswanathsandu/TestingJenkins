@@ -47,6 +47,7 @@ import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.ExamModel;
+import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.FileUtilities;
 import com.education.corsalite.utils.FileUtils;
@@ -783,7 +784,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
                 if (f.getName().endsWith(Constants.VIDEO_FILE)) {
                     String videoUrl = FileUtils.getUrlFromFile(f);
                     if (videoUrl.length() > 0) {
-                        loadWeb(Constants.VIDEO_PREFIX_URL + videoUrl.replace("./", ""));
+                        loadWeb(ApiClientService.getBaseUrl() + videoUrl.replace("./", ""));
                     }
                 } else {
                     loadWeb(Constants.HTML_PREFIX_URL + f.getAbsolutePath());
@@ -810,7 +811,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
                         if (f.getName().endsWith(Constants.VIDEO_FILE)) {
                             String videoUrl = FileUtils.getUrlFromFile(f);
                             if (videoUrl.length() > 0) {
-                                loadWeb(Constants.VIDEO_PREFIX_URL + videoUrl.replace("./", ""));
+                                loadWeb(ApiClientService.getBaseUrl() + videoUrl.replace("./", ""));
                             }
                         } else {
                             loadWeb(Constants.HTML_PREFIX_URL + f.getAbsolutePath());
