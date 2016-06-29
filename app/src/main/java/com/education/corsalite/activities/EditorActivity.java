@@ -187,6 +187,7 @@ public class EditorActivity extends AbstractBaseActivity {
                     @Override
                     public void run() {
                         L.info("UpdatedContent : " + updateContent);
+                        updateContent = updateContent.replace("+", "%2B");
                         if (operation.equalsIgnoreCase("Add")) {
                             addContent();
                         } else if (operation.equalsIgnoreCase("Edit")) {
