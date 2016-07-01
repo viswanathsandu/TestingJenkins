@@ -176,7 +176,6 @@ public class LoginActivity extends AbstractBaseActivity {
 
     private boolean checkForValidEmail(){
         if(usernameTxt.getText() != null && !usernameTxt.getText().toString().isEmpty()){
-
             return android.util.Patterns.EMAIL_ADDRESS.matcher(usernameTxt.getText().toString()).matches();
         }
         return false;

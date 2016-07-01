@@ -44,8 +44,7 @@
                 android:textColor="@color/black"
                 android:inputType="textEmailAddress"
                 android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@._-"
-                android:maxLines="1"
-                android:text="abhirambolisetti13@kkr.com"/>
+                android:maxLines="1"/>
 
         </android.support.design.widget.TextInputLayout>
 
@@ -65,8 +64,7 @@
                 android:drawableRight="@drawable/view"
                 android:drawablePadding="6dp"
                 android:inputType="textPassword"
-                android:maxLines="1"
-                android:text="test@123"/>
+                android:maxLines="1"/>
 
         </android.support.design.widget.TextInputLayout>
 

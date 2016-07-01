@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
-import android.widget.ProgressBar;
 import android.widget.VideoView;
 import android.widget.ViewSwitcher;
 
@@ -34,7 +33,7 @@ public class VideoActivity extends AbstractBaseActivity {
 
     @Bind(R.id.vs_container) ViewSwitcher viewSwitcher;
     @Bind(R.id.videoViewRelative) VideoView videoViewRelative;
-    @Bind(R.id.progress) ProgressBar progress;
+    @Bind(R.id.progress) View progress;
 
     List<ContentModel> mContentModels;
     int selectedPosition = 0;
@@ -88,6 +87,7 @@ public class VideoActivity extends AbstractBaseActivity {
         // Initialize the WebView
         try {
             progress.setVisibility(View.VISIBLE);
+            videoViewRelative.seekTo(0);
             //set the uri of the video to be played
             videoViewRelative.setVideoURI(Uri.parse(ApiClientService.getBaseUrl() + contents.get(selectedPosition).url.replace("./", "")));
             videoViewRelative.requestFocus();
@@ -98,12 +98,12 @@ public class VideoActivity extends AbstractBaseActivity {
                     // close the progress bar and play the video
                     progress.setVisibility(View.GONE);
                     videoViewRelative.seekTo(selectedPosition);
-                    if (selectedPosition == 0) {
+//                    if (selectedPosition == 0) {
                         videoViewRelative.start();
-                    } else {
-                        //if we come from a resumed activity, video playback will be paused
-                        videoViewRelative.pause();
-                    }
+//                    } else {
+//                        //if we come from a resumed activity, video playback will be paused
+//                        videoViewRelative.pause();
+//                    }
                 }
             });
             if (viewSwitcher.indexOfChild(viewSwitcher.getCurrentView()) == 0) {

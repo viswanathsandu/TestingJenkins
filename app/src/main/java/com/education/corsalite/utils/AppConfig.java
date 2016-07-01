@@ -82,6 +82,9 @@ public class AppConfig {
     }
 
     public static AppConfig getInstance() {
+        if(instance == null) {
+            return new AppConfig();
+        }
         return instance;
     }
 
