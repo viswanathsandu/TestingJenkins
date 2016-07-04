@@ -48,6 +48,7 @@ import com.education.corsalite.adapters.MockSubjectsAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.db.SugarDbManager;
 import com.education.corsalite.enums.QuestionType;
 import com.education.corsalite.enums.TestanswerPaperState;
 import com.education.corsalite.event.ExerciseAnsEvent;
@@ -57,6 +58,7 @@ import com.education.corsalite.helpers.WebSocketHelper;
 import com.education.corsalite.models.db.MockTest;
 import com.education.corsalite.models.db.OfflineTestObjectModel;
 import com.education.corsalite.models.db.ScheduledTestsArray;
+import com.education.corsalite.models.db.SyncModel;
 import com.education.corsalite.models.examengine.BaseTest;
 import com.education.corsalite.models.requestmodels.ExamTemplateChapter;
 import com.education.corsalite.models.requestmodels.ExamTemplateConfig;
@@ -777,6 +779,12 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
     private void updateTestAnswerPaper(final TestanswerPaperState state) {
         testanswerPaper.status = state.toString();
+        if(!SystemUtils.isNetworkConnected(this)) {
+            SyncModel syncModel = new SyncModel();
+            syncModel.requestObject = testanswerPaper;
+            SugarDbManager.get(this).save(syncModel);
+            return;
+        }
         ApiManager.getInstance(ExamEngineActivity.this).submitTestAnswerPaper(testanswerPaper, new ApiCallback<TestAnswerPaperResponse>(ExamEngineActivity.this) {
             @Override
             public void failure(CorsaliteError error) {
@@ -823,9 +831,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         alert.setPositiveButton("Stop Exam", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if(SystemUtils.isNetworkConnected(ExamEngineActivity.this)) {
-                    updateTestAnswerPaper(TestanswerPaperState.SUSPENDED);
-                } else {
+                updateTestAnswerPaper(TestanswerPaperState.SUSPENDED);
+                if(!SystemUtils.isNetworkConnected(ExamEngineActivity.this)) {
                     finish();
                 }
             }
@@ -906,10 +913,10 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 }
             }
             postExerciseAnsEvent();
+            updateTestAnswerPaper(TestanswerPaperState.COMPLETED);
             if (SystemUtils.isNetworkConnected(this)) {
                 headerProgress.setVisibility(View.VISIBLE);
                 mViewSwitcher.showNext();
-                updateTestAnswerPaper(TestanswerPaperState.COMPLETED);
             } else {
                 navigateToExamResultActivity(localExamModelList.size(), success, failure);
             }

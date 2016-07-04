@@ -42,7 +42,7 @@ public class ContentDownloadService extends IntentService {
     public static int downloandInProgress = 0;
     private List<OfflineContent> offlineContents = new ArrayList<>();
     private List<ExerciseOfflineModel> offlineExercises = new ArrayList<>();
-    private DownloadManager downloadManager = new ThinDownloadManager();
+    private com.thin.downloadmanager.DownloadManager downloadManager = new ThinDownloadManager();
     private SugarDbManager dbManager;
 
     public ContentDownloadService() {

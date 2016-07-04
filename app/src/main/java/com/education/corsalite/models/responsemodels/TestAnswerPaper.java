@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by vissu on 3/7/16.
  */
-public class TestAnswerPaper {
+public class TestAnswerPaper extends BaseModel{
 
     @SerializedName("idEntity")
     public String entityId;

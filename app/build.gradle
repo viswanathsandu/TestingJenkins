@@ -28,14 +28,14 @@ android {
         }
     }
 
-    productFlavors {
-        prod {
-            applicationId "com.corsalite.tabletapp"
-        }
-        staging {
-            applicationId "com.education.corsalite"
-        }
-    }
+//    productFlavors {
+//        prod {
+//            applicationId "com.corsalite.tabletapp"
+//        }
+//        staging {
+//            applicationId "com.education.corsalite"
+//        }
+//    }
 }
 
 buildscript {
