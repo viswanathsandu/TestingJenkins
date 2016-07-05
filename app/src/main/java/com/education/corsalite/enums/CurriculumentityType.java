@@ -11,7 +11,7 @@ public enum CurriculumEntityType {
     PRACTIVE_TEST("Practice Test"),
     SCHEDULED_EXAM("Scheduled Exam"),
     REVISION_TEST("Revision Test"),
-    SCHEDULED_TEST("Scheduled Test");
+    SCHEDULED_TEST("Schedule Test");
 
     private String value;
 
