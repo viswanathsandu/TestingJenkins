@@ -323,6 +323,13 @@ public class ApiManager {
         }
     }
 
+    public TestAnswerPaperResponse submitTestAnswerPaper(TestAnswerPaper testAnswerPaper) {
+        if (isApiOnline()) {
+            return ApiClientService.get().submitTestAnswerPaper(new TypedString("Upsert=" + new Gson().toJson(testAnswerPaper)));
+        }
+        return null;
+    }
+
     public void submitTestAnswerPaper(TestAnswerPaper testAnswerPaper, ApiCallback<TestAnswerPaperResponse> callback) {
         if (isApiOnline()) {
             ApiClientService.get().submitTestAnswerPaper(new TypedString("Upsert=" + new Gson().toJson(testAnswerPaper)), callback);

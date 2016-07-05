@@ -39,6 +39,7 @@
 
         <service android:name=".services.ContentDownloadService" />
         <service android:name=".services.TestDownloadService" />
+        <service android:name=".services.DataSyncService" />
 
         <receiver
             android:name=".receivers.NotifyReceiver"

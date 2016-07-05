@@ -60,6 +60,7 @@ import com.education.corsalite.models.socket.response.ChallengeTestStartEvent;
 import com.education.corsalite.models.socket.response.ChallengeTestUpdateEvent;
 import com.education.corsalite.notifications.ChallengeUtils;
 import com.education.corsalite.services.ApiClientService;
+import com.education.corsalite.services.DataSyncService;
 import com.education.corsalite.utils.AppConfig;
 import com.education.corsalite.utils.AppPref;
 import com.education.corsalite.utils.Constants;
@@ -153,11 +154,23 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         }
     }
 
+    private void syncDataWithServer() {
+        if (DataSyncService.syncData != null && !DataSyncService.syncData.isEmpty()) {
+            // Start download service if its not started
+            stopService(new Intent(getApplicationContext(), DataSyncService.class));
+            startService(new Intent(getApplicationContext(), DataSyncService.class));
+        }
+    }
+
     public void onEventMainThread(NetworkStatusChangeEvent event) {
-        showToast(event.isconnected ? "Netowrk connection restored" : "Network connection failure");
-        L.info("WIFICONNECT : "+event.isconnected);
-        if(!(this instanceof ExamEngineActivity || this instanceof ChallengeActivity)) {
-            refreshScreen();
+        try {
+            showToast(event.isconnected ? "Network connection restored" : "Network connection failure");
+            L.info("WIFICONNECT : " + event.isconnected);
+            if (!(this instanceof ExamEngineActivity || this instanceof ChallengeActivity)) {
+                refreshScreen();
+            }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
         }
     }
 
@@ -204,6 +217,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                         appPref.save("passwordHash", passwordHash);
                         if(SystemUtils.isNetworkConnected(AbstractBaseActivity.this)) {
                             startWebSocket();
+                            syncDataWithServer();
                         }
                         recreate();
                     } else {

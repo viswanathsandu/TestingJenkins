@@ -48,7 +48,6 @@ import com.education.corsalite.adapters.MockSubjectsAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.db.SugarDbManager;
 import com.education.corsalite.enums.QuestionType;
 import com.education.corsalite.enums.TestanswerPaperState;
 import com.education.corsalite.event.ExerciseAnsEvent;
@@ -83,6 +82,7 @@ import com.education.corsalite.models.responsemodels.TestPaperIndex;
 import com.education.corsalite.models.responsemodels.TestQuestionPaperResponse;
 import com.education.corsalite.models.socket.requests.UpdateLeaderBoardEvent;
 import com.education.corsalite.services.ApiClientService;
+import com.education.corsalite.services.DataSyncService;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.SystemUtils;
@@ -721,7 +721,9 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         }
         if (selectedPosition == localExamModelList.size() - 1) {
             btnPrevious.setVisibility(View.VISIBLE);
-//            btnNext.setVisibility(View.GONE);
+            if(btnSubmit.getVisibility() != View.VISIBLE) {
+                btnNext.setVisibility(View.GONE);
+            }
             return;
         }
         btnPrevious.setVisibility(View.VISIBLE);
@@ -782,7 +784,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         if(!SystemUtils.isNetworkConnected(this)) {
             SyncModel syncModel = new SyncModel();
             syncModel.requestObject = testanswerPaper;
-            SugarDbManager.get(this).save(syncModel);
+            DataSyncService.addSyncModel(syncModel);
+//            SugarDbManager.get(this).save(syncModel);
             return;
         }
         ApiManager.getInstance(ExamEngineActivity.this).submitTestAnswerPaper(testanswerPaper, new ApiCallback<TestAnswerPaperResponse>(ExamEngineActivity.this) {

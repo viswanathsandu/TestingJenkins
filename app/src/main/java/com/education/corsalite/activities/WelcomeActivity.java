@@ -94,19 +94,11 @@ public class WelcomeActivity extends AbstractBaseActivity implements View.OnClic
                         dbManager.saveReqRes(ApiCacheHolder.getInstance().welcome);
                         LoginUserCache.getInstance().setWelcomeDetails(welcomeDetails);
                         if (!isDestroyed() && !TextUtils.isEmpty(welcomeDetails.photoUrl)) {
-
                             Picasso.with(WelcomeActivity.this)
                                     .load(ApiClientService.getBaseUrl() + welcomeDetails.photoUrl.replaceFirst("./", ""))
                                     .placeholder(getResources().getDrawable(R.drawable.profile_pic))
                                     .error(getResources().getDrawable(R.drawable.profile_pic))
                                     .into(profilePic);
-
-//                            Glide.with(WelcomeActivity.this)
-//                                    .load(ApiClientService.getBaseUrl() + welcomeDetails.photoUrl.replaceFirst("./", ""))
-//                                    .signature(new StringSignature(System.currentTimeMillis()+""))
-//                                    .placeholder(getResources().getDrawable(R.drawable.profile_pic))
-//                                    .error(getResources().getDrawable(R.drawable.profile_pic))
-//                                    .into(profilePic);
                         }
                         if (!TextUtils.isEmpty(welcomeDetails.firstName) && !TextUtils.isEmpty(welcomeDetails.lastName)) {
                             fullName.setText(welcomeDetails.firstName + " " + welcomeDetails.lastName);

@@ -177,6 +177,10 @@ public interface ICorsaliteApi {
     @POST("/TestAnswerPaper")
     void submitTestAnswerPaper(@Body TypedString testAnswerPaper, ApiCallback<TestAnswerPaperResponse> callback);
 
+    @Headers("Content-Type:application/x-www-form-urlencoded")
+    @POST("/TestAnswerPaper")
+    TestAnswerPaperResponse submitTestAnswerPaper(@Body TypedString testAnswerPaper);
+
     @GET("/StandardExamsByCourse")
     void getStandardExamsByCourse(@Query("idCourse") String idCourse, @Query("idEntity") String idEntity, ApiCallback<List<Exam>> callback);
 
