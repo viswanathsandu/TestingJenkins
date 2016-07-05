@@ -28,23 +28,32 @@ public class CurriculumAdapter extends RecyclerView.Adapter<CurriculumAdapter.Cu
     private List<CurriculumEntity> mCurriculumEntities;
     private CurriculumTabType mTabType;
     private Activity mActivity;
+    private OnItemClickListener itemClickListener;
 
-    public CurriculumAdapter(Activity activity, CurriculumTabType tabType) {
+    public CurriculumAdapter(Activity activity, CurriculumTabType tabType, OnItemClickListener listener) {
         mCurriculumEntities = new ArrayList<>();
         mTabType = tabType;
         this.mActivity = activity;
+        this.itemClickListener = listener;
     }
 
     @Override
     public CurriculumHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.view_item_curriculum, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_item_curriculum, parent, false);
         return new CurriculumHolder(view);
     }
 
     @Override
     public void onBindViewHolder(CurriculumHolder holder, int position) {
         final CurriculumEntity entity = mCurriculumEntities.get(position);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(itemClickListener != null) {
+                    itemClickListener.onItemClick(entity);
+                }
+            }
+        });
         holder.typeTxt.setText(entity.recType);
         holder.descTxt.setText(entity.description);
         holder.duedataTxt.setText(entity.dueDate);
@@ -103,6 +112,7 @@ public class CurriculumAdapter extends RecyclerView.Adapter<CurriculumAdapter.Cu
     }
 
     public class CurriculumHolder extends RecyclerView.ViewHolder {
+        View itemView;
         @Bind(R.id.type_img)
         ImageView typeImg;
         @Bind(R.id.type_txt)
@@ -118,7 +128,13 @@ public class CurriculumAdapter extends RecyclerView.Adapter<CurriculumAdapter.Cu
 
         public CurriculumHolder(View itemView) {
             super(itemView);
+            this.itemView = itemView;
             ButterKnife.bind(this, itemView);
         }
     }
+
+    public interface OnItemClickListener {
+        public void onItemClick(CurriculumEntity entity);
+    }
+
 }

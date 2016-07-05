@@ -1,5 +1,6 @@
 package com.education.corsalite.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,10 +10,12 @@ import android.view.ViewGroup;
 
 import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
+import com.education.corsalite.activities.ContentReadingActivity;
 import com.education.corsalite.adapters.CurriculumAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.enums.CurriculumEntityType;
 import com.education.corsalite.enums.CurriculumTabType;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.CurriculumEntity;
@@ -27,7 +30,7 @@ import retrofit.client.Response;
 /**
  * Created by sridharnalam on 1/8/16.
  */
-public class CurriculumFragment extends BaseFragment {
+public class CurriculumFragment extends BaseFragment implements CurriculumAdapter.OnItemClickListener {
     private static final String tabTypeExta = "TAB_TYPE";
 
     @Bind(R.id.rcv_curriculum) RecyclerView mRecyclerView;
@@ -66,7 +69,7 @@ public class CurriculumFragment extends BaseFragment {
     private void setUI() {
         mLayoutManager = new LinearLayoutManager(mRecyclerView.getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mCurriculumAdapter = new CurriculumAdapter(getActivity(), selectedTab);
+        mCurriculumAdapter = new CurriculumAdapter(getActivity(), selectedTab, this);
         mRecyclerView.setAdapter(mCurriculumAdapter);
     }
 
@@ -119,5 +122,31 @@ public class CurriculumFragment extends BaseFragment {
     @Override
     public void closeProgress() {
         progress.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onItemClick(CurriculumEntity entity) {
+        CurriculumEntityType type = CurriculumEntityType.getCurriculumEntityType(entity.recType);
+        if (type != null) {
+            switch (type) {
+                case READING:
+                    Intent intent = new Intent(getActivity(), ContentReadingActivity.class);
+                    intent.putExtra("courseId", entity.idCourse);
+                    intent.putExtra("subjectId", entity.idCourseSubject);
+                    intent.putExtra("chapterId", entity.idCourseSubjectChapter);
+                    startActivity(intent);
+                    break;
+                case CUSTOM_EXERCISE:
+                    break;
+                case SCHEDULED_EXAM:
+                    break;
+                case PRACTIVE_TEST:
+                    break;
+                case REVISION_TEST:
+                    break;
+                case SCHEDULED_TEST:
+                    break;
+            }
+        }
     }
 }

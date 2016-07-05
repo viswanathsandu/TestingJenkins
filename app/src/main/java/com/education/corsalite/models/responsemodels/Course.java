@@ -17,9 +17,17 @@ public class Course extends BaseModel  implements Serializable {
     public String name;
     @SerializedName("DefaultYN")
     public String isDefault;
+    @SerializedName("EndDate")
+    public String endDate;
+    @SerializedName("IsCourseEnded")
+    public String isCourseEnded;
 
     public boolean isDefault() {
         return (!TextUtils.isEmpty(isDefault) && isDefault.equals("Y"));
+    }
+
+    public boolean isEnded() {
+        return (!TextUtils.isEmpty(isCourseEnded) && isCourseEnded.equalsIgnoreCase("Y"));
     }
 
     @Override

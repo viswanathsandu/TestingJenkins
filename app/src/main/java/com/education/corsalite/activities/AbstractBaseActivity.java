@@ -447,6 +447,10 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_profile).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(selectedCourse.isEnded()) {
+                    showToast("Please Select different Course");
+                    return;
+                }
                 if (!(AbstractBaseActivity.this instanceof UserProfileActivity)) {
                     Localytics.tagEvent("User Profile");
                     Intent intent = new Intent(AbstractBaseActivity.this, UserProfileActivity.class);
@@ -459,6 +463,10 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_welcome).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(selectedCourse.isEnded()) {
+                    showToast("Please Select different Course");
+                    return;
+                }
                 loadWelcomeScreen();
                 drawerLayout.closeDrawers();
             }
@@ -467,6 +475,10 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_smart_class).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(selectedCourse.isEnded()) {
+                    showToast("Please Select different Course");
+                    return;
+                }
                 if (SystemUtils.isNetworkConnected(AbstractBaseActivity.this)) {
                     loadSmartClass();
                 } else {
@@ -479,6 +491,10 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_study_center).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(selectedCourse.isEnded()) {
+                    showToast("Please Select different Course");
+                    return;
+                }
                 Localytics.tagEvent("Study Center");
                 loadStudyCenterScreen();
             }
@@ -487,6 +503,10 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_analytics).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(selectedCourse.isEnded()) {
+                    showToast("Please Select different Course");
+                    return;
+                }
                 if (SystemUtils.isNetworkConnected(AbstractBaseActivity.this)) {
                     Localytics.tagEvent("Analytics");
                     startActivity(new Intent(AbstractBaseActivity.this, NewAnalyticsActivity.class));
@@ -500,6 +520,10 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_curriculum).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(selectedCourse.isEnded()) {
+                    showToast("Please Select different Course");
+                    return;
+                }
                 Localytics.tagEvent("Curriculum");
                 startActivity(new Intent(AbstractBaseActivity.this, CurriculumActivity.class));
                 drawerLayout.closeDrawers();
@@ -509,6 +533,10 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_offline).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(selectedCourse.isEnded()) {
+                    showToast("Please Select different Course");
+                    return;
+                }
                 Localytics.tagEvent("Offline");
                 startActivity(new Intent(AbstractBaseActivity.this, OfflineActivity.class));
                 drawerLayout.closeDrawers();
@@ -518,6 +546,10 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_challenge_your_friends).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(selectedCourse.isEnded()) {
+                    showToast("Please Select different Course");
+                    return;
+                }
                 if (SystemUtils.isNetworkConnected(AbstractBaseActivity.this)) {
                     Localytics.tagEvent(getString(R.string.challenge_your_friends));
                     startActivity(new Intent(AbstractBaseActivity.this, ChallengeActivity.class));
@@ -531,6 +563,10 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_exam_history).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(selectedCourse.isEnded()) {
+                    showToast("Please Select different Course");
+                    return;
+                }
                 if (SystemUtils.isNetworkConnected(AbstractBaseActivity.this)) {
                     Localytics.tagEvent(getString(R.string.exam_history));
                     startActivity(new Intent(AbstractBaseActivity.this, ExamHistoryActivity.class));
@@ -543,6 +579,10 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_scheduled_tests).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(selectedCourse.isEnded()) {
+                    showToast("Please Select different Course");
+                    return;
+                }
                 Localytics.tagEvent(getString(R.string.menu_scheduled_test));
                 showScheduledTestsDialog();
             }
@@ -551,6 +591,10 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_mock_tests).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(selectedCourse.isEnded()) {
+                    showToast("Please Select different Course");
+                    return;
+                }
                 Localytics.tagEvent(getString(R.string.menu_mock_test));
                 showMockTestsDialog();
             }
@@ -559,6 +603,10 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_forum).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(selectedCourse.isEnded()) {
+                    showToast("Please Select different Course");
+                    return;
+                }
                 if (SystemUtils.isNetworkConnected(AbstractBaseActivity.this)) {
                     Localytics.tagEvent(getString(R.string.forum));
                     startActivity(new Intent(AbstractBaseActivity.this, ForumActivity.class));
@@ -841,6 +889,14 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     // this method will be overridden by the classes that subscribes from event bus
     public void onEvent(Course course) {
         selectedCourse = course;
+        if(course.isEnded()) {
+            if(!( this instanceof WelcomeActivity)) {
+                Intent newIntent = new Intent(this, WelcomeActivity.class);
+                newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(newIntent);
+            }
+        }
     }
 
     protected void getContentIndex(String courseId, String studentId) {

@@ -34,6 +34,7 @@ import retrofit.client.Response;
 
 public class WelcomeActivity extends AbstractBaseActivity implements View.OnClickListener {
 
+    @Bind(R.id.course_ended_txt) TextView courseEndedTxt;
     @Bind(R.id.redeem_welcome_btn) Button redeemBtn;
     @Bind(R.id.studycenter_btn) Button studyCenterBtn;
     @Bind(R.id.messages_btn) Button messagesBtn;
@@ -63,6 +64,13 @@ public class WelcomeActivity extends AbstractBaseActivity implements View.OnClic
     @Override
     public void onEvent(Course course) {
         super.onEvent(course);
+        if(course.isEnded()) {
+            courseEndedTxt.setVisibility(View.VISIBLE);
+            courseEndedTxt.setText("This course ended on "+course.endDate);
+
+        } else {
+            courseEndedTxt.setVisibility(View.GONE);
+        }
         getContentIndex(getSelectedCourseId(), LoginUserCache.getInstance().getStudentId());
         // Start download service if its not started
         stopService(new Intent(getApplicationContext(), ContentDownloadService.class));
@@ -133,6 +141,10 @@ public class WelcomeActivity extends AbstractBaseActivity implements View.OnClic
 
     @Override
     public void onClick(View v) {
+        if(AbstractBaseActivity.getSelectedCourse().isEnded()) {
+            showToast("Please select a different course");
+            return;
+        }
         switch (v.getId()) {
             case R.id.redeem_welcome_btn:
                 redeem();
