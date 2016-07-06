@@ -20,6 +20,7 @@ import com.education.corsalite.models.requestmodels.Bookmark;
 import com.education.corsalite.models.requestmodels.CreateChallengeRequest;
 import com.education.corsalite.models.requestmodels.ForumLikeRequest;
 import com.education.corsalite.models.requestmodels.ForumModel;
+import com.education.corsalite.models.responsemodels.BaseResponseModel;
 import com.education.corsalite.models.responsemodels.ChallengeCompleteResponseModel;
 import com.education.corsalite.models.responsemodels.ChallengeStartResponseModel;
 import com.education.corsalite.models.responsemodels.ChallengeUser;
@@ -460,6 +461,19 @@ public class ApiManager {
     public UserEventsResponse postUserEvents(String insert) {
         if (isApiOnline()) {
             return  ApiClientService.get().postUserEvents(new TypedString("Insert=" + insert));
+        }
+        return null;
+    }
+
+    public void postContentUsage(String insert, ApiCallback<BaseResponseModel> callback) {
+        if (isApiOnline()) {
+            ApiClientService.get().postContentUsage(new TypedString("Update=" + insert), callback);
+        }
+    }
+
+    public BaseResponseModel postContentUsage(String insert) {
+        if (isApiOnline()) {
+            return  ApiClientService.get().postContentUsage(new TypedString("Update=" + insert));
         }
         return null;
     }

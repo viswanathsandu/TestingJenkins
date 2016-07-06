@@ -984,7 +984,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     public void onEvent(ContentReadingEvent event) {
-        L.debug("ContentReadingEvent id", event.id);
+        L.debug("ContentReadingEvent id", event.idContent);
         new UpdateUserEvents().postContentReading(this, event);
     }
 

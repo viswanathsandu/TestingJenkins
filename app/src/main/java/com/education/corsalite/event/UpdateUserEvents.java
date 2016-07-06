@@ -7,6 +7,7 @@ import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.db.SyncModel;
 import com.education.corsalite.models.requestmodels.UserEventsModel;
+import com.education.corsalite.models.responsemodels.BaseResponseModel;
 import com.education.corsalite.models.responsemodels.UserEventsResponse;
 import com.education.corsalite.services.DataSyncService;
 import com.education.corsalite.utils.SystemUtils;
@@ -39,8 +40,20 @@ public class UpdateUserEvents {
     }
 
     public void postContentReading(Activity activity, ContentReadingEvent event){
+        if(SystemUtils.isNetworkConnected(activity)) {
+            ApiManager.getInstance(activity).postContentUsage(new Gson().toJson(event), new ApiCallback<BaseResponseModel>(activity) {
+                @Override
+                public void success(BaseResponseModel baseResponse, Response response) {
+                    super.success(baseResponse, response);
+                }
+            });
+        } else {
+            SyncModel syncModel = new SyncModel();
+            syncModel.requestObject = event;
+            DataSyncService.addSyncModel(syncModel);
+        }
         UserEventsModel model = getUserEventsModel("Content Reading",event.eventStartTime,
-                event.eventEndTime, event.id,event.pageView);
+                event.eventEndTime, event.idContent, "");
         postUserEvent(activity, model);
     }
 

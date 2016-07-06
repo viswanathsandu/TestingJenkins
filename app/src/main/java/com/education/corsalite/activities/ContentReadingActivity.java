@@ -53,16 +53,14 @@ import com.education.corsalite.utils.FileUtilities;
 import com.education.corsalite.utils.FileUtils;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.SystemUtils;
+import com.education.corsalite.utils.TimeUtils;
 import com.education.corsalite.views.CorsaliteWebViewClient;
 
 import java.io.File;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -206,21 +204,17 @@ public class ContentReadingActivity extends AbstractBaseActivity {
         try {
             eventEndDate = System.currentTimeMillis();
             ContentReadingEvent event = new ContentReadingEvent();
-            event.id = contentModelList.get(0).idContent;
-            event.pageView = "";
-            event.eventStartTime = getDate(eventStartTime);
-            event.eventEndTime = getDate(eventEndDate);
+            event.idContent = contentModelList.get(0).idContent;
+            event.idStudent = LoginUserCache.getInstance().getStudentId();
+            event.eventStartTime = TimeUtils.getDateString(eventStartTime);
+            event.eventEndTime= TimeUtils.getDateString(eventEndDate);
+            event.updatetime = TimeUtils.getDateString(System.currentTimeMillis());
             getEventbus().post(event);
         } catch (Exception e) {
             L.error(e.getMessage(), e);
         }
-    }
-
-    private String getDate(long millis) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(
-                "yyyy-mm-dd hh:mm:ss", Locale.getDefault());
-        Date date = new Date(millis);
-        return dateFormat.format(date);
+        eventStartTime = 0;
+        eventEndDate = 0;
     }
 
     private void initWebView() {

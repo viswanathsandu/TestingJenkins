@@ -5,11 +5,15 @@ import android.content.Intent;
 
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.db.SugarDbManager;
+import com.education.corsalite.event.ContentReadingEvent;
 import com.education.corsalite.models.db.SyncModel;
 import com.education.corsalite.models.requestmodels.UserEventsModel;
+import com.education.corsalite.models.responsemodels.BaseResponseModel;
 import com.education.corsalite.models.responsemodels.TestAnswerPaper;
 import com.education.corsalite.models.responsemodels.TestAnswerPaperResponse;
+import com.education.corsalite.models.responsemodels.UserEventsResponse;
 import com.education.corsalite.utils.L;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,36 +40,40 @@ public class DataSyncService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         dbManager = SugarDbManager.get(getApplicationContext());
         L.info("DataSyncService : Starting");
+        List<SyncModel> dataToBeRemoved = new ArrayList<>();
         for(SyncModel model : syncData) {
             if (model != null) {
-                executeApi(model);
+               if(executeApi(model)) {
+                   dataToBeRemoved.add(model);
+               }
             }
         }
+        syncData.removeAll(dataToBeRemoved);
     }
 
-    private void executeApi(SyncModel model) {
+    private boolean executeApi(SyncModel model) {
         try {
             if(model.requestObject != null) {
-                return;
+                return false;
             }
             if (model.requestObject instanceof TestAnswerPaper) {
                 L.info("DataSuncService : Executing SubmitAnswerPaper");
                 TestAnswerPaperResponse response = null;
                 response = ApiManager.getInstance(getApplicationContext()).submitTestAnswerPaper((TestAnswerPaper) model.requestObject);
-                if (response == null) {
-                    syncData.remove(model);
-                }
+                return response != null;
             } else if(model.requestObject instanceof UserEventsModel) {
-                L.info("DataSuncService : Executing SubmitAnswerPaper");
-                TestAnswerPaperResponse response = null;
-                response = ApiManager.getInstance(getApplicationContext()).submitTestAnswerPaper((TestAnswerPaper) model.requestObject);
-                if (response == null) {
-                    syncData.remove(model);
-                }
+                L.info("DataSuncService : Executing UserEvents");
+                UserEventsResponse response = ApiManager.getInstance(getApplicationContext()).postUserEvents(new Gson().toJson(model.requestObject));
+                return response != null;
+            } else if(model.requestObject instanceof ContentReadingEvent) {
+                L.info("DataSuncService : Executing ContentUsage");
+                BaseResponseModel response = ApiManager.getInstance(getApplicationContext()).postContentUsage(new Gson().toJson(model.requestObject));
+                return response != null;
             }
         } catch (Exception e) {
             L.error(e.getMessage(), e);
         }
+        return false;
     }
 
 }

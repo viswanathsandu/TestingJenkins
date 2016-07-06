@@ -2,6 +2,7 @@ package com.education.corsalite.api;
 
 import com.education.corsalite.models.db.MockTest;
 import com.education.corsalite.models.db.ScheduledTestList;
+import com.education.corsalite.models.responsemodels.BaseResponseModel;
 import com.education.corsalite.models.responsemodels.ChallengeCompleteResponseModel;
 import com.education.corsalite.models.responsemodels.ChallengeStartResponseModel;
 import com.education.corsalite.models.responsemodels.ChallengeUser;
@@ -253,6 +254,14 @@ public interface ICorsaliteApi {
     @Headers("Content-Type:application/x-www-form-urlencoded")
     @POST("/Bookmark")
     void addDeleteBookmark(@Body TypedString update, ApiCallback<CommonResponseModel> callback);
+
+    @Headers("Content-Type:application/x-www-form-urlencoded")
+    @POST("/ContentUsage")
+    void postContentUsage(@Body TypedString insert, ApiCallback<BaseResponseModel> callback);
+
+    @Headers("Content-Type:application/x-www-form-urlencoded")
+    @POST("/UserEvents")
+    BaseResponseModel postContentUsage(@Body TypedString insert);
 
     @Headers("Content-Type:application/x-www-form-urlencoded")
     @POST("/UserEvents")

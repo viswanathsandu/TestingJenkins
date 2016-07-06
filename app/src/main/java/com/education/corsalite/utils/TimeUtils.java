@@ -3,6 +3,7 @@ package com.education.corsalite.utils;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
@@ -34,5 +35,12 @@ public class TimeUtils {
         }
         return dateTime;
 
+    }
+
+    public static String getDateString(long millis) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
+                "yyyy-MM-dd hh:mm:ss", Locale.getDefault());
+        Date date = new Date(millis);
+        return dateFormat.format(date);
     }
 }
