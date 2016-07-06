@@ -786,6 +786,9 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             syncModel.requestObject = testanswerPaper;
             DataSyncService.addSyncModel(syncModel);
 //            SugarDbManager.get(this).save(syncModel);
+            if(state == TestanswerPaperState.COMPLETED) {
+                dbManager.deleteOfflineTestModel(offlineModelDate);
+            }
             return;
         }
         ApiManager.getInstance(ExamEngineActivity.this).submitTestAnswerPaper(testanswerPaper, new ApiCallback<TestAnswerPaperResponse>(ExamEngineActivity.this) {
@@ -821,7 +824,9 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     } else if (testAnswerPaperResponse != null && !TextUtils.isEmpty(testAnswerPaperResponse.testAnswerPaperId)) {
                         openAdvancedExamResultSummary(testAnswerPaperResponse.testAnswerPaperId);
                     }
-                    dbManager.updateOfflineTestModel(offlineModelDate, Constants.STATUS_COMPLETED, System.currentTimeMillis());
+                    // dbManager.updateOfflineTestModel(offlineModelDate, Constants.STATUS_COMPLETED, System.currentTimeMillis());
+                    // TO remove the exam if submitted
+                    dbManager.deleteOfflineTestModel(offlineModelDate);
                 }
             }
         });

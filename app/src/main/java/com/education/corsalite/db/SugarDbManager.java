@@ -300,6 +300,18 @@ public class SugarDbManager {
         }
     }
 
+    public void deleteOfflineTestModel(final long date) {
+        try {
+            for (OfflineTestObjectModel savedOfflineContent : getCachedOfflineTestObjectModles()) {
+                if (date == savedOfflineContent.dateTime) {
+                    delete(savedOfflineContent);
+                }
+            }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+    }
+
     public void saveOfflineTest(final OfflineTestObjectModel model) {
         try {
             save(model);
