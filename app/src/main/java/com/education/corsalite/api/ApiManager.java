@@ -457,6 +457,13 @@ public class ApiManager {
         }
     }
 
+    public UserEventsResponse postUserEvents(String insert) {
+        if (isApiOnline()) {
+            return  ApiClientService.get().postUserEvents(new TypedString("Insert=" + insert));
+        }
+        return null;
+    }
+
     public void getMockTests(String courseId, String studentId, ApiCallback<List<MockTest>> callback) {
         if (isApiOnline()) {
             ApiClientService.get().getMockTests(courseId, studentId, callback);

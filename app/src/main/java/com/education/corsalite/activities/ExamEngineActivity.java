@@ -20,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
@@ -326,24 +327,30 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             }
             loadFlaggedQuestions();
         } else if (title.equalsIgnoreCase("Exercises")) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             if(!TextUtils.isEmpty(topicName)){
                 setToolbarForExercise(title + " - " + topicName, true);
             }
             loadExerciseTest();
         } else if (isMockTest()) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             loadMockTest();
         } else if (isScheduledTest()) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             loadScheduledTest();
         } else if (isChallengeTest()) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             loadChallengeTest();
         } else if (isViewAnswersScreen()) {
             loadViewAnswers();
         } else if(title.equalsIgnoreCase("Take Test")) { // TakeTest
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             if(!TextUtils.isEmpty(subjectName) && !TextUtils.isEmpty(chapterName)){
                 setToolbarForExercise(subjectName + " - " + chapterName, true);
             }
             loadDefaultExam();
         } else { // PartTest
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             loadDefaultExam();
         }
     }

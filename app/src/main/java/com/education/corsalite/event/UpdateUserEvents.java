@@ -5,8 +5,10 @@ import android.app.Activity;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.models.db.SyncModel;
 import com.education.corsalite.models.requestmodels.UserEventsModel;
 import com.education.corsalite.models.responsemodels.UserEventsResponse;
+import com.education.corsalite.services.DataSyncService;
 import com.education.corsalite.utils.SystemUtils;
 import com.google.gson.Gson;
 
@@ -29,10 +31,14 @@ public class UpdateUserEvents {
                     super.success(userEventsResponse, response);
                 }
             });
+        } else {
+            SyncModel syncModel = new SyncModel();
+            syncModel.requestObject = model;
+            DataSyncService.addSyncModel(syncModel);
         }
     }
 
-    public void postContentReading(Activity activity,ContentReadingEvent event){
+    public void postContentReading(Activity activity, ContentReadingEvent event){
         UserEventsModel model = getUserEventsModel("Content Reading",event.eventStartTime,
                 event.eventEndTime, event.id,event.pageView);
         postUserEvent(activity, model);

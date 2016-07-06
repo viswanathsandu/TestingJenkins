@@ -171,7 +171,6 @@ public class ContentReadingActivity extends AbstractBaseActivity {
                 }
             }
         }
-        eventStartTime = System.currentTimeMillis();
         setListeners();
 
         drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
@@ -204,12 +203,17 @@ public class ContentReadingActivity extends AbstractBaseActivity {
     }
 
     private void postContentReadingEvent() {
-        ContentReadingEvent event = new ContentReadingEvent();
-        event.id = mChapterId;
-        event.pageView = "";
-        event.eventStartTime = getDate(eventStartTime);
-        event.eventEndTime = getDate(eventEndDate);
-        getEventbus().post(event);
+        try {
+            eventEndDate = System.currentTimeMillis();
+            ContentReadingEvent event = new ContentReadingEvent();
+            event.id = contentModelList.get(0).idContent;
+            event.pageView = "";
+            event.eventStartTime = getDate(eventStartTime);
+            event.eventEndTime = getDate(eventEndDate);
+            getEventbus().post(event);
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
     }
 
     private String getDate(long millis) {
@@ -293,6 +297,8 @@ public class ContentReadingActivity extends AbstractBaseActivity {
 
     private void loadWeb(String htmlUrl) {
         // Initialize the WebView
+        // start the timer
+        eventStartTime = System.currentTimeMillis();
         mContentId = "";
         webviewContentReading.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         htmlFileText = htmlUrl;
@@ -433,7 +439,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
     }
 
     private void loadNext() {
-
+        postContentReadingEvent();
         int nextTopicPosition = spTopic.getSelectedItemPosition() + 1;
         if (nextTopicPosition >= topicModelList.size()) {
             int nextChapterPosition = spChapter.getSelectedItemPosition() + 1;
@@ -472,6 +478,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
     }
 
     private void loadPrevious() {
+        postContentReadingEvent();
         int previousTopicPosition = spTopic.getSelectedItemPosition() - 1;
         if (previousTopicPosition < 0) {
             int previousChapterPosition = spChapter.getSelectedItemPosition() - 1;
@@ -694,33 +701,6 @@ public class ContentReadingActivity extends AbstractBaseActivity {
                 }
                 contentList = contents;
                 getWebData(contents, updatePosition);
-
-                // Used for caching the data
-                /*String courseId = String.valueOf(selectedCourse.courseId);
-                String courseName = selectedCourse.name;
-                String subjectId = subjectModelList.get(spSubject.getSelectedItemPosition()).idSubject;
-                String subjectName = subjectModelList.get(spSubject.getSelectedItemPosition()).subjectName;
-                String chapterId = chapterModelList.get(spChapter.getSelectedItemPosition()).idChapter;
-                String chapterName = chapterModelList.get(spChapter.getSelectedItemPosition()).chapterName;
-                String topicId = topicModelList.get(spTopic.getSelectedItemPosition()).idTopic;
-                String topicName = topicModelList.get(spTopic.getSelectedItemPosition()).topicName;
-                String fileName;
-
-                List<OfflineContent> offlineContents = new ArrayList<>(contents.size());
-                OfflineContent offlineContent;
-                for (Content content : contents) {
-                    if (TextUtils.isEmpty(content.type)) {
-                        fileName = content.name + ".html";
-                    } else {
-                        fileName = content.name + "." + content.type;
-                    }
-                    offlineContent = new OfflineContent(courseId, courseName,
-                            subjectId, subjectName, chapterId, chapterName, topicId, topicName,
-                            content.idContent, content.name, fileName);
-                    offlineContents.add(offlineContent);
-                }
-                DbManager.getInstance(ContentReadingActivity.this).saveOfflineContent(offlineContents);
-                */
                 if (mViewSwitcher.getNextView() instanceof RelativeLayout) {
                     mViewSwitcher.showNext();
                 }
@@ -968,8 +948,13 @@ public class ContentReadingActivity extends AbstractBaseActivity {
     }
 
     @Override
+    public void onStop() {
+        postContentReadingEvent();
+        super.onStop();
+    }
+
+    @Override
     public void onBackPressed() {
-        eventEndDate = System.currentTimeMillis();
         postContentReadingEvent();
         super.onBackPressed();
     }

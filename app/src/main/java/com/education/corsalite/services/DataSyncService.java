@@ -6,6 +6,7 @@ import android.content.Intent;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.db.SugarDbManager;
 import com.education.corsalite.models.db.SyncModel;
+import com.education.corsalite.models.requestmodels.UserEventsModel;
 import com.education.corsalite.models.responsemodels.TestAnswerPaper;
 import com.education.corsalite.models.responsemodels.TestAnswerPaperResponse;
 import com.education.corsalite.utils.L;
@@ -44,7 +45,17 @@ public class DataSyncService extends IntentService {
 
     private void executeApi(SyncModel model) {
         try {
-            if (model.requestObject != null && (model.requestObject instanceof TestAnswerPaper)) {
+            if(model.requestObject != null) {
+                return;
+            }
+            if (model.requestObject instanceof TestAnswerPaper) {
+                L.info("DataSuncService : Executing SubmitAnswerPaper");
+                TestAnswerPaperResponse response = null;
+                response = ApiManager.getInstance(getApplicationContext()).submitTestAnswerPaper((TestAnswerPaper) model.requestObject);
+                if (response == null) {
+                    syncData.remove(model);
+                }
+            } else if(model.requestObject instanceof UserEventsModel) {
                 L.info("DataSuncService : Executing SubmitAnswerPaper");
                 TestAnswerPaperResponse response = null;
                 response = ApiManager.getInstance(getApplicationContext()).submitTestAnswerPaper((TestAnswerPaper) model.requestObject);
