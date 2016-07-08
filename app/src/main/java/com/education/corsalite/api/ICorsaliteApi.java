@@ -260,7 +260,7 @@ public interface ICorsaliteApi {
     void postContentUsage(@Body TypedString insert, ApiCallback<BaseResponseModel> callback);
 
     @Headers("Content-Type:application/x-www-form-urlencoded")
-    @POST("/UserEvents")
+    @POST("/ContentUsage")
     BaseResponseModel postContentUsage(@Body TypedString insert);
 
     @Headers("Content-Type:application/x-www-form-urlencoded")

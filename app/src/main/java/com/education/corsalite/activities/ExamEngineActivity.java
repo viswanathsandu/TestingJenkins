@@ -326,7 +326,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 setToolbarForFlaggedQuestions(title);
             }
             loadFlaggedQuestions();
-        } else if (title.equalsIgnoreCase("Exercises")) {
+        } else if (isExerciseTest()) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             if(!TextUtils.isEmpty(topicName)){
                 setToolbarForExercise(title + " - " + topicName, true);
@@ -353,6 +353,10 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             loadDefaultExam();
         }
+    }
+
+    private boolean isExerciseTest() {
+        return title.equalsIgnoreCase("Exercises");
     }
 
     private boolean isChallengeTest() {
@@ -714,9 +718,11 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         resetExplanation();
         if (localExamModelList != null && localExamModelList.size() > position) {
             loadQuestion(position);
-        }
-        if (localExamModelList != null && localExamModelList.get(position).sectionName != null && !localExamModelList.get(position).sectionName.equals(selectedSection)) {
-            selectSection(localExamModelList.get(position).sectionName);
+
+            String sectionName = localExamModelList.get(position).sectionName;
+            if (!TextUtils.isEmpty(sectionName) && !sectionName.equals(selectedSection)) {
+                selectSection(localExamModelList.get(position).sectionName);
+            }
         }
     }
 
@@ -728,7 +734,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         }
         if (selectedPosition == localExamModelList.size() - 1) {
             btnPrevious.setVisibility(View.VISIBLE);
-            if(btnSubmit.getVisibility() != View.VISIBLE) {
+            if(!btnSubmit.isShown()) {
                 btnNext.setVisibility(View.GONE);
             }
             return;
@@ -787,12 +793,14 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     };
 
     private void updateTestAnswerPaper(final TestanswerPaperState state) {
+        if(isExerciseTest() || isFlaggedQuestionsScreen() || isViewAnswersScreen()) {
+            return;
+        }
         testanswerPaper.status = state.toString();
         if(!SystemUtils.isNetworkConnected(this)) {
             SyncModel syncModel = new SyncModel();
             syncModel.requestObject = testanswerPaper;
             DataSyncService.addSyncModel(syncModel);
-//            SugarDbManager.get(this).save(syncModel);
             if(state == TestanswerPaperState.COMPLETED) {
                 dbManager.deleteOfflineTestModel(offlineModelDate);
             }
