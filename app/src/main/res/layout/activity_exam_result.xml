@@ -179,7 +179,8 @@
             android:background="@drawable/login_button_bg"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:layout_marginLeft="10dp"/>
+            android:layout_marginLeft="10dp"
+            android:visibility="gone"/>
 
         <com.education.corsalite.views.CustomButton
             android:id="@+id/course_analysis_btn"
@@ -189,7 +190,8 @@
             android:background="@drawable/login_button_bg"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:layout_marginLeft="10dp"/>
+            android:layout_marginLeft="10dp"
+            android:visibility="gone"/>
 
     </LinearLayout>
 

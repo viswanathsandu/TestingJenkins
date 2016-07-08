@@ -53,7 +53,7 @@ public class DataSyncService extends IntentService {
 
     private boolean executeApi(SyncModel model) {
         try {
-            if(model.requestObject != null) {
+            if(model.requestObject == null) {
                 return false;
             }
             if (model.requestObject instanceof TestAnswerPaper) {

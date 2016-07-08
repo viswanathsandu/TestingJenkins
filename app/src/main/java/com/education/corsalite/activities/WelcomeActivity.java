@@ -67,7 +67,6 @@ public class WelcomeActivity extends AbstractBaseActivity implements View.OnClic
         if(course.isEnded()) {
             courseEndedTxt.setVisibility(View.VISIBLE);
             courseEndedTxt.setText("This course ended on "+course.endDate);
-
         } else {
             courseEndedTxt.setVisibility(View.GONE);
         }

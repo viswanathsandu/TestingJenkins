@@ -712,7 +712,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         }
         selectedPosition = position;
         resetExplanation();
-        if (localExamModelList != null && localExamModelList.size() > 0) {
+        if (localExamModelList != null && localExamModelList.size() > position) {
             loadQuestion(position);
         }
         if (localExamModelList != null && localExamModelList.get(position).sectionName != null && !localExamModelList.get(position).sectionName.equals(selectedSection)) {

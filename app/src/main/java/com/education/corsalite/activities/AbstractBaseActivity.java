@@ -902,14 +902,19 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     // this method will be overridden by the classes that subscribes from event bus
     public void onEvent(Course course) {
-        selectedCourse = course;
-        if(course.isEnded()) {
-            if(!( this instanceof WelcomeActivity)) {
-                Intent newIntent = new Intent(this, WelcomeActivity.class);
-                newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(newIntent);
+        if(course != null && (selectedCourse == null || (selectedCourse.courseId != course.courseId))) {
+            selectedCourse = course;
+            if (course.isEnded()) {
+                if (!(this instanceof WelcomeActivity)) {
+                    Intent newIntent = new Intent(this, WelcomeActivity.class);
+                    newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(newIntent);
+                    finish();
+                }
             }
+        } else {
+            return;
         }
     }
 
