@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 
 import com.education.corsalite.R;
 import com.education.corsalite.models.responsemodels.ExamDetail;
+import com.education.corsalite.utils.TimeUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -66,7 +67,7 @@ public class AddExamScheduleDialogFragment extends DialogFragment {
         if(type.equalsIgnoreCase(ADD_EXAM_DATE)){
             addExamDate.setVisibility(View.VISIBLE);
             addHallTicket.setVisibility(View.GONE);
-            examDatePicker.setMinDate(System.currentTimeMillis() - 1000);
+            examDatePicker.setMinDate(TimeUtils.currentTimeInMillis() - 1000);
         }else if(type.equalsIgnoreCase(ADD_HALL_TICKET)){
             addHallTicket.setVisibility(View.VISIBLE);
             addExamDate.setVisibility(View.GONE);

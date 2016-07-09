@@ -25,6 +25,7 @@ import com.education.corsalite.models.responsemodels.TestPaperIndex;
 import com.education.corsalite.models.responsemodels.TestQuestionPaperResponse;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.L;
+import com.education.corsalite.utils.TimeUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -134,7 +135,7 @@ public class TestDownloadService extends IntentService {
                             model.testPaperIndecies = testPAperIndecies;
                             model.testQuestionPaperId = testQuestionPaperId;
                             model.testAnswerPaperId = testAnswerPaperId;
-                            model.dateTime = System.currentTimeMillis();
+                            model.dateTime = TimeUtils.currentTimeInMillis();
                             dbManager.saveOfflineTest(model);
                         }
                     });
@@ -151,7 +152,7 @@ public class TestDownloadService extends IntentService {
                 OfflineTestObjectModel model = new OfflineTestObjectModel();
                 model.testType = Tests.CHAPTER;
                 model.baseTest = test;
-                model.dateTime = System.currentTimeMillis();
+                model.dateTime = TimeUtils.currentTimeInMillis();
                 dbManager.saveOfflineTest(model);
             }
 
@@ -173,7 +174,7 @@ public class TestDownloadService extends IntentService {
                     model.baseTest.subjectId = subjectId;
                     model.baseTest.subjectName = subjectName;
                 }
-                model.dateTime = System.currentTimeMillis();
+                model.dateTime = TimeUtils.currentTimeInMillis();
                 dbManager.saveOfflineTest(model);
                 L.info("Test Saved : "+model.getClass());
             }

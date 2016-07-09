@@ -13,7 +13,11 @@ import java.util.concurrent.TimeUnit;
 public class TimeUtils {
 
     public static long currentTimeInMillis() {
-        return Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTimeInMillis();
+        return Calendar.getInstance(TimeZone.getTimeZone("Asia/Kolkata")).getTimeInMillis();
+    }
+
+    public static long getMinInMillis(int minutes) {
+        return minutes*60*1000;
     }
 
     public static String getSecondsInTimeFormat(long seconds) {

@@ -393,7 +393,7 @@ public class SugarDbManager {
             List<OfflineTestObjectModel> responseList = getCachedOfflineTestObjectModles();
             for (OfflineTestObjectModel test : responseList) {
                 if (test != null && courseId.equals(test.baseTest.courseId)) {
-                    if (test != null && test.baseTest.subjectId.equalsIgnoreCase(subjectId)) {
+                    if (test.baseTest.subjectId.equalsIgnoreCase(subjectId)) {
                         callback.success(test.baseTest, MockUtils.getRetrofitResponse());
                         return;
                     }

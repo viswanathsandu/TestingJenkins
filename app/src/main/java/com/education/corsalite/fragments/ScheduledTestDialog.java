@@ -29,6 +29,7 @@ import com.education.corsalite.activities.ExamEngineActivity;
 import com.education.corsalite.adapters.ScheduledTestsListAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
+import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.db.ScheduledTestList;
 import com.education.corsalite.models.db.ScheduledTestsArray;
@@ -107,8 +108,8 @@ public class ScheduledTestDialog extends DialogFragment implements ScheduledTest
             return;
         }
         delay = scheduledTime.getTime() - TimeUtils.currentTimeInMillis();
-        if(scheduledTime.getTime() - 15*60*60*1000 > TimeUtils.currentTimeInMillis()) {
-            delay -= 15*60*60*1000;
+        if(scheduledTime.getTime() - TimeUtils.getMinInMillis(15) > TimeUtils.currentTimeInMillis()) {
+            delay -= TimeUtils.getMinInMillis(15);
         } else {
             delay = 0;
         }
@@ -116,7 +117,7 @@ public class ScheduledTestDialog extends DialogFragment implements ScheduledTest
         broadCastIntent.putExtra("title", examName);
         broadCastIntent.putExtra("sub_title", "Exam starts at "+new SimpleDateFormat("hh:mm a").format(scheduledTime));
         broadCastIntent.putExtra("id", Data.getInt(examId));
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this.getActivity(), (int)System.currentTimeMillis(),
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this.getActivity(), (int)TimeUtils.currentTimeInMillis(),
                                 broadCastIntent, PendingIntent.FLAG_ONE_SHOT);
         AlarmManager alarmManager = (AlarmManager)this.getActivity().getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
@@ -135,7 +136,7 @@ public class ScheduledTestDialog extends DialogFragment implements ScheduledTest
         broadCastIntent.putExtra("sub_title", "Exam started at "+new SimpleDateFormat("hh:mm a").format(scheduledTime));
         broadCastIntent.putExtra("test_question_paper_id", examId);
         broadCastIntent.putExtra("id", Data.getInt(examId));
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this.getActivity(), (int)System.currentTimeMillis(),
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this.getActivity(), (int)TimeUtils.currentTimeInMillis(),
                                 broadCastIntent, PendingIntent.FLAG_ONE_SHOT);
         AlarmManager alarmManager = (AlarmManager)this.getActivity().getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
@@ -153,7 +154,7 @@ public class ScheduledTestDialog extends DialogFragment implements ScheduledTest
         try {
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             long startTimeInMillis = df.parse(exam.startTime).getTime();
-            if (startTimeInMillis < System.currentTimeMillis() + 1000*60) {
+            if (startTimeInMillis < TimeUtils.currentTimeInMillis() + 1000*60) {
                 Intent intent = new Intent(getActivity(), ExamEngineActivity.class);
                 intent.putExtra(Constants.TEST_TITLE, "Scheduled Test");
                 intent.putExtra("test_question_paper_id", exam.testQuestionPaperId);
@@ -188,6 +189,7 @@ public class ScheduledTestDialog extends DialogFragment implements ScheduledTest
                         super.success(scheduledTests, response);
                         dialog.dismiss();
                         if (scheduledTests != null && scheduledTests.MockTest != null && !scheduledTests.MockTest.isEmpty()) {
+                            ApiCacheHolder.getInstance().setScheduleTestsResponse(scheduledTests);
                             mScheduledTestList = scheduledTests;
                             showScheduledTests();
                         }

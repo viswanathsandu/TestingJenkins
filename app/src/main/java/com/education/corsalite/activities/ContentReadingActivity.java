@@ -202,13 +202,13 @@ public class ContentReadingActivity extends AbstractBaseActivity {
 
     private void postContentReadingEvent() {
         try {
-            eventEndDate = System.currentTimeMillis();
+            eventEndDate = TimeUtils.currentTimeInMillis();
             ContentReadingEvent event = new ContentReadingEvent();
             event.idContent = contentModelList.get(0).idContent;
             event.idStudent = LoginUserCache.getInstance().getStudentId();
             event.eventStartTime = TimeUtils.getDateString(eventStartTime);
             event.eventEndTime= TimeUtils.getDateString(eventEndDate);
-            event.updatetime = TimeUtils.getDateString(System.currentTimeMillis());
+            event.updatetime = TimeUtils.getDateString(TimeUtils.currentTimeInMillis());
             getEventbus().post(event);
         } catch (Exception e) {
             L.error(e.getMessage(), e);
@@ -292,7 +292,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
     private void loadWeb(String htmlUrl) {
         // Initialize the WebView
         // start the timer
-        eventStartTime = System.currentTimeMillis();
+        eventStartTime = TimeUtils.currentTimeInMillis();
         mContentId = "";
         webviewContentReading.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         htmlFileText = htmlUrl;
@@ -353,12 +353,16 @@ public class ContentReadingActivity extends AbstractBaseActivity {
     }
 
     private void startNotesActivity() {
-        Intent intent = new Intent(this, NotesActivity.class);
-        intent.putExtra(GridRecyclerAdapter.COURSE_ID, AbstractBaseActivity.getSelectedCourseId().toString());
-        intent.putExtra(GridRecyclerAdapter.SUBJECT_ID, subjectModelList.get(spSubject.getSelectedItemPosition()).idSubject);
-        intent.putExtra(GridRecyclerAdapter.CHAPTER_ID, chapterModelList.get(spChapter.getSelectedItemPosition()).idChapter);
-        intent.putExtra(GridRecyclerAdapter.TOPIC_ID, topicModelList.get(spTopic.getSelectedItemPosition()).idTopic);
-        startActivity(intent);
+        try {
+            Intent intent = new Intent(this, NotesActivity.class);
+            intent.putExtra(GridRecyclerAdapter.COURSE_ID, AbstractBaseActivity.getSelectedCourseId().toString());
+            intent.putExtra(GridRecyclerAdapter.SUBJECT_ID, subjectModelList.get(spSubject.getSelectedItemPosition()).idSubject);
+            intent.putExtra(GridRecyclerAdapter.CHAPTER_ID, chapterModelList.get(spChapter.getSelectedItemPosition()).idChapter);
+            intent.putExtra(GridRecyclerAdapter.TOPIC_ID, topicModelList.get(spTopic.getSelectedItemPosition()).idTopic);
+            startActivity(intent);
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
     }
 
     private void setListeners() {

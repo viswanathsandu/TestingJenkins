@@ -294,7 +294,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private void getIntentData() {
         title = getIntent().getExtras().getString(Constants.TEST_TITLE, "");
         tvNavTitle.setText(title);
-        setToolbarForExercise(title, title.equalsIgnoreCase("Exercises"));
+        setToolbarForExercise(title, true);
         topicName = getIntent().getExtras().getString(Constants.SELECTED_TOPIC_NAME, "");
         tvPageTitle.setText(topicName);
         questionsCount = getIntent().getExtras().getString(Constants.QUESTIONS_COUNT, "");
@@ -829,7 +829,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
                 } else if (state == TestanswerPaperState.SUSPENDED) {
                     showToast("Exam has been suspended");
-                    dbManager.updateOfflineTestModel(offlineModelDate, Constants.STATUS_SUSPENDED, System.currentTimeMillis());
+                    dbManager.updateOfflineTestModel(offlineModelDate, Constants.STATUS_SUSPENDED, TimeUtils.currentTimeInMillis());
                     finish();
                 } else if (state == TestanswerPaperState.COMPLETED) {
                     headerProgress.setVisibility(View.GONE);
@@ -1996,15 +1996,17 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         testanswerPaper.testQuestionPaperId = testQuestionPaperId;
         testanswerPaper.startTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
         examDurationInSeconds = getExamDurationInSeconds(localExamModelList);
-        testanswerPaper.endTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(System.currentTimeMillis() + examDurationInSeconds));
+        testanswerPaper.endTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(TimeUtils.currentTimeInMillis() + examDurationInSeconds));
         testanswerPaper.entityId = LoginUserCache.getInstance().getEntityId();
         testanswerPaper.status = "Started"; // Started | Suspended | Completed
         testanswerPaper.testAnswers = new ArrayList<>();
 
-        for (ExamModel question : questions) {
-            TestAnswer answer = new TestAnswer();
-            answer.testQuestionId = question.idTestQuestion;
-            testanswerPaper.testAnswers.add(answer);
+        if(questions != null) {
+            for (ExamModel question : questions) {
+                TestAnswer answer = new TestAnswer();
+                answer.testQuestionId = question.idTestQuestion;
+                testanswerPaper.testAnswers.add(answer);
+            }
         }
     }
 

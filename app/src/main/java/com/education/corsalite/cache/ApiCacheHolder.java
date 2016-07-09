@@ -1,9 +1,11 @@
 package com.education.corsalite.cache;
 
+import com.education.corsalite.models.db.ScheduledTestList;
 import com.education.corsalite.models.db.reqres.ContentIndexReqRes;
 import com.education.corsalite.models.db.reqres.ContentReqRes;
 import com.education.corsalite.models.db.reqres.CoursesReqRes;
 import com.education.corsalite.models.db.reqres.LoginReqRes;
+import com.education.corsalite.models.db.reqres.ScheduleTestsReqRes;
 import com.education.corsalite.models.db.reqres.StudyCenterReqRes;
 import com.education.corsalite.models.db.reqres.UserProfileReqRes;
 import com.education.corsalite.models.db.reqres.VirtualCurrencyBalanceReqRes;
@@ -12,6 +14,7 @@ import com.education.corsalite.models.db.reqres.requests.ContentIndexRequest;
 import com.education.corsalite.models.db.reqres.requests.ContentRequest;
 import com.education.corsalite.models.db.reqres.requests.CourseRequest;
 import com.education.corsalite.models.db.reqres.requests.LoginRequest;
+import com.education.corsalite.models.db.reqres.requests.ScheduleTestsRequest;
 import com.education.corsalite.models.db.reqres.requests.StudyCenterRequest;
 import com.education.corsalite.models.db.reqres.requests.UserProfileRequest;
 import com.education.corsalite.models.db.reqres.requests.VirtualCurrencyBalanceRequest;
@@ -48,6 +51,8 @@ public class ApiCacheHolder {
     public ContentIndexReqRes contentIndex = null;
     public ContentRequest contentRequest = null;
     public ContentReqRes contentReqIndex;
+    public ScheduleTestsRequest scheduleTestsRequest = null;
+    public ScheduleTestsReqRes scheduleTests;
     public VirtualCurrencyBalanceRequest virtualCurrencyBalanceRequest = null;
     public VirtualCurrencyBalanceReqRes virtualCurrencyBalance = null;
 
@@ -140,6 +145,18 @@ public class ApiCacheHolder {
             contentReqIndex = new ContentReqRes();
             contentReqIndex.request = contentRequest;
             contentReqIndex.response = response;
+        }
+    }
+
+    public void setScheduleTestsRequest(String studentId) {
+        scheduleTestsRequest = new ScheduleTestsRequest(studentId);
+    }
+
+    public void setScheduleTestsResponse(ScheduledTestList response) {
+        if(scheduleTestsRequest != null && response != null) {
+            scheduleTests = new ScheduleTestsReqRes();
+            scheduleTests.request = scheduleTestsRequest;
+            scheduleTests.response = response;
         }
     }
 

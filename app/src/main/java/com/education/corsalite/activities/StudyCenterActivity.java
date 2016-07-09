@@ -87,6 +87,8 @@ public class StudyCenterActivity extends AbstractBaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        // fetch schedule tests and configure the notifications
+        loadScheduledTests();
         if (mAdapter != null) {
             recyclerView.invalidate();
         }

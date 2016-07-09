@@ -1,12 +1,15 @@
 package com.education.corsalite.activities;
 
+import android.app.AlarmManager;
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -46,6 +49,8 @@ import com.education.corsalite.fragments.MockTestDialog;
 import com.education.corsalite.fragments.ScheduledTestDialog;
 import com.education.corsalite.helpers.WebSocketHelper;
 import com.education.corsalite.models.ContentModel;
+import com.education.corsalite.models.db.OfflineTestObjectModel;
+import com.education.corsalite.models.db.ScheduledTestList;
 import com.education.corsalite.models.requestmodels.LogoutModel;
 import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
@@ -59,19 +64,25 @@ import com.education.corsalite.models.socket.response.ChallengeTestRequestEvent;
 import com.education.corsalite.models.socket.response.ChallengeTestStartEvent;
 import com.education.corsalite.models.socket.response.ChallengeTestUpdateEvent;
 import com.education.corsalite.notifications.ChallengeUtils;
+import com.education.corsalite.receivers.NotifyReceiver;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.services.DataSyncService;
 import com.education.corsalite.utils.AppConfig;
 import com.education.corsalite.utils.AppPref;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.CookieUtils;
+import com.education.corsalite.utils.Data;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.SystemUtils;
+import com.education.corsalite.utils.TimeUtils;
 import com.education.corsalite.utils.WebUrls;
 import com.google.gson.Gson;
 import com.localytics.android.Localytics;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
@@ -1017,6 +1028,88 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    protected void loadScheduledTests() {
+        ApiManager.getInstance(this).getScheduledTestsList(
+                LoginUserCache.getInstance().getStudentId(),
+                new ApiCallback<ScheduledTestList>(this) {
+
+                    @Override
+                    public void success(ScheduledTestList scheduledTests, Response response) {
+                        super.success(scheduledTests, response);
+                        dialog.dismiss();
+                        if (scheduledTests != null && scheduledTests.MockTest != null && !scheduledTests.MockTest.isEmpty()) {
+                            ApiCacheHolder.getInstance().setScheduleTestsResponse(scheduledTests);
+                            scheduleNotificationsForScheduledTests(scheduledTests);
+                        }
+                    }
+
+                    @Override
+                    public void failure(CorsaliteError error) {
+                        super.failure(error);
+                        L.error(error.message);
+                    }
+                });
+    }
+
+    private void scheduleNotificationsForScheduledTests(ScheduledTestList scheduledTestList) {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            for (int i = 0; i < scheduledTestList.MockTest.size(); i++) {
+                Date scheduledTestTime = df.parse(scheduledTestList.MockTest.get(i).startTime);
+                examAdvancedNotification(scheduledTestList.MockTest.get(i).testQuestionPaperId,
+                        scheduledTestList.MockTest.get(i).examName,
+                        scheduledTestTime);
+                examStartedNotification(scheduledTestList.MockTest.get(i).testQuestionPaperId,
+                        scheduledTestList.MockTest.get(i).examName,
+                        scheduledTestTime);
+            }
+        } catch (ParseException e) {
+            L.error(e.getMessage(), e);
+        }
+    }
+
+    private void examAdvancedNotification(String examId, String examName, Date scheduledTime) {
+        long delay = 0;
+        if(TimeUtils.currentTimeInMillis() > scheduledTime.getTime()) {
+            return;
+        }
+        delay = scheduledTime.getTime() - TimeUtils.currentTimeInMillis();
+        if(scheduledTime.getTime() - TimeUtils.getMinInMillis(15) > TimeUtils.currentTimeInMillis()) {
+            delay -= TimeUtils.getMinInMillis(15);
+        } else {
+            delay = 0;
+        }
+        Intent broadCastIntent = new Intent(this, NotifyReceiver.class);
+        broadCastIntent.putExtra("title", examName);
+        broadCastIntent.putExtra("sub_title", "Exam starts at "+new SimpleDateFormat("hh:mm a").format(scheduledTime));
+        broadCastIntent.putExtra("id", Data.getInt(examId));
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, (int)TimeUtils.currentTimeInMillis(),
+                broadCastIntent, PendingIntent.FLAG_ONE_SHOT);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                SystemClock.elapsedRealtime() + delay,
+                pendingIntent);
+    }
+
+    private void examStartedNotification(String examId, String examName, Date scheduledTime) {
+        long delay = 0;
+        if(TimeUtils.currentTimeInMillis() > scheduledTime.getTime()) {
+            return;
+        }
+        delay = scheduledTime.getTime() - TimeUtils.currentTimeInMillis();
+        Intent broadCastIntent = new Intent(this, NotifyReceiver.class);
+        broadCastIntent.putExtra("title", examName);
+        broadCastIntent.putExtra("sub_title", "Exam started at "+new SimpleDateFormat("hh:mm a").format(scheduledTime));
+        broadCastIntent.putExtra("test_question_paper_id", examId);
+        broadCastIntent.putExtra("id", Data.getInt(examId));
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, (int)TimeUtils.currentTimeInMillis(),
+                broadCastIntent, PendingIntent.FLAG_ONE_SHOT);
+        AlarmManager alarmManager = (AlarmManager)this.getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                SystemClock.elapsedRealtime() + delay,
+                pendingIntent);
+    }
+
     // trigger challenge test request
     public void onEventMainThread(ChallengeTestRequestEvent event) {
         ChallengeUtils.get(this).showChallengeRequestNotification(event);
@@ -1049,11 +1142,27 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     public void onEventMainThread(ScheduledTestStartEvent event) {
-        // start the test
-        Intent examIntent = new Intent(this, ExamEngineActivity.class);
-        examIntent.putExtra(Constants.TEST_TITLE, "Scheduled Test");
-        examIntent.putExtra("test_question_paper_id", event.testQuestionPaperId);
-        startActivity(examIntent);
+        // check if the test is available for offline
+        List<OfflineTestObjectModel> offlineTestModels = dbManager.fetchRecords(OfflineTestObjectModel.class);
+        for(OfflineTestObjectModel model : offlineTestModels) {
+            if(model.testQuestionPaperId.equalsIgnoreCase(event.testQuestionPaperId)) {
+                // start the test
+                Intent intent = new Intent(this, ExamEngineActivity.class);
+                intent.putExtra(Constants.TEST_TITLE, "Scheduled Test");
+                intent.putExtra("test_question_paper_id", model.testQuestionPaperId);
+                intent.putExtra("OfflineTestObjectModel", model.dateTime);
+                intent.putExtra(Constants.DB_ROW_ID, model.getId());
+                startActivity(intent);
+                return;
+            }
+        }
+        if(SystemUtils.isNetworkConnected(this)) {
+            // start the test
+            Intent examIntent = new Intent(this, ExamEngineActivity.class);
+            examIntent.putExtra(Constants.TEST_TITLE, "Scheduled Test");
+            examIntent.putExtra("test_question_paper_id", event.testQuestionPaperId);
+            startActivity(examIntent);
+        }
     }
 
     protected void startWebSocket() {

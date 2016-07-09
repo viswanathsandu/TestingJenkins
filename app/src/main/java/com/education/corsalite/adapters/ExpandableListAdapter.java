@@ -224,7 +224,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 ScheduledTestsArray exam = model.scheduledTest;
                 SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 long startTimeInMillis = df.parse(exam.startTime).getTime();
-                if (startTimeInMillis < System.currentTimeMillis() + 1000 * 60) {
+                if (startTimeInMillis < TimeUtils.currentTimeInMillis() + 1000 * 60) {
                     Intent intent = new Intent(context, ExamEngineActivity.class);
                     intent.putExtra(Constants.TEST_TITLE, "Scheduled Test");
                     intent.putExtra("test_question_paper_id", exam.testQuestionPaperId);

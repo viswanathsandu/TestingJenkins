@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import com.education.corsalite.activities.ExamEngineActivity;
 import com.education.corsalite.event.ScheduledTestStartEvent;
@@ -26,7 +25,6 @@ public class NotifyReceiver extends BroadcastReceiver {
         String subTitle = extras.getString("sub_title", "Thank you");
         String testQuestionPaperId = extras.getString("test_question_paper_id", "");
         int id = extras.getInt("id", 0);
-        Toast.makeText(context, "Notification : "+title, Toast.LENGTH_SHORT).show();
         NotificationsUtils.NotifyUser(context, id, title, subTitle, getScheduledExamActivityIntent(context, testQuestionPaperId));
 
         if(!TextUtils.isEmpty(testQuestionPaperId)) {

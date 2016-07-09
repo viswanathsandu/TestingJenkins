@@ -267,7 +267,7 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
 //                URL url = new URL(new URL(ApiClientService.getBaseUrl()), profile.photoUrl);
 //                Glide.with(getActivity())
 //                        .load(url)
-//                        .signature(new StringSignature(System.currentTimeMillis()+""))
+//                        .signature(new StringSignature(TimeUtils.currentTimeInMillis()+""))
 //                        .placeholder(getResources().getDrawable(R.drawable.user))
 //                        .error(getResources().getDrawable(R.drawable.user))
 //                        .into(profilePicImg);
