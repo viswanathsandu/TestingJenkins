@@ -211,7 +211,7 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
                     List<ExerciseOfflineModel> addedList = new ArrayList<>();
                     for (ExerciseOfflineModel exercise : offlineExercises) {
                         if (exercise.topicId.equals(offlineContent.topicId)) {
-                            IconTreeItemHolder.IconTreeItem item = new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_exercise, "Exercise - " + exercise.topicId, exercise.topicId + "-" + exercise.courseId, "Exercise", false, 0);
+                            IconTreeItemHolder.IconTreeItem item = new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_exercise, "Exercise", exercise.topicId + "-" + exercise.courseId, "Exercise", false, 0);
                             item.setData(exercise);
                             addedList.add(exercise);
                             topicRoot.addChild(new TreeNode(item));
@@ -344,6 +344,8 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
         double earnedMarks = Data.getDoubleWithTwoDecimals(chapter.earnedMarks);
         double scoreRedPercentage = Data.getInt(chapter.scoreRed) * totalMarks / 100;
         double scoreAmberPercentage = Data.getInt(chapter.scoreAmber) * totalMarks / 100;
+        return R.drawable.ico_offline_subject;
+        /*
         if (earnedMarks == 0 && totalMarks == 0) {
             return R.drawable.chapter_node_blue;
         } else if (earnedMarks < scoreRedPercentage) {
@@ -353,6 +355,7 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
         } else {
             return R.drawable.chapter_root_green;
         }
+        */
     }
 
     private void startExerciseTest(ExerciseOfflineModel model) {
