@@ -91,19 +91,13 @@ public class VideoActivity extends AbstractBaseActivity {
             //set the uri of the video to be played
             videoViewRelative.setVideoURI(Uri.parse(ApiClientService.getBaseUrl() + contents.get(selectedPosition).url.replace("./", "")));
             videoViewRelative.requestFocus();
-            //we also set an setOnPreparedListener in order to know when the video file is ready for playback
             videoViewRelative.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
 
                 public void onPrepared(MediaPlayer mediaPlayer) {
                     // close the progress bar and play the video
                     progress.setVisibility(View.GONE);
                     videoViewRelative.seekTo(selectedPosition);
-//                    if (selectedPosition == 0) {
-                        videoViewRelative.start();
-//                    } else {
-//                        //if we come from a resumed activity, video playback will be paused
-//                        videoViewRelative.pause();
-//                    }
+                    videoViewRelative.start();
                 }
             });
             if (viewSwitcher.indexOfChild(viewSwitcher.getCurrentView()) == 0) {
@@ -164,6 +158,8 @@ public class VideoActivity extends AbstractBaseActivity {
     }
 
     private void loadLocalVideo(){
+        progress.setVisibility(View.GONE);
+        videoViewRelative.requestFocus();
         videoViewRelative.setVideoPath(videoPath);
         videoViewRelative.start();
     }

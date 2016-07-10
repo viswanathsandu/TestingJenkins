@@ -1036,7 +1036,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     @Override
                     public void success(ScheduledTestList scheduledTests, Response response) {
                         super.success(scheduledTests, response);
-                        dialog.dismiss();
                         if (scheduledTests != null && scheduledTests.MockTest != null && !scheduledTests.MockTest.isEmpty()) {
                             ApiCacheHolder.getInstance().setScheduleTestsResponse(scheduledTests);
                             scheduleNotificationsForScheduledTests(scheduledTests);
