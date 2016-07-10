@@ -2005,6 +2005,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             for (ExamModel question : questions) {
                 TestAnswer answer = new TestAnswer();
                 answer.testQuestionId = question.idTestQuestion;
+                answer.sortOrder = question.queSortOrder;
                 testanswerPaper.testAnswers.add(answer);
             }
         }
