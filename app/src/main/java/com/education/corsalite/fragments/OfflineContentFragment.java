@@ -324,7 +324,7 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
         new FileUtilities(getActivity()).delete(path);
 
         //Update database
-        SugarDbManager.get(getActivity()).deleteOfflineContents(removeList);
+        dbManager.deleteOfflineContents(removeList);
 
         //Update treeview
         for (OfflineContent offlineContent : removeList) {

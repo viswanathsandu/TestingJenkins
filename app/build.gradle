@@ -31,9 +31,13 @@ android {
 //    productFlavors {
 //        prod {
 //            applicationId "com.corsalite.tabletapp"
+//            buildConfigField 'String', 'BASE_URL', '"http://staging.corsalite.com/v1/webservices/"'
+//            buildConfigField 'String', 'SOCKET_URL', '"ws://staging.corsalite.com:9300"'
 //        }
 //        staging {
 //            applicationId "com.education.corsalite"
+//            buildConfigField 'String', 'BASE_URL', '"http://app.corsalite.com/ws/webservices/"'
+//            buildConfigField 'String', 'SOCKET_URL', '"ws://app.corsalite.com:9300"'
 //        }
 //    }
 }

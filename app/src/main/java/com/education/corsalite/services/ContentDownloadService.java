@@ -125,9 +125,6 @@ public class ContentDownloadService extends IntentService {
             String htmlUrl = fileUtilities.write(content.name + "." + Constants.HTML_FILE, htmlText, folderStructure);
             if (htmlUrl != null) {
                 EventBus.getDefault().post(new OfflineActivityRefreshEvent(content.idContent));
-//                Toast.makeText(this, getString(R.string.file_saved), Toast.LENGTH_SHORT).show();
-            } else {
-//                Toast.makeText(this, getString(R.string.file_save_failed), Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -301,16 +298,19 @@ public class ContentDownloadService extends IntentService {
             List<ExerciseOfflineModel> offlineExerciseList = new ArrayList<>(offlineExercises);
             downloandInProgress += offlineExerciseList.size();
             for (ExerciseOfflineModel model : offlineExerciseList) {
-                List<ExamModel> examModels = ApiManager.getInstance(this).getExercise(model.topicId, model.courseId, LoginUserCache.getInstance().getStudentId(), null);
-                if (examModels != null && !examModels.isEmpty()) {
-                    model.progress = 100;
-                    model.questions = examModels;
-                    resultsToSave.add(model);
-                } else {
-                    resultsToDelete.add(model);
+                if(model.progress != 100) {
+                    List<ExamModel> examModels = ApiManager.getInstance(this).getExercise(model.topicId, model.courseId, LoginUserCache.getInstance().getStudentId(), null);
+                    if (examModels != null && !examModels.isEmpty()) {
+                        model.progress = 100;
+                        model.questions = examModels;
+                        resultsToSave.add(model);
+                    } else {
+                        resultsToDelete.add(model);
+                    }
                 }
             }
             dbManager.saveOfflineExerciseTests(resultsToSave);
+            dbManager.delete(resultsToDelete);
             downloandInProgress -= offlineExerciseList.size();
         } catch (Exception e) {
             L.error(e.getMessage(), e);

@@ -20,6 +20,7 @@ import com.google.gson.Gson;
 import com.orm.SugarRecord;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -104,6 +105,19 @@ public class SugarDbManager {
             if (object != null) {
                 object.delete();
                 deleteFromCachedData(object);
+            }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+    }
+
+    public <T extends BaseModel> void delete(Collection<T> objectList) {
+        try {
+            if (objectList != null) {
+                SugarRecord.deleteInTx(objectList);
+                for(T obj : objectList) {
+                    deleteFromCachedData(obj);
+                }
             }
         } catch (Exception e) {
             L.error(e.getMessage(), e);
@@ -321,8 +335,8 @@ public class SugarDbManager {
     }
 
     public void saveOfflineExerciseTests(List<ExerciseOfflineModel> offlineExercises) {
-        for (ExerciseOfflineModel exercise : getCahcedExerciseTests()) {
-            Long id = getOfflineexerciseId(offlineExercises, exercise);
+        for(ExerciseOfflineModel exercise : offlineExercises) {
+            Long id = getOfflineExerciseId(exercise);
             if (id != null) {
                 exercise.setId(id);
             }
@@ -330,9 +344,9 @@ public class SugarDbManager {
         save(offlineExercises);
     }
 
-    private Long getOfflineexerciseId(List<ExerciseOfflineModel> offlineExercises, ExerciseOfflineModel exercise) {
+    private Long getOfflineExerciseId(ExerciseOfflineModel exercise) {
         try {
-            for (ExerciseOfflineModel offlineExercise : offlineExercises) {
+            for (ExerciseOfflineModel offlineExercise : getCahcedExerciseTests()) {
                 if (offlineExercise.equals(exercise)) {
                     return offlineExercise.getId();
                 }
