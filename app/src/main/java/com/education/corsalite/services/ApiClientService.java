@@ -28,7 +28,7 @@ import retrofit.converter.GsonConverter;
 public class ApiClientService {
 
     private static ICorsaliteApi client;
-    private static String ROOT = BuildConfig.BASE_URL;
+    private static String ROOT = BuildConfig.BASE_API_URL;
     private static String ROOT_SOCKET = BuildConfig.SOCKET_URL;
 
     private static String setCookie;
@@ -87,7 +87,7 @@ public class ApiClientService {
                     if (response.isSuccessful()) {
                         String url = request.httpUrl().toString();
                         L.info("Intercept : URL - "+url);
-                        if (url.contains("AuthToken")
+                        if (url.contains("webservices/AuthToken")
                                 && url.contains("LoginID") && url.contains("PasswordHash")) {
                             // save login request
                             L.info("Intercept : Saving login request");

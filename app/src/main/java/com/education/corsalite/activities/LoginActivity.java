@@ -20,8 +20,6 @@ import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.LoginResponse;
-import com.education.corsalite.utils.AppConfig;
-import com.education.corsalite.utils.AppPref;
 import com.education.corsalite.utils.Encryption;
 import com.education.corsalite.utils.SystemUtils;
 import com.education.corsalite.utils.WebUrls;
@@ -50,8 +48,6 @@ public class LoginActivity extends AbstractBaseActivity {
     }
 
     private void setListeners() {
-        AppConfig config = AppConfig.getInstance();
-        String enableProduction = AppPref.getInstance(LoginActivity.this).getValue("enable_production");
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -146,7 +142,7 @@ public class LoginActivity extends AbstractBaseActivity {
         if(response != null) {
             LoginUserCache.getInstance().setLoginResponse(response);
             startWebSocket();
-            AppConfig.loadAppConfigFromService(this, LoginUserCache.getInstance().getUserId());
+            loadAppConfig(response.userId);
             if(!fetchLocal) {
                 showToast(getResources().getString(R.string.login_successful));
             }

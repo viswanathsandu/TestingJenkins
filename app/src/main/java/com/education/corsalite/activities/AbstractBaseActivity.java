@@ -68,11 +68,12 @@ import com.education.corsalite.notifications.ChallengeUtils;
 import com.education.corsalite.receivers.NotifyReceiver;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.services.DataSyncService;
-import com.education.corsalite.utils.AppConfig;
+import com.education.corsalite.models.db.AppConfig;
 import com.education.corsalite.utils.AppPref;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.CookieUtils;
 import com.education.corsalite.utils.Data;
+import com.education.corsalite.utils.FileUtils;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.SystemUtils;
 import com.education.corsalite.utils.TimeUtils;
@@ -100,6 +101,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     public static int selectedVideoPosition;
     private static Course selectedCourse;
     private static List<ExamModel> sharedExamModels;
+    private static AppConfig appConfig;
     private List<Course> courses;
     public Toolbar toolbar;
     private NavigationView navigationView;
@@ -141,6 +143,14 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         return "";
     }
 
+    public static AppConfig getAppConfig(Context context) {
+        if(appConfig == null) {
+            String jsonResponse = FileUtils.loadJSONFromAsset(context.getAssets(), "config.json");
+            appConfig = new Gson().fromJson(jsonResponse, com.education.corsalite.models.db.AppConfig.class);
+        }
+        return appConfig;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -152,6 +162,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 .setFontAttrId(R.attr.fontPath)
                 .build());
         initActivity();
+        checkForceUpgrade();
     }
 
     private void initActivity() {
@@ -199,6 +210,18 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         super.onStop();
     }
 
+    public void loadAppConfig(String idUser) {
+        ApiManager.getInstance(this).getAppConfig(idUser, new ApiCallback<AppConfig>(this) {
+            @Override
+            public void success(AppConfig appConfig, Response response) {
+                super.success(appConfig, response);
+                ApiCacheHolder.getInstance().setAppConfigResponse(appConfig);
+                dbManager.saveReqRes(ApiCacheHolder.getInstance().appConfigReqRes);
+                checkForceUpgrade();
+            }
+        });
+    }
+
     private void relogin() {
         if(isLoginApiRunningInBackground || this instanceof LoginActivity || this instanceof SplashActivity) {
            return;
@@ -231,7 +254,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                         if(SystemUtils.isNetworkConnected(AbstractBaseActivity.this)) {
                             startWebSocket();
                             syncDataWithServer();
-                            AppConfig.loadAppConfigFromService(AbstractBaseActivity.this, loginResponse.userId);
+                            loadAppConfig(loginResponse.userId);
                         }
                         recreate();
                     } else {
@@ -427,7 +450,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     private void enableNavigationOptions() {
-        AppConfig config = AppConfig.getInstance();
+        AppConfig config = getAppConfig(this);
         if (config == null) {
             return;
         }
@@ -701,7 +724,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     protected void showVirtualCurrency() {
-        if(!AppConfig.getInstance().isVirtualCurrencyEnabled()) {
+        if(!getAppConfig(this).isVirtualCurrencyEnabled()) {
             return;
         }
         final TextView textView = (TextView) toolbar.findViewById(R.id.tv_virtual_currency);
@@ -913,11 +936,12 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         selectedVideoPosition = position;
     }
 
-    public void onEventMainThread(AppConfig config) {
+    public void checkForceUpgrade() {
         try {
+            AppConfig config = getAppConfig(this);
             if (SystemUtils.isNetworkConnected(AbstractBaseActivity.this)) {
                 int appVersionCode = BuildConfig.VERSION_CODE;
-                if(config.forceUpgrade != null && config.forceUpgrade && appVersionCode < config.latestVersionCode) {
+                if(config.isforceUpgradeEnabled() && appVersionCode < config.getLatestVersionCode()) {
                     showForceUpgradeAlert();
                 }
             }

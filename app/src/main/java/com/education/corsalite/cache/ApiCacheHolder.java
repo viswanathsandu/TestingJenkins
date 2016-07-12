@@ -1,6 +1,7 @@
 package com.education.corsalite.cache;
 
 import com.education.corsalite.models.db.ScheduledTestList;
+import com.education.corsalite.models.db.reqres.AppConfigReqRes;
 import com.education.corsalite.models.db.reqres.ContentIndexReqRes;
 import com.education.corsalite.models.db.reqres.ContentReqRes;
 import com.education.corsalite.models.db.reqres.CoursesReqRes;
@@ -10,6 +11,7 @@ import com.education.corsalite.models.db.reqres.StudyCenterReqRes;
 import com.education.corsalite.models.db.reqres.UserProfileReqRes;
 import com.education.corsalite.models.db.reqres.VirtualCurrencyBalanceReqRes;
 import com.education.corsalite.models.db.reqres.WelcomeReqRes;
+import com.education.corsalite.models.db.reqres.requests.AppConfigRequest;
 import com.education.corsalite.models.db.reqres.requests.ContentIndexRequest;
 import com.education.corsalite.models.db.reqres.requests.ContentRequest;
 import com.education.corsalite.models.db.reqres.requests.CourseRequest;
@@ -27,6 +29,7 @@ import com.education.corsalite.models.responsemodels.StudyCenter;
 import com.education.corsalite.models.responsemodels.UserProfileResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencyBalanceResponse;
 import com.education.corsalite.models.responsemodels.WelcomeDetails;
+import com.education.corsalite.models.db.AppConfig;
 
 import java.util.List;
 
@@ -37,6 +40,8 @@ public class ApiCacheHolder {
 
     private static ApiCacheHolder instance;
 
+    public AppConfigRequest appConfigRequest = null;
+    public AppConfigReqRes appConfigReqRes = null;
     public LoginRequest loginRequest = null;
     public LoginReqRes login = null;
     public WelcomeRequest welcomeRequest = null;
@@ -61,6 +66,18 @@ public class ApiCacheHolder {
             instance = new ApiCacheHolder();
         }
         return instance;
+    }
+
+    public void setAppConfigRequest(String userId) {
+        appConfigRequest = new AppConfigRequest(userId);
+    }
+
+    public void setAppConfigResponse(AppConfig response) {
+        if(appConfigRequest != null && response != null) {
+            appConfigReqRes = new AppConfigReqRes();
+            appConfigReqRes.request = appConfigRequest;
+            appConfigReqRes.response = response;
+        }
     }
 
     public void setLoginRequest(String loginId, String passwordHash) {

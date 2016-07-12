@@ -10,8 +10,8 @@ android {
         applicationId "com.education.corsalite"
         minSdkVersion 15
         targetSdkVersion 20
-        versionCode 9000068
-        versionName "0.0.68"
+        versionCode 69
+        versionName "0.0.69"
         multiDexEnabled false
     }
     buildTypes {
@@ -31,7 +31,7 @@ android {
     productFlavors {
         prod {
             applicationId "com.corsalite.tabletapp"
-            versionCode 0000069
+            versionCode 69
             versionName "0.0.69"
             buildConfigField 'String', 'BASE_URL', '"http://app.corsalite.com/ws/"'
             buildConfigField 'String', 'BASE_API_URL', '"http://app.corsalite.com/ws/webservices/"'

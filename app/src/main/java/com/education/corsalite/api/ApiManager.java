@@ -2,6 +2,7 @@ package com.education.corsalite.api;
 
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.text.TextUtils;
 
 import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.config.AppConfig;
@@ -9,6 +10,7 @@ import com.education.corsalite.db.SugarDbManager;
 import com.education.corsalite.enums.NetworkMode;
 import com.education.corsalite.models.db.MockTest;
 import com.education.corsalite.models.db.ScheduledTestList;
+import com.education.corsalite.models.db.reqres.AppConfigReqRes;
 import com.education.corsalite.models.db.reqres.ContentIndexReqRes;
 import com.education.corsalite.models.db.reqres.CoursesReqRes;
 import com.education.corsalite.models.db.reqres.LoginReqRes;
@@ -69,6 +71,8 @@ import com.education.corsalite.models.responsemodels.VirtualCurrencyBalanceRespo
 import com.education.corsalite.models.responsemodels.VirtualCurrencySummaryResponse;
 import com.education.corsalite.models.responsemodels.WelcomeDetails;
 import com.education.corsalite.services.ApiClientService;
+import com.education.corsalite.utils.FileUtils;
+import com.education.corsalite.utils.MockUtils;
 import com.education.corsalite.utils.SystemUtils;
 import com.google.gson.Gson;
 
@@ -544,9 +548,17 @@ public class ApiManager {
         }
     }
 
-    public void getAppConfig(String idUser, ApiCallback<com.education.corsalite.utils.AppConfig> callback) {
-        if (isApiOnline()) {
+    public void getAppConfig(String idUser, ApiCallback<com.education.corsalite.models.db.AppConfig> callback) {
+        if (isApiOnline() && !TextUtils.isEmpty(idUser)) {
             ApiClientService.get().getAppConfig(idUser, callback);
+        }  else if(!isNetworkConnected() && !TextUtils.isEmpty(idUser)) {
+            AppConfigReqRes reqRes = new AppConfigReqRes();
+            reqRes.request = apiCacheHolder.appConfigRequest;
+            SugarDbManager.get(context).getResponse(reqRes, callback);
+        } else {
+            String jsonResponse = FileUtils.loadJSONFromAsset(context.getAssets(), "config.json");
+            com.education.corsalite.models.db.AppConfig config = new Gson().fromJson(jsonResponse, com.education.corsalite.models.db.AppConfig.class);
+            callback.success(config, MockUtils.getRetrofitResponse());
         }
     }
 

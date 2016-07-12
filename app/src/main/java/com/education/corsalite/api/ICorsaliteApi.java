@@ -48,7 +48,7 @@ import com.education.corsalite.models.responsemodels.UserProfileResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencyBalanceResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencySummaryResponse;
 import com.education.corsalite.models.responsemodels.WelcomeDetails;
-import com.education.corsalite.utils.AppConfig;
+import com.education.corsalite.models.db.AppConfig;
 
 import java.util.ArrayList;
 import java.util.List;

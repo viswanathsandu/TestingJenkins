@@ -12,7 +12,6 @@ import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.LoginResponse;
-import com.education.corsalite.utils.AppConfig;
 import com.education.corsalite.utils.SystemUtils;
 
 import retrofit.client.Response;
@@ -30,8 +29,7 @@ public class SplashActivity extends AbstractBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        AppConfig.loadAppConfig(SplashActivity.this);
-        new CountDownTimer(AppConfig.getInstance().getSplashDuration(), 100) {
+        new CountDownTimer(getAppConfig(this).getSplashDuration(), 100) {
             @Override
             public void onFinish() {
                 isTimerFinished = true;
@@ -81,7 +79,7 @@ public class SplashActivity extends AbstractBaseActivity {
                     appPref.save("passwordHash", password);
                     if(SystemUtils.isNetworkConnected(SplashActivity.this)) {
                         startWebSocket();
-                        AppConfig.loadAppConfigFromService(SplashActivity.this, loginResponse.userId);
+                        loadAppConfig(loginResponse.userId);
                     }
                 } else {
                     showToast(getResources().getString(R.string.login_failed));
@@ -94,8 +92,6 @@ public class SplashActivity extends AbstractBaseActivity {
     private void onLoginsuccess(LoginResponse response, boolean fetchLocal) {
         if(response != null && response.studentId != null) {
             LoginUserCache.getInstance().setLoginResponse(response);
-            // Uncomment it after fixing server issues
-//            AppConfig.loadAppConfigFromService(SplashActivity.this, "1624");
             if(!fetchLocal) {
                 isLoginSuccess = true;
                 showToast(getResources().getString(R.string.login_successful));
