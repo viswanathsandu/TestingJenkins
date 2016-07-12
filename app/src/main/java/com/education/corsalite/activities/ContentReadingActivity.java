@@ -191,7 +191,12 @@ public class ContentReadingActivity extends AbstractBaseActivity {
 
     private void loadOfflineExercises() {
         offlineExercises = dbManager.getOfflineExerciseModels(AbstractBaseActivity.getSelectedCourseId());
-        showExercise();
+        for (ExerciseOfflineModel model : offlineExercises) {
+            if (model.topicId.equals(mTopicId) && model.courseId.equals(getSelectedCourseId())) {
+                AbstractBaseActivity.setSharedExamModels(model.questions);
+                showExercise();
+            }
+        }
     }
 
     @Override
