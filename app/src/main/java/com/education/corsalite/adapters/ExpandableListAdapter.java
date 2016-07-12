@@ -61,7 +61,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 } else {
                     return test.examName + " ( " + test.subjectName + " ) ";
                 }
-            } else if (headers.get(groupPosition).equalsIgnoreCase("Schedule Test")) {
+            } else if (headers.get(groupPosition).equalsIgnoreCase("Scheduled Test")) {
                 return this.childs.get(this.headers.get(groupPosition)).get(childPosititon).scheduledTest.examName;
             } else if (headers.get(groupPosition).equalsIgnoreCase("Take Test")) {
                 return this.childs.get(this.headers.get(groupPosition)).get(childPosititon).baseTest.chapter.chapterName;
