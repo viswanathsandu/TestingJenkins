@@ -10,10 +10,10 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.RelativeLayout;
 
+import com.education.corsalite.BuildConfig;
 import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.models.responsemodels.Course;
-import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.AppPref;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.views.CorsaliteWebViewClient;
@@ -74,8 +74,8 @@ public class DetailsWebviewFragment extends BaseFragment {
     }
 
     private String getLoginUrl() {
-        String loginUrl = String.format("%swebservices/AuthToken?LoginID=%s&PasswordHash=%s",
-                ApiClientService.getBaseUrl(),
+        String loginUrl = String.format("%AuthToken?LoginID=%s&PasswordHash=%s",
+                BuildConfig.BASE_API_URL,
                 appPref.getValue("loginId"),
                 appPref.getValue("passwordHash"));
         return loginUrl;

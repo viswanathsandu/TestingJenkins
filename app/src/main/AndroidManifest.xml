@@ -20,10 +20,10 @@
         tools:replace="android:icon" >
         <meta-data
             android:name="DATABASE"
-            android:value="corsalite_db.db" />
+            android:value="corsalite.db" />
         <meta-data
             android:name="VERSION"
-            android:value="5" />
+            android:value="1" />
         <meta-data
             android:name="QUERY_LOG"
             android:value="true" />

@@ -1,7 +1,6 @@
 package com.education.corsalite.services;
 
-import android.text.TextUtils;
-
+import com.education.corsalite.BuildConfig;
 import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.api.ICorsaliteApi;
 import com.education.corsalite.cache.LoginUserCache;
@@ -29,24 +28,13 @@ import retrofit.converter.GsonConverter;
 public class ApiClientService {
 
     private static ICorsaliteApi client;
-    private static String PROD = "http://app.corsalite.com/ws/webservices/";
-    private static String STAGING = "http://staging.corsalite.com/v1/webservices/";
-    private static String PROD_SOCKET = "ws://app.corsalite.com:9300";
-    private static String STAGING_SOCKET = "ws://staging.corsalite.com:9300";
-
-    private static String ROOT = STAGING;
-    private static String ROOT_SOCKET = STAGING_SOCKET;
+    private static String ROOT = BuildConfig.BASE_URL;
+    private static String ROOT_SOCKET = BuildConfig.SOCKET_URL;
 
     private static String setCookie;
 
     public static String getBaseUrl() {
-        return ROOT == null ? "" : ROOT.replace("webservices/", "");
-    }
-
-    public static void setSocketUrl(String url) {
-        if(!TextUtils.isEmpty(url)) {
-            ROOT_SOCKET = url;
-        }
+        return BuildConfig.BASE_URL;
     }
 
     public static String getSocketUrl() {
@@ -69,13 +57,6 @@ public class ApiClientService {
         return client;
     }
 
-    public static void setBaseUrl(String url){
-        if(!TextUtils.isEmpty(url)) {
-            ROOT = url;
-            setupRestClient();
-        }
-    }
-
     private static void setupRestClient() {
 
         Gson gson = new GsonBuilder()
@@ -84,7 +65,7 @@ public class ApiClientService {
 
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setLogLevel(RestAdapter.LogLevel.FULL)
-                .setEndpoint(ROOT)
+                .setEndpoint(BuildConfig.BASE_API_URL)
                 .setClient(new OkClient(getOkHttpClient()))
                 .setRequestInterceptor(new SessionRequestInterceptor())
                 .setConverter(new GsonConverter(gson))
@@ -106,7 +87,7 @@ public class ApiClientService {
                     if (response.isSuccessful()) {
                         String url = request.httpUrl().toString();
                         L.info("Intercept : URL - "+url);
-                        if (url.contains("webservices/AuthToken")
+                        if (url.contains("AuthToken")
                                 && url.contains("LoginID") && url.contains("PasswordHash")) {
                             // save login request
                             L.info("Intercept : Saving login request");

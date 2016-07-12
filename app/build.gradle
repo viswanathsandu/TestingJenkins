@@ -4,7 +4,7 @@ apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "24.0.0"
+    buildToolsVersion '24'
 
     defaultConfig {
         applicationId "com.education.corsalite"
@@ -28,18 +28,26 @@ android {
         }
     }
 
-//    productFlavors {
-//        prod {
-//            applicationId "com.corsalite.tabletapp"
-//            buildConfigField 'String', 'BASE_URL', '"http://staging.corsalite.com/v1/webservices/"'
-//            buildConfigField 'String', 'SOCKET_URL', '"ws://staging.corsalite.com:9300"'
-//        }
-//        staging {
-//            applicationId "com.education.corsalite"
-//            buildConfigField 'String', 'BASE_URL', '"http://app.corsalite.com/ws/webservices/"'
-//            buildConfigField 'String', 'SOCKET_URL', '"ws://app.corsalite.com:9300"'
-//        }
-//    }
+    productFlavors {
+        prod {
+            applicationId "com.corsalite.tabletapp"
+            versionCode 0000069
+            versionName "0.0.69"
+            buildConfigField 'String', 'BASE_URL', '"http://app.corsalite.com/ws/"'
+            buildConfigField 'String', 'BASE_API_URL', '"http://app.corsalite.com/ws/webservices/"'
+            buildConfigField 'String', 'SOCKET_URL', '"ws://app.corsalite.com:9300"'
+            project.ext.set("archivesBaseName", "corsalite_" + versionName + "_" + versionCode);
+        }
+        staging {
+            applicationId "com.education.corsalite"
+            versionCode 9000069
+            versionName "0.0.69"
+            buildConfigField 'String', 'BASE_URL', '"http://staging.corsalite.com/v1/"'
+            buildConfigField 'String', 'BASE_API_URL', '"http://staging.corsalite.com/v1/webservices/"'
+            buildConfigField 'String', 'SOCKET_URL', '"ws://staging.corsalite.com:9300"'
+            project.ext.set("archivesBaseName", "corsalite_" + versionName + "_" + versionCode);
+        }
+    }
 }
 
 buildscript {

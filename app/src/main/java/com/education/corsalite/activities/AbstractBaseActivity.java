@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -28,6 +29,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.education.corsalite.BuildConfig;
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.SpinnerAdapter;
 import com.education.corsalite.analytics.GoogleAnalyticsManager;
@@ -229,6 +231,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                         if(SystemUtils.isNetworkConnected(AbstractBaseActivity.this)) {
                             startWebSocket();
                             syncDataWithServer();
+                            AppConfig.loadAppConfigFromService(AbstractBaseActivity.this, loginResponse.userId);
                         }
                         recreate();
                     } else {
@@ -239,7 +242,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
         }
     }
-
 
     public List<Course> getCourses() {
         return courses;
@@ -909,6 +911,38 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     public void onEvent(Integer position) {
         selectedVideoPosition = position;
+    }
+
+    public void onEventMainThread(AppConfig config) {
+        try {
+            if (SystemUtils.isNetworkConnected(AbstractBaseActivity.this)) {
+                int appVersionCode = BuildConfig.VERSION_CODE;
+                if(config.forceUpgrade != null && config.forceUpgrade && appVersionCode < config.latestVersionCode) {
+                    showForceUpgradeAlert();
+                }
+            }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+    }
+
+    private void showForceUpgradeAlert() {
+        new AlertDialog.Builder(this)
+                .setTitle("App Update")
+                .setMessage("Please update your app to continue")
+                .setPositiveButton("Update", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        final String appPackageName = BuildConfig.APPLICATION_ID;
+                        try {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                        } catch (Exception e) {
+                            L.error(e.getMessage(), e);
+                        }
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setCancelable(false)
+                .show();
     }
 
     // this method will be overridden by the classes that subscribes from event bus

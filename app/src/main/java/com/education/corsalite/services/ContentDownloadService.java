@@ -62,7 +62,7 @@ public class ContentDownloadService extends IntentService {
         }
         fetchOfflineContents();
         // TODO : remove it after implementing the content download
-//        downloadContent("https://staging.corsalite.com/v1/webservices/ContentIndex?idStudent=1599&idCourse=10",
+//        downloadContent(BuildConfig.BASE_API_URL+"ContentIndex?idStudent=1599&idCourse=10",
 //                "/storage/emulated/0/Corsalite/test_content_download.html");
     }
 

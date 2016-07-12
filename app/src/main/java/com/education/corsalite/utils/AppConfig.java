@@ -9,6 +9,7 @@ import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
+import de.greenrobot.event.EventBus;
 import retrofit.client.Response;
 
 /**
@@ -17,13 +18,6 @@ import retrofit.client.Response;
 public class AppConfig {
 
     private static AppConfig instance;
-    @SerializedName("BaseUrl")
-    private String baseUrl = "https://staging.corsalite.com/v1/webservices/";
-    public String stageUrl = "http://staging.corsalite.com/v1/webservices/";
-    public String productionUrl = "http://app.corsalite.com/ws/webservices/";
-    public String stageSocketUrl = "ws://staging.corsalite.com:9300";
-    public String productionSocketUrl = "ws://app.corsalite.com:9300";
-    public Boolean enableProduction = false;
     @SerializedName("SplashDuration")
     public String splashDuration = "2000";
     public String enableVirtualCurrency = "false";
@@ -46,12 +40,15 @@ public class AppConfig {
     public String enableScheduleTests = "true";
     public String enablemockTests = "true";
     public String enableExamHistory = "true";
+    public Boolean forceUpgrade = false;
+    public Integer latestVersionCode = 0;
     public String idClientAppConfig;
     public String idUser;
 
-    public static void loadAppconfig(Context context) {
+    public static void loadAppConfig(Context context) {
         String jsonResponse = FileUtils.loadJSONFromAsset(context.getAssets(), "config.json");
         instance = new Gson().fromJson(jsonResponse, AppConfig.class);
+        EventBus.getDefault().post(instance);
     }
 
     public static void loadAppConfigFromService(Context context, String idUser) {
@@ -65,6 +62,7 @@ public class AppConfig {
             public void success(AppConfig appConfig, Response response) {
                 super.success(appConfig, response);
                 instance = appConfig;
+                EventBus.getDefault().post(appConfig);
             }
         });
     }
@@ -86,14 +84,6 @@ public class AppConfig {
             return new AppConfig();
         }
         return instance;
-    }
-
-    public void enableProduction() {
-        enableProduction = true;
-    }
-
-    public void disableProduction() {
-        enableProduction = false;
     }
 
     public boolean isVirtualCurrencyEnabled() {

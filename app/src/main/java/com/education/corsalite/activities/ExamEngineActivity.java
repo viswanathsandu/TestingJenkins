@@ -43,6 +43,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
+import com.education.corsalite.BuildConfig;
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.ExamEngineGridAdapter;
 import com.education.corsalite.adapters.MockSubjectsAdapter;
@@ -95,6 +96,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -997,15 +999,21 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            if (checkNetconnection(view, url)) {
+            try {
+                if (checkNetconnection(view, url)) {
+                    return true;
+                }
+                URL appBaseUrl = new URL(BuildConfig.BASE_URL);
+                if (Uri.parse(url).getHost().equals(appBaseUrl.getHost())) {
+                    return false;
+                }
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                startActivity(intent);
                 return true;
-            }
-            if (Uri.parse(url).getHost().equals("staging.corsalite.com")) {
+            } catch (Exception e) {
+                L.error(e.getMessage(), e);
                 return false;
             }
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            startActivity(intent);
-            return true;
         }
     }
 

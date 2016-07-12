@@ -12,9 +12,8 @@ import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.LoginResponse;
-import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.AppConfig;
-import com.education.corsalite.utils.AppPref;
+import com.education.corsalite.utils.SystemUtils;
 
 import retrofit.client.Response;
 
@@ -31,8 +30,7 @@ public class SplashActivity extends AbstractBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        AppConfig.loadAppconfig(SplashActivity.this);
-        checkProduction();
+        AppConfig.loadAppConfig(SplashActivity.this);
         new CountDownTimer(AppConfig.getInstance().getSplashDuration(), 100) {
             @Override
             public void onFinish() {
@@ -44,20 +42,6 @@ public class SplashActivity extends AbstractBaseActivity {
             public void onTick(long millisUntilFinished) {}
         }.start();
         checkAutoLogin();
-    }
-
-    private void checkProduction() {
-        final String enableProduction = AppPref.getInstance(SplashActivity.this).getValue("enable_production");
-        AppConfig config = AppConfig.getInstance();
-        if(config != null) {
-            if (TextUtils.isEmpty(enableProduction)) {
-                AppPref.getInstance(SplashActivity.this).save("enable_production", config.enableProduction + "");
-            } else {
-                config.enableProduction = enableProduction.equalsIgnoreCase("true");
-            }
-            ApiClientService.setBaseUrl(config.enableProduction ? config.productionUrl : config.stageUrl);
-            ApiClientService.setSocketUrl(config.enableProduction ? config.productionSocketUrl : config.stageSocketUrl);
-        }
     }
 
     private void checkAutoLogin() {
@@ -95,7 +79,10 @@ public class SplashActivity extends AbstractBaseActivity {
                     dbManager.saveReqRes(ApiCacheHolder.getInstance().login);
                     appPref.save("loginId", username);
                     appPref.save("passwordHash", password);
-                    startWebSocket();
+                    if(SystemUtils.isNetworkConnected(SplashActivity.this)) {
+                        startWebSocket();
+                        AppConfig.loadAppConfigFromService(SplashActivity.this, loginResponse.userId);
+                    }
                 } else {
                     showToast(getResources().getString(R.string.login_failed));
                 }

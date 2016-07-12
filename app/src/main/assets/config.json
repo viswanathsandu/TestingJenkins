@@ -1,9 +1,4 @@
 {
-  "stageUrl":"http://staging.corsalite.com/v1/webservices/",
-  "stageSocketUrl":"ws://staging.corsalite.com:9300",
-  "productionUrl":"http://app.corsalite.com/ws/webservices/",
-  "productionSocketUrl":"ws://app.corsalite.com:9300",
-  "enableProduction":false,
   "SplashDuration":2000, // in milli seconds
   "enableVirtualCurrency":false,
   "EnableStudyCenter": true,
@@ -17,5 +12,7 @@
   "enableScheduleTests":true,
   "enablemockTests":true,
   "enableExamHistory":true,
-  "EnableLogout":true
+  "EnableLogout":true,
+  "forceUpgrade":true,
+  "latestVersionCode":9000069
 }
