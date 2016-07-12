@@ -20,6 +20,8 @@ public class QuestionPaperExamDetails extends BaseModel {
     public String timeToStart;
     @SerializedName("LastStartTime")
     public String lastStartTime;
+    @SerializedName("TotalTime")
+    public String totalTime;
 
     public QuestionPaperExamDetails() {}
 }

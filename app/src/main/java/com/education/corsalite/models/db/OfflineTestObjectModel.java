@@ -4,6 +4,7 @@ import com.education.corsalite.enums.Tests;
 import com.education.corsalite.models.examengine.BaseTest;
 import com.education.corsalite.models.responsemodels.BaseModel;
 import com.education.corsalite.models.responsemodels.ExamModel;
+import com.education.corsalite.models.responsemodels.QuestionPaperExamDetails;
 import com.education.corsalite.models.responsemodels.TestPaperIndex;
 import com.education.corsalite.utils.Constants;
 import com.orm.dsl.Ignore;
@@ -19,6 +20,7 @@ public class OfflineTestObjectModel extends BaseModel {
     public Tests testType;
     @Ignore
     public List<ExamModel> examModels;
+    public QuestionPaperExamDetails examDetails;
     public MockTest mockTest;
     public ScheduledTestsArray scheduledTest;
     public String testQuestionPaperId;

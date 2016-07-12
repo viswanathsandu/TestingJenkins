@@ -3,14 +3,13 @@ package com.education.corsalite.models.responsemodels;
 import android.text.TextUtils;
 
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.db.IDomainEntity;
 import com.education.corsalite.utils.L;
 import com.orm.SugarRecord;
 
 /**
  * Created by vissu on 9/11/15.
  */
-public class BaseModel extends SugarRecord implements IDomainEntity<BaseModel> {
+public class BaseModel extends SugarRecord {
     /*
     This is used to determine which user has saved the data
      */

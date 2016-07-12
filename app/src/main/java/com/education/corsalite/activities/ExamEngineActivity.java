@@ -76,6 +76,7 @@ import com.education.corsalite.models.responsemodels.PostExamTemplate;
 import com.education.corsalite.models.responsemodels.PostExercise;
 import com.education.corsalite.models.responsemodels.PostFlaggedQuestions;
 import com.education.corsalite.models.responsemodels.PostQuestionPaper;
+import com.education.corsalite.models.responsemodels.QuestionPaperExamDetails;
 import com.education.corsalite.models.responsemodels.QuestionPaperIndex;
 import com.education.corsalite.models.responsemodels.TestAnswer;
 import com.education.corsalite.models.responsemodels.TestAnswerPaper;
@@ -1955,7 +1956,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     public void success(TestQuestionPaperResponse questionPaperResponse, Response response) {
                         super.success(questionPaperResponse, response);
                         if(questionPaperResponse != null)
-                        showQuestionPaper(questionPaperResponse.questions);
+                        showQuestionPaper(questionPaperResponse.questions, questionPaperResponse.examDetails);
                     }
 
                     @Override
@@ -1968,7 +1969,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 });
     }
 
-    private void showQuestionPaper(List<ExamModel> examModels) {
+    private void showQuestionPaper(List<ExamModel> examModels, QuestionPaperExamDetails examDetails) {
         localExamModelList = examModels;
         initTestAnswerPaper(localExamModelList);
         getFlaggedQuestion(false);
@@ -1984,10 +1985,12 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 webFooter.setVisibility(View.GONE);
             }
             renderQuestionLayout();
-            if (TextUtils.isEmpty(challengeTestTimeDuration)) {
-                examDurationInSeconds = getExamDurationInSeconds(examModels);
-            } else {
+            if (!TextUtils.isEmpty(challengeTestTimeDuration)) {
                 examDurationInSeconds = Integer.valueOf(challengeTestTimeDuration);
+            } else if(examDetails != null && !TextUtils.isEmpty(examDetails.totalTime)) {
+                examDurationInSeconds = Integer.valueOf(examDetails.totalTime);
+            } else {
+                examDurationInSeconds = getExamDurationInSeconds(examModels);
             }
             //dummy timer.. need to fetch time and interval from service
 
@@ -2065,7 +2068,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 headerProgress.setVisibility(View.GONE);
                 testQuestionPaperId = offlineModel.testQuestionPaperId;
                 testanswerPaper.testQuestionPaperId = testQuestionPaperId;
-                showQuestionPaper(offlineModel.examModels);
+                showQuestionPaper(offlineModel.examModels, offlineModel.examDetails);
             }
         });
     }
@@ -2115,7 +2118,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 headerProgress.setVisibility(View.GONE);
                 testQuestionPaperId = baseTest.testQuestionPaperId;
                 testanswerPaper.testQuestionPaperId = testQuestionPaperId;
-                showQuestionPaper(baseTest.questions);
+                showQuestionPaper(baseTest.questions, null);
             }
         });
     }

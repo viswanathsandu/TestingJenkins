@@ -122,6 +122,7 @@ public class TestDownloadService extends IntentService {
                             OfflineTestObjectModel model = new OfflineTestObjectModel();
                             if(questionPaperResponse != null) {
                                 model.examModels = questionPaperResponse.questions;
+                                model.examDetails = questionPaperResponse.examDetails;
                             }
                             if (mockTest != null) {
                                 model.testType = Tests.MOCK;

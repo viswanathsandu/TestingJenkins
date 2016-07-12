@@ -130,7 +130,7 @@ public class WebviewActivity extends AbstractBaseActivity {
     }
 
     private String getLoginUrl() {
-        String loginUrl = String.format("%AuthToken?LoginID=%s&PasswordHash=%s",
+        String loginUrl = String.format("AuthToken?LoginID=%s&PasswordHash=%s",
                 BuildConfig.BASE_API_URL,
                 appPref.getValue("loginId"),
                 appPref.getValue("passwordHash"));
