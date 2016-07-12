@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -82,6 +81,7 @@ import com.localytics.android.Localytics;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -1036,8 +1036,9 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     @Override
                     public void success(ScheduledTestList scheduledTests, Response response) {
                         super.success(scheduledTests, response);
-                        if (scheduledTests != null && scheduledTests.MockTest != null && !scheduledTests.MockTest.isEmpty()) {
+                        if (scheduledTests != null && scheduledTests.MockTest != null) {
                             ApiCacheHolder.getInstance().setScheduleTestsResponse(scheduledTests);
+                            dbManager.saveReqRes(ApiCacheHolder.getInstance().scheduleTests);
                             scheduleNotificationsForScheduledTests(scheduledTests);
                         }
                     }
@@ -1050,11 +1051,14 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 });
     }
 
-    private void scheduleNotificationsForScheduledTests(ScheduledTestList scheduledTestList) {
+    public void scheduleNotificationsForScheduledTests(ScheduledTestList scheduledTestList) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
             for (int i = 0; i < scheduledTestList.MockTest.size(); i++) {
                 Date scheduledTestTime = df.parse(scheduledTestList.MockTest.get(i).startTime);
+                examDownloadNotification(scheduledTestList.MockTest.get(i).testQuestionPaperId,
+                        scheduledTestList.MockTest.get(i).examName,
+                        scheduledTestTime);
                 examAdvancedNotification(scheduledTestList.MockTest.get(i).testQuestionPaperId,
                         scheduledTestList.MockTest.get(i).examName,
                         scheduledTestTime);
@@ -1067,46 +1071,77 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         }
     }
 
-    private void examAdvancedNotification(String examId, String examName, Date scheduledTime) {
-        long delay = 0;
+    private void examDownloadNotification(String examId, String examName, Date scheduledTime) {
         if(TimeUtils.currentTimeInMillis() > scheduledTime.getTime()) {
             return;
         }
-        delay = scheduledTime.getTime() - TimeUtils.currentTimeInMillis();
+        Calendar cal = Calendar.getInstance();
+        Date date = cal.getTime();
+        Calendar expiry = Calendar.getInstance();
+        expiry.setTimeInMillis(scheduledTime.getTime());
+        Intent broadCastIntent = new Intent(this, NotifyReceiver.class);
+        broadCastIntent.putExtra("title", examName);
+        broadCastIntent.putExtra("sub_title", "Exam starts at "+new SimpleDateFormat("hh:mm a").format(scheduledTime)+". Please Download");
+        broadCastIntent.putExtra("id", Data.getInt(examId));
+        broadCastIntent.putExtra("time", scheduledTime.getTime());
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, (int)TimeUtils.currentTimeInMillis(),
+                broadCastIntent, PendingIntent.FLAG_ONE_SHOT);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
+        // cancel notification
+        Intent intent = new Intent(this, NotifyReceiver.class);
+        intent.setAction("CANCEL_NOTIFICATION");
+        intent.putExtra("id", Data.getInt(examId));
+        PendingIntent cancelDownloadNotifIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, expiry.getTimeInMillis(), cancelDownloadNotifIntent);
+    }
+
+    private void examAdvancedNotification(String examId, String examName, Date scheduledTime) {
+        if(TimeUtils.currentTimeInMillis() > scheduledTime.getTime()) {
+            return;
+        }
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(scheduledTime.getTime());
+        Calendar expiry = Calendar.getInstance();
+        expiry.setTimeInMillis(scheduledTime.getTime());
         if(scheduledTime.getTime() - TimeUtils.getMinInMillis(15) > TimeUtils.currentTimeInMillis()) {
-            delay -= TimeUtils.getMinInMillis(15);
+            cal.setTimeInMillis(cal.getTimeInMillis() - TimeUtils.getMinInMillis(15));
         } else {
-            delay = 0;
+            cal = Calendar.getInstance();
         }
         Intent broadCastIntent = new Intent(this, NotifyReceiver.class);
         broadCastIntent.putExtra("title", examName);
         broadCastIntent.putExtra("sub_title", "Exam starts at "+new SimpleDateFormat("hh:mm a").format(scheduledTime));
         broadCastIntent.putExtra("id", Data.getInt(examId));
+        broadCastIntent.putExtra("time", scheduledTime.getTime());
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, (int)TimeUtils.currentTimeInMillis(),
                 broadCastIntent, PendingIntent.FLAG_ONE_SHOT);
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                SystemClock.elapsedRealtime() + delay,
-                pendingIntent);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
+        // cancel notification
+        Intent intent = new Intent(this, NotifyReceiver.class);
+        intent.setAction("CANCEL_NOTIFICATION");
+        intent.putExtra("id", Data.getInt(examId));
+        PendingIntent cancelDownloadNotifIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, expiry.getTimeInMillis(), cancelDownloadNotifIntent);
     }
 
     private void examStartedNotification(String examId, String examName, Date scheduledTime) {
-        long delay = 0;
         if(TimeUtils.currentTimeInMillis() > scheduledTime.getTime()) {
             return;
         }
-        delay = scheduledTime.getTime() - TimeUtils.currentTimeInMillis();
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(scheduledTime.getTime());
         Intent broadCastIntent = new Intent(this, NotifyReceiver.class);
         broadCastIntent.putExtra("title", examName);
         broadCastIntent.putExtra("sub_title", "Exam started at "+new SimpleDateFormat("hh:mm a").format(scheduledTime));
         broadCastIntent.putExtra("test_question_paper_id", examId);
         broadCastIntent.putExtra("id", Data.getInt(examId));
+        broadCastIntent.putExtra("time", scheduledTime.getTime());
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, (int)TimeUtils.currentTimeInMillis(),
                 broadCastIntent, PendingIntent.FLAG_ONE_SHOT);
         AlarmManager alarmManager = (AlarmManager)this.getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                SystemClock.elapsedRealtime() + delay,
-                pendingIntent);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
     }
 
     // trigger challenge test request
@@ -1141,26 +1176,40 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     public void onEventMainThread(ScheduledTestStartEvent event) {
-        // check if the test is available for offline
-        List<OfflineTestObjectModel> offlineTestModels = dbManager.fetchRecords(OfflineTestObjectModel.class);
-        for(OfflineTestObjectModel model : offlineTestModels) {
-            if(model.testQuestionPaperId.equalsIgnoreCase(event.testQuestionPaperId)) {
-                // start the test
-                Intent intent = new Intent(this, ExamEngineActivity.class);
-                intent.putExtra(Constants.TEST_TITLE, "Scheduled Test");
-                intent.putExtra("test_question_paper_id", model.testQuestionPaperId);
-                intent.putExtra("OfflineTestObjectModel", model.dateTime);
-                intent.putExtra(Constants.DB_ROW_ID, model.getId());
-                startActivity(intent);
+        try {
+            // check if the test is available for offline
+            if (TimeUtils.currentTimeInMillis() < event.scheduledTime) {
                 return;
             }
-        }
-        if(SystemUtils.isNetworkConnected(this)) {
-            // start the test
-            Intent examIntent = new Intent(this, ExamEngineActivity.class);
-            examIntent.putExtra(Constants.TEST_TITLE, "Scheduled Test");
-            examIntent.putExtra("test_question_paper_id", event.testQuestionPaperId);
-            startActivity(examIntent);
+            List<OfflineTestObjectModel> offlineTestModels = dbManager.fetchRecords(OfflineTestObjectModel.class);
+            for (OfflineTestObjectModel model : offlineTestModels) {
+                if (model.testQuestionPaperId.equalsIgnoreCase(event.testQuestionPaperId)) {
+                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    long startTimeInMillis = df.parse(model.scheduledTest.startTime).getTime();
+                    // start the test
+                    Intent intent = new Intent(this, ExamEngineActivity.class);
+                    intent.putExtra(Constants.TEST_TITLE, "Scheduled Test");
+                    intent.putExtra("test_question_paper_id", model.testQuestionPaperId);
+                    intent.putExtra("OfflineTestObjectModel", model.dateTime);
+                    intent.putExtra(Constants.IS_OFFLINE, true);
+                    intent.putExtra("mock_test_data_json", new Gson().toJson(model.scheduledTest));
+                    intent.putExtra("time", startTimeInMillis);
+                    intent.putExtra(Constants.DB_ROW_ID, model.getId());
+                    startActivity(intent);
+                    return;
+                }
+            }
+            if (SystemUtils.isNetworkConnected(this)) {
+                // start the test
+                Intent examIntent = new Intent(this, ExamEngineActivity.class);
+                examIntent.putExtra(Constants.TEST_TITLE, "Scheduled Test");
+                examIntent.putExtra("test_question_paper_id", event.testQuestionPaperId);
+                examIntent.putExtra("time", event.scheduledTime);
+                startActivity(examIntent);
+            }
+
+        } catch(Exception e) {
+            L.error(e.getMessage(), e);
         }
     }
 

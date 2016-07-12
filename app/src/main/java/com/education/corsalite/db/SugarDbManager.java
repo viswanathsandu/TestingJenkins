@@ -7,6 +7,8 @@ import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.models.db.ExerciseOfflineModel;
 import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.models.db.OfflineTestObjectModel;
+import com.education.corsalite.models.db.ScheduledTestList;
+import com.education.corsalite.models.db.ScheduledTestsArray;
 import com.education.corsalite.models.db.reqres.LoginReqRes;
 import com.education.corsalite.models.db.reqres.ReqRes;
 import com.education.corsalite.models.db.reqres.requests.AbstractBaseRequest;
@@ -328,6 +330,12 @@ public class SugarDbManager {
 
     public void saveOfflineTest(final OfflineTestObjectModel model) {
         try {
+            List<OfflineTestObjectModel> tests = getCachedOfflineTestObjectModles();
+            for(OfflineTestObjectModel test : tests) {
+                if(test.testQuestionPaperId.equalsIgnoreCase(model.testQuestionPaperId)) {
+                    model.setId(test.getId());
+                }
+            }
             save(model);
         } catch (Exception e) {
             L.error(e.getMessage(), e);
@@ -521,5 +529,16 @@ public class SugarDbManager {
             cachedOfflineTestObjects = new ArrayList<>();
         }
         return cachedOfflineTestObjects;
+    }
+
+    private void updateScheduledTest(ScheduledTestList scheduledTests) {
+        try {
+            List<ScheduledTestsArray> testsList = fetchRecords(ScheduledTestsArray.class);
+            for(ScheduledTestsArray test : testsList) {
+
+            }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
     }
 }

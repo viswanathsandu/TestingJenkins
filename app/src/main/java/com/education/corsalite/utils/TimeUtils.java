@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -13,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 public class TimeUtils {
 
     public static long currentTimeInMillis() {
-        return Calendar.getInstance(TimeZone.getTimeZone("Asia/Kolkata")).getTimeInMillis();
+        return Calendar.getInstance().getTimeInMillis();
     }
 
     public static long getMinInMillis(int minutes) {

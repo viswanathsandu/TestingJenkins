@@ -1,17 +1,13 @@
 package com.education.corsalite.fragments;
 
 import android.annotation.TargetApi;
-import android.app.AlarmManager;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,29 +21,26 @@ import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
-import com.education.corsalite.activities.ExamEngineActivity;
 import com.education.corsalite.adapters.ScheduledTestsListAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.db.SugarDbManager;
+import com.education.corsalite.event.ScheduledTestStartEvent;
 import com.education.corsalite.models.db.ScheduledTestList;
 import com.education.corsalite.models.db.ScheduledTestsArray;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.services.TestDownloadService;
-import com.education.corsalite.utils.Constants;
-import com.education.corsalite.utils.Data;
 import com.education.corsalite.utils.L;
-import com.education.corsalite.receivers.NotifyReceiver;
-import com.education.corsalite.utils.TimeUtils;
 import com.google.gson.Gson;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
 import retrofit.client.Response;
 
 /**
@@ -88,60 +81,10 @@ public class ScheduledTestDialog extends DialogFragment implements ScheduledTest
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
-            for (int i = 0; i < mScheduledTestList.MockTest.size(); i++) {
-                Date scheduledTestTime = df.parse(mScheduledTestList.MockTest.get(i).startTime);
-                examAdvancedNotification(mScheduledTestList.MockTest.get(i).testQuestionPaperId,
-                                        mScheduledTestList.MockTest.get(i).examName,
-                                        scheduledTestTime);
-                examStartedNotification(mScheduledTestList.MockTest.get(i).testQuestionPaperId,
-                                        mScheduledTestList.MockTest.get(i).examName,
-                                        scheduledTestTime);
-            }
-        } catch (ParseException e) {
+            ((AbstractBaseActivity)getActivity()).scheduleNotificationsForScheduledTests(mScheduledTestList);
+        } catch (Exception e) {
             L.error(e.getMessage(), e);
         }
-    }
-
-    private void examAdvancedNotification(String examId, String examName, Date scheduledTime) {
-        long delay = 0;
-        if(TimeUtils.currentTimeInMillis() > scheduledTime.getTime()) {
-            return;
-        }
-        delay = scheduledTime.getTime() - TimeUtils.currentTimeInMillis();
-        if(scheduledTime.getTime() - TimeUtils.getMinInMillis(15) > TimeUtils.currentTimeInMillis()) {
-            delay -= TimeUtils.getMinInMillis(15);
-        } else {
-            delay = 0;
-        }
-        Intent broadCastIntent = new Intent(this.getActivity(), NotifyReceiver.class);
-        broadCastIntent.putExtra("title", examName);
-        broadCastIntent.putExtra("sub_title", "Exam starts at "+new SimpleDateFormat("hh:mm a").format(scheduledTime));
-        broadCastIntent.putExtra("id", Data.getInt(examId));
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this.getActivity(), (int)TimeUtils.currentTimeInMillis(),
-                                broadCastIntent, PendingIntent.FLAG_ONE_SHOT);
-        AlarmManager alarmManager = (AlarmManager)this.getActivity().getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                SystemClock.elapsedRealtime() + delay,
-                pendingIntent);
-    }
-
-    private void examStartedNotification(String examId, String examName, Date scheduledTime) {
-        long delay = 0;
-        if(TimeUtils.currentTimeInMillis() > scheduledTime.getTime()) {
-            return;
-        }
-        delay = scheduledTime.getTime() - TimeUtils.currentTimeInMillis();
-        Intent broadCastIntent = new Intent(this.getActivity(), NotifyReceiver.class);
-        broadCastIntent.putExtra("title", examName);
-        broadCastIntent.putExtra("sub_title", "Exam started at "+new SimpleDateFormat("hh:mm a").format(scheduledTime));
-        broadCastIntent.putExtra("test_question_paper_id", examId);
-        broadCastIntent.putExtra("id", Data.getInt(examId));
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this.getActivity(), (int)TimeUtils.currentTimeInMillis(),
-                                broadCastIntent, PendingIntent.FLAG_ONE_SHOT);
-        AlarmManager alarmManager = (AlarmManager)this.getActivity().getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                                SystemClock.elapsedRealtime() + delay,
-                                pendingIntent);
     }
 
     @Override
@@ -154,13 +97,12 @@ public class ScheduledTestDialog extends DialogFragment implements ScheduledTest
         try {
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             long startTimeInMillis = df.parse(exam.startTime).getTime();
-            if (startTimeInMillis < TimeUtils.currentTimeInMillis() + 1000*60) {
-                Intent intent = new Intent(getActivity(), ExamEngineActivity.class);
-                intent.putExtra(Constants.TEST_TITLE, "Scheduled Test");
-                intent.putExtra("test_question_paper_id", exam.testQuestionPaperId);
-                startActivity(intent);
-                return;
-            }
+            L.info("Starting Schedule Test : "+exam.testQuestionPaperId);
+            ScheduledTestStartEvent event = new ScheduledTestStartEvent();
+            event.testQuestionPaperId = exam.testQuestionPaperId;
+            event.scheduledTime = startTimeInMillis;
+            EventBus.getDefault().post(event);
+            return;
         } catch (ParseException e) {
             L.error(e.getMessage(), e);
         }
@@ -172,8 +114,7 @@ public class ScheduledTestDialog extends DialogFragment implements ScheduledTest
         ScheduledTestsArray exam = mScheduledTestList.MockTest.get(position);
         Intent intent = new Intent(getActivity(), TestDownloadService.class);
         intent.putExtra("testQuestionPaperId",exam.testQuestionPaperId);
-        String scheduleTestStr = new Gson().toJson(exam);
-        intent.putExtra("selectedScheduledTest",scheduleTestStr);
+        intent.putExtra("selectedScheduledTest",new Gson().toJson(exam));
         getActivity().startService(intent);
         Toast.makeText(getActivity(), "Downloading Scheduled test paper in background", Toast.LENGTH_SHORT).show();
     }
@@ -190,6 +131,7 @@ public class ScheduledTestDialog extends DialogFragment implements ScheduledTest
                         dialog.dismiss();
                         if (scheduledTests != null && scheduledTests.MockTest != null && !scheduledTests.MockTest.isEmpty()) {
                             ApiCacheHolder.getInstance().setScheduleTestsResponse(scheduledTests);
+                            SugarDbManager.get(getActivity()).saveReqRes(ApiCacheHolder.getInstance().scheduleTests);
                             mScheduledTestList = scheduledTests;
                             showScheduledTests();
                         }

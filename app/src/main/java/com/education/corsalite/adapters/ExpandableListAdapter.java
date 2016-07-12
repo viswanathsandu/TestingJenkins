@@ -17,6 +17,7 @@ import com.education.corsalite.activities.ExamEngineActivity;
 import com.education.corsalite.activities.StartMockTestActivity;
 import com.education.corsalite.activities.TestStartActivity;
 import com.education.corsalite.enums.Tests;
+import com.education.corsalite.event.ScheduledTestStartEvent;
 import com.education.corsalite.models.db.MockTest;
 import com.education.corsalite.models.db.OfflineTestObjectModel;
 import com.education.corsalite.models.db.ScheduledTestsArray;
@@ -30,6 +31,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by madhuri on 2/28/16.
@@ -224,15 +227,12 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 ScheduledTestsArray exam = model.scheduledTest;
                 SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 long startTimeInMillis = df.parse(exam.startTime).getTime();
-                if (startTimeInMillis < TimeUtils.currentTimeInMillis() + 1000 * 60) {
-                    Intent intent = new Intent(context, ExamEngineActivity.class);
-                    intent.putExtra(Constants.TEST_TITLE, "Scheduled Test");
-                    intent.putExtra("test_question_paper_id", exam.testQuestionPaperId);
-                    intent.putExtra("OfflineTestObjectModel", model.dateTime);
-                    intent.putExtra(Constants.DB_ROW_ID, model.getId());
-                    context.startActivity(intent);
-                    return;
-                }
+                L.info("Starting Schedule Test : "+exam.testQuestionPaperId);
+                ScheduledTestStartEvent event = new ScheduledTestStartEvent();
+                event.testQuestionPaperId = exam.testQuestionPaperId;
+                event.scheduledTime = startTimeInMillis;
+                EventBus.getDefault().post(event);
+                return;
             } catch (ParseException e) {
                 L.error(e.getMessage(), e);
             }

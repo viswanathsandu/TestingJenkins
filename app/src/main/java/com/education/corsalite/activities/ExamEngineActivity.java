@@ -243,6 +243,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private List<PartTestGridElement> partTestGridElements;
     private List<String> sections;
     private TestAnswerPaper testanswerPaper = new TestAnswerPaper();
+    private Long scheduledTimeInMillis = 0l;
 
     private long timeSpent = 0;
 
@@ -310,6 +311,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         challengeTestId = getIntent().getStringExtra("challenge_test_id");
         challengeTestTimeDuration = getIntent().getStringExtra("challenge_test_time_duration");
         mIsAdaptiveTest = getIntent().getBooleanExtra(Constants.ADAPIVE_LEAERNING, false);
+        scheduledTimeInMillis = getIntent().getExtras().getLong("time", 0);
         String partTestGridElimentsJson = getIntent().getStringExtra(Constants.PARTTEST_GRIDMODELS);
         if (!TextUtils.isEmpty(partTestGridElimentsJson)) {
             Type listType = new TypeToken<ArrayList<PartTestGridElement>>() {
@@ -1982,8 +1984,14 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             //dummy timer.. need to fetch time and interval from service
 
             TimeUtils.getSecondsInTimeFormat(examDurationInSeconds);
-            final CounterClass timer = new CounterClass(examDurationInSeconds * 1000, 1000);
-            timer.start();
+            if(isScheduledTest() && scheduledTimeInMillis != 0) {
+                long examExpirytime = scheduledTimeInMillis + (examDurationInSeconds * 1000);
+                final CounterClass timer = new CounterClass(examExpirytime - TimeUtils.currentTimeInMillis(), 1000);
+                timer.start();
+            } else {
+                final CounterClass timer = new CounterClass(examDurationInSeconds * 1000, 1000);
+                timer.start();
+            }
         } else {
             headerProgress.setVisibility(View.GONE);
             tvEmptyLayout.setVisibility(View.VISIBLE);
@@ -2075,7 +2083,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     renderQuestionLayout();
                     examDurationInSeconds = getExamDurationInSeconds(localExamModelList);
                     tv_timer.setText(TimeUtils.getSecondsInTimeFormat(examDurationInSeconds));
-                    final CounterClass timer = new CounterClass(examDurationInSeconds * 1000, 1000);
+                    long examExpirytime = scheduledTimeInMillis + (examDurationInSeconds * 1000);
+                    final CounterClass timer = new CounterClass(examExpirytime - TimeUtils.currentTimeInMillis(), 1000);
                     timer.start();
                 } else {
                     headerProgress.setVisibility(View.GONE);
