@@ -5,9 +5,7 @@ import android.content.res.AssetManager;
 import android.text.TextUtils;
 
 import com.education.corsalite.cache.ApiCacheHolder;
-import com.education.corsalite.config.AppConfig;
 import com.education.corsalite.db.SugarDbManager;
-import com.education.corsalite.enums.NetworkMode;
 import com.education.corsalite.models.db.MockTest;
 import com.education.corsalite.models.db.ScheduledTestList;
 import com.education.corsalite.models.db.reqres.AppConfigReqRes;
@@ -102,7 +100,7 @@ public class ApiManager {
     }
 
     public boolean isApiOnline() {
-        return isNetworkConnected() && AppConfig.NETWORK_MODE == NetworkMode.ONLINE;
+        return isNetworkConnected();
     }
 
     private boolean isNetworkConnected() {

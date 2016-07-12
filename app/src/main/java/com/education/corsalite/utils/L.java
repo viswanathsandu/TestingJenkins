@@ -2,29 +2,25 @@ package com.education.corsalite.utils;
 
 import android.util.Log;
 
-import com.education.corsalite.config.AppConfig;
-import com.education.corsalite.enums.LoggerMode;
+import com.education.corsalite.BuildConfig;
 
 /**
  * Created by vissu on 9/17/15.
  */
 public class L {
 
-    private static final String TAG = "corsalite";
+    private static final String TAG = "CORSALITE";
 
     private static boolean isInfoEnabled() {
-        return (AppConfig.LOGGER_MODE == LoggerMode.DEVELOPMENT ||
-                AppConfig.LOGGER_MODE == LoggerMode.QA);
+        return (BuildConfig.DEBUG);
     }
 
     private static boolean isDebugEnabled() {
-        return (AppConfig.LOGGER_MODE == LoggerMode.DEVELOPMENT ||
-                AppConfig.LOGGER_MODE == LoggerMode.QA);
+        return (BuildConfig.DEBUG);
     }
 
     private static boolean isErrorEnabled() {
-        return (AppConfig.LOGGER_MODE == LoggerMode.DEVELOPMENT ||
-                AppConfig.LOGGER_MODE == LoggerMode.QA);
+        return BuildConfig.DEBUG;
     }
 
     public static void info(String message) {
