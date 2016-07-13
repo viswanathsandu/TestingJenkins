@@ -55,11 +55,12 @@
         android:backgroundTint="@color/black"
         fontPath="@string/roboto_regular"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:layout_centerVertical="true"
         android:lines="1"
+        android:textAllCaps="false"
         android:textColor="@color/text_white"
-        android:textSize="14sp" />
+        android:textSize="12sp" />
     </RelativeLayout>
 
   <!--  <LinearLayout

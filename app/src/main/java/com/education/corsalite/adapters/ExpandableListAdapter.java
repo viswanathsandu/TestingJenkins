@@ -116,7 +116,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             textViewTime.setText(TimeUtils.getDateTime(childs.get(this.headers.get(groupPosition)).get(childPosition).dateTime));
         }
         txtListChild.setText(childText);
-        txtListChild.setOnClickListener(new View.OnClickListener() {
+        textViewStatus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (headers.get(groupPosition).equals("Mock Test")) {
