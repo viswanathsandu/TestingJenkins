@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -90,16 +91,16 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         OfflineTestObjectModel model = childs.get(this.headers.get(groupPosition)).get(childPosition);
         TextView txtListChild = (TextView) convertView.findViewById(R.id.mock_test_txt);
         TextView textViewTime = (TextView) convertView.findViewById(R.id.mock_test_time_txt);
-        TextView textViewStatus = (TextView) convertView.findViewById(R.id.test_status);
+        Button textViewStatus = (Button) convertView.findViewById(R.id.test_status);
         ImageView ivStatus = (ImageView) convertView.findViewById(R.id.iv_status);
         if (model.status == Constants.STATUS_COMPLETED) {
             textViewStatus.setText("Completed");
             ivStatus.setImageResource(R.drawable.ico_correct);
         } else if (model.status == Constants.STATUS_START) {
-            textViewStatus.setText("Not Started");
+            textViewStatus.setText("Start");
             ivStatus.setImageResource(R.drawable.ico_yettoattempt);
         } else if (model.status == Constants.STATUS_SUSPENDED) {
-            textViewStatus.setText("Suspended");
+            textViewStatus.setText("Restart");
             ivStatus.setImageResource(R.drawable.ico_notattended);
         }
         if (headers.get(groupPosition).equals("Scheduled Test")) {

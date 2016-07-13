@@ -315,10 +315,10 @@ public class SugarDbManager {
         }
     }
 
-    public void deleteOfflineTestModel(final long date) {
+    public void deleteOfflineTestModel(final String testQuestionPaperId) {
         try {
             for (OfflineTestObjectModel savedOfflineContent : getCachedOfflineTestObjectModles()) {
-                if (date == savedOfflineContent.dateTime) {
+                if (testQuestionPaperId.equalsIgnoreCase(savedOfflineContent.testQuestionPaperId)) {
                     delete(savedOfflineContent);
                 }
             }

@@ -33,10 +33,12 @@
         android:singleLine="true"
         android:textColor="@color/text_black"
         android:textSize="12sp" />
+
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="0.1">
+
     <ImageView
         android:id="@+id/iv_status"
         android:layout_marginRight="5dp"
@@ -44,17 +46,19 @@
         android:layout_height="30dp"
         android:layout_gravity="center"
         android:scaleType="centerInside"
+        android:layout_centerVertical="true"
         android:src="@drawable/ico_correct"/>
-    <TextView
+
+    <Button
         android:layout_toRightOf="@+id/iv_status"
         android:id="@+id/test_status"
-        style="?android:attr/spinnerDropDownItemStyle"
-        fontPath="@string/roboto_light"
+        android:backgroundTint="@color/black"
+        fontPath="@string/roboto_regular"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:singleLine="true"
-        android:textColor="@color/text_black"
+        android:layout_height="50dp"
+        android:layout_centerVertical="true"
+        android:lines="1"
+        android:textColor="@color/text_white"
         android:textSize="14sp" />
     </RelativeLayout>
 

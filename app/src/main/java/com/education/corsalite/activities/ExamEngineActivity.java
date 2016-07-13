@@ -249,6 +249,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private List<String> sections;
     private TestAnswerPaper testanswerPaper = new TestAnswerPaper();
     private Long scheduledTimeInMillis = 0l;
+    private CounterClass timer;
 
     private long timeSpent = 0;
 
@@ -817,7 +818,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             syncModel.requestObject = testanswerPaper;
             DataSyncService.addSyncModel(syncModel);
             if(state == TestanswerPaperState.COMPLETED) {
-                dbManager.deleteOfflineTestModel(offlineModelDate);
+                dbManager.deleteOfflineTestModel(testQuestionPaperId);
             }
             return;
         }
@@ -856,7 +857,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     }
                     // dbManager.updateOfflineTestModel(offlineModelDate, Constants.STATUS_COMPLETED, System.currentTimeMillis());
                     // TO remove the exam if submitted
-                    dbManager.deleteOfflineTestModel(offlineModelDate);
+                    dbManager.deleteOfflineTestModel(testAnswerPaperId);
                 }
             }
         });
@@ -909,7 +910,6 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
     private void submitTest() {
         if (localExamModelList != null && !localExamModelList.isEmpty()) {
-            int score = 0;
             int success = 0;
             int failure = 0;
             for (ExamModel model : localExamModelList) {
@@ -1761,6 +1761,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             if (isChallengeTest() || isScheduledTest() || isMockTest()) {
                 submitTest();
             }
+
         }
 
         @Override
@@ -2007,10 +2008,10 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             TimeUtils.getSecondsInTimeFormat(examDurationInSeconds);
             if(isScheduledTest() && scheduledTimeInMillis != 0) {
                 long examExpirytime = scheduledTimeInMillis + (examDurationInSeconds * 1000);
-                final CounterClass timer = new CounterClass(examExpirytime - TimeUtils.currentTimeInMillis(), 1000);
+                timer = new CounterClass(examExpirytime - TimeUtils.currentTimeInMillis(), 1000);
                 timer.start();
             } else {
-                final CounterClass timer = new CounterClass(examDurationInSeconds * 1000, 1000);
+                timer = new CounterClass(examDurationInSeconds * 1000, 1000);
                 timer.start();
             }
         } else {
@@ -2117,6 +2118,14 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 showQuestionPaper(baseTest.questions, null);
             }
         });
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(timer != null) {
+            timer.cancel();
+        }
     }
 
     @Override
