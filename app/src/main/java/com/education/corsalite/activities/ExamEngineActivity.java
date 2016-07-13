@@ -364,6 +364,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 setToolbarForExercise(examName, true);
             }
             getTestQuestionPaper(testAnswerPaperId);
+            testNavFooter.setVisibility(View.VISIBLE);
         } else { // PartTest
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             loadDefaultExam();
