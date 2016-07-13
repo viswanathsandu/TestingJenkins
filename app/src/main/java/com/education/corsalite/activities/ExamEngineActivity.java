@@ -429,6 +429,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             String testJson = getIntent().getExtras().getString("mock_test_data_json");
             ScheduledTestsArray model = new Gson().fromJson(testJson, ScheduledTestsArray.class);
             loadOfflineScheduledTest(model);
+            testNavFooter.setVisibility(View.VISIBLE);
         } else {
             imvFlag.setVisibility(View.VISIBLE);
             getTestQuestionPaper(null);

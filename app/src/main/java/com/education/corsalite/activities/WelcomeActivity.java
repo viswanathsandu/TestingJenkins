@@ -132,7 +132,7 @@ public class WelcomeActivity extends AbstractBaseActivity implements View.OnClic
 
     @Override
     public void onClick(View v) {
-        if(AbstractBaseActivity.getSelectedCourse().isEnded()) {
+        if(AbstractBaseActivity.getSelectedCourse() == null && AbstractBaseActivity.getSelectedCourse().isEnded()) {
             showToast("Please select a different course");
             return;
         }
