@@ -73,17 +73,19 @@ public class ScheduledTestDialog extends DialogFragment implements ScheduledTest
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     private void showScheduledTests() {
-        final LinearLayoutManager layoutManager = new org.solovyev.android.views.llm.LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        rvMockTestList.setLayoutManager(layoutManager);
-        ScheduledTestsListAdapter scheduledTestsListAdapter = new ScheduledTestsListAdapter(mScheduledTestList, getActivity().getLayoutInflater());
-        scheduledTestsListAdapter.setScheduledTestSelectedListener(this);
-        rvMockTestList.setAdapter(scheduledTestsListAdapter);
+        if(mScheduledTestList != null) {
+            final LinearLayoutManager layoutManager = new org.solovyev.android.views.llm.LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+            rvMockTestList.setLayoutManager(layoutManager);
+            ScheduledTestsListAdapter scheduledTestsListAdapter = new ScheduledTestsListAdapter(mScheduledTestList, getActivity().getLayoutInflater());
+            scheduledTestsListAdapter.setScheduledTestSelectedListener(this);
+            rvMockTestList.setAdapter(scheduledTestsListAdapter);
 
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        try {
-            ((AbstractBaseActivity)getActivity()).scheduleNotificationsForScheduledTests(mScheduledTestList);
-        } catch (Exception e) {
-            L.error(e.getMessage(), e);
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            try {
+                ((AbstractBaseActivity) getActivity()).scheduleNotificationsForScheduledTests(mScheduledTestList);
+            } catch (Exception e) {
+                L.error(e.getMessage(), e);
+            }
         }
     }
 

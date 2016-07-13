@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -97,14 +96,21 @@ public class ExamHistoryActivity extends AbstractBaseActivity implements ExamHis
     public void onItemClick(int position) {
         ExamHistory examHistory = (ExamHistory) examHistoryAdapter.getItem(position);
         if (SystemUtils.isNetworkConnected(this)) {
-            if(!TextUtils.isEmpty(examHistory.totalScore) && examHistory.totalScore.equalsIgnoreCase("suspended")) {
+            if(examHistory.totalScore.equalsIgnoreCase("suspended")) {
+                // TODO : uncomment it to enable exam history suspended items to work
+//                Intent intent = new Intent(ExamHistoryActivity.this, ExamEngineActivity.class);
+//                intent.putExtra("exam_name", examHistory.examName);
+//                intent.putExtra("test_question_paper_id", examHistory.idTestQuestionPaper);
+//                intent.putExtra("test_answer_paper_id", examHistory.idTestAnswerPaper);
+//                startActivity(intent);
                return;
+            } else {
+                Intent intent = new Intent(this, WebviewActivity.class);
+                L.info("URL : " + WebUrls.getExamResultsSummaryUrl() + examHistory.idTestAnswerPaper);
+                intent.putExtra(LoginActivity.URL, WebUrls.getExamResultsSummaryUrl() + examHistory.idTestAnswerPaper);
+                intent.putExtra(LoginActivity.TITLE, getString(R.string.results));
+                startActivity(intent);
             }
-            Intent intent = new Intent(this, WebviewActivity.class);
-            L.info("URL : " + WebUrls.getExamResultsSummaryUrl() + examHistory.idTestAnswerPaper);
-            intent.putExtra(LoginActivity.URL, WebUrls.getExamResultsSummaryUrl() + examHistory.idTestAnswerPaper);
-            intent.putExtra(LoginActivity.TITLE, getString(R.string.results));
-            startActivity(intent);
         }
     }
 }

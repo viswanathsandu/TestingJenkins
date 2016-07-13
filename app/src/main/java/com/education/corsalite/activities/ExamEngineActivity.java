@@ -238,6 +238,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private String challengeTestId;
     private String challengeTestTimeDuration;
     private String testQuestionPaperId = null;
+    private String testAnswerPaperId = null;
+    private String examName = null;
     private ExamEngineGridAdapter gridAdapter;
     private MockSubjectsAdapter sectionsAdapter;
     private TestPaperIndex mockTestPaperIndex;
@@ -315,6 +317,9 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         challengeTestTimeDuration = getIntent().getStringExtra("challenge_test_time_duration");
         mIsAdaptiveTest = getIntent().getBooleanExtra(Constants.ADAPIVE_LEAERNING, false);
         scheduledTimeInMillis = getIntent().getExtras().getLong("time", 0);
+        testQuestionPaperId = getIntent().getExtras().getString("test_question_paper_id");
+        testAnswerPaperId = getIntent().getExtras().getString("test_answer_paper_id");
+        examName = getIntent().getExtras().getString("exam_name");
         String partTestGridElimentsJson = getIntent().getStringExtra(Constants.PARTTEST_GRIDMODELS);
         if (!TextUtils.isEmpty(partTestGridElimentsJson)) {
             Type listType = new TypeToken<ArrayList<PartTestGridElement>>() {
@@ -354,6 +359,11 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 setToolbarForExercise(subjectName + " - " + chapterName, true);
             }
             loadDefaultExam();
+        } else if(!TextUtils.isEmpty(testQuestionPaperId) && !TextUtils.isEmpty(testAnswerPaperId)) {
+            if(!TextUtils.isEmpty(examName)){
+                setToolbarForExercise(examName, true);
+            }
+            getTestQuestionPaper(testAnswerPaperId);
         } else { // PartTest
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             loadDefaultExam();
@@ -421,7 +431,6 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             loadOfflineScheduledTest(model);
         } else {
             imvFlag.setVisibility(View.VISIBLE);
-            testQuestionPaperId = getIntent().getExtras().getString("test_question_paper_id");
             getTestQuestionPaper(null);
             imvRefresh.setVisibility(View.VISIBLE);
             timerLayout.setVisibility(View.VISIBLE);
@@ -440,7 +449,6 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         btnSuspend.setVisibility(View.GONE);
         btnSave.setVisibility(View.GONE);
         imvFlag.setVisibility(View.VISIBLE);
-        testQuestionPaperId = getIntent().getExtras().getString("test_question_paper_id");
         sendLederBoardRequestEvent();
         getTestQuestionPaper(null);
         imvRefresh.setVisibility(View.VISIBLE);
@@ -462,7 +470,6 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         }
         imvFlag.setVisibility(View.VISIBLE);
         String testInstructions = getIntent().getStringExtra("Test_Instructions");
-        testQuestionPaperId = getIntent().getStringExtra("test_question_paper_id");
         if (mockTest == null) {
             getTestQuestionPaper(null);
         } else {
