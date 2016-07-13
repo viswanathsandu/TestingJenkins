@@ -909,7 +909,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                         if (!model.selectedAnswers.contains(",")) {
                             int selectedOption = -1;
                             selectedOption = Integer.parseInt(model.selectedAnswers);
-                            if (selectedOption > model.answerChoice.size() && model.answerChoice.get(selectedOption).isCorrectAnswer.equals("Y")) {
+                            if (selectedOption < model.answerChoice.size() && model.answerChoice.get(selectedOption).isCorrectAnswer.equals("Y")) {
                                 success++;
                             } else {
                                 failure++;

@@ -129,12 +129,16 @@ public class WebSocketHelper {
 
 
     private void sendEvent(String message) {
-        if(mContext == null || !SystemUtils.isNetworkConnected(mContext)) {
-            return;
-        }
-        if(isWebsocketConnected) {
-            L.info(String.format("Websocket send(%s)", message));
-            mWebSocketClient.send(message);
+        try {
+            if (mContext == null || !SystemUtils.isNetworkConnected(mContext)) {
+                return;
+            }
+            if (isWebsocketConnected) {
+                L.info(String.format("Websocket send(%s)", message));
+                mWebSocketClient.send(message);
+            }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
         }
     }
 
