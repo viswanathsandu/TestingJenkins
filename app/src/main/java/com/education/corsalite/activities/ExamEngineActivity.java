@@ -802,6 +802,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             return;
         }
         testanswerPaper.status = state.toString();
+        testanswerPaper.endTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(TimeUtils.currentTimeInMillis()));
         if(!SystemUtils.isNetworkConnected(this)) {
             SyncModel syncModel = new SyncModel();
             syncModel.requestObject = testanswerPaper;
@@ -2015,7 +2016,6 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         testanswerPaper.testQuestionPaperId = testQuestionPaperId;
         testanswerPaper.startTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
         examDurationInSeconds = getExamDurationInSeconds(localExamModelList);
-        testanswerPaper.endTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(TimeUtils.currentTimeInMillis() + examDurationInSeconds));
         testanswerPaper.entityId = LoginUserCache.getInstance().getEntityId();
         testanswerPaper.status = "Started"; // Started | Suspended | Completed
         testanswerPaper.testAnswers = new ArrayList<>();
@@ -2079,28 +2079,15 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             finish();
             return;
         }
-        dbManager.getAllExamModels(dbRowId, new ApiCallback<List<ExamModel>>(this) {
+        dbManager.getAllExamModels(dbRowId, new ApiCallback<OfflineTestObjectModel>(this) {
             @Override
-            public void success(List<ExamModel> examModels, Response response) {
-                super.success(examModels, response);
+            public void success(OfflineTestObjectModel offlineTest, Response response) {
+                super.success(offlineTest, response);
                 headerProgress.setVisibility(View.GONE);
-                localExamModelList = examModels;
-                if (localExamModelList != null) {
-                    if (localExamModelList.size() > 1) {
-                        webFooter.setVisibility(View.VISIBLE);
-                    } else {
-                        webFooter.setVisibility(View.GONE);
-                    }
-                    renderQuestionLayout();
-                    examDurationInSeconds = getExamDurationInSeconds(localExamModelList);
-                    tv_timer.setText(TimeUtils.getSecondsInTimeFormat(examDurationInSeconds));
-                    long examExpirytime = scheduledTimeInMillis + (examDurationInSeconds * 1000);
-                    final CounterClass timer = new CounterClass(examExpirytime - TimeUtils.currentTimeInMillis(), 1000);
-                    timer.start();
-                } else {
-                    headerProgress.setVisibility(View.GONE);
-                    tvEmptyLayout.setVisibility(View.VISIBLE);
-                }
+                localExamModelList = offlineTest.examModels;
+                testQuestionPaperId = offlineTest.testQuestionPaperId;
+                testanswerPaper.testQuestionPaperId = testQuestionPaperId;
+                showQuestionPaper(localExamModelList, offlineTest.examDetails);
             }
         });
     }

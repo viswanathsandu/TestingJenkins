@@ -109,6 +109,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 textViewTime.setText(TimeUtils.getDateTime(date.getTime()));
             } catch(Exception e) {
                 L.error(e.getMessage(), e);
+                textViewTime.setText(TimeUtils.getDateTime(childs.get(this.headers.get(groupPosition)).get(childPosition).dateTime));
             }
         } else {
             textViewTime.setText(TimeUtils.getDateTime(childs.get(this.headers.get(groupPosition)).get(childPosition).dateTime));

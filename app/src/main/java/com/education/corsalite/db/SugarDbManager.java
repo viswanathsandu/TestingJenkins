@@ -15,7 +15,6 @@ import com.education.corsalite.models.db.reqres.requests.AbstractBaseRequest;
 import com.education.corsalite.models.examengine.BaseTest;
 import com.education.corsalite.models.responsemodels.BaseModel;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
-import com.education.corsalite.models.responsemodels.ExamModel;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.MockUtils;
 import com.google.gson.Gson;
@@ -465,13 +464,13 @@ public class SugarDbManager {
         }
     }
 
-    public void getAllExamModels(Long dbRowId, final ApiCallback<List<ExamModel>> callback) {
+    public void getAllExamModels(Long dbRowId, final ApiCallback<OfflineTestObjectModel> callback) {
         try {
             List<OfflineTestObjectModel> responseList = getCachedOfflineTestObjectModles();
             for (OfflineTestObjectModel test : responseList) {
                 if (test != null && dbRowId.equals(test.getId())) {
                     if (test != null && test.scheduledTest != null && !TextUtils.isEmpty(test.scheduledTest.testQuestionPaperId)) {
-                        callback.success(test.examModels, MockUtils.getRetrofitResponse());
+                        callback.success(test, MockUtils.getRetrofitResponse());
                         return;
                     }
                 }
