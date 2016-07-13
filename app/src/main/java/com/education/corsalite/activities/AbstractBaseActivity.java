@@ -1097,6 +1097,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                         if (scheduledTests != null && scheduledTests.MockTest != null) {
                             ApiCacheHolder.getInstance().setScheduleTestsResponse(scheduledTests);
                             dbManager.saveReqRes(ApiCacheHolder.getInstance().scheduleTests);
+                            dbManager.deleteExpiredScheduleTests(scheduledTests.MockTest);
                             scheduleNotificationsForScheduledTests(scheduledTests);
                         }
                     }

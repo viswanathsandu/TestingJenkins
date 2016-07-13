@@ -29,6 +29,7 @@ import com.google.gson.Gson;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -101,7 +102,17 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             textViewStatus.setText("Suspended");
             ivStatus.setImageResource(R.drawable.ico_notattended);
         }
-        textViewTime.setText(TimeUtils.getDateTime(childs.get(this.headers.get(groupPosition)).get(childPosition).dateTime));
+        if (headers.get(groupPosition).equals("Scheduled Test")) {
+            try {
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date date = df.parse(childs.get(this.headers.get(groupPosition)).get(childPosition).scheduledTest.startTime);
+                textViewTime.setText(TimeUtils.getDateTime(date.getTime()));
+            } catch(Exception e) {
+                L.error(e.getMessage(), e);
+            }
+        } else {
+            textViewTime.setText(TimeUtils.getDateTime(childs.get(this.headers.get(groupPosition)).get(childPosition).dateTime));
+        }
         txtListChild.setText(childText);
         txtListChild.setOnClickListener(new View.OnClickListener() {
             @Override

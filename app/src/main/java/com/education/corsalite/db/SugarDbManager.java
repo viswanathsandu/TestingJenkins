@@ -484,6 +484,21 @@ public class SugarDbManager {
         }
     }
 
+    public void deleteExpiredScheduleTests(List<ScheduledTestsArray> testsList) {
+        List<OfflineTestObjectModel> offlineTests = getCachedOfflineTestObjectModles();
+        List<OfflineTestObjectModel> testsToBeDeleted = new ArrayList<>();
+        for(ScheduledTestsArray test : testsList) {
+            for(OfflineTestObjectModel offlineTest : offlineTests) {
+                if(offlineTest.scheduledTest != null && offlineTest.testQuestionPaperId.equalsIgnoreCase(test.testQuestionPaperId)) {
+                    testsToBeDeleted.add(offlineTest);
+                }
+            }
+        }
+        if(!testsToBeDeleted.isEmpty()) {
+            delete(testsToBeDeleted);
+        }
+    }
+
     public void deleteOfflineMockTest(OfflineTestObjectModel model) {
         delete(model);
     }
