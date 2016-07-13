@@ -1134,7 +1134,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             return;
         }
         Calendar cal = Calendar.getInstance();
-        Date date = cal.getTime();
         Calendar expiry = Calendar.getInstance();
         expiry.setTimeInMillis(scheduledTime.getTime());
         Intent broadCastIntent = new Intent(this, NotifyReceiver.class);
@@ -1160,11 +1159,10 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         }
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(scheduledTime.getTime());
+        cal.add(Calendar.MINUTE, -15);
         Calendar expiry = Calendar.getInstance();
         expiry.setTimeInMillis(scheduledTime.getTime());
-        if(scheduledTime.getTime() - TimeUtils.getMinInMillis(15) > TimeUtils.currentTimeInMillis()) {
-            cal.setTimeInMillis(cal.getTimeInMillis() - TimeUtils.getMinInMillis(15));
-        } else {
+        if(cal.getTimeInMillis() < TimeUtils.currentTimeInMillis()) {
             cal = Calendar.getInstance();
         }
         Intent broadCastIntent = new Intent(this, NotifyReceiver.class);
