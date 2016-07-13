@@ -857,7 +857,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     }
                     // dbManager.updateOfflineTestModel(offlineModelDate, Constants.STATUS_COMPLETED, System.currentTimeMillis());
                     // TO remove the exam if submitted
-                    dbManager.deleteOfflineTestModel(testAnswerPaperId);
+                    dbManager.deleteOfflineTestModel(testQuestionPaperId);
                 }
             }
         });
@@ -2059,10 +2059,15 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
     private void showFullQuestionDialog() {
         FullQuestionDialog fullQuestionDialog = new FullQuestionDialog();
-        Bundle bundle = new Bundle();
-        bundle.putString(Constants.SELECTED_TOPIC_NAME, topicName);
-        fullQuestionDialog.setArguments(bundle);
-        fullQuestionDialog.show(getFragmentManager(), "fullQuestionDialog");
+        try {
+            Bundle bundle = new Bundle();
+            bundle.putString(Constants.SELECTED_TOPIC_NAME, topicName);
+            fullQuestionDialog.setArguments(bundle);
+            fullQuestionDialog.show(getFragmentManager(), "fullQuestionDialog");
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+            fullQuestionDialog.dismiss();
+        }
     }
 
     private void loadOfflineMockTest(MockTest model) {

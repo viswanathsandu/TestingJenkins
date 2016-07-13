@@ -3,6 +3,7 @@ package com.education.corsalite.services;
 import android.app.IntentService;
 import android.content.Intent;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.api.ApiCallback;
@@ -120,6 +121,7 @@ public class TestDownloadService extends IntentService {
                         public void success(TestQuestionPaperResponse questionPaperResponse, Response response) {
                             super.success(questionPaperResponse, response);
                             OfflineTestObjectModel model = new OfflineTestObjectModel();
+                            String testName = "";
                             if(questionPaperResponse != null) {
                                 model.examModels = questionPaperResponse.questions;
                                 model.examDetails = questionPaperResponse.examDetails;
@@ -127,9 +129,11 @@ public class TestDownloadService extends IntentService {
                             if (mockTest != null) {
                                 model.testType = Tests.MOCK;
                                 model.mockTest = mockTest;
-                            } else {
+                                testName = mockTest.displayName;
+                            } else if(scheduledTestsArray != null) {
                                 model.testType = Tests.SCHEDULED;
                                 model.scheduledTest = scheduledTestsArray;
+                                testName = scheduledTestsArray.examName;
                             }
                             model.baseTest = new BaseTest();
                             model.baseTest.courseId = AbstractBaseActivity.getSelectedCourseId();
@@ -138,6 +142,11 @@ public class TestDownloadService extends IntentService {
                             model.testAnswerPaperId = testAnswerPaperId;
                             model.dateTime = TimeUtils.currentTimeInMillis();
                             dbManager.saveOfflineTest(model);
+                            if(!TextUtils.isEmpty(testName)) {
+                                Toast.makeText(getApplicationContext(), "Test \""+testName+"\" has been downloaded successfully", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Test has been downloaded successfully", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     });
         } catch (Exception e) {
@@ -145,7 +154,7 @@ public class TestDownloadService extends IntentService {
         }
     }
 
-    private void loadTakeTest(Chapter chapter, String subjectName, String questionsCount, String subjectId){
+    private void loadTakeTest(final Chapter chapter, final String subjectName, String questionsCount, String subjectId){
         ExamEngineHelper helper = new ExamEngineHelper(this);
         helper.loadTakeTest(chapter, subjectName, subjectId, questionsCount, new OnExamLoadCallback() {
             @Override
@@ -154,7 +163,9 @@ public class TestDownloadService extends IntentService {
                 model.testType = Tests.CHAPTER;
                 model.baseTest = test;
                 model.dateTime = TimeUtils.currentTimeInMillis();
+                model.testQuestionPaperId = test.testQuestionPaperId;
                 dbManager.saveOfflineTest(model);
+                Toast.makeText(getApplicationContext(), "\"" + chapter.chapterName + "\" test is downloaded successfully", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -176,8 +187,10 @@ public class TestDownloadService extends IntentService {
                     model.baseTest.subjectName = subjectName;
                 }
                 model.dateTime = TimeUtils.currentTimeInMillis();
+                model.testQuestionPaperId = test.testQuestionPaperId;
                 dbManager.saveOfflineTest(model);
                 L.info("Test Saved : "+model.getClass());
+                Toast.makeText(getApplicationContext(), "\""+subjectName + "\" test is downloaded successfully", Toast.LENGTH_SHORT).show();
             }
 
             @Override

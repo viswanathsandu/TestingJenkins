@@ -18,7 +18,7 @@ public class BaseModel extends SugarRecord {
     /**
      * This is specifically used to support lists in Sugar Db
      */
-    public String reflectionJsonString = null;
+    public byte[] reflectionJsonString = null;
 
     public BaseModel() {
     }

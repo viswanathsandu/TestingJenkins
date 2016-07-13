@@ -20,12 +20,17 @@ public class OfflineTestObjectModel extends BaseModel {
     public Tests testType;
     @Ignore
     public List<ExamModel> examModels;
+    @Ignore
     public QuestionPaperExamDetails examDetails;
+    @Ignore
     public MockTest mockTest;
+    @Ignore
     public ScheduledTestsArray scheduledTest;
     public String testQuestionPaperId;
     public String testAnswerPaperId;
+    @Ignore
     public TestPaperIndex testPaperIndecies;
+    @Ignore
     public BaseTest baseTest;
     public long dateTime;
     public int status = Constants.STATUS_START;
