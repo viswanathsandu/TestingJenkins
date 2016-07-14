@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -425,6 +426,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void loadScheduledTest() {
+        hideDrawerIcon();
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         btnSuspend.setVisibility(View.GONE);
         btnSave.setVisibility(View.GONE);
         if (isOffline) {
@@ -845,7 +848,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
                 } else if (state == TestanswerPaperState.SUSPENDED) {
                     showToast("Exam has been suspended");
-                    dbManager.updateOfflineTestModel(offlineModelDate, Constants.STATUS_SUSPENDED, TimeUtils.currentTimeInMillis());
+                    dbManager.updateOfflineTestModel(testQuestionPaperId, Constants.STATUS_SUSPENDED, TimeUtils.currentTimeInMillis());
                     finish();
                 } else if (state == TestanswerPaperState.COMPLETED) {
                     headerProgress.setVisibility(View.GONE);
@@ -2025,7 +2028,9 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         testanswerPaper.studentId = LoginUserCache.getInstance().getStudentId();
         testanswerPaper.testQuestionPaperId = testQuestionPaperId;
         testanswerPaper.startTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-        examDurationInSeconds = getExamDurationInSeconds(localExamModelList);
+        if(examDurationInSeconds <= 0) {
+            examDurationInSeconds = getExamDurationInSeconds(localExamModelList);
+        }
         testanswerPaper.entityId = LoginUserCache.getInstance().getEntityId();
         testanswerPaper.status = "Started"; // Started | Suspended | Completed
         testanswerPaper.testAnswers = new ArrayList<>();
