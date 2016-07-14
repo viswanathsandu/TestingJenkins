@@ -16,7 +16,10 @@ import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
+import com.education.corsalite.models.responsemodels.Message;
 import com.education.corsalite.models.responsemodels.MessageResponse;
+
+import java.util.List;
 
 import retrofit.client.Response;
 
@@ -46,6 +49,7 @@ public class MessageTabFragment extends BaseFragment {
         tvNoData = (TextView)v.findViewById(R.id.tv_no_data);
 
         tvNoData.setText("No Message Found");
+        tvNoData.setTextAppearance(getActivity(),R.style.user_profile_text);
 
         //mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setVisibility(View.VISIBLE);
@@ -57,10 +61,11 @@ public class MessageTabFragment extends BaseFragment {
     }
 
     private void getMessage(final LayoutInflater inflater) {
-        ApiManager.getInstance(getActivity()).getMessages(LoginUserCache.getInstance().loginResponse.studentId,
-                new ApiCallback<MessageResponse>() {
+        ApiManager.getInstance(getActivity()).getMessages(LoginUserCache.getInstance().getStudentId(),
+                new ApiCallback<List<Message>>(getActivity()) {
                     @Override
                     public void failure(CorsaliteError error) {
+                        super.failure(error);
                         if(error!= null && !TextUtils.isEmpty(error.message)) {
                             showToast(error.message);
                         }
@@ -68,10 +73,10 @@ public class MessageTabFragment extends BaseFragment {
                     }
 
                     @Override
-                    public void success(MessageResponse messageResponse, Response response) {
-                        if (messageResponse.isSuccessful() && messageResponse != null &&
-                                messageResponse.messages != null && messageResponse.messages.size() > 0) {
-                            mAdapter = new MessageAdapter(messageResponse.messages, inflater);
+                    public void success(List<Message> messages, Response response) {
+                        super.success(messages, response);
+                        if (messages != null && messages.size() > 0) {
+                            mAdapter = new MessageAdapter(messages, inflater);
                             mRecyclerView.setAdapter(mAdapter);
                         } else {
                             hideRecyclerView();

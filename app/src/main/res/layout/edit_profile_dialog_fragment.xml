@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="18dp">
+
+    <EditText
+        android:id="@+id/username_txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Username"
+        android:inputType="textCapCharacters"
+        fontPath="@string/roboto_regular"
+        android:gravity="center_vertical|left"
+       />
+
+    <EditText
+        android:id="@+id/firstname_txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="First Name"
+        android:inputType="text"
+        android:layout_marginTop="20dp"
+        fontPath="@string/roboto_light"
+        android:gravity="center_vertical|left"/>
+
+
+    <EditText
+        android:id="@+id/lastname_txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Last Name"
+        android:inputType="text"
+        android:layout_marginTop="20dp"
+        fontPath="@string/roboto_light"
+        android:gravity="center_vertical|left"/>
+
+
+    <EditText
+        android:id="@+id/emailid_txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Email Id"
+        android:inputType="text"
+        android:layout_marginTop="20dp"
+        fontPath="@string/roboto_light"
+        android:gravity="center_vertical|left"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="right">
+
+        <com.education.corsalite.views.CustomButton
+            android:id="@+id/btn_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@color/transparent"
+            android:padding="5dp"
+            android:text="CANCEL"
+            fontPath="@string/roboto_regular"
+            android:textColor="@color/black" />
+
+        <com.education.corsalite.views.CustomButton
+            android:id="@+id/btn_submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@color/transparent"
+            android:padding="5dp"
+            android:text="UPDATE"
+            fontPath="@string/roboto_regular"
+            android:textColor="@color/blue"/>
+
+    </LinearLayout>
+</LinearLayout>

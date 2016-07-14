@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * Created by vissu on 9/12/15.
  */
-public class Message extends BaseModel  implements Serializable {
+public class Message extends BaseModel {
 
     @SerializedName("idStudent")
     public String studentId;

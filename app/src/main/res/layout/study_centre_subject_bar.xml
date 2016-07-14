@@ -1,22 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="50dp"
     android:background="@color/gray"
-    android:orientation="horizontal"
-    android:padding="10dp">
-
-    <LinearLayout
-        android:id="@+id/subjects_name_id"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingLeft="15dp"
-        android:weightSum="1"></LinearLayout>
-
+    android:orientation="horizontal">
 
     <LinearLayout
         android:id="@+id/color_bar"
@@ -26,91 +13,123 @@
         android:layout_alignParentTop="true"
         android:gravity="center_vertical"
         android:orientation="horizontal"
+        android:padding="10dp"
         android:weightSum="1">
 
         <LinearLayout
+            android:id="@+id/all_colors"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="15dp"
-            android:id="@+id/all_colors"
+            android:background="@drawable/tile_filter_color_selector"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
                 android:orientation="horizontal">
 
                 <View
                     android:id="@+id/view1"
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
+                    android:layout_width="11dp"
+                    android:layout_height="11dp"
                     android:layout_gravity="center_vertical"
-                    android:background="@drawable/redshape" />
+                    android:layout_marginRight="1dp"
+                    android:background="@color/red" />
 
                 <View
                     android:id="@+id/view2"
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
+                    android:layout_width="11dp"
+                    android:layout_height="11dp"
                     android:layout_gravity="center_vertical"
-                    android:background="@drawable/blueshape" />
+                    android:layout_marginLeft="1dp"
+                    android:background="@color/blue" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
                 android:orientation="horizontal">
 
                 <View
                     android:id="@+id/view3"
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
+                    android:layout_width="11dp"
+                    android:layout_height="11dp"
                     android:layout_gravity="center_vertical"
-                    android:background="@drawable/greenshape" />
+                    android:layout_marginRight="1dp"
+                    android:background="@color/green" />
 
                 <View
                     android:id="@+id/view4"
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
+                    android:layout_width="11dp"
+                    android:layout_height="11dp"
                     android:layout_gravity="center_vertical"
-                    android:background="@drawable/yellowshape" />
+                    android:layout_marginLeft="1dp"
+                    android:background="@color/amber" />
             </LinearLayout>
         </LinearLayout>
 
-        <View
+        <ImageView
             android:id="@+id/redView"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
             android:layout_gravity="center_vertical"
+            android:layout_marginLeft="15dp"
             android:layout_weight="0.25"
-            android:background="@drawable/red_selector" />
+            android:background="@color/red"
+            android:src="@drawable/tile_filter_color_selector"
+            android:visibility="gone" />
 
-        <View
+        <ImageView
             android:id="@+id/blueView"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="15dp"
             android:layout_weight="0.25"
-            android:background="@drawable/blue_selector" />
+            android:background="@color/blue"
+            android:src="@drawable/tile_filter_color_selector"
+            android:visibility="gone" />
 
-        <View
-            android:id="@+id/greenView"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="15dp"
-            android:layout_weight="0.25"
-            android:background="@drawable/yellow_selector" />
-
-        <View
+        <ImageView
             android:id="@+id/yellowView"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="15dp"
             android:layout_weight="0.25"
-            android:background="@drawable/green_selector" />
+            android:background="@color/amber"
+            android:src="@drawable/tile_filter_color_selector"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/greenView"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="15dp"
+            android:layout_weight="0.25"
+            android:background="@color/green"
+            android:src="@drawable/tile_filter_color_selector"
+            android:visibility="gone" />
     </LinearLayout>
 
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/color_bar"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:id="@+id/subjects_name_id"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingLeft="15dp" />
+    </HorizontalScrollView>
 
 </RelativeLayout>

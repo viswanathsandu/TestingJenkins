@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2013-2016 KeepTrax, Inc. All Rights Reserved.
+  ~  NOTICE:  All information contained herein is, and remains the property of
+  ~  KeepTrax Incorporated.  The intellectual and technical concepts contained
+  ~  herein are proprietary to KeepTrax Incorporated and may be covered by U.S.
+  ~  and Foreign Patents, patents in process, and are protected by trade secret
+  ~  or copyright law. Dissemination of this information or reproduction of this
+  ~  material as a whole or in part is strictly forbidden unless prior written
+  ~  permission is obtained from KeepTrax Incorporated.
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:background="#111F25"
+    tools:context="com.education.corsalite.activities.InviteFriendsActivity">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp">
+    <RelativeLayout
+        android:id="@+id/rlSearchBar"
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:background="#CE2E26"
+        android:layout_alignParentTop="true"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            android:text="Select frends to challange"/>
+        <EditText
+            android:id="@+id/etSearchBar"
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:maxLines="1"
+            android:hint="Search Users.."
+            android:textSize="14sp"
+            android:layout_margin="10dp"
+            android:drawableRight="@android:drawable/ic_search_category_default"/>
+    </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/rlSearchBar">
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_friends_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </android.support.v7.widget.RecyclerView>
+        </RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="10dp"
+            android:background="#E6001C"
+            android:textColor="#FFF409"
+            android:padding="10dp"
+            android:textSize="22sp"
+            android:text="SET RULES ->"/>
+    </RelativeLayout>
+</RelativeLayout>

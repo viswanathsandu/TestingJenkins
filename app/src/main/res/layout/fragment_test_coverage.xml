@@ -2,16 +2,18 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <LinearLayout
-        android:orientation="vertical"
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/ll_test_coverage">
-    </LinearLayout>
-</ScrollView>
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/ll_test_coverage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"/>
+    </ScrollView>
 
 
     <ProgressBar
@@ -21,5 +23,17 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_gravity="center_horizontal"
-        android:visibility="visible"/>
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/tv_failure_text"
+        style="@style/analytics_text_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:drawableTop="@drawable/ico_info"
+        android:gravity="center_horizontal"
+        android:text="No Analytics available for Test Coverage"
+        android:visibility="gone" />
 </RelativeLayout>

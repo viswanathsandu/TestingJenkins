@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:gravity="center"
+        android:id="@+id/tv_examhistory_date"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        style="@style/virtual_currency_data_text"
+        android:text="Date" />
+
+    <TextView
+        android:id="@+id/tv_exam"
+        android:gravity="left"
+        android:layout_weight="3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        style="@style/virtual_currency_data_text"
+        android:text="Exam" />
+
+    <TextView
+        android:id="@+id/tv_type"
+        android:gravity="left"
+        android:layout_weight="1.3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        style="@style/virtual_currency_data_text"
+        android:text="Type" />
+
+    <TextView
+        android:id="@+id/tv_score"
+        android:gravity="center"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        style="@style/virtual_currency_data_text"
+        android:text="-" />
+
+    <TextView
+        android:id="@+id/tv_rank"
+        android:gravity="center"
+        android:layout_weight="0.7"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        style="@style/virtual_currency_data_text"
+        android:text="Rank" />
+
+    <TextView
+        android:id="@+id/tv_status"
+        android:gravity="center"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        style="@style/virtual_currency_data_text"
+        android:text="Status" />
+</LinearLayout>

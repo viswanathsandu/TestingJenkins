@@ -1,6 +1,5 @@
 package com.education.corsalite.fragments;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -33,21 +32,14 @@ public class VirtualCurrencyFragment extends BaseFragment {
     private TextView tvNoData;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_currencylist, container, false);
         mRecyclerView = (RecyclerView) v.findViewById(R.id.userdetail_recyclerView);
         layoutEmpty = (LinearLayout) v.findViewById(R.id.layout_empty);
         tvNoData = (TextView)v.findViewById(R.id.tv_no_data);
-
         tvNoData.setText("No Currency Summary Found");
-        //mRecyclerView.setHasFixedSize(true);
+        tvNoData.setTextAppearance(getActivity(),R.style.user_profile_text);
         mRecyclerView.setVisibility(View.VISIBLE);
         layoutEmpty.setVisibility(View.GONE);
         mLayoutManager = new LinearLayoutManager(getActivity());
@@ -56,22 +48,12 @@ public class VirtualCurrencyFragment extends BaseFragment {
         return v;
     }
 
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
     private void getTransactionHistory(final LayoutInflater inflater) {
-        ApiManager.getInstance(getActivity()).getVirtualCurrencyTransactions(LoginUserCache.getInstance().loginResponse.studentId,
-                new ApiCallback<VirtualCurrencySummaryResponse>() {
+        ApiManager.getInstance(getActivity()).getVirtualCurrencyTransactions(LoginUserCache.getInstance().getStudentId(),
+                new ApiCallback<VirtualCurrencySummaryResponse>(getActivity()) {
                     @Override
                     public void failure(CorsaliteError error) {
+                        super.failure(error);
                         if(error!= null && !TextUtils.isEmpty(error.message)) {
                             showToast(error.message);
                         }
@@ -79,6 +61,7 @@ public class VirtualCurrencyFragment extends BaseFragment {
 
                     @Override
                     public void success(VirtualCurrencySummaryResponse virtualCurrencySummaryResponse, Response response) {
+                        super.success(virtualCurrencySummaryResponse, response);
                         if(virtualCurrencySummaryResponse != null &&
                                 virtualCurrencySummaryResponse.virtualCurrencyTransaction != null &&
                                 virtualCurrencySummaryResponse.virtualCurrencyTransaction.size() > 0) {

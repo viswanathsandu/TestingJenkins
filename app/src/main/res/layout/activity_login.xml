@@ -1,77 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blue">
+    android:background="@color/blue"
+    android:focusableInTouchMode="true">
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/bg_login"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/bg_login" />
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="500dp"
         android:layout_height="wrap_content"
-        android:background="@android:color/white"
+        android:layout_centerInParent="true"
+        android:background="@color/white"
         android:elevation="10dp"
         android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingBottom="20dp"
         android:paddingLeft="40dp"
         android:paddingRight="40dp"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
-        android:layout_centerInParent="true">
+        android:paddingTop="20dp">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="60dp"
-            android:src="@drawable/logo_signin"
+            android:layout_marginBottom="20dp"
             android:contentDescription="logo"
-            android:layout_marginBottom="20dp"/>
+            android:src="@drawable/logo_signin" />
 
-        <com.rengwuxian.materialedittext.MaterialEditText
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/username_txt"
+                fontPath="@string/roboto_regular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Email"
+                android:textColor="@color/black"
+                android:inputType="textEmailAddress"
+                android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@._-"
+                android:maxLines="1"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Email"
-            android:text="test06@mail.com"
-            android:id="@+id/username_txt"
-            android:textColor="@android:color/black"
-            app:met_primaryColor="@color/green"
-            android:singleLine="true"/>
+            android:layout_marginTop="20dp">
 
-        <com.rengwuxian.materialedittext.MaterialEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Password"
-            android:id="@+id/password_txt"
-            android:textColor="@android:color/black"
-            app:met_primaryColor="@color/green"
-            android:inputType="textPassword"
-            android:layout_marginTop="20dp"
-            android:text="core@tech"
-            android:singleLine="true"/>
+            <EditText
+                android:id="@+id/password_txt"
+                fontPath="@string/roboto_regular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Password"
+                android:textColor="@color/black"
+                android:drawableRight="@drawable/view"
+                android:drawablePadding="6dp"
+                android:inputType="textPassword"
+                android:maxLines="1"/>
 
-        <Button
+        </android.support.design.widget.TextInputLayout>
+
+        <com.education.corsalite.views.CustomButton
+            android:id="@+id/login_btn"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:text="LOGIN"
-            android:id="@+id/login_btn"
-            android:background="@drawable/rounded_corners_green"
-            android:textColor="@android:color/white"
             android:layout_marginTop="30dp"
+            android:background="@drawable/login_button_bg"
             android:paddingLeft="45dp"
-            android:paddingRight="45dp" />
+            android:paddingRight="45dp"
+            android:text="LOGIN"
+            android:textColor="@android:color/white" />
 
         <TextView
             android:id="@+id/tv_forgot_password"
+            fontPath="@string/roboto_regular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Forgot Password?"
-            android:textColor="@color/red"
+            android:layout_marginBottom="10dp"
             android:layout_marginTop="27dp"
-            android:layout_marginBottom="10dp"/>
+            android:text="Forgot Password?"
+            android:textColor="@color/red" />
 
     </LinearLayout>
+
 </RelativeLayout>

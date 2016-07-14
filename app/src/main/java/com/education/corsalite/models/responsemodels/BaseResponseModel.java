@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by vissu on 9/12/15.
  */
-public abstract class BaseResponseModel extends BaseModel {
+public class BaseResponseModel extends BaseModel {
     @SerializedName("Status")
     public String status;
     @SerializedName("Message")

@@ -15,4 +15,6 @@ public class VirtualCurrencyTransaction extends BaseModel implements Serializabl
     public String eventName;
     @SerializedName("EarnedVirtualCurrency")
     public String earnedVirtualCurrency;
+    @SerializedName("Balance")
+    public String balance;
 }

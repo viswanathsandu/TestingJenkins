@@ -1,45 +1,46 @@
 package com.education.corsalite.models;
 
 import com.education.corsalite.models.responsemodels.BaseModel;
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
 
 /**
- * Created by mt0060 on 03/10/15.
+ * Created by Girish on 03/10/15.
  */
-public class ContentModel extends BaseModel implements Comparable<ContentModel>{
+public class ContentModel extends BaseModel implements Comparable<ContentModel>, Serializable {
 
     public String idContent;
+    @SerializedName("Type")
     public String type;
+    @SerializedName("ContentName")
     public String contentName;
+    @SerializedName("Status")
     public String status;
+    @SerializedName("AuthorCopyright")
+    public String authorCopyright;
+    @SerializedName("UpdateTime")
+    public String updateTime;
+    @SerializedName("NamePrefix")
+    public String namePrefix;
+    @SerializedName("GivenName")
+    public String givenName;
+    @SerializedName("SurName")
+    public String surName;
+    @SerializedName("Rating")
+    public String rating;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        ContentModel that = (ContentModel) o;
-
-        if (idContent != null ? !idContent.equals(that.idContent) : that.idContent != null)
-            return false;
-        if (type != null ? !type.equals(that.type) : that.type != null) return false;
-        if (contentName != null ? !contentName.equals(that.contentName) : that.contentName != null)
-            return false;
-        return !(status != null ? !status.equals(that.status) : that.status != null);
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = idContent != null ? idContent.hashCode() : 0;
-        result = 31 * result + (type != null ? type.hashCode() : 0);
-        result = 31 * result + (contentName != null ? contentName.hashCode() : 0);
-        result = 31 * result + (status != null ? status.hashCode() : 0);
-        return result;
-    }
+    public String topicId;
+    public String topicName;
 
 
     @Override
     public int compareTo(ContentModel another) {
         return Integer.valueOf(this.idContent) - Integer.valueOf(another.idContent);
+    }
+
+    @Override
+    public String toString() {
+        return contentName;
     }
 }

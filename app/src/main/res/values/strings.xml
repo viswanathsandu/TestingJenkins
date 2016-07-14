@@ -7,15 +7,22 @@
     <string name="title_activity_user_profile">My Profile</string>
     <string name="title_activity_currency">Virtual Currency Summary</string>
 
-    
+
     <string name="menu_add">Add</string>
     <string name="menu_add_guardian">Add Guardian</string>
     <string name="menu_add_courses">Add Courses</string>
     <string name="menu_read_offline">Read Offline</string>
     <string name="menu_download_pdf">Download PDF</string>
     <string name="menu_view_notes">View Notes</string>
-    <string name="menu_rate_it">Rate It</string>
-    <string name="menu_content_reading">Content Reading</string>
+    <string name="menu_rate_it">Rate Content</string>
+    <string name="menu_take_test">Take Test</string>
+    <string name="menu_part_test">Part Test</string>
+    <string name="menu_scheduled_test">Scheduled Test</string>
+    <string name="menu_mock_test">Mock Test</string>
+    <string name="menu_challenge_your_friends">Challenge your friends</string>
+    <string name="menu_exam_history">Exam History</string>
+    <string name="menu_recommended_reading">Recommended Reading</string>
+    <string name="menu_progress_card">Progress Card</string>
 
 
     <string name="logout">Logout</string>
@@ -25,14 +32,39 @@
     <string name="logout_failed">Logout failed</string>
     <string name="logout_successful">Logged out Successfully</string>
     <string name="login_failed">Login failed</string>
-    <string name="login_successful">Login Successfully</string>
-    <string name="profile_fetched">User Profile fetched successfully...</string>
+    <string name="login_successful">Logged in Successfully</string>
+    <string name="profile_fetched">User Profile fetched successfully</string>
     <string name="failed_fetch">Failed to fetch user profile information</string>
-    <string name="virtual_currency_fetched">Virtual currency fetched successfully...</string>
+    <string name="virtual_currency_fetched">Virtual currency fetched successfully</string>
     <string name="virtual_currency_fetch_failed">Failed to fetch virtual currency information</string>
-    <string name="study_centre">Study Centre</string>
+    <string name="study_centre">Study Center</string>
+    <string name="offline_content">Offline Content</string>
+    <string name="usage_analysis">Usage Analysis</string>
     <string name="analytics">Analytics</string>
+    <string name="content">Content</string>
+    <string name="notes">Notes</string>
+    <string name="exam_history">Exam History</string>
+    <string name="label_cancel">Cancel</string>
+    <string name="label_next">Next</string>
+    <string name="label_note">Note : </string>
+    <string name="label_test_level">Level</string>
+    <string name="label_test_coverage_chapter">Test Coverage by Chapter</string>
+    <string name="label_test_question_count">Question Count</string>
+    <string name="label_test_questions_correct">Answered Correct Questions</string>
+    <string name="label_test_questions_remaining">Remaining Questions</string>
+    <string name="label_test_questions_wrong">Answered Wrong Questions</string>
+    <string name="value_test_chapter_name">Practice Test Coverage (%%) by Chapter - %1$s</string>
+    <string name="value_test_note"> &#032; Your current level in this chapter is %1$s. Your accuracy at this level so far is %2$s%%, with a score of %3$s out of %4$s. You need to earn an overall accuracy of 70%% and a minimum coverage of 10 Marks (number of questions could be different) to break this level. At this point, you have to take more tests and answer questions correctly to improve your overall accuracy to 70%% and break this level. Meanwhile, you can try adaptive test to attempt questions from increasingly higher levels based on your performance</string>
 
+    <!-- Labels for recommended reading screen headings -->
+    <string name="subject_label">SUBJECT</string>
+    <string name="chapter_label">CHAPTER</string>
+    <string name="topic_label">TOPIC</string>
+    <string name="date_label">DATE</string>
+    <string name="time_label">TIME</string>
+    <string name="marks_label">MARKS</string>
+    <string name="accuracy_label">ACCURACY</string>
+    <string name="speed_label">SPEED</string>
 
 
     <!--Fonts-->
@@ -40,21 +72,32 @@
     <string name="roboto_light">fonts/Roboto-Light.ttf</string>
     <string name="roboto_medium">fonts/Roboto-Medium.ttf</string>
     <string name="roboto_bold">fonts/Roboto-Bold.ttf</string>
+    <string name="material_icon_font">fonts/material-icon-font.ttf</string>
 
     <!--Menu Drawer-->
     <string name="my_groups">My Groups</string>
     <string name="virtual_currency">Virtual Currency</string>
     <string name="invite_friends">Invite Friends</string>
     <string name="exam_schedule">Exam Schedule</string>
+    <string name="challenge_your_friends">Challenge</string>
+    <string name="forum">Forum</string>
+    <string name="post">New Post</string>
     <string name="open_drawer">Open</string>
     <string name="close_drawer">Closed</string>
+    <string name="log_out">Log Out</string>
 
     <string name="subject1">Physics</string>
     <string name="subject2">Chemistry</string>
     <string name="subject3">Maths</string>
-    <string name="level_text">level</string>
+    <string name="level_text">Level</string>
     <string name="exercise">Exercise</string>
     <string name="completed_topics">Completed Topics</string>
+    <string name="topics">Topics</string>
+    <string name="start_reading">Start Reading</string>
+    <string name="flagged_questions">Flagged Questions</string>
+    <string name="part_test">Part Test</string>
+    <string name="take_test">Take Test</string>
+    <string name="score">Score</string>
     <string name="ic_keyboard_arrow_down">&#xe0c5;</string>
     <string name="ic_keyboard_arrow_left">&#xe0c6;</string>
     <string name="ic_keyboard_arrow_right">&#xe0c7;</string>
@@ -70,5 +113,55 @@
     <string name="ic_add">&#xe006;</string>
     <string name="ic_close">&#xe048;</string>
     <string name="ic_email">&#xe087;</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="results">Results</string>
+    <string name="add_course">Add Course</string>
+    <string name="add_guardian">Add Guardian</string>
+    <string name="redeem">Redeem</string>
+    <string name="app_close_alert">Press back button once again to exit the app</string>
+    <string name="study_center_offline_click_text">Not available for offline reading</string>
+    <string name="select_content_toast">Please select content type to download</string>
+    <string name="content_downloaded_toast">Your content is being downloaded in background</string>
+    <string name="offline_dialog_title_text">List of items to be downloaded</string>
+    <string name="file_saved">File saved</string>
+    <string name="file_save_failed">Unable to save file.</string>
+    <string name="file_exists">File already exists.</string>
 
+
+    <!--Challenge Screen -->
+
+    <string name="participant">One more participants are still battling it out</string>
+    <string name="check_result">Please wait to check result.</string>
+    <string name="vc_hint"><font size="15">Virtual Currency</font></string>
+    <string name="ques_hint"><font size="15">No of Questions</font></string>
+    <string name="time_hint"><font size="15">Time in Mins</font></string>
+
+
+    <!-- Screen names-->
+
+    <string name="screen_examhistory">Exam History Screen</string>
+    <string name="screen_exercise">Exercise Screen</string>
+    <string name="screen_login">Login Screen</string>
+    <string name="screen_notes">Notes Screen</string>
+    <string name="screen_offlineContent">Offline Content Screen</string>
+    <string name="screen_studycenter">Study Center Screen</string>
+    <string name="screen_profile">User Profile Screen</string>
+    <string name="screen_virtualcurrency">Virtual Currency Screen</string>
+    <string name="screen_webview">Webview Screen</string>
+    <string name="title_activity_challenge">ChallengeActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="computer_adaptive_test">Computer Adaptive Test</string>
+
+
+    <string-array name="tab_names">
+        <item>All Posts</item>
+        <item>My Posts</item>
+        <item>Library</item>
+    </string-array>
+
+    <string name="title_activity_crash_handler">CrashHandlerActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

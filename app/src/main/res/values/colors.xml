@@ -3,28 +3,57 @@
     <color name="dark_blue">#1E589A</color>
     <color name="primary_color">#125291</color>
     <color name="colorPrimaryDark">#1E589A</color>
+    <color name="dark_blue_selector">#0B4A8E</color>
     <color name="blue">#125291</color>
+    <color name="royalblue">#4169E1</color>
+    <color name="skyblue">#1799F3</color>
+    <color name="light_yellow">#FAFAC8</color>
+    <color name="bg_chart">#D9FAC8</color>
+    <color name="beige">#F5F5DC</color>
+
     <color name="gray">#E6E6E6</color>
-    <color name="green">#289C55</color>
+    <color name="light_green">#a4c639</color>
+    <color name="green">#22b552</color>
     <color name="red">#C6352E</color>
+    <color name="crimson_red">#DC143C</color>
     <color name="white">#FFFFFF</color>
     <color name="yellow">#ffff00</color>
     <color name="amber">#FF7E00</color>
-
-    <color name="text_gray">#787878</color>
+    <color name="golden_yellow">#ffd700</color>
+    <color name="flagged_yellow">#FFC117</color>
     <color name="black">#000000</color>
     <color name="dark_gray">#a9a9a9</color>
+    <color name="light_gray">#d3d1d1</color>
+    <color name="cyan">#008B8B</color>
+    <color name="light_40">#96F5F5F6</color>
+    <color name="transparent">#00000000</color>
+    <color name="gray_dark_border">#4D4E4F</color>
+    <color name="header_row_background">#a4aeb9</color>
+    <color name="webview_background_grey">#F7F8F9</color>
+    <!--Text colors-->
+    <color name="text_gray">#666666</color>
+    <color name="text_red">#c61515</color>
+    <color name="text_white">#ffffff</color>
+    <color name="text_green">#22b552</color>
+    <color name="text_blue">#0f4d92</color>
+    <color name="text_black">#222222</color>
 
     <!--User Profile-->
     <color name="user_profile_toolbar">#222222</color>
     <color name="user_profile_statusbar">#2D2D2D</color>
-    <color name="tab_recycler_header">#9EAAB4</color>
+    <color name="tab_recycler_header">#a4aeb9</color>
     <color name="tab_recycler_alternate_row">#F7F8F9</color>
 
- <color name="table_level_1">#D62D24</color>
+    <color name="table_level_1">#D62D24</color>
     <color name="table_level_2">#AE4E2D</color>
     <color name="table_level_3">#876D37</color>
     <color name="table_level_4">#628B40</color>
     <color name="table_level_5">#3AAB49</color>
-
+    <color name="black_overlay">#66000000</color>
+    <color name="voilet">#A570B5</color>
+    <color name="voilet_light">#bd97c9</color>
+    <color name="schedule_test">#00B8AB</color>
+    <color name="schedule_test_clicked">#7dd8d1</color>
+    <color name="study_center_clicked">#7bd188</color>
+    <color name="challenge_tile_color">#bbffffff</color>
 </resources>

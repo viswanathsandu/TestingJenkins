@@ -1,207 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <include layout="@layout/header" />
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <include layout="@layout/header" />
+        android:layout_height="match_parent"
+        android:scrollbars="none">
 
         <LinearLayout
-            android:id="@+id/menu_profile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="60dp"
-                android:src="@drawable/ico_sidemenu_myprofile" />
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/option_text_1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:paddingLeft="16dp"
+                android:id="@+id/navigation_welcome"
+                android:drawableLeft="@drawable/ico_sidemenu_dashboard"
+                android:text="Home"
+                style="@style/navigation_drawer_element"/>
+
+            <TextView
+                android:id="@+id/navigation_profile"
+                android:drawableLeft="@drawable/ico_sidemenu_myprofile"
                 android:text="@string/title_activity_user_profile"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/menu_groups"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="60dp"
-                android:src="@drawable/ico_sidemenu_groups" />
+                style="@style/navigation_drawer_element"/>
 
             <TextView
-                android:id="@+id/option_text_2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:paddingLeft="16dp"
-                android:text="@string/my_groups"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/menu_virtual_currency"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="60dp"
-                android:src="@drawable/ico_sidemenu_currency" />
-
-            <TextView
-                android:id="@+id/option_text_3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:paddingLeft="16dp"
-                android:text="@string/virtual_currency"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/menu_invite_friends"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="60dp"
-                android:src="@drawable/ico_sidemenu_invite_friend" />
-
-            <TextView
-                android:id="@+id/option_text_4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:paddingLeft="16dp"
-                android:text="@string/invite_friends"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/menu_exam_schedule"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="60dp"
-                android:src="@drawable/ico_sidemenu_calendar" />
-
-            <TextView
-                android:id="@+id/option_text_5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:paddingLeft="16dp"
-                android:text="@string/exam_schedule"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/menu_study_center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="60dp"
-                android:src="@drawable/ico_sidemenu_invite_friend" />
-
-            <TextView
-                android:id="@+id/option_text_6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:paddingLeft="16dp"
+                android:id="@+id/navigation_study_center"
+                android:drawableLeft="@drawable/ico_sidemenu_studycenter"
                 android:text="Study Center"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/menu_content_reading"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="60dp"
-                android:src="@drawable/ico_sidemenu_calendar" />
+                style="@style/navigation_drawer_element" />
 
             <TextView
-                android:id="@+id/option_text_7"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:paddingLeft="16dp"
-                android:text="Content Reading"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/menu_analytics"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="60dp"
-                android:src="@drawable/ico_sidemenu_invite_friend" />
+                android:id="@+id/navigation_forum"
+                android:text="@string/forum"
+                android:drawableLeft="@drawable/ico_forum"
+                style="@style/navigation_drawer_element" />
 
             <TextView
-                android:id="@+id/option_analytics"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:paddingLeft="16dp"
+                android:id="@+id/navigation_analytics"
+                android:drawableLeft="@drawable/ico_sidemenu_analytics"
                 android:text="Analytics"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/menu_offline"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="60dp"
-                android:src="@drawable/ico_sidemenu_invite_friend" />
+                style="@style/navigation_drawer_element" />
 
             <TextView
-                android:id="@+id/option_offline"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:paddingLeft="16dp"
+                android:id="@+id/navigation_curriculum"
+                android:drawableLeft="@drawable/ico_sidemenu_analytics"
+                android:text="Curriculum"
+                style="@style/navigation_drawer_element" />
+
+            <TextView
+                android:id="@+id/navigation_offline"
+                android:drawableLeft="@drawable/ico_sidemenu_offline"
                 android:text="Offline"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                style="@style/navigation_drawer_element" />
+
+            <TextView
+                android:id="@+id/navigation_smart_class"
+                android:drawableLeft="@drawable/ico_sidemenu_smartclass"
+                android:text="Smart Class"
+                style="@style/navigation_drawer_element" />
+
+            <TextView
+                android:id="@+id/navigation_scheduled_tests"
+                android:text="@string/menu_scheduled_test"
+                android:drawableLeft="@drawable/ico_scheduled_tests"
+                style="@style/navigation_drawer_element" />
+
+            <TextView
+                android:id="@+id/navigation_mock_tests"
+                android:text="@string/menu_mock_test"
+                android:drawableLeft="@drawable/ico_mock_tests"
+                style="@style/navigation_drawer_element" />
+
+            <TextView
+                android:id="@+id/navigation_challenge_your_friends"
+                android:text="@string/challenge_your_friends"
+                android:drawableLeft="@drawable/ico_challenge"
+                style="@style/navigation_drawer_element" />
+
+            <TextView
+                android:id="@+id/navigation_exam_history"
+                android:text="@string/menu_exam_history"
+                android:drawableLeft="@drawable/ico_exam_history"
+                style="@style/navigation_drawer_element" />
+
+            <TextView
+                android:id="@+id/navigation_logout"
+                android:text="@string/log_out"
+                android:drawableLeft="@drawable/ico_sidemenu_logout"
+                style="@style/navigation_drawer_element" />
+
         </LinearLayout>
-    </LinearLayout>
-</ScrollView>
+    </ScrollView>
+</LinearLayout>

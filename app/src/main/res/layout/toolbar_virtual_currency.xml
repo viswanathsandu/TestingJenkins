@@ -21,12 +21,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="right|center_vertical">
-        <Button
+        <com.education.corsalite.views.CustomButton
             android:id="@+id/redeem_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="REDEEM"
-            android:background="@drawable/yellowshape"/>
+            android:background="@drawable/ambershape"/>
     </LinearLayout>
 
 </android.support.v7.widget.Toolbar>

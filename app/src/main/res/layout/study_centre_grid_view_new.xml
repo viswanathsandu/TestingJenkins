@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/grid_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp"
+    android:layout_marginRight="16dp"
+    android:background="@color/transparent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/grid_layout_color"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/redshape"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/subject_name"
+            style="@style/grid_text_style"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:ellipsize="end"
+            android:gravity="center_vertical|center"
+            android:lineSpacingMultiplier="1.2"
+            android:maxLines="2"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:text="Subject name"
+            android:textColor="@color/white"
+            android:textSize="16sp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal"
+            android:paddingLeft="12dp"
+            android:weightSum="3">
+
+            <TextView
+                android:id="@+id/clock"
+                style="@style/grid_child_text_style"
+                fontPath="@string/roboto_regular"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/ico_tile_time"
+                android:drawablePadding="4dp"
+                android:gravity="center_vertical|left"
+                android:paddingLeft="4dp"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:visibility="gone"
+                tools:text="00:00:00"/>
+
+            <TextView
+                android:id="@+id/star"
+                style="@style/grid_child_text_style"
+                fontPath="@string/roboto_regular"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:drawablePadding="16dp"
+                android:drawableTop="@drawable/cup"
+                android:gravity="center_vertical|center_horizontal"
+                android:paddingLeft="4dp"
+                android:text="28/347"
+                android:textColor="@color/white"/>
+
+            <TextView
+                android:id="@+id/level"
+                style="@style/grid_child_text_style"
+                fontPath="@string/roboto_regular"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:drawablePadding="16dp"
+                android:drawableTop="@drawable/level_three"
+                android:gravity="center_vertical|center"
+                android:paddingLeft="4dp"
+                android:textColor="@color/white"
+                tools:text="level 2"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingLeft="4dp">
+
+                <com.github.lzyzsd.circleprogress.DonutProgress
+                    android:id="@+id/progress_id"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:gravity="center_vertical|center"
+                    custom:donut_finished_color="#FFFFFF"
+                    custom:donut_unfinished_color="#23232300"
+                    custom:donut_finished_stroke_width="6dp"
+                    custom:donut_unfinished_stroke_width="6dp"
+                    custom:donut_progress="30"
+                    custom:donut_text_size="12sp"
+                    custom:donut_text_color="#FFFFFF"/>
+
+                <TextView
+                    android:id="@+id/grid_child_text_view"
+                    style="@style/grid_child_text_style"
+                    fontPath="@string/roboto_regular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:ellipsize="end"
+                    android:gravity="center|center_vertical"
+                    android:maxLines="2"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:text="@string/topics"
+                    android:textColor="@color/white"
+                    android:visibility="visible"/>
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/grid_layout_gray"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/grayshape"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/subject_name_gray"
+            style="@style/grid_text_style"
+            fontPath="@string/roboto_bold"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:ellipsize="end"
+            android:gravity="center|center_vertical"
+            android:lineSpacingMultiplier="1.2"
+            android:maxLines="2"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:text="Subject name"
+            android:textColor="@color/dark_gray"
+            android:textSize="16sp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal"
+            android:paddingLeft="12dp"
+            android:weightSum="3">
+
+            <TextView
+                android:id="@+id/clock_gray"
+                style="@style/grid_child_text_style"
+                fontPath="@string/roboto_regular"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/ico_tile_time"
+                android:drawablePadding="4dp"
+                android:gravity="center_vertical|left"
+                android:paddingLeft="4dp"
+                android:textColor="@color/dark_gray"
+                android:textSize="12sp"
+                android:visibility="gone"
+                tools:text="00:00:00"/>
+
+            <TextView
+                android:id="@+id/star_gray"
+                style="@style/grid_child_text_style"
+                fontPath="@string/roboto_regular"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:drawablePadding="16dp"
+                android:drawableTop="@drawable/cup"
+                android:gravity="center_vertical|center"
+                android:paddingLeft="4dp"
+                android:text="28/347"
+                android:textColor="@color/dark_gray"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/level_gray"
+                style="@style/grid_child_text_style"
+                fontPath="@string/roboto_regular"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:drawablePadding="16dp"
+                android:drawableTop="@drawable/level_three"
+                android:gravity="center_vertical|center"
+                android:paddingLeft="4dp"
+                android:textColor="@color/dark_gray"
+                android:textSize="12sp"
+                tools:text="level 2"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingLeft="4dp">
+
+                <com.github.lzyzsd.circleprogress.DonutProgress
+                    android:id="@+id/progress_id_gray"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:gravity="center_vertical|center"
+                    custom:donut_finished_stroke_width="6dp"
+                    custom:donut_unfinished_stroke_width="6dp"
+                    custom:donut_finished_color="#FFFFFF"
+                    custom:donut_unfinished_color="@color/dark_gray"
+                    custom:donut_progress="30"
+                    custom:donut_text_color="@color/dark_gray"/>
+
+                <TextView
+                    android:id="@+id/grid_child_text_view_gray"
+                    style="@style/grid_child_text_style"
+                    fontPath="@string/roboto_regular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:ellipsize="end"
+                    android:gravity="center|center_vertical"
+                    android:maxLines="2"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:text="@string/topics"
+                    android:textColor="@color/dark_gray"
+                    android:textSize="12sp"
+                    android:visibility="visible"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

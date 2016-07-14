@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.education.corsalite.R;
 import com.education.corsalite.models.responsemodels.Message;
+import com.education.corsalite.utils.L;
 
 import java.util.List;
 
@@ -21,23 +22,39 @@ public class MessageAdapter extends AbstractRecycleViewAdapter {
 
     LayoutInflater inflater;
 
-    public MessageAdapter(List<Message> messageList, LayoutInflater inflater) {
-        this(messageList);
+    public MessageAdapter(List<Message> messages, LayoutInflater inflater) {
+        this(messages);
         this.inflater = inflater;
     }
 
-    public MessageAdapter(List<Message> messageList) {
-        addAll(messageList);
+    public MessageAdapter(List<Message> messages) {
+        addAll(messages);
     }
 
     @Override
     public MessageDataHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new MessageDataHolder(inflater.inflate(R.layout.row_messages_list, parent, false));
+        View view  =inflater.inflate(R.layout.row_messages_list, parent, false) ;
+        if((viewType+1)% 2 == 0)
+        {
+            view.setBackgroundColor(inflater.getContext().getResources().getColor(R.color.tab_recycler_alternate_row));
+
+        }else {
+            view.setBackgroundColor(inflater.getContext().getResources().getColor(R.color.white));
+        }
+        return new MessageDataHolder(view);
+    }
+    @Override
+    public int getItemViewType(int position) {
+        return position;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((MessageDataHolder) holder).bindData(position, (Message) getItem(position));
+        try {
+            ((MessageDataHolder) holder).bindData(position, (Message)getItem(position));
+        } catch (Exception e) {
+            L.error("Handle it carefully", e);
+        }
     }
 
     public class MessageDataHolder extends RecyclerView.ViewHolder {

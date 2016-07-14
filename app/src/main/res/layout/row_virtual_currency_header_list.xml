@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <TextView
+        android:gravity="center"
+        android:layout_weight="1"
+        android:id="@+id/tv_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:text="Effective Date"
+        style="@style/virtual_currency_header_text"/>
+
+    <TextView
+        android:gravity="center"
+        android:layout_weight="1"
+        android:id="@+id/tv_time"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:text="TIME"
+        style="@style/virtual_currency_header_text"/>
+    <TextView
+        android:gravity="center"
+        android:layout_weight="1"
+        android:id="@+id/tv_event"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:text="Event"
+        style="@style/virtual_currency_header_text"/>
+
+    <TextView
+        android:gravity="center"
+        android:layout_weight="1"
+        android:id="@+id/tv_earned"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:text="Currency Earned"
+        style="@style/virtual_currency_header_text" />
+
+    <TextView
+        android:gravity="center"
+        android:layout_weight="1"
+        android:id="@+id/tv_balance"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:text="Balance"
+        style="@style/virtual_currency_header_text"/>
+
+</LinearLayout>

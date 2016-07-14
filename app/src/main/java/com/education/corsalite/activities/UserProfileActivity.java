@@ -9,30 +9,23 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.UserTabBaseAdapter;
 import com.education.corsalite.fragments.UserProfileDetailsFragment;
-import com.education.corsalite.models.db.CourseList;
 import com.education.corsalite.models.responsemodels.ExamDetail;
-import com.education.corsalite.models.responsemodels.Message;
 import com.education.corsalite.models.responsemodels.VirtualCurrencyTransaction;
-import com.education.corsalite.utils.Constants;
+import com.education.corsalite.utils.WebUrls;
 
 import java.util.List;
 
 public class UserProfileActivity extends AbstractBaseActivity implements UserProfileDetailsFragment.UpdateExamData{
 
-    TabLayout userProfileLayout ;
-    ViewPager viewPager;
-    Spinner coursesSpinner;
-    List<ExamDetail> examDetails;
-    List<Message> messages;
-    List<VirtualCurrencyTransaction> virtualCurrencyTransactions;
-    UserTabBaseAdapter userTabAdapter;
+    private TabLayout userProfileLayout ;
+    private ViewPager viewPager;
+    private List<VirtualCurrencyTransaction> virtualCurrencyTransactions;
+    private UserTabBaseAdapter userTabAdapter;
     public static String BALANCE_CURRENCY;
 
     @Override
@@ -42,12 +35,13 @@ public class UserProfileActivity extends AbstractBaseActivity implements UserPro
         LinearLayout myView = (LinearLayout) inflater.inflate(R.layout.activity_user_profile, null);
         frameLayout.addView(myView);
         initUI();
+        setToolbarForProfile();
+        sendAnalytics(getString(R.string.screen_profile));
     }
 
     private void initUI() {
         userProfileLayout = (TabLayout)findViewById(R.id.tl_userprofile);
         viewPager = (ViewPager)findViewById(R.id.pager);
-        coursesSpinner = (Spinner)findViewById(R.id.spinner_nav);
     }
 
     private void setTabView(List<ExamDetail> examDetailList) {
@@ -59,16 +53,6 @@ public class UserProfileActivity extends AbstractBaseActivity implements UserPro
             userTabAdapter.updateExamDetailData(examDetailList);
         }
         userProfileLayout.setupWithViewPager(viewPager);
-    }
-
-    public void showCoursesInToolbar(CourseList courseList) {
-        if(courseList != null) {
-            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
-                    R.layout.spinner_title_textview, courseList.courses);
-            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            coursesSpinner.setAdapter(dataAdapter);
-            coursesSpinner.setSelection(courseList.defaultCourseIndex);
-        }
     }
 
     @Override
@@ -93,13 +77,15 @@ public class UserProfileActivity extends AbstractBaseActivity implements UserPro
 
     private void addGuardian() {
         Intent intent = new Intent(this, WebviewActivity.class);
-        intent.putExtra(LoginActivity.URL, Constants.ADD_GUARDIAN_URL);
+        intent.putExtra(LoginActivity.TITLE, getString(R.string.add_guardian));
+        intent.putExtra(LoginActivity.URL, WebUrls.getAddGuardianUrl());
         startActivity(intent);
     }
 
     private void addCourses() {
         Intent intent = new Intent(this, WebviewActivity.class);
-        intent.putExtra(LoginActivity.URL, Constants.ADD_COURSES_URL);
+        intent.putExtra(LoginActivity.TITLE, getString(R.string.add_course));
+        intent.putExtra(LoginActivity.URL, WebUrls.getAddCoursesUrl());
         startActivity(intent);
     }
 
@@ -112,4 +98,5 @@ public class UserProfileActivity extends AbstractBaseActivity implements UserPro
         Intent intent = new Intent(this, VirtualCurrencyActivity.class);
         startActivity(intent);
     }
+
 }

@@ -1,7 +1,5 @@
 package com.education.corsalite.interceptors;
 
-import android.util.Log;
-
 import com.education.corsalite.services.ApiClientService;
 
 import retrofit.RequestInterceptor;
@@ -14,7 +12,6 @@ public class SessionRequestInterceptor implements RequestInterceptor {
 
     @Override
     public void intercept(RequestFacade request) {
-        request.addHeader("Content-Type", "application/json");
         String setcookie = ApiClientService.getSetCookie();
         if(setcookie != null && !setcookie.isEmpty()) {
             request.addHeader("cookie", setcookie);

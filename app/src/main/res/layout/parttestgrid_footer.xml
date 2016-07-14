@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="right"
+    android:orientation="horizontal">
+
+
+    <com.education.corsalite.views.CustomButton
+        android:id="@+id/btn_cancel"
+        fontPath="@string/roboto_regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@color/transparent"
+        android:padding="5dp"
+        android:text="Cancel"
+        android:textAllCaps="false"
+        android:textColor="@color/black" />
+
+    <com.education.corsalite.views.CustomButton
+        android:id="@+id/btn_download"
+        fontPath="@string/roboto_regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@color/transparent"
+        android:padding="5dp"
+        android:text="Download"
+        android:textAllCaps="false"
+        android:textColor="@color/green" />
+
+    <com.education.corsalite.views.CustomButton
+        android:id="@+id/btn_next"
+        fontPath="@string/roboto_regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@color/transparent"
+        android:padding="5dp"
+        android:text="Take Test"
+        android:textAllCaps="false"
+        android:textColor="@color/green" />
+</LinearLayout>

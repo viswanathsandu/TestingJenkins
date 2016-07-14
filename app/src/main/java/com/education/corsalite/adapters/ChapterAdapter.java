@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
@@ -20,6 +21,7 @@ public class ChapterAdapter extends BaseAdapter {
     List<ChapterModel> chapterModelList;
     Context mContext;
     LayoutInflater inflater;
+    private int selectedPosition;
 
     public ChapterAdapter(List<ChapterModel> chapterModelList, Context mContext) {
         this.chapterModelList = chapterModelList;
@@ -38,12 +40,12 @@ public class ChapterAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return chapterModelList.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
     @Override
@@ -52,5 +54,20 @@ public class ChapterAdapter extends BaseAdapter {
         TextView tv = (TextView)convertView.findViewById(R.id.tv_spn);
         tv.setText(chapterModelList.get(position).chapterName);
         return convertView;
+    }
+
+    @Override
+    public View getDropDownView(int position, View convertView, ViewGroup parent) {
+        View itemView =  inflater.inflate(R.layout.spinner_drop_down, null);
+        TextView textView = (TextView)itemView.findViewById(R.id.text);
+        ImageView imageView = (ImageView)itemView.findViewById(R.id.selected_item);
+        textView.setText(chapterModelList.get(position).chapterName);
+        imageView.setVisibility(position == selectedPosition ? View.VISIBLE : View.INVISIBLE);
+        return itemView;
+    }
+
+    public void setSelectedPosition(int position){
+        selectedPosition = position;
+        notifyDataSetChanged();
     }
 }

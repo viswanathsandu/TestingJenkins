@@ -5,7 +5,9 @@
     android:layout_height="wrap_content"
     android:background="#f3f3f3"
     android:orientation="horizontal"
-    tools:ignore="MissingPrefix">
+    tools:ignore="MissingPrefix"
+    android:id="@+id/ll_user_details"
+    android:visibility="visible">
 
     <LinearLayout
         android:layout_width="0dp"
@@ -13,6 +15,9 @@
         android:layout_weight="1"
         android:orientation="horizontal">
 
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
         <ImageView
             android:id="@+id/iv_userProfilePic"
             android:layout_width="180dp"
@@ -21,62 +26,64 @@
             android:scaleType="centerCrop"
             android:src="@drawable/user"
             android:layout_marginTop="10dp"/>
+            <ImageView
+                android:id="@+id/btn_edit_pic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ico_edit_pic"
+                android:layout_gravity="right|bottom"/>
+        </FrameLayout>
 
         <RelativeLayout
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp">
+            android:layout_margin="8dp">
 
             <RelativeLayout
                 android:id="@+id/ll_user_name"
                 android:layout_width="wrap_content"
+                android:layout_margin="5dp"
                 android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/tv_userName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingRight="5dp"
-                    android:layout_alignParentLeft="true"
-                    android:textAllCaps="true"
-                    android:textColor="#21A656"
-                    android:textSize="@dimen/abc_text_size_large_material"
-                    android:textStyle="bold"
-                    android:singleLine="true"
-                    android:ellipsize="end"
-                    android:layout_toLeftOf="@+id/sp_default_course"/>
 
                 <Spinner
                     android:id="@+id/sp_default_course"
                     android:layout_width="140dp"
                     android:layout_height="35dp"
                     android:background="@drawable/shape_rounded_corners_black"
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/white"
                     android:spinnerMode="dropdown"
-                    android:layout_toLeftOf="@+id/btn_edit" />
+                    android:layout_alignParentRight="true"/>
 
-                <Button
+                <TextView
                     android:id="@+id/btn_default_course"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
                     android:background="@drawable/shape_rounded_corners_black"
                     android:text="Default Course"
-                    android:textColor="#ffffff"
+                    android:textColor="@color/white"
+                    android:padding="3dp"
+                    android:drawablePadding="5dp"
                     android:layout_alignLeft="@+id/sp_default_course"
                     android:layout_alignTop="@+id/sp_default_course"
                     android:layout_alignRight="@+id/sp_default_course"
-                    android:layout_alignBottom="@+id/sp_default_course"/>
+                    android:layout_alignBottom="@+id/sp_default_course"
+                    android:drawableRight="@drawable/ico_dropdown_white"
+                    fontPath="@string/roboto_medium"/>
 
-                <Button
-                    android:id="@+id/btn_edit"
-                    android:layout_width="70dp"
-                    android:layout_height="35dp"
-                    android:layout_alignParentRight="true"
-                    android:background="@drawable/shape_rounded_corners_black"
-                    android:text="EDIT"
-                    android:textColor="#ffffff"
-                    android:layout_marginLeft="10dp"/>
+                <TextView
+                    android:id="@+id/tv_userName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="8dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_toLeftOf="@id/sp_default_course"
+                    android:layout_alignTop="@id/sp_default_course"
+                    android:layout_alignBottom="@id/sp_default_course"
+                    android:drawableRight="@drawable/ico_edit"
+                    style="@style/user_profile_heading_caps"/>
+
             </RelativeLayout>
 
             <TextView
@@ -84,9 +91,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/ll_user_name"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/abc_text_size_large_material"
-                android:textStyle="bold" />
+                style="@style/user_profile_heading_bold" />
 
             <TextView
                 android:id="@+id/tv_emailId"
@@ -94,7 +99,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_userFullName"
                 android:paddingBottom="10dp"
-                android:textColor="@color/text_gray"/>
+                style="@style/user_profile_text_gray"/>
 
             <TextView
                 android:id="@+id/tv_instituteHeader"
@@ -102,8 +107,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_emailId"
                 android:text="Institute: "
-                android:textColor="@android:color/black"
-                android:textStyle="bold"
+                style="@style/user_profile_subheading"
                 android:visibility="gone"/>
 
             <TextView
@@ -112,7 +116,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_emailId"
                 android:layout_toRightOf="@id/tv_instituteHeader"
-                android:textColor="@color/text_gray"
+                style="@style/user_profile_text"
                 android:visibility="gone"/>
 
             <TextView
@@ -123,7 +127,7 @@
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:lineSpacingMultiplier="1.5"
-                android:textColor="@color/text_gray"
+                style="@style/user_profile_text"
                 android:paddingTop="5dp"/>
 
         </RelativeLayout>
@@ -156,22 +160,20 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:text="Virtual Currency"
-            android:textColor="@color/text_gray" />
+            style="@style/user_profile_text" />
 
         <TextView
             android:id="@+id/tv_virtual_currency_balance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="197"
-            android:textColor="@color/text_gray"
-            android:textSize="@dimen/abc_text_size_large_material"
-            android:textStyle="bold" />
+            style="@style/user_profile_heading_bold" />
 
-        <Button
+        <com.education.corsalite.views.CustomButton
+            android:id="@+id/redeem_btn"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_height="35dp"
             android:layout_marginTop="5dp"
-            android:background="@drawable/shape_rounded_corners_gold"
+            android:background="@drawable/redeem_btn_selector"
             android:textStyle="bold"
             android:text="REDEEM" />
     </LinearLayout>

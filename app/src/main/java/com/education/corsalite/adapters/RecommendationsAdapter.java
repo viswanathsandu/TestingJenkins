@@ -7,7 +7,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
-import com.education.corsalite.models.responsemodels.CourseAnalysis;
+import com.education.corsalite.models.responsemodels.RecommendedModel;
+import com.education.corsalite.utils.AnalyticsHelper;
 
 import java.util.List;
 
@@ -17,15 +18,22 @@ import butterknife.ButterKnife;
 /**
  * Created by Aastha on 01/10/15.
  */
-public class RecommendationsAdapter extends  AbstractRecycleViewAdapter {
+public class RecommendationsAdapter extends AbstractRecycleViewAdapter {
+    private SetOnRecommendationClickListener setOnRecommendationClickListener;
     LayoutInflater inflater;
 
-    public RecommendationsAdapter(List<CourseAnalysis> courseAnalysisList, LayoutInflater inflater) {
-        this(courseAnalysisList);
-        this.inflater = inflater;
+    public interface SetOnRecommendationClickListener {
+        void onItemClick(int position);
     }
-    public RecommendationsAdapter(List<CourseAnalysis> courseAnalysisList) {
-        addAll(courseAnalysisList);
+
+    public RecommendationsAdapter(List<RecommendedModel> recommendedModels, LayoutInflater inflater, SetOnRecommendationClickListener setOnRecommendationClickListener) {
+        this(recommendedModels);
+        this.inflater = inflater;
+        this.setOnRecommendationClickListener = setOnRecommendationClickListener;
+    }
+
+    public RecommendationsAdapter(List<RecommendedModel> recommendedModels) {
+        addAll(recommendedModels);
     }
 
     @Override
@@ -35,18 +43,25 @@ public class RecommendationsAdapter extends  AbstractRecycleViewAdapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((RecommendationsDataHolder) holder).bindData(position, (CourseAnalysis) getItem(position));
+        ((RecommendationsDataHolder) holder).bindData(position, (RecommendedModel) getItem(position));
     }
 
     public class RecommendationsDataHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.tv_subject_name)TextView subject;
-        @Bind(R.id.tv_chapter)TextView chapter;
-        @Bind(R.id.tv_topic)TextView topic;
-        @Bind(R.id.tv_date)TextView dateTime;
-        @Bind(R.id.tv_marks)TextView marks;
-        @Bind(R.id.tv_accuracy)TextView accuracy;
-        @Bind(R.id.tv_speed)TextView speed;
+        @Bind(R.id.tv_subject_name)
+        TextView subject;
+        @Bind(R.id.tv_chapter)
+        TextView chapter;
+        @Bind(R.id.tv_topic)
+        TextView topic;
+        @Bind(R.id.tv_date)
+        TextView dateTime;
+        @Bind(R.id.tv_marks)
+        TextView marks;
+        @Bind(R.id.tv_accuracy)
+        TextView accuracy;
+        @Bind(R.id.tv_speed)
+        TextView speed;
         View parent;
 
         public RecommendationsDataHolder(View view) {
@@ -55,37 +70,25 @@ public class RecommendationsAdapter extends  AbstractRecycleViewAdapter {
             ButterKnife.bind(this, view);
         }
 
-        public void bindData(final int position, final CourseAnalysis course) {
-            if((position+1)% 2 == 0) {
+        public void bindData(final int position, final RecommendedModel recommendedModel) {
+            if ((position + 1) % 2 == 0) {
                 parent.setBackgroundColor(inflater.getContext().getResources().getColor(R.color.tab_recycler_alternate_row));
+            } else {
+                parent.setBackgroundColor(inflater.getContext().getResources().getColor(R.color.white));
             }
-            subject.setText(course.subjectName);
-            subject.setAllCaps(false);
-            chapter.setText(course.chapterName);
-            chapter.setAllCaps(false);
-            topic.setText(course.topic);
-            topic.setAllCaps(false);
-            dateTime.setText(course.date);
-            dateTime.setAllCaps(false);
-            marks.setText(course.earnedMarks);
-            marks.setAllCaps(false);
-
-
-            accuracy.setText(course.accuracy);
-            if(accuracy.getText() != null && !accuracy.getText().toString().isEmpty()){
-                float accuracyF = Float.parseFloat(accuracy.getText().toString());
-                float scoreRed = Float.parseFloat(course.scoreRed);
-                float scoreAmber = Float.parseFloat(course.scoreAmber);
-                if(accuracyF <= scoreRed){
-                    accuracy.setTextColor(inflater.getContext().getResources().getColor(R.color.red));
-                }else if(accuracyF > scoreRed && accuracyF <= scoreAmber){
-                    accuracy.setTextColor(inflater.getContext().getResources().getColor(R.color.amber));
-                }else {
-                    accuracy.setTextColor(inflater.getContext().getResources().getColor(R.color.green));
+            subject.setText(recommendedModel.subjectName);
+            chapter.setText(recommendedModel.chapterName);
+            topic.setText(recommendedModel.topicName);
+            dateTime.setText(recommendedModel.recentTestDate);
+            marks.setText(AnalyticsHelper.truncateString(recommendedModel.totalTestedMarks));
+            accuracy.setText(AnalyticsHelper.truncateString(recommendedModel.accuracy));
+            speed.setText(AnalyticsHelper.truncateString(recommendedModel.speed));
+            parent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    setOnRecommendationClickListener.onItemClick(position);
                 }
-            }
-
-            speed.setText(course.speed);
+            });
 
         }
     }

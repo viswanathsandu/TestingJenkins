@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
-import com.education.corsalite.activities.UserProfileActivity;
 import com.education.corsalite.models.responsemodels.VirtualCurrencyTransaction;
 
 import java.util.List;
@@ -33,9 +32,20 @@ public class CurrencyAdapter extends AbstractRecycleViewAdapter {
 
     @Override
     public CurrencyDataHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new CurrencyDataHolder(inflater.inflate(R.layout.row_virtual_currency_list, parent, false));
-    }
+        View view  =inflater.inflate(R.layout.row_virtual_currency_list, parent, false) ;
+        if((viewType+1)% 2 == 0)
+        {
+            view.setBackgroundColor(inflater.getContext().getResources().getColor(R.color.tab_recycler_alternate_row));
 
+        }else {
+            view.setBackgroundColor(inflater.getContext().getResources().getColor(R.color.white));
+        }
+        return new CurrencyDataHolder(view);
+    }
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ((CurrencyDataHolder) holder).bindData(position, (VirtualCurrencyTransaction)getItem(position));
@@ -47,6 +57,7 @@ public class CurrencyAdapter extends AbstractRecycleViewAdapter {
         @Bind(R.id.tv_event) TextView eventTxt;
         @Bind(R.id.tv_earned) TextView earnedTxt;
         @Bind(R.id.tv_balance) TextView balanceTxt;
+        @Bind(R.id.tv_time) TextView timeText;
 
         View parent;
 
@@ -62,11 +73,18 @@ public class CurrencyAdapter extends AbstractRecycleViewAdapter {
                 parent.setBackgroundColor(inflater.getContext().getResources().getColor(R.color.tab_recycler_alternate_row));
             }
             if(virtualCurrencyTransaction.eventDate != null ) {
-                dateTxt.setText(virtualCurrencyTransaction.eventDate);
+                String[] data = virtualCurrencyTransaction.eventDate.split(" ");
+                if(data != null){
+                    if(data[0] != null && data.length > 1)
+                        dateTxt.setText(data[0]);
+                    if(data[1] != null)
+                        timeText.setText(data[1]);
+                }else
+                    dateTxt.setText(virtualCurrencyTransaction.eventDate);
             }
             eventTxt.setText(virtualCurrencyTransaction.eventName);
             earnedTxt.setText(virtualCurrencyTransaction.earnedVirtualCurrency);
-            balanceTxt.setText(UserProfileActivity.BALANCE_CURRENCY);
+            balanceTxt.setText(virtualCurrencyTransaction.balance);
         }
     }
 }

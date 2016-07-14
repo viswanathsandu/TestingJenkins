@@ -14,4 +14,9 @@ public class LoginResponse extends BaseResponseModel {
     public String entitiyId;
     @SerializedName("AuthToken")
     public String authtoken;
+
+    // Is used for challenge test
+    public String displayName = "";
+
+    public LoginResponse() {}
 }

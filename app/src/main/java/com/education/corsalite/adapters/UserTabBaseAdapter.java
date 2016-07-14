@@ -30,14 +30,18 @@ public class UserTabBaseAdapter extends FragmentPagerAdapter {
 
     private void setExamTitle() {
         if(examDetailList != null && examDetailList.size() > 0) {
-            examTitle = " ("+examDetailList.size()+")";
+            examTitle = " ("+String.format("%02d", examDetailList.size())+")";
         }
     }
+
 
     public void updateExamDetailData(List<ExamDetail> examDetails) {
         this.examDetailList = examDetails;
         notifyDataSetChanged();
+
     }
+
+
 
     @Override
     public Fragment getItem(int i) {
@@ -84,7 +88,6 @@ public class UserTabBaseAdapter extends FragmentPagerAdapter {
                 title = "Virtual Currency Summary";
                 break;
         }
-        ;
         return title;
     }
 }
