@@ -497,7 +497,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_profile).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(selectedCourse == null || selectedCourse.isEnded()) {
+                if(isCourseEnded(selectedCourse)) {
                     showToast("Please Select different Course");
                     return;
                 }
@@ -513,7 +513,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_welcome).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(selectedCourse == null || selectedCourse.isEnded()) {
+                if(isCourseEnded(selectedCourse)) {
                     showToast("Please Select different Course");
                     return;
                 }
@@ -525,7 +525,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_smart_class).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(selectedCourse == null || selectedCourse.isEnded()) {
+                if(isCourseEnded(selectedCourse)) {
                     showToast("Please Select different Course");
                     return;
                 }
@@ -541,7 +541,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_study_center).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(selectedCourse == null || selectedCourse.isEnded()) {
+                if(isCourseEnded(selectedCourse)) {
                     showToast("Please Select different Course");
                     return;
                 }
@@ -553,7 +553,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_analytics).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(selectedCourse == null || selectedCourse.isEnded()) {
+                if(isCourseEnded(selectedCourse)) {
                     showToast("Please Select different Course");
                     return;
                 }
@@ -570,7 +570,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_curriculum).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(selectedCourse == null || selectedCourse.isEnded()) {
+                if(isCourseEnded(selectedCourse)) {
                     showToast("Please Select different Course");
                     return;
                 }
@@ -583,7 +583,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_offline).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(selectedCourse == null || selectedCourse.isEnded()) {
+                if(isCourseEnded(selectedCourse)) {
                     showToast("Please Select different Course");
                     return;
                 }
@@ -596,7 +596,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_challenge_your_friends).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(selectedCourse == null || selectedCourse.isEnded()) {
+                if(isCourseEnded(selectedCourse)) {
                     showToast("Please Select different Course");
                     return;
                 }
@@ -613,7 +613,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_exam_history).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(selectedCourse == null || selectedCourse.isEnded()) {
+                if(isCourseEnded(selectedCourse)) {
                     showToast("Please Select different Course");
                     return;
                 }
@@ -629,7 +629,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_scheduled_tests).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(selectedCourse == null || selectedCourse.isEnded()) {
+                if(isCourseEnded(selectedCourse)) {
                     showToast("Please Select different Course");
                     return;
                 }
@@ -641,7 +641,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_mock_tests).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(selectedCourse == null || selectedCourse.isEnded()) {
+                if(isCourseEnded(selectedCourse)) {
                     showToast("Please Select different Course");
                     return;
                 }
@@ -653,7 +653,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_forum).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(selectedCourse == null || selectedCourse.isEnded()) {
+                if(isCourseEnded(selectedCourse)) {
                     showToast("Please Select different Course");
                     return;
                 }
@@ -973,7 +973,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     public void onEvent(Course course) {
         if(course != null && (selectedCourse == null || (selectedCourse.courseId != course.courseId))) {
             selectedCourse = course;
-            if (course.isEnded()) {
+            if (isCourseEnded(course)) {
                 if (!(this instanceof WelcomeActivity)) {
                     Intent newIntent = new Intent(this, WelcomeActivity.class);
                     newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -1028,6 +1028,13 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     public void deleteSessionCookie() {
         ApiClientService.setSetCookie(null);
+    }
+
+    public boolean isCourseEnded(Course course) {
+        if(course != null && course.isEnded()) {
+            return true;
+        }
+        return false;
     }
 
     public void showProgress() {

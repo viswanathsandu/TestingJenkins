@@ -251,7 +251,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private TestAnswerPaper testanswerPaper = new TestAnswerPaper();
     private Long scheduledTimeInMillis = 0l;
     private CounterClass timer;
-
+    private long questionStartedTime = 0;
     private long timeSpent = 0;
 
     public static Intent getMyIntent(Context context, @Nullable Bundle extras) {
@@ -761,6 +761,26 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         btnNext.setVisibility(View.VISIBLE);
     }
 
+    private void updateQuestionTimeTaken(int position) {
+        if(isFlaggedQuestionsScreen() || isViewAnswersScreen()) {
+            return;
+        }
+        try {
+            if (selectedPosition >= 0) {
+                long currentTime = TimeUtils.currentTimeInMillis();
+                long diff = currentTime - questionStartedTime;
+                long diffInSeconds = diff / 1000;
+                int timeTakenPreviously = 0;
+                if(!TextUtils.isEmpty(testanswerPaper.testAnswers.get(position).timeTaken)) {
+                    timeTakenPreviously = Integer.parseInt(testanswerPaper.testAnswers.get(position).timeTaken);
+                }
+                testanswerPaper.testAnswers.get(position).timeTaken = String.valueOf(timeTakenPreviously + diffInSeconds);
+            }
+        }catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+    }
+
     View.OnClickListener mClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -769,6 +789,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     if (selectedPosition == localExamModelList.size() - 1 && !isFlaggedQuestionsScreen() && !isViewAnswersScreen() && !title.equalsIgnoreCase("Exercises")) {
                         showSubmitTestAlert();
                     }else{
+                        updateQuestionTimeTaken(selectedPosition);
                         updateTestAnswerPaper(TestanswerPaperState.STARTED);
                         previousQuestionPosition = selectedPosition;
                         inflateUI(selectedPosition + 1);
@@ -777,6 +798,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     break;
                 case R.id.btn_previous:
                     hideKeyboard();
+                    updateQuestionTimeTaken(selectedPosition);
                     updateTestAnswerPaper(TestanswerPaperState.STARTED);
                     previousQuestionPosition = selectedPosition;
                     inflateUI(selectedPosition - 1);
@@ -798,9 +820,11 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     showFullQuestionDialog();
                     break;
                 case R.id.btn_submit:
+                    updateQuestionTimeTaken(selectedPosition);
                     showSubmitTestAlert();
                     break;
                 case R.id.btn_suspend:
+                    updateQuestionTimeTaken(selectedPosition);
                     showSuspendDialog();
                     break;
                 case R.id.imv_flag:
@@ -1033,6 +1057,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
     private void loadQuestion(int position) {
         isFlagged = false;
+        questionStartedTime = TimeUtils.currentTimeInMillis();
         if (testanswerPaper != null && testanswerPaper.testAnswers != null && testanswerPaper.testAnswers.size() > position) {
             if (!TextUtils.isEmpty(testanswerPaper.testAnswers.get(position).status) && testanswerPaper.testAnswers.get(position).status.equalsIgnoreCase(Constants.AnswerState.UNATTEMPTED.getValue())) {
                 testanswerPaper.testAnswers.get(position).status = Constants.AnswerState.SKIPPED.getValue();
