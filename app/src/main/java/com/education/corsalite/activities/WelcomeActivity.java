@@ -64,7 +64,7 @@ public class WelcomeActivity extends AbstractBaseActivity implements View.OnClic
     @Override
     public void onEvent(Course course) {
         super.onEvent(course);
-        if(course.isEnded()) {
+        if(isCourseEnded(course)) {
             courseEndedTxt.setVisibility(View.VISIBLE);
             courseEndedTxt.setText("This course ended on "+course.endDate);
         } else {
@@ -132,7 +132,7 @@ public class WelcomeActivity extends AbstractBaseActivity implements View.OnClic
 
     @Override
     public void onClick(View v) {
-        if(AbstractBaseActivity.getSelectedCourse() == null && AbstractBaseActivity.getSelectedCourse().isEnded()) {
+        if(isCourseEnded(AbstractBaseActivity.getSelectedCourse())) {
             showToast("Please select a different course");
             return;
         }
