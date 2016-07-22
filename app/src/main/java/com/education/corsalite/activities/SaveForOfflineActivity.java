@@ -452,6 +452,8 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("tState", tView.getSaveState());
+        if(outState != null && tView != null) {
+            outState.putString("tState", tView.getSaveState());
+        }
     }
 }
