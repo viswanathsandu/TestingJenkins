@@ -50,18 +50,20 @@ public abstract class BaseFragment extends Fragment {
     }
 
     public void showProgress(){
-        ProgressBar pbar = new ProgressBar(getActivity());
-        pbar.setBackgroundColor(getResources().getColor(android.R.color.transparent));
-        dialog = new Dialog(getActivity());
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(pbar);
-        dialog.setCancelable(false);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.show();
+        if(getActivity() != null) {
+            ProgressBar pbar = new ProgressBar(getActivity());
+            pbar.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+            dialog = new Dialog(getActivity());
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(pbar);
+            dialog.setCancelable(false);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.show();
+        }
     }
 
     public void closeProgress(){
-        if(dialog != null) {
+        if(getActivity() != null && dialog != null && dialog.isShowing()) {
             dialog.dismiss();
         }
     }

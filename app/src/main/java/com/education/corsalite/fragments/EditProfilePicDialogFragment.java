@@ -74,20 +74,22 @@ public class EditProfilePicDialogFragment extends DialogFragment {
     public static final int REQUEST_CODE_TAKE_PICTURE = 0x2;
 
     private void setListeners() {
-        takePicCamera.setOnClickListener(
-                new View.OnClickListener() {
+        takePicCamera.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        File file = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
-                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
-                        startActivityForResult(takePictureIntent, REQUEST_CODE_TAKE_PICTURE);
-                        //getDialog().dismiss();
+                        try {
+                            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            File file = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
+                            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
+                            startActivityForResult(takePictureIntent, REQUEST_CODE_TAKE_PICTURE);
+                        } catch (ActivityNotFoundException e) {
+                            ((AbstractBaseActivity) getActivity()).showToast("Device couldn't start camera");
+                        }
+
                     }
                 });
 
-        uploadPicGallery.setOnClickListener(
-                new View.OnClickListener() {
+        uploadPicGallery.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -97,7 +99,6 @@ public class EditProfilePicDialogFragment extends DialogFragment {
                         } catch (ActivityNotFoundException e) {
                             ((AbstractBaseActivity) getActivity()).showToast("No image source available");
                         }
-                       // getDialog().dismiss();
                     }
                 });
 

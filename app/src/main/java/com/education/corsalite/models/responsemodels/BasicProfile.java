@@ -13,13 +13,13 @@ public class BasicProfile  implements Serializable {
     @SerializedName("PhotoUrl")
     public String photoUrl;
     @SerializedName("DisplayName")
-    public String displayName;
+    public String displayName = "";
     @SerializedName("GivenName")
-    public String givenName;
+    public String givenName = "";
     @SerializedName("SurName")
-    public String surName;
+    public String surName = "";
     @SerializedName("EmailID")
-    public String emailId;
+    public String emailId = "";
     @SerializedName("EnrolledCourses")
     public String enrolledCourses;
     @SerializedName("PhotoUrlEncoded")
