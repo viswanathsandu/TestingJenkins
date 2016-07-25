@@ -8,8 +8,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.Window;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
+import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.db.SugarDbManager;
 import com.education.corsalite.models.socket.response.ResponseEvent;
 
@@ -42,11 +42,15 @@ public abstract class BaseFragment extends Fragment {
     }
 
     public void showToast(String message) {
-        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+        if(getActivity() != null && getActivity() instanceof AbstractBaseActivity) {
+            ((AbstractBaseActivity) getActivity()).showToast(message);
+        }
     }
 
     public void showLongToast(String message) {
-        Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+        if(getActivity() != null && getActivity() instanceof AbstractBaseActivity) {
+            ((AbstractBaseActivity) getActivity()).showLongToast(message);
+        }
     }
 
     public void showProgress(){

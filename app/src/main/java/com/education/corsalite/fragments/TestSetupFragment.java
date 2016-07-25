@@ -160,7 +160,7 @@ public class TestSetupFragment extends BaseFragment {
         request.durationInSeconds = String.valueOf(durationInMins * 60);
         request.questionCount = noOfQuesEdit.getText().toString();
         request.virtualCurrencyChallenged = virtCurrencyEdit.getText().toString();
-        if(examsSpinner.getSelectedItemPosition() == 0) {
+        if(examsSpinner.getSelectedItemPosition() == 0 || examsList == null) {
             showToast("Please select the exam");
             return;
         }
@@ -291,22 +291,25 @@ public class TestSetupFragment extends BaseFragment {
     }
 
     private void showExams() {
-        examsSpinner.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.challenge_spinner_item, R.id.mock_test_txt, getExams(examsList)));
-        selectSubjSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                try {
-                    if (position > 0) {
-                        L.info("Selected exam : " + examsList.get(position - 1).examId + " - " + examsList.get(position - 1).examName);
+        if(getActivity() != null) {
+            examsSpinner.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.challenge_spinner_item, R.id.mock_test_txt, getExams(examsList)));
+            selectSubjSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                    try {
+                        if (position > 0) {
+                            L.info("Selected exam : " + examsList.get(position - 1).examId + " - " + examsList.get(position - 1).examName);
+                        }
+                    } catch (Exception e) {
+                        L.error(e.getMessage(), e);
                     }
-                } catch (Exception e) {
-                    L.error(e.getMessage(), e);
                 }
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {}
-        });
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+                }
+            });
+        }
     }
 
 
