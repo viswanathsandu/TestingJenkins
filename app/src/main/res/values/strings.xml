@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Corsalite</string>
+    <string name="localytics_api_key">53219e39511fbd4230deb55-401673cc-52a8-11e6-18db-00cef1388a40</string>
 
     <string name="in_progress">In Progress</string>
     <string name="action_logout">Logout</string>
