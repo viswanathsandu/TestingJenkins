@@ -44,8 +44,10 @@ import retrofit.client.Response;
  */
 public class MockTestDialog extends DialogFragment implements MockTestsListAdapter.IMockTestSelectedListener {
 
-    @Bind(R.id.tv_title)TextView tvTitle;
-    @Bind(R.id.mocktests_recyclerview)RecyclerView rvMockTestList;
+    @Bind(R.id.tv_title)
+    TextView tvTitle;
+    @Bind(R.id.mocktests_recyclerview)
+    RecyclerView rvMockTestList;
     private Dialog dialog;
     private List<MockTest> mMockTestList;
     private String testQuestionPaperId;
@@ -68,7 +70,7 @@ public class MockTestDialog extends DialogFragment implements MockTestsListAdapt
     }
 
     private void showMockTests() {
-        if(getActivity() != null) {
+        if (getActivity() != null) {
             final LinearLayoutManager layoutManager = new org.solovyev.android.views.llm.LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
             rvMockTestList.setLayoutManager(layoutManager);
             MockTestsListAdapter mockTestsListAdapter = new MockTestsListAdapter(mMockTestList, getActivity().getLayoutInflater());
@@ -100,7 +102,7 @@ public class MockTestDialog extends DialogFragment implements MockTestsListAdapt
                     @Override
                     public void success(List<MockTest> mockTests, Response response) {
                         super.success(mockTests, response);
-                        if (mockTests != null && !mockTests.isEmpty()) {
+                        if (getActivity() != null && mockTests != null && !mockTests.isEmpty()) {
                             mMockTestList = mockTests;
                             showMockTests();
                         }
@@ -109,8 +111,10 @@ public class MockTestDialog extends DialogFragment implements MockTestsListAdapt
                     @Override
                     public void failure(CorsaliteError error) {
                         super.failure(error);
-                        ((AbstractBaseActivity) getActivity()).showToast("No mock tests available");
-                        dismiss();
+                        if (getActivity() != null) {
+                            ((AbstractBaseActivity) getActivity()).showToast("No mock tests available");
+                            dismiss();
+                        }
                     }
                 });
     }
@@ -124,49 +128,53 @@ public class MockTestDialog extends DialogFragment implements MockTestsListAdapt
         postQuestionPaper.idStudent = studentId;
         showProgress();
         ApiManager.getInstance(getActivity()).postQuestionPaper(new Gson().toJson(postQuestionPaper),
-            new ApiCallback<PostQuestionPaper>(getActivity()) {
-                @Override
-                public void success(PostQuestionPaper postQuestionPaper, Response response) {
-                    super.success(postQuestionPaper, response);
-                    if (postQuestionPaper != null && !TextUtils.isEmpty(postQuestionPaper.idTestQuestionPaper)) {
-                        testQuestionPaperId = postQuestionPaper.idTestQuestionPaper;
-                        getIndex(postQuestionPaper.idTestQuestionPaper, null, "N", download);
-                    } else {
-                        dialog.dismiss();
+                new ApiCallback<PostQuestionPaper>(getActivity()) {
+                    @Override
+                    public void success(PostQuestionPaper postQuestionPaper, Response response) {
+                        super.success(postQuestionPaper, response);
+                        if (getActivity() != null) {
+                            if (postQuestionPaper != null && !TextUtils.isEmpty(postQuestionPaper.idTestQuestionPaper)) {
+                                testQuestionPaperId = postQuestionPaper.idTestQuestionPaper;
+                                getIndex(postQuestionPaper.idTestQuestionPaper, null, "N", download);
+                            } else {
+                                dialog.dismiss();
+                            }
+                        }
                     }
-                }
-            });
+                });
     }
 
 
-    private void getIndex(String questionPaperId, String answerPaperId, String all, final boolean download){
+    private void getIndex(String questionPaperId, String answerPaperId, String all, final boolean download) {
         ApiManager.getInstance(getActivity()).getTestPaperIndex(questionPaperId, answerPaperId, all, new ApiCallback<TestPaperIndex>(getActivity()) {
             @Override
             public void success(TestPaperIndex testPaperIndexes, Response response) {
                 super.success(testPaperIndexes, response);
-                dialog.dismiss();
-                dismiss();
-                if (testPaperIndexes != null) {
-                    if(!download) {
-                        Intent intent = new Intent(getActivity(), StartMockTestActivity.class);
-                        intent.putExtra("Test_Instructions", new Gson().toJson(testPaperIndexes));
-                        intent.putExtra("test_question_paper_id", testQuestionPaperId);
-                        startActivity(intent);
-                    } else {
-                        Intent intent = new Intent(getActivity(), TestDownloadService.class);
-                        intent.putExtra("testQuestionPaperId",testQuestionPaperId);
-                        intent.putExtra("Test_Instructions", new Gson().toJson(testPaperIndexes));
-                        String mockTestStr = new Gson().toJson(selectedMockTest);
-                        intent.putExtra("selectedMockTest",mockTestStr);
-                        getActivity().startService(intent);
-                        Toast.makeText(getActivity(), "Downloading Mock test paper in background", Toast.LENGTH_SHORT).show();
+                if (getActivity() != null) {
+                    dialog.dismiss();
+                    dismiss();
+                    if (testPaperIndexes != null) {
+                        if (!download) {
+                            Intent intent = new Intent(getActivity(), StartMockTestActivity.class);
+                            intent.putExtra("Test_Instructions", new Gson().toJson(testPaperIndexes));
+                            intent.putExtra("test_question_paper_id", testQuestionPaperId);
+                            startActivity(intent);
+                        } else {
+                            Intent intent = new Intent(getActivity(), TestDownloadService.class);
+                            intent.putExtra("testQuestionPaperId", testQuestionPaperId);
+                            intent.putExtra("Test_Instructions", new Gson().toJson(testPaperIndexes));
+                            String mockTestStr = new Gson().toJson(selectedMockTest);
+                            intent.putExtra("selectedMockTest", mockTestStr);
+                            getActivity().startService(intent);
+                            Toast.makeText(getActivity(), "Downloading Mock test paper in background", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
             }
         });
     }
 
-    public void showProgress(){
+    public void showProgress() {
         ProgressBar pbar = new ProgressBar(getActivity());
         pbar.setBackgroundColor(getResources().getColor(android.R.color.transparent));
         dialog = new Dialog(getActivity());
