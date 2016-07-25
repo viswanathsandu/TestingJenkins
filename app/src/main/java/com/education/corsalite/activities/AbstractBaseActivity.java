@@ -164,6 +164,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 .build());
         initActivity();
         checkForceUpgrade();
+        Localytics.tagScreen(this.getClass().getSimpleName());
     }
 
     private void initActivity() {

@@ -12,6 +12,7 @@ import android.widget.ProgressBar;
 import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.db.SugarDbManager;
 import com.education.corsalite.models.socket.response.ResponseEvent;
+import com.localytics.android.Localytics;
 
 import de.greenrobot.event.EventBus;
 
@@ -26,6 +27,7 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        Localytics.tagScreen(this.getClass().getSimpleName());
         EventBus.getDefault().register(this);
     }
 
