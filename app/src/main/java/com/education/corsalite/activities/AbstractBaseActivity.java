@@ -188,6 +188,14 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         }
     }
 
+    public void resetCrashlyticsUserData() {
+        try {
+            Crashlytics.setUserEmail("");
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+    }
+
     private void syncDataWithServer() {
         if (DataSyncService.syncData != null && !DataSyncService.syncData.isEmpty()) {
             // Start download service if its not started
@@ -843,6 +851,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 @Override
                 public void success(LogoutResponse logoutResponse, Response response) {
                     if (logoutResponse.isSuccessful()) {
+                        resetCrashlyticsUserData();
                         showToast(getResources().getString(R.string.logout_successful));
                         WebSocketHelper.get(AbstractBaseActivity.this).disconnectWebSocket();
                         logoutAccount();
@@ -857,6 +866,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     private void logoutAccount() {
         LoginUserCache.getInstance().clearCache();
+        resetCrashlyticsUserData();
         deleteSessionCookie();
         AbstractBaseActivity.selectedCourse = null;
         AbstractBaseActivity.selectedVideoPosition= 0;
