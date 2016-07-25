@@ -126,6 +126,7 @@ public class LoginActivity extends AbstractBaseActivity {
                 super.success(loginResponse, response);
                 closeProgress();
                 if (loginResponse.isSuccessful()) {
+                    setCrashlyticsUserData();
                     ApiCacheHolder.getInstance().setLoginResponse(loginResponse);
                     dbManager.saveReqRes(ApiCacheHolder.getInstance().login);
                     appPref.save("loginId", username);

@@ -29,6 +29,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.education.corsalite.BuildConfig;
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.SpinnerAdapter;
@@ -178,6 +179,15 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         }
     }
 
+    public void setCrashlyticsUserData() {
+        try {
+            String emailId = appPref.getValue("loginId");
+            Crashlytics.setUserEmail(emailId);
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+    }
+
     private void syncDataWithServer() {
         if (DataSyncService.syncData != null && !DataSyncService.syncData.isEmpty()) {
             // Start download service if its not started
@@ -247,6 +257,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     super.success(loginResponse, response);
                     closeProgress();
                     if (loginResponse.isSuccessful()) {
+                        setCrashlyticsUserData();
                         isLoginApiRunningInBackground = false;
                         dbManager.saveReqRes(ApiCacheHolder.getInstance().login);
                         appPref.save("loginId", username);
