@@ -767,17 +767,21 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     public void showToast(String message) {
-        showToast(this, message);
+        if (this != null && !TextUtils.isEmpty(message)) {
+            showToast(this, message);
+        }
     }
 
     public void showToast(Context context, String message) {
-        if (!TextUtils.isEmpty(message)) {
+        if (context != null && !TextUtils.isEmpty(message)) {
             Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
         }
     }
 
     public void showLongToast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        if (this!= null && !TextUtils.isEmpty(message)) {
+            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
