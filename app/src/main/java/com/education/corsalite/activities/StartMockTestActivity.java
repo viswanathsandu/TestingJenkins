@@ -13,7 +13,8 @@ import android.widget.TextView;
 import com.education.corsalite.R;
 import com.education.corsalite.models.responsemodels.TestPaperIndex;
 import com.education.corsalite.utils.Constants;
-import com.google.gson.Gson;
+import com.education.corsalite.utils.Gson;
+
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -59,7 +60,7 @@ public class StartMockTestActivity extends AbstractBaseActivity {
                 Intent intent = new Intent(StartMockTestActivity.this, ExamEngineActivity.class);
                 intent.putExtra(Constants.TEST_TITLE, "Mock Test");
                 intent.putExtra("test_question_paper_id", testQuestionPaperId);
-                intent.putExtra("Test_Instructions", new Gson().toJson(testPaperIndex));
+                intent.putExtra("Test_Instructions", Gson.get().toJson(testPaperIndex));
                 intent.putExtra("exam_template_id", testPaperIndex.examDetails.get(0).examTemplateId);
                 intent.putExtras(getIntent().getExtras());
                 startActivity(intent);
@@ -76,7 +77,7 @@ public class StartMockTestActivity extends AbstractBaseActivity {
 
     private void getBundleData() {
         String testString = getIntent().getStringExtra("Test_Instructions");
-        testPaperIndex = new Gson().fromJson(testString, TestPaperIndex.class);
+        testPaperIndex = Gson.get().fromJson(testString, TestPaperIndex.class);
         testQuestionPaperId = getIntent().getStringExtra("test_question_paper_id");
     }
 

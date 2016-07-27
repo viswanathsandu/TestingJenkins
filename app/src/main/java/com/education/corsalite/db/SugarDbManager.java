@@ -15,10 +15,11 @@ import com.education.corsalite.models.db.reqres.requests.AbstractBaseRequest;
 import com.education.corsalite.models.examengine.BaseTest;
 import com.education.corsalite.models.responsemodels.BaseModel;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
+import com.education.corsalite.utils.Gson;
 import com.education.corsalite.utils.Gzip;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.MockUtils;
-import com.google.gson.Gson;
+
 import com.orm.SugarRecord;
 
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ public class SugarDbManager {
         try {
             if (object != null) {
                 object.setUserId();
-                object.reflectionJsonString = Gzip.compress(new Gson().toJson(object));
+                object.reflectionJsonString = Gzip.compressBytes(Gson.get().toJson(object));
                 object.save();
                 object.reflectionJsonString = null; // clear the memory
                 updateChachedData(object);
@@ -83,7 +84,7 @@ public class SugarDbManager {
                 while(allList!=null && allList.size() > 0) {
                     T t = allList.remove(0);
                     if(t.reflectionJsonString != null) {
-                        T object = new Gson().fromJson(Gzip.decompress(t.reflectionJsonString), type);
+                        T object = Gson.get().fromJson(Gzip.decompressBytes(t.reflectionJsonString), type);
                         t.reflectionJsonString = null;
                         object.setId(t.getId());
                         results.add(object);
@@ -101,7 +102,7 @@ public class SugarDbManager {
             if (type != null) {
                 T t = SugarRecord.findById(type, id);
                 if (t.reflectionJsonString != null) {
-                    T object = new Gson().fromJson(Gzip.decompress(t.reflectionJsonString), type);
+                    T object = Gson.get().fromJson(Gzip.decompressBytes(t.reflectionJsonString), type);
                     t.reflectionJsonString = null;
                     object.setId(t.getId());
                     return object;

@@ -39,8 +39,9 @@ import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.DefaultForumResponse;
 import com.education.corsalite.models.responsemodels.DefaultNoteResponse;
+import com.education.corsalite.utils.Gson;
 import com.education.corsalite.utils.L;
-import com.google.gson.Gson;
+
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -324,7 +325,7 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
         try {
             showProgress();
             AddNoteRequest request = new AddNoteRequest(studentId, new Note(topicId, contentId, updateContent));
-            ApiManager.getInstance(getActivity()).addNote(new Gson().toJson(request), new ApiCallback<DefaultNoteResponse>(getActivity()) {
+            ApiManager.getInstance(getActivity()).addNote(Gson.get().toJson(request), new ApiCallback<DefaultNoteResponse>(getActivity()) {
                 @Override
                 public void failure(CorsaliteError error) {
                     super.failure(error);
@@ -350,7 +351,7 @@ public class EditorDialogFragment extends DialogFragment implements View.OnClick
     private void editNotes() {
         UpdateNoteRequest request = new UpdateNoteRequest(studentId, notesId, updateContent);
         showProgress();
-        ApiManager.getInstance(getActivity()).updateNote(new Gson().toJson(request), new ApiCallback<DefaultNoteResponse>(getActivity()) {
+        ApiManager.getInstance(getActivity()).updateNote(Gson.get().toJson(request), new ApiCallback<DefaultNoteResponse>(getActivity()) {
             @Override
             public void failure(CorsaliteError error) {
                 super.failure(error);

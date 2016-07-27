@@ -89,14 +89,14 @@ import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.services.DataSyncService;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.ExamUtils;
-import com.education.corsalite.utils.FileUtils;
+import com.education.corsalite.utils.Gson;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.SystemUtils;
 import com.education.corsalite.utils.TimeUtils;
 import com.education.corsalite.utils.WebUrls;
 import com.education.corsalite.views.CorsaliteWebViewClient;
 import com.education.corsalite.views.GridViewInScrollView;
-import com.google.gson.Gson;
+
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
@@ -328,7 +328,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         if (!TextUtils.isEmpty(partTestGridElimentsJson)) {
             Type listType = new TypeToken<ArrayList<PartTestGridElement>>() {
             }.getType();
-            partTestGridElements = new Gson().fromJson(partTestGridElimentsJson, listType);
+            partTestGridElements = Gson.get().fromJson(partTestGridElimentsJson, listType);
         }
 
         if (isFlaggedQuestionsScreen()) {
@@ -434,7 +434,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         btnSave.setVisibility(View.GONE);
         if (isOffline) {
             String testJson = getIntent().getExtras().getString("mock_test_data_json");
-            ScheduledTestsArray model = new Gson().fromJson(testJson, ScheduledTestsArray.class);
+            ScheduledTestsArray model = Gson.get().fromJson(testJson, ScheduledTestsArray.class);
             loadOfflineScheduledTest(model);
             testNavFooter.setVisibility(View.VISIBLE);
         } else {
@@ -474,7 +474,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         MockTest mockTest = null;
         if (isOffline) {
             String mockTestJson = getIntent().getExtras().getString("mock_test_data_json");
-            mockTest = new Gson().fromJson(mockTestJson, MockTest.class);
+            mockTest = Gson.get().fromJson(mockTestJson, MockTest.class);
         }
         imvFlag.setVisibility(View.VISIBLE);
         String testInstructions = getIntent().getStringExtra("Test_Instructions");
@@ -484,7 +484,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             loadOfflineMockTest(mockTest);
         }
         if (!TextUtils.isEmpty(testInstructions)) {
-            mockTestPaperIndex = new Gson().fromJson(testInstructions, TestPaperIndex.class);
+            mockTestPaperIndex = Gson.get().fromJson(testInstructions, TestPaperIndex.class);
             fetchSections(mockTestPaperIndex);
         }
         imvRefresh.setVisibility(View.VISIBLE);
@@ -1665,7 +1665,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         layoutChoice.setVisibility(View.VISIBLE);
 
         if (SystemUtils.isNetworkConnected(this)) {
-            ApiManager.getInstance(this).postExerciseAnswer(new Gson().toJson(postExerciseRequestModel),
+            ApiManager.getInstance(this).postExerciseAnswer(Gson.get().toJson(postExerciseRequestModel),
                     new ApiCallback<PostExercise>(this) {
                         @Override
                         public void failure(CorsaliteError error) {
@@ -1839,7 +1839,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         }
         if(getIntent().hasExtra(Constants.PARTTEST_EXAMMODEL)) {
             String examJson  = getIntent().getExtras().getString(Constants.PARTTEST_EXAMMODEL);
-            Exam exam = new Gson().fromJson(examJson, Exam.class);
+            Exam exam = Gson.get().fromJson(examJson, Exam.class);
             List<Exam> exams = new ArrayList<>();
             exams.add(exam);
             postCustomExamTemplate(exams);
@@ -1888,7 +1888,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         }
         postCustomExamTemplate.examTemplateConfig.add(examTemplateConfig);
 
-        ApiManager.getInstance(this).postCustomExamTemplate(new Gson().toJson(postCustomExamTemplate),
+        ApiManager.getInstance(this).postCustomExamTemplate(Gson.get().toJson(postCustomExamTemplate),
                 new ApiCallback<PostExamTemplate>(this) {
                     @Override
                     public void success(PostExamTemplate postExamTemplate, Response response) {
@@ -1925,7 +1925,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         flaggedQuestionModel.idTestQuestion = localExamModelList.get(selectedPosition).idTestQuestion + "";
         flaggedQuestionModel.updateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 
-        ApiManager.getInstance(this).postFlaggedQuestions(new Gson().toJson(flaggedQuestionModel),
+        ApiManager.getInstance(this).postFlaggedQuestions(Gson.get().toJson(flaggedQuestionModel),
                 new ApiCallback<PostFlaggedQuestions>(this) {
                     @Override
                     public void success(PostFlaggedQuestions postFlaggedQuestions, Response response) {
@@ -1949,7 +1949,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         postQuestionPaper.idSubject = "";
         postQuestionPaper.idStudent = studentId;
 
-        ApiManager.getInstance(this).postQuestionPaper(new Gson().toJson(postQuestionPaper),
+        ApiManager.getInstance(this).postQuestionPaper(Gson.get().toJson(postQuestionPaper),
                 new ApiCallback<PostQuestionPaper>(this) {
                     @Override
                     public void success(PostQuestionPaper postQuestionPaper, Response response) {
@@ -1978,7 +1978,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     @Override
                     public void failure(CorsaliteError error) {
                         super.failure(error);
-                        L.error("error : "+new Gson().toJson(error));
+                        L.error("error : "+Gson.get().toJson(error));
                         showToast("Failed to start exam");
                         finish();
                     }
@@ -2134,13 +2134,12 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
     private void loadOfflineTestQuestionPaper(String testQuestionPaperId) {
         try {
-            String fileName = testQuestionPaperId + "." + Constants.TEST_FILE;
-            String questionPaperJson = new FileUtils(this).readFromFile(fileName, null);
-            TestQuestionPaperResponse response = new Gson().fromJson(questionPaperJson, TestQuestionPaperResponse.class);
+            TestQuestionPaperResponse response = new ExamUtils(this).getTestQuestionPaper(testQuestionPaperId);
             localExamModelList = response.questions;
             showQuestionPaper(response.questions, response.examDetails);
         } catch (Exception e) {
             showToast("Failed to load exam");
+            finish();
             L.error(e.getMessage(), e);
         }
     }

@@ -10,8 +10,9 @@ import com.education.corsalite.models.requestmodels.UserEventsModel;
 import com.education.corsalite.models.responsemodels.BaseResponseModel;
 import com.education.corsalite.models.responsemodels.UserEventsResponse;
 import com.education.corsalite.services.DataSyncService;
+import com.education.corsalite.utils.Gson;
 import com.education.corsalite.utils.SystemUtils;
-import com.google.gson.Gson;
+
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -26,7 +27,7 @@ public class UpdateUserEvents {
 
     public void postUserEvent(Activity activity, UserEventsModel model){
         if(SystemUtils.isNetworkConnected(activity)) {
-            ApiManager.getInstance(activity).postUserEvents(new Gson().toJson(model), new ApiCallback<UserEventsResponse>(activity) {
+            ApiManager.getInstance(activity).postUserEvents(Gson.get().toJson(model), new ApiCallback<UserEventsResponse>(activity) {
                 @Override
                 public void success(UserEventsResponse userEventsResponse, Response response) {
                     super.success(userEventsResponse, response);
@@ -41,7 +42,7 @@ public class UpdateUserEvents {
 
     public void postContentReading(Activity activity, ContentReadingEvent event){
         if(SystemUtils.isNetworkConnected(activity)) {
-            ApiManager.getInstance(activity).postContentUsage(new Gson().toJson(event), new ApiCallback<BaseResponseModel>(activity) {
+            ApiManager.getInstance(activity).postContentUsage(Gson.get().toJson(event), new ApiCallback<BaseResponseModel>(activity) {
                 @Override
                 public void success(BaseResponseModel baseResponse, Response response) {
                     super.success(baseResponse, response);

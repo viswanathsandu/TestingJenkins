@@ -17,9 +17,10 @@ import com.education.corsalite.models.socket.response.ChallengeUserList;
 import com.education.corsalite.models.socket.response.UpdateLeaderBoardEvent;
 import com.education.corsalite.models.socket.response.UserListResponseEvent;
 import com.education.corsalite.services.ApiClientService;
+import com.education.corsalite.utils.Gson;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.SystemUtils;
-import com.google.gson.Gson;
+
 
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
@@ -147,26 +148,26 @@ public class WebSocketHelper {
             if (!TextUtils.isEmpty(message)) {
                 if (message.contains("Userslist")) {
                     // Fetch the user data
-                    UserListResponseEvent event = new Gson().fromJson(message, UserListResponseEvent.class);
+                    UserListResponseEvent event = Gson.get().fromJson(message, UserListResponseEvent.class);
                     ChallengeUserList challengeEvent = new ChallengeUserList();
                     challengeEvent.event = event.event;
                     challengeEvent.setUsers(event.usersTxt);
                     EventBus.getDefault().post(challengeEvent);
                 } else if (message.contains("ChallengeTestRequest")) {
                     // show a dialog asking confirmation for challenge test
-                    ChallengeTestRequestEvent event = new Gson().fromJson(message, ChallengeTestRequestEvent.class);
+                    ChallengeTestRequestEvent event = Gson.get().fromJson(message, ChallengeTestRequestEvent.class);
                     EventBus.getDefault().post(event);
                 } else if (message.contains("UpdateLeaderBoard")) {
-                    UpdateLeaderBoardEvent event = new Gson().fromJson(message, UpdateLeaderBoardEvent.class);
+                    UpdateLeaderBoardEvent event = Gson.get().fromJson(message, UpdateLeaderBoardEvent.class);
                     EventBus.getDefault().post(event);
                 } else if (message.contains("ChallengeTestComplete")) {
-                    ChallengeTestCompletedEvent event = new Gson().fromJson(message, ChallengeTestCompletedEvent.class);
+                    ChallengeTestCompletedEvent event = Gson.get().fromJson(message, ChallengeTestCompletedEvent.class);
                     EventBus.getDefault().post(event);
                 } else if (message.contains("ChallengeTestUpdate")) {
-                    ChallengeTestUpdateEvent event = new Gson().fromJson(message, ChallengeTestUpdateEvent.class);
+                    ChallengeTestUpdateEvent event = Gson.get().fromJson(message, ChallengeTestUpdateEvent.class);
                     EventBus.getDefault().post(event);
                 } else if (message.contains("ChallengeTestStart")) {
-                    ChallengeTestStartEvent event = new Gson().fromJson(message, ChallengeTestStartEvent.class);
+                    ChallengeTestStartEvent event = Gson.get().fromJson(message, ChallengeTestStartEvent.class);
                     EventBus.getDefault().post(event);
                 } else if (message.contains("AutoDeclinedUsers")) {
 
@@ -180,35 +181,35 @@ public class WebSocketHelper {
     // send('{"event":"subscribe", "idStudent":"<id>"}');
     public void sendSubscribeEvent() {
         SubscribeEvent event = new SubscribeEvent(LoginUserCache.getInstance().getStudentId());
-        sendEvent(new Gson().toJson(event));
+        sendEvent(Gson.get().toJson(event));
     }
 
     // send('{"event":"getuserslist", "idStudent":"<id>"}');
     public void sendGetUserListEvent() {
         UserListEvent event = new UserListEvent(LoginUserCache.getInstance().getStudentId());
-        sendEvent(new Gson().toJson(event));
+        sendEvent(Gson.get().toJson(event));
     }
 
     // send('{"event":"ChallengeTestRequest", "ChallengeTestParentID":"1 "ChallengerName":"First Challenge');
     public void sendChallengeTestEvent(NewChallengeTestRequestEvent event) {
-        sendEvent(new Gson().toJson(event));
+        sendEvent(Gson.get().toJson(event));
     }
 
     // send('{"event":"ChallengeTestUpdate", "ChallengeTestParentID":"1", "ChallengerName":"test name", "ChallengerStatus":"accepted"}');
     public void sendChallengeUpdateEvent(ChallengeTestUpdateRequestEvent event) {
-        sendEvent(new Gson().toJson(event));
+        sendEvent(Gson.get().toJson(event));
     }
 
     // send('{"event":"ChallengeTestStart", "ChallengeTestParentID":"1", "ChallengerName":"test name", "ChallengerStatus":"accepted","TestQuestionPaperId":"32125" }');
     public void sendChallengeStartEvent(ChallengeTestStartRequestEvent event) {
-        sendEvent(new Gson().toJson(event));
+        sendEvent(Gson.get().toJson(event));
     }
 
     public void sendUpdateLeaderBoardEvent(com.education.corsalite.models.socket.requests.UpdateLeaderBoardEvent event) {
-        sendEvent(new Gson().toJson(event));
+        sendEvent(Gson.get().toJson(event));
     }
 
     public void sendChallengeTestcompleteEvent(ChallengeTestCompletedEvent event) {
-        sendEvent(new Gson().toJson(event));
+        sendEvent(Gson.get().toJson(event));
     }
 }

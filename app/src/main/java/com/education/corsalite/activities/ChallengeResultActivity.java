@@ -26,9 +26,10 @@ import com.education.corsalite.models.responsemodels.CommonResponseModel;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.socket.requests.ChallengeTestUpdateRequestEvent;
 import com.education.corsalite.models.socket.response.ChallengeTestCompletedEvent;
+import com.education.corsalite.utils.Gson;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.WebUrls;
-import com.google.gson.Gson;
+
 
 import java.util.List;
 
@@ -127,7 +128,7 @@ public class ChallengeResultActivity extends AbstractBaseActivity {
     private void updateChallengeStatus(final String status) {
         ChallengeStatusRequest request = new ChallengeStatusRequest(LoginUserCache.getInstance().getStudentId(),
                 challengeTestId, status);
-        ApiManager.getInstance(this).postChallengeStatus(new Gson().toJson(request),
+        ApiManager.getInstance(this).postChallengeStatus(Gson.get().toJson(request),
                 new ApiCallback<CommonResponseModel>(this) {
                     @Override
                     public void success(CommonResponseModel commonResponseModel, Response response) {

@@ -24,9 +24,10 @@ import com.education.corsalite.models.db.OfflineTestObjectModel;
 import com.education.corsalite.models.db.ScheduledTestsArray;
 import com.education.corsalite.models.responsemodels.Chapter;
 import com.education.corsalite.utils.Constants;
+import com.education.corsalite.utils.Gson;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.TimeUtils;
-import com.google.gson.Gson;
+
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -220,13 +221,13 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private void startMockTest(OfflineTestObjectModel model) {
         if (model.status != Constants.STATUS_COMPLETED) {
             Intent intent = new Intent(context, StartMockTestActivity.class);
-            intent.putExtra("Test_Instructions", new Gson().toJson(model.testPaperIndecies));
+            intent.putExtra("Test_Instructions", Gson.get().toJson(model.testPaperIndecies));
             intent.putExtra("test_question_paper_id", model.testQuestionPaperId);
             intent.putExtra(Constants.TEST_TITLE, "Mock Test");
             intent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.getSelectedCourseId());
             intent.putExtra(Constants.IS_OFFLINE, true);
             intent.putExtra(Constants.DB_ROW_ID, model.getId());
-            intent.putExtra("mock_test_data_json", new Gson().toJson(model.mockTest));
+            intent.putExtra("mock_test_data_json", Gson.get().toJson(model.mockTest));
             intent.putExtra("OfflineTestObjectModel", model.dateTime);
             context.startActivity(intent);
         } else {

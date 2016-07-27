@@ -29,8 +29,9 @@ import com.education.corsalite.models.socket.response.ChallengeTestRequestEvent;
 import com.education.corsalite.models.socket.response.ChallengeTestStartEvent;
 import com.education.corsalite.models.socket.response.ChallengeTestUpdateEvent;
 import com.education.corsalite.utils.Constants;
+import com.education.corsalite.utils.Gson;
 import com.education.corsalite.utils.L;
-import com.google.gson.Gson;
+
 
 import java.util.ArrayList;
 
@@ -83,11 +84,11 @@ public class ChallengeActivity extends AbstractBaseActivity {
                 getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, InviteFriendsFragment.newInstance(mFriendsListCallback), "FriendsList").commit();
             } else if(screenType.equalsIgnoreCase("REQUEST")) {
                 String challengeTestRequestJson = bundle.getString("challenge_test_request_json");
-                ChallengeTestRequestEvent event = new Gson().fromJson(challengeTestRequestJson, ChallengeTestRequestEvent.class);
+                ChallengeTestRequestEvent event = Gson.get().fromJson(challengeTestRequestJson, ChallengeTestRequestEvent.class);
                 showChallengeTestRequestFragment(event);
             } else if(screenType.equalsIgnoreCase("UPDATE")) {
                 String challengeTestRequestJson = bundle.getString("challenge_test_update_json");
-                ChallengeTestUpdateEvent event = new Gson().fromJson(challengeTestRequestJson, ChallengeTestUpdateEvent.class);
+                ChallengeTestUpdateEvent event = Gson.get().fromJson(challengeTestRequestJson, ChallengeTestUpdateEvent.class);
                 showChallengeTestRequestFragment(getRequestEvent(event));
             }
         }

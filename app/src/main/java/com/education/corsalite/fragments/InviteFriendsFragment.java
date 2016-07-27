@@ -23,8 +23,9 @@ import com.education.corsalite.helpers.WebSocketHelper;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.FriendsData;
 import com.education.corsalite.models.socket.response.ChallengeUserList;
+import com.education.corsalite.utils.Gson;
 import com.education.corsalite.utils.L;
-import com.google.gson.Gson;
+
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -174,7 +175,7 @@ public class InviteFriendsFragment extends BaseFragment implements SearchView.On
     public void onEventMainThread(ChallengeUserList event) {
         challengeFriendsId = event.users;
         showFriendsList();
-        L.info("Websocket : " + new Gson().toJson(event.users));
+        L.info("Websocket : " + Gson.get().toJson(event.users));
     }
 
     private void fetchDisplayName() {

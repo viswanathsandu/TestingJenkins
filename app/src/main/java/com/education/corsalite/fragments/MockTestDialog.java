@@ -31,7 +31,8 @@ import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.PostQuestionPaper;
 import com.education.corsalite.models.responsemodels.TestPaperIndex;
 import com.education.corsalite.services.TestDownloadService;
-import com.google.gson.Gson;
+import com.education.corsalite.utils.Gson;
+
 
 import java.util.List;
 
@@ -123,7 +124,7 @@ public class MockTestDialog extends DialogFragment implements MockTestsListAdapt
         postQuestionPaper.idSubject = subjectId;
         postQuestionPaper.idStudent = studentId;
         showProgress();
-        ApiManager.getInstance(getActivity()).postQuestionPaper(new Gson().toJson(postQuestionPaper),
+        ApiManager.getInstance(getActivity()).postQuestionPaper(Gson.get().toJson(postQuestionPaper),
             new ApiCallback<PostQuestionPaper>(getActivity()) {
                 @Override
                 public void success(PostQuestionPaper postQuestionPaper, Response response) {
@@ -149,14 +150,14 @@ public class MockTestDialog extends DialogFragment implements MockTestsListAdapt
                 if (testPaperIndexes != null) {
                     if(!download) {
                         Intent intent = new Intent(getActivity(), StartMockTestActivity.class);
-                        intent.putExtra("Test_Instructions", new Gson().toJson(testPaperIndexes));
+                        intent.putExtra("Test_Instructions", Gson.get().toJson(testPaperIndexes));
                         intent.putExtra("test_question_paper_id", testQuestionPaperId);
                         startActivity(intent);
                     } else {
                         Intent intent = new Intent(getActivity(), TestDownloadService.class);
                         intent.putExtra("testQuestionPaperId",testQuestionPaperId);
-                        intent.putExtra("Test_Instructions", new Gson().toJson(testPaperIndexes));
-                        String mockTestStr = new Gson().toJson(selectedMockTest);
+                        intent.putExtra("Test_Instructions", Gson.get().toJson(testPaperIndexes));
+                        String mockTestStr = Gson.get().toJson(selectedMockTest);
                         intent.putExtra("selectedMockTest",mockTestStr);
                         getActivity().startService(intent);
                         Toast.makeText(getActivity(), "Downloading Mock test paper in background", Toast.LENGTH_SHORT).show();

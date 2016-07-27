@@ -26,9 +26,10 @@ import com.education.corsalite.models.responsemodels.TestPaperIndex;
 import com.education.corsalite.models.responsemodels.TestQuestionPaperResponse;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.ExamUtils;
+import com.education.corsalite.utils.Gson;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.TimeUtils;
-import com.google.gson.Gson;
+
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
@@ -51,7 +52,7 @@ public class TestDownloadService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         dbManager = SugarDbManager.get(getApplicationContext());
-        TestPaperIndex testPaperIndicies = new Gson().fromJson(intent.getStringExtra("Test_Instructions"), TestPaperIndex.class);
+        TestPaperIndex testPaperIndicies = Gson.get().fromJson(intent.getStringExtra("Test_Instructions"), TestPaperIndex.class);
         String testQuestionPaperId = intent.getStringExtra("testQuestionPaperId");
         String testAnswerPaperId = intent.getStringExtra("testAnswerPaperId");
         String mockTestStr = intent.getStringExtra("selectedMockTest");
@@ -66,22 +67,22 @@ public class TestDownloadService extends IntentService {
         if(!TextUtils.isEmpty(exerciseQuestionsListJson)) {
             Type listType = new TypeToken<ArrayList<ExerciseOfflineModel>>() {
             }.getType();
-            exerciseModelsList = new Gson().fromJson(exerciseQuestionsListJson, listType);
+            exerciseModelsList = Gson.get().fromJson(exerciseQuestionsListJson, listType);
         }
         String partTestGridElimentsJson = intent.getStringExtra(Constants.PARTTEST_GRIDMODELS);
         List<PartTestGridElement> partTestGridElements = null;
         if(!TextUtils.isEmpty(partTestGridElimentsJson)) {
             Type listType = new TypeToken<ArrayList<PartTestGridElement>>() {}.getType();
-            partTestGridElements = new Gson().fromJson(partTestGridElimentsJson, listType);
+            partTestGridElements = Gson.get().fromJson(partTestGridElimentsJson, listType);
         }
         if (mockTestStr != null) {
-            MockTest mockTest = new Gson().fromJson(mockTestStr, MockTest.class);
+            MockTest mockTest = Gson.get().fromJson(mockTestStr, MockTest.class);
             getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, mockTest, testPaperIndicies, null);
         } else if (scheduledTestStr != null) {
-            ScheduledTestsArray scheduledTest = new Gson().fromJson(scheduledTestStr, ScheduledTestsArray.class);
+            ScheduledTestsArray scheduledTest = Gson.get().fromJson(scheduledTestStr, ScheduledTestsArray.class);
             getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, null, null, scheduledTest);
         } else if(takeTestStr != null){
-            Chapter chapter = new Gson().fromJson(takeTestStr,Chapter.class);
+            Chapter chapter = Gson.get().fromJson(takeTestStr,Chapter.class);
             loadTakeTest(chapter,null, questionsCount, subjectId);
         } else if(partTestStr != null){
             subjectName = partTestStr;

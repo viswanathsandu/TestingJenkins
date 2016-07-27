@@ -32,8 +32,9 @@ import com.education.corsalite.models.db.ScheduledTestList;
 import com.education.corsalite.models.db.ScheduledTestsArray;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.services.TestDownloadService;
+import com.education.corsalite.utils.Gson;
 import com.education.corsalite.utils.L;
-import com.google.gson.Gson;
+
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -116,7 +117,7 @@ public class ScheduledTestDialog extends DialogFragment implements ScheduledTest
         ScheduledTestsArray exam = mScheduledTestList.MockTest.get(position);
         Intent intent = new Intent(getActivity(), TestDownloadService.class);
         intent.putExtra("testQuestionPaperId",exam.testQuestionPaperId);
-        intent.putExtra("selectedScheduledTest",new Gson().toJson(exam));
+        intent.putExtra("selectedScheduledTest", Gson.get().toJson(exam));
         getActivity().startService(intent);
         Toast.makeText(getActivity(), "Downloading Scheduled test paper in background", Toast.LENGTH_SHORT).show();
     }

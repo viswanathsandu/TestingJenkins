@@ -22,8 +22,9 @@ import com.education.corsalite.models.responsemodels.PartTestGridElement;
 import com.education.corsalite.models.responsemodels.PostExamTemplate;
 import com.education.corsalite.models.responsemodels.PostQuestionPaper;
 import com.education.corsalite.models.responsemodels.TestQuestionPaperResponse;
+import com.education.corsalite.utils.Gson;
 import com.education.corsalite.utils.L;
-import com.google.gson.Gson;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -127,7 +128,7 @@ public class ExamEngineHelper {
             examTemplateConfig.examTemplateChapter.add(examTemplateChapter);
         }
         postCustomExamTemplate.examTemplateConfig.add(examTemplateConfig);
-        ApiManager.getInstance(mActivity).postCustomExamTemplate(new Gson().toJson(postCustomExamTemplate),
+        ApiManager.getInstance(mActivity).postCustomExamTemplate(Gson.get().toJson(postCustomExamTemplate),
                 new ApiCallback<PostExamTemplate>(mActivity) {
                     @Override
                     public void success(PostExamTemplate postExamTemplate, Response response) {
@@ -159,7 +160,7 @@ public class ExamEngineHelper {
         postQuestionPaper.idSubject = "";
         postQuestionPaper.idStudent = LoginUserCache.getInstance().getStudentId();
 
-        ApiManager.getInstance(mActivity).postQuestionPaper(new Gson().toJson(postQuestionPaper),
+        ApiManager.getInstance(mActivity).postQuestionPaper(Gson.get().toJson(postQuestionPaper),
                 new ApiCallback<PostQuestionPaper>(mActivity) {
                     @Override
                     public void success(PostQuestionPaper postQuestionPaper, Response response) {

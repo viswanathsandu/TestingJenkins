@@ -70,9 +70,10 @@ import com.education.corsalite.models.responsemodels.VirtualCurrencySummaryRespo
 import com.education.corsalite.models.responsemodels.WelcomeDetails;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.FileUtils;
+import com.education.corsalite.utils.Gson;
 import com.education.corsalite.utils.MockUtils;
 import com.education.corsalite.utils.SystemUtils;
-import com.google.gson.Gson;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -315,14 +316,14 @@ public class ApiManager {
     public void addFriend(String userId, String friendUserId, ApiCallback<CommonResponseModel> callback) {
         if(isApiOnline()) {
             AddRemoveFriendRequest request = new AddRemoveFriendRequest(userId, friendUserId, "AddFriend");
-            ApiClientService.get().addRemoveFriend(new TypedString("Update=" + new Gson().toJson(request)), callback);
+            ApiClientService.get().addRemoveFriend(new TypedString("Update=" + Gson.get().toJson(request)), callback);
         }
     }
 
     public void unFriend(String userId, String friendUserId, ApiCallback<CommonResponseModel> callback) {
         if(isApiOnline()) {
             AddRemoveFriendRequest request = new AddRemoveFriendRequest(userId, friendUserId, "UnFriend");
-            ApiClientService.get().addRemoveFriend(new TypedString("Update=" + new Gson().toJson(request)), callback);
+            ApiClientService.get().addRemoveFriend(new TypedString("Update=" + Gson.get().toJson(request)), callback);
         }
     }
 
@@ -334,14 +335,14 @@ public class ApiManager {
 
     public TestAnswerPaperResponse submitTestAnswerPaper(TestAnswerPaper testAnswerPaper) {
         if (isApiOnline()) {
-            return ApiClientService.get().submitTestAnswerPaper(new TypedString("Upsert=" + new Gson().toJson(testAnswerPaper)));
+            return ApiClientService.get().submitTestAnswerPaper(new TypedString("Upsert=" + Gson.get().toJson(testAnswerPaper)));
         }
         return null;
     }
 
     public void submitTestAnswerPaper(TestAnswerPaper testAnswerPaper, ApiCallback<TestAnswerPaperResponse> callback) {
         if (isApiOnline()) {
-            ApiClientService.get().submitTestAnswerPaper(new TypedString("Upsert=" + new Gson().toJson(testAnswerPaper)), callback);
+            ApiClientService.get().submitTestAnswerPaper(new TypedString("Upsert=" + Gson.get().toJson(testAnswerPaper)), callback);
         }
     }
 
@@ -437,26 +438,26 @@ public class ApiManager {
 
     public void addForumLike(ForumLikeRequest forumLikeRequest, ApiCallback<CommonResponseModel> callback) {
         if (isApiOnline()) {
-            ApiClientService.get().addForumLike(new TypedString("Insert=" + new Gson().toJson(forumLikeRequest)), callback);
+            ApiClientService.get().addForumLike(new TypedString("Insert=" + Gson.get().toJson(forumLikeRequest)), callback);
         }
     }
 
     public void addEditForumPost(ForumModel forumPost, ApiCallback<DefaultForumResponse> callback) {
         if (isApiOnline()) {
-            ApiClientService.get().addPostToForum(new TypedString("Update=" + new Gson().toJson(forumPost)), callback);
+            ApiClientService.get().addPostToForum(new TypedString("Update=" + Gson.get().toJson(forumPost)), callback);
         }
     }
 
 
     public void addComment(ForumModel forumPost, ApiCallback<CommonResponseModel> callback) {
         if (isApiOnline()) {
-            ApiClientService.get().addComment(new TypedString("Update=" + new Gson().toJson(forumPost)), callback);
+            ApiClientService.get().addComment(new TypedString("Update=" + Gson.get().toJson(forumPost)), callback);
         }
     }
 
     public void deleteForum(ForumLikeRequest forumdeleteRequest, ApiCallback<CommonResponseModel> callback) {
         if (isApiOnline()) {
-            ApiClientService.get().deleteForum(new TypedString("Delete=" + new Gson().toJson(forumdeleteRequest)), callback);
+            ApiClientService.get().deleteForum(new TypedString("Delete=" + Gson.get().toJson(forumdeleteRequest)), callback);
         }
     }
 
@@ -500,7 +501,7 @@ public class ApiManager {
 
     public void createChallenge(CreateChallengeRequest insert, ApiCallback<CreateChallengeResponseModel> callback) {
         if (isApiOnline()) {
-            ApiClientService.get().createChallenge(new TypedString("Insert=" + new Gson().toJson(insert)), callback);
+            ApiClientService.get().createChallenge(new TypedString("Insert=" + Gson.get().toJson(insert)), callback);
         }
     }
 
@@ -542,7 +543,7 @@ public class ApiManager {
 
     public void postBookmark(Bookmark bookmark, ApiCallback<CommonResponseModel> callback) {
         if (isApiOnline()) {
-            ApiClientService.get().addDeleteBookmark(new TypedString(("Update=" + new Gson().toJson(bookmark))), callback);
+            ApiClientService.get().addDeleteBookmark(new TypedString(("Update=" + Gson.get().toJson(bookmark))), callback);
         }
     }
 
@@ -555,7 +556,7 @@ public class ApiManager {
             SugarDbManager.get(context).getResponse(reqRes, callback);
         } else {
             String jsonResponse = new FileUtils(context).loadJSONFromAsset(context.getAssets(), "config.json");
-            com.education.corsalite.models.db.AppConfig config = new Gson().fromJson(jsonResponse, com.education.corsalite.models.db.AppConfig.class);
+            com.education.corsalite.models.db.AppConfig config = Gson.get().fromJson(jsonResponse, com.education.corsalite.models.db.AppConfig.class);
             callback.success(config, MockUtils.getRetrofitResponse());
         }
     }

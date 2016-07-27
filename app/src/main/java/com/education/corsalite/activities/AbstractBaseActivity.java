@@ -74,11 +74,12 @@ import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.CookieUtils;
 import com.education.corsalite.utils.Data;
 import com.education.corsalite.utils.FileUtils;
+import com.education.corsalite.utils.Gson;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.SystemUtils;
 import com.education.corsalite.utils.TimeUtils;
 import com.education.corsalite.utils.WebUrls;
-import com.google.gson.Gson;
+
 import com.localytics.android.Localytics;
 
 import java.text.ParseException;
@@ -146,7 +147,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     public static AppConfig getAppConfig(Context context) {
         if(appConfig == null) {
             String jsonResponse = new FileUtils(context).loadJSONFromAsset(context.getAssets(), "config.json");
-            appConfig = new Gson().fromJson(jsonResponse, com.education.corsalite.models.db.AppConfig.class);
+            appConfig = Gson.get().fromJson(jsonResponse, com.education.corsalite.models.db.AppConfig.class);
         }
         return appConfig;
     }
@@ -818,7 +819,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             logout.AuthToken = LoginUserCache.getInstance().getLongResponse().authtoken;
             appPref.remove("loginId");
             appPref.remove("passwordHash");
-            ApiManager.getInstance(this).logout(new Gson().toJson(logout), new ApiCallback<LogoutResponse>(this) {
+            ApiManager.getInstance(this).logout(Gson.get().toJson(logout), new ApiCallback<LogoutResponse>(this) {
                 @Override
                 public void failure(CorsaliteError error) {
                     super.failure(error);
@@ -1249,7 +1250,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     intent.putExtra("test_question_paper_id", model.testQuestionPaperId);
                     intent.putExtra("OfflineTestObjectModel", model.dateTime);
                     intent.putExtra(Constants.IS_OFFLINE, true);
-                    intent.putExtra("mock_test_data_json", new Gson().toJson(model.scheduledTest));
+                    intent.putExtra("mock_test_data_json", Gson.get().toJson(model.scheduledTest));
                     intent.putExtra("time", startTimeInMillis);
                     intent.putExtra(Constants.DB_ROW_ID, model.getId());
                     startActivity(intent);

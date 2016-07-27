@@ -39,10 +39,11 @@ import com.education.corsalite.models.responsemodels.DefaultCourseResponse;
 import com.education.corsalite.models.responsemodels.ExamDetail;
 import com.education.corsalite.models.responsemodels.UserProfileResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencyBalanceResponse;
+import com.education.corsalite.utils.Gson;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.SystemUtils;
 import com.education.corsalite.utils.WebUrls;
-import com.google.gson.Gson;
+
 
 import java.util.List;
 
@@ -173,7 +174,7 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
         EditProfileDialogFragment dialogFragment = new EditProfileDialogFragment();
         dialogFragment.setUpdateProfileDetailsListener(this);
         Bundle bundle = new Bundle();
-        bundle.putString("user_profile_response", new Gson().toJson(user));
+        bundle.putString("user_profile_response", Gson.get().toJson(user));
         dialogFragment.setArguments(bundle);
         dialogFragment.show(getFragmentManager(), "Edit Profile");
     }
@@ -182,14 +183,14 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
         EditProfilePicDialogFragment dialogFragment = new EditProfilePicDialogFragment();
         dialogFragment.setUpdateProfilePicListener(this);
         Bundle bundle = new Bundle();
-        bundle.putString("user_profile_response", new Gson().toJson(user));
+        bundle.putString("user_profile_response", Gson.get().toJson(user));
         dialogFragment.setArguments(bundle);
         dialogFragment.show(getFragmentManager(), "Edit Profile Picture");
     }
 
     private void saveDefaultCourse(Course course) {
         if (course != null) {
-            String update = new Gson().toJson(new Defaultcourserequest(
+            String update = Gson.get().toJson(new Defaultcourserequest(
                     LoginUserCache.getInstance().getStudentId(), course.courseId + ""));
             showProgress();
             ApiManager.getInstance(getActivity()).updateDefaultCourse(update, new ApiCallback<DefaultCourseResponse>(getActivity()) {

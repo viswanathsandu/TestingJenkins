@@ -26,9 +26,10 @@ import com.education.corsalite.models.responsemodels.Chapter;
 import com.education.corsalite.models.responsemodels.TestCoverage;
 import com.education.corsalite.services.TestDownloadService;
 import com.education.corsalite.utils.Constants;
+import com.education.corsalite.utils.Gson;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.views.InputFilterMinMax;
-import com.google.gson.Gson;
+
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
@@ -85,11 +86,11 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
         String chapterStr = mExtras.getString("chapter");
         levelCrossed = mExtras.getInt(Constants.LEVEL_CROSSED, 0);
         if (chapterStr != null) {
-            chapter = new Gson().fromJson(chapterStr, Chapter.class);
+            chapter = Gson.get().fromJson(chapterStr, Chapter.class);
         }
         String testCoveragesGson = mExtras.getString(Constants.TEST_COVERAGE_LIST_GSON);
         if (!TextUtils.isEmpty(testCoveragesGson)) {
-            testCoverages = new Gson().fromJson(testCoveragesGson, new TypeToken<List<TestCoverage>>() {
+            testCoverages = Gson.get().fromJson(testCoveragesGson, new TypeToken<List<TestCoverage>>() {
             }.getType());
         }
     }
@@ -223,7 +224,7 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
         Intent exerciseIntent = new Intent(getActivity(), TestDownloadService.class);
         exerciseIntent.putExtra("subjectId", subjectId);
         exerciseIntent.putExtra("chapterId", chapter.idCourseSubjectchapter);
-        exerciseIntent.putExtra("selectedTakeTest", new Gson().toJson(chapter));
+        exerciseIntent.putExtra("selectedTakeTest", Gson.get().toJson(chapter));
         exerciseIntent.putExtra("courseId", AbstractBaseActivity.getSelectedCourseId());
         if (!TextUtils.isEmpty(noOfQuestions) && TextUtils.isDigitsOnly(noOfQuestions)) {
             exerciseIntent.putExtra("questions_count", noOfQuestions);

@@ -20,7 +20,7 @@ import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.LoginResponse;
-import com.education.corsalite.utils.Encryption;
+import com.education.corsalite.security.Encrypter;
 import com.education.corsalite.utils.SystemUtils;
 import com.education.corsalite.utils.WebUrls;
 
@@ -170,7 +170,7 @@ public class LoginActivity extends AbstractBaseActivity {
     private void login(){
         if(checkForValidEmail()) {
             if(checkPasswordField()) {
-                login(usernameTxt.getText().toString(), Encryption.md5(passwordTxt.getText().toString()), false);
+                login(usernameTxt.getText().toString(), Encrypter.md5(passwordTxt.getText().toString()), false);
             }else {
                 showToast("Please enter password");
             }

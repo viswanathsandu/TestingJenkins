@@ -35,8 +35,9 @@ import com.education.corsalite.services.ContentDownloadService;
 import com.education.corsalite.services.TestDownloadService;
 import com.education.corsalite.utils.AppPref;
 import com.education.corsalite.utils.Constants;
+import com.education.corsalite.utils.Gson;
 import com.education.corsalite.utils.L;
-import com.google.gson.Gson;
+
 import com.unnamed.b.atv.model.TreeNode;
 import com.unnamed.b.atv.view.AndroidTreeView;
 
@@ -244,7 +245,7 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
 
     private void downloadExercises() {
         Intent intent = new Intent(this, TestDownloadService.class);
-        intent.putExtra("exercise_data", new Gson().toJson(offlineExerciseModels));
+        intent.putExtra("exercise_data", Gson.get().toJson(offlineExerciseModels));
         startService(intent);
     }
 

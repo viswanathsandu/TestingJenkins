@@ -11,8 +11,9 @@ import com.education.corsalite.models.responsemodels.BaseResponseModel;
 import com.education.corsalite.models.responsemodels.TestAnswerPaper;
 import com.education.corsalite.models.responsemodels.TestAnswerPaperResponse;
 import com.education.corsalite.models.responsemodels.UserEventsResponse;
+import com.education.corsalite.utils.Gson;
 import com.education.corsalite.utils.L;
-import com.google.gson.Gson;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,11 +62,11 @@ public class DataSyncService extends IntentService {
                 return response != null;
             } else if(model.requestObject instanceof UserEventsModel) {
                 L.info("DataSuncService : Executing UserEvents");
-                UserEventsResponse response = ApiManager.getInstance(getApplicationContext()).postUserEvents(new Gson().toJson(model.requestObject));
+                UserEventsResponse response = ApiManager.getInstance(getApplicationContext()).postUserEvents(Gson.get().toJson(model.requestObject));
                 return response != null;
             } else if(model.requestObject instanceof ContentReadingEvent) {
                 L.info("DataSuncService : Executing ContentUsage");
-                BaseResponseModel response = ApiManager.getInstance(getApplicationContext()).postContentUsage(new Gson().toJson(model.requestObject));
+                BaseResponseModel response = ApiManager.getInstance(getApplicationContext()).postContentUsage(Gson.get().toJson(model.requestObject));
                 return response != null;
             }
         } catch (Exception e) {

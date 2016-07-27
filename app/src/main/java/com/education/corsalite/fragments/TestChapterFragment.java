@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
@@ -21,6 +20,7 @@ import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.TestCoverage;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.Data;
+import com.education.corsalite.utils.Gson;
 import com.education.corsalite.utils.L;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Legend;
@@ -29,7 +29,6 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,7 +111,7 @@ public class TestChapterFragment extends BaseFragment {
         levelCrossed = mExtras.getInt(Constants.LEVEL_CROSSED, 0) + 1;
         String chapterStr = mExtras.getString("chapter");
         if(chapterStr != null){
-            chapter = new Gson().fromJson(chapterStr,Chapter.class);
+            chapter = Gson.get().fromJson(chapterStr,Chapter.class);
         }
         if (TextUtils.isEmpty(chapterID) || TextUtils.isEmpty(chapterName) || TextUtils.isEmpty(subjectId)) {
             //In case data is missing finish this activity,
@@ -219,7 +218,7 @@ public class TestChapterFragment extends BaseFragment {
         mExtras.putStringArrayList(TestChapterSetupFragment.EXTRAS_CHAPTER_LEVELS, mChapterLevels);
         mExtras.putInt(Constants.LEVEL_CROSSED, levelCrossed);
         if(testCoverages != null) {
-            mExtras.putString(Constants.TEST_COVERAGE_LIST_GSON, new Gson().toJson(testCoverages));
+            mExtras.putString(Constants.TEST_COVERAGE_LIST_GSON, Gson.get().toJson(testCoverages));
         }
         TestChapterSetupFragment fragment = TestChapterSetupFragment.newInstance(mExtras);
         fragment.show(getFragmentManager(), TestChapterSetupFragment.getMyTag());

@@ -17,8 +17,9 @@ import com.education.corsalite.models.requestmodels.UserProfileModel;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.EditProfileModel;
 import com.education.corsalite.models.responsemodels.UserProfileResponse;
+import com.education.corsalite.utils.Gson;
 import com.education.corsalite.utils.L;
-import com.google.gson.Gson;
+
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -46,7 +47,7 @@ public class EditProfileDialogFragment extends BaseDialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.edit_profile_dialog_fragment, container, false);
         ButterKnife.bind(this, v);
-        user = new Gson().fromJson(getArguments().getString("user_profile_response"), UserProfileResponse.class);
+        user = Gson.get().fromJson(getArguments().getString("user_profile_response"), UserProfileResponse.class);
         loadData();
         setListeners();
         getDialog().setTitle("Edit Profile");
@@ -75,7 +76,7 @@ public class EditProfileDialogFragment extends BaseDialogFragment {
 
     private void updateUserProfile() {
         final UserProfileModel model = getUserData();
-        String userProfileJson = new Gson().toJson(model);
+        String userProfileJson = Gson.get().toJson(model);
         ApiManager.getInstance(getActivity()).updateUserProfile(userProfileJson, new ApiCallback<EditProfileModel>(getActivity()) {
             @Override
             public void failure(CorsaliteError error) {
