@@ -20,21 +20,16 @@ public enum Tests {
 
     public static Tests getTest(int testType) {
         switch (testType) {
-            case 1 : {
+            case 1 :
                 return SCHEDULED;
-            }
-            case 2 : {
+            case 2 :
                 return CHAPTER;
-            }
-            case 3 : {
+            case 3 :
                 return PART;
-            }
-            case 4 : {
+            case 4 :
                 return MOCK;
-            }
-            default : {
+            default :
                 return INVALID;
-            }
         }
     }
 }

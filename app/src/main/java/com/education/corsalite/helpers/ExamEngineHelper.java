@@ -190,7 +190,7 @@ public class ExamEngineHelper {
                     public void success(TestQuestionPaperResponse questionPaperResponse, Response response) {
                         super.success(questionPaperResponse, response);
                         if (questionPaperResponse != null && questionPaperResponse.questions != null) {
-                            test.questions = questionPaperResponse.questions;
+                            test.testQuestionPaperResponse = questionPaperResponse;
                             callback.onSuccess(test);
                         } else {
                             callback.OnFailure("Sorry, couldn't fetch the test from server");

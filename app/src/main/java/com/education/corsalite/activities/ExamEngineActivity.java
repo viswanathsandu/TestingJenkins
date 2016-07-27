@@ -2105,7 +2105,6 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             public void success(OfflineTestObjectModel offlineTest, Response response) {
                 super.success(offlineTest, response);
                 headerProgress.setVisibility(View.GONE);
-                localExamModelList = offlineTest.examModels;
                 testQuestionPaperId = offlineTest.testQuestionPaperId;
                 testanswerPaper.testQuestionPaperId = testQuestionPaperId;
 //                showQuestionPaper(localExamModelList, offlineTest.examDetails);

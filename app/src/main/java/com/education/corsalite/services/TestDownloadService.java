@@ -124,8 +124,7 @@ public class TestDownloadService extends IntentService {
                             OfflineTestObjectModel model = new OfflineTestObjectModel();
                             String testName = "";
                             if(questionPaperResponse != null) {
-//                                model.examModels = questionPaperResponse.questions;
-                                model.examDetails = questionPaperResponse.examDetails;
+                                model.testQuestionPaperResponse = questionPaperResponse;
                             }
                             if (mockTest != null) {
                                 model.testType = Tests.MOCK;
@@ -176,6 +175,7 @@ public class TestDownloadService extends IntentService {
                 model.dateTime = TimeUtils.currentTimeInMillis();
                 model.testQuestionPaperId = test.testQuestionPaperId;
                 dbManager.saveOfflineTest(model);
+                saveTestQuestionPaper(model.testQuestionPaperId, test.testQuestionPaperResponse);
                 Toast.makeText(getApplicationContext(), "\"" + chapter.chapterName + "\" test is downloaded successfully", Toast.LENGTH_SHORT).show();
             }
 
@@ -200,6 +200,7 @@ public class TestDownloadService extends IntentService {
                 model.dateTime = TimeUtils.currentTimeInMillis();
                 model.testQuestionPaperId = test.testQuestionPaperId;
                 dbManager.saveOfflineTest(model);
+                saveTestQuestionPaper(model.testQuestionPaperId, test.testQuestionPaperResponse);
                 L.info("Test Saved : "+model.getClass());
                 Toast.makeText(getApplicationContext(), "\""+subjectName + "\" test is downloaded successfully", Toast.LENGTH_SHORT).show();
             }
