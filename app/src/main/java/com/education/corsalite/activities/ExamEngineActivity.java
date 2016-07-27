@@ -88,6 +88,7 @@ import com.education.corsalite.models.socket.requests.UpdateLeaderBoardEvent;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.services.DataSyncService;
 import com.education.corsalite.utils.Constants;
+import com.education.corsalite.utils.ExamUtils;
 import com.education.corsalite.utils.FileUtils;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.SystemUtils;
@@ -822,7 +823,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             syncModel.requestObject = testanswerPaper;
             DataSyncService.addSyncModel(syncModel);
             if(state == TestanswerPaperState.COMPLETED) {
-                dbManager.deleteOfflineTestModel(testQuestionPaperId);
+                new ExamUtils(this).deleteTestQuestionPaper(testQuestionPaperId);
             }
             return;
         }
@@ -861,7 +862,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     }
                     // dbManager.updateOfflineTestModel(offlineModelDate, Constants.STATUS_COMPLETED, System.currentTimeMillis());
                     // TO remove the exam if submitted
-                    dbManager.deleteOfflineTestModel(testQuestionPaperId);
+                    new ExamUtils(ExamEngineActivity.this).deleteTestQuestionPaper(testQuestionPaperId);
                 }
             }
         });

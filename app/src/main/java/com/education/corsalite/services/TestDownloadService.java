@@ -25,7 +25,7 @@ import com.education.corsalite.models.responsemodels.PartTestGridElement;
 import com.education.corsalite.models.responsemodels.TestPaperIndex;
 import com.education.corsalite.models.responsemodels.TestQuestionPaperResponse;
 import com.education.corsalite.utils.Constants;
-import com.education.corsalite.utils.FileUtils;
+import com.education.corsalite.utils.ExamUtils;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.TimeUtils;
 import com.google.gson.Gson;
@@ -142,7 +142,7 @@ public class TestDownloadService extends IntentService {
                             model.testAnswerPaperId = testAnswerPaperId;
                             model.dateTime = TimeUtils.currentTimeInMillis();
                             dbManager.saveOfflineTest(model);
-                            saveTestQuestionPaper(model.testQuestionPaperId, questionPaperResponse);
+                            new ExamUtils(getApplicationContext()).saveTestQuestionPaper(model.testQuestionPaperId, questionPaperResponse);
                             if(!TextUtils.isEmpty(testName)) {
                                 Toast.makeText(getApplicationContext(), "Test \""+testName+"\" has been downloaded successfully", Toast.LENGTH_SHORT).show();
                             } else {
@@ -152,15 +152,6 @@ public class TestDownloadService extends IntentService {
                     });
         } catch (Exception e) {
             L.error(e.getMessage(), e);
-        }
-    }
-
-    private void saveTestQuestionPaper(String testQuestionPaperId, TestQuestionPaperResponse response) {
-        String fileName = testQuestionPaperId + "." + Constants.TEST_FILE;
-        String jsonQuestionPaper = new Gson().toJson(response);
-        String savedFileName = new FileUtils(getApplicationContext()).write(fileName, jsonQuestionPaper, null);
-        if(TextUtils.isEmpty(savedFileName)) {
-            Toast.makeText(getApplicationContext(), "Test download failed. Please try again", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -175,7 +166,7 @@ public class TestDownloadService extends IntentService {
                 model.dateTime = TimeUtils.currentTimeInMillis();
                 model.testQuestionPaperId = test.testQuestionPaperId;
                 dbManager.saveOfflineTest(model);
-                saveTestQuestionPaper(model.testQuestionPaperId, test.testQuestionPaperResponse);
+                new ExamUtils(getApplicationContext()).saveTestQuestionPaper(model.testQuestionPaperId, test.testQuestionPaperResponse);
                 Toast.makeText(getApplicationContext(), "\"" + chapter.chapterName + "\" test is downloaded successfully", Toast.LENGTH_SHORT).show();
             }
 
@@ -200,7 +191,7 @@ public class TestDownloadService extends IntentService {
                 model.dateTime = TimeUtils.currentTimeInMillis();
                 model.testQuestionPaperId = test.testQuestionPaperId;
                 dbManager.saveOfflineTest(model);
-                saveTestQuestionPaper(model.testQuestionPaperId, test.testQuestionPaperResponse);
+                new ExamUtils(getApplicationContext()).saveTestQuestionPaper(model.testQuestionPaperId, test.testQuestionPaperResponse);
                 L.info("Test Saved : "+model.getClass());
                 Toast.makeText(getApplicationContext(), "\""+subjectName + "\" test is downloaded successfully", Toast.LENGTH_SHORT).show();
             }

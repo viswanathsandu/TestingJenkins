@@ -129,6 +129,24 @@ public class FileUtils {
 
     }
 
+    public void deleteFile(String fileName) {
+        File root = Environment.getExternalStorageDirectory();
+        File fileorDir;
+        if(fileName.endsWith("." + Constants.TEST_FILE)) {
+            fileorDir = new File(root.getAbsolutePath() + File.separator + Constants.PARENT_FOLDER + File.separator + Constants.TESTS_FOLDER + File.separator + fileName);
+        } else {
+            fileorDir = new File(root.getAbsolutePath() + File.separator + Constants.PARENT_FOLDER + File.separator + fileName);
+        }
+
+        if (fileorDir.isDirectory()) {
+            deleteChildren(fileorDir);
+        } else if (fileorDir.isFile()) {
+            File parentFile = fileorDir.getParentFile();
+            fileorDir.delete();
+            deleteParent(parentFile);
+        }
+    }
+
     public void delete(String selectedPath) {
         File root = Environment.getExternalStorageDirectory();
         File fileorDir = new File(root.getAbsolutePath() + File.separator + Constants.PARENT_FOLDER + File.separator + selectedPath);
