@@ -145,7 +145,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     public static AppConfig getAppConfig(Context context) {
         if(appConfig == null) {
-            String jsonResponse = FileUtils.loadJSONFromAsset(context.getAssets(), "config.json");
+            String jsonResponse = new FileUtils(context).loadJSONFromAsset(context.getAssets(), "config.json");
             appConfig = new Gson().fromJson(jsonResponse, com.education.corsalite.models.db.AppConfig.class);
         }
         return appConfig;

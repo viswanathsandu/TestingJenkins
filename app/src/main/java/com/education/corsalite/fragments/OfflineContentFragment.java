@@ -23,7 +23,7 @@ import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.Data;
-import com.education.corsalite.utils.FileUtilities;
+import com.education.corsalite.utils.FileUtils;
 import com.education.corsalite.utils.L;
 import com.unnamed.b.atv.model.TreeNode;
 import com.unnamed.b.atv.view.AndroidTreeView;
@@ -321,7 +321,7 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
             }
         }
         //Delete file
-        new FileUtilities(getActivity()).delete(path);
+        new FileUtils(getActivity()).delete(path);
 
         //Update database
         dbManager.deleteOfflineContents(removeList);

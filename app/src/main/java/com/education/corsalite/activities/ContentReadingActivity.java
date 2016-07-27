@@ -49,7 +49,6 @@ import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.ExamModel;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.Constants;
-import com.education.corsalite.utils.FileUtilities;
 import com.education.corsalite.utils.FileUtils;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.SystemUtils;
@@ -421,7 +420,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
     };
 
     private void saveFileToDisk() {
-        FileUtilities fileUtilities = new FileUtilities(this);
+        FileUtils fileUtils = new FileUtils(this);
         String folderStructure = getSelectedCourseName() + File.separator +
                 subjectModelList.get(spSubject.getSelectedItemPosition()).subjectName + File.separator +
                 chapterModelList.get(spChapter.getSelectedItemPosition()).chapterName + File.separator +
@@ -430,7 +429,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
         if (TextUtils.isEmpty(htmlFileText) || htmlFileText.endsWith(Constants.HTML_FILE)) {
             showToast("File already exists.");
         } else {
-            String htmlUrl = fileUtilities.write(contentModelList.get(mContentIdPosition).contentName + "." +
+            String htmlUrl = fileUtils.write(contentModelList.get(mContentIdPosition).contentName + "." +
                     Constants.HTML_FILE, htmlFileText, folderStructure);
             if (htmlUrl != null) {
                 showToast("File saved");
@@ -765,7 +764,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
                     mContentIdPosition = i;
                 }
                 if (f.getName().endsWith(Constants.VIDEO_FILE)) {
-                    String videoUrl = FileUtils.getUrlFromFile(f);
+                    String videoUrl = new FileUtils(this).getUrlFromFile(f);
                     if (videoUrl.length() > 0) {
                         loadWeb(ApiClientService.getBaseUrl() + videoUrl.replace("./", ""));
                     }
@@ -792,7 +791,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
                             mContentIdPosition = i;
                         }
                         if (f.getName().endsWith(Constants.VIDEO_FILE)) {
-                            String videoUrl = FileUtils.getUrlFromFile(f);
+                            String videoUrl = new FileUtils(this).getUrlFromFile(f);
                             if (videoUrl.length() > 0) {
                                 loadWeb(ApiClientService.getBaseUrl() + videoUrl.replace("./", ""));
                             }

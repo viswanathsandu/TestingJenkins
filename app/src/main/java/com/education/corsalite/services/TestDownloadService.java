@@ -154,6 +154,11 @@ public class TestDownloadService extends IntentService {
         }
     }
 
+    private void saveTestQuestionPaper(String testQuestionPaperId, TestQuestionPaperResponse response) {
+        String fileName = testQuestionPaperId+".test";
+        String jsonQuestionPaper = new Gson().toJson(response);
+    }
+
     private void loadTakeTest(final Chapter chapter, final String subjectName, String questionsCount, String subjectId){
         ExamEngineHelper helper = new ExamEngineHelper(this);
         helper.loadTakeTest(chapter, subjectName, subjectId, questionsCount, new OnExamLoadCallback() {

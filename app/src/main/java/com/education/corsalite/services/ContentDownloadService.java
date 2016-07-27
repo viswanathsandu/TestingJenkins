@@ -18,7 +18,7 @@ import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ExamModel;
 import com.education.corsalite.utils.Constants;
-import com.education.corsalite.utils.FileUtilities;
+import com.education.corsalite.utils.FileUtils;
 import com.education.corsalite.utils.L;
 import com.thin.downloadmanager.DefaultRetryPolicy;
 import com.thin.downloadmanager.DownloadManager;
@@ -110,7 +110,7 @@ public class ContentDownloadService extends IntentService {
     }
 
     private void saveFileToDisk(OfflineContent offlineContent, String htmlText, Content content) {
-        FileUtilities fileUtilities = new FileUtilities(this);
+        FileUtils fileUtils = new FileUtils(this);
         final String folderStructure = offlineContent.courseName + File.separator
                                         + offlineContent.subjectName + File.separator
                                         + offlineContent.chapterName + File.separator
@@ -122,7 +122,7 @@ public class ContentDownloadService extends IntentService {
         } else if (TextUtils.isEmpty(htmlText) || htmlText.endsWith(Constants.HTML_FILE)) {
             Toast.makeText(this, getString(R.string.file_exists), Toast.LENGTH_SHORT).show();
         } else {
-            String htmlUrl = fileUtilities.write(content.name + "." + Constants.HTML_FILE, htmlText, folderStructure);
+            String htmlUrl = fileUtils.write(content.name + "." + Constants.HTML_FILE, htmlText, folderStructure);
             if (htmlUrl != null) {
                 EventBus.getDefault().post(new OfflineActivityRefreshEvent(content.idContent));
             }

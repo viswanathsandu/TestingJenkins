@@ -17,5 +17,4 @@ public class TestQuestionPaperResponse extends BaseResponseModel {
 
     public TestQuestionPaperResponse() {}
 
-
 }

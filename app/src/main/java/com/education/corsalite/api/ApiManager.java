@@ -554,7 +554,7 @@ public class ApiManager {
             reqRes.request = apiCacheHolder.appConfigRequest;
             SugarDbManager.get(context).getResponse(reqRes, callback);
         } else {
-            String jsonResponse = FileUtils.loadJSONFromAsset(context.getAssets(), "config.json");
+            String jsonResponse = new FileUtils(context).loadJSONFromAsset(context.getAssets(), "config.json");
             com.education.corsalite.models.db.AppConfig config = new Gson().fromJson(jsonResponse, com.education.corsalite.models.db.AppConfig.class);
             callback.success(config, MockUtils.getRetrofitResponse());
         }
