@@ -2127,7 +2127,6 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 headerProgress.setVisibility(View.GONE);
                 testQuestionPaperId = baseTest.testQuestionPaperId;
                 testanswerPaper.testQuestionPaperId = testQuestionPaperId;
-//                showQuestionPaper(baseTest.questions, null);
                 loadOfflineTestQuestionPaper(testQuestionPaperId);
             }
         });

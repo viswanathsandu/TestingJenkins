@@ -4,7 +4,6 @@ import android.app.IntentService;
 import android.content.Intent;
 
 import com.education.corsalite.api.ApiManager;
-import com.education.corsalite.db.SugarDbManager;
 import com.education.corsalite.event.ContentReadingEvent;
 import com.education.corsalite.models.db.SyncModel;
 import com.education.corsalite.models.requestmodels.UserEventsModel;
@@ -23,7 +22,6 @@ import java.util.List;
  */
 public class DataSyncService extends IntentService {
 
-    private SugarDbManager dbManager;
     public static List<SyncModel> syncData = new ArrayList<>();
 
     public static void addSyncModel(SyncModel model) {
@@ -38,10 +36,10 @@ public class DataSyncService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        dbManager = SugarDbManager.get(getApplicationContext());
         L.info("DataSyncService : Starting");
         List<SyncModel> dataToBeRemoved = new ArrayList<>();
-        for(SyncModel model : syncData) {
+        List<SyncModel> data = new ArrayList<>(syncData);
+        for(SyncModel model : data) {
             if (model != null) {
                if(executeApi(model)) {
                    dataToBeRemoved.add(model);
