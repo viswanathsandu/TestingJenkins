@@ -88,6 +88,7 @@ import com.education.corsalite.models.socket.requests.UpdateLeaderBoardEvent;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.services.DataSyncService;
 import com.education.corsalite.utils.Constants;
+import com.education.corsalite.utils.FileUtils;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.SystemUtils;
 import com.education.corsalite.utils.TimeUtils;
@@ -2088,7 +2089,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 headerProgress.setVisibility(View.GONE);
                 testQuestionPaperId = offlineModel.testQuestionPaperId;
                 testanswerPaper.testQuestionPaperId = testQuestionPaperId;
-                showQuestionPaper(offlineModel.examModels, offlineModel.examDetails);
+                loadOfflineTestQuestionPaper(testQuestionPaperId);
             }
         });
     }
@@ -2107,7 +2108,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 localExamModelList = offlineTest.examModels;
                 testQuestionPaperId = offlineTest.testQuestionPaperId;
                 testanswerPaper.testQuestionPaperId = testQuestionPaperId;
-                showQuestionPaper(localExamModelList, offlineTest.examDetails);
+//                showQuestionPaper(localExamModelList, offlineTest.examDetails);
+                loadOfflineTestQuestionPaper(testQuestionPaperId);
             }
         });
     }
@@ -2125,9 +2127,23 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 headerProgress.setVisibility(View.GONE);
                 testQuestionPaperId = baseTest.testQuestionPaperId;
                 testanswerPaper.testQuestionPaperId = testQuestionPaperId;
-                showQuestionPaper(baseTest.questions, null);
+//                showQuestionPaper(baseTest.questions, null);
+                loadOfflineTestQuestionPaper(testQuestionPaperId);
             }
         });
+    }
+
+    private void loadOfflineTestQuestionPaper(String testQuestionPaperId) {
+        try {
+            String fileName = testQuestionPaperId + "." + Constants.TEST_FILE;
+            String questionPaperJson = new FileUtils(this).readFromFile(fileName, null);
+            TestQuestionPaperResponse response = new Gson().fromJson(questionPaperJson, TestQuestionPaperResponse.class);
+            localExamModelList = response.questions;
+            showQuestionPaper(response.questions, response.examDetails);
+        } catch (Exception e) {
+            showToast("Failed to load exam");
+            L.error(e.getMessage(), e);
+        }
     }
 
     @Override

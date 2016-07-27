@@ -3,6 +3,7 @@ package com.education.corsalite.utils;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.os.Environment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -30,14 +31,21 @@ public class FileUtils {
 
     public String write(String fileName, String data, String folderStructure) {
         File root = Environment.getExternalStorageDirectory();
-        File outDir = new File(root.getAbsolutePath() + File.separator + Constants.PARENT_FOLDER + File.separator +folderStructure);
+        File outDir = null;
+        if (TextUtils.isEmpty(folderStructure)) {
+            outDir = new File(root.getAbsolutePath() + File.separator + Constants.PARENT_FOLDER);
+        } else {
+            outDir = new File(root.getAbsolutePath() + File.separator + Constants.PARENT_FOLDER + File.separator + folderStructure);
+        }
         if (!outDir.isDirectory()) {
             outDir.mkdirs();
         }
 
-        File savingDirectory ;
-        if(fileName.endsWith(Constants.VIDEO_FILE)) {
+        File savingDirectory;
+        if (fileName.endsWith(Constants.VIDEO_FILE)) {
             savingDirectory = new File(outDir.getAbsolutePath() + File.separator + Constants.VIDEO_FOLDER);
+        } else if (fileName.endsWith(Constants.TEST_FILE)) {
+            savingDirectory = new File(outDir.getAbsolutePath() + File.separator + Constants.TESTS_FOLDER);
         } else {
             savingDirectory = new File(outDir.getAbsolutePath() + File.separator + Constants.HTML_FOLDER);
         }
@@ -62,23 +70,54 @@ public class FileUtils {
         return null;
     }
 
-    private boolean deleteChildren(File path) {
-        if( path.exists() ) {
-            File[] files = path.listFiles();
-            for(int i=0; i<files.length; i++) {
-                if(files[i].isDirectory()) {
-                    deleteChildren(files[i]);
+    public String readFromFile(String fileName, String folderStructure) {
+        File root = Environment.getExternalStorageDirectory();
+        File file = null;
+        if (TextUtils.isEmpty(folderStructure)) {
+            file = new File(root.getAbsolutePath() + File.separator + Constants.PARENT_FOLDER);
+        } else {
+            file = new File(root.getAbsolutePath() + File.separator + Constants.PARENT_FOLDER + File.separator + folderStructure);
+        }
+        if (fileName.endsWith(Constants.VIDEO_FILE)) {
+            file = new File(file.getAbsolutePath() + File.separator + Constants.VIDEO_FOLDER + File.separator + fileName);
+        } else if (fileName.endsWith(Constants.TEST_FILE)) {
+            file = new File(file.getAbsolutePath() + File.separator + Constants.TESTS_FOLDER + File.separator + fileName);
+        } else {
+            file = new File(file.getAbsolutePath() + File.separator + Constants.HTML_FOLDER + File.separator + fileName);
+        }
+        if (file.exists()) {
+            StringBuilder text = new StringBuilder();
+            try {
+                BufferedReader br = new BufferedReader(new FileReader(file));
+                String line;
+                while ((line = br.readLine()) != null) {
+                    text.append(line);
+                    text.append('\n');
                 }
-                else {
+                return text.toString();
+            } catch (IOException e) {
+                L.error(e.getMessage(), e);
+            }
+        }
+        return null;
+    }
+
+    private boolean deleteChildren(File path) {
+        if (path.exists()) {
+            File[] files = path.listFiles();
+            for (int i = 0; i < files.length; i++) {
+                if (files[i].isDirectory()) {
+                    deleteChildren(files[i]);
+                } else {
                     files[i].delete();
                 }
             }
         }
-        return(path.delete());
+        return (path.delete());
     }
 
-    private void deleteParent(File path){
-        if(path.exists()) {
+    private void deleteParent(File path) {
+        if (path.exists()) {
             File[] files = path.listFiles();
             if (files.length <= 0) {
                 File parent = path.getParentFile();
@@ -89,13 +128,14 @@ public class FileUtils {
         }
 
     }
-    public void delete(String selectedPath){
-        File root = Environment.getExternalStorageDirectory();
-        File fileorDir = new File(root.getAbsolutePath() + File.separator + Constants.PARENT_FOLDER + File.separator +selectedPath);
 
-        if(fileorDir.isDirectory()){
+    public void delete(String selectedPath) {
+        File root = Environment.getExternalStorageDirectory();
+        File fileorDir = new File(root.getAbsolutePath() + File.separator + Constants.PARENT_FOLDER + File.separator + selectedPath);
+
+        if (fileorDir.isDirectory()) {
             deleteChildren(fileorDir);
-        }else if(fileorDir.isFile()){
+        } else if (fileorDir.isFile()) {
             File parentFile = fileorDir.getParentFile();
             fileorDir.delete();
             deleteParent(parentFile);
