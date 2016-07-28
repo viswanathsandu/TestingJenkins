@@ -74,7 +74,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
     ImageView ivEditNotes;
     @Bind(R.id.iv_forum)
     ImageView ivForum;
-    @Bind(R.id.webView_content_reading)
+    @Bind(R.id.webview_content_reading)
     WebView webviewContentReading;
     @Bind(R.id.sp_subject)
     Spinner spSubject;

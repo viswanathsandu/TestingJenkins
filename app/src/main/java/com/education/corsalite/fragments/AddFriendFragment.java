@@ -109,7 +109,7 @@ public class AddFriendFragment extends BaseFragment implements SearchView.OnQuer
 
     private void showFriendsList() {
         updateFriendsListStatus();
-        if(friends != null && friends != null) {
+        if(getActivity() != null && friends != null && friends != null) {
             mAdapter = new AddFriendsAdapter(getActivity(), friends, this);
             mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), R.drawable.horizontal_line, true, true));
             mRecyclerView.setAdapter(mAdapter);

@@ -12,7 +12,7 @@ import com.education.corsalite.models.responsemodels.UserEventsResponse;
 import com.education.corsalite.services.DataSyncService;
 import com.education.corsalite.utils.Gson;
 import com.education.corsalite.utils.SystemUtils;
-
+import com.education.corsalite.utils.TimeUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -92,7 +92,7 @@ public class UpdateUserEvents {
     private String getDate(long millis) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "yyyy-mm-dd hh:mm:ss", Locale.getDefault());
-        Date date = new Date(millis);
+        Date date = TimeUtils.getDate(millis);
         return dateFormat.format(date);
     }
 

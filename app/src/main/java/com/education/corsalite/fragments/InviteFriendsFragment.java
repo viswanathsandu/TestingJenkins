@@ -83,13 +83,15 @@ public class InviteFriendsFragment extends BaseFragment implements SearchView.On
             toolbar.findViewById(R.id.add_friends_btn).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(getActivity(), AddFriendsActivity.class));
+                    if(getActivity() != null) {
+                        startActivity(new Intent(getActivity(), AddFriendsActivity.class));
+                    }
                 }
             });
             toolbar.findViewById(R.id.next_btn).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (mAdapter.getSelectedFriends() != null && mAdapter.getSelectedFriends().size() > 0) {
+                    if (getActivity() != null && mAdapter != null && mAdapter.getSelectedFriends() != null && mAdapter.getSelectedFriends().size() > 0) {
                         mFriendsListCallback.onNextClick(mAdapter.getSelectedFriends());
                     }
                 }
@@ -106,7 +108,7 @@ public class InviteFriendsFragment extends BaseFragment implements SearchView.On
                     @Override
                     public void success(FriendsData friendsData, Response response) {
                         super.success(friendsData, response);
-                        if (friendsData != null) {
+                        if (getActivity() != null && friendsData != null) {
                             InviteFriendsFragment.this.friendsData = friendsData;
                             showFriendsList();
                             fetchDisplayName();
@@ -116,7 +118,9 @@ public class InviteFriendsFragment extends BaseFragment implements SearchView.On
                     @Override
                     public void failure(CorsaliteError error) {
                         super.failure(error);
-                        ((AbstractBaseActivity) getActivity()).showToast("No friends available");
+                        if(getActivity() != null) {
+                            ((AbstractBaseActivity) getActivity()).showToast("No friends available");
+                        }
                     }
                 });
     }
@@ -173,9 +177,11 @@ public class InviteFriendsFragment extends BaseFragment implements SearchView.On
     }
 
     public void onEventMainThread(ChallengeUserList event) {
-        challengeFriendsId = event.users;
-        showFriendsList();
-        L.info("Websocket : " + Gson.get().toJson(event.users));
+        if(getActivity() != null) {
+            challengeFriendsId = event.users;
+            showFriendsList();
+            L.info("Websocket : " + Gson.get().toJson(event.users));
+        }
     }
 
     private void fetchDisplayName() {

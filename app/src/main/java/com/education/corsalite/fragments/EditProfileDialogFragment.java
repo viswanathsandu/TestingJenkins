@@ -82,14 +82,16 @@ public class EditProfileDialogFragment extends BaseDialogFragment {
             public void failure(CorsaliteError error) {
                 super.failure(error);
                 L.error(error.message);
-                showToast("Failed to Update User Profile");
-                getDialog().dismiss();
+                if(getActivity() != null) {
+                    showToast("Failed to Update User Profile");
+                    getDialog().dismiss();
+                }
             }
 
             @Override
             public void success(EditProfileModel editProfileResponse, Response response) {
                 super.success(editProfileResponse, response);
-                if (editProfileResponse.isSuccessful()) {
+                if (getActivity() != null && editProfileResponse.isSuccessful()) {
                     showToast("Updated User Profile Successfully");
                     if(updateProfileDetailsListener != null)
                         updateProfileDetailsListener.onUpdateProfileDetails(model);
@@ -122,10 +124,12 @@ public class EditProfileDialogFragment extends BaseDialogFragment {
     }
 
     private void loadData() {
-        usernameTxt.setText(user.basicProfile.displayName);
-        firstNameTxt.setText(user.basicProfile.surName);
-        lastNameTxt.setText(user.basicProfile.givenName);
-        emailIdTxt.setText(user.basicProfile.emailId);
+        if(user != null && user.basicProfile != null) {
+            usernameTxt.setText(user.basicProfile.displayName+"");
+            firstNameTxt.setText(user.basicProfile.surName+"");
+            lastNameTxt.setText(user.basicProfile.givenName+"");
+            emailIdTxt.setText(user.basicProfile.emailId+"");
+        }
     }
 
     public interface IUpdateProfileDetailsListener {

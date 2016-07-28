@@ -253,7 +253,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private TestAnswerPaper testanswerPaper = new TestAnswerPaper();
     private Long scheduledTimeInMillis = 0l;
     private CounterClass timer;
-
+    private long questionStartedTime = 0;
     private long timeSpent = 0;
 
     public static Intent getMyIntent(Context context, @Nullable Bundle extras) {
@@ -763,6 +763,26 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         btnNext.setVisibility(View.VISIBLE);
     }
 
+    private void updateQuestionTimeTaken(int position) {
+        if(isFlaggedQuestionsScreen() || isViewAnswersScreen()) {
+            return;
+        }
+        try {
+            if (selectedPosition >= 0) {
+                long currentTime = TimeUtils.currentTimeInMillis();
+                long diff = currentTime - questionStartedTime;
+                long diffInSeconds = diff / 1000;
+                int timeTakenPreviously = 0;
+                if(!TextUtils.isEmpty(testanswerPaper.testAnswers.get(position).timeTaken)) {
+                    timeTakenPreviously = Integer.parseInt(testanswerPaper.testAnswers.get(position).timeTaken);
+                }
+                testanswerPaper.testAnswers.get(position).timeTaken = String.valueOf(timeTakenPreviously + diffInSeconds);
+            }
+        }catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+    }
+
     View.OnClickListener mClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -771,6 +791,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     if (selectedPosition == localExamModelList.size() - 1 && !isFlaggedQuestionsScreen() && !isViewAnswersScreen() && !title.equalsIgnoreCase("Exercises")) {
                         showSubmitTestAlert();
                     }else{
+                        updateQuestionTimeTaken(selectedPosition);
                         updateTestAnswerPaper(TestanswerPaperState.STARTED);
                         previousQuestionPosition = selectedPosition;
                         inflateUI(selectedPosition + 1);
@@ -779,6 +800,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     break;
                 case R.id.btn_previous:
                     hideKeyboard();
+                    updateQuestionTimeTaken(selectedPosition);
                     updateTestAnswerPaper(TestanswerPaperState.STARTED);
                     previousQuestionPosition = selectedPosition;
                     inflateUI(selectedPosition - 1);
@@ -800,9 +822,11 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     showFullQuestionDialog();
                     break;
                 case R.id.btn_submit:
+                    updateQuestionTimeTaken(selectedPosition);
                     showSubmitTestAlert();
                     break;
                 case R.id.btn_suspend:
+                    updateQuestionTimeTaken(selectedPosition);
                     showSuspendDialog();
                     break;
                 case R.id.imv_flag:
@@ -1034,82 +1058,87 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void loadQuestion(int position) {
-        isFlagged = false;
-        if (testanswerPaper != null && testanswerPaper.testAnswers != null && testanswerPaper.testAnswers.size() > position) {
-            if (!TextUtils.isEmpty(testanswerPaper.testAnswers.get(position).status) && testanswerPaper.testAnswers.get(position).status.equalsIgnoreCase(Constants.AnswerState.UNATTEMPTED.getValue())) {
-                testanswerPaper.testAnswers.get(position).status = Constants.AnswerState.SKIPPED.getValue();
+        try {
+            isFlagged = false;
+            questionStartedTime = TimeUtils.currentTimeInMillis();
+            if (testanswerPaper != null && testanswerPaper.testAnswers != null && testanswerPaper.testAnswers.size() > position) {
+                if (!TextUtils.isEmpty(testanswerPaper.testAnswers.get(position).status) && testanswerPaper.testAnswers.get(position).status.equalsIgnoreCase(Constants.AnswerState.UNATTEMPTED.getValue())) {
+                    testanswerPaper.testAnswers.get(position).status = Constants.AnswerState.SKIPPED.getValue();
+                }
             }
-        }
-        updateFlaggedQuestion(localExamModelList.get(position).isFlagged);
-        tvSerialNo.setText("Q" + (position + 1) + ")");
-        if (!TextUtils.isEmpty(localExamModelList.get(position).displayName) && !isFlaggedQuestionsScreen()) {
-            tvLevel.setText(localExamModelList.get(position).displayName.split("\\s+")[0].toUpperCase(Locale.ENGLISH));
-        }
-        if (TextUtils.isEmpty(localExamModelList.get(position).paragraphHtml)) {
-            webviewParagraph.setVisibility(View.GONE);
-        } else {
-            webviewParagraph.setVisibility(View.VISIBLE);
-            webQuestion = localExamModelList.get(position).paragraphHtml;
-            webviewParagraph.loadData(webQuestion, "text/html; charset=UTF-8", null);
-        }
-        webviewQuestion.setVisibility(View.GONE);
-        if (localExamModelList.get(position).questionHtml != null) {
-            webQuestion = localExamModelList.get(position).questionHtml;
-            webviewQuestion.loadData(webQuestion, "text/html; charset=UTF-8", null);
-            webviewQuestion.setVisibility(View.VISIBLE);
-        }
-        if (localExamModelList.get(position).comment != null) {
-            tvComment.setText(localExamModelList.get(position).comment);
-            tvComment.setVisibility(View.VISIBLE);
-        } else {
-            tvComment.setVisibility(View.GONE);
-        }
-        navigateButtonEnabled();
+            updateFlaggedQuestion(localExamModelList.get(position).isFlagged);
+            tvSerialNo.setText("Q" + (position + 1) + ")");
+            if (!TextUtils.isEmpty(localExamModelList.get(position).displayName) && !isFlaggedQuestionsScreen()) {
+                tvLevel.setText(localExamModelList.get(position).displayName.split("\\s+")[0].toUpperCase(Locale.ENGLISH));
+            }
+            if (TextUtils.isEmpty(localExamModelList.get(position).paragraphHtml)) {
+                webviewParagraph.setVisibility(View.GONE);
+            } else {
+                webviewParagraph.setVisibility(View.VISIBLE);
+                webQuestion = localExamModelList.get(position).paragraphHtml;
+                webviewParagraph.loadData(webQuestion, "text/html; charset=UTF-8", null);
+            }
+            webviewQuestion.setVisibility(View.GONE);
+            if (localExamModelList.get(position).questionHtml != null) {
+                webQuestion = localExamModelList.get(position).questionHtml;
+                webviewQuestion.loadData(webQuestion, "text/html; charset=UTF-8", null);
+                webviewQuestion.setVisibility(View.VISIBLE);
+            }
+            if (localExamModelList.get(position).comment != null) {
+                tvComment.setText(localExamModelList.get(position).comment);
+                tvComment.setVisibility(View.VISIBLE);
+            } else {
+                tvComment.setVisibility(View.GONE);
+            }
+            navigateButtonEnabled();
 
-        switch (QuestionType.getQuestionType(localExamModelList.get(position).idQuestionType)) {
-            case SINGLE_SELECT_CHOICE:
-                loadSingleSelectChoiceAnswers(position);
-                break;
-            case MULTI_SELECT_CHOICE:
-                loadMultiSelectChoiceAnswers(position);
-                break;
-            case ALPHANUMERIC:
-                loadEditTextAnswer(QuestionType.ALPHANUMERIC, position);
-                break;
-            case NUMERIC:
-                loadEditTextAnswer(QuestionType.NUMERIC, position);
-                break;
-            case FILL_IN_THE_BLANK:
-                loadEditTextAnswer(QuestionType.FILL_IN_THE_BLANK, position);
-                break;
-            case N_BLANK_SINGLE_SELECT:
-                loadNBlankAnswer(QuestionType.N_BLANK_SINGLE_SELECT, position);
-                break;
-            case N_BLANK_MULTI_SELECT:
-                loadNBlankAnswer(QuestionType.N_BLANK_MULTI_SELECT, position);
-                break;
-            case GRID:
-                loadGridTypeAnswer(position);
-                break;
-            case FRACTION:
-            case PICK_A_SENTENCE:
-            case WORD_PROPERTIES:
-                break;
-            default:
-                if (localExamModelList.size() - 1 == 0) {
-                    return;
-                }
-                if (localExamModelList.size() - 1 > selectedPosition) {
-                    localExamModelList.remove(selectedPosition);
-                    inflateUI(selectedPosition);
-                } else {
-                    localExamModelList.remove(selectedPosition);
-                    inflateUI(selectedPosition - 1);
-                }
-                break;
-        }
-        if (mViewSwitcher.indexOfChild(mViewSwitcher.getCurrentView()) == 0) {
-            mViewSwitcher.showNext();
+            switch (QuestionType.getQuestionType(localExamModelList.get(position).idQuestionType)) {
+                case SINGLE_SELECT_CHOICE:
+                    loadSingleSelectChoiceAnswers(position);
+                    break;
+                case MULTI_SELECT_CHOICE:
+                    loadMultiSelectChoiceAnswers(position);
+                    break;
+                case ALPHANUMERIC:
+                    loadEditTextAnswer(QuestionType.ALPHANUMERIC, position);
+                    break;
+                case NUMERIC:
+                    loadEditTextAnswer(QuestionType.NUMERIC, position);
+                    break;
+                case FILL_IN_THE_BLANK:
+                    loadEditTextAnswer(QuestionType.FILL_IN_THE_BLANK, position);
+                    break;
+                case N_BLANK_SINGLE_SELECT:
+                    loadNBlankAnswer(QuestionType.N_BLANK_SINGLE_SELECT, position);
+                    break;
+                case N_BLANK_MULTI_SELECT:
+                    loadNBlankAnswer(QuestionType.N_BLANK_MULTI_SELECT, position);
+                    break;
+                case GRID:
+                    loadGridTypeAnswer(position);
+                    break;
+                case FRACTION:
+                case PICK_A_SENTENCE:
+                case WORD_PROPERTIES:
+                    break;
+                default:
+                    if (localExamModelList.size() - 1 == 0) {
+                        return;
+                    }
+                    if (localExamModelList.size() - 1 > selectedPosition) {
+                        localExamModelList.remove(selectedPosition);
+                        inflateUI(selectedPosition);
+                    } else {
+                        localExamModelList.remove(selectedPosition);
+                        inflateUI(selectedPosition - 1);
+                    }
+                    break;
+            }
+            if (mViewSwitcher.indexOfChild(mViewSwitcher.getCurrentView()) == 0) {
+                mViewSwitcher.showNext();
+            }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
         }
     }
 
@@ -1576,14 +1605,18 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void clearAnswers() {
-        localExamModelList.get(selectedPosition).selectedAnswers = "";
-        if (testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty()) {
-            testanswerPaper.testAnswers.get(selectedPosition).answerText = null;
-            testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = null;
-            if (!title.equals("Exercises")) {
-                testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.SKIPPED.getValue();
-                localExamModelList.get(selectedPosition).answerColorSelection = Constants.AnswerState.SKIPPED.getValue();
+        try {
+            localExamModelList.get(selectedPosition).selectedAnswers = "";
+            if (testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty()) {
+                testanswerPaper.testAnswers.get(selectedPosition).answerText = null;
+                testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = null;
+                if (!title.equals("Exercises")) {
+                    testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.SKIPPED.getValue();
+                    localExamModelList.get(selectedPosition).answerColorSelection = Constants.AnswerState.SKIPPED.getValue();
+                }
             }
+        } catch (Exception e) {
+            L.error(e.getMessage());
         }
         loadQuestion(selectedPosition);
         resetExplanation();

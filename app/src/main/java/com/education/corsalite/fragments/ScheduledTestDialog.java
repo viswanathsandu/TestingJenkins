@@ -74,19 +74,23 @@ public class ScheduledTestDialog extends DialogFragment implements ScheduledTest
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     private void showScheduledTests() {
-        if(mScheduledTestList != null) {
-            final LinearLayoutManager layoutManager = new org.solovyev.android.views.llm.LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-            rvMockTestList.setLayoutManager(layoutManager);
-            ScheduledTestsListAdapter scheduledTestsListAdapter = new ScheduledTestsListAdapter(mScheduledTestList, getActivity().getLayoutInflater());
-            scheduledTestsListAdapter.setScheduledTestSelectedListener(this);
-            rvMockTestList.setAdapter(scheduledTestsListAdapter);
+        try {
+            if (mScheduledTestList != null) {
+                final LinearLayoutManager layoutManager = new org.solovyev.android.views.llm.LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+                rvMockTestList.setLayoutManager(layoutManager);
+                ScheduledTestsListAdapter scheduledTestsListAdapter = new ScheduledTestsListAdapter(mScheduledTestList, getActivity().getLayoutInflater());
+                scheduledTestsListAdapter.setScheduledTestSelectedListener(this);
+                rvMockTestList.setAdapter(scheduledTestsListAdapter);
 
-            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            try {
-                ((AbstractBaseActivity) getActivity()).scheduleNotificationsForScheduledTests(mScheduledTestList);
-            } catch (Exception e) {
-                L.error(e.getMessage(), e);
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                try {
+                    ((AbstractBaseActivity) getActivity()).scheduleNotificationsForScheduledTests(mScheduledTestList);
+                } catch (Exception e) {
+                    L.error(e.getMessage(), e);
+                }
             }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
         }
     }
 
@@ -131,21 +135,27 @@ public class ScheduledTestDialog extends DialogFragment implements ScheduledTest
                     @Override
                     public void success(ScheduledTestList scheduledTests, Response response) {
                         super.success(scheduledTests, response);
-                        dialog.dismiss();
-                        if (scheduledTests != null && scheduledTests.MockTest != null && !scheduledTests.MockTest.isEmpty()) {
-                            ApiCacheHolder.getInstance().setScheduleTestsResponse(scheduledTests);
-                            SugarDbManager.get(getActivity()).saveReqRes(ApiCacheHolder.getInstance().scheduleTests);
-                            mScheduledTestList = scheduledTests;
-                            showScheduledTests();
+                        if(getActivity() != null) {
+                            dialog.dismiss();
+                            if (scheduledTests != null && scheduledTests.MockTest != null && !scheduledTests.MockTest.isEmpty()) {
+                                ApiCacheHolder.getInstance().setScheduleTestsResponse(scheduledTests);
+                                SugarDbManager.get(getActivity()).saveReqRes(ApiCacheHolder.getInstance().scheduleTests);
+                                mScheduledTestList = scheduledTests;
+                                showScheduledTests();
+                            }
                         }
                     }
 
                     @Override
                     public void failure(CorsaliteError error) {
                         super.failure(error);
-                        ((AbstractBaseActivity) getActivity()).showToast("No scheduled tests available");
-                        dialog.dismiss();
-                        dismiss();
+                        try {
+                            ((AbstractBaseActivity) getActivity()).showToast("No scheduled tests available");
+                            dialog.dismiss();
+                            dismiss();
+                        } catch (Exception e) {
+                            L.error(e.getMessage(), e);
+                        }
                     }
                 });
     }

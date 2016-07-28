@@ -33,7 +33,7 @@ public class TimeUtils {
        String dateTime = "";
         if(millis != 0) {
             SimpleDateFormat sdfmt2 = new SimpleDateFormat("MMM dd, yyyy HH:mm");
-            Date date = new Date(millis);
+            Date date = getDate(millis);
             dateTime = sdfmt2.format(date);
         }
         return dateTime;
@@ -43,7 +43,15 @@ public class TimeUtils {
     public static String getDateString(long millis) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "yyyy-MM-dd hh:mm:ss", Locale.getDefault());
-        Date date = new Date(millis);
+        Date date = getDate(millis);
         return dateFormat.format(date);
+    }
+
+    public static Date getDate(long millis) {
+        if(millis > 0) {
+            return new Date(millis);
+        } else {
+            return new Date();
+        }
     }
 }

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -96,7 +97,7 @@ public class ExamHistoryActivity extends AbstractBaseActivity implements ExamHis
     public void onItemClick(int position) {
         ExamHistory examHistory = (ExamHistory) examHistoryAdapter.getItem(position);
         if (SystemUtils.isNetworkConnected(this)) {
-            if(examHistory.totalScore.equalsIgnoreCase("suspended")) {
+            if(!TextUtils.isEmpty(examHistory.totalScore) && examHistory.totalScore.equalsIgnoreCase("suspended")) {
                 Intent intent = new Intent(ExamHistoryActivity.this, ExamEngineActivity.class);
                 intent.putExtra("exam_name", examHistory.examName);
                 intent.putExtra("test_question_paper_id", examHistory.idTestQuestionPaper);
