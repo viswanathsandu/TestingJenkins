@@ -131,6 +131,7 @@ public class LoginActivity extends AbstractBaseActivity {
                     dbManager.saveReqRes(ApiCacheHolder.getInstance().login);
                     appPref.save("loginId", username);
                     appPref.save("passwordHash", password);
+                    appPref.setUserId(loginResponse.userId);
                     onLoginsuccess(loginResponse, fetchLocal);
                 } else {
                     showToast(getResources().getString(R.string.login_failed));

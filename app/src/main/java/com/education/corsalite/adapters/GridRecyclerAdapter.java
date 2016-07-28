@@ -32,7 +32,7 @@ import com.education.corsalite.models.responsemodels.Chapter;
 import com.education.corsalite.services.ContentDownloadService;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.Data;
-import com.education.corsalite.utils.Gson;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.utils.SystemUtils;
 import com.github.lzyzsd.circleprogress.DonutProgress;
 

@@ -18,7 +18,7 @@ import com.education.corsalite.models.requestmodels.ExamDetailsRequest;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.ExamDetail;
 import com.education.corsalite.models.responsemodels.UpdateExamDetailsResponse;
-import com.education.corsalite.utils.Gson;
+import com.education.corsalite.gson.Gson;
 
 
 import java.util.ArrayList;

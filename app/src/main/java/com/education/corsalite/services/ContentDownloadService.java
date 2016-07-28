@@ -110,7 +110,7 @@ public class ContentDownloadService extends IntentService {
     }
 
     private void saveFileToDisk(OfflineContent offlineContent, String htmlText, Content content) {
-        FileUtils fileUtils = new FileUtils(this);
+        FileUtils fileUtils = FileUtils.get(this);
         final String folderStructure = offlineContent.courseName + File.separator
                                         + offlineContent.subjectName + File.separator
                                         + offlineContent.chapterName + File.separator
@@ -133,7 +133,7 @@ public class ContentDownloadService extends IntentService {
         String destinationPath = "";
         try {
             File SDCardRoot = Environment.getExternalStorageDirectory();
-            File outDir = new File(SDCardRoot.getAbsolutePath() + File.separator + Constants.PARENT_FOLDER + File.separator + folderStructure);
+            File outDir = new File(FileUtils.get(this).getParentFolder() + File.separator + folderStructure);
             if (!outDir.exists()) {
                 outDir.mkdirs();
             }

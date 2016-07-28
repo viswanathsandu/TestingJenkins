@@ -11,7 +11,7 @@ import com.education.corsalite.activities.ChallengeActivity;
 import com.education.corsalite.models.responsemodels.ChallengeUser;
 import com.education.corsalite.models.socket.response.ChallengeTestRequestEvent;
 import com.education.corsalite.models.socket.response.ChallengeTestUpdateEvent;
-import com.education.corsalite.utils.Gson;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.utils.L;
 
 

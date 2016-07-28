@@ -1,4 +1,4 @@
-package com.education.corsalite.utils;
+package com.education.corsalite.gson;
 
 import com.google.gson.GsonBuilder;
 

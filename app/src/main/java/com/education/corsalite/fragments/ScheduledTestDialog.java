@@ -32,7 +32,7 @@ import com.education.corsalite.models.db.ScheduledTestList;
 import com.education.corsalite.models.db.ScheduledTestsArray;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.services.TestDownloadService;
-import com.education.corsalite.utils.Gson;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.utils.L;
 
 

@@ -4,8 +4,8 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.widget.Toast;
 
-import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.db.SugarDbManager;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.models.responsemodels.TestQuestionPaperResponse;
 import com.education.corsalite.security.Encrypter;
 
@@ -33,11 +33,11 @@ public class ExamUtils {
             L.error(e.getMessage(), e);
         }
         try {
-            testPaper = Encrypter.encrypt(LoginUserCache.getInstance().getUserId(), testPaper);
+            testPaper = Encrypter.encrypt(AppPref.get(mContext).getUserId(), testPaper);
         } catch (Exception e) {
             L.error(e.getMessage(), e);
         }
-        String savedFileName = new FileUtils(mContext).write(fileName, testPaper, null);
+        String savedFileName = FileUtils.get(mContext).write(fileName, testPaper, null);
         if(TextUtils.isEmpty(savedFileName)) {
             Toast.makeText(mContext, "Test download failed. Please try again", Toast.LENGTH_SHORT).show();
         } else {
@@ -49,9 +49,9 @@ public class ExamUtils {
         try {
 
             String fileName = testQuestionPaperId + "." + Constants.TEST_FILE;
-            String testPaper = new FileUtils(mContext).readFromFile(fileName, null);
+            String testPaper = FileUtils.get(mContext).readFromFile(fileName, null);
             try {
-                testPaper = Encrypter.decrypt(LoginUserCache.getInstance().getUserId(), testPaper);
+                testPaper = Encrypter.decrypt(AppPref.get(mContext).getUserId(), testPaper);
             } catch (Exception e) {
                 L.error(e.getMessage(), e);
             }
@@ -71,7 +71,7 @@ public class ExamUtils {
     public void deleteTestQuestionPaper(String testQuestionPaperId) {
         dbManager.deleteOfflineTestModel(testQuestionPaperId);
         String fileName = testQuestionPaperId + "." + Constants.TEST_FILE;
-        new FileUtils(mContext).deleteFile(fileName);
+        FileUtils.get(mContext).deleteFile(fileName);
         L.info("Deleted test question paper with id " + testQuestionPaperId);
     }
 }

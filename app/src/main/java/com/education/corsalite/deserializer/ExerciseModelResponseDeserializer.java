@@ -4,7 +4,7 @@ package com.education.corsalite.deserializer;
 import com.education.corsalite.models.responsemodels.AnswerChoiceModel;
 import com.education.corsalite.models.responsemodels.ExamModel;
 
-import com.education.corsalite.utils.Gson;
+import com.education.corsalite.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;

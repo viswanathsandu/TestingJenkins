@@ -22,20 +22,35 @@ import java.io.Writer;
 public class FileUtils {
 
     private Writer writer;
-    private final Context context;
+    private Context context;
 
-    public FileUtils(Context context) {
+    public static FileUtils instance;
+
+    public static FileUtils get(Context context) {
+        if(instance == null) {
+            instance = new FileUtils();
+        }
+        instance.context = context;
+        return instance;
+    }
+
+    private FileUtils() {
         super();
-        this.context = context;
+    }
+
+    public String getParentFolder() {
+        File root = Environment.getExternalStorageDirectory();
+        File parent = new File(root.getAbsolutePath() + File.separator + Constants.PARENT_FOLDER + File.separator + AppPref.get(context).getUserId());
+        return parent.getAbsolutePath();
     }
 
     public String write(String fileName, String data, String folderStructure) {
         File root = Environment.getExternalStorageDirectory();
         File outDir = null;
         if (TextUtils.isEmpty(folderStructure)) {
-            outDir = new File(root.getAbsolutePath() + File.separator + Constants.PARENT_FOLDER);
+            outDir = new File(getParentFolder());
         } else {
-            outDir = new File(root.getAbsolutePath() + File.separator + Constants.PARENT_FOLDER + File.separator + folderStructure);
+            outDir = new File(getParentFolder() + File.separator + folderStructure);
         }
         if (!outDir.isDirectory()) {
             outDir.mkdirs();
@@ -74,9 +89,9 @@ public class FileUtils {
         File root = Environment.getExternalStorageDirectory();
         File file = null;
         if (TextUtils.isEmpty(folderStructure)) {
-            file = new File(root.getAbsolutePath() + File.separator + Constants.PARENT_FOLDER);
+            file = new File(getParentFolder());
         } else {
-            file = new File(root.getAbsolutePath() + File.separator + Constants.PARENT_FOLDER + File.separator + folderStructure);
+            file = new File(getParentFolder() + File.separator + folderStructure);
         }
         if (fileName.endsWith(Constants.VIDEO_FILE)) {
             file = new File(file.getAbsolutePath() + File.separator + Constants.VIDEO_FOLDER + File.separator + fileName);
@@ -133,9 +148,9 @@ public class FileUtils {
         File root = Environment.getExternalStorageDirectory();
         File fileorDir;
         if(fileName.endsWith("." + Constants.TEST_FILE)) {
-            fileorDir = new File(root.getAbsolutePath() + File.separator + Constants.PARENT_FOLDER + File.separator + Constants.TESTS_FOLDER + File.separator + fileName);
+            fileorDir = new File(getParentFolder() + File.separator + Constants.TESTS_FOLDER + File.separator + fileName);
         } else {
-            fileorDir = new File(root.getAbsolutePath() + File.separator + Constants.PARENT_FOLDER + File.separator + fileName);
+            fileorDir = new File(getParentFolder() + File.separator + fileName);
         }
 
         if (fileorDir.isDirectory()) {
@@ -149,7 +164,7 @@ public class FileUtils {
 
     public void delete(String selectedPath) {
         File root = Environment.getExternalStorageDirectory();
-        File fileorDir = new File(root.getAbsolutePath() + File.separator + Constants.PARENT_FOLDER + File.separator + selectedPath);
+        File fileorDir = new File(getParentFolder() + File.separator + selectedPath);
 
         if (fileorDir.isDirectory()) {
             deleteChildren(fileorDir);

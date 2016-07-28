@@ -22,7 +22,7 @@ import com.education.corsalite.models.responsemodels.PartTestGridElement;
 import com.education.corsalite.models.responsemodels.PostExamTemplate;
 import com.education.corsalite.models.responsemodels.PostQuestionPaper;
 import com.education.corsalite.models.responsemodels.TestQuestionPaperResponse;
-import com.education.corsalite.utils.Gson;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.utils.L;
 
 

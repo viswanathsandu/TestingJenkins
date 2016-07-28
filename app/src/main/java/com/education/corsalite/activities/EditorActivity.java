@@ -35,7 +35,7 @@ import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.DefaultForumResponse;
 import com.education.corsalite.models.responsemodels.DefaultNoteResponse;
-import com.education.corsalite.utils.Gson;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.views.CustomButton;
 
@@ -270,7 +270,7 @@ public class EditorActivity extends AbstractBaseActivity {
         }
         try {
             post.studentId = LoginUserCache.getInstance().getStudentId();
-            post.userId = LoginUserCache.getInstance().getUserId();
+            post.userId = appPref.getUserId();
             post.courseId = AbstractBaseActivity.getSelectedCourseId();
             if (mSubjectModelList != null && !mSubjectModelList.isEmpty()) {
                 post.idCourseSubject = mSubjectModelList.get(subjectSpinner.getSelectedItemPosition()).idSubject;

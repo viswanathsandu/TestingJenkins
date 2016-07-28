@@ -24,7 +24,7 @@ import com.education.corsalite.models.db.OfflineTestObjectModel;
 import com.education.corsalite.models.db.ScheduledTestsArray;
 import com.education.corsalite.models.responsemodels.Chapter;
 import com.education.corsalite.utils.Constants;
-import com.education.corsalite.utils.Gson;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.TimeUtils;
 

@@ -26,7 +26,7 @@ import com.education.corsalite.models.responsemodels.TestPaperIndex;
 import com.education.corsalite.models.responsemodels.TestQuestionPaperResponse;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.ExamUtils;
-import com.education.corsalite.utils.Gson;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.TimeUtils;
 

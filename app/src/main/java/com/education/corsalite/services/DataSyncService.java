@@ -11,7 +11,7 @@ import com.education.corsalite.models.responsemodels.BaseResponseModel;
 import com.education.corsalite.models.responsemodels.TestAnswerPaper;
 import com.education.corsalite.models.responsemodels.TestAnswerPaperResponse;
 import com.education.corsalite.models.responsemodels.UserEventsResponse;
-import com.education.corsalite.utils.Gson;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.utils.L;
 
 

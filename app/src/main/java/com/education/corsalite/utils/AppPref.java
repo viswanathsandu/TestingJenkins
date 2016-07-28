@@ -3,6 +3,7 @@ package com.education.corsalite.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.models.db.OfflineContent;
 
 
@@ -16,7 +17,10 @@ public class AppPref {
     private static String PREFS_NAME = "CORSALITE_PREFS";
     private static String OFFLINE_PREFS_NAME = "CORSALITE_PREFS";
 
-    public static AppPref getInstance(Context context) {
+    private final String KEY_USER_ID = "user_id";
+    private final String KEY_STUDENT_ID = "student_id";
+
+    public static AppPref get(Context context) {
         if(instance == null) {
             instance = new AppPref();
         }
@@ -55,5 +59,17 @@ public class AppPref {
         SharedPreferences.Editor editor = settings.edit();
         editor.remove(key);
         editor.apply();
+    }
+
+    public void setUserId(String userID) {
+        save(KEY_USER_ID, userID);
+    }
+
+    public String getUserId() {
+        return getValue(KEY_USER_ID);
+    }
+
+    public void clearUserId() {
+        remove(KEY_USER_ID);
     }
 }

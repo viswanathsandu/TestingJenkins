@@ -35,7 +35,7 @@ import com.education.corsalite.services.ContentDownloadService;
 import com.education.corsalite.services.TestDownloadService;
 import com.education.corsalite.utils.AppPref;
 import com.education.corsalite.utils.Constants;
-import com.education.corsalite.utils.Gson;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.utils.L;
 
 import com.unnamed.b.atv.model.TreeNode;
@@ -268,7 +268,7 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
                 null, null, contentId, null, null);
         offlineContent.status = OfflineContentStatus.WAITING;
         offlineContents.add(offlineContent);
-        AppPref.getInstance(SaveForOfflineActivity.this).save("DATA_IN_PROGRESS", null);
+        AppPref.get(SaveForOfflineActivity.this).save("DATA_IN_PROGRESS", null);
         dbManager.saveOfflineContents(offlineContents);
     }
 

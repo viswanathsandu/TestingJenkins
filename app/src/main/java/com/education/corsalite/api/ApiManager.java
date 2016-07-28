@@ -71,7 +71,7 @@ import com.education.corsalite.models.responsemodels.WelcomeDetails;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.FileUtils;
 import com.education.corsalite.utils.L;
-import com.education.corsalite.utils.Gson;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.utils.MockUtils;
 import com.education.corsalite.utils.SystemUtils;
 
@@ -564,7 +564,7 @@ public class ApiManager {
             reqRes.request = apiCacheHolder.appConfigRequest;
             SugarDbManager.get(context).getResponse(reqRes, callback);
         } else {
-            String jsonResponse = new FileUtils(context).loadJSONFromAsset(context.getAssets(), "config.json");
+            String jsonResponse = FileUtils.get(context).loadJSONFromAsset(context.getAssets(), "config.json");
             com.education.corsalite.models.db.AppConfig config = Gson.get().fromJson(jsonResponse, com.education.corsalite.models.db.AppConfig.class);
             callback.success(config, MockUtils.getRetrofitResponse());
         }

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.education.corsalite.api.ApiCallback;
-import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.models.db.ExerciseOfflineModel;
 import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.models.db.OfflineTestObjectModel;
@@ -15,11 +15,10 @@ import com.education.corsalite.models.db.reqres.requests.AbstractBaseRequest;
 import com.education.corsalite.models.examengine.BaseTest;
 import com.education.corsalite.models.responsemodels.BaseModel;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
-import com.education.corsalite.utils.Gson;
+import com.education.corsalite.utils.AppPref;
 import com.education.corsalite.utils.Gzip;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.MockUtils;
-
 import com.orm.SugarRecord;
 
 import java.util.ArrayList;
@@ -51,7 +50,7 @@ public class SugarDbManager {
     public <T extends BaseModel> void save(T object) {
         try {
             if (object != null) {
-                object.setUserId();
+                object.setUserId(context);
                 object.reflectionJsonString = Gzip.compressBytes(Gson.get().toJson(object));
                 object.save();
                 object.reflectionJsonString = null; // clear the memory
@@ -82,7 +81,7 @@ public class SugarDbManager {
             if (type != null) {
                 List<T> allList;
                 if(!type.equals(LoginReqRes.class)) {
-                    allList = SugarRecord.find(type, "USER_ID=?", LoginUserCache.getInstance().getUserId());
+                    allList = SugarRecord.find(type, "USER_ID=?", AppPref.get(context).getUserId());
                 } else {
                     allList = SugarRecord.listAll(type);
                 }

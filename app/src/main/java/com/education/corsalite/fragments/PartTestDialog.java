@@ -30,7 +30,7 @@ import com.education.corsalite.models.responsemodels.PartTestModel;
 import com.education.corsalite.services.TestDownloadService;
 import com.education.corsalite.utils.Constants;
 
-import com.education.corsalite.utils.Gson;
+import com.education.corsalite.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 
 import java.util.ArrayList;

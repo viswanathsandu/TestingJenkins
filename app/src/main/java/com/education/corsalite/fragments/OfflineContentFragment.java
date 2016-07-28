@@ -2,7 +2,6 @@ package com.education.corsalite.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -135,7 +134,7 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
         }.getType();
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String jsonObject = gson.toJson(contentIndexList, contentIndexType);
-        DbManager.getInstance(getActivity()).saveContentIndexList(jsonObject, courseId, LoginUserCache.getInstance().getStudentId());
+        DbManager.get(getActivity()).saveContentIndexList(jsonObject, courseId, LoginUserCache.get().getStudentId());
     }*/
 
     private void updateContentIndexResponses(String contentId) {
@@ -321,7 +320,7 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
             }
         }
         //Delete file
-        new FileUtils(getActivity()).delete(path);
+        FileUtils.get(getActivity()).delete(path);
 
         //Update database
         dbManager.deleteOfflineContents(removeList);
@@ -379,8 +378,7 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
 
     private void startVideoActivity(String courseName, String mSubjectName, String mChapterName, String topicName, String contentName) {
         String folderStructure = courseName + File.separator + mSubjectName + File.separator + mChapterName + File.separator + topicName;
-        File SDCardRoot = Environment.getExternalStorageDirectory();
-        File outDir = new File(SDCardRoot.getAbsolutePath() + File.separator + Constants.PARENT_FOLDER + File.separator + folderStructure);
+        File outDir = new File(FileUtils.get(getActivity()).getParentFolder() + File.separator + folderStructure);
         File file = new File(outDir.getAbsolutePath() + File.separator + Constants.VIDEO_FOLDER);
         File newFile = new File(file, contentName);
         Intent intent = new Intent(getActivity(), VideoActivity.class);

@@ -127,21 +127,21 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
     private void loadForumLibrary() {
         showProgress();
         ApiManager.getInstance(getActivity()).getMyComments(AbstractBaseActivity.getSelectedCourseId(),
-                LoginUserCache.getInstance().getUserId(), "forumLibrary",
+                appPref.getUserId(), "forumLibrary",
                 postsCallback);
     }
 
     private void loadForumPosts() {
         showProgress();
         ApiManager.getInstance(getActivity()).getAllPosts(AbstractBaseActivity.getSelectedCourseId(),
-                LoginUserCache.getInstance().getUserId(), "AllPosts", "", "",
+                appPref.getUserId(), "AllPosts", "", "",
                 postsCallback);
     }
 
     private void loadForumMyPosts() {
         showProgress();
         ApiManager.getInstance(getActivity()).getMyPosts(AbstractBaseActivity.getSelectedCourseId(),
-                LoginUserCache.getInstance().getUserId(),
+                appPref.getUserId(),
                 postsCallback);
     }
 
@@ -152,7 +152,7 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
     @Override
     public void onLikeClicked(final int position) {
         final ForumPost forumPost = mPostAdapter.getItem(position);
-        ApiManager.getInstance(getActivity()).addForumLike(new ForumLikeRequest(LoginUserCache.getInstance().getUserId(), forumPost.idUserPost),
+        ApiManager.getInstance(getActivity()).addForumLike(new ForumLikeRequest(appPref.getUserId(), forumPost.idUserPost),
                 new ApiCallback<CommonResponseModel>(getActivity()) {
                     @Override
                     public void success(CommonResponseModel baseResponseModel, Response response) {
@@ -183,7 +183,7 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
             startActivity(intent);
         } else {
             Bundle bundle = new Bundle();
-            bundle.putString("user_id", LoginUserCache.getInstance().getUserId());
+            bundle.putString("user_id", appPref.getUserId());
             bundle.putString("post_id", item.idUserPost);
             Intent intent = new Intent(getActivity(), PostDetailsActivity.class);
             intent.putExtras(bundle);
@@ -201,7 +201,7 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
             bookmark.bookmarkdelete = "N";
         }
         bookmark.idUserPost = forumPost.idUserPost;
-        bookmark.idUser = LoginUserCache.getInstance().getUserId();
+        bookmark.idUser = appPref.getUserId();
         showProgress();
         ApiManager.getInstance(getActivity()).postBookmark(bookmark, new ApiCallback<CommonResponseModel>(getActivity()) {
             @Override

@@ -26,7 +26,7 @@ import com.education.corsalite.models.responsemodels.CommonResponseModel;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.socket.requests.ChallengeTestUpdateRequestEvent;
 import com.education.corsalite.models.socket.response.ChallengeTestCompletedEvent;
-import com.education.corsalite.utils.Gson;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.WebUrls;
 

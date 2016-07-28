@@ -78,6 +78,7 @@ public class SplashActivity extends AbstractBaseActivity {
                     dbManager.saveReqRes(ApiCacheHolder.getInstance().login);
                     appPref.save("loginId", username);
                     appPref.save("passwordHash", password);
+                    appPref.setUserId(loginResponse.userId);
                     if(SystemUtils.isNetworkConnected(SplashActivity.this)) {
                         startWebSocket();
                         loadAppConfig(loginResponse.userId);

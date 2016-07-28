@@ -10,7 +10,7 @@ import com.education.corsalite.models.requestmodels.UserEventsModel;
 import com.education.corsalite.models.responsemodels.BaseResponseModel;
 import com.education.corsalite.models.responsemodels.UserEventsResponse;
 import com.education.corsalite.services.DataSyncService;
-import com.education.corsalite.utils.Gson;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.utils.SystemUtils;
 import com.education.corsalite.utils.TimeUtils;
 

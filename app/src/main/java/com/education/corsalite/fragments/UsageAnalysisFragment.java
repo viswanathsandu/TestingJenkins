@@ -1,6 +1,5 @@
 package com.education.corsalite.fragments;
 
-import android.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,7 +13,6 @@ import android.widget.TextView;
 import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
-import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.UsageAnalysis;
 import com.education.corsalite.utils.L;
@@ -40,7 +38,7 @@ import retrofit.client.Response;
 /**
  * Created by Madhuri on 16-01-2016.
  */
-public class UsageAnalysisFragment extends Fragment {
+public class UsageAnalysisFragment extends BaseFragment {
     @Bind(R.id.usage_analysis_chart1) CombinedChart mChart1;
     @Bind(R.id.usage_analysis_chart2)CombinedChart mChart2;
     @Bind(R.id.progress_bar_tab)ProgressBar mProgressBar;
@@ -57,7 +55,7 @@ public class UsageAnalysisFragment extends Fragment {
     }
 
     private void init(){
-        ApiManager.getInstance(getActivity()).getUsageAnalysis(LoginUserCache.getInstance().getUserId(),
+        ApiManager.getInstance(getActivity()).getUsageAnalysis(appPref.getUserId(),
                 new ApiCallback<UsageAnalysis>(getActivity()) {
                     @Override
                     public void failure(CorsaliteError error) {

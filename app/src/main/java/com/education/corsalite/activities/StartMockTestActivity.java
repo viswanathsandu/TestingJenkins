@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.education.corsalite.R;
 import com.education.corsalite.models.responsemodels.TestPaperIndex;
 import com.education.corsalite.utils.Constants;
-import com.education.corsalite.utils.Gson;
+import com.education.corsalite.gson.Gson;
 
 
 import butterknife.Bind;

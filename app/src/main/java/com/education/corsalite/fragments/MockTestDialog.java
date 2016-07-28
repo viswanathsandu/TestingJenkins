@@ -31,7 +31,7 @@ import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.PostQuestionPaper;
 import com.education.corsalite.models.responsemodels.TestPaperIndex;
 import com.education.corsalite.services.TestDownloadService;
-import com.education.corsalite.utils.Gson;
+import com.education.corsalite.gson.Gson;
 
 
 import java.util.List;

@@ -75,7 +75,7 @@ import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.CookieUtils;
 import com.education.corsalite.utils.Data;
 import com.education.corsalite.utils.FileUtils;
-import com.education.corsalite.utils.Gson;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.SystemUtils;
 import com.education.corsalite.utils.TimeUtils;
@@ -147,7 +147,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     public static AppConfig getAppConfig(Context context) {
         if(appConfig == null) {
-            String jsonResponse = new FileUtils(context).loadJSONFromAsset(context.getAssets(), "config.json");
+            String jsonResponse = FileUtils.get(context).loadJSONFromAsset(context.getAssets(), "config.json");
             appConfig = Gson.get().fromJson(jsonResponse, com.education.corsalite.models.db.AppConfig.class);
         }
         return appConfig;
@@ -170,7 +170,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     private void initActivity() {
         dbManager = SugarDbManager.get(getApplicationContext());
-        appPref = AppPref.getInstance(this);
+        appPref = AppPref.get(this);
     }
 
     protected void refreshScreen() {
@@ -274,6 +274,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                         dbManager.saveReqRes(ApiCacheHolder.getInstance().login);
                         appPref.save("loginId", username);
                         appPref.save("passwordHash", passwordHash);
+                        appPref.setUserId(loginResponse.userId);
                         if(SystemUtils.isNetworkConnected(AbstractBaseActivity.this)) {
                             startWebSocket();
                             syncDataWithServer();
@@ -845,6 +846,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             logout.AuthToken = LoginUserCache.getInstance().getLongResponse().authtoken;
             appPref.remove("loginId");
             appPref.remove("passwordHash");
+            appPref.clearUserId();
             ApiManager.getInstance(this).logout(Gson.get().toJson(logout), new ApiCallback<LogoutResponse>(this) {
                 @Override
                 public void failure(CorsaliteError error) {

@@ -43,7 +43,7 @@ public class PostCommentsAdapter extends RecyclerView.Adapter<PostCommentsAdapte
     public void onBindViewHolder(CommentHolder holder, int position) {
         final ForumPost forumPost = mForumPostList.get(position);
         // TODO : uncomment it after implementing the edit/delete functionality
-        //    if (forumPost.idUser.equals(LoginUserCache.getInstance().getLongResponse().userId)) {
+        //    if (forumPost.idUser.equals(LoginUserCache.get().getLongResponse().userId)) {
         //        holder.tvActionDelete.setVisibility(View.VISIBLE);
         //        holder.tvActionEdit.setVisibility(View.VISIBLE);
         //    }

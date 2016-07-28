@@ -8,7 +8,7 @@ import com.education.corsalite.deserializer.ExerciseModelResponseDeserializer;
 import com.education.corsalite.interceptors.SessionRequestInterceptor;
 import com.education.corsalite.models.responsemodels.ExamModel;
 import com.education.corsalite.utils.CookieUtils;
-import com.education.corsalite.utils.Gson;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.utils.L;
 
 import com.google.gson.GsonBuilder;

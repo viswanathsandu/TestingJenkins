@@ -17,7 +17,7 @@ import com.education.corsalite.models.requestmodels.UserProfileModel;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.EditProfileModel;
 import com.education.corsalite.models.responsemodels.UserProfileResponse;
-import com.education.corsalite.utils.Gson;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.utils.L;
 
 
@@ -104,7 +104,7 @@ public class EditProfileDialogFragment extends BaseDialogFragment {
     private UserProfileModel getUserData() {
         UserProfileModel model = new UserProfileModel();
         model.updateTime =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-        model.userId = LoginUserCache.getInstance().getUserId();
+        model.userId = appPref.getUserId();
         model.studentId = LoginUserCache.getInstance().getStudentId();
         if(!TextUtils.isEmpty(usernameTxt.getText().toString())) {
             model.displayName = usernameTxt.getText().toString();

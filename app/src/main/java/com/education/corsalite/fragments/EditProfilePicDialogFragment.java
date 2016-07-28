@@ -27,7 +27,8 @@ import com.education.corsalite.models.requestmodels.UserProfileModel;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.EditProfileModel;
 import com.education.corsalite.models.responsemodels.UserProfileResponse;
-import com.education.corsalite.utils.Gson;
+import com.education.corsalite.gson.Gson;
+import com.education.corsalite.utils.AppPref;
 import com.education.corsalite.utils.ImageUtils;
 import com.education.corsalite.utils.L;
 
@@ -193,7 +194,7 @@ public class EditProfilePicDialogFragment extends DialogFragment {
     private UserProfileModel getUserData(Bitmap image) {
         UserProfileModel model = new UserProfileModel();
         model.updateTime =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-        model.userId = LoginUserCache.getInstance().getUserId();
+        model.userId = AppPref.get(getActivity()).getUserId();
         model.studentId = LoginUserCache.getInstance().getStudentId();
         //encode and update
         if(image != null) {

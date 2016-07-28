@@ -21,7 +21,7 @@ import com.education.corsalite.models.responsemodels.CommonResponseModel;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.FriendsData;
 import com.education.corsalite.models.socket.response.ChallengeUserList;
-import com.education.corsalite.utils.Gson;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.utils.L;
 
 
@@ -84,7 +84,7 @@ public class AddFriendFragment extends BaseFragment implements SearchView.OnQuer
         }
         this.searchKey = searchKey;
         ApiManager.getInstance(getActivity()).searchFriends(
-                LoginUserCache.getInstance().getUserId(),
+                appPref.getUserId(),
                 AbstractBaseActivity.getSelectedCourseId(),
                 searchKey,
                 new ApiCallback<List<FriendsData.Friend>>(getActivity()) {
@@ -176,7 +176,7 @@ public class AddFriendFragment extends BaseFragment implements SearchView.OnQuer
     @Override
     public void addFriend(FriendsData.Friend friend) {
         showProgress();
-        ApiManager.getInstance(getActivity()).addFriend(LoginUserCache.getInstance().getUserId(), friend.idUser,
+        ApiManager.getInstance(getActivity()).addFriend(appPref.getUserId(), friend.idUser,
                 new ApiCallback<CommonResponseModel>(getActivity()) {
             @Override
             public void failure(CorsaliteError error) {
@@ -206,7 +206,7 @@ public class AddFriendFragment extends BaseFragment implements SearchView.OnQuer
     @Override
     public void removeFriend(FriendsData.Friend friend) {
         showProgress();
-        ApiManager.getInstance(getActivity()).unFriend(LoginUserCache.getInstance().getUserId(), friend.idUser,
+        ApiManager.getInstance(getActivity()).unFriend(appPref.getUserId(), friend.idUser,
                 new ApiCallback<CommonResponseModel>(getActivity()) {
             @Override
             public void failure(CorsaliteError error) {
