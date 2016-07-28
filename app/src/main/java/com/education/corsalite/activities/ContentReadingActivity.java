@@ -209,7 +209,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
             eventEndDate = TimeUtils.currentTimeInMillis();
             ContentReadingEvent event = new ContentReadingEvent();
             event.idContent = contentModelList.get(0).idContent;
-            event.idStudent = LoginUserCache.getInstance().getStudentId();
+            event.idStudent = appPref.getUserId();
             event.eventStartTime = TimeUtils.getDateString(eventStartTime);
             event.eventEndTime= TimeUtils.getDateString(eventEndDate);
             event.updatetime = TimeUtils.getDateString(TimeUtils.currentTimeInMillis());

@@ -42,7 +42,7 @@ public class TimeUtils {
 
     public static String getDateString(long millis) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(
-                "yyyy-MM-dd hh:mm:ss", Locale.getDefault());
+                "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         Date date = getDate(millis);
         return dateFormat.format(date);
     }

@@ -5,18 +5,13 @@ import android.app.Activity;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.models.db.SyncModel;
 import com.education.corsalite.models.requestmodels.UserEventsModel;
 import com.education.corsalite.models.responsemodels.BaseResponseModel;
 import com.education.corsalite.models.responsemodels.UserEventsResponse;
 import com.education.corsalite.services.DataSyncService;
-import com.education.corsalite.gson.Gson;
 import com.education.corsalite.utils.SystemUtils;
-import com.education.corsalite.utils.TimeUtils;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 import retrofit.client.Response;
 
@@ -85,15 +80,6 @@ public class UpdateUserEvents {
         model.eventName = eventName;
         model.eventSourceId = eventSourceId;
         model.pageView = pageView;
-
         return model;
     }
-
-    private String getDate(long millis) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(
-                "yyyy-mm-dd hh:mm:ss", Locale.getDefault());
-        Date date = TimeUtils.getDate(millis);
-        return dateFormat.format(date);
-    }
-
 }

@@ -264,8 +264,8 @@ public interface ICorsaliteApi {
     BaseResponseModel postContentUsage(@Body TypedString insert);
 
     @Headers("Content-Type:application/x-www-form-urlencoded")
-    @POST("/UserEvents")
-    void postUserEvents(@Body TypedString insert, ApiCallback<UserEventsResponse> callback);
+    @POST("/EventLog")
+    void postUserEvents(@Body TypedString update, ApiCallback<UserEventsResponse> callback);
 
     @Headers("Content-Type:application/x-www-form-urlencoded")
     @POST("/UserEvents")

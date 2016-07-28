@@ -478,7 +478,7 @@ public class ApiManager {
 
     public UserEventsResponse postUserEvents(String insert) {
         if (isApiOnline()) {
-            return  ApiClientService.get().postUserEvents(new TypedString("Insert=" + insert));
+            return  ApiClientService.get().postUserEvents(new TypedString("Update=" + insert));
         }
         return null;
     }
