@@ -15,7 +15,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.ChapterAdapter;
@@ -268,16 +267,26 @@ public class EditorActivity extends AbstractBaseActivity {
         if (!TextUtils.isEmpty(postId)) {
             post.idUserPost = postId;
         }
-        post.studentId = LoginUserCache.getInstance().getStudentId();
-        post.userId = LoginUserCache.getInstance().getUserId();
-        post.courseId = AbstractBaseActivity.getSelectedCourseId();
-        post.idCourseSubject = mSubjectModelList.get(subjectSpinner.getSelectedItemPosition()).idSubject;
-        post.idCourseSubjectChapter = mChapterModelList.get(chapterSpinner.getSelectedItemPosition()).idChapter;
-        post.topicId = mTopicModelList.get(topicSpinner.getSelectedItemPosition()).idTopic;
-        post.postContent = updateContent;
-        post.referIdUserPost = operation.equalsIgnoreCase("Add") ? null : "";
-        post.postSubject = titleTxt.getText().toString();
-        post.isAuthorOnly = isAuthorOnlyCkb.isChecked() ? "Y" : "N";
+        try {
+            post.studentId = LoginUserCache.getInstance().getStudentId();
+            post.userId = LoginUserCache.getInstance().getUserId();
+            post.courseId = AbstractBaseActivity.getSelectedCourseId();
+            if (mSubjectModelList != null && !mSubjectModelList.isEmpty()) {
+                post.idCourseSubject = mSubjectModelList.get(subjectSpinner.getSelectedItemPosition()).idSubject;
+            }
+            if (mChapterModelList != null && !mChapterModelList.isEmpty()) {
+                post.idCourseSubjectChapter = mChapterModelList.get(chapterSpinner.getSelectedItemPosition()).idChapter;
+            }
+            if (mTopicModelList != null && !mTopicModelList.isEmpty()) {
+                post.topicId = mTopicModelList.get(topicSpinner.getSelectedItemPosition()).idTopic;
+            }
+            post.postContent = updateContent;
+            post.referIdUserPost = operation.equalsIgnoreCase("Add") ? null : "";
+            post.postSubject = titleTxt.getText().toString();
+            post.isAuthorOnly = isAuthorOnlyCkb.isChecked() ? "Y" : "N";
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
         return post;
     }
 
@@ -289,14 +298,14 @@ public class EditorActivity extends AbstractBaseActivity {
                 public void failure(CorsaliteError error) {
                     super.failure(error);
                     closeProgress();
-                    Toast.makeText(EditorActivity.this, "Failed to add post on Forum", Toast.LENGTH_SHORT).show();
+                    showToast("Failed to add post on Forum");
                 }
 
                 @Override
                 public void success(DefaultForumResponse defaultNoteResponse, Response response) {
                     super.success(defaultNoteResponse, response);
                     closeProgress();
-                    Toast.makeText(EditorActivity.this, "Post added successfully", Toast.LENGTH_SHORT).show();
+                    showToast("Post added successfully");
                     finish();
                 }
             });
@@ -314,14 +323,14 @@ public class EditorActivity extends AbstractBaseActivity {
                 public void failure(CorsaliteError error) {
                     super.failure(error);
                     closeProgress();
-                    Toast.makeText(EditorActivity.this, "Failed to add Note", Toast.LENGTH_SHORT).show();
+                    showToast("Failed to add Note");
                 }
 
                 @Override
                 public void success(DefaultNoteResponse defaultNoteResponse, Response response) {
                     super.success(defaultNoteResponse, response);
                     closeProgress();
-                    Toast.makeText(EditorActivity.this, "Note added successfully", Toast.LENGTH_SHORT).show();
+                    showToast("Note added successfully");
                     finish();
                 }
             });
@@ -338,13 +347,13 @@ public class EditorActivity extends AbstractBaseActivity {
             public void failure(CorsaliteError error) {
                 super.failure(error);
                 closeProgress();
-                Toast.makeText(EditorActivity.this, "Failed to update Note", Toast.LENGTH_SHORT).show();
+                showToast("Failed to update Note");
             }
 
             @Override
             public void success(DefaultNoteResponse defaultNoteResponse, Response response) {
                 super.success(defaultNoteResponse, response);
-                Toast.makeText(EditorActivity.this, "Updated Note successfully", Toast.LENGTH_SHORT).show();
+                showToast("Updated Note successfully");
                 closeProgress();
                 finish();
             }

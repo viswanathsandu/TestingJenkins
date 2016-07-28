@@ -34,7 +34,9 @@ public class FriendsAdapter extends AbstractRecycleViewAdapter {
     public FriendsAdapter(Activity activity, FriendsData friendsData, ChallengeActivity.FriendsListCallback friendsListCallback) {
         this(friendsData);
         this.mActivity = activity;
-        this.inflater = activity.getLayoutInflater();
+        if(mActivity != null) {
+            this.inflater = activity.getLayoutInflater();
+        }
         this.mFriendsListCallback = friendsListCallback;
         selectedFriends = new ArrayList<>();
     }

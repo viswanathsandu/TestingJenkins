@@ -70,6 +70,7 @@ import com.education.corsalite.models.responsemodels.VirtualCurrencySummaryRespo
 import com.education.corsalite.models.responsemodels.WelcomeDetails;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.FileUtils;
+import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.MockUtils;
 import com.education.corsalite.utils.SystemUtils;
 import com.google.gson.Gson;
@@ -259,7 +260,11 @@ public class ApiManager {
     public List<Content> getContent(String idContent, String updateTime) {
         apiCacheHolder.setContentRequest(idContent, updateTime);
         if (isApiOnline()) {
-            return ApiClientService.get().getContentData(idContent, updateTime);
+            try {
+                return ApiClientService.get().getContentData(idContent, updateTime);
+            } catch (Exception e) {
+                L.error(e.getMessage(), e);
+            }
         }
         return new ArrayList<>();
     }
@@ -272,7 +277,11 @@ public class ApiManager {
 
     public List<ExamModel> getExercise(String topicId, String courseId, String idStudent, String UpdateTime) {
         if (isApiOnline()) {
-            return ApiClientService.get().getExerciseData(topicId, courseId, idStudent, UpdateTime);
+            try {
+                return ApiClientService.get().getExerciseData(topicId, courseId, idStudent, UpdateTime);
+            } catch (Exception e) {
+                L.error(e.getMessage(), e);
+            }
         }
         return new ArrayList<>();
     }

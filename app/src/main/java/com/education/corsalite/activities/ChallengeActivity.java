@@ -99,7 +99,9 @@ public class ChallengeActivity extends AbstractBaseActivity {
                     new ApiCallback<UserProfileResponse>(this) {
                         @Override
                         public void success(UserProfileResponse userProfileResponse, Response response) {
-                            LoginUserCache.getInstance().getLongResponse().displayName = userProfileResponse.basicProfile.displayName;
+                            if(LoginUserCache.getInstance().getLongResponse() != null) {
+                                LoginUserCache.getInstance().getLongResponse().displayName = userProfileResponse.basicProfile.displayName;
+                            }
                         }
                     });
         } catch (Exception e) {

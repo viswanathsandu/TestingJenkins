@@ -25,6 +25,7 @@ import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.CourseData;
 import com.education.corsalite.models.responsemodels.Note;
 import com.education.corsalite.models.responsemodels.StudyCenter;
+import com.education.corsalite.utils.L;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -170,13 +171,17 @@ public class NotesActivity extends AbstractBaseActivity {
         courseSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                key = courseSpinner.getSelectedItem().toString();
-                for (StudyCenter studyCenter : mCourseData.StudyCenter) {
-                    if (key.equalsIgnoreCase(studyCenter.SubjectName)) {
-                        ((TextView) courseSpinner.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
-                        callNotesData(studyCenter.idCourseSubject+"");
-                        break;
+                try {
+                    key = courseSpinner.getSelectedItem().toString();
+                    for (StudyCenter studyCenter : mCourseData.StudyCenter) {
+                        if (key.equalsIgnoreCase(studyCenter.SubjectName)) {
+                            ((TextView) courseSpinner.getSelectedView()).setTextColor(getResources().getColor(R.color.black));
+                            callNotesData(studyCenter.idCourseSubject + "");
+                            break;
+                        }
                     }
+                } catch (Exception e) {
+                    L.error(e.getMessage(), e);
                 }
             }
 

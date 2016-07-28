@@ -29,6 +29,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.education.corsalite.BuildConfig;
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.SpinnerAdapter;
@@ -163,6 +164,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 .build());
         initActivity();
         checkForceUpgrade();
+        Localytics.tagScreen(this.getClass().getSimpleName());
     }
 
     private void initActivity() {
@@ -175,6 +177,25 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             relogin();
         } else {
             recreate();
+        }
+    }
+
+    public void setCrashlyticsUserData() {
+        try {
+            String emailId = appPref.getValue("loginId");
+            Crashlytics.setUserEmail(emailId);
+            Localytics.setCustomerEmail(emailId);
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+    }
+
+    public void resetCrashlyticsUserData() {
+        try {
+            Crashlytics.setUserEmail("");
+            Localytics.setCustomerEmail("");
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
         }
     }
 
@@ -247,6 +268,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     super.success(loginResponse, response);
                     closeProgress();
                     if (loginResponse.isSuccessful()) {
+                        setCrashlyticsUserData();
                         isLoginApiRunningInBackground = false;
                         dbManager.saveReqRes(ApiCacheHolder.getInstance().login);
                         appPref.save("loginId", username);
@@ -497,7 +519,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_profile).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(selectedCourse == null || selectedCourse.isEnded()) {
+                if(isCourseEnded(selectedCourse)) {
                     showToast("Please Select different Course");
                     return;
                 }
@@ -513,7 +535,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_welcome).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(selectedCourse == null || selectedCourse.isEnded()) {
+                if(isCourseEnded(selectedCourse)) {
                     showToast("Please Select different Course");
                     return;
                 }
@@ -525,7 +547,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_smart_class).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(selectedCourse == null || selectedCourse.isEnded()) {
+                if(isCourseEnded(selectedCourse)) {
                     showToast("Please Select different Course");
                     return;
                 }
@@ -541,7 +563,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_study_center).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(selectedCourse == null || selectedCourse.isEnded()) {
+                if(isCourseEnded(selectedCourse)) {
                     showToast("Please Select different Course");
                     return;
                 }
@@ -553,7 +575,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_analytics).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(selectedCourse == null || selectedCourse.isEnded()) {
+                if(isCourseEnded(selectedCourse)) {
                     showToast("Please Select different Course");
                     return;
                 }
@@ -570,7 +592,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_curriculum).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(selectedCourse == null || selectedCourse.isEnded()) {
+                if(isCourseEnded(selectedCourse)) {
                     showToast("Please Select different Course");
                     return;
                 }
@@ -583,7 +605,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_offline).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(selectedCourse == null || selectedCourse.isEnded()) {
+                if(isCourseEnded(selectedCourse)) {
                     showToast("Please Select different Course");
                     return;
                 }
@@ -596,7 +618,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_challenge_your_friends).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(selectedCourse == null || selectedCourse.isEnded()) {
+                if(isCourseEnded(selectedCourse)) {
                     showToast("Please Select different Course");
                     return;
                 }
@@ -613,7 +635,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_exam_history).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(selectedCourse == null || selectedCourse.isEnded()) {
+                if(isCourseEnded(selectedCourse)) {
                     showToast("Please Select different Course");
                     return;
                 }
@@ -629,7 +651,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_scheduled_tests).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(selectedCourse == null || selectedCourse.isEnded()) {
+                if(isCourseEnded(selectedCourse)) {
                     showToast("Please Select different Course");
                     return;
                 }
@@ -641,7 +663,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_mock_tests).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(selectedCourse == null || selectedCourse.isEnded()) {
+                if(isCourseEnded(selectedCourse)) {
                     showToast("Please Select different Course");
                     return;
                 }
@@ -653,7 +675,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_forum).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(selectedCourse == null || selectedCourse.isEnded()) {
+                if(isCourseEnded(selectedCourse)) {
                     showToast("Please Select different Course");
                     return;
                 }
@@ -767,17 +789,21 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     public void showToast(String message) {
-        showToast(this, message);
+        if (this != null && !TextUtils.isEmpty(message)) {
+            showToast(this, message);
+        }
     }
 
     public void showToast(Context context, String message) {
-        if (!TextUtils.isEmpty(message)) {
+        if (context != null && !TextUtils.isEmpty(message)) {
             Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
         }
     }
 
     public void showLongToast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        if (this!= null && !TextUtils.isEmpty(message)) {
+            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
@@ -828,6 +854,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 @Override
                 public void success(LogoutResponse logoutResponse, Response response) {
                     if (logoutResponse.isSuccessful()) {
+                        resetCrashlyticsUserData();
                         showToast(getResources().getString(R.string.logout_successful));
                         WebSocketHelper.get(AbstractBaseActivity.this).disconnectWebSocket();
                         logoutAccount();
@@ -842,6 +869,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     private void logoutAccount() {
         LoginUserCache.getInstance().clearCache();
+        resetCrashlyticsUserData();
         deleteSessionCookie();
         AbstractBaseActivity.selectedCourse = null;
         AbstractBaseActivity.selectedVideoPosition= 0;
@@ -973,7 +1001,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     public void onEvent(Course course) {
         if(course != null && (selectedCourse == null || (selectedCourse.courseId != course.courseId))) {
             selectedCourse = course;
-            if (course.isEnded()) {
+            if (isCourseEnded(course)) {
                 if (!(this instanceof WelcomeActivity)) {
                     Intent newIntent = new Intent(this, WelcomeActivity.class);
                     newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -1028,6 +1056,13 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     public void deleteSessionCookie() {
         ApiClientService.setSetCookie(null);
+    }
+
+    public boolean isCourseEnded(Course course) {
+        if(course != null && course.isEnded()) {
+            return true;
+        }
+        return false;
     }
 
     public void showProgress() {

@@ -8,10 +8,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.Window;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
+import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.db.SugarDbManager;
 import com.education.corsalite.models.socket.response.ResponseEvent;
+import com.localytics.android.Localytics;
 
 import de.greenrobot.event.EventBus;
 
@@ -26,6 +27,7 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        Localytics.tagScreen(this.getClass().getSimpleName());
         EventBus.getDefault().register(this);
     }
 
@@ -42,26 +44,32 @@ public abstract class BaseFragment extends Fragment {
     }
 
     public void showToast(String message) {
-        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+        if(getActivity() != null && getActivity() instanceof AbstractBaseActivity) {
+            ((AbstractBaseActivity) getActivity()).showToast(message);
+        }
     }
 
     public void showLongToast(String message) {
-        Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+        if(getActivity() != null && getActivity() instanceof AbstractBaseActivity) {
+            ((AbstractBaseActivity) getActivity()).showLongToast(message);
+        }
     }
 
     public void showProgress(){
-        ProgressBar pbar = new ProgressBar(getActivity());
-        pbar.setBackgroundColor(getResources().getColor(android.R.color.transparent));
-        dialog = new Dialog(getActivity());
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(pbar);
-        dialog.setCancelable(false);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.show();
+        if(getActivity() != null) {
+            ProgressBar pbar = new ProgressBar(getActivity());
+            pbar.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+            dialog = new Dialog(getActivity());
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(pbar);
+            dialog.setCancelable(false);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.show();
+        }
     }
 
     public void closeProgress(){
-        if(dialog != null) {
+        if(getActivity() != null && dialog != null && dialog.isShowing()) {
             dialog.dismiss();
         }
     }
