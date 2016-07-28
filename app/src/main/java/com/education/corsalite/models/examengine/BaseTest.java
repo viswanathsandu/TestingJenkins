@@ -3,7 +3,6 @@ package com.education.corsalite.models.examengine;
 import com.education.corsalite.models.responsemodels.BaseModel;
 import com.education.corsalite.models.responsemodels.Chapter;
 import com.education.corsalite.models.responsemodels.TestQuestionPaperResponse;
-import com.google.gson.annotations.Expose;
 import com.orm.dsl.Ignore;
 
 /**
@@ -19,8 +18,7 @@ public class BaseTest extends BaseModel {
     public Chapter chapter;
     public String questionsCount;
     @Ignore
-    @Expose(serialize = false, deserialize = false)
-    public TestQuestionPaperResponse testQuestionPaperResponse;
+    public transient TestQuestionPaperResponse testQuestionPaperResponse;
 
     public BaseTest() {}
 }

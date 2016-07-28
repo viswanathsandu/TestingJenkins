@@ -6,7 +6,6 @@ import com.education.corsalite.models.responsemodels.BaseModel;
 import com.education.corsalite.models.responsemodels.TestPaperIndex;
 import com.education.corsalite.models.responsemodels.TestQuestionPaperResponse;
 import com.education.corsalite.utils.Constants;
-import com.google.gson.annotations.Expose;
 import com.orm.dsl.Ignore;
 
 /**
@@ -17,8 +16,7 @@ public class OfflineTestObjectModel extends BaseModel {
     @Ignore
     public Tests testType;
     @Ignore
-    @Expose(serialize = false, deserialize = false)
-    public TestQuestionPaperResponse testQuestionPaperResponse;
+    public transient TestQuestionPaperResponse testQuestionPaperResponse;
     @Ignore
     public MockTest mockTest;
     @Ignore

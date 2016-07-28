@@ -12,7 +12,7 @@ public class Gson {
 
     public static com.google.gson.Gson get() {
         if(instance == null) {
-            instance = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+            instance = new GsonBuilder().create();
         }
         return instance;
     }

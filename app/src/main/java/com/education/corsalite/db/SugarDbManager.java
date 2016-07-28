@@ -80,7 +80,12 @@ public class SugarDbManager {
         List<T> results = new ArrayList<>();
         try {
             if (type != null) {
-                List<T> allList = SugarRecord.find(type, "USER_ID=?", LoginUserCache.getInstance().getUserId());
+                List<T> allList;
+                if(!type.equals(LoginReqRes.class)) {
+                    allList = SugarRecord.find(type, "USER_ID=?", LoginUserCache.getInstance().getUserId());
+                } else {
+                    allList = SugarRecord.listAll(type);
+                }
                 while(allList!=null && allList.size() > 0) {
                     T t = allList.remove(0);
                     if(t.reflectionJsonString != null) {
