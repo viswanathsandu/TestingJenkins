@@ -14,10 +14,10 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.education.corsalite.R;
-import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.listener.SocialEventsListener;
 import com.education.corsalite.models.responsemodels.ForumPost;
 import com.education.corsalite.services.ApiClientService;
+import com.education.corsalite.utils.AppPref;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +55,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
         holder.tvActionLock.setVisibility(View.GONE);
         holder.tvActionComment.setVisibility(View.INVISIBLE);
 
-        if (forumPost.idUser.equals(LoginUserCache.getInstance().getLongResponse().idUser)) {
+        if (forumPost.idUser.equals(AppPref.get(mActivity).getUserId())) {
             holder.tvActionDelete.setVisibility(View.VISIBLE);
             holder.tvActionEdit.setVisibility(View.VISIBLE);
         }
