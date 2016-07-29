@@ -9,6 +9,7 @@ import com.education.corsalite.models.db.ExerciseOfflineModel;
 import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.models.db.OfflineTestObjectModel;
 import com.education.corsalite.models.db.ScheduledTestsArray;
+import com.education.corsalite.models.db.SyncModel;
 import com.education.corsalite.models.db.reqres.LoginReqRes;
 import com.education.corsalite.models.db.reqres.ReqRes;
 import com.education.corsalite.models.db.reqres.requests.AbstractBaseRequest;
@@ -20,6 +21,7 @@ import com.education.corsalite.utils.Gzip;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.MockUtils;
 import com.orm.SugarRecord;
+import com.orm.query.Select;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -118,6 +120,23 @@ public class SugarDbManager {
         return null;
     }
 
+    public <T extends BaseModel> T fetchFirstRecord(Class<T> type) {
+        try {
+            if (type != null) {
+                T t = Select.from(type).first();
+                if (t.reflectionJsonString != null) {
+                    T object = Gson.get().fromJson(Gzip.decompressBytes(t.reflectionJsonString), type);
+                    t.reflectionJsonString = null;
+                    object.setId(t.getId());
+                    return object;
+                }
+            }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+        return null;
+    }
+
     public <T extends BaseModel> void delete(T object) {
         try {
             if (object != null) {
@@ -139,6 +158,21 @@ public class SugarDbManager {
             }
         } catch (Exception e) {
             L.error(e.getMessage(), e);
+        }
+    }
+
+    public void addSyncModel(SyncModel model) {
+        if(model != null) {
+            save(model);
+        }
+    }
+
+    public SyncModel getFirstSyncModel() {
+        try {
+            return fetchFirstRecord(SyncModel.class);
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+            return null;
         }
     }
 

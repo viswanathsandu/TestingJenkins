@@ -201,11 +201,9 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     private void syncDataWithServer() {
-        if (DataSyncService.syncData != null && !DataSyncService.syncData.isEmpty()) {
-            // Start download service if its not started
-            stopService(new Intent(getApplicationContext(), DataSyncService.class));
-            startService(new Intent(getApplicationContext(), DataSyncService.class));
-        }
+        // Start download service if its not started
+        stopService(new Intent(getApplicationContext(), DataSyncService.class));
+        startService(new Intent(getApplicationContext(), DataSyncService.class));
     }
 
     public void onEventMainThread(NetworkStatusChangeEvent event) {
@@ -1097,24 +1095,24 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     public void onEvent(ContentReadingEvent event) {
         L.debug("ContentReadingEvent id", event.idContent);
-        new UpdateUserEvents().postContentReading(this, event);
+        new UpdateUserEvents(this).postContentReading(this, event);
     }
 
     public void onEvent(ForumPostingEvent event) {
         L.debug("ForumPostingEvent id", event.id);
-        new UpdateUserEvents().postForumPosting(this, event);
+        new UpdateUserEvents(this).postForumPosting(this, event);
     }
 
     public void onEvent(ExerciseAnsEvent event) {
         if (event != null && event.id != null) {
             L.debug("ExerciseAnsEvent id", event.id + "");
-            new UpdateUserEvents().postExerciseAns(this, event);
+            new UpdateUserEvents(this).postExerciseAns(this, event);
         }
     }
 
     public void onEvent(TakingTestEvent event) {
         L.debug("TakingTestEvent id", event.id);
-        new UpdateUserEvents().postTakingTest(this, event);
+        new UpdateUserEvents(this).postTakingTest(this, event);
     }
 
     protected void redeem() {

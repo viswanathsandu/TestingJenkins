@@ -1,16 +1,17 @@
 package com.education.corsalite.event;
 
 import android.app.Activity;
+import android.content.Context;
 
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.db.SugarDbManager;
 import com.education.corsalite.gson.Gson;
 import com.education.corsalite.models.db.SyncModel;
 import com.education.corsalite.models.requestmodels.UserEventsModel;
 import com.education.corsalite.models.responsemodels.BaseResponseModel;
 import com.education.corsalite.models.responsemodels.UserEventsResponse;
-import com.education.corsalite.services.DataSyncService;
 import com.education.corsalite.utils.SystemUtils;
 
 import retrofit.client.Response;
@@ -19,6 +20,14 @@ import retrofit.client.Response;
  * Created by Madhuri on 24-01-2016.
  */
 public class UpdateUserEvents {
+
+    private Context mContext;
+    SugarDbManager dbManager;
+
+    public UpdateUserEvents(Context context) {
+        this.mContext = context;
+        dbManager = SugarDbManager.get(context);
+    }
 
     public void postUserEvent(Activity activity, UserEventsModel model){
         if(SystemUtils.isNetworkConnected(activity)) {
@@ -31,7 +40,7 @@ public class UpdateUserEvents {
         } else {
             SyncModel syncModel = new SyncModel();
             syncModel.requestObject = model;
-            DataSyncService.addSyncModel(syncModel);
+            dbManager.addSyncModel(syncModel);
         }
     }
 
@@ -46,7 +55,7 @@ public class UpdateUserEvents {
         } else {
             SyncModel syncModel = new SyncModel();
             syncModel.requestObject = event;
-            DataSyncService.addSyncModel(syncModel);
+            dbManager.addSyncModel(syncModel);
         }
         UserEventsModel model = getUserEventsModel("Content Reading",event.eventStartTime,
                 event.eventEndTime, event.idContent, "");

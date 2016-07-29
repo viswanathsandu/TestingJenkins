@@ -4,32 +4,23 @@ import android.app.IntentService;
 import android.content.Intent;
 
 import com.education.corsalite.api.ApiManager;
+import com.education.corsalite.db.SugarDbManager;
 import com.education.corsalite.event.ContentReadingEvent;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.models.db.SyncModel;
 import com.education.corsalite.models.requestmodels.UserEventsModel;
 import com.education.corsalite.models.responsemodels.BaseResponseModel;
 import com.education.corsalite.models.responsemodels.TestAnswerPaper;
 import com.education.corsalite.models.responsemodels.TestAnswerPaperResponse;
 import com.education.corsalite.models.responsemodels.UserEventsResponse;
-import com.education.corsalite.gson.Gson;
 import com.education.corsalite.utils.L;
-
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by madhuri on 2/27/16.
  */
 public class DataSyncService extends IntentService {
 
-    public static List<SyncModel> syncData = new ArrayList<>();
-
-    public static void addSyncModel(SyncModel model) {
-        if(model != null) {
-            syncData.add(model);
-        }
-    }
+    private SugarDbManager dbManager;
 
     public DataSyncService() {
         super("DataSyncService");
@@ -38,16 +29,17 @@ public class DataSyncService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         L.info("DataSyncService : Starting");
-        List<SyncModel> dataToBeRemoved = new ArrayList<>();
-        List<SyncModel> data = new ArrayList<>(syncData);
-        for(SyncModel model : data) {
-            if (model != null) {
-               if(executeApi(model)) {
-                   dataToBeRemoved.add(model);
-               }
+        dbManager = SugarDbManager.get(getApplicationContext());
+        SyncModel object = null;
+        while((object = dbManager.getFirstSyncModel()) != null) {
+            if (object != null) {
+                dbManager.delete(object);
+                if(!executeApi(object)) {
+                    object.setId(null);
+                    dbManager.addSyncModel(object);
+                }
             }
         }
-        syncData.removeAll(dataToBeRemoved);
     }
 
     private boolean executeApi(SyncModel model) {

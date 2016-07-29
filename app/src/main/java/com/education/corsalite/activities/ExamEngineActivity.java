@@ -87,7 +87,6 @@ import com.education.corsalite.models.responsemodels.TestPaperIndex;
 import com.education.corsalite.models.responsemodels.TestQuestionPaperResponse;
 import com.education.corsalite.models.socket.requests.UpdateLeaderBoardEvent;
 import com.education.corsalite.services.ApiClientService;
-import com.education.corsalite.services.DataSyncService;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.ExamUtils;
 import com.education.corsalite.utils.L;
@@ -847,7 +846,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         if(!SystemUtils.isNetworkConnected(this)) {
             SyncModel syncModel = new SyncModel();
             syncModel.requestObject = testanswerPaper;
-            DataSyncService.addSyncModel(syncModel);
+            dbManager.addSyncModel(syncModel);
             if(state == TestanswerPaperState.COMPLETED) {
                 new ExamUtils(this).deleteTestQuestionPaper(testQuestionPaperId);
             } else if(state == TestanswerPaperState.SUSPENDED) {
