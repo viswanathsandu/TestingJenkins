@@ -24,7 +24,6 @@ public class NotifyReceiver extends BroadcastReceiver {
         try {
             String action = intent.getAction();
             String testQuestionPaperId = intent.getExtras().getString("test_question_paper_id", "");
-            Long scheduledTime = intent.getExtras().getLong("time", 0);
             if (action != null && action.equals("CANCEL_NOTIFICATION")) {
                 int id = intent.getIntExtra("id", -1);
                 if (id != -1) {
@@ -38,10 +37,8 @@ public class NotifyReceiver extends BroadcastReceiver {
                 int id = extras.getInt("id", 0);
                 NotificationsUtils.NotifyUser(context, id, title, subTitle, getScheduledExamActivityIntent(context, testQuestionPaperId));
             } else {
-                L.info("Starting Schedule Test : "+testQuestionPaperId);
                 ScheduledTestStartEvent event = new ScheduledTestStartEvent();
                 event.testQuestionPaperId = testQuestionPaperId;
-                event.scheduledTime = scheduledTime;
                 EventBus.getDefault().post(event);
             }
         } catch (Exception e) {

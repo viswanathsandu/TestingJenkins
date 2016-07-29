@@ -28,15 +28,13 @@ import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.db.SugarDbManager;
 import com.education.corsalite.event.ScheduledTestStartEvent;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.models.db.ScheduledTestList;
 import com.education.corsalite.models.db.ScheduledTestsArray;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.services.TestDownloadService;
-import com.education.corsalite.gson.Gson;
 import com.education.corsalite.utils.L;
 
-
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import butterknife.Bind;
@@ -102,15 +100,11 @@ public class ScheduledTestDialog extends DialogFragment implements ScheduledTest
 
     private void startScheduleTest(ScheduledTestsArray exam) {
         try {
-            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            long startTimeInMillis = df.parse(exam.startTime).getTime();
-            L.info("Starting Schedule Test : "+exam.testQuestionPaperId);
             ScheduledTestStartEvent event = new ScheduledTestStartEvent();
             event.testQuestionPaperId = exam.testQuestionPaperId;
-            event.scheduledTime = startTimeInMillis;
             EventBus.getDefault().post(event);
             return;
-        } catch (ParseException e) {
+        } catch (Exception e) {
             L.error(e.getMessage(), e);
         }
         Toast.makeText(getActivity(), "Please access the test during scheduled time", Toast.LENGTH_SHORT).show();

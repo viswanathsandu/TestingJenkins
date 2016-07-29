@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
-import com.education.corsalite.activities.StartMockTestActivity;
+import com.education.corsalite.activities.TestInstructionsActivity;
 import com.education.corsalite.adapters.MockTestsListAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
@@ -143,7 +143,7 @@ public class MockTestDialog extends DialogFragment implements MockTestsListAdapt
     private void goForward(boolean download) {
         try {
             if (!download) {
-                Intent intent = new Intent(getActivity(), StartMockTestActivity.class);
+                Intent intent = new Intent(getActivity(), TestInstructionsActivity.class);
                 intent.putExtra("test_question_paper_id", testQuestionPaperId);
                 startActivity(intent);
             } else {

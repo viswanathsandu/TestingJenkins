@@ -1225,6 +1225,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         }
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(scheduledTime.getTime());
+        cal.add(Calendar.MINUTE, -3);
         Intent broadCastIntent = new Intent(this, NotifyReceiver.class);
         broadCastIntent.putExtra("title", examName);
         broadCastIntent.putExtra("sub_title", "Exam started at "+new SimpleDateFormat("hh:mm a").format(scheduledTime));
@@ -1270,37 +1271,25 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     public void onEventMainThread(ScheduledTestStartEvent event) {
         try {
-            // check if the test is available for offline
-            if (TimeUtils.currentTimeInMillis() < event.scheduledTime) {
+            if(this instanceof TestInstructionsActivity) {
                 return;
             }
-            List<OfflineTestObjectModel> offlineTestModels = dbManager.fetchRecords(OfflineTestObjectModel.class);
-            for (OfflineTestObjectModel model : offlineTestModels) {
-                if (model.testQuestionPaperId.equalsIgnoreCase(event.testQuestionPaperId)) {
-                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    long startTimeInMillis = df.parse(model.scheduledTest.startTime).getTime();
-                    // start the test
-                    Intent intent = new Intent(this, ExamEngineActivity.class);
-                    intent.putExtra(Constants.TEST_TITLE, "Scheduled Test");
-                    intent.putExtra("test_question_paper_id", model.testQuestionPaperId);
-                    intent.putExtra("OfflineTestObjectModel", model.dateTime);
-                    intent.putExtra(Constants.IS_OFFLINE, true);
-                    intent.putExtra("mock_test_data_json", Gson.get().toJson(model.scheduledTest));
-                    intent.putExtra("time", startTimeInMillis);
-                    if(model.status == Constants.STATUS_SUSPENDED) {
-                        intent.putExtra("test_status", "Suspended");
-                    }
-                    intent.putExtra(Constants.DB_ROW_ID, model.getId());
-                    startActivity(intent);
-                    return;
+            OfflineTestObjectModel model = dbManager.fetchRecord(OfflineTestObjectModel.class, Long.parseLong(event.testQuestionPaperId));
+            if (model != null && model.testQuestionPaperId.equalsIgnoreCase(event.testQuestionPaperId)) {
+                Intent intent = new Intent(this, TestInstructionsActivity.class);
+                intent.putExtra(Constants.TEST_TITLE, "Scheduled Test");
+                intent.putExtra("test_question_paper_id", model.testQuestionPaperId);
+                intent.putExtra("test_answer_paper_id", model.testAnswerPaperId);
+                if(model.status == Constants.STATUS_SUSPENDED) {
+                    intent.putExtra("test_status", "Suspended");
                 }
-            }
-            if (SystemUtils.isNetworkConnected(this)) {
+                startActivity(intent);
+                return;
+            } else if (SystemUtils.isNetworkConnected(this)) {
                 // start the test
-                Intent examIntent = new Intent(this, ExamEngineActivity.class);
+                Intent examIntent = new Intent(this, TestInstructionsActivity.class);
                 examIntent.putExtra(Constants.TEST_TITLE, "Scheduled Test");
                 examIntent.putExtra("test_question_paper_id", event.testQuestionPaperId);
-                examIntent.putExtra("time", event.scheduledTime);
                 startActivity(examIntent);
             }
 

@@ -21,6 +21,7 @@ import com.education.corsalite.utils.Gzip;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.MockUtils;
 import com.orm.SugarRecord;
+import com.orm.query.Condition;
 import com.orm.query.Select;
 
 import java.util.ArrayList;
@@ -83,7 +84,7 @@ public class SugarDbManager {
             if (type != null) {
                 List<T> allList;
                 if(!type.equals(LoginReqRes.class)) {
-                    allList = SugarRecord.find(type, "USER_ID=?", AppPref.get(context).getUserId());
+                    allList = Select.from(type).where(Condition.prop("userId").eq(AppPref.get(context).getUserId())).list();
                 } else {
                     allList = SugarRecord.listAll(type);
                 }
@@ -123,7 +124,7 @@ public class SugarDbManager {
     public <T extends BaseModel> T fetchFirstRecord(Class<T> type) {
         try {
             if (type != null) {
-                T t = Select.from(type).first();
+                T t = Select.from(type).where(Condition.prop("userId").eq(AppPref.get(context).getUserId())).first();
                 if (t.reflectionJsonString != null) {
                     T object = Gson.get().fromJson(Gzip.decompressBytes(t.reflectionJsonString), type);
                     t.reflectionJsonString = null;

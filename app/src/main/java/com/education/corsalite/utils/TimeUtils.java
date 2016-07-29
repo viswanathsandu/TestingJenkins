@@ -40,6 +40,17 @@ public class TimeUtils {
 
     }
 
+    public static long getMillisFromDate(String date) {
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat(
+                    "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+            return dateFormat.parse(date).getTime();
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+            return currentTimeInMillis();
+        }
+    }
+
     public static String getDateString(long millis) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
