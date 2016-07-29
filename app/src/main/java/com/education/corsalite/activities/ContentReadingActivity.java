@@ -646,17 +646,17 @@ public class ContentReadingActivity extends AbstractBaseActivity {
         }
 
         contentIds = "";
-        String contentNames = "";
+        String contentFileNames = "";
         for (ContentModel contentModel : contentModelList) {
             if (contentIds.trim().length() > 0) {
                 contentIds = contentIds + ",";
-                contentNames = contentNames + ",";
+                contentFileNames = contentFileNames + ",";
             }
-            contentNames = contentNames + contentModel.contentName + "." + contentModel.type;
-            contentIds = contentIds + contentModel.idContent + "." + contentModel.type;
+            contentFileNames = contentFileNames + contentModel.idContent + "." + contentModel.type;
+            contentIds = contentIds + contentModel.idContent;
         }
 
-        if (loadWebIfFileExists(contentIds)) {
+        if (loadWebIfFileExists(contentFileNames)) {
             if (mViewSwitcher.getNextView() instanceof RelativeLayout) {
                 mViewSwitcher.showNext();
             }
