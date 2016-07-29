@@ -80,10 +80,10 @@ public class SplashActivity extends AbstractBaseActivity {
                     dbManager.saveReqRes(ApiCacheHolder.getInstance().login);
                     appPref.save("loginId", username);
                     appPref.save("passwordHash", password);
-                    appPref.setUserId(loginResponse.userId);
+                    appPref.setUserId(loginResponse.idUser);
                     if(SystemUtils.isNetworkConnected(SplashActivity.this)) {
                         startWebSocket();
-                        loadAppConfig(loginResponse.userId);
+                        loadAppConfig(loginResponse.idUser);
                     }
                 } else {
                     showToast(getResources().getString(R.string.login_failed));

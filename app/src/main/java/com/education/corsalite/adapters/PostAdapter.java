@@ -55,7 +55,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
         holder.tvActionLock.setVisibility(View.GONE);
         holder.tvActionComment.setVisibility(View.INVISIBLE);
 
-        if (forumPost.idUser.equals(LoginUserCache.getInstance().getLongResponse().userId)) {
+        if (forumPost.idUser.equals(LoginUserCache.getInstance().getLongResponse().idUser)) {
             holder.tvActionDelete.setVisibility(View.VISIBLE);
             holder.tvActionEdit.setVisibility(View.VISIBLE);
         }

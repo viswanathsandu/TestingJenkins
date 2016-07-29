@@ -272,11 +272,11 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                         dbManager.saveReqRes(ApiCacheHolder.getInstance().login);
                         appPref.save("loginId", username);
                         appPref.save("passwordHash", passwordHash);
-                        appPref.setUserId(loginResponse.userId);
+                        appPref.setUserId(loginResponse.idUser);
                         if(SystemUtils.isNetworkConnected(AbstractBaseActivity.this)) {
                             startWebSocket();
                             syncDataWithServer();
-                            loadAppConfig(loginResponse.userId);
+                            loadAppConfig(loginResponse.idUser);
                         }
                         recreate();
                     } else {

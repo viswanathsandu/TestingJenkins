@@ -83,7 +83,7 @@ public class UpdateUserEvents {
     private UserEventsModel getUserEventsModel(String eventName,String eventStartTime,
                                                String eventEndTime, String eventSourceId, String pageView){
         UserEventsModel model = new UserEventsModel();
-        model.userId = LoginUserCache.getInstance().getStudentId();
+        model.idUser = LoginUserCache.getInstance().getStudentId();
         model.eventEndTime = eventEndTime;
         model.eventStartTime =eventStartTime;
         model.eventName = eventName;

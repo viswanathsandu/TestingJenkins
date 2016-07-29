@@ -131,7 +131,7 @@ public class LoginActivity extends AbstractBaseActivity {
                     dbManager.saveReqRes(ApiCacheHolder.getInstance().login);
                     appPref.save("loginId", username);
                     appPref.save("passwordHash", password);
-                    appPref.setUserId(loginResponse.userId);
+                    appPref.setUserId(loginResponse.idUser);
                     onLoginsuccess(loginResponse, fetchLocal);
                 } else {
                     showToast(getResources().getString(R.string.login_failed));
@@ -144,7 +144,7 @@ public class LoginActivity extends AbstractBaseActivity {
         if(response != null) {
             LoginUserCache.getInstance().setLoginResponse(response);
             startWebSocket();
-            loadAppConfig(response.userId);
+            loadAppConfig(response.idUser);
             if(!fetchLocal) {
                 showToast(getResources().getString(R.string.login_successful));
             }
