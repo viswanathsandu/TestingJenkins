@@ -14,20 +14,20 @@ public class BaseModel extends SugarRecord {
     /*
     This is used to determine which user has saved the data
      */
-    private String userId;
+    private String baseUserId;
 
     /**
      * This is specifically used to support lists in Sugar Db
      */
-    public byte[] reflectionJsonString = null;
+    public String reflectionJsonString = null;
 
     public BaseModel() {
     }
 
-    public void setUserId(Context context) {
+    public void setBaseUserId(Context context) {
         try {
             if (!TextUtils.isEmpty(AppPref.get(context).getUserId())) {
-                userId = AppPref.get(context).getUserId();
+                baseUserId = AppPref.get(context).getUserId();
             }
         } catch (Exception e) {
             L.error(e.getMessage(), e);
@@ -36,8 +36,8 @@ public class BaseModel extends SugarRecord {
 
     public boolean isCurrentUser(Context context) {
         try {
-            if (!TextUtils.isEmpty(userId) && !TextUtils.isEmpty(AppPref.get(context).getUserId())) {
-                return userId.equalsIgnoreCase(AppPref.get(context).getUserId());
+            if (!TextUtils.isEmpty(baseUserId) && !TextUtils.isEmpty(AppPref.get(context).getUserId())) {
+                return baseUserId.equalsIgnoreCase(AppPref.get(context).getUserId());
             }
         } catch (Exception e) {
             L.error(e.getMessage(), e);

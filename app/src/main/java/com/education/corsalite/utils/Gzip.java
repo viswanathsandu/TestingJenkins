@@ -14,42 +14,6 @@ import java.util.zip.GZIPOutputStream;
 
 public class Gzip {
 
-    public static byte[] compressBytes(String data) throws IOException {
-        byte[] compressed = null;
-        try {
-            compressed = data.getBytes();
-            ByteArrayOutputStream bos = new ByteArrayOutputStream(data.length());
-            GZIPOutputStream gzip = new GZIPOutputStream(bos);
-            gzip.write(data.getBytes());
-            gzip.close();
-            compressed = bos.toByteArray();
-            bos.close();
-        } catch (Exception e) {
-            L.error(e.getMessage(), e);
-        }
-        return compressed;
-    }
-
-    public static String decompressBytes(byte[] compressed) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        try {
-            ByteArrayInputStream bis = new ByteArrayInputStream(compressed);
-            GZIPInputStream gis = new GZIPInputStream(bis);
-            BufferedReader br = new BufferedReader(new InputStreamReader(gis, "UTF-8"));
-            String line;
-            while ((line = br.readLine()) != null) {
-                sb.append(line);
-            }
-            br.close();
-            gis.close();
-            bis.close();
-        } catch (Exception e) {
-            L.error(e.getMessage(), e);
-        }
-        return sb.toString();
-    }
-
-
     public static String compress(String str) throws IOException {
         if (str == null || str.length() == 0) {
             return str;

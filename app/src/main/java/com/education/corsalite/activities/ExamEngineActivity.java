@@ -2040,8 +2040,6 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             } else {
                 examDurationInSeconds = getExamDurationInSeconds(examModels);
             }
-            //dummy timer.. need to fetch time and interval from service
-
             TimeUtils.getSecondsInTimeFormat(examDurationInSeconds);
             if(isScheduledTest() && scheduledTimeInMillis != 0) {
                 long examExpirytime = scheduledTimeInMillis + (examDurationInSeconds * 1000);
