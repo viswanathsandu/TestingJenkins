@@ -18,4 +18,5 @@ public class ExamDetail extends BaseModel implements Serializable {
     public String examDate;
     @SerializedName("DaysRemaining")
     public Integer daysRemaining;
+
 }
