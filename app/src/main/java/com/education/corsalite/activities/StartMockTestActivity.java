@@ -44,6 +44,7 @@ public class StartMockTestActivity extends AbstractBaseActivity {
     private TestPaperIndex testPaperIndex;
     private String testQuestionPaperId;
     private String testAnswerPaperId;
+    private String testStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,12 +99,18 @@ public class StartMockTestActivity extends AbstractBaseActivity {
 
     private void showData() {
         title.setText(testPaperIndex.examDetails.get(0).examName);
+        if(!TextUtils.isEmpty(testStatus) && testStatus.equalsIgnoreCase("Suspended")) {
+            btStart.setText("Restart");
+        } else {
+            btStart.setText("Start");
+        }
         instuctions.loadData(testPaperIndex.examDetails.get(0).examInstucation , "text/html; charset=UTF-8", null);
     }
 
     private void getBundleData() {
         testQuestionPaperId = getIntent().getStringExtra("test_question_paper_id");
         testAnswerPaperId = getIntent().getStringExtra("test_answer_paper_id");
+        testStatus = getIntent().getStringExtra("test_status");
     }
 
     private List<String> fetchSections() {

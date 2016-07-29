@@ -1289,6 +1289,9 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     intent.putExtra(Constants.IS_OFFLINE, true);
                     intent.putExtra("mock_test_data_json", Gson.get().toJson(model.scheduledTest));
                     intent.putExtra("time", startTimeInMillis);
+                    if(model.status == Constants.STATUS_SUSPENDED) {
+                        intent.putExtra("test_status", "Suspended");
+                    }
                     intent.putExtra(Constants.DB_ROW_ID, model.getId());
                     startActivity(intent);
                     return;

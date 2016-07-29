@@ -466,8 +466,10 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void sendLederBoardRequestEvent() {
-        UpdateLeaderBoardEvent event = new UpdateLeaderBoardEvent(testQuestionPaperId);
-        WebSocketHelper.get(this).sendUpdateLeaderBoardEvent(event);
+        if(isChallengeTest()) {
+            UpdateLeaderBoardEvent event = new UpdateLeaderBoardEvent(testQuestionPaperId);
+            WebSocketHelper.get(this).sendUpdateLeaderBoardEvent(event);
+        }
     }
 
     private void loadMockTest() {

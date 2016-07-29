@@ -228,6 +228,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             intent.putExtra(Constants.DB_ROW_ID, model.getId());
             intent.putExtra("mock_test_data_json", Gson.get().toJson(model.mockTest));
             intent.putExtra("OfflineTestObjectModel", model.dateTime);
+            if(model.status == Constants.STATUS_SUSPENDED) {
+                intent.putExtra("test_status", "Suspended");
+            }
             context.startActivity(intent);
         } else {
             Toast.makeText(context, "You have already taken the test.", Toast.LENGTH_SHORT).show();
@@ -269,6 +272,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, subjectId);
             exerciseIntent.putExtra(Constants.DB_ROW_ID, model.getId());
             exerciseIntent.putExtra(Constants.IS_OFFLINE, true);
+            if(model.status == Constants.STATUS_SUSPENDED) {
+                exerciseIntent.putExtra("test_status", "Suspended");
+            }
             exerciseIntent.putExtra("OfflineTestObjectModel", model.dateTime);
             context.startActivity(exerciseIntent);
         } else {
@@ -289,6 +295,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             exerciseIntent.putExtra(Constants.DB_ROW_ID, model.getId());
             exerciseIntent.putExtra(Constants.IS_OFFLINE, true);
             exerciseIntent.putExtra("OfflineTestObjectModel", model.dateTime);
+            if(model.status == Constants.STATUS_SUSPENDED) {
+                exerciseIntent.putExtra("test_status", "Suspended");
+            }
             context.startActivity(exerciseIntent);
         } else {
             Toast.makeText(context, "You have already taken the test.", Toast.LENGTH_SHORT).show();
