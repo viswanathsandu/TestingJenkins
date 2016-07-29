@@ -408,6 +408,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         } else {
             getStandardExamByCourse();
         }
+        fetchSections();
         imvRefresh.setVisibility(View.VISIBLE);
         timerLayout.setVisibility(View.VISIBLE);
         testNavFooter.setVisibility(View.VISIBLE);
@@ -431,6 +432,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         btnSuspend.setVisibility(View.GONE);
         btnSave.setVisibility(View.GONE);
+        fetchSections();
         if (isOffline) {
             String testJson = getIntent().getExtras().getString("mock_test_data_json");
             ScheduledTestsArray model = Gson.get().fromJson(testJson, ScheduledTestsArray.class);
@@ -451,6 +453,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             showToast("Challenge Test works in online mode");
             return;
         }
+        fetchSections();
         // load leader board for testing purpose
         loadLeaderBoard();
         btnSuspend.setVisibility(View.GONE);
@@ -478,16 +481,12 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             mockTest = Gson.get().fromJson(mockTestJson, MockTest.class);
         }
         imvFlag.setVisibility(View.VISIBLE);
-        String testInstructions = getIntent().getStringExtra("Test_Instructions");
         if (mockTest == null) {
             getTestQuestionPaper(null);
         } else {
             loadOfflineMockTest(mockTest);
         }
-        if (!TextUtils.isEmpty(testInstructions)) {
-            mockTestPaperIndex = Gson.get().fromJson(testInstructions, TestPaperIndex.class);
-            fetchSections(mockTestPaperIndex);
-        }
+        fetchSections();
         imvRefresh.setVisibility(View.VISIBLE);
         timerLayout.setVisibility(View.VISIBLE);
         testNavFooter.setVisibility(View.VISIBLE);
@@ -517,23 +516,29 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         timerLayout.setVisibility(View.GONE);
     }
 
-    private void fetchSections(TestPaperIndex testPaperIndex) {
-        if (testPaperIndex != null && testPaperIndex.questionPaperIndecies != null) {
+    private void fetchSections() {
+        String testInstructions = getIntent().getStringExtra("Test_Instructions");
+        if (!TextUtils.isEmpty(testInstructions)) {
+            mockTestPaperIndex = Gson.get().fromJson(testInstructions, TestPaperIndex.class);
+        }
+        if (mockTestPaperIndex != null && mockTestPaperIndex.questionPaperIndecies != null) {
             sections = new ArrayList<>();
-            for (QuestionPaperIndex questionPaperIndex : testPaperIndex.questionPaperIndecies) {
+            for (QuestionPaperIndex questionPaperIndex : mockTestPaperIndex.questionPaperIndecies) {
                 if (!TextUtils.isEmpty(questionPaperIndex.sectionName)) {
                     if (!sections.contains(questionPaperIndex.sectionName)) {
                         sections.add(questionPaperIndex.sectionName);
                     }
                 }
             }
-            sectionsRecyclerView.setVisibility(View.VISIBLE);
-            sectionsRecyclerView.setHasFixedSize(true);
-            sectionsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-            sectionsAdapter = new MockSubjectsAdapter();
-            sectionsAdapter.setData(sections);
-            sectionsAdapter.setOnMockSubjectClickListener(onMockSectionClickListener);
-            sectionsRecyclerView.setAdapter(sectionsAdapter);
+            if(sections.size() > 1) {
+                sectionsRecyclerView.setVisibility(View.VISIBLE);
+                sectionsRecyclerView.setHasFixedSize(true);
+                sectionsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+                sectionsAdapter = new MockSubjectsAdapter();
+                sectionsAdapter.setData(sections);
+                sectionsAdapter.setOnMockSubjectClickListener(onMockSectionClickListener);
+                sectionsRecyclerView.setAdapter(sectionsAdapter);
+            }
         }
     }
 
