@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.text.TextUtils;
@@ -654,10 +653,10 @@ public class ContentReadingActivity extends AbstractBaseActivity {
                 contentNames = contentNames + ",";
             }
             contentNames = contentNames + contentModel.contentName + "." + contentModel.type;
-            contentIds = contentIds + contentModel.idContent;
+            contentIds = contentIds + contentModel.idContent + "." + contentModel.type;
         }
 
-        if (loadwebifFileExists(contentNames)) {
+        if (loadWebIfFileExists(contentIds)) {
             if (mViewSwitcher.getNextView() instanceof RelativeLayout) {
                 mViewSwitcher.showNext();
             }
@@ -710,12 +709,12 @@ public class ContentReadingActivity extends AbstractBaseActivity {
         });
     }
 
-    public boolean loadwebifFileExists(String contentNames) {
+    public boolean loadWebIfFileExists(String contentIds) {
         String[] htmlFile;
-        if (contentNames.contains(",")) {
-            htmlFile = contentNames.split(",");
+        if (contentIds.contains(",")) {
+            htmlFile = contentIds.split(",");
         } else {
-            htmlFile = new String[]{contentNames};
+            htmlFile = new String[]{contentIds};
         }
         if (subjectModelList.size() > 0 || chapterModelList.size() > 0 ||
                 topicModelList.size() > 0 || contentModelList.size() > 0) {
@@ -732,21 +731,23 @@ public class ContentReadingActivity extends AbstractBaseActivity {
         return loadFirstContent(htmlFile) || false;
     }
 
-    File root;
+    private File getFile(String fileName) {
+        if(!TextUtils.isEmpty(fileName) && fileName.contains(".")) {
+            L.info("FileName : "+fileName);
+            String [] data = fileName.split("\\.");
+            return getFile(data[0], data[1]);
+        }
+        return null;
+    }
 
-    private File getgetFile(String fileName) {
-        root = Environment.getExternalStorageDirectory();
-        File file;
-        String folderStructure = getSelectedCourseName() + File.separator +
-                subjectModelList.get(spSubject.getSelectedItemPosition()).subjectName + File.separator +
-                chapterModelList.get(spChapter.getSelectedItemPosition()).chapterName + File.separator +
-                topicModelList.get(spTopic.getSelectedItemPosition()).topicName;
-        if (fileName.endsWith(Constants.VIDEO_FILE)) {
-            file = new File(FileUtils.get(this).getParentFolder() + File.separator + folderStructure
-                    + File.separator + Constants.VIDEO_FOLDER + File.separator + fileName);
-        } else {
-            file = new File(FileUtils.get(this).getParentFolder() + File.separator + folderStructure
-                    + File.separator + Constants.HTML_FOLDER + File.separator + fileName);
+    private File getFile(String contentId, String type) {
+        FileUtils fileUtils = FileUtils.get(this);
+        File file = null;
+        if (type.endsWith(Constants.VIDEO_FILE)) {
+            file = new File(fileUtils.getVideoDownloadPath(contentId));
+        } else if (type.endsWith(Constants.HTML_FILE)) {
+            file = new File(fileUtils.getParentFolder() + fileUtils.getContentFilePath()
+                    + File.separator + fileUtils.getContentFileName(contentId));
         }
         return file;
     }
@@ -756,7 +757,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
         String fileName;
         for (int i = 0; i < htmlFile.length; i++) {
             fileName = htmlFile[i];
-            f = getgetFile(fileName);
+            f = getFile(fileName);
             if (f.exists()) {
                 if (htmlFile.length == contentModelList.size()) {
                     mContentIdPosition = i;
@@ -775,29 +776,27 @@ public class ContentReadingActivity extends AbstractBaseActivity {
         return false;
     }
 
-    private boolean loadSpecificContent(String[] htmlFile) {
+    private boolean loadSpecificContent(String[] htmlFiles) {
         File f;
         String fileName;
-        for (int i = 0; i < htmlFile.length; i++) {
-            fileName = htmlFile[i];
-            f = getgetFile(fileName);
-            if (f.exists()) {
-                if (!TextUtils.isEmpty(mContentName)) {
-                    String[] data = htmlFile[i].split(".");
-                    if (data.length > 0 && mContentName.equalsIgnoreCase(data[0])) {
-                        if (htmlFile.length == contentModelList.size()) {
-                            mContentIdPosition = i;
-                        }
-                        if (f.getName().endsWith(Constants.VIDEO_FILE)) {
-                            String videoUrl = FileUtils.get(this).getUrlFromFile(f);
-                            if (videoUrl.length() > 0) {
-                                loadWeb(ApiClientService.getBaseUrl() + videoUrl.replace("./", ""));
-                            }
-                        } else {
-                            loadWeb(Constants.HTML_PREFIX_URL + f.getAbsolutePath());
-                        }
-                        return true;
+        for (int i = 0; i < htmlFiles.length; i++) {
+            fileName = htmlFiles[i];
+            String[] data = fileName.split(".");
+            if(data.length > 0) {
+                f = getFile(data[0]);
+                if (f.exists() && !TextUtils.isEmpty(mContentId) && mContentId.equalsIgnoreCase(data[0])) {
+                    if (htmlFiles.length == contentModelList.size()) {
+                        mContentIdPosition = i;
                     }
+                    if (f.getName().endsWith(Constants.VIDEO_FILE)) {
+                        String videoUrl = FileUtils.get(this).getUrlFromFile(f);
+                        if (videoUrl.length() > 0) {
+                            loadWeb(ApiClientService.getBaseUrl() + videoUrl.replace("./", ""));
+                        }
+                    } else {
+                        loadWeb(Constants.HTML_PREFIX_URL + f.getAbsolutePath());
+                    }
+                    return true;
                 }
             }
         }

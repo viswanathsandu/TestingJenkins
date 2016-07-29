@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import com.education.corsalite.db.SugarDbManager;
 import com.education.corsalite.gson.Gson;
+import com.education.corsalite.models.responsemodels.TestAnswerPaper;
 import com.education.corsalite.models.responsemodels.TestQuestionPaperResponse;
 import com.education.corsalite.security.Encrypter;
 
@@ -18,13 +19,34 @@ public class ExamUtils {
 
     private Context mContext;
     private SugarDbManager dbManager;
-
     public ExamUtils(Context context) {
         this.mContext = context;
         dbManager = SugarDbManager.get(mContext);
     }
 
     public void saveTestQuestionPaper(String testQuestionPaperId, TestQuestionPaperResponse response) {
+        String testPaper = Gson.get().toJson(response);
+        try {
+            testPaper = Gzip.compress(testPaper);
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+        try {
+            testPaper = Encrypter.encrypt(AppPref.get(mContext).getUserId(), testPaper);
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+        FileUtils fileUtils = FileUtils.get(mContext);
+        String savedFileName = fileUtils.write(fileUtils.getTestQuestionPaperFileName(),
+                            testPaper, fileUtils.getTestQuestionPaperFilePath(testQuestionPaperId));
+        if(TextUtils.isEmpty(savedFileName)) {
+            Toast.makeText(mContext, "Test download failed. Please try again", Toast.LENGTH_SHORT).show();
+        } else {
+            L.info("Saved test question paper with id " + testQuestionPaperId);
+        }
+    }
+
+    public void saveTestAnswerPaper(String testQuestionPaperId, TestAnswerPaper response) {
         String fileName = testQuestionPaperId + "." + Constants.TEST_FILE;
         String testPaper = Gson.get().toJson(response);
         try {
@@ -47,9 +69,8 @@ public class ExamUtils {
 
     public TestQuestionPaperResponse getTestQuestionPaper(String testQuestionPaperId) {
         try {
-
-            String fileName = testQuestionPaperId + "." + Constants.TEST_FILE;
-            String testPaper = FileUtils.get(mContext).readFromFile(fileName, null);
+            FileUtils fileUtils = FileUtils.get(mContext);
+            String testPaper = fileUtils.readFromFile(fileUtils.getTestQuestionPaperFileName(), fileUtils.getTestQuestionPaperFilePath(testQuestionPaperId));
             try {
                 testPaper = Encrypter.decrypt(AppPref.get(mContext).getUserId(), testPaper);
             } catch (Exception e) {

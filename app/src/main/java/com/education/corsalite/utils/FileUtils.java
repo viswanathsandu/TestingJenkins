@@ -44,35 +44,50 @@ public class FileUtils {
         return parent.getAbsolutePath();
     }
 
-    public String write(String fileName, String data, String folderStructure) {
-        File root = Environment.getExternalStorageDirectory();
-        File outDir = null;
-        if (TextUtils.isEmpty(folderStructure)) {
-            outDir = new File(getParentFolder());
-        } else {
-            outDir = new File(getParentFolder() + File.separator + folderStructure);
-        }
-        if (!outDir.isDirectory()) {
-            outDir.mkdirs();
-        }
+    public String getVideoDownloadPath(String videoId) {
+        String fileName = "v." + Constants.VIDEO_FILE;
+        String folderPath = getParentFolder() + File.separator + Constants.VIDEO_FOLDER + File.separator + videoId;
+        return folderPath + File.separator + fileName;
+    }
 
-        File savingDirectory;
-        if (fileName.endsWith(Constants.VIDEO_FILE)) {
-            savingDirectory = new File(outDir.getAbsolutePath() + File.separator + Constants.VIDEO_FOLDER);
-        } else if (fileName.endsWith(Constants.TEST_FILE)) {
-            savingDirectory = new File(outDir.getAbsolutePath() + File.separator + Constants.TESTS_FOLDER);
+    public String  getContentFileName(String contentId) {
+        return contentId + "." + Constants.HTML_FILE;
+    }
+
+    public String  getContentFilePath() {
+        String filePath = File.separator + Constants.CONTENT_FOLDER;
+        return filePath;
+    }
+
+    public String getTestQuestionPaperFilePath(String testQuestionPaperId) {
+        String filePath = File.separator + Constants.TESTS_FOLDER + File.separator + testQuestionPaperId;
+        return filePath;
+    }
+
+    public String  getTestQuestionPaperFileName() {
+        return "q." + Constants.TEST_FILE;
+    }
+
+    public String write(String fileName, String data) {
+        return write(fileName, data, null);
+    }
+
+    public String write(String fileName, String data, String folderStructure) {
+        File dir = null;
+        if (TextUtils.isEmpty(folderStructure)) {
+            dir = new File(getParentFolder());
         } else {
-            savingDirectory = new File(outDir.getAbsolutePath() + File.separator + Constants.HTML_FOLDER);
+            dir = new File(getParentFolder() + File.separator + folderStructure);
         }
-        if (!savingDirectory.isDirectory()) {
-            savingDirectory.mkdirs();
+        if (!dir.isDirectory()) {
+            dir.mkdirs();
         }
         try {
-            if (!savingDirectory.isDirectory()) {
+            if (!dir.isDirectory()) {
                 throw new IOException(
                         "Unable to create directory Corsalite. Maybe the SD card is mounted?");
             }
-            File outputFile = new File(savingDirectory, fileName);
+            File outputFile = new File(dir, fileName);
             writer = new BufferedWriter(new FileWriter(outputFile));
             writer.write(data);
             writer.close();
@@ -86,19 +101,11 @@ public class FileUtils {
     }
 
     public String readFromFile(String fileName, String folderStructure) {
-        File root = Environment.getExternalStorageDirectory();
-        File file = null;
+        File file;
         if (TextUtils.isEmpty(folderStructure)) {
-            file = new File(getParentFolder());
+            file = new File(getParentFolder() + File.separator + fileName);
         } else {
-            file = new File(getParentFolder() + File.separator + folderStructure);
-        }
-        if (fileName.endsWith(Constants.VIDEO_FILE)) {
-            file = new File(file.getAbsolutePath() + File.separator + Constants.VIDEO_FOLDER + File.separator + fileName);
-        } else if (fileName.endsWith(Constants.TEST_FILE)) {
-            file = new File(file.getAbsolutePath() + File.separator + Constants.TESTS_FOLDER + File.separator + fileName);
-        } else {
-            file = new File(file.getAbsolutePath() + File.separator + Constants.HTML_FOLDER + File.separator + fileName);
+            file = new File(getParentFolder() + File.separator + folderStructure + File.separator + fileName);
         }
         if (file.exists()) {
             StringBuilder text = new StringBuilder();
