@@ -81,7 +81,6 @@ public class ExamUtils {
         if(response == null) {
             return;
         }
-        String fileName = testQuestionPaperId + "." + Constants.TEST_FILE;
         String testPaper = Gson.get().toJson(response);
         try {
             testPaper = Gzip.compress(testPaper);
@@ -93,11 +92,12 @@ public class ExamUtils {
         } catch (Exception e) {
             L.error(e.getMessage(), e);
         }
-        String savedFileName = FileUtils.get(mContext).write(fileName, testPaper, null);
+        FileUtils fileUtils = FileUtils.get(mContext);
+        String savedFileName = fileUtils.write(fileUtils.getTestAnswerPaperFileName(), testPaper, fileUtils.getTestsFolderPath(testQuestionPaperId));
         if(TextUtils.isEmpty(savedFileName)) {
-            Toast.makeText(mContext, "Test download failed. Please try again", Toast.LENGTH_SHORT).show();
+            L.info("Test Could not be saved on device. Please try again");
         } else {
-            L.info("Saved test question paper with id " + testQuestionPaperId);
+            L.info("Saved test answer paper with id " + testQuestionPaperId);
         }
     }
 
@@ -138,6 +138,28 @@ public class ExamUtils {
                 L.error(e.getMessage(), e);
             }
             TestQuestionPaperResponse response = Gson.get().fromJson(testPaper, TestQuestionPaperResponse.class);
+            return response;
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+            return null;
+        }
+    }
+
+    public TestAnswerPaper getTestAnswerPaper(String testQuestionPaperId) {
+        try {
+            FileUtils fileUtils = FileUtils.get(mContext);
+            String testPaper = fileUtils.readFromFile(fileUtils.getTestAnswerPaperFileName(), fileUtils.getTestsFolderPath(testQuestionPaperId));
+            try {
+                testPaper = Encrypter.decrypt(AppPref.get(mContext).getUserId(), testPaper);
+            } catch (Exception e) {
+                L.error(e.getMessage(), e);
+            }
+            try {
+                testPaper = Gzip.decompress(testPaper);
+            } catch (Exception e) {
+                L.error(e.getMessage(), e);
+            }
+            TestAnswerPaper response = Gson.get().fromJson(testPaper, TestAnswerPaper.class);
             return response;
         } catch (Exception e) {
             L.error(e.getMessage(), e);

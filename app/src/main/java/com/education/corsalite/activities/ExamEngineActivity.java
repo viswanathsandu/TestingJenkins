@@ -56,6 +56,7 @@ import com.education.corsalite.enums.TestanswerPaperState;
 import com.education.corsalite.event.ExerciseAnsEvent;
 import com.education.corsalite.fragments.FullQuestionDialog;
 import com.education.corsalite.fragments.LeaderBoardFragment;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.helpers.WebSocketHelper;
 import com.education.corsalite.models.db.MockTest;
 import com.education.corsalite.models.db.OfflineTestObjectModel;
@@ -89,14 +90,12 @@ import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.services.DataSyncService;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.ExamUtils;
-import com.education.corsalite.gson.Gson;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.SystemUtils;
 import com.education.corsalite.utils.TimeUtils;
 import com.education.corsalite.utils.WebUrls;
 import com.education.corsalite.views.CorsaliteWebViewClient;
 import com.education.corsalite.views.GridViewInScrollView;
-
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
@@ -250,6 +249,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private List<ExamModel> flaggedQuestions;
     private List<PartTestGridElement> partTestGridElements;
     private List<String> sections;
+    private QuestionPaperExamDetails examDetails;
     private TestAnswerPaper testanswerPaper = new TestAnswerPaper();
     private Long scheduledTimeInMillis = 0l;
     private CounterClass timer;
@@ -848,6 +848,13 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             DataSyncService.addSyncModel(syncModel);
             if(state == TestanswerPaperState.COMPLETED) {
                 new ExamUtils(this).deleteTestQuestionPaper(testQuestionPaperId);
+            } else if(state == TestanswerPaperState.SUSPENDED) {
+                dbManager.updateOfflineTestModel(testQuestionPaperId, Constants.STATUS_SUSPENDED, TimeUtils.currentTimeInMillis());
+                new ExamUtils(this).saveTestAnswerPaper(testQuestionPaperId, testanswerPaper);
+                TestQuestionPaperResponse response = new TestQuestionPaperResponse();
+                response.questions = localExamModelList;
+                response.examDetails = examDetails;
+                new ExamUtils(this).saveTestQuestionPaper(testQuestionPaperId, response);
             }
             return;
         }
@@ -1061,10 +1068,11 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         try {
             isFlagged = false;
             questionStartedTime = TimeUtils.currentTimeInMillis();
-            if (testanswerPaper != null && testanswerPaper.testAnswers != null && testanswerPaper.testAnswers.size() > position) {
-                if (!TextUtils.isEmpty(testanswerPaper.testAnswers.get(position).status) && testanswerPaper.testAnswers.get(position).status.equalsIgnoreCase(Constants.AnswerState.UNATTEMPTED.getValue())) {
-                    testanswerPaper.testAnswers.get(position).status = Constants.AnswerState.SKIPPED.getValue();
-                }
+            if (testanswerPaper != null && testanswerPaper.testAnswers != null
+                    && testanswerPaper.testAnswers.size() > position
+                    && !TextUtils.isEmpty(testanswerPaper.testAnswers.get(position).status)
+                    && testanswerPaper.testAnswers.get(position).status.equalsIgnoreCase(Constants.AnswerState.UNATTEMPTED.getValue())) {
+                testanswerPaper.testAnswers.get(position).status = Constants.AnswerState.SKIPPED.getValue();
             }
             updateFlaggedQuestion(localExamModelList.get(position).isFlagged);
             tvSerialNo.setText("Q" + (position + 1) + ")");
@@ -2060,6 +2068,11 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void initTestAnswerPaper(List<ExamModel> questions) {
+        TestAnswerPaper answerPaper = new ExamUtils(this).getTestAnswerPaper(testQuestionPaperId);
+        if(answerPaper != null) {
+            testanswerPaper = answerPaper;
+            return;
+        }
         testanswerPaper.studentId = LoginUserCache.getInstance().getStudentId();
         testanswerPaper.testQuestionPaperId = testQuestionPaperId;
         testanswerPaper.startTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
@@ -2169,6 +2182,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         try {
             TestQuestionPaperResponse response = new ExamUtils(this).getTestQuestionPaper(testQuestionPaperId);
             localExamModelList = response.questions;
+            examDetails = response.examDetails;
             showQuestionPaper(response.questions, response.examDetails);
         } catch (Exception e) {
             showToast("Failed to load exam");
