@@ -1226,7 +1226,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         }
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(scheduledTime.getTime());
-        cal.add(Calendar.MINUTE, -3);
+        cal.add(Calendar.MINUTE, -5);
         Intent broadCastIntent = new Intent(this, NotifyReceiver.class);
         broadCastIntent.putExtra("title", examName);
         broadCastIntent.putExtra("sub_title", "Exam started at "+new SimpleDateFormat("hh:mm a").format(scheduledTime));

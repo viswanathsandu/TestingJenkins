@@ -142,9 +142,11 @@ public class TestInstructionsActivity extends AbstractBaseActivity {
                 long timeToStart = scheduledTime - TimeUtils.currentTimeInMillis();
                 if (timeToStart < 0) {
                     timerLayout.setVisibility(View.GONE);
+                    btStart.setVisibility(View.VISIBLE);
                 } else {
                     timerLayout.setVisibility(View.VISIBLE);
                     setTimer(timeToStart);
+                    btStart.setVisibility(View.GONE);
                 }
             }
         }
