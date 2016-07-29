@@ -336,6 +336,13 @@ public class ApiManager {
         }
     }
 
+    public TestQuestionPaperResponse getTestQuestionPaper(String testQuestionPaperId, String testAnswerPaperId) {
+        if (isApiOnline()) {
+            return ApiClientService.get().getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId);
+        }
+        return null;
+    }
+
     public void getTestQuestionPaper(String testQuestionPaperId, String testAnswerPaperId, ApiCallback<TestQuestionPaperResponse> callback) {
         if (isApiOnline()) {
             ApiClientService.get().getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, callback);
@@ -500,6 +507,13 @@ public class ApiManager {
         if (isApiOnline()) {
             ApiClientService.get().getMockTests(courseId, studentId, callback);
         }
+    }
+
+    public TestPaperIndex getTestPaperIndex(String questionPaperId, String answerPaperId, String allPosts) {
+        if (isApiOnline()) {
+            return  ApiClientService.get().getTestPaperIndex(questionPaperId, answerPaperId, allPosts);
+        }
+        return null;
     }
 
     public void getTestPaperIndex(String questionPaperId, String answerPpaerId, String allPosts, ApiCallback<TestPaperIndex> callback) {

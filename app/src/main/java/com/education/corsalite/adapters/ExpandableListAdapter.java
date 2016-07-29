@@ -221,7 +221,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private void startMockTest(OfflineTestObjectModel model) {
         if (model.status != Constants.STATUS_COMPLETED) {
             Intent intent = new Intent(context, StartMockTestActivity.class);
-            intent.putExtra("Test_Instructions", Gson.get().toJson(model.testPaperIndecies));
             intent.putExtra("test_question_paper_id", model.testQuestionPaperId);
             intent.putExtra(Constants.TEST_TITLE, "Mock Test");
             intent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.getSelectedCourseId());

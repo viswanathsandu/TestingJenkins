@@ -44,6 +44,7 @@ import retrofit.client.Response;
 public class TestDownloadService extends IntentService {
 
     SugarDbManager dbManager;
+    ExamUtils examUtils;
 
     public TestDownloadService() {
         super("TestDownloadService");
@@ -52,7 +53,7 @@ public class TestDownloadService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         dbManager = SugarDbManager.get(getApplicationContext());
-        TestPaperIndex testPaperIndicies = Gson.get().fromJson(intent.getStringExtra("Test_Instructions"), TestPaperIndex.class);
+        examUtils = new ExamUtils(getApplicationContext());
         String testQuestionPaperId = intent.getStringExtra("testQuestionPaperId");
         String testAnswerPaperId = intent.getStringExtra("testAnswerPaperId");
         String mockTestStr = intent.getStringExtra("selectedMockTest");
@@ -77,10 +78,10 @@ public class TestDownloadService extends IntentService {
         }
         if (mockTestStr != null) {
             MockTest mockTest = Gson.get().fromJson(mockTestStr, MockTest.class);
-            getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, mockTest, testPaperIndicies, null);
+            getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, mockTest, null);
         } else if (scheduledTestStr != null) {
             ScheduledTestsArray scheduledTest = Gson.get().fromJson(scheduledTestStr, ScheduledTestsArray.class);
-            getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, null, null, scheduledTest);
+            getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, null, scheduledTest);
         } else if(takeTestStr != null){
             Chapter chapter = Gson.get().fromJson(takeTestStr,Chapter.class);
             loadTakeTest(chapter,null, questionsCount, subjectId);
@@ -114,43 +115,41 @@ public class TestDownloadService extends IntentService {
         }
     }
 
+
     private void getTestQuestionPaper(final String testQuestionPaperId, final String testAnswerPaperId,
-                                      final MockTest mockTest, final TestPaperIndex testPAperIndecies, final ScheduledTestsArray scheduledTestsArray) {
+                                      final MockTest mockTest, final ScheduledTestsArray scheduledTestsArray) {
         try {
-            ApiManager.getInstance(this).getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId,
-                    new ApiCallback<TestQuestionPaperResponse>(this) {
-                        @Override
-                        public void success(TestQuestionPaperResponse questionPaperResponse, Response response) {
-                            super.success(questionPaperResponse, response);
-                            OfflineTestObjectModel model = new OfflineTestObjectModel();
-                            String testName = "";
-                            if(questionPaperResponse != null) {
-                                model.testQuestionPaperResponse = questionPaperResponse;
-                            }
-                            if (mockTest != null) {
-                                model.testType = Tests.MOCK;
-                                model.mockTest = mockTest;
-                                testName = mockTest.displayName;
-                            } else if(scheduledTestsArray != null) {
-                                model.testType = Tests.SCHEDULED;
-                                model.scheduledTest = scheduledTestsArray;
-                                testName = scheduledTestsArray.examName;
-                            }
-                            model.baseTest = new BaseTest();
-                            model.baseTest.courseId = AbstractBaseActivity.getSelectedCourseId();
-                            model.testPaperIndecies = testPAperIndecies;
-                            model.testQuestionPaperId = testQuestionPaperId;
-                            model.testAnswerPaperId = testAnswerPaperId;
-                            model.dateTime = TimeUtils.currentTimeInMillis();
-                            dbManager.saveOfflineTest(model);
-                            new ExamUtils(getApplicationContext()).saveTestQuestionPaper(model.testQuestionPaperId, questionPaperResponse);
-                            if(!TextUtils.isEmpty(testName)) {
-                                Toast.makeText(getApplicationContext(), "Test \""+testName+"\" has been downloaded successfully", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(getApplicationContext(), "Test has been downloaded successfully", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
+            TestPaperIndex testPaperIndexResponse = ApiManager.getInstance(this).getTestPaperIndex(testQuestionPaperId, testAnswerPaperId, "N");
+            TestQuestionPaperResponse questionPaperResponse = ApiManager.getInstance(this).getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId);
+            if (questionPaperResponse != null) {
+                OfflineTestObjectModel model = new OfflineTestObjectModel();
+                String testName = "";
+                if (questionPaperResponse != null) {
+                    model.testQuestionPaperResponse = questionPaperResponse;
+                }
+                if (mockTest != null) {
+                    model.testType = Tests.MOCK;
+                    model.mockTest = mockTest;
+                    testName = mockTest.displayName;
+                } else if (scheduledTestsArray != null) {
+                    model.testType = Tests.SCHEDULED;
+                    model.scheduledTest = scheduledTestsArray;
+                    testName = scheduledTestsArray.examName;
+                }
+                model.baseTest = new BaseTest();
+                model.baseTest.courseId = AbstractBaseActivity.getSelectedCourseId();
+                model.testQuestionPaperId = testQuestionPaperId;
+                model.testAnswerPaperId = testAnswerPaperId;
+                model.dateTime = TimeUtils.currentTimeInMillis();
+                dbManager.saveOfflineTest(model);
+                examUtils.saveTestPaperIndex(model.testQuestionPaperId, testPaperIndexResponse);
+                examUtils.saveTestQuestionPaper(model.testQuestionPaperId, questionPaperResponse);
+                if (!TextUtils.isEmpty(testName)) {
+                    Toast.makeText(getApplicationContext(), "Test \"" + testName + "\" has been downloaded successfully", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Test has been downloaded successfully", Toast.LENGTH_SHORT).show();
+                }
+            }
         } catch (Exception e) {
             L.error(e.getMessage(), e);
         }

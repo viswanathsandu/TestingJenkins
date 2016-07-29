@@ -59,7 +59,7 @@ public class FileUtils {
         return filePath;
     }
 
-    public String getTestQuestionPaperFilePath(String testQuestionPaperId) {
+    public String getTestsFolderPath(String testQuestionPaperId) {
         String filePath = File.separator + Constants.TESTS_FOLDER + File.separator + testQuestionPaperId;
         return filePath;
     }
@@ -68,14 +68,20 @@ public class FileUtils {
         return "q." + Constants.TEST_FILE;
     }
 
-    public String write(String fileName, String data) {
-        return write(fileName, data, null);
+    public String  getTestPaperIndexFileName() {
+        return "i." + Constants.TEST_FILE;
+    }
+
+    public String  getTestAnswerPaperFileName() {
+        return "a." + Constants.TEST_FILE;
     }
 
     public String write(String fileName, String data, String folderStructure) {
         File dir = null;
         if (TextUtils.isEmpty(folderStructure)) {
             dir = new File(getParentFolder());
+        } else if(folderStructure.startsWith("/")){
+            dir = new File(getParentFolder() + folderStructure);
         } else {
             dir = new File(getParentFolder() + File.separator + folderStructure);
         }
