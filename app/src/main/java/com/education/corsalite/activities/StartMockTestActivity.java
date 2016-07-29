@@ -3,6 +3,7 @@ package com.education.corsalite.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.WebView;
@@ -15,10 +16,15 @@ import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.gson.Gson;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
+import com.education.corsalite.models.responsemodels.ExamDetails;
+import com.education.corsalite.models.responsemodels.QuestionPaperIndex;
 import com.education.corsalite.models.responsemodels.TestPaperIndex;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.ExamUtils;
 import com.education.corsalite.utils.SystemUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -63,7 +69,8 @@ public class StartMockTestActivity extends AbstractBaseActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(StartMockTestActivity.this, ExamEngineActivity.class);
-                intent.putExtra(Constants.TEST_TITLE, "Mock Test");
+
+                intent.putExtra(Constants.TEST_TITLE, getTestName());
                 intent.putExtra("test_question_paper_id", testQuestionPaperId);
                 intent.putExtra("test_answer_paper_id", testQuestionPaperId);
                 intent.putExtra("Test_Instructions", Gson.get().toJson(testPaperIndex));
@@ -75,6 +82,20 @@ public class StartMockTestActivity extends AbstractBaseActivity {
         });
     }
 
+    private String getTestName() {
+        if(testPaperIndex != null && testPaperIndex.examDetails != null && !testPaperIndex.examDetails.isEmpty()) {
+            ExamDetails details = testPaperIndex.examDetails.get(0);
+            if(details != null && !TextUtils.isEmpty(details.scheduledTime)) {
+                return "Scheduled Test";
+            } else if(fetchSections().size() > 1){
+                return "MockTest";
+            } else {
+                return "";
+            }
+        }
+        return "";
+    }
+
     private void showData() {
         title.setText(testPaperIndex.examDetails.get(0).examName);
         instuctions.loadData(testPaperIndex.examDetails.get(0).examInstucation , "text/html; charset=UTF-8", null);
@@ -84,6 +105,21 @@ public class StartMockTestActivity extends AbstractBaseActivity {
         testQuestionPaperId = getIntent().getStringExtra("test_question_paper_id");
         testAnswerPaperId = getIntent().getStringExtra("test_answer_paper_id");
     }
+
+    private List<String> fetchSections() {
+        List sections = new ArrayList<>();
+        if (testPaperIndex != null && testPaperIndex.questionPaperIndecies != null) {
+            for (QuestionPaperIndex questionPaperIndex : testPaperIndex.questionPaperIndecies) {
+                if (!TextUtils.isEmpty(questionPaperIndex.sectionName)) {
+                    if (!sections.contains(questionPaperIndex.sectionName)) {
+                        sections.add(questionPaperIndex.sectionName);
+                    }
+                }
+            }
+        }
+        return sections;
+    }
+
 
     private void fetchTestPaperIndex() {
         testPaperIndex = getLocalTestPaperIndex();
