@@ -38,11 +38,34 @@ public class FileUtils {
         super();
     }
 
+    public String getAppRootFolder() {
+        File root = Environment.getExternalStorageDirectory();
+        File parent = new File(root.getAbsolutePath() + File.separator + Constants.PARENT_FOLDER);
+        return parent.getAbsolutePath();
+    }
+
+    public String getAppRootFolder(String fileName) {
+        File root = Environment.getExternalStorageDirectory();
+        File parent = new File(root.getAbsolutePath() + File.separator + fileName);
+        return parent.getAbsolutePath();
+    }
+
+    public boolean appRootExists() {
+        try {
+            File dir = new File(getAppRootFolder());
+            return dir.exists() && dir.isDirectory();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     public String getParentFolder() {
         File root = Environment.getExternalStorageDirectory();
         File parent = new File(root.getAbsolutePath() + File.separator + Constants.PARENT_FOLDER + File.separator + AppPref.get(context).getUserId());
         return parent.getAbsolutePath();
     }
+
+
 
     public String getVideoDownloadPath(String videoId) {
         String fileName = "v." + Constants.VIDEO_FILE;
@@ -175,10 +198,19 @@ public class FileUtils {
         }
     }
 
-    public void delete(String selectedPath) {
-        File root = Environment.getExternalStorageDirectory();
-        File fileorDir = new File(getParentFolder() + File.separator + selectedPath);
+    public void deleteRootLevel(String selectedPath) {
+        File fileorDir = new File(selectedPath);
+        if (fileorDir.isDirectory()) {
+            deleteChildren(fileorDir);
+        } else if (fileorDir.isFile()) {
+            File parentFile = fileorDir.getParentFile();
+            fileorDir.delete();
+            deleteParent(parentFile);
+        }
+    }
 
+    public void delete(String selectedPath) {
+        File fileorDir = new File(getParentFolder() + File.separator + selectedPath);
         if (fileorDir.isDirectory()) {
             deleteChildren(fileorDir);
         } else if (fileorDir.isFile()) {
