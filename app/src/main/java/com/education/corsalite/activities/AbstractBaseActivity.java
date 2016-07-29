@@ -872,6 +872,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         LoginUserCache.getInstance().clearCache();
         resetCrashlyticsUserData();
         deleteSessionCookie();
+        dbManager.clearCachedData();
         AbstractBaseActivity.selectedCourse = null;
         AbstractBaseActivity.selectedVideoPosition= 0;
         AbstractBaseActivity.sharedExamModels = null;
@@ -1274,7 +1275,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             if(this instanceof TestInstructionsActivity || this instanceof ExamEngineActivity) {
                 return;
             }
-            OfflineTestObjectModel model = dbManager.fetchRecord(OfflineTestObjectModel.class, Long.parseLong(event.testQuestionPaperId));
+            OfflineTestObjectModel model = dbManager.fetchOfflineTestRecord(event.testQuestionPaperId);
             if (model != null && model.testQuestionPaperId.equalsIgnoreCase(event.testQuestionPaperId)) {
                 Intent intent = new Intent(this, TestInstructionsActivity.class);
                 intent.putExtra(Constants.TEST_TITLE, "Scheduled Test");

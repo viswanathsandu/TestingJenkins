@@ -138,6 +138,23 @@ public class SugarDbManager {
         return null;
     }
 
+    public OfflineTestObjectModel fetchOfflineTestRecord(String testQuestionPaperID) {
+        try {
+            OfflineTestObjectModel t = Select.from(OfflineTestObjectModel.class)
+                            .where(Condition.prop("USER_ID").eq(AppPref.get(context).getUserId()),
+                                    Condition.prop("TEST_QUESTION_PAPER_ID").eq(testQuestionPaperID)).first();
+            if (t.reflectionJsonString != null) {
+                OfflineTestObjectModel object = Gson.get().fromJson(Gzip.decompressBytes(t.reflectionJsonString), OfflineTestObjectModel.class);
+                t.reflectionJsonString = null;
+                object.setId(t.getId());
+                return object;
+            }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+        return null;
+    }
+
     public <T extends BaseModel> void delete(T object) {
         try {
             if (object != null) {
@@ -357,7 +374,6 @@ public class SugarDbManager {
         try {
             if(model != null && !TextUtils.isEmpty(model.testQuestionPaperId)
                     && TextUtils.isDigitsOnly(model.testQuestionPaperId)) {
-                model.setId(Long.valueOf(model.testQuestionPaperId));
                 save(model);
             }
         } catch (Exception e) {
@@ -568,6 +584,12 @@ public class SugarDbManager {
     }
 
     // Cached data
+    public void clearCachedData() {
+        cachedOfflineContents = null;
+        cachedOfflineTestObjects = null;
+        cachedOfflineExercises = null;
+    }
+
     private List<OfflineContent> getCahcedOfflineContents() {
         if (cachedOfflineContents == null || cachedOfflineContents.isEmpty()) {
             cachedOfflineContents = fetchRecords(OfflineContent.class);
