@@ -84,7 +84,7 @@ public class SugarDbManager {
             if (type != null) {
                 List<T> allList;
                 if(!type.equals(LoginReqRes.class)) {
-                    allList = Select.from(type).where(Condition.prop("userId").eq(AppPref.get(context).getUserId())).list();
+                    allList = Select.from(type).where(Condition.prop("USER_ID").eq(AppPref.get(context).getUserId())).list();
                 } else {
                     allList = SugarRecord.listAll(type);
                 }
@@ -124,7 +124,7 @@ public class SugarDbManager {
     public <T extends BaseModel> T fetchFirstRecord(Class<T> type) {
         try {
             if (type != null) {
-                T t = Select.from(type).where(Condition.prop("userId").eq(AppPref.get(context).getUserId())).first();
+                T t = Select.from(type).where(Condition.prop("USER_ID").eq(AppPref.get(context).getUserId())).first();
                 if (t.reflectionJsonString != null) {
                     T object = Gson.get().fromJson(Gzip.decompressBytes(t.reflectionJsonString), type);
                     t.reflectionJsonString = null;

@@ -1271,7 +1271,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     public void onEventMainThread(ScheduledTestStartEvent event) {
         try {
-            if(this instanceof TestInstructionsActivity) {
+            if(this instanceof TestInstructionsActivity || this instanceof ExamEngineActivity) {
                 return;
             }
             OfflineTestObjectModel model = dbManager.fetchRecord(OfflineTestObjectModel.class, Long.parseLong(event.testQuestionPaperId));

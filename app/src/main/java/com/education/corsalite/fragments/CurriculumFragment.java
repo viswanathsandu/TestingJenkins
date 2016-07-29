@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.activities.ContentReadingActivity;
+import com.education.corsalite.activities.TestInstructionsActivity;
 import com.education.corsalite.adapters.CurriculumAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
@@ -138,13 +139,14 @@ public class CurriculumFragment extends BaseFragment implements CurriculumAdapte
                     break;
                 case CUSTOM_EXERCISE:
                     break;
-                case SCHEDULED_EXAM:
-                    break;
                 case PRACTIVE_TEST:
                     break;
+                case SCHEDULED_EXAM:
                 case REVISION_TEST:
-                    break;
                 case SCHEDULED_TEST:
+                    intent = new Intent(getActivity(), TestInstructionsActivity.class);
+                    intent.putExtra("test_question_paper_id", entity.idTestQuestionPaper);
+                    startActivity(intent);
                     break;
             }
         }
