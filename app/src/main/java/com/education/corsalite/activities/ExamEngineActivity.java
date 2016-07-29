@@ -2204,7 +2204,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     @Override
     public void onBackPressed() {
         if (!title.equalsIgnoreCase("Exercises") && !isFlaggedQuestionsScreen() && !isViewAnswersScreen()) {
-            showToast("Click on Suspend button to stop the exam");
+            showToast("You need to submit the exam before navigating away from this screen.");
         } else {
             super.onBackPressed();
         }
