@@ -58,7 +58,6 @@ import com.education.corsalite.fragments.FullQuestionDialog;
 import com.education.corsalite.fragments.LeaderBoardFragment;
 import com.education.corsalite.gson.Gson;
 import com.education.corsalite.helpers.WebSocketHelper;
-import com.education.corsalite.models.db.OfflineTestObjectModel;
 import com.education.corsalite.models.db.SyncModel;
 import com.education.corsalite.models.examengine.BaseTest;
 import com.education.corsalite.models.requestmodels.ExamTemplateChapter;
@@ -397,7 +396,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         if (!TextUtils.isEmpty(subjectName) && !TextUtils.isEmpty(chapterName)) {
             tvPageTitle.setText(subjectName + " - " + chapterName);
         }
-        if (SystemUtils.isNetworkConnected(this)) {
+        if (!SystemUtils.isNetworkConnected(this)) {
             loadOfflineDefaultExam();
         } else {
             getStandardExamByCourse();
@@ -437,7 +436,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void loadChallengeTest() {
-        if (SystemUtils.isNetworkConnected(this)) {
+        if (!SystemUtils.isNetworkConnected(this)) {
             showToast("Challenge Test works in online mode");
             return;
         }
@@ -2113,24 +2112,6 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             L.error(e.getMessage(), e);
             fullQuestionDialog.dismiss();
         }
-    }
-
-    private void loadOfflineMockTest() {
-        if(dbRowId == null || dbRowId <= 0) {
-            showToast("Not available for offline");
-            finish();
-            return;
-        }
-        dbManager.getMockExamModels(dbRowId, new ApiCallback<OfflineTestObjectModel>(this) {
-            @Override
-            public void success(OfflineTestObjectModel offlineModel, Response response) {
-                super.success(offlineModel, response);
-                headerProgress.setVisibility(View.GONE);
-                testQuestionPaperId = offlineModel.testQuestionPaperId;
-                testanswerPaper.testQuestionPaperId = testQuestionPaperId;
-                loadOfflineTestQuestionPaper(testQuestionPaperId);
-            }
-        });
     }
 
     private void loadOfflineDefaultExam() {
