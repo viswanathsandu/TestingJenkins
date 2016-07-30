@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
-import com.education.corsalite.activities.ExamEngineActivity;
 import com.education.corsalite.activities.TestInstructionsActivity;
 import com.education.corsalite.activities.TestStartActivity;
 import com.education.corsalite.enums.Tests;
@@ -255,18 +254,20 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         if (model.status != Constants.STATUS_COMPLETED) {
             Chapter chapter = model.baseTest.chapter;
             String subjectId = model.baseTest.subjectId;
-            Intent exerciseIntent = new Intent(context, ExamEngineActivity.class);
-            exerciseIntent.putExtra(TestStartActivity.KEY_TEST_TYPE, Tests.CHAPTER.getType());
-            exerciseIntent.putExtra(Constants.TEST_TITLE, chapter.chapterName);
-            exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.getSelectedCourseId());
-            exerciseIntent.putExtra(Constants.SELECTED_CHAPTERID, chapter.idCourseSubjectchapter);
-            exerciseIntent.putExtra(Constants.SELECTED_CHAPTER_NAME, chapter.chapterName);
-            exerciseIntent.putExtra(Constants.LEVEL_CROSSED, chapter.passedComplexity);
-            exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, subjectId);
+            Intent intent = new Intent(context, TestInstructionsActivity.class);
+            intent.putExtra(TestStartActivity.KEY_TEST_TYPE, Tests.CHAPTER.getType());
+            intent.putExtra(Constants.TEST_TITLE, chapter.chapterName);
+            intent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.getSelectedCourseId());
+            intent.putExtra(Constants.SELECTED_CHAPTERID, chapter.idCourseSubjectchapter);
+            intent.putExtra(Constants.SELECTED_CHAPTER_NAME, chapter.chapterName);
+            intent.putExtra(Constants.LEVEL_CROSSED, chapter.passedComplexity);
+            intent.putExtra(Constants.SELECTED_SUBJECTID, subjectId);
+            intent.putExtra("test_question_paper_id", model.testQuestionPaperId);
+            intent.putExtra("test_answer_paper_id", model.testAnswerPaperId);
             if(model.status == Constants.STATUS_SUSPENDED) {
-                exerciseIntent.putExtra("test_status", "Suspended");
+                intent.putExtra("test_status", "Suspended");
             }
-            context.startActivity(exerciseIntent);
+            context.startActivity(intent);
         } else {
             Toast.makeText(context, "You have already taken the test.", Toast.LENGTH_SHORT).show();
         }
@@ -276,16 +277,18 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         if (model.status != Constants.STATUS_COMPLETED) {
             String subjectName = model.baseTest.subjectName;
             String subjectId = model.baseTest.subjectId;
-            Intent exerciseIntent = new Intent(context, ExamEngineActivity.class);
-            exerciseIntent.putExtra(TestStartActivity.KEY_TEST_TYPE, Tests.PART.getType());
-            exerciseIntent.putExtra(Constants.TEST_TITLE, "Part Test - " + subjectName);
-            exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.getSelectedCourseId());
-            exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, subjectId);
-            exerciseIntent.putExtra(Constants.SELECTED_TOPIC_NAME, subjectName);
+            Intent intent = new Intent(context, TestInstructionsActivity.class);
+            intent.putExtra(TestStartActivity.KEY_TEST_TYPE, Tests.PART.getType());
+            intent.putExtra(Constants.TEST_TITLE, "Part Test - " + subjectName);
+            intent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.getSelectedCourseId());
+            intent.putExtra(Constants.SELECTED_SUBJECTID, subjectId);
+            intent.putExtra(Constants.SELECTED_TOPIC_NAME, subjectName);
+            intent.putExtra("test_question_paper_id", model.testQuestionPaperId);
+            intent.putExtra("test_answer_paper_id", model.testAnswerPaperId);
             if(model.status == Constants.STATUS_SUSPENDED) {
-                exerciseIntent.putExtra("test_status", "Suspended");
+                intent.putExtra("test_status", "Suspended");
             }
-            context.startActivity(exerciseIntent);
+            context.startActivity(intent);
         } else {
             Toast.makeText(context, "You have already taken the test.", Toast.LENGTH_SHORT).show();
         }

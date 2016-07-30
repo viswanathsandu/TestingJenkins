@@ -169,8 +169,8 @@ public class ExamUtils {
 
     public void deleteTestQuestionPaper(String testQuestionPaperId) {
         dbManager.deleteOfflineTestModel(testQuestionPaperId);
-        String fileName = testQuestionPaperId + "." + Constants.TEST_FILE;
-        FileUtils.get(mContext).deleteFile(fileName);
+        FileUtils fileUtils = FileUtils.get(mContext);
+        fileUtils.deleteFile(fileUtils.getTestsFolderPath(testQuestionPaperId));
         L.info("Deleted test question paper with id " + testQuestionPaperId);
     }
 }

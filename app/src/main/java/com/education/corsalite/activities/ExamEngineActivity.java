@@ -59,7 +59,6 @@ import com.education.corsalite.fragments.LeaderBoardFragment;
 import com.education.corsalite.gson.Gson;
 import com.education.corsalite.helpers.WebSocketHelper;
 import com.education.corsalite.models.db.SyncModel;
-import com.education.corsalite.models.examengine.BaseTest;
 import com.education.corsalite.models.requestmodels.ExamTemplateChapter;
 import com.education.corsalite.models.requestmodels.ExamTemplateConfig;
 import com.education.corsalite.models.requestmodels.FlaggedQuestionModel;
@@ -359,6 +358,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             if(!TextUtils.isEmpty(examName)){
                 setToolbarForExercise(examName, true);
             }
+            hideDrawerIcon();
             getTestQuestionPaper();
             testNavFooter.setVisibility(View.VISIBLE);
         } else { // PartTest
@@ -405,8 +405,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         if (!TextUtils.isEmpty(subjectName) && !TextUtils.isEmpty(chapterName)) {
             tvPageTitle.setText(subjectName + " - " + chapterName);
         }
-        if (!SystemUtils.isNetworkConnected(this)) {
-            loadOfflineDefaultExam();
+        if (!TextUtils.isEmpty(testQuestionPaperId)) {
+            getTestQuestionPaper();
         } else {
             getStandardExamByCourse();
         }
@@ -861,6 +861,11 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 if (state == TestanswerPaperState.STARTED) {
 
                 } else if (state == TestanswerPaperState.SUSPENDED) {
+                    TestQuestionPaperResponse response = new TestQuestionPaperResponse();
+                    response.questions = localExamModelList;
+                    response.examDetails = examDetails;
+                    new ExamUtils(ExamEngineActivity.this).saveTestQuestionPaper(testQuestionPaperId, response);
+                    new ExamUtils(ExamEngineActivity.this).saveTestAnswerPaper(testQuestionPaperId, testanswerPaper);
                     finish();
                 } else if (state == TestanswerPaperState.COMPLETED) {
                     headerProgress.setVisibility(View.GONE);
@@ -877,6 +882,11 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 } else if (state == TestanswerPaperState.SUSPENDED) {
                     showToast("Exam has been suspended");
                     dbManager.updateOfflineTestModel(testQuestionPaperId, Constants.STATUS_SUSPENDED, TimeUtils.currentTimeInMillis());
+                    TestQuestionPaperResponse questionPaperResponse = new TestQuestionPaperResponse();
+                    questionPaperResponse.questions = localExamModelList;
+                    questionPaperResponse.examDetails = examDetails;
+                    new ExamUtils(ExamEngineActivity.this).saveTestQuestionPaper(testQuestionPaperId, questionPaperResponse);
+                    new ExamUtils(ExamEngineActivity.this).saveTestAnswerPaper(testQuestionPaperId, testanswerPaper);
                     finish();
                 } else if (state == TestanswerPaperState.COMPLETED) {
                     headerProgress.setVisibility(View.GONE);
@@ -2019,8 +2029,12 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     @Override
                     public void success(TestQuestionPaperResponse questionPaperResponse, Response response) {
                         super.success(questionPaperResponse, response);
-                        if (questionPaperResponse != null)
+                        if (questionPaperResponse != null) {
                             showQuestionPaper(questionPaperResponse.questions, questionPaperResponse.examDetails);
+                        } else {
+                            showToast("Failed to start exam");
+                            finish();
+                        }
                     }
 
                     @Override
@@ -2129,37 +2143,6 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         } catch (Exception e) {
             L.error(e.getMessage(), e);
             fullQuestionDialog.dismiss();
-        }
-    }
-
-    private void loadOfflineDefaultExam() {
-        if(dbRowId == null || dbRowId <= 0) {
-            showToast("Not available for offline");
-            finish();
-            return;
-        }
-        dbManager.getExamModel(dbRowId, new ApiCallback<BaseTest>(this) {
-            @Override
-            public void success(BaseTest baseTest, Response response) {
-                super.success(baseTest, response);
-                headerProgress.setVisibility(View.GONE);
-                testQuestionPaperId = baseTest.testQuestionPaperId;
-                testanswerPaper.testQuestionPaperId = testQuestionPaperId;
-                loadOfflineTestQuestionPaper(testQuestionPaperId);
-            }
-        });
-    }
-
-    private void loadOfflineTestQuestionPaper(String testQuestionPaperId) {
-        try {
-            TestQuestionPaperResponse response = new ExamUtils(this).getTestQuestionPaper(testQuestionPaperId);
-            localExamModelList = response.questions;
-            examDetails = response.examDetails;
-            showQuestionPaper(response.questions, response.examDetails);
-        } catch (Exception e) {
-            showToast("Failed to load exam");
-            finish();
-            L.error(e.getMessage(), e);
         }
     }
 
