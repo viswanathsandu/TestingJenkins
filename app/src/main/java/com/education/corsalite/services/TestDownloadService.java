@@ -3,7 +3,6 @@ package com.education.corsalite.services;
 import android.app.IntentService;
 import android.content.Intent;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.api.ApiCallback;
@@ -11,6 +10,7 @@ import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.db.SugarDbManager;
 import com.education.corsalite.enums.Tests;
+import com.education.corsalite.event.Toast;
 import com.education.corsalite.helpers.ExamEngineHelper;
 import com.education.corsalite.listener.OnExamLoadCallback;
 import com.education.corsalite.models.db.ExerciseOfflineModel;
@@ -36,6 +36,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.greenrobot.event.EventBus;
 import retrofit.client.Response;
 
 /**
@@ -145,9 +146,9 @@ public class TestDownloadService extends IntentService {
                 examUtils.saveTestPaperIndex(model.testQuestionPaperId, testPaperIndexResponse);
                 examUtils.saveTestQuestionPaper(model.testQuestionPaperId, questionPaperResponse);
                 if (!TextUtils.isEmpty(testName)) {
-                    Toast.makeText(getApplicationContext(), "Test \"" + testName + "\" has been downloaded successfully", Toast.LENGTH_SHORT).show();
+                    EventBus.getDefault().post(new Toast("Test \"" + testName + "\" has been downloaded successfully"));
                 } else {
-                    Toast.makeText(getApplicationContext(), "Test has been downloaded successfully", Toast.LENGTH_SHORT).show();
+                    EventBus.getDefault().post(new Toast("Test has been downloaded successfully"));
                 }
             }
         } catch (Exception e) {
@@ -167,7 +168,7 @@ public class TestDownloadService extends IntentService {
                 model.testQuestionPaperId = test.testQuestionPaperId;
                 dbManager.saveOfflineTest(model);
                 new ExamUtils(getApplicationContext()).saveTestQuestionPaper(model.testQuestionPaperId, test.testQuestionPaperResponse);
-                Toast.makeText(getApplicationContext(), "\"" + chapter.chapterName + "\" test is downloaded successfully", Toast.LENGTH_SHORT).show();
+                EventBus.getDefault().post(new Toast("\"" + chapter.chapterName + "\" test is downloaded successfully"));
             }
 
             @Override
@@ -193,7 +194,7 @@ public class TestDownloadService extends IntentService {
                 dbManager.saveOfflineTest(model);
                 new ExamUtils(getApplicationContext()).saveTestQuestionPaper(model.testQuestionPaperId, test.testQuestionPaperResponse);
                 L.info("Test Saved : "+model.getClass());
-                Toast.makeText(getApplicationContext(), "\""+subjectName + "\" test is downloaded successfully", Toast.LENGTH_SHORT).show();
+                EventBus.getDefault().post(new Toast("\"\"+subjectName + \"\" test is downloaded successfully"));
             }
 
             @Override

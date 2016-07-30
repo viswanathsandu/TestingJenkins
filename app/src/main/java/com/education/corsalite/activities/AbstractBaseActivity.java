@@ -1240,6 +1240,12 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
     }
 
+    public void onEventMainThread(com.education.corsalite.event.Toast toast) {
+        if(!TextUtils.isEmpty(toast.message)) {
+            showToast(toast.message);
+        }
+    }
+
     // trigger challenge test request
     public void onEventMainThread(ChallengeTestRequestEvent event) {
         ChallengeUtils.get(this).showChallengeRequestNotification(event);
