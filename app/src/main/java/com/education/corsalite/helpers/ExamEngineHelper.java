@@ -8,6 +8,7 @@ import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.enums.ExamType;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.listener.OnExamLoadCallback;
 import com.education.corsalite.models.examengine.BaseTest;
 import com.education.corsalite.models.examengine.PartTest;
@@ -17,14 +18,15 @@ import com.education.corsalite.models.requestmodels.ExamTemplateConfig;
 import com.education.corsalite.models.requestmodels.PostCustomExamTemplate;
 import com.education.corsalite.models.requestmodels.PostQuestionPaperRequest;
 import com.education.corsalite.models.responsemodels.Chapter;
+import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Exam;
 import com.education.corsalite.models.responsemodels.PartTestGridElement;
 import com.education.corsalite.models.responsemodels.PostExamTemplate;
 import com.education.corsalite.models.responsemodels.PostQuestionPaper;
+import com.education.corsalite.models.responsemodels.TestPaperIndex;
 import com.education.corsalite.models.responsemodels.TestQuestionPaperResponse;
-import com.education.corsalite.gson.Gson;
+import com.education.corsalite.utils.ExamUtils;
 import com.education.corsalite.utils.L;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,14 +112,23 @@ public class ExamEngineHelper {
     private void postCustomExamTemplate(String chapterId, String topicIds, String questionsCount, List<Exam> examsList, final OnExamLoadCallback callback) {
         final PostCustomExamTemplate postCustomExamTemplate = new PostCustomExamTemplate();
         postCustomExamTemplate.examId = examsList.get(0).examId;
-        postCustomExamTemplate.examName = examsList.get(0).examName;
+
+        // TODO : Handling exam name for take test and part test
+        if (examType == ExamType.TAKE_TEST) {
+            postCustomExamTemplate.examName = "Chapter Practice Test - " + test.chapter.chapterName;
+        } else if (examType == ExamType.PART_TEST) {
+            postCustomExamTemplate.examName = "Part Test - " + test.subjectName;
+        } else {
+            postCustomExamTemplate.examName = examsList.get(0).examName;
+        }
+
         postCustomExamTemplate.examTemplateConfig = new ArrayList<>();
         ExamTemplateConfig examTemplateConfig = new ExamTemplateConfig();
         examTemplateConfig.subjectId = test.subjectId;
         examTemplateConfig.questionCount = questionsCount == null ? "" : questionsCount;
         examTemplateConfig.examTemplateChapter = new ArrayList<>();
-        if(partTestGridelements != null && !partTestGridelements.isEmpty()) {
-            for(PartTestGridElement element : partTestGridelements) {
+        if (partTestGridelements != null && !partTestGridelements.isEmpty()) {
+            for (PartTestGridElement element : partTestGridelements) {
                 examTemplateConfig.examTemplateChapter.add(new ExamTemplateChapter(element.idCourseSubjectChapter, element.recommendedQuestionCount));
             }
         } else {
@@ -184,7 +195,22 @@ public class ExamEngineHelper {
                 });
     }
 
-    private void getTestQuestionPaper(String testQuestionPaperId, String testAnswerPaperId, final OnExamLoadCallback callback) {
+    private void getTestQuestionPaper(final String testQuestionPaperId, String testAnswerPaperId, final OnExamLoadCallback callback) {
+        ApiManager.getInstance(mActivity).getTestPaperIndex(testQuestionPaperId, testAnswerPaperId, "N",
+                new ApiCallback<TestPaperIndex>(mActivity) {
+                    @Override
+                    public void failure(CorsaliteError error) {
+                        super.failure(error);
+                    }
+
+                    @Override
+                    public void success(TestPaperIndex testPaperIndex, Response response) {
+                        super.success(testPaperIndex, response);
+                        if (testPaperIndex != null) {
+                            new ExamUtils(mActivity).saveTestPaperIndex(testQuestionPaperId, testPaperIndex);
+                        }
+                    }
+                });
         ApiManager.getInstance(mActivity).getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId,
                 new ApiCallback<TestQuestionPaperResponse>(mActivity) {
                     @Override
@@ -198,6 +224,8 @@ public class ExamEngineHelper {
                         }
                     }
                 });
+
+
     }
 
 }

@@ -768,10 +768,15 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 long diff = currentTime - questionStartedTime;
                 long diffInSeconds = diff / 1000;
                 int timeTakenPreviously = 0;
+                int testTimeTaken = 0;
                 if(!TextUtils.isEmpty(testanswerPaper.testAnswers.get(position).timeTaken)) {
                     timeTakenPreviously = Integer.parseInt(testanswerPaper.testAnswers.get(position).timeTaken);
                 }
+                if(!TextUtils.isEmpty(testanswerPaper.timeTaken)) {
+                    testTimeTaken = Integer.parseInt(testanswerPaper.timeTaken);
+                }
                 testanswerPaper.testAnswers.get(position).timeTaken = String.valueOf(timeTakenPreviously + diffInSeconds);
+                testanswerPaper.timeTaken = String.valueOf(testTimeTaken + diffInSeconds);
             }
         }catch (Exception e) {
             L.error(e.getMessage(), e);
@@ -837,9 +842,6 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         }
         testanswerPaper.status = state.toString();
         testanswerPaper.endTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(TimeUtils.currentTimeInMillis()));
-        long startMillis = TimeUtils.getMillisFromDate(testanswerPaper.startTime);
-        long endMillis = TimeUtils.getMillisFromDate(testanswerPaper.endTime);
-        testanswerPaper.timeTaken = ((startMillis - endMillis)/1000) + "";
         if(!SystemUtils.isNetworkConnected(this)) {
             SyncModel syncModel = new SyncModel();
             syncModel.requestObject = testanswerPaper;
@@ -2092,6 +2094,10 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 timer = new CounterClass(examExpirytime - TimeUtils.currentTimeInMillis(), 1000);
                 timer.start();
             } else {
+                if(!TextUtils.isEmpty(testanswerPaper.timeTaken)) {
+                    long timeTaken = Long.parseLong(testanswerPaper.timeTaken);
+                    examDurationInSeconds -= timeTaken;
+                }
                 timer = new CounterClass(examDurationInSeconds * 1000, 1000);
                 timer.start();
             }

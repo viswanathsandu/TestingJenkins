@@ -35,21 +35,9 @@
                 style="@style/navigation_drawer_element" />
 
             <TextView
-                android:id="@+id/navigation_forum"
-                android:text="@string/forum"
-                android:drawableLeft="@drawable/ico_forum"
-                style="@style/navigation_drawer_element" />
-
-            <TextView
                 android:id="@+id/navigation_analytics"
                 android:drawableLeft="@drawable/ico_sidemenu_analytics"
                 android:text="Analytics"
-                style="@style/navigation_drawer_element" />
-
-            <TextView
-                android:id="@+id/navigation_curriculum"
-                android:drawableLeft="@drawable/ico_sidemenu_analytics"
-                android:text="Curriculum"
                 style="@style/navigation_drawer_element" />
 
             <TextView
@@ -59,9 +47,9 @@
                 style="@style/navigation_drawer_element" />
 
             <TextView
-                android:id="@+id/navigation_smart_class"
-                android:drawableLeft="@drawable/ico_sidemenu_smartclass"
-                android:text="Smart Class"
+                android:id="@+id/navigation_curriculum"
+                android:drawableLeft="@drawable/ico_sidemenu_analytics"
+                android:text="Curriculum"
                 style="@style/navigation_drawer_element" />
 
             <TextView
@@ -86,6 +74,18 @@
                 android:id="@+id/navigation_exam_history"
                 android:text="@string/menu_exam_history"
                 android:drawableLeft="@drawable/ico_exam_history"
+                style="@style/navigation_drawer_element" />
+
+            <TextView
+                android:id="@+id/navigation_forum"
+                android:text="@string/forum"
+                android:drawableLeft="@drawable/ico_forum"
+                style="@style/navigation_drawer_element" />
+
+            <TextView
+                android:id="@+id/navigation_smart_class"
+                android:drawableLeft="@drawable/ico_sidemenu_smartclass"
+                android:text="Smart Class"
                 style="@style/navigation_drawer_element" />
 
             <TextView
