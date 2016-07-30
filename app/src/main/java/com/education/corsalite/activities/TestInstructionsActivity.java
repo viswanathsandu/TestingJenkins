@@ -135,6 +135,11 @@ public class TestInstructionsActivity extends AbstractBaseActivity {
 
     private void showData() {
         setToolbarTitle(testPaperIndex.examDetails.get(0).examName);
+        if (!TextUtils.isEmpty(testStatus) && testStatus.equalsIgnoreCase("Suspended")) {
+            btStart.setText("Restart");
+        } else {
+            btStart.setText("Start");
+        }
         if (testPaperIndex != null && testPaperIndex.examDetails != null && !testPaperIndex.examDetails.isEmpty()) {
             ExamDetails exam = testPaperIndex.examDetails.get(0);
             long dueDateInMillis = TimeUtils.getMillisFromDate(exam.dueDateTime);
@@ -155,13 +160,12 @@ public class TestInstructionsActivity extends AbstractBaseActivity {
                     btStart.setVisibility(View.GONE);
                 }
             }
+            if(exam != null && exam.examInstucation != null) {
+                instuctions.loadData(testPaperIndex.examDetails.get(0).examInstucation, "text/html; charset=UTF-8", null);
+            } else {
+                navigateToExamEngine();
+            }
         }
-        if (!TextUtils.isEmpty(testStatus) && testStatus.equalsIgnoreCase("Suspended")) {
-            btStart.setText("Restart");
-        } else {
-            btStart.setText("Start");
-        }
-        instuctions.loadData(testPaperIndex.examDetails.get(0).examInstucation, "text/html; charset=UTF-8", null);
     }
 
     private void getBundleData() {
