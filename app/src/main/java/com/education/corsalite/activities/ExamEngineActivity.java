@@ -401,6 +401,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
     private void loadDefaultExam() {
         imvFlag.setVisibility(View.VISIBLE);
+        hideDrawerIcon();
         if (!TextUtils.isEmpty(subjectName) && !TextUtils.isEmpty(chapterName)) {
             tvPageTitle.setText(subjectName + " - " + chapterName);
         }
@@ -448,6 +449,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             showToast("Challenge Test works in online mode");
             return;
         }
+        hideDrawerIcon();
         fetchSections();
         // load leader board for testing purpose
         loadLeaderBoard();
@@ -470,6 +472,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void loadMockTest() {
+        hideDrawerIcon();
         imvFlag.setVisibility(View.VISIBLE);
         getTestQuestionPaper();
         fetchSections();

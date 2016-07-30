@@ -428,6 +428,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     protected void hideDrawerIcon() {
         actionBarDrawerToggle.setDrawerIndicatorEnabled(false);
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
     }
 
     protected void showDrawerIcon() {
