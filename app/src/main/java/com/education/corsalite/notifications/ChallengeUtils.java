@@ -11,8 +11,9 @@ import com.education.corsalite.activities.ChallengeActivity;
 import com.education.corsalite.models.responsemodels.ChallengeUser;
 import com.education.corsalite.models.socket.response.ChallengeTestRequestEvent;
 import com.education.corsalite.models.socket.response.ChallengeTestUpdateEvent;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.utils.L;
-import com.google.gson.Gson;
+
 
 import java.util.List;
 
@@ -55,7 +56,7 @@ public class ChallengeUtils {
         }
         Intent intent = new Intent(context, ChallengeActivity.class);
         intent.putExtra("type", "REQUEST");
-        intent.putExtra("challenge_test_request_json", new Gson().toJson(event));
+        intent.putExtra("challenge_test_request_json", Gson.get().toJson(event));
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 context, requestCode++, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
@@ -88,7 +89,7 @@ public class ChallengeUtils {
         }
         Intent intent = new Intent(context, ChallengeActivity.class);
         intent.putExtra("type", "UPDATE");
-        intent.putExtra("challenge_test_update_json", new Gson().toJson(event));
+        intent.putExtra("challenge_test_update_json", Gson.get().toJson(event));
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 context, requestCode++, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);

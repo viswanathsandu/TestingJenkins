@@ -172,6 +172,9 @@ public interface ICorsaliteApi {
     void getScheduledTestsList(@Query("idStudent") String idStudent, ApiCallback<ScheduledTestList> callback);
 
     @GET("/TestQuestionPaper")
+    TestQuestionPaperResponse getTestQuestionPaper(@Query("idTestQuestionPaper") String idTestQuestionPaper, @Query("idTestAnswerPaper") String idTestAnswerPaper);
+
+    @GET("/TestQuestionPaper")
     void getTestQuestionPaper(@Query("idTestQuestionPaper") String idTestQuestionPaper, @Query("idTestAnswerPaper") String idTestAnswerPaper, ApiCallback<TestQuestionPaperResponse> callback);
 
     @Headers("Content-Type:application/x-www-form-urlencoded")
@@ -264,8 +267,8 @@ public interface ICorsaliteApi {
     BaseResponseModel postContentUsage(@Body TypedString insert);
 
     @Headers("Content-Type:application/x-www-form-urlencoded")
-    @POST("/UserEvents")
-    void postUserEvents(@Body TypedString insert, ApiCallback<UserEventsResponse> callback);
+    @POST("/EventLog")
+    void postUserEvents(@Body TypedString update, ApiCallback<UserEventsResponse> callback);
 
     @Headers("Content-Type:application/x-www-form-urlencoded")
     @POST("/UserEvents")
@@ -277,6 +280,10 @@ public interface ICorsaliteApi {
 
     @GET("/MockTest")
     void getMockTests(@Query("idCourse") String courseID, @Query("idStudent") String studentId, ApiCallback<List<MockTest>> callback);
+
+    @GET("/TestPaperIndex")
+    TestPaperIndex getTestPaperIndex(@Query("idTestQuestionPaper") String questionPaperId, @Query("idTestAnswerPaper") String answerPaperId, @Query("doGetAllStage") String allStage);
+
 
     @GET("/TestPaperIndex")
     void getTestPaperIndex(@Query("idTestQuestionPaper") String questionPaperId, @Query("idTestAnswerPaper") String answerPaperId, @Query("doGetAllStage") String allStage, ApiCallback<TestPaperIndex> callback);

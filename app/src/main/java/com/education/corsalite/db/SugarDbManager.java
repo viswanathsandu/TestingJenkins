@@ -4,22 +4,25 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.education.corsalite.api.ApiCallback;
-import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.models.db.ExerciseOfflineModel;
 import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.models.db.OfflineTestObjectModel;
 import com.education.corsalite.models.db.ScheduledTestsArray;
+import com.education.corsalite.models.db.SyncModel;
 import com.education.corsalite.models.db.reqres.LoginReqRes;
 import com.education.corsalite.models.db.reqres.ReqRes;
 import com.education.corsalite.models.db.reqres.requests.AbstractBaseRequest;
 import com.education.corsalite.models.examengine.BaseTest;
 import com.education.corsalite.models.responsemodels.BaseModel;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
+import com.education.corsalite.utils.AppPref;
 import com.education.corsalite.utils.Gzip;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.MockUtils;
-import com.google.gson.Gson;
 import com.orm.SugarRecord;
+import com.orm.query.Condition;
+import com.orm.query.Select;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -50,8 +53,8 @@ public class SugarDbManager {
     public <T extends BaseModel> void save(T object) {
         try {
             if (object != null) {
-                object.setUserId();
-                object.reflectionJsonString = Gzip.compress(new Gson().toJson(object));
+                object.setBaseUserId(context);
+                object.reflectionJsonString = Gzip.compress(Gson.get().toJson(object));
                 object.save();
                 object.reflectionJsonString = null; // clear the memory
                 updateChachedData(object);
@@ -79,11 +82,16 @@ public class SugarDbManager {
         List<T> results = new ArrayList<>();
         try {
             if (type != null) {
-                List<T> allList = SugarRecord.find(type, "USER_ID=?", LoginUserCache.getInstance().getUserId());
+                List<T> allList;
+                if(!type.equals(LoginReqRes.class)) {
+                    allList = Select.from(type).where(Condition.prop("BASE_USER_ID").eq(AppPref.get(context).getUserId())).list();
+                } else {
+                    allList = SugarRecord.listAll(type);
+                }
                 while(allList!=null && allList.size() > 0) {
                     T t = allList.remove(0);
                     if(t.reflectionJsonString != null) {
-                        T object = new Gson().fromJson(Gzip.decompress(t.reflectionJsonString), type);
+                        T object = Gson.get().fromJson(Gzip.decompress(t.reflectionJsonString), type);
                         t.reflectionJsonString = null;
                         object.setId(t.getId());
                         results.add(object);
@@ -101,11 +109,45 @@ public class SugarDbManager {
             if (type != null) {
                 T t = SugarRecord.findById(type, id);
                 if (t.reflectionJsonString != null) {
-                    T object = new Gson().fromJson(Gzip.decompress(t.reflectionJsonString), type);
+                    T object = Gson.get().fromJson(Gzip.decompress(t.reflectionJsonString), type);
                     t.reflectionJsonString = null;
                     object.setId(t.getId());
                     return object;
                 }
+            }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+        return null;
+    }
+
+    public <T extends BaseModel> T fetchFirstRecord(Class<T> type) {
+        try {
+            if (type != null) {
+                T t = Select.from(type).where(Condition.prop("BASE_USER_ID").eq(AppPref.get(context).getUserId())).first();
+                if (t.reflectionJsonString != null) {
+                    T object = Gson.get().fromJson(Gzip.decompress(t.reflectionJsonString), type);
+                    t.reflectionJsonString = null;
+                    object.setId(t.getId());
+                    return object;
+                }
+            }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+        return null;
+    }
+
+    public OfflineTestObjectModel fetchOfflineTestRecord(String testQuestionPaperID) {
+        try {
+            OfflineTestObjectModel t = Select.from(OfflineTestObjectModel.class)
+                            .where(Condition.prop("BASE_USER_ID").eq(AppPref.get(context).getUserId()),
+                                    Condition.prop("TEST_QUESTION_PAPER_ID").eq(testQuestionPaperID)).first();
+            if (t != null && t.reflectionJsonString != null) {
+                OfflineTestObjectModel object = Gson.get().fromJson(Gzip.decompress(t.reflectionJsonString), OfflineTestObjectModel.class);
+                t.reflectionJsonString = null;
+                object.setId(t.getId());
+                return object;
             }
         } catch (Exception e) {
             L.error(e.getMessage(), e);
@@ -134,6 +176,21 @@ public class SugarDbManager {
             }
         } catch (Exception e) {
             L.error(e.getMessage(), e);
+        }
+    }
+
+    public void addSyncModel(SyncModel model) {
+        if(model != null) {
+            save(model);
+        }
+    }
+
+    public SyncModel getFirstSyncModel() {
+        try {
+            return fetchFirstRecord(SyncModel.class);
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+            return null;
         }
     }
 
@@ -317,7 +374,6 @@ public class SugarDbManager {
         try {
             if(model != null && !TextUtils.isEmpty(model.testQuestionPaperId)
                     && TextUtils.isDigitsOnly(model.testQuestionPaperId)) {
-                model.setId(Long.valueOf(model.testQuestionPaperId));
                 save(model);
             }
         } catch (Exception e) {
@@ -327,7 +383,7 @@ public class SugarDbManager {
 
     public void updateOfflineTestModel(final String testQuestionPaperId, final int status, final long examTakenTime) {
         try {
-            OfflineTestObjectModel result = fetchRecord(OfflineTestObjectModel.class, Long.valueOf(testQuestionPaperId));
+            OfflineTestObjectModel result = fetchOfflineTestRecord(testQuestionPaperId);
             if (result != null) {
                 result.dateTime = examTakenTime;
                 result.status = status;
@@ -340,7 +396,7 @@ public class SugarDbManager {
 
     public void deleteOfflineTestModel(final String testQuestionPaperId) {
         try {
-            OfflineTestObjectModel result = fetchRecord(OfflineTestObjectModel.class, Long.valueOf(testQuestionPaperId));
+            OfflineTestObjectModel result = fetchOfflineTestRecord(testQuestionPaperId);
             if(result != null) {
                 delete(result);
             }
@@ -528,6 +584,12 @@ public class SugarDbManager {
     }
 
     // Cached data
+    public void clearCachedData() {
+        cachedOfflineContents = null;
+        cachedOfflineTestObjects = null;
+        cachedOfflineExercises = null;
+    }
+
     private List<OfflineContent> getCahcedOfflineContents() {
         if (cachedOfflineContents == null || cachedOfflineContents.isEmpty()) {
             cachedOfflineContents = fetchRecords(OfflineContent.class);

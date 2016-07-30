@@ -98,10 +98,11 @@ public class ExamHistoryActivity extends AbstractBaseActivity implements ExamHis
         ExamHistory examHistory = (ExamHistory) examHistoryAdapter.getItem(position);
         if (SystemUtils.isNetworkConnected(this)) {
             if(!TextUtils.isEmpty(examHistory.totalScore) && examHistory.totalScore.equalsIgnoreCase("suspended")) {
-                Intent intent = new Intent(ExamHistoryActivity.this, ExamEngineActivity.class);
+                Intent intent = new Intent(ExamHistoryActivity.this, TestInstructionsActivity.class);
                 intent.putExtra("exam_name", examHistory.examName);
                 intent.putExtra("test_question_paper_id", examHistory.idTestQuestionPaper);
                 intent.putExtra("test_answer_paper_id", examHistory.idTestAnswerPaper);
+                intent.putExtra("test_status", "Suspended");
                 startActivity(intent);
                return;
             } else {

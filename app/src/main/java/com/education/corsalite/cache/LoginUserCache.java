@@ -50,13 +50,6 @@ public class LoginUserCache {
         return "";
     }
 
-    public String getUserId() {
-        if(loginResponse != null && !TextUtils.isEmpty(loginResponse.userId)) {
-            return loginResponse.userId;
-        }
-        return "";
-    }
-
     public String getEntityId() {
         if(loginResponse != null && !TextUtils.isEmpty(loginResponse.entitiyId)) {
             return loginResponse.entitiyId;

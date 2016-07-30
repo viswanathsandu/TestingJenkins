@@ -68,7 +68,7 @@ public class AnalyticsActivity extends AbstractBaseActivity implements Analytics
                 break;
             case K_TITLE_USAGE_ANALYSIS:
                 UsageAnalysisFragment usageAnalysisFragment = new UsageAnalysisFragment();
-                getFragmentManager().beginTransaction().replace(R.id.fl_analytics_detail,usageAnalysisFragment).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fl_analytics_detail,usageAnalysisFragment).commit();
                 break;
             default:
                 AccuracySpeedTabFragment accuracySpeedTabFragment1 = new AccuracySpeedTabFragment();

@@ -18,7 +18,8 @@ import com.education.corsalite.models.requestmodels.ExamDetailsRequest;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.ExamDetail;
 import com.education.corsalite.models.responsemodels.UpdateExamDetailsResponse;
-import com.google.gson.Gson;
+import com.education.corsalite.gson.Gson;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,7 +86,7 @@ public class ExamTabFragment extends BaseFragment implements ExamAdapter.IAddExa
     public void onUpdateExamDetails(View view, ExamDetail examDetail,int position) {
         examDetailList.add(position, examDetail);
         mAdapter.notifyItemChanged(position);
-        String update = new Gson().toJson(new ExamDetailsRequest(
+        String update = Gson.get().toJson(new ExamDetailsRequest(
                 LoginUserCache.getInstance().getStudentId(), examDetail));
         ApiManager.getInstance(getActivity()).updateExamDetails(update, new ApiCallback<UpdateExamDetailsResponse>(getActivity()) {
             @Override

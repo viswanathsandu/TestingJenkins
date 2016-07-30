@@ -52,14 +52,14 @@
     <Button
         android:layout_toRightOf="@+id/iv_status"
         android:id="@+id/test_status"
-        android:background="@drawable/button_selector_black"
+        android:background="@drawable/button_selector_gray"
         fontPath="@string/roboto_regular"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:layout_centerVertical="true"
         android:lines="1"
         android:textAllCaps="false"
-        android:textColor="@color/text_white"
+        android:textColor="@color/text_black"
         android:textSize="12sp" />
     </RelativeLayout>
 

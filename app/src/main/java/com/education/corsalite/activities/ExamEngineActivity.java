@@ -56,12 +56,9 @@ import com.education.corsalite.enums.TestanswerPaperState;
 import com.education.corsalite.event.ExerciseAnsEvent;
 import com.education.corsalite.fragments.FullQuestionDialog;
 import com.education.corsalite.fragments.LeaderBoardFragment;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.helpers.WebSocketHelper;
-import com.education.corsalite.models.db.MockTest;
-import com.education.corsalite.models.db.OfflineTestObjectModel;
-import com.education.corsalite.models.db.ScheduledTestsArray;
 import com.education.corsalite.models.db.SyncModel;
-import com.education.corsalite.models.examengine.BaseTest;
 import com.education.corsalite.models.requestmodels.ExamTemplateChapter;
 import com.education.corsalite.models.requestmodels.ExamTemplateConfig;
 import com.education.corsalite.models.requestmodels.FlaggedQuestionModel;
@@ -86,15 +83,14 @@ import com.education.corsalite.models.responsemodels.TestPaperIndex;
 import com.education.corsalite.models.responsemodels.TestQuestionPaperResponse;
 import com.education.corsalite.models.socket.requests.UpdateLeaderBoardEvent;
 import com.education.corsalite.services.ApiClientService;
-import com.education.corsalite.services.DataSyncService;
 import com.education.corsalite.utils.Constants;
+import com.education.corsalite.utils.ExamUtils;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.SystemUtils;
 import com.education.corsalite.utils.TimeUtils;
 import com.education.corsalite.utils.WebUrls;
 import com.education.corsalite.views.CorsaliteWebViewClient;
 import com.education.corsalite.views.GridViewInScrollView;
-import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
@@ -220,9 +216,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private int selectedAnswerPosition = -1;
     private long examDurationInSeconds = 0;
     private long examDurationTakenInSeconds = 0;
-    private long offlineModelDate;
     private boolean isFlagged = false;
-    private boolean isOffline;
     private boolean mIsAdaptiveTest;
     private String webQuestion = "";
     private String enteredAnswer = ""; // for alphanumeric
@@ -248,6 +242,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private List<ExamModel> flaggedQuestions;
     private List<PartTestGridElement> partTestGridElements;
     private List<String> sections;
+    private QuestionPaperExamDetails examDetails;
     private TestAnswerPaper testanswerPaper = new TestAnswerPaper();
     private Long scheduledTimeInMillis = 0l;
     private CounterClass timer;
@@ -312,9 +307,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         topicIds = getIntent().getExtras().getString(Constants.SELECTED_TOPICID);
         chapterName = getIntent().getExtras().getString(Constants.SELECTED_CHAPTER_NAME);
         subjectName = getIntent().getExtras().getString(Constants.SELECTED_SUBJECT_NAME);
-        isOffline = getIntent().getExtras().getBoolean(Constants.IS_OFFLINE, false);
         dbRowId = getIntent().getExtras().getLong(Constants.DB_ROW_ID);
-        offlineModelDate = getIntent().getExtras().getLong("OfflineTestObjectModel");
         challengeTestId = getIntent().getStringExtra("challenge_test_id");
         challengeTestTimeDuration = getIntent().getStringExtra("challenge_test_time_duration");
         mIsAdaptiveTest = getIntent().getBooleanExtra(Constants.ADAPIVE_LEAERNING, false);
@@ -326,7 +319,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         if (!TextUtils.isEmpty(partTestGridElimentsJson)) {
             Type listType = new TypeToken<ArrayList<PartTestGridElement>>() {
             }.getType();
-            partTestGridElements = new Gson().fromJson(partTestGridElimentsJson, listType);
+            partTestGridElements = Gson.get().fromJson(partTestGridElimentsJson, listType);
         }
 
         if (isFlaggedQuestionsScreen()) {
@@ -355,7 +348,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             loadChallengeTest();
         } else if (isViewAnswersScreen()) {
             loadViewAnswers();
-        } else if(title.equalsIgnoreCase("Take Test")) { // TakeTest
+        } else if(isTakeTest()) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             if(!TextUtils.isEmpty(subjectName) && !TextUtils.isEmpty(chapterName)){
                 setToolbarForExercise(subjectName + " - " + chapterName, true);
@@ -365,7 +358,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             if(!TextUtils.isEmpty(examName)){
                 setToolbarForExercise(examName, true);
             }
-            getTestQuestionPaper(testAnswerPaperId);
+            hideDrawerIcon();
+            getTestQuestionPaper();
             testNavFooter.setVisibility(View.VISIBLE);
         } else { // PartTest
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -375,6 +369,14 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
     private boolean isExerciseTest() {
         return title.equalsIgnoreCase("Exercises");
+    }
+
+    private boolean isTakeTest() {
+        return title.equalsIgnoreCase("Take Test");
+    }
+
+    private boolean isPartTest() {
+        return title.equalsIgnoreCase("Part Test");
     }
 
     private boolean isChallengeTest() {
@@ -399,14 +401,16 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
     private void loadDefaultExam() {
         imvFlag.setVisibility(View.VISIBLE);
+        hideDrawerIcon();
         if (!TextUtils.isEmpty(subjectName) && !TextUtils.isEmpty(chapterName)) {
             tvPageTitle.setText(subjectName + " - " + chapterName);
         }
-        if (isOffline) {
-            loadOfflineDefaultExam();
+        if (!TextUtils.isEmpty(testQuestionPaperId)) {
+            getTestQuestionPaper();
         } else {
             getStandardExamByCourse();
         }
+        fetchSections();
         imvRefresh.setVisibility(View.VISIBLE);
         timerLayout.setVisibility(View.VISIBLE);
         testNavFooter.setVisibility(View.VISIBLE);
@@ -430,33 +434,30 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         btnSuspend.setVisibility(View.GONE);
         btnSave.setVisibility(View.GONE);
-        if (isOffline) {
-            String testJson = getIntent().getExtras().getString("mock_test_data_json");
-            ScheduledTestsArray model = new Gson().fromJson(testJson, ScheduledTestsArray.class);
-            loadOfflineScheduledTest(model);
-            testNavFooter.setVisibility(View.VISIBLE);
-        } else {
-            imvFlag.setVisibility(View.VISIBLE);
-            getTestQuestionPaper(null);
-            imvRefresh.setVisibility(View.VISIBLE);
-            timerLayout.setVisibility(View.VISIBLE);
-            testNavFooter.setVisibility(View.VISIBLE);
-            btnVerify.setVisibility(View.GONE);
-        }
+        testNavFooter.setVisibility(View.VISIBLE);
+        fetchSections();
+        imvFlag.setVisibility(View.VISIBLE);
+        getTestQuestionPaper();
+        imvRefresh.setVisibility(View.VISIBLE);
+        timerLayout.setVisibility(View.VISIBLE);
+        testNavFooter.setVisibility(View.VISIBLE);
+        btnVerify.setVisibility(View.GONE);
     }
 
     private void loadChallengeTest() {
-        if (isOffline) {
+        if (!SystemUtils.isNetworkConnected(this)) {
             showToast("Challenge Test works in online mode");
             return;
         }
+        hideDrawerIcon();
+        fetchSections();
         // load leader board for testing purpose
         loadLeaderBoard();
         btnSuspend.setVisibility(View.GONE);
         btnSave.setVisibility(View.GONE);
         imvFlag.setVisibility(View.VISIBLE);
         sendLederBoardRequestEvent();
-        getTestQuestionPaper(null);
+        getTestQuestionPaper();
         imvRefresh.setVisibility(View.VISIBLE);
         timerLayout.setVisibility(View.VISIBLE);
         testNavFooter.setVisibility(View.VISIBLE);
@@ -464,27 +465,17 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void sendLederBoardRequestEvent() {
-        UpdateLeaderBoardEvent event = new UpdateLeaderBoardEvent(testQuestionPaperId);
-        WebSocketHelper.get(this).sendUpdateLeaderBoardEvent(event);
+        if(isChallengeTest()) {
+            UpdateLeaderBoardEvent event = new UpdateLeaderBoardEvent(testQuestionPaperId);
+            WebSocketHelper.get(this).sendUpdateLeaderBoardEvent(event);
+        }
     }
 
     private void loadMockTest() {
-        MockTest mockTest = null;
-        if (isOffline) {
-            String mockTestJson = getIntent().getExtras().getString("mock_test_data_json");
-            mockTest = new Gson().fromJson(mockTestJson, MockTest.class);
-        }
+        hideDrawerIcon();
         imvFlag.setVisibility(View.VISIBLE);
-        String testInstructions = getIntent().getStringExtra("Test_Instructions");
-        if (mockTest == null) {
-            getTestQuestionPaper(null);
-        } else {
-            loadOfflineMockTest(mockTest);
-        }
-        if (!TextUtils.isEmpty(testInstructions)) {
-            mockTestPaperIndex = new Gson().fromJson(testInstructions, TestPaperIndex.class);
-            fetchSections(mockTestPaperIndex);
-        }
+        getTestQuestionPaper();
+        fetchSections();
         imvRefresh.setVisibility(View.VISIBLE);
         timerLayout.setVisibility(View.VISIBLE);
         testNavFooter.setVisibility(View.VISIBLE);
@@ -514,23 +505,29 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         timerLayout.setVisibility(View.GONE);
     }
 
-    private void fetchSections(TestPaperIndex testPaperIndex) {
-        if (testPaperIndex != null && testPaperIndex.questionPaperIndecies != null) {
+    private void fetchSections() {
+        String testInstructions = getIntent().getStringExtra("Test_Instructions");
+        if (!TextUtils.isEmpty(testInstructions)) {
+            mockTestPaperIndex = Gson.get().fromJson(testInstructions, TestPaperIndex.class);
+        }
+        if (mockTestPaperIndex != null && mockTestPaperIndex.questionPaperIndecies != null) {
             sections = new ArrayList<>();
-            for (QuestionPaperIndex questionPaperIndex : testPaperIndex.questionPaperIndecies) {
+            for (QuestionPaperIndex questionPaperIndex : mockTestPaperIndex.questionPaperIndecies) {
                 if (!TextUtils.isEmpty(questionPaperIndex.sectionName)) {
                     if (!sections.contains(questionPaperIndex.sectionName)) {
                         sections.add(questionPaperIndex.sectionName);
                     }
                 }
             }
-            sectionsRecyclerView.setVisibility(View.VISIBLE);
-            sectionsRecyclerView.setHasFixedSize(true);
-            sectionsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-            sectionsAdapter = new MockSubjectsAdapter();
-            sectionsAdapter.setData(sections);
-            sectionsAdapter.setOnMockSubjectClickListener(onMockSectionClickListener);
-            sectionsRecyclerView.setAdapter(sectionsAdapter);
+            if(sections.size() > 1) {
+                sectionsRecyclerView.setVisibility(View.VISIBLE);
+                sectionsRecyclerView.setHasFixedSize(true);
+                sectionsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+                sectionsAdapter = new MockSubjectsAdapter();
+                sectionsAdapter.setData(sections);
+                sectionsAdapter.setOnMockSubjectClickListener(onMockSectionClickListener);
+                sectionsRecyclerView.setAdapter(sectionsAdapter);
+            }
         }
     }
 
@@ -771,10 +768,15 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 long diff = currentTime - questionStartedTime;
                 long diffInSeconds = diff / 1000;
                 int timeTakenPreviously = 0;
+                int testTimeTaken = 0;
                 if(!TextUtils.isEmpty(testanswerPaper.testAnswers.get(position).timeTaken)) {
                     timeTakenPreviously = Integer.parseInt(testanswerPaper.testAnswers.get(position).timeTaken);
                 }
+                if(!TextUtils.isEmpty(testanswerPaper.timeTaken)) {
+                    testTimeTaken = Integer.parseInt(testanswerPaper.timeTaken);
+                }
                 testanswerPaper.testAnswers.get(position).timeTaken = String.valueOf(timeTakenPreviously + diffInSeconds);
+                testanswerPaper.timeTaken = String.valueOf(testTimeTaken + diffInSeconds);
             }
         }catch (Exception e) {
             L.error(e.getMessage(), e);
@@ -843,9 +845,16 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         if(!SystemUtils.isNetworkConnected(this)) {
             SyncModel syncModel = new SyncModel();
             syncModel.requestObject = testanswerPaper;
-            DataSyncService.addSyncModel(syncModel);
+            dbManager.addSyncModel(syncModel);
             if(state == TestanswerPaperState.COMPLETED) {
-                dbManager.deleteOfflineTestModel(testQuestionPaperId);
+                new ExamUtils(this).deleteTestQuestionPaper(testQuestionPaperId);
+            } else if(state == TestanswerPaperState.SUSPENDED) {
+                dbManager.updateOfflineTestModel(testQuestionPaperId, Constants.STATUS_SUSPENDED, TimeUtils.currentTimeInMillis());
+                new ExamUtils(this).saveTestAnswerPaper(testQuestionPaperId, testanswerPaper);
+                TestQuestionPaperResponse response = new TestQuestionPaperResponse();
+                response.questions = localExamModelList;
+                response.examDetails = examDetails;
+                new ExamUtils(this).saveTestQuestionPaper(testQuestionPaperId, response);
             }
             return;
         }
@@ -857,10 +866,16 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 if (state == TestanswerPaperState.STARTED) {
 
                 } else if (state == TestanswerPaperState.SUSPENDED) {
+                    TestQuestionPaperResponse response = new TestQuestionPaperResponse();
+                    response.questions = localExamModelList;
+                    response.examDetails = examDetails;
+                    new ExamUtils(ExamEngineActivity.this).saveTestQuestionPaper(testQuestionPaperId, response);
+                    new ExamUtils(ExamEngineActivity.this).saveTestAnswerPaper(testQuestionPaperId, testanswerPaper);
                     finish();
                 } else if (state == TestanswerPaperState.COMPLETED) {
                     headerProgress.setVisibility(View.GONE);
                     mViewSwitcher.showNext();
+                    new ExamUtils(ExamEngineActivity.this).deleteTestQuestionPaper(testQuestionPaperId);
                 }
             }
 
@@ -873,18 +888,23 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 } else if (state == TestanswerPaperState.SUSPENDED) {
                     showToast("Exam has been suspended");
                     dbManager.updateOfflineTestModel(testQuestionPaperId, Constants.STATUS_SUSPENDED, TimeUtils.currentTimeInMillis());
+                    TestQuestionPaperResponse questionPaperResponse = new TestQuestionPaperResponse();
+                    questionPaperResponse.questions = localExamModelList;
+                    questionPaperResponse.examDetails = examDetails;
+                    new ExamUtils(ExamEngineActivity.this).saveTestQuestionPaper(testQuestionPaperId, questionPaperResponse);
+                    new ExamUtils(ExamEngineActivity.this).saveTestAnswerPaper(testQuestionPaperId, testanswerPaper);
                     finish();
                 } else if (state == TestanswerPaperState.COMPLETED) {
                     headerProgress.setVisibility(View.GONE);
+                    new ExamUtils(ExamEngineActivity.this).deleteTestQuestionPaper(testQuestionPaperId);
                     mViewSwitcher.showNext();
                     if (isChallengeTest()) {
                         openChallengeTestResults();
                     } else if (testAnswerPaperResponse != null && !TextUtils.isEmpty(testAnswerPaperResponse.testAnswerPaperId)) {
                         openAdvancedExamResultSummary(testAnswerPaperResponse.testAnswerPaperId);
                     }
-                    // dbManager.updateOfflineTestModel(offlineModelDate, Constants.STATUS_COMPLETED, System.currentTimeMillis());
                     // TO remove the exam if submitted
-                    dbManager.deleteOfflineTestModel(testQuestionPaperId);
+                    new ExamUtils(ExamEngineActivity.this).deleteTestQuestionPaper(testQuestionPaperId);
                 }
             }
         });
@@ -1007,6 +1027,12 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         intent.putExtra("recommended_time", TimeUtils.getSecondsInTimeFormat(examDurationInSeconds));
         intent.putExtra("time_taken", TimeUtils.getSecondsInTimeFormat(examDurationTakenInSeconds));
         intent.putExtra("total_questions", totalQuestions);
+        if(mockTestPaperIndex != null && mockTestPaperIndex.examDetails != null && mockTestPaperIndex.examDetails.get(0) != null) {
+            String dueDateText = mockTestPaperIndex.examDetails.get(0).dueDateTime;
+            if(!TextUtils.isEmpty(dueDateText)) {
+                intent.putExtra("due_date_millis", TimeUtils.getMillisFromDate(dueDateText));
+            }
+        }
         intent.putExtra("correct", correct);
         intent.putExtra("wrong", wrong);
         startActivity(intent);
@@ -1059,10 +1085,11 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         try {
             isFlagged = false;
             questionStartedTime = TimeUtils.currentTimeInMillis();
-            if (testanswerPaper != null && testanswerPaper.testAnswers != null && testanswerPaper.testAnswers.size() > position) {
-                if (!TextUtils.isEmpty(testanswerPaper.testAnswers.get(position).status) && testanswerPaper.testAnswers.get(position).status.equalsIgnoreCase(Constants.AnswerState.UNATTEMPTED.getValue())) {
-                    testanswerPaper.testAnswers.get(position).status = Constants.AnswerState.SKIPPED.getValue();
-                }
+            if (testanswerPaper != null && testanswerPaper.testAnswers != null
+                    && testanswerPaper.testAnswers.size() > position
+                    && !TextUtils.isEmpty(testanswerPaper.testAnswers.get(position).status)
+                    && testanswerPaper.testAnswers.get(position).status.equalsIgnoreCase(Constants.AnswerState.UNATTEMPTED.getValue())) {
+                testanswerPaper.testAnswers.get(position).status = Constants.AnswerState.SKIPPED.getValue();
             }
             updateFlaggedQuestion(localExamModelList.get(position).isFlagged);
             tvSerialNo.setText("Q" + (position + 1) + ")");
@@ -1696,7 +1723,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         layoutChoice.setVisibility(View.VISIBLE);
 
         if (SystemUtils.isNetworkConnected(this)) {
-            ApiManager.getInstance(this).postExerciseAnswer(new Gson().toJson(postExerciseRequestModel),
+            ApiManager.getInstance(this).postExerciseAnswer(Gson.get().toJson(postExerciseRequestModel),
                     new ApiCallback<PostExercise>(this) {
                         @Override
                         public void failure(CorsaliteError error) {
@@ -1870,7 +1897,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         }
         if(getIntent().hasExtra(Constants.PARTTEST_EXAMMODEL)) {
             String examJson  = getIntent().getExtras().getString(Constants.PARTTEST_EXAMMODEL);
-            Exam exam = new Gson().fromJson(examJson, Exam.class);
+            Exam exam = Gson.get().fromJson(examJson, Exam.class);
             List<Exam> exams = new ArrayList<>();
             exams.add(exam);
             postCustomExamTemplate(exams);
@@ -1896,7 +1923,16 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
         PostCustomExamTemplate postCustomExamTemplate = new PostCustomExamTemplate();
         postCustomExamTemplate.examId = examsList.get(0).examId;
-        postCustomExamTemplate.examName = examsList.get(0).examName;
+
+        // TODO : Handling exam name for take test and part test
+        if(isTakeTest()) {
+            postCustomExamTemplate.examName = "Chapter Practice Test - " + chapterName;
+        } else if(isPartTest()) {
+            postCustomExamTemplate.examName = "Part Test - " + subjectName;
+        } else {
+            postCustomExamTemplate.examName = examsList.get(0).examName;
+        }
+
         if (mIsAdaptiveTest) {
             postCustomExamTemplate.examDoTestBySlidingComplexity = "Y";
         }
@@ -1919,7 +1955,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         }
         postCustomExamTemplate.examTemplateConfig.add(examTemplateConfig);
 
-        ApiManager.getInstance(this).postCustomExamTemplate(new Gson().toJson(postCustomExamTemplate),
+        ApiManager.getInstance(this).postCustomExamTemplate(Gson.get().toJson(postCustomExamTemplate),
                 new ApiCallback<PostExamTemplate>(this) {
                     @Override
                     public void success(PostExamTemplate postExamTemplate, Response response) {
@@ -1956,7 +1992,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         flaggedQuestionModel.idTestQuestion = localExamModelList.get(selectedPosition).idTestQuestion + "";
         flaggedQuestionModel.updateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 
-        ApiManager.getInstance(this).postFlaggedQuestions(new Gson().toJson(flaggedQuestionModel),
+        ApiManager.getInstance(this).postFlaggedQuestions(Gson.get().toJson(flaggedQuestionModel),
                 new ApiCallback<PostFlaggedQuestions>(this) {
                     @Override
                     public void success(PostFlaggedQuestions postFlaggedQuestions, Response response) {
@@ -1980,14 +2016,14 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         postQuestionPaper.idSubject = "";
         postQuestionPaper.idStudent = studentId;
 
-        ApiManager.getInstance(this).postQuestionPaper(new Gson().toJson(postQuestionPaper),
+        ApiManager.getInstance(this).postQuestionPaper(Gson.get().toJson(postQuestionPaper),
                 new ApiCallback<PostQuestionPaper>(this) {
                     @Override
                     public void success(PostQuestionPaper postQuestionPaper, Response response) {
                         super.success(postQuestionPaper, response);
                         if (postQuestionPaper != null && !TextUtils.isEmpty(postQuestionPaper.idTestQuestionPaper)) {
                             testQuestionPaperId = postQuestionPaper.idTestQuestionPaper;
-                            getTestQuestionPaper(null);
+                            getTestQuestionPaper();
                         } else {
                             headerProgress.setVisibility(View.GONE);
                             tvEmptyLayout.setVisibility(View.VISIBLE);
@@ -1996,24 +2032,33 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 });
     }
 
-    private void getTestQuestionPaper(String testAnswerPaperId) {
-        ApiManager.getInstance(this).getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId,
+    private void getTestQuestionPaper() {
+        TestQuestionPaperResponse response = new ExamUtils(this).getTestQuestionPaper(testQuestionPaperId);
+        if(response != null) {
+            showQuestionPaper(response.questions, response.examDetails);
+        } else {
+            ApiManager.getInstance(this).getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId,
                 new ApiCallback<TestQuestionPaperResponse>(this) {
                     @Override
                     public void success(TestQuestionPaperResponse questionPaperResponse, Response response) {
                         super.success(questionPaperResponse, response);
-                        if(questionPaperResponse != null)
-                        showQuestionPaper(questionPaperResponse.questions, questionPaperResponse.examDetails);
+                        if (questionPaperResponse != null) {
+                            showQuestionPaper(questionPaperResponse.questions, questionPaperResponse.examDetails);
+                        } else {
+                            showToast("Failed to start exam");
+                            finish();
+                        }
                     }
 
                     @Override
                     public void failure(CorsaliteError error) {
                         super.failure(error);
-                        L.error("error : "+new Gson().toJson(error));
+                        L.error("error : " + Gson.get().toJson(error));
                         showToast("Failed to start exam");
                         finish();
                     }
                 });
+        }
     }
 
     private void showQuestionPaper(List<ExamModel> examModels, QuestionPaperExamDetails examDetails) {
@@ -2036,10 +2081,12 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 examDurationInSeconds = Integer.valueOf(challengeTestTimeDuration);
             } else if(examDetails != null && !TextUtils.isEmpty(examDetails.totalTime)) {
                 examDurationInSeconds = Integer.valueOf(examDetails.totalTime);
+            } else if(mockTestPaperIndex != null && mockTestPaperIndex.examDetails != null
+                    && !mockTestPaperIndex.examDetails.isEmpty() && !TextUtils.isEmpty(mockTestPaperIndex.examDetails.get(0).totalTestDuration)) {
+                examDurationInSeconds = Integer.valueOf(mockTestPaperIndex.examDetails.get(0).totalTestDuration);
             } else {
                 examDurationInSeconds = getExamDurationInSeconds(examModels);
             }
-            //dummy timer.. need to fetch time and interval from service
 
             TimeUtils.getSecondsInTimeFormat(examDurationInSeconds);
             if(isScheduledTest() && scheduledTimeInMillis != 0) {
@@ -2047,6 +2094,10 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 timer = new CounterClass(examExpirytime - TimeUtils.currentTimeInMillis(), 1000);
                 timer.start();
             } else {
+                if(!TextUtils.isEmpty(testanswerPaper.timeTaken)) {
+                    long timeTaken = Long.parseLong(testanswerPaper.timeTaken);
+                    examDurationInSeconds -= timeTaken;
+                }
                 timer = new CounterClass(examDurationInSeconds * 1000, 1000);
                 timer.start();
             }
@@ -2058,6 +2109,11 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void initTestAnswerPaper(List<ExamModel> questions) {
+        TestAnswerPaper answerPaper = new ExamUtils(this).getTestAnswerPaper(testQuestionPaperId);
+        if(answerPaper != null) {
+            testanswerPaper = answerPaper;
+            return;
+        }
         testanswerPaper.studentId = LoginUserCache.getInstance().getStudentId();
         testanswerPaper.testQuestionPaperId = testQuestionPaperId;
         testanswerPaper.startTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
@@ -2108,61 +2164,6 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         }
     }
 
-    private void loadOfflineMockTest(MockTest model) {
-        if(dbRowId == null || dbRowId <= 0) {
-            showToast("Not available for offline");
-            finish();
-            return;
-        }
-        dbManager.getMockExamModels(dbRowId, new ApiCallback<OfflineTestObjectModel>(this) {
-            @Override
-            public void success(OfflineTestObjectModel offlineModel, Response response) {
-                super.success(offlineModel, response);
-                headerProgress.setVisibility(View.GONE);
-                testQuestionPaperId = offlineModel.testQuestionPaperId;
-                testanswerPaper.testQuestionPaperId = testQuestionPaperId;
-                showQuestionPaper(offlineModel.examModels, offlineModel.examDetails);
-            }
-        });
-    }
-
-    private void loadOfflineScheduledTest(ScheduledTestsArray model) {
-        if(dbRowId == null || dbRowId <= 0) {
-            showToast("Not available for offline");
-            finish();
-            return;
-        }
-        dbManager.getAllExamModels(dbRowId, new ApiCallback<OfflineTestObjectModel>(this) {
-            @Override
-            public void success(OfflineTestObjectModel offlineTest, Response response) {
-                super.success(offlineTest, response);
-                headerProgress.setVisibility(View.GONE);
-                localExamModelList = offlineTest.examModels;
-                testQuestionPaperId = offlineTest.testQuestionPaperId;
-                testanswerPaper.testQuestionPaperId = testQuestionPaperId;
-                showQuestionPaper(localExamModelList, offlineTest.examDetails);
-            }
-        });
-    }
-
-    private void loadOfflineDefaultExam() {
-        if(dbRowId == null || dbRowId <= 0) {
-            showToast("Not available for offline");
-            finish();
-            return;
-        }
-        dbManager.getExamModel(dbRowId, new ApiCallback<BaseTest>(this) {
-            @Override
-            public void success(BaseTest baseTest, Response response) {
-                super.success(baseTest, response);
-                headerProgress.setVisibility(View.GONE);
-                testQuestionPaperId = baseTest.testQuestionPaperId;
-                testanswerPaper.testQuestionPaperId = testQuestionPaperId;
-                showQuestionPaper(baseTest.questions, null);
-            }
-        });
-    }
-
     @Override
     public void onStop() {
         super.onStop();
@@ -2174,7 +2175,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     @Override
     public void onBackPressed() {
         if (!title.equalsIgnoreCase("Exercises") && !isFlaggedQuestionsScreen() && !isViewAnswersScreen()) {
-            showToast("Click on Suspend button to stop the exam");
+            showToast("You need to submit the exam before navigating away from this screen.");
         } else {
             super.onBackPressed();
         }

@@ -25,8 +25,9 @@ import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.DefaultNoteResponse;
 import com.education.corsalite.models.responsemodels.Note;
 import com.education.corsalite.services.ApiClientService;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.utils.L;
-import com.google.gson.Gson;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -183,7 +184,7 @@ public class NotesAdapter extends AbstractRecycleViewAdapter {
 
     private void deleteNote(Note note) {
         UpdateNoteRequest request = new UpdateNoteRequest(note.studentId, note.idNotes, null);
-        ApiManager.getInstance(context).deleteNote(new Gson().toJson(request), new ApiCallback<DefaultNoteResponse>(context) {
+        ApiManager.getInstance(context).deleteNote(Gson.get().toJson(request), new ApiCallback<DefaultNoteResponse>(context) {
             @Override
             public void failure(CorsaliteError error) {
                 super.failure(error);

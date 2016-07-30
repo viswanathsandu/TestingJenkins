@@ -35,9 +35,10 @@ import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.DefaultForumResponse;
 import com.education.corsalite.models.responsemodels.DefaultNoteResponse;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.views.CustomButton;
-import com.google.gson.Gson;
+
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -227,7 +228,7 @@ public class EditorActivity extends AbstractBaseActivity {
 
     private ForumModel getComment() {
         ForumModel post = new ForumModel();
-        post.userId = LoginUserCache.getInstance().getLongResponse().userId;
+        post.userId = appPref.getUserId();
         post.studentId = LoginUserCache.getInstance().getLongResponse().studentId;
         post.courseId = courseId;
         post.idCourseSubject = subjectId;
@@ -269,7 +270,7 @@ public class EditorActivity extends AbstractBaseActivity {
         }
         try {
             post.studentId = LoginUserCache.getInstance().getStudentId();
-            post.userId = LoginUserCache.getInstance().getUserId();
+            post.userId = appPref.getUserId();
             post.courseId = AbstractBaseActivity.getSelectedCourseId();
             if (mSubjectModelList != null && !mSubjectModelList.isEmpty()) {
                 post.idCourseSubject = mSubjectModelList.get(subjectSpinner.getSelectedItemPosition()).idSubject;
@@ -318,7 +319,7 @@ public class EditorActivity extends AbstractBaseActivity {
         try {
             showProgress();
             AddNoteRequest request = new AddNoteRequest(studentId, new Note(topicId, contentId, updateContent));
-            ApiManager.getInstance(EditorActivity.this).addNote(new Gson().toJson(request), new ApiCallback<DefaultNoteResponse>(EditorActivity.this) {
+            ApiManager.getInstance(EditorActivity.this).addNote(Gson.get().toJson(request), new ApiCallback<DefaultNoteResponse>(EditorActivity.this) {
                 @Override
                 public void failure(CorsaliteError error) {
                     super.failure(error);
@@ -342,7 +343,7 @@ public class EditorActivity extends AbstractBaseActivity {
     private void editNotes() {
         UpdateNoteRequest request = new UpdateNoteRequest(studentId, notesId, updateContent);
         showProgress();
-        ApiManager.getInstance(EditorActivity.this).updateNote(new Gson().toJson(request), new ApiCallback<DefaultNoteResponse>(EditorActivity.this) {
+        ApiManager.getInstance(EditorActivity.this).updateNote(Gson.get().toJson(request), new ApiCallback<DefaultNoteResponse>(EditorActivity.this) {
             @Override
             public void failure(CorsaliteError error) {
                 super.failure(error);

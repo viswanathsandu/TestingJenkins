@@ -12,6 +12,7 @@ import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.LoginResponse;
+import com.education.corsalite.utils.AppUpdateUtils;
 import com.education.corsalite.utils.SystemUtils;
 
 import retrofit.client.Response;
@@ -29,6 +30,7 @@ public class SplashActivity extends AbstractBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        new AppUpdateUtils(this).update();
         new CountDownTimer(getAppConfig(this).getSplashDuration(), 100) {
             @Override
             public void onFinish() {
@@ -78,9 +80,10 @@ public class SplashActivity extends AbstractBaseActivity {
                     dbManager.saveReqRes(ApiCacheHolder.getInstance().login);
                     appPref.save("loginId", username);
                     appPref.save("passwordHash", password);
+                    appPref.setUserId(loginResponse.idUser);
                     if(SystemUtils.isNetworkConnected(SplashActivity.this)) {
                         startWebSocket();
-                        loadAppConfig(loginResponse.userId);
+                        loadAppConfig(loginResponse.idUser);
                     }
                 } else {
                     showToast(getResources().getString(R.string.login_failed));

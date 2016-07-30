@@ -10,8 +10,8 @@ android {
         applicationId "com.education.corsalite"
         minSdkVersion 20
         targetSdkVersion 20
-        versionCode 100002
-        versionName "1.0.2"
+        versionCode 101000
+        versionName "1.1"
         multiDexEnabled false
     }
     buildTypes {
@@ -34,6 +34,7 @@ android {
             buildConfigField 'String', 'BASE_URL', '"http://app.corsalite.com/ws/"'
             buildConfigField 'String', 'BASE_API_URL', '"http://app.corsalite.com/ws/webservices/"'
             buildConfigField 'String', 'SOCKET_URL', '"ws://app.corsalite.com:9300"'
+            buildConfigField 'String', 'PARENT_FOLDER', '".Corsalite"'
             project.ext.set("archivesBaseName", "corsalite_" + defaultConfig.versionName + "_" + defaultConfig.versionCode);
         }
         staging {
@@ -41,6 +42,7 @@ android {
             buildConfigField 'String', 'BASE_URL', '"http://staging.corsalite.com/v1/"'
             buildConfigField 'String', 'BASE_API_URL', '"http://staging.corsalite.com/v1/webservices/"'
             buildConfigField 'String', 'SOCKET_URL', '"ws://staging.corsalite.com:9300"'
+            buildConfigField 'String', 'PARENT_FOLDER', '".CorsaliteStaging"'
             project.ext.set("archivesBaseName", "corsalite_" + defaultConfig.versionName + "_" + defaultConfig.versionCode);
         }
     }

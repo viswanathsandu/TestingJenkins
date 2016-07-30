@@ -40,7 +40,7 @@ public class DetailsWebviewFragment extends BaseFragment {
         if (!TextUtils.isEmpty(mUrlPattern)) {
             mUrl = String.format(mUrlPattern, AbstractBaseActivity.getSelectedCourseId());
         }
-        appPref = AppPref.getInstance(getActivity());
+        appPref = AppPref.get(getActivity());
         loadLoginUrl();
         return myView;
     }

@@ -32,9 +32,10 @@ import com.education.corsalite.models.responsemodels.Chapter;
 import com.education.corsalite.services.ContentDownloadService;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.Data;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.utils.SystemUtils;
 import com.github.lzyzsd.circleprogress.DonutProgress;
-import com.google.gson.Gson;
+
 import com.localytics.android.Localytics;
 
 import java.util.List;
@@ -222,7 +223,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
             exerciseIntent.putExtra(Constants.SELECTED_CHAPTERID, chapter.idCourseSubjectchapter);
             exerciseIntent.putExtra(Constants.SELECTED_CHAPTER_NAME, chapter.chapterName);
             exerciseIntent.putExtra(Constants.LEVEL_CROSSED, chapter.passedComplexity);
-            exerciseIntent.putExtra("chapter", new Gson().toJson(chapter));
+            exerciseIntent.putExtra("chapter", Gson.get().toJson(chapter));
             studyCenterActivity.startActivity(exerciseIntent);
         }else {
             Intent exerciseIntent = new Intent(studyCenterActivity, OfflineActivity.class);

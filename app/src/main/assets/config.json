@@ -1,5 +1,5 @@
 {
-  "SplashDuration":2000, // in milli seconds
+  "SplashDuration":"2000",
   "EnableStudyCenter": "true",
   "EnableAnalytics":"false",
   "EnableSmartClass":"true",

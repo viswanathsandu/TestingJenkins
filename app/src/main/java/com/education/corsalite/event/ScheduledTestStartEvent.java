@@ -6,6 +6,5 @@ package com.education.corsalite.event;
 
 public class ScheduledTestStartEvent {
     public String testQuestionPaperId;
-    public Long scheduledTime;
 
 }

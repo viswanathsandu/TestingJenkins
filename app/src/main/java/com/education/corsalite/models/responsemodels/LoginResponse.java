@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
  */
 public class LoginResponse extends BaseResponseModel {
     @SerializedName("idUser")
-    public String userId;
+    public String idUser;
     @SerializedName("idStudent")
     public String studentId;
     @SerializedName("idEntity")

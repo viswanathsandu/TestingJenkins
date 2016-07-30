@@ -25,9 +25,11 @@ import com.education.corsalite.models.responsemodels.PartTestGridElement;
 import com.education.corsalite.models.responsemodels.TestPaperIndex;
 import com.education.corsalite.models.responsemodels.TestQuestionPaperResponse;
 import com.education.corsalite.utils.Constants;
+import com.education.corsalite.utils.ExamUtils;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.TimeUtils;
-import com.google.gson.Gson;
+
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
@@ -42,6 +44,7 @@ import retrofit.client.Response;
 public class TestDownloadService extends IntentService {
 
     SugarDbManager dbManager;
+    ExamUtils examUtils;
 
     public TestDownloadService() {
         super("TestDownloadService");
@@ -50,7 +53,7 @@ public class TestDownloadService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         dbManager = SugarDbManager.get(getApplicationContext());
-        TestPaperIndex testPaperIndicies = new Gson().fromJson(intent.getStringExtra("Test_Instructions"), TestPaperIndex.class);
+        examUtils = new ExamUtils(getApplicationContext());
         String testQuestionPaperId = intent.getStringExtra("testQuestionPaperId");
         String testAnswerPaperId = intent.getStringExtra("testAnswerPaperId");
         String mockTestStr = intent.getStringExtra("selectedMockTest");
@@ -65,22 +68,22 @@ public class TestDownloadService extends IntentService {
         if(!TextUtils.isEmpty(exerciseQuestionsListJson)) {
             Type listType = new TypeToken<ArrayList<ExerciseOfflineModel>>() {
             }.getType();
-            exerciseModelsList = new Gson().fromJson(exerciseQuestionsListJson, listType);
+            exerciseModelsList = Gson.get().fromJson(exerciseQuestionsListJson, listType);
         }
         String partTestGridElimentsJson = intent.getStringExtra(Constants.PARTTEST_GRIDMODELS);
         List<PartTestGridElement> partTestGridElements = null;
         if(!TextUtils.isEmpty(partTestGridElimentsJson)) {
             Type listType = new TypeToken<ArrayList<PartTestGridElement>>() {}.getType();
-            partTestGridElements = new Gson().fromJson(partTestGridElimentsJson, listType);
+            partTestGridElements = Gson.get().fromJson(partTestGridElimentsJson, listType);
         }
         if (mockTestStr != null) {
-            MockTest mockTest = new Gson().fromJson(mockTestStr, MockTest.class);
-            getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, mockTest, testPaperIndicies, null);
+            MockTest mockTest = Gson.get().fromJson(mockTestStr, MockTest.class);
+            getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, mockTest, null);
         } else if (scheduledTestStr != null) {
-            ScheduledTestsArray scheduledTest = new Gson().fromJson(scheduledTestStr, ScheduledTestsArray.class);
-            getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, null, null, scheduledTest);
+            ScheduledTestsArray scheduledTest = Gson.get().fromJson(scheduledTestStr, ScheduledTestsArray.class);
+            getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, null, scheduledTest);
         } else if(takeTestStr != null){
-            Chapter chapter = new Gson().fromJson(takeTestStr,Chapter.class);
+            Chapter chapter = Gson.get().fromJson(takeTestStr,Chapter.class);
             loadTakeTest(chapter,null, questionsCount, subjectId);
         } else if(partTestStr != null){
             subjectName = partTestStr;
@@ -112,43 +115,41 @@ public class TestDownloadService extends IntentService {
         }
     }
 
+
     private void getTestQuestionPaper(final String testQuestionPaperId, final String testAnswerPaperId,
-                                      final MockTest mockTest, final TestPaperIndex testPAperIndecies, final ScheduledTestsArray scheduledTestsArray) {
+                                      final MockTest mockTest, final ScheduledTestsArray scheduledTestsArray) {
         try {
-            ApiManager.getInstance(this).getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId,
-                    new ApiCallback<TestQuestionPaperResponse>(this) {
-                        @Override
-                        public void success(TestQuestionPaperResponse questionPaperResponse, Response response) {
-                            super.success(questionPaperResponse, response);
-                            OfflineTestObjectModel model = new OfflineTestObjectModel();
-                            String testName = "";
-                            if(questionPaperResponse != null) {
-                                model.examModels = questionPaperResponse.questions;
-                                model.examDetails = questionPaperResponse.examDetails;
-                            }
-                            if (mockTest != null) {
-                                model.testType = Tests.MOCK;
-                                model.mockTest = mockTest;
-                                testName = mockTest.displayName;
-                            } else if(scheduledTestsArray != null) {
-                                model.testType = Tests.SCHEDULED;
-                                model.scheduledTest = scheduledTestsArray;
-                                testName = scheduledTestsArray.examName;
-                            }
-                            model.baseTest = new BaseTest();
-                            model.baseTest.courseId = AbstractBaseActivity.getSelectedCourseId();
-                            model.testPaperIndecies = testPAperIndecies;
-                            model.testQuestionPaperId = testQuestionPaperId;
-                            model.testAnswerPaperId = testAnswerPaperId;
-                            model.dateTime = TimeUtils.currentTimeInMillis();
-                            dbManager.saveOfflineTest(model);
-                            if(!TextUtils.isEmpty(testName)) {
-                                Toast.makeText(getApplicationContext(), "Test \""+testName+"\" has been downloaded successfully", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(getApplicationContext(), "Test has been downloaded successfully", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
+            TestPaperIndex testPaperIndexResponse = ApiManager.getInstance(this).getTestPaperIndex(testQuestionPaperId, testAnswerPaperId, "N");
+            TestQuestionPaperResponse questionPaperResponse = ApiManager.getInstance(this).getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId);
+            if (questionPaperResponse != null) {
+                OfflineTestObjectModel model = new OfflineTestObjectModel();
+                String testName = "";
+                if (questionPaperResponse != null) {
+                    model.testQuestionPaperResponse = questionPaperResponse;
+                }
+                if (mockTest != null) {
+                    model.testType = Tests.MOCK;
+                    model.mockTest = mockTest;
+                    testName = mockTest.displayName;
+                } else if (scheduledTestsArray != null) {
+                    model.testType = Tests.SCHEDULED;
+                    model.scheduledTest = scheduledTestsArray;
+                    testName = scheduledTestsArray.examName;
+                }
+                model.baseTest = new BaseTest();
+                model.baseTest.courseId = AbstractBaseActivity.getSelectedCourseId();
+                model.testQuestionPaperId = testQuestionPaperId;
+                model.testAnswerPaperId = testAnswerPaperId;
+                model.dateTime = TimeUtils.currentTimeInMillis();
+                dbManager.saveOfflineTest(model);
+                examUtils.saveTestPaperIndex(model.testQuestionPaperId, testPaperIndexResponse);
+                examUtils.saveTestQuestionPaper(model.testQuestionPaperId, questionPaperResponse);
+                if (!TextUtils.isEmpty(testName)) {
+                    Toast.makeText(getApplicationContext(), "Test \"" + testName + "\" has been downloaded successfully", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Test has been downloaded successfully", Toast.LENGTH_SHORT).show();
+                }
+            }
         } catch (Exception e) {
             L.error(e.getMessage(), e);
         }
@@ -165,6 +166,7 @@ public class TestDownloadService extends IntentService {
                 model.dateTime = TimeUtils.currentTimeInMillis();
                 model.testQuestionPaperId = test.testQuestionPaperId;
                 dbManager.saveOfflineTest(model);
+                new ExamUtils(getApplicationContext()).saveTestQuestionPaper(model.testQuestionPaperId, test.testQuestionPaperResponse);
                 Toast.makeText(getApplicationContext(), "\"" + chapter.chapterName + "\" test is downloaded successfully", Toast.LENGTH_SHORT).show();
             }
 
@@ -189,6 +191,7 @@ public class TestDownloadService extends IntentService {
                 model.dateTime = TimeUtils.currentTimeInMillis();
                 model.testQuestionPaperId = test.testQuestionPaperId;
                 dbManager.saveOfflineTest(model);
+                new ExamUtils(getApplicationContext()).saveTestQuestionPaper(model.testQuestionPaperId, test.testQuestionPaperResponse);
                 L.info("Test Saved : "+model.getClass());
                 Toast.makeText(getApplicationContext(), "\""+subjectName + "\" test is downloaded successfully", Toast.LENGTH_SHORT).show();
             }

@@ -3,7 +3,6 @@ package com.education.corsalite.services;
 import android.app.IntentService;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Environment;
 import android.text.TextUtils;
 import android.widget.Toast;
 
@@ -18,7 +17,7 @@ import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ExamModel;
 import com.education.corsalite.utils.Constants;
-import com.education.corsalite.utils.FileUtilities;
+import com.education.corsalite.utils.FileUtils;
 import com.education.corsalite.utils.L;
 import com.thin.downloadmanager.DefaultRetryPolicy;
 import com.thin.downloadmanager.DownloadManager;
@@ -26,7 +25,6 @@ import com.thin.downloadmanager.DownloadRequest;
 import com.thin.downloadmanager.DownloadStatusListenerV1;
 import com.thin.downloadmanager.ThinDownloadManager;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -110,44 +108,18 @@ public class ContentDownloadService extends IntentService {
     }
 
     private void saveFileToDisk(OfflineContent offlineContent, String htmlText, Content content) {
-        FileUtilities fileUtilities = new FileUtilities(this);
-        final String folderStructure = offlineContent.courseName + File.separator
-                                        + offlineContent.subjectName + File.separator
-                                        + offlineContent.chapterName + File.separator
-                                        + offlineContent.topicName;
-        L.info("File Path : " + folderStructure);
+        FileUtils fileUtils = FileUtils.get(this);
         if (content.type.equalsIgnoreCase(Constants.VIDEO_FILE)) {
-            String downloadPath = getDestinationPath(content, folderStructure);
-            downloadVideo(offlineContent, content, ApiClientService.getBaseUrl() + htmlText.replaceFirst("./", ""), downloadPath);
+            downloadVideo(offlineContent, content, ApiClientService.getBaseUrl() + htmlText.replaceFirst("./", ""),
+                    FileUtils.get(getApplicationContext()).getVideoDownloadPath(content.idContent));
         } else if (TextUtils.isEmpty(htmlText) || htmlText.endsWith(Constants.HTML_FILE)) {
             Toast.makeText(this, getString(R.string.file_exists), Toast.LENGTH_SHORT).show();
         } else {
-            String htmlUrl = fileUtilities.write(content.name + "." + Constants.HTML_FILE, htmlText, folderStructure);
+            String htmlUrl = fileUtils.write(fileUtils.getContentFileName(content.idContent), htmlText, fileUtils.getContentFilePath());
             if (htmlUrl != null) {
                 EventBus.getDefault().post(new OfflineActivityRefreshEvent(content.idContent));
             }
         }
-    }
-
-    private String getDestinationPath(Content content, String folderStructure) {
-        String destinationPath = "";
-        try {
-            File SDCardRoot = Environment.getExternalStorageDirectory();
-            File outDir = new File(SDCardRoot.getAbsolutePath() + File.separator + Constants.PARENT_FOLDER + File.separator + folderStructure);
-            if (!outDir.exists()) {
-                outDir.mkdirs();
-            }
-            File file = new File(outDir.getAbsolutePath() + File.separator + Constants.VIDEO_FOLDER);
-            if (!file.exists())
-                file.mkdir();
-            File newFile = new File(file, content.name + "." + content.type);
-            newFile.createNewFile();
-            destinationPath = newFile.getAbsolutePath();
-        } catch (Exception e) {
-            L.error(e.getMessage(), e);
-        }
-        L.info("Video Downloaing Url : "+destinationPath);
-        return destinationPath;
     }
 
     // TODO : need to implement it further

@@ -75,11 +75,12 @@ import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.CookieUtils;
 import com.education.corsalite.utils.Data;
 import com.education.corsalite.utils.FileUtils;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.SystemUtils;
 import com.education.corsalite.utils.TimeUtils;
 import com.education.corsalite.utils.WebUrls;
-import com.google.gson.Gson;
+
 import com.localytics.android.Localytics;
 
 import java.text.ParseException;
@@ -146,8 +147,8 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     public static AppConfig getAppConfig(Context context) {
         if(appConfig == null) {
-            String jsonResponse = FileUtils.loadJSONFromAsset(context.getAssets(), "config.json");
-            appConfig = new Gson().fromJson(jsonResponse, com.education.corsalite.models.db.AppConfig.class);
+            String jsonResponse = FileUtils.get(context).loadJSONFromAsset(context.getAssets(), "config.json");
+            appConfig = Gson.get().fromJson(jsonResponse, com.education.corsalite.models.db.AppConfig.class);
         }
         return appConfig;
     }
@@ -169,7 +170,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     private void initActivity() {
         dbManager = SugarDbManager.get(getApplicationContext());
-        appPref = AppPref.getInstance(this);
+        appPref = AppPref.get(this);
     }
 
     protected void refreshScreen() {
@@ -184,6 +185,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         try {
             String emailId = appPref.getValue("loginId");
             Crashlytics.setUserEmail(emailId);
+            Localytics.setCustomerEmail(emailId);
         } catch (Exception e) {
             L.error(e.getMessage(), e);
         }
@@ -192,17 +194,16 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     public void resetCrashlyticsUserData() {
         try {
             Crashlytics.setUserEmail("");
+            Localytics.setCustomerEmail("");
         } catch (Exception e) {
             L.error(e.getMessage(), e);
         }
     }
 
     private void syncDataWithServer() {
-        if (DataSyncService.syncData != null && !DataSyncService.syncData.isEmpty()) {
-            // Start download service if its not started
-            stopService(new Intent(getApplicationContext(), DataSyncService.class));
-            startService(new Intent(getApplicationContext(), DataSyncService.class));
-        }
+        // Start download service if its not started
+        stopService(new Intent(getApplicationContext(), DataSyncService.class));
+        startService(new Intent(getApplicationContext(), DataSyncService.class));
     }
 
     public void onEventMainThread(NetworkStatusChangeEvent event) {
@@ -271,10 +272,11 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                         dbManager.saveReqRes(ApiCacheHolder.getInstance().login);
                         appPref.save("loginId", username);
                         appPref.save("passwordHash", passwordHash);
+                        appPref.setUserId(loginResponse.idUser);
                         if(SystemUtils.isNetworkConnected(AbstractBaseActivity.this)) {
                             startWebSocket();
                             syncDataWithServer();
-                            loadAppConfig(loginResponse.userId);
+                            loadAppConfig(loginResponse.idUser);
                         }
                         recreate();
                     } else {
@@ -426,6 +428,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     protected void hideDrawerIcon() {
         actionBarDrawerToggle.setDrawerIndicatorEnabled(false);
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
     }
 
     protected void showDrawerIcon() {
@@ -842,7 +845,8 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             logout.AuthToken = LoginUserCache.getInstance().getLongResponse().authtoken;
             appPref.remove("loginId");
             appPref.remove("passwordHash");
-            ApiManager.getInstance(this).logout(new Gson().toJson(logout), new ApiCallback<LogoutResponse>(this) {
+            appPref.clearUserId();
+            ApiManager.getInstance(this).logout(Gson.get().toJson(logout), new ApiCallback<LogoutResponse>(this) {
                 @Override
                 public void failure(CorsaliteError error) {
                     super.failure(error);
@@ -869,6 +873,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         LoginUserCache.getInstance().clearCache();
         resetCrashlyticsUserData();
         deleteSessionCookie();
+        dbManager.clearCachedData();
         AbstractBaseActivity.selectedCourse = null;
         AbstractBaseActivity.selectedVideoPosition= 0;
         AbstractBaseActivity.sharedExamModels = null;
@@ -1092,24 +1097,24 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     public void onEvent(ContentReadingEvent event) {
         L.debug("ContentReadingEvent id", event.idContent);
-        new UpdateUserEvents().postContentReading(this, event);
+        new UpdateUserEvents(this).postContentReading(this, event);
     }
 
     public void onEvent(ForumPostingEvent event) {
         L.debug("ForumPostingEvent id", event.id);
-        new UpdateUserEvents().postForumPosting(this, event);
+        new UpdateUserEvents(this).postForumPosting(this, event);
     }
 
     public void onEvent(ExerciseAnsEvent event) {
         if (event != null && event.id != null) {
             L.debug("ExerciseAnsEvent id", event.id + "");
-            new UpdateUserEvents().postExerciseAns(this, event);
+            new UpdateUserEvents(this).postExerciseAns(this, event);
         }
     }
 
     public void onEvent(TakingTestEvent event) {
         L.debug("TakingTestEvent id", event.id);
-        new UpdateUserEvents().postTakingTest(this, event);
+        new UpdateUserEvents(this).postTakingTest(this, event);
     }
 
     protected void redeem() {
@@ -1222,6 +1227,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         }
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(scheduledTime.getTime());
+        cal.add(Calendar.MINUTE, -5);
         Intent broadCastIntent = new Intent(this, NotifyReceiver.class);
         broadCastIntent.putExtra("title", examName);
         broadCastIntent.putExtra("sub_title", "Exam started at "+new SimpleDateFormat("hh:mm a").format(scheduledTime));
@@ -1267,34 +1273,25 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     public void onEventMainThread(ScheduledTestStartEvent event) {
         try {
-            // check if the test is available for offline
-            if (TimeUtils.currentTimeInMillis() < event.scheduledTime) {
+            if(this instanceof TestInstructionsActivity || this instanceof ExamEngineActivity) {
                 return;
             }
-            List<OfflineTestObjectModel> offlineTestModels = dbManager.fetchRecords(OfflineTestObjectModel.class);
-            for (OfflineTestObjectModel model : offlineTestModels) {
-                if (model.testQuestionPaperId.equalsIgnoreCase(event.testQuestionPaperId)) {
-                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    long startTimeInMillis = df.parse(model.scheduledTest.startTime).getTime();
-                    // start the test
-                    Intent intent = new Intent(this, ExamEngineActivity.class);
-                    intent.putExtra(Constants.TEST_TITLE, "Scheduled Test");
-                    intent.putExtra("test_question_paper_id", model.testQuestionPaperId);
-                    intent.putExtra("OfflineTestObjectModel", model.dateTime);
-                    intent.putExtra(Constants.IS_OFFLINE, true);
-                    intent.putExtra("mock_test_data_json", new Gson().toJson(model.scheduledTest));
-                    intent.putExtra("time", startTimeInMillis);
-                    intent.putExtra(Constants.DB_ROW_ID, model.getId());
-                    startActivity(intent);
-                    return;
+            OfflineTestObjectModel model = dbManager.fetchOfflineTestRecord(event.testQuestionPaperId);
+            if (model != null && model.testQuestionPaperId.equalsIgnoreCase(event.testQuestionPaperId)) {
+                Intent intent = new Intent(this, TestInstructionsActivity.class);
+                intent.putExtra(Constants.TEST_TITLE, "Scheduled Test");
+                intent.putExtra("test_question_paper_id", model.testQuestionPaperId);
+                intent.putExtra("test_answer_paper_id", model.testAnswerPaperId);
+                if(model.status == Constants.STATUS_SUSPENDED) {
+                    intent.putExtra("test_status", "Suspended");
                 }
-            }
-            if (SystemUtils.isNetworkConnected(this)) {
+                startActivity(intent);
+                return;
+            } else if (SystemUtils.isNetworkConnected(this)) {
                 // start the test
-                Intent examIntent = new Intent(this, ExamEngineActivity.class);
+                Intent examIntent = new Intent(this, TestInstructionsActivity.class);
                 examIntent.putExtra(Constants.TEST_TITLE, "Scheduled Test");
                 examIntent.putExtra("test_question_paper_id", event.testQuestionPaperId);
-                examIntent.putExtra("time", event.scheduledTime);
                 startActivity(examIntent);
             }
 

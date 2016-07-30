@@ -30,8 +30,9 @@ import com.education.corsalite.models.socket.requests.ChallengeTestUpdateRequest
 import com.education.corsalite.models.socket.response.ChallengeTestRequestEvent;
 import com.education.corsalite.models.socket.response.ChallengeTestStartEvent;
 import com.education.corsalite.models.socket.response.ChallengeTestUpdateEvent;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.utils.L;
-import com.google.gson.Gson;
+
 
 import java.util.List;
 
@@ -68,7 +69,7 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
         if(event != null) {
             fragment = new ChallengeTestRequestDialogFragment();
             Bundle bundle = new Bundle();
-            bundle.putString("message", new Gson().toJson(event));
+            bundle.putString("message", Gson.get().toJson(event));
             fragment.setArguments(bundle);
         }
         return fragment;
@@ -80,7 +81,7 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
         ButterKnife.bind(this, v);
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        mChallengeTestRequestEvent = new Gson().fromJson(getArguments().getString("message"), ChallengeTestRequestEvent.class);
+        mChallengeTestRequestEvent = Gson.get().fromJson(getArguments().getString("message"), ChallengeTestRequestEvent.class);
         return v;
     }
 
@@ -105,7 +106,7 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
                             examId = challengeUserListResponse.examId;
                             fillData();
                             updateUI();
-                            L.info("Challenge Users : " + new Gson().toJson(mChallengeUsers));
+                            L.info("Challenge Users : " + Gson.get().toJson(mChallengeUsers));
                         } else {
                             ChallengeTestRequestDialogFragment.this.dismiss();
                         }
@@ -147,7 +148,7 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
         showProgress();
         ChallengeStatusRequest request = new ChallengeStatusRequest(LoginUserCache.getInstance().getStudentId(),
                 mChallengeTestRequestEvent.challengeTestParentId, status);
-        ApiManager.getInstance(getActivity()).postChallengeStatus(new Gson().toJson(request),
+        ApiManager.getInstance(getActivity()).postChallengeStatus(Gson.get().toJson(request),
                 new ApiCallback<CommonResponseModel>(getActivity()) {
                     @Override
                     public void success(CommonResponseModel commonResponseModel, Response response) {
@@ -235,7 +236,7 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
     @Deprecated
     private void startChallenge() {
         ChallengestartRequest request = new ChallengestartRequest(mCurrentUser.challengeTestParentId, examId);
-        ApiManager.getInstance(getActivity()).postChallengeStart(new Gson().toJson(request),
+        ApiManager.getInstance(getActivity()).postChallengeStart(Gson.get().toJson(request),
                 new ApiCallback<ChallengeStartResponseModel>(getActivity()) {
                     @Override
                     public void success(ChallengeStartResponseModel challengeStartResponseModel, Response response) {

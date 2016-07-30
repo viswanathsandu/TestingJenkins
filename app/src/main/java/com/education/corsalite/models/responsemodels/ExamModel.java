@@ -42,6 +42,15 @@ public class ExamModel extends BaseModel implements Serializable, Comparable {
     public String comment;
     @SerializedName("Complexity")
     public String complexity;
+    @SerializedName("IsSelectedAnswer")
+    public String isSelectedAnswer;
+    @SerializedName("EnteredAnswerText")
+    public String enteredAnswerText;
+    @SerializedName("TimeTaken")
+    public String timeTaken;
+    @SerializedName("Score")
+    public String scroe;
+
     @Ignore
     @SerializedName("AnswerChoice")
     public List<AnswerChoiceModel> answerChoice;

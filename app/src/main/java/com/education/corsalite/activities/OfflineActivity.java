@@ -40,6 +40,9 @@ public class OfflineActivity extends AbstractBaseActivity {
         setToolbarForOfflineContent();
         setTabView();
         sendAnalytics(getString(R.string.screen_offlineContent));
+        if(getSelectedCourse() == null) {
+            showProgress();
+        }
     }
 
     private void setTabView() {
@@ -71,6 +74,7 @@ public class OfflineActivity extends AbstractBaseActivity {
     @Override
     public void onEvent(Course course) {
         super.onEvent(course);
+        closeProgress();
         if(offlineEventListener!=null) {
             offlineEventListener.onCourseIdSelected(course);
         }

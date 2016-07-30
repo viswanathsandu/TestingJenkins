@@ -10,6 +10,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.education.corsalite.models.socket.response.ResponseEvent;
+import com.education.corsalite.utils.AppPref;
 
 import de.greenrobot.event.EventBus;
 
@@ -18,12 +19,13 @@ import de.greenrobot.event.EventBus;
  */
 public class BaseDialogFragment extends DialogFragment {
 
-    Dialog dialog;
-
+    protected Dialog dialog;
+    protected AppPref appPref;
     @Override
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
+        appPref = AppPref.get(getActivity());
     }
 
     @Override

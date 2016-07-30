@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.education.corsalite.R;
 import com.education.corsalite.utils.Constants;
+import com.education.corsalite.utils.TimeUtils;
 
 import butterknife.ButterKnife;
 
@@ -23,6 +24,7 @@ public class ExamResultActivity extends AbstractBaseActivity implements View.OnC
     private String examRecommendedTime = "";
     private String examType = "";
     private String examDate = "";
+    private long dueDateInMillis;
 
     private TextView recommendedTimeTxt;
     private TextView timeTakenTxt;
@@ -41,6 +43,15 @@ public class ExamResultActivity extends AbstractBaseActivity implements View.OnC
         setToolbarTitle("Exam Results");
         loadIntentData();
         loadData();
+        showViewAnswersButton();
+    }
+
+    private void showViewAnswersButton() {
+        if(dueDateInMillis == 0 || dueDateInMillis < TimeUtils.currentTimeInMillis()) {
+            findViewById(R.id.view_answers_btn).setVisibility(View.VISIBLE);
+        } else {
+            findViewById(R.id.view_answers_btn).setVisibility(View.GONE);
+        }
     }
 
     private void initUi() {
@@ -64,6 +75,7 @@ public class ExamResultActivity extends AbstractBaseActivity implements View.OnC
         totalQuestions = bundle.getInt("total_questions", 0);
         correct = bundle.getInt("correct", 0);
         wrong = bundle.getInt("wrong", 0);
+        dueDateInMillis = bundle.getLong("due_date_millis", 0);
     }
 
     private void loadData() {

@@ -6,26 +6,30 @@
     android:orientation="vertical">
 
     <RelativeLayout
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/blue">
 
         <TextView
-            android:id="@+id/tv_title"
+            android:id="@+id/instructions_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:padding="5dp"
-            android:text="fkhjwekrgherkyrtryj"
-            android:textColor="@color/black"
-            android:textSize="18sp" />
+            android:paddingLeft="20dp"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:gravity="center_vertical"
+            android:text="Instructions"
+            fontPath="@string/roboto_regular"
+            android:textSize="16sp"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true">
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:layout_alignTop="@+id/instructions_txt"
+            android:layout_alignBottom="@+id/instructions_txt"
+            android:gravity="center_vertical">
 
             <com.education.corsalite.views.CustomButton
                 android:id="@+id/bCancel"
@@ -36,7 +40,7 @@
                 android:text="Cancel"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="16sp"  />
+                android:textSize="16sp" />
 
             <com.education.corsalite.views.CustomButton
                 android:id="@+id/bStart"
@@ -47,33 +51,204 @@
                 android:text="Start"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="16sp"  />
+                android:textSize="16sp" />
         </LinearLayout>
     </RelativeLayout>
 
-    <LinearLayout
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="10dp">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/tvborder"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="10dp">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/blue"
-                android:padding="10dp"
-                android:text="Instructions" />
+                android:layout_height="match_parent"
+                android:background="@drawable/tvborder"
+                android:orientation="vertical">
 
-            <WebView
-                android:id="@+id/webview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"></WebView>
+                <LinearLayout
+                    android:id="@+id/timer_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    android:padding="30dp"
+                    android:visibility="gone">
+
+                    <RelativeLayout
+                        android:id="@+id/days_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/days_txt"
+                            fontPath="@string/roboto_light"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="00"
+                            android:textColor="@color/text_black"
+                            android:textSize="80dp" />
+
+                        <TextView
+                            android:id="@+id/days_lbl"
+                            fontPath="@string/roboto_regular"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignLeft="@id/days_txt"
+                            android:layout_alignRight="@id/days_txt"
+                            android:layout_below="@id/days_txt"
+                            android:gravity="center_horizontal"
+                            android:text="Days"
+                            android:textColor="@color/text_black" />
+
+                        <TextView
+                            fontPath="@string/roboto_light"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@+id/days_txt"
+                            android:layout_alignTop="@id/days_txt"
+                            android:layout_toRightOf="@id/days_txt"
+                            android:gravity="center_vertical"
+                            android:text=":"
+                            android:textColor="@color/text_black"
+                            android:textSize="50dp" />
+
+                    </RelativeLayout>
+
+
+                    <RelativeLayout
+                        android:id="@+id/hours_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/hours_txt"
+                            fontPath="@string/roboto_light"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="00"
+                            android:textColor="@color/text_black"
+                            android:textSize="80dp" />
+
+                        <TextView
+                            android:id="@+id/hours_lbl"
+                            fontPath="@string/roboto_regular"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignLeft="@id/hours_txt"
+                            android:layout_alignRight="@id/hours_txt"
+                            android:layout_below="@id/hours_txt"
+                            android:gravity="center_horizontal"
+                            android:text="Hours"
+                            android:textColor="@color/text_black" />
+
+                        <TextView
+                            fontPath="@string/roboto_light"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@+id/hours_txt"
+                            android:layout_alignTop="@id/hours_txt"
+                            android:layout_toRightOf="@id/hours_txt"
+                            android:gravity="center_vertical"
+                            android:text=":"
+                            android:textColor="@color/text_black"
+                            android:textSize="50dp" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/minutes_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/minutes_txt"
+                            fontPath="@string/roboto_light"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="00"
+                            android:textColor="@color/text_black"
+                            android:textSize="80dp" />
+
+                        <TextView
+                            android:id="@+id/minutes_lbl"
+                            fontPath="@string/roboto_regular"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignLeft="@id/minutes_txt"
+                            android:layout_alignRight="@id/minutes_txt"
+                            android:layout_below="@id/minutes_txt"
+                            android:gravity="center_horizontal"
+                            android:text="Minutes"
+                            android:textColor="@color/text_black" />
+
+                        <TextView
+                            fontPath="@string/roboto_light"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@+id/minutes_txt"
+                            android:layout_alignTop="@id/minutes_txt"
+                            android:layout_toRightOf="@id/minutes_txt"
+                            android:gravity="center_vertical"
+                            android:text=":"
+                            android:textColor="@color/text_black"
+                            android:textSize="50dp" />
+
+                    </RelativeLayout>
+
+
+                    <RelativeLayout
+                        android:id="@+id/secs_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/secs_txt"
+                            fontPath="@string/roboto_light"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="00"
+                            android:textColor="@color/text_black"
+                            android:textSize="80dp" />
+
+                        <TextView
+                            android:id="@+id/secs_lbl"
+                            fontPath="@string/roboto_regular"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignLeft="@id/secs_txt"
+                            android:layout_alignRight="@id/secs_txt"
+                            android:layout_below="@id/secs_txt"
+                            android:gravity="center_horizontal"
+                            android:text="Seconds"
+                            android:textColor="@color/text_black" />
+
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <WebView
+                    android:id="@+id/webview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp" />
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+    </ScrollView>
 </LinearLayout>

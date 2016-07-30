@@ -1,18 +1,22 @@
 package com.education.corsalite.utils;
 
+import com.education.corsalite.BuildConfig;
+
 /**
  * Created by ayush on 15/09/15.
  */
 public class Constants {
 
-    public final static String PARENT_FOLDER = "Corsalite";
-    public final static String HTML_FOLDER = "Html";
-    public final static String VIDEO_FOLDER = "Video";
+    public final static String PARENT_FOLDER = BuildConfig.PARENT_FOLDER;
+    public final static String CONTENT_FOLDER = "Content";
+    public final static String VIDEO_FOLDER = "Videos";
+    public final static String TESTS_FOLDER = "Tests";
 
     public static final String HTML_PREFIX_URL = "file:///";
 
     public static final String HTML_FILE = "html";
     public static final String VIDEO_FILE = "mpg";
+    public static final String TEST_FILE = "tst";
 
     public static final String EXERCISE_MODEL = "exercise_model";
     public static final String SELECTED_POSITION =  "selectedPosition";

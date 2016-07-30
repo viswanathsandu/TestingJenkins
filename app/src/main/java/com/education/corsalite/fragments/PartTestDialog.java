@@ -29,7 +29,8 @@ import com.education.corsalite.models.responsemodels.PartTestGridElement;
 import com.education.corsalite.models.responsemodels.PartTestModel;
 import com.education.corsalite.services.TestDownloadService;
 import com.education.corsalite.utils.Constants;
-import com.google.gson.Gson;
+
+import com.education.corsalite.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 
 import java.util.ArrayList;
@@ -220,10 +221,10 @@ public class PartTestDialog extends BaseDialogFragment {
         intent.putExtra(Constants.SELECTED_TOPIC_NAME, subjectName);
         intent.putExtra(Constants.ADAPIVE_LEAERNING, mIsAdaptiveTest);
         if(selectedExam != null) {
-            intent.putExtra(Constants.PARTTEST_EXAMMODEL, new Gson().toJson(selectedExam));
+            intent.putExtra(Constants.PARTTEST_EXAMMODEL, Gson.get().toJson(selectedExam));
         }
         if (adapter != null && adapter.getListData() != null) {
-            intent.putExtra(Constants.PARTTEST_GRIDMODELS, new Gson().toJson(adapter.getListData()));
+            intent.putExtra(Constants.PARTTEST_GRIDMODELS, Gson.get().toJson(adapter.getListData()));
         }
         startActivity(intent);
     }
@@ -234,7 +235,7 @@ public class PartTestDialog extends BaseDialogFragment {
         intent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.getSelectedCourseId());
         intent.putExtra("subjectId", idCourseSubject + "");
         if (adapter != null && adapter.getListData() != null) {
-            intent.putExtra(Constants.PARTTEST_GRIDMODELS, new Gson().toJson(adapter.getListData()));
+            intent.putExtra(Constants.PARTTEST_GRIDMODELS, Gson.get().toJson(adapter.getListData()));
         }
         getActivity().startService(intent);
         Toast.makeText(getActivity(), "Downloading test paper in background", Toast.LENGTH_SHORT).show();

@@ -8,8 +8,9 @@ import com.education.corsalite.deserializer.ExerciseModelResponseDeserializer;
 import com.education.corsalite.interceptors.SessionRequestInterceptor;
 import com.education.corsalite.models.responsemodels.ExamModel;
 import com.education.corsalite.utils.CookieUtils;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.utils.L;
-import com.google.gson.Gson;
+
 import com.google.gson.GsonBuilder;
 import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.OkHttpClient;
@@ -59,7 +60,7 @@ public class ApiClientService {
 
     private static void setupRestClient() {
 
-        Gson gson = new GsonBuilder()
+        com.google.gson.Gson gson = new GsonBuilder()
                 .registerTypeAdapter(ExamModel.class, new ExerciseModelResponseDeserializer()) // This is the important line ;)
                 .create();
 
@@ -104,9 +105,9 @@ public class ApiClientService {
                                 request = request.newBuilder().removeHeader("cookie").build();
                                 request = request.newBuilder().addHeader("cookie", setcookie).build();
                                 L.info("Intercept : Retrying api call");
-                                L.info("Intercept : Request : " + new Gson().toJson(request));
+                                L.info("Intercept : Request : " + Gson.get().toJson(request));
                                 response = chain.proceed(request);
-                                L.info("Intercept : Response : " + response.code()+ " -- " + new Gson().toJson(response));
+                                L.info("Intercept : Response : " + response.code()+ " -- " + Gson.get().toJson(response));
                             }
                         }
                         tryCount = 0;
@@ -131,7 +132,7 @@ public class ApiClientService {
                 if(loginRequest != null) {
                     L.info("Intercept : Making auth call");
                     Response loginResponse = chain.proceed(loginRequest);
-                    L.info("Intercept : Auth call response : " + loginResponse.code()+ " -- " +new Gson().toJson(loginResponse));
+                    L.info("Intercept : Auth call response : " + loginResponse.code()+ " -- " +Gson.get().toJson(loginResponse));
                     if(loginResponse != null && loginResponse.isSuccessful()) {
                         L.info("Intercept : Auth call saving session cookie");
                         AbstractBaseActivity.saveSessionCookie(loginResponse);

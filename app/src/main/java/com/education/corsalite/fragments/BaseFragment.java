@@ -12,6 +12,7 @@ import android.widget.ProgressBar;
 import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.db.SugarDbManager;
 import com.education.corsalite.models.socket.response.ResponseEvent;
+import com.education.corsalite.utils.AppPref;
 import com.localytics.android.Localytics;
 
 import de.greenrobot.event.EventBus;
@@ -21,7 +22,7 @@ import de.greenrobot.event.EventBus;
  */
 public abstract class BaseFragment extends Fragment {
     private Dialog dialog;
-
+    protected AppPref appPref;
     protected SugarDbManager dbManager;
 
     @Override
@@ -41,6 +42,7 @@ public abstract class BaseFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dbManager = SugarDbManager.get(getActivity().getApplicationContext());
+        appPref = AppPref.get(getActivity());
     }
 
     public void showToast(String message) {

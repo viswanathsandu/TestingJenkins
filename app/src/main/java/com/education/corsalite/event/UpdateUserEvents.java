@@ -1,21 +1,18 @@
 package com.education.corsalite.event;
 
 import android.app.Activity;
+import android.content.Context;
 
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.db.SugarDbManager;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.models.db.SyncModel;
 import com.education.corsalite.models.requestmodels.UserEventsModel;
 import com.education.corsalite.models.responsemodels.BaseResponseModel;
 import com.education.corsalite.models.responsemodels.UserEventsResponse;
-import com.education.corsalite.services.DataSyncService;
 import com.education.corsalite.utils.SystemUtils;
-import com.google.gson.Gson;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 import retrofit.client.Response;
 
@@ -24,9 +21,17 @@ import retrofit.client.Response;
  */
 public class UpdateUserEvents {
 
+    private Context mContext;
+    SugarDbManager dbManager;
+
+    public UpdateUserEvents(Context context) {
+        this.mContext = context;
+        dbManager = SugarDbManager.get(context);
+    }
+
     public void postUserEvent(Activity activity, UserEventsModel model){
         if(SystemUtils.isNetworkConnected(activity)) {
-            ApiManager.getInstance(activity).postUserEvents(new Gson().toJson(model), new ApiCallback<UserEventsResponse>(activity) {
+            ApiManager.getInstance(activity).postUserEvents(Gson.get().toJson(model), new ApiCallback<UserEventsResponse>(activity) {
                 @Override
                 public void success(UserEventsResponse userEventsResponse, Response response) {
                     super.success(userEventsResponse, response);
@@ -35,13 +40,13 @@ public class UpdateUserEvents {
         } else {
             SyncModel syncModel = new SyncModel();
             syncModel.requestObject = model;
-            DataSyncService.addSyncModel(syncModel);
+            dbManager.addSyncModel(syncModel);
         }
     }
 
     public void postContentReading(Activity activity, ContentReadingEvent event){
         if(SystemUtils.isNetworkConnected(activity)) {
-            ApiManager.getInstance(activity).postContentUsage(new Gson().toJson(event), new ApiCallback<BaseResponseModel>(activity) {
+            ApiManager.getInstance(activity).postContentUsage(Gson.get().toJson(event), new ApiCallback<BaseResponseModel>(activity) {
                 @Override
                 public void success(BaseResponseModel baseResponse, Response response) {
                     super.success(baseResponse, response);
@@ -50,7 +55,7 @@ public class UpdateUserEvents {
         } else {
             SyncModel syncModel = new SyncModel();
             syncModel.requestObject = event;
-            DataSyncService.addSyncModel(syncModel);
+            dbManager.addSyncModel(syncModel);
         }
         UserEventsModel model = getUserEventsModel("Content Reading",event.eventStartTime,
                 event.eventEndTime, event.idContent, "");
@@ -78,21 +83,12 @@ public class UpdateUserEvents {
     private UserEventsModel getUserEventsModel(String eventName,String eventStartTime,
                                                String eventEndTime, String eventSourceId, String pageView){
         UserEventsModel model = new UserEventsModel();
-        model.userId = LoginUserCache.getInstance().getStudentId();
+        model.idUser = LoginUserCache.getInstance().getStudentId();
         model.eventEndTime = eventEndTime;
         model.eventStartTime =eventStartTime;
         model.eventName = eventName;
         model.eventSourceId = eventSourceId;
         model.pageView = pageView;
-
         return model;
     }
-
-    private String getDate(long millis) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(
-                "yyyy-mm-dd hh:mm:ss", Locale.getDefault());
-        Date date = new Date(millis);
-        return dateFormat.format(date);
-    }
-
 }

@@ -3,8 +3,9 @@ package com.education.corsalite.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.models.db.OfflineContent;
-import com.google.gson.Gson;
+
 
 /**
  * Created by vissu on 11/29/15.
@@ -16,7 +17,10 @@ public class AppPref {
     private static String PREFS_NAME = "CORSALITE_PREFS";
     private static String OFFLINE_PREFS_NAME = "CORSALITE_PREFS";
 
-    public static AppPref getInstance(Context context) {
+    private final String KEY_USER_ID = "user_id";
+    private final String KEY_STUDENT_ID = "student_id";
+
+    public static AppPref get(Context context) {
         if(instance == null) {
             instance = new AppPref();
         }
@@ -31,8 +35,7 @@ public class AppPref {
 
     public void saveObj(String id, OfflineContent content) {
         try {
-            Gson gson = new Gson();
-            String json = gson.toJson(content);
+            String json = Gson.get().toJson(content);
             SharedPreferences settings = context.getSharedPreferences(OFFLINE_PREFS_NAME, Context.MODE_PRIVATE);
             settings.edit().putString(id, json).commit();
         } catch (Exception e) {
@@ -56,5 +59,17 @@ public class AppPref {
         SharedPreferences.Editor editor = settings.edit();
         editor.remove(key);
         editor.apply();
+    }
+
+    public void setUserId(String userID) {
+        save(KEY_USER_ID, userID);
+    }
+
+    public String getUserId() {
+        return getValue(KEY_USER_ID);
+    }
+
+    public void clearUserId() {
+        remove(KEY_USER_ID);
     }
 }

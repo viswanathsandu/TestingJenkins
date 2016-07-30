@@ -1,4 +1,4 @@
-package com.education.corsalite.utils;
+package com.education.corsalite.security;
 
 import android.util.Base64;
 
@@ -13,17 +13,16 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 /**
- * Created by vissu on 9/11/15.
+ * Created by vissu on 7/28/16.
  */
-public class Encryption {
 
-    public static String md5(String s)
-    {
+public class Encrypter {
+
+    public static String md5(String s) {
         MessageDigest digest;
-        try
-        {
+        try {
             digest = MessageDigest.getInstance("MD5");
-            digest.update(s.getBytes(Charset.forName("US-ASCII")),0,s.length());
+            digest.update(s.getBytes(Charset.forName("US-ASCII")), 0, s.length());
             byte[] magnitude = digest.digest();
             BigInteger bi = new BigInteger(1, magnitude);
             String hash = String.format("%0" + (magnitude.length << 1) + "x", bi);

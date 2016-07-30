@@ -3,7 +3,8 @@ package com.education.corsalite.deserializer;
 
 import com.education.corsalite.models.responsemodels.AnswerChoiceModel;
 import com.education.corsalite.models.responsemodels.ExamModel;
-import com.google.gson.Gson;
+
+import com.education.corsalite.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -22,12 +23,11 @@ public class ExerciseModelResponseDeserializer implements JsonDeserializer<ExamM
 
     @Override
     public ExamModel deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        Gson gson=new Gson();
         JsonElement value = json.getAsJsonObject();
         JsonObject jsonObject = json.getAsJsonObject();
         ExamModel examModel = null;
         if(jsonObject != null) {
-            examModel = gson.fromJson(jsonObject, ExamModel.class);
+            examModel = Gson.get().fromJson(jsonObject, ExamModel.class);
             Iterable<Map.Entry<String, JsonElement>> entries = value.getAsJsonObject().entrySet();
 
             for (Map.Entry<String, JsonElement> entry : entries) {

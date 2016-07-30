@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
  */
 public class UserEventsModel extends BaseModel{
     @SerializedName("UserID")
-    public String userId;
+    public String idUser;
     @SerializedName("EventStartTime")
     public String eventStartTime;
     @SerializedName("EventEndTime")

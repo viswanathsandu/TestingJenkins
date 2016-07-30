@@ -14,38 +14,29 @@ import java.util.zip.GZIPOutputStream;
 
 public class Gzip {
 
-    public static byte[] compress(String data) throws IOException {
-        byte[] compressed = null;
-        try {
-            compressed = data.getBytes();
-            ByteArrayOutputStream bos = new ByteArrayOutputStream(data.length());
-            GZIPOutputStream gzip = new GZIPOutputStream(bos);
-            gzip.write(data.getBytes());
-            gzip.close();
-            compressed = bos.toByteArray();
-            bos.close();
-        } catch (Exception e) {
-            L.error(e.getMessage(), e);
+    public static String compress(String str) throws IOException {
+        if (str == null || str.length() == 0) {
+            return str;
         }
-        return compressed;
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        GZIPOutputStream gzip = new GZIPOutputStream(out);
+        gzip.write(str.getBytes());
+        gzip.close();
+        String outStr = out.toString("ISO-8859-1");
+        return outStr;
     }
 
-    public static String decompress(byte[] compressed) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        try {
-            ByteArrayInputStream bis = new ByteArrayInputStream(compressed);
-            GZIPInputStream gis = new GZIPInputStream(bis);
-            BufferedReader br = new BufferedReader(new InputStreamReader(gis, "UTF-8"));
-            String line;
-            while ((line = br.readLine()) != null) {
-                sb.append(line);
-            }
-            br.close();
-            gis.close();
-            bis.close();
-        } catch (Exception e) {
-            L.error(e.getMessage(), e);
+    public static String decompress(String str) throws IOException {
+        if (str == null || str.length() == 0) {
+            return str;
         }
-        return sb.toString();
+        GZIPInputStream gis = new GZIPInputStream(new ByteArrayInputStream(str.getBytes("ISO-8859-1")));
+        BufferedReader bf = new BufferedReader(new InputStreamReader(gis, "ISO-8859-1"));
+        String outStr = "";
+        String line;
+        while ((line = bf.readLine()) != null) {
+            outStr += line;
+        }
+        return outStr;
     }
 }

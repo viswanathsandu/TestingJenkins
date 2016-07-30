@@ -27,9 +27,11 @@ import com.education.corsalite.models.requestmodels.UserProfileModel;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.EditProfileModel;
 import com.education.corsalite.models.responsemodels.UserProfileResponse;
+import com.education.corsalite.gson.Gson;
+import com.education.corsalite.utils.AppPref;
 import com.education.corsalite.utils.ImageUtils;
 import com.education.corsalite.utils.L;
-import com.google.gson.Gson;
+
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -60,7 +62,7 @@ public class EditProfilePicDialogFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.edit_profile_pic_dialog_fragment, container, false);
         ButterKnife.bind(this, v);
-        user = new Gson().fromJson(getArguments().getString("user_profile_response"), UserProfileResponse.class);
+        user = Gson.get().fromJson(getArguments().getString("user_profile_response"), UserProfileResponse.class);
         setListeners();
         getDialog().setTitle("Edit Profile Picture");
         return v;
@@ -162,7 +164,7 @@ public class EditProfilePicDialogFragment extends DialogFragment {
         if(image == null){
             return;
         }
-        String userProfileJson = new Gson().toJson(getUserData(image));
+        String userProfileJson = Gson.get().toJson(getUserData(image));
         ApiManager.getInstance(getActivity()).updateUserProfile(userProfileJson, new ApiCallback<EditProfileModel>(getActivity()) {
             @Override
             public void failure(CorsaliteError error) {
@@ -192,7 +194,7 @@ public class EditProfilePicDialogFragment extends DialogFragment {
     private UserProfileModel getUserData(Bitmap image) {
         UserProfileModel model = new UserProfileModel();
         model.updateTime =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-        model.userId = LoginUserCache.getInstance().getUserId();
+        model.userId = AppPref.get(getActivity()).getUserId();
         model.studentId = LoginUserCache.getInstance().getStudentId();
         //encode and update
         if(image != null) {
