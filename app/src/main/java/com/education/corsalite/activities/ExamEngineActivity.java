@@ -1028,7 +1028,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         if(mockTestPaperIndex != null && mockTestPaperIndex.examDetails != null && mockTestPaperIndex.examDetails.get(0) != null) {
             String dueDateText = mockTestPaperIndex.examDetails.get(0).dueDateTime;
             if(!TextUtils.isEmpty(dueDateText)) {
-                intent.putExtra("due_date_millis", TimeUtils.getMillisFromDate(dueDateText))
+                intent.putExtra("due_date_millis", TimeUtils.getMillisFromDate(dueDateText));
             }
         }
         intent.putExtra("correct", correct);
