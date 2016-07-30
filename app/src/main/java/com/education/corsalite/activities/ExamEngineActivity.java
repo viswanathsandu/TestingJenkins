@@ -349,7 +349,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             loadChallengeTest();
         } else if (isViewAnswersScreen()) {
             loadViewAnswers();
-        } else if(title.equalsIgnoreCase("Take Test")) { // TakeTest
+        } else if(isTakeTest()) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             if(!TextUtils.isEmpty(subjectName) && !TextUtils.isEmpty(chapterName)){
                 setToolbarForExercise(subjectName + " - " + chapterName, true);
@@ -369,6 +369,14 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
     private boolean isExerciseTest() {
         return title.equalsIgnoreCase("Exercises");
+    }
+
+    private boolean isTakeTest() {
+        return title.equalsIgnoreCase("Take Test");
+    }
+
+    private boolean isPartTest() {
+        return title.equalsIgnoreCase("Part Test");
     }
 
     private boolean isChallengeTest() {
@@ -1889,7 +1897,16 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
         PostCustomExamTemplate postCustomExamTemplate = new PostCustomExamTemplate();
         postCustomExamTemplate.examId = examsList.get(0).examId;
-        postCustomExamTemplate.examName = examsList.get(0).examName;
+
+        // TODO : Handling exam name for take test and part test
+        if(isTakeTest()) {
+            postCustomExamTemplate.examName = "Chapter Practice Test - " + chapterName;
+        } else if(isPartTest()) {
+            postCustomExamTemplate.examName = "Part Test - " + subjectName;
+        } else {
+            postCustomExamTemplate.examName = examsList.get(0).examName;
+        }
+
         if (mIsAdaptiveTest) {
             postCustomExamTemplate.examDoTestBySlidingComplexity = "Y";
         }

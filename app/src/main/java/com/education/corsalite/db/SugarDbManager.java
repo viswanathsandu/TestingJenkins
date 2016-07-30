@@ -143,7 +143,7 @@ public class SugarDbManager {
             OfflineTestObjectModel t = Select.from(OfflineTestObjectModel.class)
                             .where(Condition.prop("BASE_USER_ID").eq(AppPref.get(context).getUserId()),
                                     Condition.prop("TEST_QUESTION_PAPER_ID").eq(testQuestionPaperID)).first();
-            if (t.reflectionJsonString != null) {
+            if (t != null && t.reflectionJsonString != null) {
                 OfflineTestObjectModel object = Gson.get().fromJson(Gzip.decompress(t.reflectionJsonString), OfflineTestObjectModel.class);
                 t.reflectionJsonString = null;
                 object.setId(t.getId());
