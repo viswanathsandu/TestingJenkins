@@ -39,7 +39,7 @@ public class UpdateUserEvents {
             });
         } else {
             SyncModel syncModel = new SyncModel();
-            syncModel.requestObject = model;
+            syncModel.setUserEventsModelEvent(model);
             dbManager.addSyncModel(syncModel);
         }
     }
@@ -54,7 +54,7 @@ public class UpdateUserEvents {
             });
         } else {
             SyncModel syncModel = new SyncModel();
-            syncModel.requestObject = event;
+            syncModel.setContentReadingEvent(event);
             dbManager.addSyncModel(syncModel);
         }
         UserEventsModel model = getUserEventsModel("Content Reading",event.eventStartTime,

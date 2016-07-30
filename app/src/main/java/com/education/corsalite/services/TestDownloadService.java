@@ -43,8 +43,8 @@ import retrofit.client.Response;
  */
 public class TestDownloadService extends IntentService {
 
-    SugarDbManager dbManager;
-    ExamUtils examUtils;
+    private SugarDbManager dbManager;
+    private ExamUtils examUtils;
 
     public TestDownloadService() {
         super("TestDownloadService");

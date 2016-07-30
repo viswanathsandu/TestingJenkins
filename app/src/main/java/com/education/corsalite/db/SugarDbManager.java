@@ -125,7 +125,7 @@ public class SugarDbManager {
         try {
             if (type != null) {
                 T t = Select.from(type).where(Condition.prop("BASE_USER_ID").eq(AppPref.get(context).getUserId())).first();
-                if (t.reflectionJsonString != null) {
+                if (t != null && t.reflectionJsonString != null) {
                     T object = Gson.get().fromJson(Gzip.decompress(t.reflectionJsonString), type);
                     t.reflectionJsonString = null;
                     object.setId(t.getId());

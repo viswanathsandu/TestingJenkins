@@ -844,7 +844,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         testanswerPaper.endTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(TimeUtils.currentTimeInMillis()));
         if(!SystemUtils.isNetworkConnected(this)) {
             SyncModel syncModel = new SyncModel();
-            syncModel.requestObject = testanswerPaper;
+            syncModel.setTestAnswerPaperEvent(testanswerPaper);
             dbManager.addSyncModel(syncModel);
             if(state == TestanswerPaperState.COMPLETED) {
                 new ExamUtils(this).deleteTestQuestionPaper(testQuestionPaperId);

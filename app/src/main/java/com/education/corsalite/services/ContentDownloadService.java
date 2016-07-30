@@ -36,7 +36,6 @@ import de.greenrobot.event.EventBus;
 public class ContentDownloadService extends IntentService {
 
     public static boolean isIntentServiceRunning = false;
-    private static boolean isDownloadInProgress = false;
     public static int downloandInProgress = 0;
     private List<OfflineContent> offlineContents = new ArrayList<>();
     private List<ExerciseOfflineModel> offlineExercises = new ArrayList<>();
@@ -59,13 +58,9 @@ public class ContentDownloadService extends IntentService {
             dbManager = SugarDbManager.get(getApplicationContext());
         }
         fetchOfflineContents();
-        // TODO : remove it after implementing the content download
-//        downloadContent(BuildConfig.BASE_API_URL+"ContentIndex?idStudent=1599&idCourse=10",
-//                "/storage/emulated/0/Corsalite/test_content_download.html");
     }
 
     private void fetchOfflineContents() {
-        L.info("SUGAR : Fetching offline contents");
         offlineContents = dbManager.getOfflineContents(null);
         offlineExercises = dbManager.getOfflineExerciseModels(null);
         startDownload();
@@ -120,43 +115,6 @@ public class ContentDownloadService extends IntentService {
                 EventBus.getDefault().post(new OfflineActivityRefreshEvent(content.idContent));
             }
         }
-    }
-
-    // TODO : need to implement it further
-    private void downloadContent(String url, String downloadLocation) {
-        downloandInProgress++;
-        Uri downloadUri = Uri.parse(url);
-        Uri destinationUri = Uri.parse(downloadLocation);
-        DownloadRequest downloadRequest = new DownloadRequest(downloadUri)
-                .addCustomHeader("cookie", ApiClientService.getSetCookie())
-                .addCustomHeader("Accept-Encoding", "gzip")
-                .addCustomHeader("Accept", "application/json")
-                .setRetryPolicy(new DefaultRetryPolicy())
-                .setDestinationURI(destinationUri).setPriority(DownloadRequest.Priority.HIGH)
-                .setDownloadContext(getApplicationContext())//Optional
-                .setStatusListener(new DownloadStatusListenerV1() {
-                    int preProgress = -1;
-                    @Override
-                    public void onDownloadComplete(DownloadRequest downloadRequest) {
-                        L.info("Downloader : completed");
-                        downloandInProgress--;
-                    }
-
-                    @Override
-                    public void onDownloadFailed(DownloadRequest downloadRequest, int errorCode, String errorMessage) {
-                        L.info("Downloader : failed with error code : "+errorCode+"\t message : "+errorMessage);
-                        downloandInProgress--;
-                    }
-
-                    @Override
-                    public void onProgress(DownloadRequest downloadRequest, long totalBytes, long downloadedBytes, int progress) {
-                        if(progress - preProgress >= 10 || progress == 100) {
-                            L.info("Downloader : In progress - "+progress);
-                            preProgress = progress;
-                        }
-                    }
-                });
-        downloadManager.add(downloadRequest);
     }
 
     private void downloadVideo(OfflineContent offlineContent, final Content content, String videoUrl, String downloadLocation) {
