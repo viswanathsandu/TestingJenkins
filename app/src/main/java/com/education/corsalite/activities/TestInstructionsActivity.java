@@ -220,32 +220,28 @@ public class TestInstructionsActivity extends AbstractBaseActivity {
             @Override
             public void onTick(long millisUntilFinished) {
                 long days = TimeUnit.MILLISECONDS.toDays(millisUntilFinished);
-                if (days > 0) {
+                if (days == 0) {
+                    daysLayout.setVisibility(View.GONE);
+                } else {
                     millisUntilFinished -= TimeUnit.DAYS.toMillis(days);
                     daysTxt.setText(days+"");
-                } else {
-                    daysLayout.setVisibility(View.GONE);
                 }
                 long hours = TimeUnit.MILLISECONDS.toHours(millisUntilFinished);
-                if (hours > 0) {
+                if (days == 0 && hours == 0) {
+                    hoursLayout.setVisibility(View.GONE);
+                } else {
                     millisUntilFinished -= TimeUnit.HOURS.toMillis(hours);
                     hoursTxt.setText(String.format("%02d", hours));
-                } else {
-                    hoursLayout.setVisibility(View.GONE);
                 }
                 long mins = TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished);
-                if (mins > 0) {
+                if (days == 0 && hours == 0 && mins == 0) {
+                    minutesLayout.setVisibility(View.GONE);
+                } else {
                     millisUntilFinished -= TimeUnit.MINUTES.toMillis(mins);
                     minutesTxt.setText(String.format("%02d", mins));
-                } else {
-                    minutesLayout.setVisibility(View.GONE);
                 }
                 long secs = TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished);
-                if (secs > 0) {
-                    secondsTxt.setText(String.format("%02d", secs));
-                } else {
-                    secondssLayout.setVisibility(View.GONE);
-                }
+                secondsTxt.setText(String.format("%02d", secs));
             }
 
             @Override
