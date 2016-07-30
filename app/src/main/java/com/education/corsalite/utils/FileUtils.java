@@ -210,7 +210,12 @@ public class FileUtils {
     }
 
     public void delete(String selectedPath) {
-        File fileorDir = new File(getParentFolder() + File.separator + selectedPath);
+        File fileorDir;
+        if(selectedPath.startsWith("/")) {
+            fileorDir = new File(getParentFolder() + selectedPath);
+        } else {
+            fileorDir = new File(getParentFolder() + File.separator + selectedPath);
+        }
         if (fileorDir.isDirectory()) {
             deleteChildren(fileorDir);
         } else if (fileorDir.isFile()) {

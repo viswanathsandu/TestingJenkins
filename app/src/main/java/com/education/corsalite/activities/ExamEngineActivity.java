@@ -873,6 +873,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 } else if (state == TestanswerPaperState.COMPLETED) {
                     headerProgress.setVisibility(View.GONE);
                     mViewSwitcher.showNext();
+                    new ExamUtils(ExamEngineActivity.this).deleteTestQuestionPaper(testQuestionPaperId);
                 }
             }
 
@@ -893,6 +894,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     finish();
                 } else if (state == TestanswerPaperState.COMPLETED) {
                     headerProgress.setVisibility(View.GONE);
+                    new ExamUtils(ExamEngineActivity.this).deleteTestQuestionPaper(testQuestionPaperId);
                     mViewSwitcher.showNext();
                     if (isChallengeTest()) {
                         openChallengeTestResults();
@@ -1023,6 +1025,12 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         intent.putExtra("recommended_time", TimeUtils.getSecondsInTimeFormat(examDurationInSeconds));
         intent.putExtra("time_taken", TimeUtils.getSecondsInTimeFormat(examDurationTakenInSeconds));
         intent.putExtra("total_questions", totalQuestions);
+        if(mockTestPaperIndex != null && mockTestPaperIndex.examDetails != null && mockTestPaperIndex.examDetails.get(0) != null) {
+            String dueDateText = mockTestPaperIndex.examDetails.get(0).dueDateTime;
+            if(!TextUtils.isEmpty(dueDateText)) {
+                intent.putExtra("due_date_millis", TimeUtils.getMillisFromDate(dueDateText))
+            }
+        }
         intent.putExtra("correct", correct);
         intent.putExtra("wrong", wrong);
         startActivity(intent);
