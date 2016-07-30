@@ -215,8 +215,8 @@ public class TestInstructionsActivity extends AbstractBaseActivity {
     }
 
 
-    private void setTimer(long seconds) {
-        timer = new CountDownTimer(seconds * 1000, 1 * 1000) {
+    private void setTimer(long millis) {
+        timer = new CountDownTimer(millis, 1 * 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 long days = TimeUnit.MILLISECONDS.toDays(millisUntilFinished);

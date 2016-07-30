@@ -837,6 +837,9 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         }
         testanswerPaper.status = state.toString();
         testanswerPaper.endTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(TimeUtils.currentTimeInMillis()));
+        long startMillis = TimeUtils.getMillisFromDate(testanswerPaper.startTime);
+        long endMillis = TimeUtils.getMillisFromDate(testanswerPaper.endTime);
+        testanswerPaper.timeTaken = ((startMillis - endMillis)/1000) + "";
         if(!SystemUtils.isNetworkConnected(this)) {
             SyncModel syncModel = new SyncModel();
             syncModel.requestObject = testanswerPaper;
@@ -2074,6 +2077,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             } else {
                 examDurationInSeconds = getExamDurationInSeconds(examModels);
             }
+
             TimeUtils.getSecondsInTimeFormat(examDurationInSeconds);
             if(isScheduledTest() && scheduledTimeInMillis != 0) {
                 long examExpirytime = scheduledTimeInMillis + (examDurationInSeconds * 1000);
