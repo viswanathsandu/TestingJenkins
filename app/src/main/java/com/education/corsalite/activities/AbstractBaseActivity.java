@@ -1147,7 +1147,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     public void scheduleNotificationsForScheduledTests(ScheduledTestList scheduledTestList) {
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
             for (int i = 0; i < scheduledTestList.MockTest.size(); i++) {
                 Date scheduledTestTime = new Date(TimeUtils.getMillisFromDate(scheduledTestList.MockTest.get(i).startTime));
@@ -1167,13 +1166,13 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     private void examDownloadNotification(String examId, String examName, Date scheduledTime) {
-        Calendar downloadNotifytime = Calendar.getInstance();
-        downloadNotifytime.setTime(scheduledTime);
-        downloadNotifytime.add(Calendar.MINUTE, -15);
-        if(TimeUtils.currentTimeInMillis() > downloadNotifytime.getTimeInMillis()) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(scheduledTime);
+        cal.add(Calendar.MINUTE, -15);
+        if(TimeUtils.currentTimeInMillis() > cal.getTimeInMillis()) {
             return;
         }
-        Calendar cal = Calendar.getInstance();
+        cal = Calendar.getInstance();
         Calendar expiry = Calendar.getInstance();
         expiry.setTimeInMillis(scheduledTime.getTime());
         Intent broadCastIntent = new Intent(this, NotifyReceiver.class);
@@ -1185,6 +1184,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 broadCastIntent, PendingIntent.FLAG_ONE_SHOT);
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
+        L.info("Scheduled Download Notification for "+TimeUtils.getDateString(cal.getTimeInMillis()));
         // cancel notification
         Intent intent = new Intent(this, NotifyReceiver.class);
         intent.setAction("CANCEL_NOTIFICATION");
@@ -1214,6 +1214,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 broadCastIntent, PendingIntent.FLAG_ONE_SHOT);
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
+        L.info("Scheduled Advanced Notification for "+TimeUtils.getDateString(cal.getTimeInMillis()));
         // cancel notification
         Intent intent = new Intent(this, NotifyReceiver.class);
         intent.setAction("CANCEL_NOTIFICATION");
@@ -1225,7 +1226,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     private void examStartedNotification(String examId, String examName, Date scheduledTime) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(scheduledTime);
-//        cal.add(Calendar.MINUTE, -5);
+        cal.add(Calendar.MINUTE, -5);
         if(TimeUtils.currentTimeInMillis() > cal.getTimeInMillis()) {
             return;
         }
@@ -1238,8 +1239,9 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         broadCastIntent.putExtra("time", scheduledTime.getTime());
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, (int)TimeUtils.currentTimeInMillis(),
                 broadCastIntent, PendingIntent.FLAG_ONE_SHOT);
-        AlarmManager alarmManager = (AlarmManager)this.getSystemService(Context.ALARM_SERVICE);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
+        L.info("Scheduled Started Notification for "+TimeUtils.getDateString(cal.getTimeInMillis()));
     }
 
     public void onEventMainThread(com.education.corsalite.event.Toast toast) {

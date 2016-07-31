@@ -201,6 +201,7 @@
         <activity
             android:name=".activities.TestInstructionsActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
+            android:launchMode="singleTask"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".activities.WelcomeActivity"

@@ -35,8 +35,6 @@ import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.services.TestDownloadService;
 import com.education.corsalite.utils.L;
 
-import java.text.SimpleDateFormat;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
@@ -79,8 +77,6 @@ public class ScheduledTestDialog extends DialogFragment implements ScheduledTest
                 ScheduledTestsListAdapter scheduledTestsListAdapter = new ScheduledTestsListAdapter(mScheduledTestList, getActivity().getLayoutInflater());
                 scheduledTestsListAdapter.setScheduledTestSelectedListener(this);
                 rvMockTestList.setAdapter(scheduledTestsListAdapter);
-
-                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 try {
                     ((AbstractBaseActivity) getActivity()).scheduleNotificationsForScheduledTests(mScheduledTestList);
                 } catch (Exception e) {
@@ -128,35 +124,35 @@ public class ScheduledTestDialog extends DialogFragment implements ScheduledTest
     private void loadScheduledTests() {
         showProgress();
         ApiManager.getInstance(getActivity()).getScheduledTestsList(
-                LoginUserCache.getInstance().getStudentId(),
-                new ApiCallback<ScheduledTestList>(getActivity()) {
+            LoginUserCache.getInstance().getStudentId(),
+            new ApiCallback<ScheduledTestList>(getActivity()) {
 
-                    @Override
-                    public void success(ScheduledTestList scheduledTests, Response response) {
-                        super.success(scheduledTests, response);
-                        if(getActivity() != null) {
-                            dialog.dismiss();
-                            if (scheduledTests != null && scheduledTests.MockTest != null && !scheduledTests.MockTest.isEmpty()) {
-                                ApiCacheHolder.getInstance().setScheduleTestsResponse(scheduledTests);
-                                SugarDbManager.get(getActivity()).saveReqRes(ApiCacheHolder.getInstance().scheduleTests);
-                                mScheduledTestList = scheduledTests;
-                                showScheduledTests();
-                            }
+                @Override
+                public void success(ScheduledTestList scheduledTests, Response response) {
+                    super.success(scheduledTests, response);
+                    if(getActivity() != null) {
+                        dialog.dismiss();
+                        if (scheduledTests != null && scheduledTests.MockTest != null && !scheduledTests.MockTest.isEmpty()) {
+                            ApiCacheHolder.getInstance().setScheduleTestsResponse(scheduledTests);
+                            SugarDbManager.get(getActivity()).saveReqRes(ApiCacheHolder.getInstance().scheduleTests);
+                            mScheduledTestList = scheduledTests;
+                            showScheduledTests();
                         }
                     }
+                }
 
-                    @Override
-                    public void failure(CorsaliteError error) {
-                        super.failure(error);
-                        try {
-                            ((AbstractBaseActivity) getActivity()).showToast("No scheduled tests available");
-                            dialog.dismiss();
-                            dismiss();
-                        } catch (Exception e) {
-                            L.error(e.getMessage(), e);
-                        }
+                @Override
+                public void failure(CorsaliteError error) {
+                    super.failure(error);
+                    try {
+                        ((AbstractBaseActivity) getActivity()).showToast("No scheduled tests available");
+                        dialog.dismiss();
+                        dismiss();
+                    } catch (Exception e) {
+                        L.error(e.getMessage(), e);
                     }
-                });
+                }
+            });
     }
 
     public void showProgress(){

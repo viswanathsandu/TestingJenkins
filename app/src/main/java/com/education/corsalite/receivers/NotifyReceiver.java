@@ -25,6 +25,7 @@ public class NotifyReceiver extends BroadcastReceiver {
             String action = intent.getAction();
             String testQuestionPaperId = intent.getExtras().getString("test_question_paper_id", "");
             boolean startExam = intent.getExtras().getBoolean("start_exam", false);
+            L.info("Notify Receiver : Cancel Notification - "+testQuestionPaperId +"\t"+startExam);
             if (action != null && action.equals("CANCEL_NOTIFICATION")) {
                 int id = intent.getIntExtra("id", -1);
                 if (id != -1) {
@@ -32,6 +33,7 @@ public class NotifyReceiver extends BroadcastReceiver {
                     NotificationsUtils.cancelNotification(context, id);
                 }
             } else if (TextUtils.isEmpty(testQuestionPaperId)) {
+
                 Bundle extras = intent.getExtras();
                 String title = extras.getString("title", "Corsalite");
                 String subTitle = extras.getString("sub_title", "Thank you");
