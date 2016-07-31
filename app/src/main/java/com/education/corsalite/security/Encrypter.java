@@ -1,12 +1,11 @@
 package com.education.corsalite.security;
 
+import com.scottyab.aescrypt.AESCrypt;
+
 import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
-
-import javax.crypto.spec.SecretKeySpec;
 
 /**
  * Created by vissu on 7/28/16.
@@ -31,25 +30,11 @@ public class Encrypter {
 
     public static String encrypt(String password, String text)
             throws Exception {
-        return AESHelper.encrypt(password, text);
+        return AESCrypt.encrypt(password, text);
     }
 
     public static String decrypt(String password, String encryptedData)
             throws Exception {
-        return AESHelper.encrypt(password, encryptedData);
-    }
-
-
-    public static SecretKeySpec getKey(String password)
-            throws Exception {
-        int keyLength = 128;
-        byte[] keyBytes = new byte[keyLength / 8];
-        Arrays.fill(keyBytes, (byte) 0x0);
-        byte[] passwordBytes = password.getBytes("UTF-8");
-        int length = passwordBytes.length < keyBytes.length ? passwordBytes.length
-                : keyBytes.length;
-        System.arraycopy(passwordBytes, 0, keyBytes, 0, length);
-        SecretKeySpec key = new SecretKeySpec(keyBytes, "AES");
-        return key;
+        return AESCrypt.decrypt(password, encryptedData);
     }
 }

@@ -112,12 +112,17 @@ public class ScheduledTestDialog extends DialogFragment implements ScheduledTest
 
     @Override
     public void onSchedledDownload(int position) {
-        ScheduledTestsArray exam = mScheduledTestList.MockTest.get(position);
-        Intent intent = new Intent(getActivity(), TestDownloadService.class);
-        intent.putExtra("testQuestionPaperId",exam.testQuestionPaperId);
-        intent.putExtra("selectedScheduledTest", Gson.get().toJson(exam));
-        getActivity().startService(intent);
-        Toast.makeText(getActivity(), "Downloading Scheduled test paper in background", Toast.LENGTH_SHORT).show();
+        try {
+            ScheduledTestsArray exam = mScheduledTestList.MockTest.get(position);
+            Intent intent = new Intent(getActivity(), TestDownloadService.class);
+            intent.putExtra("testQuestionPaperId", exam.testQuestionPaperId);
+            intent.putExtra("selectedScheduledTest", Gson.get().toJson(exam));
+            getActivity().startService(intent);
+            Toast.makeText(getActivity(), "Downloading Scheduled test paper in background", Toast.LENGTH_SHORT).show();
+            dismiss();
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
     }
 
     private void loadScheduledTests() {

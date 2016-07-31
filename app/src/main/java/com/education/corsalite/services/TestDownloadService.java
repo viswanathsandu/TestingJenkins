@@ -142,9 +142,9 @@ public class TestDownloadService extends IntentService {
                 model.testQuestionPaperId = testQuestionPaperId;
                 model.testAnswerPaperId = testAnswerPaperId;
                 model.dateTime = TimeUtils.currentTimeInMillis();
-                dbManager.saveOfflineTest(model);
                 examUtils.saveTestPaperIndex(model.testQuestionPaperId, testPaperIndexResponse);
                 examUtils.saveTestQuestionPaper(model.testQuestionPaperId, questionPaperResponse);
+                dbManager.saveOfflineTest(model);
                 if (!TextUtils.isEmpty(testName)) {
                     EventBus.getDefault().post(new Toast("Test \"" + testName + "\" has been downloaded successfully"));
                 } else {

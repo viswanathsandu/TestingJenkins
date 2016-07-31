@@ -142,11 +142,14 @@ public class TestInstructionsActivity extends AbstractBaseActivity {
         }
         if (testPaperIndex != null && testPaperIndex.examDetails != null && !testPaperIndex.examDetails.isEmpty()) {
             ExamDetails exam = testPaperIndex.examDetails.get(0);
-            long dueDateInMillis = TimeUtils.getMillisFromDate(exam.dueDateTime);
-            if(dueDateInMillis < TimeUtils.currentTimeInMillis()) {
-                showToast("Exam time is over. Removed from offline screen");
-                new ExamUtils(this).deleteTestQuestionPaper(testQuestionPaperId);
-                finish();
+            if(!TextUtils.isEmpty(exam.dueDateTime)) {
+                long dueDateInMillis = TimeUtils.getMillisFromDate(exam.dueDateTime);
+                if (dueDateInMillis < TimeUtils.currentTimeInMillis()) {
+                    showToast("Exam time is over. Removed from offline screen");
+                    new ExamUtils(this).deleteTestQuestionPaper(testQuestionPaperId);
+                    finish();
+                    return;
+                }
             }
             if (exam != null && !TextUtils.isEmpty(exam.timeTostart)) {
                 long scheduledTime = TimeUtils.getMillisFromDate(exam.scheduledTime);

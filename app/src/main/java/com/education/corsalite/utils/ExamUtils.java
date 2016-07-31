@@ -20,84 +20,73 @@ public class ExamUtils {
 
     private Context mContext;
     private SugarDbManager dbManager;
+
     public ExamUtils(Context context) {
         this.mContext = context;
         dbManager = SugarDbManager.get(mContext);
     }
 
     public void saveTestQuestionPaper(String testQuestionPaperId, TestQuestionPaperResponse response) {
-        if(response == null) {
+        if (response == null) {
             return;
         }
         String testPaper = Gson.get().toJson(response);
         try {
             testPaper = Gzip.compress(testPaper);
-        } catch (Exception e) {
-            L.error(e.getMessage(), e);
-        }
-        try {
             testPaper = Encrypter.encrypt(AppPref.get(mContext).getUserId(), testPaper);
+            FileUtils fileUtils = FileUtils.get(mContext);
+            String savedFileName = fileUtils.write(fileUtils.getTestQuestionPaperFileName(),
+                    testPaper, fileUtils.getTestsFolderPath(testQuestionPaperId));
+            if (TextUtils.isEmpty(savedFileName)) {
+                Toast.makeText(mContext, "Test download failed. Please try again", Toast.LENGTH_SHORT).show();
+                L.info("Failed to Save test paper  with id " + testQuestionPaperId);
+            } else {
+                L.info("Saved test paper with id " + testQuestionPaperId);
+            }
         } catch (Exception e) {
             L.error(e.getMessage(), e);
-        }
-        FileUtils fileUtils = FileUtils.get(mContext);
-        String savedFileName = fileUtils.write(fileUtils.getTestQuestionPaperFileName(),
-                            testPaper, fileUtils.getTestsFolderPath(testQuestionPaperId));
-        if(TextUtils.isEmpty(savedFileName)) {
-            Toast.makeText(mContext, "Test download failed. Please try again", Toast.LENGTH_SHORT).show();
-            L.info("Failed to Save test paper  with id " + testQuestionPaperId);
-        } else {
-            L.info("Saved test paper with id " + testQuestionPaperId);
         }
     }
 
     public void saveTestPaperIndex(String testQuestionPaperId, TestPaperIndex response) {
-        if(response == null) {
+        if (response == null) {
             return;
         }
         String testPaper = Gson.get().toJson(response);
         try {
             testPaper = Gzip.compress(testPaper);
-        } catch (Exception e) {
-            L.error(e.getMessage(), e);
-        }
-        try {
             testPaper = Encrypter.encrypt(AppPref.get(mContext).getUserId(), testPaper);
+            FileUtils fileUtils = FileUtils.get(mContext);
+            String savedFileName = fileUtils.write(fileUtils.getTestPaperIndexFileName(),
+                    testPaper, fileUtils.getTestsFolderPath(testQuestionPaperId));
+            if (TextUtils.isEmpty(savedFileName)) {
+                Toast.makeText(mContext, "Test download failed. Please try again", Toast.LENGTH_SHORT).show();
+                L.info("Failed to Save test paper index with id " + testQuestionPaperId);
+            } else {
+                L.info("Saved test paper index with id " + testQuestionPaperId);
+            }
         } catch (Exception e) {
             L.error(e.getMessage(), e);
-        }
-        FileUtils fileUtils = FileUtils.get(mContext);
-        String savedFileName = fileUtils.write(fileUtils.getTestPaperIndexFileName(),
-                testPaper, fileUtils.getTestsFolderPath(testQuestionPaperId));
-        if(TextUtils.isEmpty(savedFileName)) {
-            Toast.makeText(mContext, "Test download failed. Please try again", Toast.LENGTH_SHORT).show();
-            L.info("Failed to Save test paper index with id " + testQuestionPaperId);
-        } else {
-            L.info("Saved test paper index with id " + testQuestionPaperId);
         }
     }
 
     public void saveTestAnswerPaper(String testQuestionPaperId, TestAnswerPaper response) {
-        if(response == null) {
+        if (response == null) {
             return;
         }
         String testPaper = Gson.get().toJson(response);
         try {
             testPaper = Gzip.compress(testPaper);
-        } catch (Exception e) {
-            L.error(e.getMessage(), e);
-        }
-        try {
             testPaper = Encrypter.encrypt(AppPref.get(mContext).getUserId(), testPaper);
+            FileUtils fileUtils = FileUtils.get(mContext);
+            String savedFileName = fileUtils.write(fileUtils.getTestAnswerPaperFileName(), testPaper, fileUtils.getTestsFolderPath(testQuestionPaperId));
+            if (TextUtils.isEmpty(savedFileName)) {
+                L.info("Test Could not be saved on device. Please try again");
+            } else {
+                L.info("Saved test answer paper with id " + testQuestionPaperId);
+            }
         } catch (Exception e) {
             L.error(e.getMessage(), e);
-        }
-        FileUtils fileUtils = FileUtils.get(mContext);
-        String savedFileName = fileUtils.write(fileUtils.getTestAnswerPaperFileName(), testPaper, fileUtils.getTestsFolderPath(testQuestionPaperId));
-        if(TextUtils.isEmpty(savedFileName)) {
-            L.info("Test Could not be saved on device. Please try again");
-        } else {
-            L.info("Saved test answer paper with id " + testQuestionPaperId);
         }
     }
 
@@ -105,66 +94,60 @@ public class ExamUtils {
         try {
             FileUtils fileUtils = FileUtils.get(mContext);
             String testPaper = fileUtils.readFromFile(fileUtils.getTestPaperIndexFileName(), fileUtils.getTestsFolderPath(testQuestionPaperId));
-            try {
-                testPaper = Encrypter.decrypt(AppPref.get(mContext).getUserId(), testPaper);
-            } catch (Exception e) {
-                L.error(e.getMessage(), e);
+            if (!TextUtils.isEmpty(testPaper)) {
+                try {
+                    testPaper = Encrypter.decrypt(AppPref.get(mContext).getUserId(), testPaper);
+                    testPaper = Gzip.decompress(testPaper);
+                    TestPaperIndex response = Gson.get().fromJson(testPaper, TestPaperIndex.class);
+                    return response;
+                } catch (Exception e) {
+                    L.error(e.getMessage(), e);
+                }
             }
-            try {
-                testPaper = Gzip.decompress(testPaper);
-            } catch (Exception e) {
-                L.error(e.getMessage(), e);
-            }
-            TestPaperIndex response = Gson.get().fromJson(testPaper, TestPaperIndex.class);
-            return response;
         } catch (Exception e) {
             L.error(e.getMessage(), e);
-            return null;
         }
+        return null;
     }
 
     public TestQuestionPaperResponse getTestQuestionPaper(String testQuestionPaperId) {
         try {
             FileUtils fileUtils = FileUtils.get(mContext);
             String testPaper = fileUtils.readFromFile(fileUtils.getTestQuestionPaperFileName(), fileUtils.getTestsFolderPath(testQuestionPaperId));
-            try {
-                testPaper = Encrypter.decrypt(AppPref.get(mContext).getUserId(), testPaper);
-            } catch (Exception e) {
-                L.error(e.getMessage(), e);
+            if (!TextUtils.isEmpty(testPaper)) {
+                try {
+                    testPaper = Encrypter.decrypt(AppPref.get(mContext).getUserId(), testPaper);
+                    testPaper = Gzip.decompress(testPaper);
+                    TestQuestionPaperResponse response = Gson.get().fromJson(testPaper, TestQuestionPaperResponse.class);
+                    return response;
+                } catch (Exception e) {
+                    L.error(e.getMessage(), e);
+                }
             }
-            try {
-                testPaper = Gzip.decompress(testPaper);
-            } catch (Exception e) {
-                L.error(e.getMessage(), e);
-            }
-            TestQuestionPaperResponse response = Gson.get().fromJson(testPaper, TestQuestionPaperResponse.class);
-            return response;
         } catch (Exception e) {
             L.error(e.getMessage(), e);
-            return null;
         }
+        return null;
     }
 
     public TestAnswerPaper getTestAnswerPaper(String testQuestionPaperId) {
         try {
             FileUtils fileUtils = FileUtils.get(mContext);
             String testPaper = fileUtils.readFromFile(fileUtils.getTestAnswerPaperFileName(), fileUtils.getTestsFolderPath(testQuestionPaperId));
-            try {
-                testPaper = Encrypter.decrypt(AppPref.get(mContext).getUserId(), testPaper);
-            } catch (Exception e) {
-                L.error(e.getMessage(), e);
+            if (!TextUtils.isEmpty(testPaper)) {
+                try {
+                    testPaper = Encrypter.decrypt(AppPref.get(mContext).getUserId(), testPaper);
+                    testPaper = Gzip.decompress(testPaper);
+                    TestAnswerPaper response = Gson.get().fromJson(testPaper, TestAnswerPaper.class);
+                    return response;
+                } catch (Exception e) {
+                    L.error(e.getMessage(), e);
+                }
             }
-            try {
-                testPaper = Gzip.decompress(testPaper);
-            } catch (Exception e) {
-                L.error(e.getMessage(), e);
-            }
-            TestAnswerPaper response = Gson.get().fromJson(testPaper, TestAnswerPaper.class);
-            return response;
         } catch (Exception e) {
             L.error(e.getMessage(), e);
-            return null;
         }
+        return null;
     }
 
     public void deleteTestQuestionPaper(String testQuestionPaperId) {

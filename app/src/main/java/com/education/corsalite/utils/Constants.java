@@ -46,6 +46,9 @@ public class Constants {
     public static final int STATUS_COMPLETED = 33;
     public static final int STATUS_START = 44;
 
+    public static final int EXAM_DOWNLOADED_REQUEST_ID = 500;
+    public static final int EXAM_ADVANCED_NOTIFICATION_REQUEST_ID = 501;
+    public static final int EXAM_STARTED_REQUEST_ID = 502;
 
 
 

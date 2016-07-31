@@ -93,4 +93,5 @@ dependencies {
     compile 'com.mani:ThinDownloadManager:1.2.5'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha1'
     compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.scottyab:aescrypt:0.0.1'
 }

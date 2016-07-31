@@ -49,8 +49,10 @@ import com.education.corsalite.event.UpdateUserEvents;
 import com.education.corsalite.fragments.ChallengeTestRequestDialogFragment;
 import com.education.corsalite.fragments.MockTestDialog;
 import com.education.corsalite.fragments.ScheduledTestDialog;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.helpers.WebSocketHelper;
 import com.education.corsalite.models.ContentModel;
+import com.education.corsalite.models.db.AppConfig;
 import com.education.corsalite.models.db.OfflineTestObjectModel;
 import com.education.corsalite.models.db.ScheduledTestList;
 import com.education.corsalite.models.requestmodels.LogoutModel;
@@ -69,21 +71,17 @@ import com.education.corsalite.notifications.ChallengeUtils;
 import com.education.corsalite.receivers.NotifyReceiver;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.services.DataSyncService;
-import com.education.corsalite.models.db.AppConfig;
 import com.education.corsalite.utils.AppPref;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.CookieUtils;
 import com.education.corsalite.utils.Data;
 import com.education.corsalite.utils.FileUtils;
-import com.education.corsalite.gson.Gson;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.SystemUtils;
 import com.education.corsalite.utils.TimeUtils;
 import com.education.corsalite.utils.WebUrls;
-
 import com.localytics.android.Localytics;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -1152,7 +1150,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
             for (int i = 0; i < scheduledTestList.MockTest.size(); i++) {
-                Date scheduledTestTime = df.parse(scheduledTestList.MockTest.get(i).startTime);
+                Date scheduledTestTime = new Date(TimeUtils.getMillisFromDate(scheduledTestList.MockTest.get(i).startTime));
                 examDownloadNotification(scheduledTestList.MockTest.get(i).testQuestionPaperId,
                         scheduledTestList.MockTest.get(i).examName,
                         scheduledTestTime);
@@ -1163,14 +1161,14 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                         scheduledTestList.MockTest.get(i).examName,
                         scheduledTestTime);
             }
-        } catch (ParseException e) {
+        } catch (Exception e) {
             L.error(e.getMessage(), e);
         }
     }
 
     private void examDownloadNotification(String examId, String examName, Date scheduledTime) {
         Calendar downloadNotifytime = Calendar.getInstance();
-        downloadNotifytime.setTimeInMillis(scheduledTime.getTime());
+        downloadNotifytime.setTime(scheduledTime);
         downloadNotifytime.add(Calendar.MINUTE, -15);
         if(TimeUtils.currentTimeInMillis() > downloadNotifytime.getTimeInMillis()) {
             return;
@@ -1197,7 +1195,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     private void examAdvancedNotification(String examId, String examName, Date scheduledTime) {
         Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(scheduledTime.getTime());
+        cal.setTime(scheduledTime);
         cal.add(Calendar.MINUTE, -15);
         if(TimeUtils.currentTimeInMillis() > cal.getTimeInMillis()) {
             return;
@@ -1226,8 +1224,8 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     private void examStartedNotification(String examId, String examName, Date scheduledTime) {
         Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(scheduledTime.getTime());
-        cal.add(Calendar.MINUTE, -5);
+        cal.setTime(scheduledTime);
+//        cal.add(Calendar.MINUTE, -5);
         if(TimeUtils.currentTimeInMillis() > cal.getTimeInMillis()) {
             return;
         }
