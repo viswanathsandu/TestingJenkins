@@ -47,7 +47,9 @@
             android:id="@+id/pb_content"
             android:minWidth="70dp"
             android:max="100"
-            android:background="@color/gray"
+            android:indeterminate="true"
+            android:scaleY="2"
+            android:progressBackgroundTint="@color/dark_gray"
             android:layout_gravity="center_vertical"/>
 
 

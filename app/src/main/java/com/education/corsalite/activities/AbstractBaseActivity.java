@@ -1169,7 +1169,10 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     private void examDownloadNotification(String examId, String examName, Date scheduledTime) {
-        if(TimeUtils.currentTimeInMillis() > scheduledTime.getTime()) {
+        Calendar downloadNotifytime = Calendar.getInstance();
+        downloadNotifytime.setTimeInMillis(scheduledTime.getTime());
+        downloadNotifytime.add(Calendar.MINUTE, -15);
+        if(TimeUtils.currentTimeInMillis() > downloadNotifytime.getTimeInMillis()) {
             return;
         }
         Calendar cal = Calendar.getInstance();
@@ -1177,7 +1180,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         expiry.setTimeInMillis(scheduledTime.getTime());
         Intent broadCastIntent = new Intent(this, NotifyReceiver.class);
         broadCastIntent.putExtra("title", examName);
-        broadCastIntent.putExtra("sub_title", "Exam starts at "+new SimpleDateFormat("hh:mm a").format(scheduledTime)+". Please Download");
+        broadCastIntent.putExtra("sub_title", "Exam starts at "+new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime)+". Please Download");
         broadCastIntent.putExtra("id", Data.getInt(examId));
         broadCastIntent.putExtra("time", scheduledTime.getTime());
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, (int)TimeUtils.currentTimeInMillis(),
@@ -1193,12 +1196,12 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     private void examAdvancedNotification(String examId, String examName, Date scheduledTime) {
-        if(TimeUtils.currentTimeInMillis() > scheduledTime.getTime()) {
-            return;
-        }
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(scheduledTime.getTime());
         cal.add(Calendar.MINUTE, -15);
+        if(TimeUtils.currentTimeInMillis() > cal.getTimeInMillis()) {
+            return;
+        }
         Calendar expiry = Calendar.getInstance();
         expiry.setTimeInMillis(scheduledTime.getTime());
         if(cal.getTimeInMillis() < TimeUtils.currentTimeInMillis()) {
@@ -1206,7 +1209,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         }
         Intent broadCastIntent = new Intent(this, NotifyReceiver.class);
         broadCastIntent.putExtra("title", examName);
-        broadCastIntent.putExtra("sub_title", "Exam starts at "+new SimpleDateFormat("hh:mm a").format(scheduledTime));
+        broadCastIntent.putExtra("sub_title", "Exam starts at "+new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime));
         broadCastIntent.putExtra("id", Data.getInt(examId));
         broadCastIntent.putExtra("time", scheduledTime.getTime());
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, (int)TimeUtils.currentTimeInMillis(),
@@ -1222,16 +1225,17 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     private void examStartedNotification(String examId, String examName, Date scheduledTime) {
-        if(TimeUtils.currentTimeInMillis() > scheduledTime.getTime()) {
-            return;
-        }
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(scheduledTime.getTime());
         cal.add(Calendar.MINUTE, -5);
+        if(TimeUtils.currentTimeInMillis() > cal.getTimeInMillis()) {
+            return;
+        }
         Intent broadCastIntent = new Intent(this, NotifyReceiver.class);
         broadCastIntent.putExtra("title", examName);
-        broadCastIntent.putExtra("sub_title", "Exam started at "+new SimpleDateFormat("hh:mm a").format(scheduledTime));
+        broadCastIntent.putExtra("sub_title", "Exam started at "+new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime));
         broadCastIntent.putExtra("test_question_paper_id", examId);
+        broadCastIntent.putExtra("start_exam", true);
         broadCastIntent.putExtra("id", Data.getInt(examId));
         broadCastIntent.putExtra("time", scheduledTime.getTime());
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, (int)TimeUtils.currentTimeInMillis(),

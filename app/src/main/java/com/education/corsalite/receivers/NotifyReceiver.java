@@ -24,6 +24,7 @@ public class NotifyReceiver extends BroadcastReceiver {
         try {
             String action = intent.getAction();
             String testQuestionPaperId = intent.getExtras().getString("test_question_paper_id", "");
+            boolean startExam = intent.getExtras().getBoolean("start_exam", false);
             if (action != null && action.equals("CANCEL_NOTIFICATION")) {
                 int id = intent.getIntExtra("id", -1);
                 if (id != -1) {
@@ -36,7 +37,7 @@ public class NotifyReceiver extends BroadcastReceiver {
                 String subTitle = extras.getString("sub_title", "Thank you");
                 int id = extras.getInt("id", 0);
                 NotificationsUtils.NotifyUser(context, id, title, subTitle, getScheduledExamActivityIntent(context, testQuestionPaperId));
-            } else {
+            } else if(startExam){
                 ScheduledTestStartEvent event = new ScheduledTestStartEvent();
                 event.testQuestionPaperId = testQuestionPaperId;
                 EventBus.getDefault().post(event);
