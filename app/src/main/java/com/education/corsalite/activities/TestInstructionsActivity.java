@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -110,11 +111,11 @@ public class TestInstructionsActivity extends AbstractBaseActivity {
     private void navigateToExamEngine() {
         Intent intent = new Intent(TestInstructionsActivity.this, ExamEngineActivity.class);
         intent.putExtra(Constants.TEST_TITLE, getTestName());
+        intent.putExtras(getIntent().getExtras());
         intent.putExtra("test_question_paper_id", testQuestionPaperId);
         intent.putExtra("test_answer_paper_id", testQuestionPaperId);
         intent.putExtra("Test_Instructions", Gson.get().toJson(testPaperIndex));
         intent.putExtra("exam_template_id", testPaperIndex.examDetails.get(0).examTemplateId);
-        intent.putExtras(getIntent().getExtras());
         startActivity(intent);
         finish();
     }
@@ -229,6 +230,9 @@ public class TestInstructionsActivity extends AbstractBaseActivity {
 
 
     private void setTimer(long millis) {
+        if(timer != null) {
+            timer.cancel();
+        }
         timer = new CountDownTimer(millis, 1 * 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -259,14 +263,22 @@ public class TestInstructionsActivity extends AbstractBaseActivity {
 
             @Override
             public void onFinish() {
-                navigateToExamEngine();
+                timerLayout.setVisibility(View.GONE);
+                new Handler().post(runnable);
             }
         }.start();
     }
 
+    Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            navigateToExamEngine();
+        }
+    };
+
     @Override
-    protected void onPause() {
-        super.onPause();
+    public void onStop() {
+        super.onStop();
         if(timer != null) {
             timer.cancel();
         }

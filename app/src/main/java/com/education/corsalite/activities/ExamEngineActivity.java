@@ -359,6 +359,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 setToolbarForExercise(examName, true);
             }
             hideDrawerIcon();
+            fetchSections();
             getTestQuestionPaper();
             testNavFooter.setVisibility(View.VISIBLE);
         } else { // PartTest
@@ -405,12 +406,12 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         if (!TextUtils.isEmpty(subjectName) && !TextUtils.isEmpty(chapterName)) {
             tvPageTitle.setText(subjectName + " - " + chapterName);
         }
+        fetchSections();
         if (!TextUtils.isEmpty(testQuestionPaperId)) {
             getTestQuestionPaper();
         } else {
             getStandardExamByCourse();
         }
-        fetchSections();
         imvRefresh.setVisibility(View.VISIBLE);
         timerLayout.setVisibility(View.VISIBLE);
         testNavFooter.setVisibility(View.VISIBLE);
@@ -474,8 +475,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private void loadMockTest() {
         hideDrawerIcon();
         imvFlag.setVisibility(View.VISIBLE);
-        getTestQuestionPaper();
         fetchSections();
+        getTestQuestionPaper();
         imvRefresh.setVisibility(View.VISIBLE);
         timerLayout.setVisibility(View.VISIBLE);
         testNavFooter.setVisibility(View.VISIBLE);
@@ -2033,7 +2034,9 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void getTestQuestionPaper() {
+        showProgress();
         TestQuestionPaperResponse response = new ExamUtils(this).getTestQuestionPaper(testQuestionPaperId);
+        closeProgress();
         if(response != null) {
             showQuestionPaper(response.questions, response.examDetails);
         } else {
@@ -2082,7 +2085,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             } else if(examDetails != null && !TextUtils.isEmpty(examDetails.totalTime)) {
                 examDurationInSeconds = Integer.valueOf(examDetails.totalTime);
             } else if(mockTestPaperIndex != null && mockTestPaperIndex.examDetails != null
-                    && !mockTestPaperIndex.examDetails.isEmpty() && !TextUtils.isEmpty(mockTestPaperIndex.examDetails.get(0).totalTestDuration)) {
+                    && !mockTestPaperIndex.examDetails.isEmpty()
+                    && !TextUtils.isEmpty(mockTestPaperIndex.examDetails.get(0).totalTestDuration)) {
                 examDurationInSeconds = Integer.valueOf(mockTestPaperIndex.examDetails.get(0).totalTestDuration);
             } else {
                 examDurationInSeconds = getExamDurationInSeconds(examModels);
@@ -2091,12 +2095,18 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             TimeUtils.getSecondsInTimeFormat(examDurationInSeconds);
             if(isScheduledTest() && scheduledTimeInMillis != 0) {
                 long examExpirytime = scheduledTimeInMillis + (examDurationInSeconds * 1000);
+                if(timer != null) {
+                    timer.cancel();
+                }
                 timer = new CounterClass(examExpirytime - TimeUtils.currentTimeInMillis(), 1000);
                 timer.start();
             } else {
                 if(!TextUtils.isEmpty(testanswerPaper.timeTaken)) {
                     long timeTaken = Long.parseLong(testanswerPaper.timeTaken);
                     examDurationInSeconds -= timeTaken;
+                }
+                if(timer != null) {
+                    timer.cancel();
                 }
                 timer = new CounterClass(examDurationInSeconds * 1000, 1000);
                 timer.start();
