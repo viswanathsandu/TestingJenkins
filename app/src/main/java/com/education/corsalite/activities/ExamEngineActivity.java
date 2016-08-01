@@ -377,7 +377,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private boolean isPartTest() {
-        return title.equalsIgnoreCase("Part Test");
+        return title.contains("Part Test");
     }
 
     private boolean isChallengeTest() {
@@ -2084,6 +2084,9 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 examDurationInSeconds = Integer.valueOf(challengeTestTimeDuration);
             } else if(examDetails != null && !TextUtils.isEmpty(examDetails.totalTime)) {
                 examDurationInSeconds = Integer.valueOf(examDetails.totalTime);
+            } else if(isTakeTest() || isPartTest()) {
+                // TODO : remove it after changing the implementation on server side API
+                examDurationInSeconds = getExamDurationInSeconds(examModels);
             } else if(mockTestPaperIndex != null && mockTestPaperIndex.examDetails != null
                     && !mockTestPaperIndex.examDetails.isEmpty()
                     && !TextUtils.isEmpty(mockTestPaperIndex.examDetails.get(0).totalTestDuration)) {
