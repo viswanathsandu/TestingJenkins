@@ -477,15 +477,15 @@ public class ApiManager {
         }
     }
 
-    public void postUserEvents(String insert, ApiCallback<UserEventsResponse> callback) {
+    public void postUserEvents(String update, ApiCallback<UserEventsResponse> callback) {
         if (isApiOnline()) {
-            ApiClientService.get().postUserEvents(new TypedString("Insert=" + insert), callback);
+            ApiClientService.get().postUserEvents(new TypedString("Update=" + update), callback);
         }
     }
 
-    public UserEventsResponse postUserEvents(String insert) {
+    public UserEventsResponse postUserEvents(String update) {
         if (isApiOnline()) {
-            return  ApiClientService.get().postUserEvents(new TypedString("Update=" + insert));
+            return  ApiClientService.get().postUserEvents(new TypedString("Update=" + update));
         }
         return null;
     }
