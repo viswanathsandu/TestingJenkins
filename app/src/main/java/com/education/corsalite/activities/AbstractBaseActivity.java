@@ -1232,7 +1232,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         }
         Intent broadCastIntent = new Intent(this, NotifyReceiver.class);
         broadCastIntent.putExtra("title", examName);
-        broadCastIntent.putExtra("sub_title", "Exam started at "+new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime));
+        broadCastIntent.putExtra("sub_title", "Exam will start at "+new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime));
         broadCastIntent.putExtra("test_question_paper_id", examId);
         broadCastIntent.putExtra("start_exam", true);
         broadCastIntent.putExtra("id", Data.getInt(examId));
