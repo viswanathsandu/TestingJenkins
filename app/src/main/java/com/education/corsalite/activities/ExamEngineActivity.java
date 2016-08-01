@@ -2034,9 +2034,9 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void getTestQuestionPaper() {
-        showProgress();
+        L.info("Fetching offline Test question paper");
         TestQuestionPaperResponse response = new ExamUtils(this).getTestQuestionPaper(testQuestionPaperId);
-        closeProgress();
+        L.info("Fetched offline Test question paper");
         if(response != null) {
             showQuestionPaper(response.questions, response.examDetails);
         } else {

@@ -113,11 +113,17 @@ public class ExamUtils {
     public TestQuestionPaperResponse getTestQuestionPaper(String testQuestionPaperId) {
         try {
             FileUtils fileUtils = FileUtils.get(mContext);
+            L.info("Reading offline Test question paper from file");
             String testPaper = fileUtils.readFromFile(fileUtils.getTestQuestionPaperFileName(), fileUtils.getTestsFolderPath(testQuestionPaperId));
+            L.info("Completed reading offline Test question paper from file");
             if (!TextUtils.isEmpty(testPaper)) {
                 try {
+                    L.info("Decrypting offline Test question paper from file");
                     testPaper = Encrypter.decrypt(AppPref.get(mContext).getUserId(), testPaper);
+                    L.info("Decrypted offline Test question paper from file");
+                    L.info("Decompressing offline Test question paper from file");
                     testPaper = Gzip.decompress(testPaper);
+                    L.info("Decompressed offline Test question paper from file");
                     TestQuestionPaperResponse response = Gson.get().fromJson(testPaper, TestQuestionPaperResponse.class);
                     return response;
                 } catch (Exception e) {

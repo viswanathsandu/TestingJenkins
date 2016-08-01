@@ -13,7 +13,6 @@ import com.education.corsalite.models.db.SyncModel;
 import com.education.corsalite.models.db.reqres.LoginReqRes;
 import com.education.corsalite.models.db.reqres.ReqRes;
 import com.education.corsalite.models.db.reqres.requests.AbstractBaseRequest;
-import com.education.corsalite.models.examengine.BaseTest;
 import com.education.corsalite.models.responsemodels.BaseModel;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.utils.AppPref;
@@ -37,7 +36,6 @@ public class SugarDbManager {
 
     private List<OfflineContent> cachedOfflineContents;
     private List<ExerciseOfflineModel> cachedOfflineExercises;
-    private List<OfflineTestObjectModel> cachedOfflineTestObjects;
 
     private SugarDbManager() {
     }
@@ -205,16 +203,6 @@ public class SugarDbManager {
                 }
             }
             cachedOfflineContents.add((OfflineContent) object);
-        } else if (object instanceof OfflineTestObjectModel) {
-            if (object.getId() != null && object.getId() > 0) {
-                for (int i = 0; i < getCachedOfflineTestObjectModles().size(); i++) {
-                    if (cachedOfflineTestObjects.get(i).getId().equals(object.getId())) {
-                        cachedOfflineTestObjects.set(i, (OfflineTestObjectModel) object);
-                        return;
-                    }
-                }
-            }
-            cachedOfflineTestObjects.add((OfflineTestObjectModel) object);
         } else if (object instanceof ExerciseOfflineModel) {
             if (object.getId() != null && object.getId() > 0) {
                 for (int i = 0; i < cachedOfflineExercises.size(); i++) {
@@ -234,15 +222,6 @@ public class SugarDbManager {
                 for (int i = 0; i < cachedOfflineContents.size(); i++) {
                     if (cachedOfflineContents.get(i).getId().equals(object.getId())) {
                         cachedOfflineContents.remove(i);
-                        return;
-                    }
-                }
-            }
-        } else if (object instanceof OfflineTestObjectModel) {
-            if (object.getId() != null && object.getId() > 0) {
-                for (int i = 0; i < cachedOfflineTestObjects.size(); i++) {
-                    if (cachedOfflineTestObjects.get(i).getId().equals(object.getId())) {
-                        cachedOfflineTestObjects.remove(i);
                         return;
                     }
                 }
@@ -442,14 +421,6 @@ public class SugarDbManager {
         save(exercise);
     }
 
-    public void deleteOfflineExercise(ExerciseOfflineModel exercise) {
-        try {
-            delete(exercise);
-        } catch (Exception e) {
-            L.error(e.getMessage(), e);
-        }
-    }
-
     public List<ExerciseOfflineModel> getOfflineExerciseModels(String courseId) {
         List<ExerciseOfflineModel> offlineExercises = new ArrayList<>();
         try {
@@ -468,31 +439,12 @@ public class SugarDbManager {
         return offlineExercises;
     }
 
-    public void getAllExamModels(String courseId, final String subjectId, final ApiCallback<BaseTest> callback) {
+    public void getAllExamModels(Long dbRowId, final ApiCallback<OfflineTestObjectModel> callback) {
         try {
-            List<OfflineTestObjectModel> responseList = getCachedOfflineTestObjectModles();
-            for (OfflineTestObjectModel test : responseList) {
-                if (test != null && courseId.equals(test.baseTest.courseId)) {
-                    if (test.baseTest.subjectId.equalsIgnoreCase(subjectId)) {
-                        callback.success(test.baseTest, MockUtils.getRetrofitResponse());
-                        return;
-                    }
-                }
-            }
-        } catch (Exception e) {
-            CorsaliteError error = new CorsaliteError();
-            error.message = "No data found";
-            callback.failure(error);
-            L.error(e.getMessage(), e);
-        }
-    }
-
-    public void getExamModel(Long dbRowId, final ApiCallback<BaseTest> callback) {
-        try {
-            List<OfflineTestObjectModel> responseList = getCachedOfflineTestObjectModles();
-            for (OfflineTestObjectModel test : responseList) {
-                if (test != null && dbRowId.equals(test.getId())) {
-                    callback.success(test.baseTest, MockUtils.getRetrofitResponse());
+            OfflineTestObjectModel test = fetchRecord(OfflineTestObjectModel.class, dbRowId);
+            if (test != null && dbRowId.equals(test.getId())) {
+                if (test != null && test.scheduledTest != null && !TextUtils.isEmpty(test.scheduledTest.testQuestionPaperId)) {
+                    callback.success(test, MockUtils.getRetrofitResponse());
                     return;
                 }
             }
@@ -504,46 +456,8 @@ public class SugarDbManager {
         }
     }
 
-    public void getMockExamModels(Long dbRowId, final ApiCallback<OfflineTestObjectModel> callback) {
-        try {
-            List<OfflineTestObjectModel> responseList = getCachedOfflineTestObjectModles();
-            for (OfflineTestObjectModel test : responseList) {
-                if (test != null && dbRowId.equals(test.getId())) {
-                    if (test != null && test.mockTest != null && !TextUtils.isEmpty(test.mockTest.examTemplateId)) {
-                        callback.success(test, MockUtils.getRetrofitResponse());
-                        return;
-                    }
-                }
-            }
-        } catch (Exception e) {
-            CorsaliteError error = new CorsaliteError();
-            error.message = "No data found";
-            callback.failure(error);
-            L.error(e.getMessage(), e);
-        }
-    }
-
-    public void getAllExamModels(Long dbRowId, final ApiCallback<OfflineTestObjectModel> callback) {
-        try {
-            List<OfflineTestObjectModel> responseList = getCachedOfflineTestObjectModles();
-            for (OfflineTestObjectModel test : responseList) {
-                if (test != null && dbRowId.equals(test.getId())) {
-                    if (test != null && test.scheduledTest != null && !TextUtils.isEmpty(test.scheduledTest.testQuestionPaperId)) {
-                        callback.success(test, MockUtils.getRetrofitResponse());
-                        return;
-                    }
-                }
-            }
-        } catch (Exception e) {
-            CorsaliteError error = new CorsaliteError();
-            error.message = "No data found";
-            callback.failure(error);
-            L.error(e.getMessage(), e);
-        }
-    }
-
     public void deleteExpiredScheduleTests(List<ScheduledTestsArray> testsList) {
-        List<OfflineTestObjectModel> offlineTests = getCachedOfflineTestObjectModles();
+        List<OfflineTestObjectModel> offlineTests = fetchRecords(OfflineTestObjectModel.class);
         List<OfflineTestObjectModel> testsToBeDeleted = new ArrayList<>();
         for(OfflineTestObjectModel offlineTest : offlineTests) {
             if(offlineTest.scheduledTest != null) {
@@ -565,28 +479,9 @@ public class SugarDbManager {
         delete(model);
     }
 
-    public void getAllOfflineMockTests(String courseId, ApiCallback<List<OfflineTestObjectModel>> callback) {
-        List<OfflineTestObjectModel> currentUserResults = new ArrayList<>();
-        try {
-            List<OfflineTestObjectModel> responseList = getCachedOfflineTestObjectModles();
-            for (OfflineTestObjectModel test : responseList) {
-                if (test != null && courseId.equals(test.baseTest.courseId)) {
-                    currentUserResults.add(test);
-                }
-            }
-            callback.success(currentUserResults, MockUtils.getRetrofitResponse());
-        } catch (Exception e) {
-            CorsaliteError error = new CorsaliteError();
-            error.message = "No data found";
-            callback.failure(error);
-            L.error(e.getMessage(), e);
-        }
-    }
-
     // Cached data
     public void clearCachedData() {
         cachedOfflineContents = null;
-        cachedOfflineTestObjects = null;
         cachedOfflineExercises = null;
     }
 
@@ -602,12 +497,5 @@ public class SugarDbManager {
             cachedOfflineExercises = fetchRecords(ExerciseOfflineModel.class);
         }
         return cachedOfflineExercises;
-    }
-
-    private List<OfflineTestObjectModel> getCachedOfflineTestObjectModles() {
-        if (cachedOfflineTestObjects == null) {
-            cachedOfflineTestObjects = fetchRecords(OfflineTestObjectModel.class);
-        }
-        return cachedOfflineTestObjects != null ? cachedOfflineTestObjects : new ArrayList<OfflineTestObjectModel>();
     }
 }

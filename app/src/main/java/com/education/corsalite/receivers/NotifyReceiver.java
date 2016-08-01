@@ -33,7 +33,6 @@ public class NotifyReceiver extends BroadcastReceiver {
                     NotificationsUtils.cancelNotification(context, id);
                 }
             } else if (TextUtils.isEmpty(testQuestionPaperId)) {
-
                 Bundle extras = intent.getExtras();
                 String title = extras.getString("title", "Corsalite");
                 String subTitle = extras.getString("sub_title", "Thank you");

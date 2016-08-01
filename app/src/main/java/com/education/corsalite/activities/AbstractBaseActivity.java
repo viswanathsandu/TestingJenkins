@@ -1159,6 +1159,9 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 examStartedNotification(scheduledTestList.MockTest.get(i).testQuestionPaperId,
                         scheduledTestList.MockTest.get(i).examName,
                         scheduledTestTime);
+                examForceStartNotification(scheduledTestList.MockTest.get(i).testQuestionPaperId,
+                        scheduledTestList.MockTest.get(i).examName,
+                        scheduledTestTime);
             }
         } catch (Exception e) {
             L.error(e.getMessage(), e);
@@ -1233,6 +1236,25 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         Intent broadCastIntent = new Intent(this, NotifyReceiver.class);
         broadCastIntent.putExtra("title", examName);
         broadCastIntent.putExtra("sub_title", "Exam will start at "+new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime));
+        broadCastIntent.putExtra("test_question_paper_id", examId);
+        broadCastIntent.putExtra("start_exam", true);
+        broadCastIntent.putExtra("id", Data.getInt(examId));
+        broadCastIntent.putExtra("time", scheduledTime.getTime());
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, (int)TimeUtils.currentTimeInMillis(),
+                broadCastIntent, PendingIntent.FLAG_ONE_SHOT);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
+        L.info("Scheduled Started Notification for "+TimeUtils.getDateString(cal.getTimeInMillis()));
+    }
+
+    private void examForceStartNotification(String examId, String examName, Date scheduledTime) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(scheduledTime);
+        cal.add(Calendar.SECOND, -15);
+        if(TimeUtils.currentTimeInMillis() > cal.getTimeInMillis()) {
+            return;
+        }
+        Intent broadCastIntent = new Intent(this, NotifyReceiver.class);
         broadCastIntent.putExtra("test_question_paper_id", examId);
         broadCastIntent.putExtra("start_exam", true);
         broadCastIntent.putExtra("id", Data.getInt(examId));
