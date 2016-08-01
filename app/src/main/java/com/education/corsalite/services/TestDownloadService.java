@@ -168,7 +168,7 @@ public class TestDownloadService extends IntentService {
                 model.testQuestionPaperId = test.testQuestionPaperId;
                 dbManager.saveOfflineTest(model);
                 new ExamUtils(getApplicationContext()).saveTestQuestionPaper(model.testQuestionPaperId, test.testQuestionPaperResponse);
-                EventBus.getDefault().post(new Toast("\"" + chapter.chapterName + "\" test is downloaded successfully"));
+                EventBus.getDefault().post(new Toast("\""+chapter.chapterName + "\" test is downloaded successfully"));
             }
 
             @Override
@@ -194,7 +194,7 @@ public class TestDownloadService extends IntentService {
                 dbManager.saveOfflineTest(model);
                 new ExamUtils(getApplicationContext()).saveTestQuestionPaper(model.testQuestionPaperId, test.testQuestionPaperResponse);
                 L.info("Test Saved : "+model.getClass());
-                EventBus.getDefault().post(new Toast("\"\"+subjectName + \"\" test is downloaded successfully"));
+                EventBus.getDefault().post(new Toast("\""+subjectName + "\" test is downloaded successfully"));
             }
 
             @Override

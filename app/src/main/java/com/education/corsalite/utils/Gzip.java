@@ -1,12 +1,10 @@
 package com.education.corsalite.utils;
 
-import android.text.TextUtils;
-
-import org.apache.commons.codec.binary.Hex;
-
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -17,44 +15,34 @@ import java.util.zip.GZIPOutputStream;
 public class Gzip {
 
     public static String compress(String str) throws IOException {
-        if (TextUtils.isEmpty(str)) {
+        if (str == null || str.length() == 0) {
             return str;
         }
-        try {
-            ByteArrayOutputStream os = new ByteArrayOutputStream(str.length());
-            GZIPOutputStream gos = new GZIPOutputStream(os);
-            gos.write(str.getBytes());
-            gos.close();
-            byte[] compressed = os.toByteArray();
-            os.close();
-            return new String(Hex.encodeHex(compressed));
-        } catch (Exception e) {
-            L.error(e.getMessage(), e);
-        }
-        return str;
+        long initTime = TimeUtils.currentTimeInMillis();
+        L.debug("Before Compression\t" + str.length() +"\t"+ initTime);
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        GZIPOutputStream gzip = new GZIPOutputStream(out);
+        gzip.write(str.getBytes("ISO-8859-1"));
+        gzip.close();
+        String outStr = out.toString("ISO-8859-1");
+        L.debug("After Compression\t" + outStr.length() +"\t"+ (TimeUtils.currentTimeInMillis() - initTime));
+        return outStr;
     }
 
-    public static String decompress(String compressedData) throws IOException {
-        if (TextUtils.isEmpty(compressedData)) {
-            return compressedData;
+    public static String decompress(String str) throws IOException {
+        if (str == null || str.length() == 0) {
+            return str;
         }
-        try {
-            final int BUFFER_SIZE = 32;
-            byte[] compressedBytes = Hex.decodeHex(compressedData.toCharArray());
-            ByteArrayInputStream is = new ByteArrayInputStream(compressedBytes);
-            GZIPInputStream gis = new GZIPInputStream(is, BUFFER_SIZE);
-            StringBuilder string = new StringBuilder();
-            byte[] data = new byte[BUFFER_SIZE];
-            int bytesRead;
-            while ((bytesRead = gis.read(data)) != -1) {
-                string.append(new String(data, 0, bytesRead));
-            }
-            gis.close();
-            is.close();
-            return string.toString();
-        } catch (Exception e) {
-            L.error(e.getMessage(), e);
+        long initTime = TimeUtils.currentTimeInMillis();
+        L.debug("Before Decompression\t" + str.length() +"\t"+ initTime);
+        GZIPInputStream gis = new GZIPInputStream(new ByteArrayInputStream(str.getBytes("ISO-8859-1")));
+        BufferedReader bf = new BufferedReader(new InputStreamReader(gis, "ISO-8859-1"));
+        String outStr = "";
+        String line;
+        while ((line = bf.readLine()) != null) {
+            outStr += line;
         }
-        return compressedData;
+        L.debug("After Deompression\t" + outStr.length() +"\t"+ (TimeUtils.currentTimeInMillis() - initTime));
+        return outStr;
     }
 }
