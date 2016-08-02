@@ -2,17 +2,141 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/blue"
     android:gravity="center"
     android:orientation="vertical">
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Exam Name"
+    fontPath="@string/roboto_bold"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:background="@color/webview_background_grey"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingRight="30dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="Total Questions"
+                android:textColor="@color/text_gray" />
+
+            <TextView
+                android:id="@+id/total_questions_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="00"
+                android:textColor="@color/text_black" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingRight="30dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="Answered"
+                android:textColor="@color/text_gray" />
+
+            <TextView
+                android:id="@+id/answered_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="00"
+                android:textColor="@color/text_black" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingRight="30dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="Skipped"
+                android:textColor="@color/text_gray" />
+
+            <TextView
+                android:id="@+id/skipped_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="00"
+                android:textColor="@color/text_black" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingRight="30dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="Correct"
+                android:textColor="@color/text_gray" />
+
+            <TextView
+                android:id="@+id/correct_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="00"
+                android:textColor="@color/text_black" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="Wrong"
+                android:textColor="@color/text_gray" />
+
+            <TextView
+                android:id="@+id/wrong_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="00"
+                android:textColor="@color/text_black" />
+        </LinearLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp"
+        android:background="@color/dark_gray"
         android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:background="@color/dark_gray">
+        android:orientation="vertical">
 
         <LinearLayout
             style="@style/exam_results_data_layout"
@@ -165,33 +289,33 @@
             android:id="@+id/view_answers_btn"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
-            android:text="View Answers"
+            android:layout_marginLeft="10dp"
             android:background="@drawable/login_button_bg"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:layout_marginLeft="10dp"/>
+            android:text="View Answers" />
 
         <com.education.corsalite.views.CustomButton
             android:id="@+id/exam_history_btn"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
-            android:text="Exam History"
+            android:layout_marginLeft="10dp"
             android:background="@drawable/login_button_bg"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:layout_marginLeft="10dp"
-            android:visibility="gone"/>
+            android:text="Exam History"
+            android:visibility="gone" />
 
         <com.education.corsalite.views.CustomButton
             android:id="@+id/course_analysis_btn"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
-            android:text="Course analysis"
+            android:layout_marginLeft="10dp"
             android:background="@drawable/login_button_bg"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:layout_marginLeft="10dp"
-            android:visibility="gone"/>
+            android:text="Course analysis"
+            android:visibility="gone" />
 
     </LinearLayout>
 

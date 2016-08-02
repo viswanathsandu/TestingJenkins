@@ -1084,18 +1084,20 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     public void showProgress() {
-        ProgressBar pbar = new ProgressBar(this);
-        pbar.setBackgroundColor(getResources().getColor(android.R.color.transparent));
-        dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(pbar);
-        dialog.setCancelable(false);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.show();
+        if(isShown()) {
+            ProgressBar pbar = new ProgressBar(this);
+            pbar.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+            dialog = new Dialog(this);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(pbar);
+            dialog.setCancelable(false);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.show();
+        }
     }
 
     public void closeProgress() {
-        if (dialog != null && dialog.isShowing()) {
+        if (isShown() && dialog != null && dialog.isShowing()) {
             dialog.dismiss();
         }
     }

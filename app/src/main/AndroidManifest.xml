@@ -184,7 +184,7 @@
         <activity
             android:name=".activities.ExamResultActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/UserProfileTheme" />
         <activity
             android:name=".activities.TestStartActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
