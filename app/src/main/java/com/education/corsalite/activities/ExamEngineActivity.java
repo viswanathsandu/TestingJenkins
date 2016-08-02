@@ -1821,18 +1821,21 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
         @Override
         public void onFinish() {
-            tv_timer.setText("TIME OVER");
-            if (isChallengeTest() || isScheduledTest() || isMockTest()) {
-                submitTest();
+            if(isShown()) {
+                tv_timer.setText("TIME OVER");
+                if (isChallengeTest() || isScheduledTest() || isMockTest()) {
+                    submitTest();
+                }
             }
-
         }
 
         @Override
         public void onTick(long millisUntilFinished) {
-            examDurationTakenInSeconds = examDurationInSeconds - millisUntilFinished / 1000;
-            String hms = TimeUtils.getSecondsInTimeFormat(millisUntilFinished / 1000);
-            tv_timer.setText(hms);
+            if(isShown()) {
+                examDurationTakenInSeconds = examDurationInSeconds - millisUntilFinished / 1000;
+                String hms = TimeUtils.getSecondsInTimeFormat(millisUntilFinished / 1000);
+                tv_timer.setText(hms);
+            }
         }
     }
 
@@ -2178,8 +2181,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
+    protected void onDestroy() {
+        super.onDestroy();
         if(timer != null) {
             timer.cancel();
         }

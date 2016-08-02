@@ -112,6 +112,11 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     protected SugarDbManager dbManager;
     protected AppPref appPref;
     private boolean isLoginApiRunningInBackground = false;
+    private boolean isShown = false;
+
+    public boolean isShown() {
+        return isShown;
+    }
 
     public List<FriendsData.Friend> selectedFriends = new ArrayList<>();
 
@@ -164,6 +169,18 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         initActivity();
         checkForceUpgrade();
         Localytics.tagScreen(this.getClass().getSimpleName());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        isShown = true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        isShown = false;
     }
 
     private void initActivity() {
