@@ -8,8 +8,8 @@ android {
 
     defaultConfig {
         applicationId "com.education.corsalite"
-        minSdkVersion 20
-        targetSdkVersion 20
+        minSdkVersion 21
+        targetSdkVersion 21
         versionCode 101000
         versionName "1.1"
         multiDexEnabled false
@@ -39,6 +39,15 @@ android {
         }
         staging {
             applicationId "com.corsalite.androidapp.staging"
+            buildConfigField 'String', 'BASE_URL', '"http://staging.corsalite.com/v1/"'
+            buildConfigField 'String', 'BASE_API_URL', '"http://staging.corsalite.com/v1/webservices/"'
+            buildConfigField 'String', 'SOCKET_URL', '"ws://staging.corsalite.com:9300"'
+            buildConfigField 'String', 'PARENT_FOLDER', '".CorsaliteStaging"'
+            project.ext.set("archivesBaseName", "corsalite_" + defaultConfig.versionName + "_" + defaultConfig.versionCode);
+        }
+        stagingPreLollipop {
+            applicationId "com.corsalite.androidapp.stagingprelollipop"
+            minSdkVersion 19
             buildConfigField 'String', 'BASE_URL', '"http://staging.corsalite.com/v1/"'
             buildConfigField 'String', 'BASE_API_URL', '"http://staging.corsalite.com/v1/webservices/"'
             buildConfigField 'String', 'SOCKET_URL', '"ws://staging.corsalite.com:9300"'
