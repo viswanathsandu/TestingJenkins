@@ -12,25 +12,33 @@ import com.education.corsalite.R;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.TimeUtils;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
-public class ExamResultActivity extends AbstractBaseActivity implements View.OnClickListener {
+public class ExamResultActivity extends AbstractBaseActivity {
 
     private int totalQuestions = 0;
+    private int answered = 0;
+    private int skipped = 0;
     private int correct = 0;
     private int wrong = 0;
     private String exam = "";
+    private String examname = "";
     private String examTimeTaken = "";
     private String examRecommendedTime = "";
     private String examType = "";
     private String examDate = "";
     private long dueDateInMillis;
 
-    private TextView recommendedTimeTxt;
-    private TextView timeTakenTxt;
-    private TextView totalQuestionTxt;
-    private TextView correctTxt;
-    private TextView wrongTxt;
+    @Bind(R.id.exam_name_txt) TextView examNameTxt;
+    @Bind(R.id.recommended_time_txt) TextView recommendedTimeTxt;
+    @Bind(R.id.time_taken_txt) TextView timeTakenTxt;
+    @Bind(R.id.total_questions_txt) TextView totalQuestionTxt;
+    @Bind(R.id.answered_txt) TextView answeredTxt;
+    @Bind(R.id.skipped_txt) TextView skippedTxt;
+    @Bind(R.id.correct_txt) TextView correctTxt;
+    @Bind(R.id.wrong_txt) TextView wrongTxt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +47,6 @@ public class ExamResultActivity extends AbstractBaseActivity implements View.OnC
         LinearLayout myView = (LinearLayout) inflater.inflate(R.layout.activity_exam_result, null);
         frameLayout.addView(myView);
         ButterKnife.bind(this);
-        initUi();
         setToolbarTitle("Exam Results");
         loadIntentData();
         loadData();
@@ -54,39 +61,34 @@ public class ExamResultActivity extends AbstractBaseActivity implements View.OnC
         }
     }
 
-    private void initUi() {
-        recommendedTimeTxt = (TextView) findViewById(R.id.tv_recommended_time);
-        timeTakenTxt = (TextView) findViewById(R.id.tv_time_taken);
-        totalQuestionTxt = (TextView) findViewById(R.id.tv_total_questions);
-        correctTxt = (TextView) findViewById(R.id.tv_correct);
-        wrongTxt = (TextView) findViewById(R.id.tv_wrong);
-        findViewById(R.id.view_answers_btn).setOnClickListener(this);
-        findViewById(R.id.exam_history_btn).setOnClickListener(this);
-        findViewById(R.id.course_analysis_btn).setOnClickListener(this);
-    }
-
     private void loadIntentData() {
         Bundle bundle = getIntent().getExtras();
         exam = bundle.getString("exam", "Chapter");
+        examname = bundle.getString("examname", "");
         examType = bundle.getString("type", "Custom");
         examRecommendedTime = bundle.getString("recommended_time", "00:00:00");
         examTimeTaken = bundle.getString("time_taken", "00:00:00");
         examDate  = bundle.getString("time_taken", "00:00:00");
         totalQuestions = bundle.getInt("total_questions", 0);
+        answered = bundle.getInt("answered_questions", 0);
+        skipped = bundle.getInt("skipped_questions", 0);
         correct = bundle.getInt("correct", 0);
         wrong = bundle.getInt("wrong", 0);
         dueDateInMillis = bundle.getLong("due_date_millis", 0);
     }
 
     private void loadData() {
+        examNameTxt.setText(examname);
         recommendedTimeTxt.setText(examRecommendedTime);
         timeTakenTxt.setText(examTimeTaken);
         totalQuestionTxt.setText(totalQuestions+"");
+        answeredTxt.setText(answered+"");
+        skippedTxt.setText(skipped+"");
         correctTxt.setText(correct+"");
         wrongTxt.setText(wrong+"");
     }
 
-    @Override
+    @OnClick({R.id.view_answers_btn, R.id.exam_history_btn, R.id.course_analysis_btn})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.view_answers_btn :

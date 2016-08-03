@@ -958,10 +958,13 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
     private void submitTest() {
         if (localExamModelList != null && !localExamModelList.isEmpty()) {
+            int answered = 0;
+            int skipped = 0;
             int success = 0;
             int failure = 0;
             for (ExamModel model : localExamModelList) {
                 if (!TextUtils.isEmpty(model.selectedAnswers)) {
+                    answered++;
                     try {
                         if (!model.selectedAnswers.contains(",")) {
                             int selectedOption = -1;
@@ -995,7 +998,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                         failure++;
                     }
                 } else {
-                    failure++;
+                    skipped++;
                 }
             }
             postExerciseAnsEvent();
@@ -1004,7 +1007,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 headerProgress.setVisibility(View.VISIBLE);
                 mViewSwitcher.showNext();
             } else {
-                navigateToExamResultActivity(localExamModelList.size(), success, failure);
+                navigateToExamResultActivity(localExamModelList.size(), answered, skipped, success, failure);
             }
         }
     }
@@ -1019,15 +1022,18 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         }
     }
 
-    private void navigateToExamResultActivity(int totalQuestions, int correct, int wrong) {
+    private void navigateToExamResultActivity(int totalQuestions, int answered, int skipped, int correct, int wrong) {
         AbstractBaseActivity.setSharedExamModels(localExamModelList);
 
         Intent intent = new Intent(this, ExamResultActivity.class);
+        intent.putExtra("examname", examName);
         intent.putExtra("exam", "Chapter");
         intent.putExtra("type", "Custom");
         intent.putExtra("recommended_time", TimeUtils.getSecondsInTimeFormat(examDurationInSeconds));
         intent.putExtra("time_taken", TimeUtils.getSecondsInTimeFormat(examDurationTakenInSeconds));
         intent.putExtra("total_questions", totalQuestions);
+        intent.putExtra("answered_questions", answered);
+        intent.putExtra("skipped_questions", skipped);
         if(mockTestPaperIndex != null && mockTestPaperIndex.examDetails != null && mockTestPaperIndex.examDetails.get(0) != null) {
             String dueDateText = mockTestPaperIndex.examDetails.get(0).dueDateTime;
             if(!TextUtils.isEmpty(dueDateText)) {
@@ -1930,12 +1936,13 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
         // TODO : Handling exam name for take test and part test
         if(isTakeTest()) {
-            postCustomExamTemplate.examName = "Chapter Practice Test - " + chapterName;
+            examName = "Chapter Practice Test - " + chapterName;
         } else if(isPartTest()) {
-            postCustomExamTemplate.examName = "Part Test - " + subjectName;
+            examName = "Part Test - " + subjectName;
         } else {
-            postCustomExamTemplate.examName = examsList.get(0).examName;
+            examName = examsList.get(0).examName;
         }
+        postCustomExamTemplate.examName = examName;
 
         if (mIsAdaptiveTest) {
             postCustomExamTemplate.examDoTestBySlidingComplexity = "Y";
