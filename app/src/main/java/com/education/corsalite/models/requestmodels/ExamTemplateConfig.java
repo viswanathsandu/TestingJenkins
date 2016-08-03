@@ -27,7 +27,7 @@ public class ExamTemplateConfig {
     @SerializedName("ComplexityTo")
     public String complexityTo;
     @SerializedName("Duration")
-    public String duration = "300";
+    public String duration;
     @Ignore
     @SerializedName("ExamTemplateChapter")
     public List<ExamTemplateChapter> examTemplateChapter;

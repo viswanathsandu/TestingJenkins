@@ -8,9 +8,9 @@ android {
 
     defaultConfig {
         applicationId "com.education.corsalite"
-        minSdkVersion 21
-        targetSdkVersion 21
-        versionCode 101000
+        minSdkVersion 15
+        targetSdkVersion 20
+        versionCode 101002
         versionName "1.1"
         multiDexEnabled false
     }
