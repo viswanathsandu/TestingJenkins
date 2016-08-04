@@ -2,10 +2,10 @@ package com.education.corsalite.api;
 
 import android.content.Context;
 import android.content.res.AssetManager;
-import android.text.TextUtils;
 
 import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.db.SugarDbManager;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.models.db.MockTest;
 import com.education.corsalite.models.db.ScheduledTestList;
 import com.education.corsalite.models.db.reqres.AppConfigReqRes;
@@ -71,10 +71,8 @@ import com.education.corsalite.models.responsemodels.WelcomeDetails;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.FileUtils;
 import com.education.corsalite.utils.L;
-import com.education.corsalite.gson.Gson;
 import com.education.corsalite.utils.MockUtils;
 import com.education.corsalite.utils.SystemUtils;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -570,10 +568,10 @@ public class ApiManager {
         }
     }
 
-    public void getAppConfig(String idUser, ApiCallback<com.education.corsalite.models.db.AppConfig> callback) {
-        if (isApiOnline() && !TextUtils.isEmpty(idUser)) {
-            ApiClientService.get().getAppConfig(idUser, callback);
-        }  else if(!isNetworkConnected() && !TextUtils.isEmpty(idUser)) {
+    public void getAppConfig(ApiCallback<com.education.corsalite.models.db.AppConfig> callback) {
+        if (isApiOnline()) {
+            ApiClientService.get().getAppConfig(callback);
+        }  else if(!isNetworkConnected()) {
             AppConfigReqRes reqRes = new AppConfigReqRes();
             reqRes.request = apiCacheHolder.appConfigRequest;
             SugarDbManager.get(context).getResponse(reqRes, callback);

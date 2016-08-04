@@ -15,8 +15,8 @@
       "EnableMockTests": "true",
       "EnableExamHistory": "true",
       "EnableCurriculum":"true",
-      "ForceUpgrade":"false",
-      "LatestVersionCode":"0"
+      "ForceUpgrade":"true",
+      "LatestVersionCode":"101002"
     }
   ]
 }

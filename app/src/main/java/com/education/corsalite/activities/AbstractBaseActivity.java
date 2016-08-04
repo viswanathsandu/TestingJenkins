@@ -245,8 +245,8 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         super.onStop();
     }
 
-    public void loadAppConfig(String idUser) {
-        ApiManager.getInstance(this).getAppConfig(idUser, new ApiCallback<AppConfig>(this) {
+    public void loadAppConfig() {
+        ApiManager.getInstance(this).getAppConfig(new ApiCallback<AppConfig>(this) {
             @Override
             public void success(AppConfig appConfig, Response response) {
                 super.success(appConfig, response);
@@ -291,7 +291,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                         if(SystemUtils.isNetworkConnected(AbstractBaseActivity.this)) {
                             startWebSocket();
                             syncDataWithServer();
-                            loadAppConfig(loginResponse.idUser);
+                            loadAppConfig();
                         }
                         recreate();
                     } else {

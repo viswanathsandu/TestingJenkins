@@ -83,7 +83,7 @@ public class SplashActivity extends AbstractBaseActivity {
                     appPref.setUserId(loginResponse.idUser);
                     if(SystemUtils.isNetworkConnected(SplashActivity.this)) {
                         startWebSocket();
-                        loadAppConfig(loginResponse.idUser);
+                        loadAppConfig();
                     }
                 } else {
                     showToast(getResources().getString(R.string.login_failed));
