@@ -28,27 +28,16 @@
         android:textSize="15sp" />
 
     <View
+        android:id="@+id/separator"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/tv_title"
         android:background="@color/gray" />
 
-    <TextView
-        android:id="@+id/tv_module"
-        fontPath="@string/roboto_bold"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tv_title"
-        android:layout_marginTop="11dp"
-        android:layout_toLeftOf="@id/tv_close"
-        android:padding="10dp"
-        android:text="Test Module"
-        android:textColor="@color/black"
-        android:textSize="18sp" />
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/questions_recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_below="@+id/separator"/>
 
 </RelativeLayout>
