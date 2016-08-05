@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primary_color"
+    android:background="@color/white"
     android:gravity="center"
     android:orientation="vertical">
 
@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:text="Exam Name"
-        android:textColor="@color/text_white"
+        android:textColor="@color/text_black"
         android:textSize="24sp"
         android:maxLines="2"
         android:ellipsize="end"/>
@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:text="Exam Date    "
-                android:textColor="@color/light_40" />
+                android:textColor="@color/text_gray" />
 
             <TextView
                 android:id="@+id/date_txt"
@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="00/00/0000"
-                android:textColor="@color/text_white" />
+                android:textColor="@color/black" />
         </LinearLayout>
 
 
@@ -61,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:text="Recommended Time"
-                android:textColor="@color/light_40" />
+                android:textColor="@color/text_gray" />
 
             <TextView
                 android:id="@+id/recommended_time_txt"
@@ -70,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="00"
-                android:textColor="@color/text_white" />
+                android:textColor="@color/text_black" />
         </LinearLayout>
 
         <LinearLayout
@@ -85,7 +85,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:text="Time Taken"
-                android:textColor="@color/light_40" />
+                android:textColor="@color/text_gray" />
 
             <TextView
                 android:id="@+id/time_taken_txt"
@@ -94,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="00"
-                android:textColor="@color/text_white" />
+                android:textColor="@color/text_black" />
         </LinearLayout>
     </LinearLayout>
 
@@ -102,7 +102,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:background="@color/webview_background_grey"
+        android:background="@color/primary_color"
         android:orientation="horizontal"
         android:padding="10dp">
 
@@ -118,7 +118,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:text="Total Questions"
-                android:textColor="@color/text_gray" />
+                android:textColor="@color/light_40" />
 
             <TextView
                 android:id="@+id/total_questions_txt"
@@ -127,7 +127,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="00"
-                android:textColor="@color/text_black" />
+                android:textColor="@color/text_white" />
         </LinearLayout>
 
         <LinearLayout
@@ -142,7 +142,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:text="Answered"
-                android:textColor="@color/text_gray" />
+                android:textColor="@color/light_40" />
 
             <TextView
                 android:id="@+id/answered_txt"
@@ -151,7 +151,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="00"
-                android:textColor="@color/text_black" />
+                android:textColor="@color/text_white" />
         </LinearLayout>
 
         <LinearLayout
@@ -166,7 +166,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:text="Skipped"
-                android:textColor="@color/text_gray" />
+                android:textColor="@color/light_40" />
 
             <TextView
                 android:id="@+id/skipped_txt"
@@ -175,7 +175,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="00"
-                android:textColor="@color/text_black" />
+                android:textColor="@color/text_white" />
         </LinearLayout>
 
         <LinearLayout
@@ -190,7 +190,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:text="Correct"
-                android:textColor="@color/text_gray" />
+                android:textColor="@color/light_40" />
 
             <TextView
                 android:id="@+id/correct_txt"
@@ -199,7 +199,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="00"
-                android:textColor="@color/text_black" />
+                android:textColor="@color/text_white" />
         </LinearLayout>
 
         <LinearLayout
@@ -213,7 +213,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:text="Wrong"
-                android:textColor="@color/text_gray" />
+                android:textColor="@color/light_40" />
 
             <TextView
                 android:id="@+id/wrong_txt"
@@ -222,161 +222,9 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="00"
-                android:textColor="@color/text_black" />
+                android:textColor="@color/text_white" />
         </LinearLayout>
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:background="@color/dark_gray"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <LinearLayout
-            style="@style/exam_results_data_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                style="@style/exam_results_label"
-                android:layout_height="wrap_content"
-                android:text="Exam : " />
-
-            <TextView
-                android:id="@+id/tv_exam_title"
-                style="@style/exam_results_value"
-                android:layout_height="wrap_content"
-                android:text="Chapter" />
-        </LinearLayout>
-
-        <LinearLayout
-            style="@style/exam_results_data_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                style="@style/exam_results_label"
-                android:layout_height="wrap_content"
-                android:text="Type : " />
-
-            <TextView
-                android:id="@+id/tv_exam_type"
-                style="@style/exam_results_value"
-                android:layout_height="wrap_content"
-                android:text="Custom" />
-        </LinearLayout>
-
-        <LinearLayout
-            style="@style/exam_results_data_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                style="@style/exam_results_label"
-                android:layout_height="wrap_content"
-                android:text="Date : " />
-
-            <TextView
-                android:id="@+id/tv_exam_date"
-                style="@style/exam_results_value"
-                android:layout_height="wrap_content"
-                android:text="26-12-2015" />
-        </LinearLayout>
-
-        <LinearLayout
-            style="@style/exam_results_data_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                style="@style/exam_results_label"
-                android:layout_height="wrap_content"
-                android:text="Recommended Time : " />
-
-            <TextView
-                android:id="@+id/tv_recommended_time"
-                style="@style/exam_results_value"
-                android:layout_height="wrap_content"
-                android:text="00:00:00" />
-        </LinearLayout>
-
-        <LinearLayout
-            style="@style/exam_results_data_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                style="@style/exam_results_label"
-                android:layout_height="wrap_content"
-                android:text="Time Taken : " />
-
-            <TextView
-                android:id="@+id/tv_time_taken"
-                style="@style/exam_results_value"
-                android:layout_height="wrap_content"
-                android:text="00:00:00" />
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <TableLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone">
-
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
-
-            <TextView
-                style="@style/exam_results_data_header"
-                android:layout_column="1"
-                android:text="Total Questions" />
-
-            <TextView
-                style="@style/exam_results_data_header"
-                android:layout_column="2"
-                android:text="Correct" />
-
-            <TextView
-                style="@style/exam_results_data_header"
-                android:layout_column="3"
-                android:text="Wrong" />
-        </TableRow>
-
-        <TableRow>
-
-            <TextView
-                android:id="@+id/tv_total_questions"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="1"
-                android:layout_gravity="center_horizontal"
-                android:text="10"
-                android:textColor="@color/text_black" />
-
-            <TextView
-                android:id="@+id/tv_correct"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="2"
-                android:layout_gravity="center_horizontal"
-                android:text="8"
-                android:textColor="@color/text_black" />
-
-            <TextView
-                android:id="@+id/tv_wrong"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="3"
-                android:layout_gravity="center_horizontal"
-                android:text="2"
-                android:textColor="@color/text_black" />
-        </TableRow>
-    </TableLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"

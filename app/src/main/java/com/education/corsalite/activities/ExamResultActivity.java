@@ -32,6 +32,7 @@ public class ExamResultActivity extends AbstractBaseActivity {
     private long dueDateInMillis;
 
     @Bind(R.id.exam_name_txt) TextView examNameTxt;
+    @Bind(R.id.date_txt) TextView examDateTxt;
     @Bind(R.id.recommended_time_txt) TextView recommendedTimeTxt;
     @Bind(R.id.time_taken_txt) TextView timeTakenTxt;
     @Bind(R.id.total_questions_txt) TextView totalQuestionTxt;
@@ -79,6 +80,7 @@ public class ExamResultActivity extends AbstractBaseActivity {
 
     private void loadData() {
         examNameTxt.setText(examname);
+        examDateTxt.setText(examDate);
         recommendedTimeTxt.setText(examRecommendedTime);
         timeTakenTxt.setText(examTimeTaken);
         totalQuestionTxt.setText(totalQuestions+"");
