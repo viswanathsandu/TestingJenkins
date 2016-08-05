@@ -167,13 +167,13 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 .setFontAttrId(R.attr.fontPath)
                 .build());
         initActivity();
-        checkForceUpgrade();
         Localytics.tagScreen(this.getClass().getSimpleName());
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        checkForceUpgrade();
         isShown = true;
     }
 
