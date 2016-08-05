@@ -1,77 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:fillViewport="true"
     android:orientation="vertical"
     android:padding="15dp">
 
+    <TextView
+        android:id="@+id/tv_close"
+        fontPath="@string/roboto_bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/ico_close"
+        android:padding="10dp"
+        android:textColor="@color/black"
+        android:textStyle="bold" />
 
-    <ViewSwitcher
-        android:id="@+id/vs_container"
+    <TextView
+        android:id="@+id/tv_title"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/tv_close"
+        android:padding="10dp"
+        android:text="Full Question Paper"
+        android:textColor="@color/black"
+        android:textSize="15sp" />
 
-        <ProgressBar
-            android:id="@+id/headerProgress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/tv_title"
+        android:background="@color/gray" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/tv_module"
+        fontPath="@string/roboto_bold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_title"
+        android:layout_marginTop="11dp"
+        android:layout_toLeftOf="@id/tv_close"
+        android:padding="10dp"
+        android:text="Test Module"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/tv_close"
-                fontPath="@string/roboto_bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:background="@drawable/ico_close"
-                android:padding="10dp"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/questions_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
-            <TextView
-                android:id="@+id/tv_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_toLeftOf="@id/tv_close"
-                android:padding="10dp"
-                android:text="Full Question Paper"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@id/tv_title"
-                android:background="@color/gray" />
-
-            <TextView
-                android:id="@+id/tv_module"
-                fontPath="@string/roboto_bold"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tv_title"
-                android:layout_marginTop="11dp"
-                android:layout_toLeftOf="@id/tv_close"
-                android:padding="10dp"
-                android:text="Test Module"
-                android:textColor="@color/black"
-                android:textSize="18sp" />
-
-            <LinearLayout
-                android:id="@+id/layout_full_question"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@id/tv_module"
-                android:orientation="vertical" />
-
-        </RelativeLayout>
-
-    </ViewSwitcher>
-
-</ScrollView>
+</RelativeLayout>

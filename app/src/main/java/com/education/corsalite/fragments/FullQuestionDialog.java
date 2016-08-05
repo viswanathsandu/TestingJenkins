@@ -8,6 +8,8 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -20,10 +22,10 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.ViewSwitcher;
 
 import com.education.corsalite.R;
 import com.education.corsalite.activities.ExamEngineActivity;
+import com.education.corsalite.adapters.FullQuestionsAdapter;
 import com.education.corsalite.models.responsemodels.AnswerChoiceModel;
 import com.education.corsalite.models.responsemodels.ExamModel;
 import com.education.corsalite.services.ApiClientService;
@@ -42,12 +44,11 @@ import butterknife.ButterKnife;
  */
 public class FullQuestionDialog extends DialogFragment {
 
-    @Bind(R.id.vs_container) ViewSwitcher mViewSwitcher;
     @Bind(R.id.tv_close) TextView tvClose;
     @Bind(R.id.tv_module) TextView tvModule;
+    @Bind(R.id.questions_recyclerview) RecyclerView questionsRecyclerView;
 
-    @Bind(R.id.layout_full_question) LinearLayout layoutFullQuestion;
-
+    private FullQuestionsAdapter fullQuestionsAdapter;
     private List<ExamModel> localExamModelList;
     Context context;
     int serialNumber = 0;
@@ -66,19 +67,7 @@ public class FullQuestionDialog extends DialogFragment {
         ButterKnife.bind(this, v);
         context = getActivity();
         getAvailableArguments();
-        if(localExamModelList != null) {
-            for(ExamModel examModel : localExamModelList) {
-                if (examModel.idQuestionType.equalsIgnoreCase("1") ||
-                        examModel.idQuestionType.equalsIgnoreCase("2")) {
-
-                    // TODO : handle for other question types
-                    setQuestionLayout(examModel);
-                }
-            }
-        }
-        if (mViewSwitcher.indexOfChild(mViewSwitcher.getCurrentView()) == 0) {
-            mViewSwitcher.showNext();
-        }
+        loadAdapter(inflater);
         return v;
     }
 
@@ -90,6 +79,12 @@ public class FullQuestionDialog extends DialogFragment {
         if(localExamModelList != null && localExamModelList.size() > 0) {
             Collections.sort(localExamModelList);
         }
+    }
+
+    private void loadAdapter(LayoutInflater inflater) {
+        fullQuestionsAdapter = new FullQuestionsAdapter(getActivity(), localExamModelList, inflater);
+        questionsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        questionsRecyclerView.setAdapter(fullQuestionsAdapter);
     }
 
     private class MyWebViewClient extends CorsaliteWebViewClient {
@@ -179,7 +174,9 @@ public class FullQuestionDialog extends DialogFragment {
             } else if (examModel.idQuestionType.equalsIgnoreCase("2")) {
                 questionLayout.addView(loadChexkbox(examModel.answerChoice));
             }
-            layoutFullQuestion.addView(questionLayout);
+            // TODO : add items to layout
+
+//            layoutFullQuestion.addView(questionLayout);
         } catch (Exception e) {
             L.error(e.getMessage(), e);
         }
