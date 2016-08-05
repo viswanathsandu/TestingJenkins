@@ -252,7 +252,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 super.success(appConfig, response);
                 ApiCacheHolder.getInstance().setAppConfigResponse(appConfig);
                 dbManager.saveReqRes(ApiCacheHolder.getInstance().appConfigReqRes);
-                checkForceUpgrade();
+                AbstractBaseActivity.appConfig = appConfig;
             }
         });
     }
