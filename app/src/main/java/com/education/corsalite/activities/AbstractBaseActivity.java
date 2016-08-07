@@ -168,6 +168,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 .build());
         initActivity();
         Localytics.tagScreen(this.getClass().getSimpleName());
+        Localytics.tagEvent(this.getClass().getSimpleName());
     }
 
     @Override
