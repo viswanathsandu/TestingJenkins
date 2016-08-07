@@ -2107,7 +2107,12 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             }
 
             TimeUtils.getSecondsInTimeFormat(examDurationInSeconds);
-            if(isScheduledTest() && scheduledTimeInMillis != 0) {
+            if(isScheduledTest()) {
+                try {
+                    scheduledTimeInMillis = TimeUtils.getMillisFromDate(mockTestPaperIndex.examDetails.get(0).scheduledTime);
+                } catch (Exception e) {
+                    L.error(e.getMessage(), e);
+                }
                 long examExpirytime = scheduledTimeInMillis + (examDurationInSeconds * 1000);
                 if(timer != null) {
                     timer.cancel();
