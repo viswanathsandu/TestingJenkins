@@ -209,9 +209,9 @@ public class ContentReadingActivity extends AbstractBaseActivity {
             ContentReadingEvent event = new ContentReadingEvent();
             event.idContent = contentModelList.get(0).idContent;
             event.idStudent = LoginUserCache.getInstance().getStudentId();
-            event.eventStartTime = TimeUtils.getDateString(eventStartTime);
-            event.eventEndTime= TimeUtils.getDateString(eventEndDate);
-            event.updatetime = TimeUtils.getDateString(TimeUtils.currentTimeInMillis());
+            event.eventStartTime = TimeUtils.getDateTimeString(eventStartTime);
+            event.eventEndTime= TimeUtils.getDateTimeString(eventEndDate);
+            event.updatetime = TimeUtils.getDateTimeString(TimeUtils.currentTimeInMillis());
             getEventbus().post(event);
         } catch (Exception e) {
             L.error(e.getMessage(), e);

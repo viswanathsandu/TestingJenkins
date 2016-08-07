@@ -790,6 +790,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             switch (v.getId()) {
                 case R.id.btn_next:
                     if (selectedPosition == localExamModelList.size() - 1 && !isFlaggedQuestionsScreen() && !isViewAnswersScreen() && !title.equalsIgnoreCase("Exercises")) {
+                        updateQuestionTimeTaken(selectedPosition);
                         showSubmitTestAlert();
                     }else{
                         updateQuestionTimeTaken(selectedPosition);
@@ -1026,11 +1027,12 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         AbstractBaseActivity.setSharedExamModels(localExamModelList);
 
         Intent intent = new Intent(this, ExamResultActivity.class);
-        intent.putExtra("examname", examName);
+        intent.putExtra("exam_name", examName);
         intent.putExtra("exam", "Chapter");
         intent.putExtra("type", "Custom");
         intent.putExtra("recommended_time", TimeUtils.getSecondsInTimeFormat(examDurationInSeconds));
         intent.putExtra("time_taken", TimeUtils.getSecondsInTimeFormat(examDurationTakenInSeconds));
+        intent.putExtra("exam_date", TimeUtils.getDateString(TimeUtils.currentTimeInMillis()));
         intent.putExtra("total_questions", totalQuestions);
         intent.putExtra("answered_questions", answered);
         intent.putExtra("skipped_questions", skipped);

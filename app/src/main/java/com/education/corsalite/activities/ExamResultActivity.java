@@ -65,11 +65,11 @@ public class ExamResultActivity extends AbstractBaseActivity {
     private void loadIntentData() {
         Bundle bundle = getIntent().getExtras();
         exam = bundle.getString("exam", "Chapter");
-        examname = bundle.getString("examname", "");
+        examname = bundle.getString("exam_name", "Exam Result");
         examType = bundle.getString("type", "Custom");
-        examRecommendedTime = bundle.getString("recommended_time", "00:00:00");
-        examTimeTaken = bundle.getString("time_taken", "00:00:00");
-        examDate  = bundle.getString("time_taken", "00:00:00");
+        examRecommendedTime = bundle.getString("recommended_time", "--:--:--");
+        examTimeTaken = bundle.getString("time_taken", "--:--:--");
+        examDate  = bundle.getString("exam_date", "--/--/----");
         totalQuestions = bundle.getInt("total_questions", 0);
         answered = bundle.getInt("answered_questions", 0);
         skipped = bundle.getInt("skipped_questions", 0);

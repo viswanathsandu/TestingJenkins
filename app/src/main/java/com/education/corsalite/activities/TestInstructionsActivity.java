@@ -115,6 +115,7 @@ public class TestInstructionsActivity extends AbstractBaseActivity {
         intent.putExtra("test_question_paper_id", testQuestionPaperId);
         intent.putExtra("test_answer_paper_id", testQuestionPaperId);
         intent.putExtra("Test_Instructions", Gson.get().toJson(testPaperIndex));
+        intent.putExtra("exam_name", testPaperIndex.examDetails.get(0).examName);
         intent.putExtra("exam_template_id", testPaperIndex.examDetails.get(0).examTemplateId);
         startActivity(intent);
         finish();

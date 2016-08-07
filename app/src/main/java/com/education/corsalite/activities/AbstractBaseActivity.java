@@ -1205,7 +1205,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 broadCastIntent, PendingIntent.FLAG_ONE_SHOT);
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
-        L.info("Scheduled Download Notification for "+TimeUtils.getDateString(cal.getTimeInMillis()));
+        L.info("Scheduled Download Notification for "+TimeUtils.getDateTimeString(cal.getTimeInMillis()));
         // cancel notification
         Intent intent = new Intent(this, NotifyReceiver.class);
         intent.setAction("CANCEL_NOTIFICATION");
@@ -1235,7 +1235,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 broadCastIntent, PendingIntent.FLAG_ONE_SHOT);
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
-        L.info("Scheduled Advanced Notification for "+TimeUtils.getDateString(cal.getTimeInMillis()));
+        L.info("Scheduled Advanced Notification for "+TimeUtils.getDateTimeString(cal.getTimeInMillis()));
         // cancel notification
         Intent intent = new Intent(this, NotifyReceiver.class);
         intent.setAction("CANCEL_NOTIFICATION");
@@ -1262,7 +1262,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 broadCastIntent, PendingIntent.FLAG_ONE_SHOT);
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
-        L.info("Scheduled Started Notification for "+TimeUtils.getDateString(cal.getTimeInMillis()));
+        L.info("Scheduled Started Notification for "+TimeUtils.getDateTimeString(cal.getTimeInMillis()));
     }
 
     private void examForceStartNotification(String examId, String examName, Date scheduledTime) {
@@ -1281,7 +1281,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 broadCastIntent, PendingIntent.FLAG_ONE_SHOT);
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
-        L.info("Scheduled Started Notification for "+TimeUtils.getDateString(cal.getTimeInMillis()));
+        L.info("Scheduled Started Notification for "+TimeUtils.getDateTimeString(cal.getTimeInMillis()));
     }
 
     public void onEventMainThread(com.education.corsalite.event.Toast toast) {

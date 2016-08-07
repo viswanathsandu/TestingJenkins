@@ -51,9 +51,16 @@ public class TimeUtils {
         }
     }
 
-    public static String getDateString(long millis) {
+    public static String getDateTimeString(long millis) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        Date date = getDate(millis);
+        return dateFormat.format(date);
+    }
+
+    public static String getDateString(long millis) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
+                "dd/MM/yyyy", Locale.getDefault());
         Date date = getDate(millis);
         return dateFormat.format(date);
     }
