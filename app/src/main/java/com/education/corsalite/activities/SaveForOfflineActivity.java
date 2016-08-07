@@ -2,13 +2,14 @@ package com.education.corsalite.activities;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -190,6 +191,30 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
     }
 
     private void setUpDialogLogic(final List<OfflineContent> offlineContents, final List<ExerciseOfflineModel> offlineExerciseModels) {
+        new AlertDialog.Builder(this)
+                .setTitle("Download Content")
+                .setMessage("Do you want to download the selected content for offline use?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        stopService(new Intent(getApplicationContext(), ContentDownloadService.class));
+                        storeInProgressItemsInDb(offlineContents, offlineExerciseModels);
+                        EventBus.getDefault().post(new RefreshDownloadsEvent());
+                        startService(new Intent(getApplicationContext(), ContentDownloadService.class));
+                        dialog.dismiss();
+                        finish();
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+                        dialog.dismiss();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setCancelable(false)
+                .show();
+        /*
+        // This code is to enable preview before downloading
         dialog.show();
         Button downloadBtn = (Button) dialog.findViewById(R.id.ok);
         Button cancelBtn = (Button) dialog.findViewById(R.id.cancel);
@@ -209,7 +234,7 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
             public void onClick(View v) {
                 dialog.dismiss();
             }
-        });
+        }); */
     }
 
     public String method(String str) {
