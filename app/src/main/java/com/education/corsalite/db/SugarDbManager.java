@@ -152,6 +152,40 @@ public class SugarDbManager {
         return null;
     }
 
+    /*
+    This should be used after implementing the course id for all exams
+     */
+    public List<OfflineTestObjectModel> fetchOfflineTestRecords(String courseId) {
+        try {
+            List<OfflineTestObjectModel> allList = Select.from(OfflineTestObjectModel.class)
+                    .where(Condition.prop("BASE_USER_ID").eq(AppPref.get(context).getUserId()),
+                            Condition.prop("COURSE_ID").eq(courseId)).list();
+            List<OfflineTestObjectModel> otherList = Select.from(OfflineTestObjectModel.class)
+                    .where(Condition.prop("BASE_USER_ID").eq(AppPref.get(context).getUserId()),
+                            Condition.prop("COURSE_ID").eq(null)).list();
+            if(allList == null) {
+                allList = new ArrayList<>();
+            }
+            if(otherList != null && !otherList.isEmpty()) {
+                allList.addAll(otherList);
+            }
+            List<OfflineTestObjectModel> results = new ArrayList<>();
+            while(allList!=null && allList.size() > 0) {
+                OfflineTestObjectModel t = allList.remove(0);
+                if(t.reflectionJsonString != null) {
+                    OfflineTestObjectModel object = Gson.get().fromJson(Gzip.decompress(t.reflectionJsonString), OfflineTestObjectModel.class);
+                    t.reflectionJsonString = null;
+                    object.setId(t.getId());
+                    results.add(object);
+                }
+            }
+            return results;
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+        return null;
+    }
+
     public OfflineTestObjectModel fetchOfflineTestRecord(String testQuestionPaperID) {
         try {
             OfflineTestObjectModel t = Select.from(OfflineTestObjectModel.class)
