@@ -122,21 +122,6 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
         return contents;
     }
 
-    private void getTopicIds(ArrayList<OfflineContent> contents) {
-        contentIds = new ArrayList<>();
-        for (OfflineContent offlineContent : contents) {
-            contentIds.add(offlineContent.contentId);
-        }
-    }
-
-    /*private void updateContentIndexResponses(String courseId) {
-        Type contentIndexType = new TypeToken<List<ContentIndex>>() {
-        }.getType();
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String jsonObject = gson.toJson(contentIndexList, contentIndexType);
-        DbManager.get(getActivity()).saveContentIndexList(jsonObject, courseId, LoginUserCache.get().getStudentId());
-    }*/
-
     private void updateContentIndexResponses(String contentId) {
         if (contentIds != null) {
             contentIds.remove(contentId);
@@ -180,11 +165,11 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
                 }
             }
             boolean showProgress = false;
-            if(offlineContent.status != null &&
+            if (offlineContent.status != null &&
                     (offlineContent.status.equals(OfflineContentStatus.WAITING)
-                            ||  offlineContent.status.equals(OfflineContentStatus.STARTED)
-                            ||  offlineContent.status.equals(OfflineContentStatus.IN_PROGRESS)
-                            ||  offlineContent.status.equals(OfflineContentStatus.FAILED))) {
+                            || offlineContent.status.equals(OfflineContentStatus.STARTED)
+                            || offlineContent.status.equals(OfflineContentStatus.IN_PROGRESS)
+                            || offlineContent.status.equals(OfflineContentStatus.FAILED))) {
                 showProgress = true;
             }
             if (chapterRoot == null) {
@@ -206,7 +191,7 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
                 chapterRoot.addChild(topicRoot);
 
                 // Add exercise as the first item in topic
-                if(offlineExercises != null) {
+                if (offlineExercises != null) {
                     List<ExerciseOfflineModel> addedList = new ArrayList<>();
                     for (ExerciseOfflineModel exercise : offlineExercises) {
                         if (exercise.topicId.equals(offlineContent.topicId)) {
@@ -251,7 +236,6 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
         @Override
         public void onClick(TreeNode node, Object value) {
             IconTreeItemHolder.IconTreeItem item = (IconTreeItemHolder.IconTreeItem) value;
-
             if (item.tag.equalsIgnoreCase("subject")) {
                 subjectId = item.id;
                 subjectName = item.text;
@@ -284,51 +268,46 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
     public void onDeleteOfflineData(String id, String tag) {
         String path = null;
         ArrayList<OfflineContent> removeList = new ArrayList<>();
-        for (OfflineContent offlineContent : offlineContentList) {
-            if (offlineContent.courseId.equalsIgnoreCase(selectedCourse)) {
-                switch (tag) {
-                    case "subject":
-                        if (id.equalsIgnoreCase(offlineContent.subjectId)) {
-                            path = offlineContent.courseName + "/" + offlineContent.subjectName;
-                            removeList.add(offlineContent);
-                        }
-                        break;
-                    case "chapter":
-                        if (id.equalsIgnoreCase(offlineContent.chapterId)) {
-                            path = offlineContent.courseName + "/" + offlineContent.subjectName + "/" + offlineContent.chapterName;
-                            removeList.add(offlineContent);
-                        }
-                        break;
-                    case "topic":
-                        if (id.equalsIgnoreCase(offlineContent.topicId)) {
-                            path = offlineContent.courseName + "/" + offlineContent.subjectName + "/" + offlineContent.chapterName + "/" + offlineContent.topicName;
-                            removeList.add(offlineContent);
-                        }
-                        break;
-                    case "content":
-                        if (id.equalsIgnoreCase(offlineContent.contentId)) {
-                            String pathPrefix = offlineContent.courseName + "/" + offlineContent.subjectName + "/" + offlineContent.chapterName + "/" + offlineContent.topicName;
-                            if (offlineContent.fileName.split(Pattern.quote("."))[1].equalsIgnoreCase("video")) {
-                                path = pathPrefix + "/" + "Video" + "/" + offlineContent.fileName;
-                            } else {
-                                path = pathPrefix + "/" + "Html" + "/" + offlineContent.fileName;
-                            }
-                            removeList.add(offlineContent);
-                        }
-                        break;
+        if (tag.equalsIgnoreCase("subject")) {
+            List<OfflineContent> subjectContent = dbManager.getOfflineContentWithSubject(id);
+            if (subjectContent != null && !subjectContent.isEmpty()) {
+                removeList.addAll(subjectContent);
+                OfflineContent offlineContent = subjectContent.get(0);
+                path = offlineContent.courseName + "/" + offlineContent.subjectName;
+            }
+        } else if (tag.equalsIgnoreCase("chapter")) {
+            List<OfflineContent> chapterContent = dbManager.getOfflineContentWithChapter(id);
+            if (chapterContent != null && !chapterContent.isEmpty()) {
+                removeList.addAll(chapterContent);
+                OfflineContent offlineContent = chapterContent.get(0);
+                path = offlineContent.courseName + "/" + offlineContent.subjectName + "/" + offlineContent.chapterName;
+            }
+        } else if (tag.equalsIgnoreCase("topic")) {
+            OfflineContent offlineContent = dbManager.getOfflineContentWithTopic(id);
+            if (offlineContent != null) {
+                removeList.add(offlineContent);
+                path = offlineContent.courseName + "/" + offlineContent.subjectName + "/" + offlineContent.chapterName + "/" + offlineContent.topicName;
+            }
+            removeList.add(offlineContent);
+        } else if (tag.equalsIgnoreCase("content")) {
+            OfflineContent offlineContent = dbManager.getOfflineContentWithContent(id);
+            if (offlineContent != null) {
+                removeList.add(offlineContent);
+                String pathPrefix = offlineContent.courseName + "/" + offlineContent.subjectName + "/" + offlineContent.chapterName + "/" + offlineContent.topicName;
+                if (offlineContent.fileName.split(Pattern.quote("."))[1].equalsIgnoreCase("video")) {
+                    path = pathPrefix + "/" + "Video" + "/" + offlineContent.fileName;
+                } else {
+                    path = pathPrefix + "/" + "Html" + "/" + offlineContent.fileName;
                 }
             }
+            removeList.add(offlineContent);
         }
         //Delete file
         FileUtils.get(getActivity()).delete(path);
-
         //Update database
         dbManager.delete(removeList);
-
         //Update treeview
-        for (OfflineContent offlineContent : removeList) {
-            offlineContentList.remove(offlineContent);
-        }
+        offlineContentList.removeAll(removeList);
         mainNodeLayout.removeAllViews();
         if (offlineContentList.isEmpty()) {
             emptyContentView.setVisibility(View.VISIBLE);

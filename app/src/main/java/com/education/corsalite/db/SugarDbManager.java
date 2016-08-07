@@ -201,6 +201,50 @@ public class SugarDbManager {
         return results;
     }
 
+    public OfflineContent getOfflineContentWithContent(String contentId) {
+        try {
+            return Select.from(OfflineContent.class).where(
+                    Condition.prop("BASE_USER_ID").eq(AppPref.get(context).getUserId()),
+                    Condition.prop("CONTENT_ID").eq(contentId)).first();
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+        return null;
+    }
+
+    public OfflineContent getOfflineContentWithTopic(String topicId) {
+        try {
+            return Select.from(OfflineContent.class).where(
+                    Condition.prop("BASE_USER_ID").eq(AppPref.get(context).getUserId()),
+                    Condition.prop("TOPIC_ID").eq(topicId)).first();
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+        return null;
+    }
+
+    public List<OfflineContent> getOfflineContentWithChapter(String chapterId) {
+        try {
+            return Select.from(OfflineContent.class).where(
+                    Condition.prop("BASE_USER_ID").eq(AppPref.get(context).getUserId()),
+                    Condition.prop("CHAPTER_ID").eq(chapterId)).list();
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+        return null;
+    }
+
+    public List<OfflineContent> getOfflineContentWithSubject(String subjectId) {
+        try {
+            return Select.from(OfflineContent.class).where(
+                    Condition.prop("BASE_USER_ID").eq(AppPref.get(context).getUserId()),
+                    Condition.prop("SUBJECT_ID").eq(subjectId)).list();
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+        return null;
+    }
+
     public void deleteOfflineContent(OfflineContent offlineContent) {
         try {
             delete(offlineContent);
