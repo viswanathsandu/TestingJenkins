@@ -28,6 +28,7 @@ import com.education.corsalite.models.requestmodels.PostQuestionPaperRequest;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.PostQuestionPaper;
 import com.education.corsalite.services.TestDownloadService;
+import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.L;
 
 import java.util.List;
@@ -144,10 +145,12 @@ public class MockTestDialog extends DialogFragment implements MockTestsListAdapt
         try {
             if (!download) {
                 Intent intent = new Intent(getActivity(), TestInstructionsActivity.class);
+                intent.putExtra(Constants.TEST_TITLE, "Mock Test");
                 intent.putExtra("test_question_paper_id", testQuestionPaperId);
                 startActivity(intent);
             } else {
                 Intent intent = new Intent(getActivity(), TestDownloadService.class);
+                intent.putExtra(Constants.TEST_TITLE, "Mock Test");
                 intent.putExtra("testQuestionPaperId", testQuestionPaperId);
                 intent.putExtra("selectedMockTest", Gson.get().toJson(selectedMockTest));
                 getActivity().startService(intent);
