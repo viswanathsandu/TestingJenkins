@@ -250,9 +250,9 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             @Override
             public void success(AppConfig appConfig, Response response) {
                 super.success(appConfig, response);
+                AbstractBaseActivity.appConfig = appConfig;
                 ApiCacheHolder.getInstance().setAppConfigResponse(appConfig);
                 dbManager.saveReqRes(ApiCacheHolder.getInstance().appConfigReqRes);
-                AbstractBaseActivity.appConfig = appConfig;
             }
         });
     }
@@ -888,7 +888,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         LoginUserCache.getInstance().clearCache();
         resetCrashlyticsUserData();
         deleteSessionCookie();
-        dbManager.clearCachedData();
         AbstractBaseActivity.selectedCourse = null;
         AbstractBaseActivity.selectedVideoPosition= 0;
         AbstractBaseActivity.sharedExamModels = null;

@@ -314,7 +314,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
             }
         }
         if (saveForOffline) {
-            dbManager.saveOfflineContents(offlineContents);
+            dbManager.save(offlineContents);
         } else {
             mCourseData = new CourseData();
             mCourseData.StudyCenter = studyCenters;

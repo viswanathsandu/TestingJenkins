@@ -67,8 +67,7 @@ public class TestDownloadService extends IntentService {
         String exerciseQuestionsListJson = intent.getStringExtra("exercise_data");
         List<ExerciseOfflineModel> exerciseModelsList = null;
         if(!TextUtils.isEmpty(exerciseQuestionsListJson)) {
-            Type listType = new TypeToken<ArrayList<ExerciseOfflineModel>>() {
-            }.getType();
+            Type listType = new TypeToken<ArrayList<ExerciseOfflineModel>>() {}.getType();
             exerciseModelsList = Gson.get().fromJson(exerciseQuestionsListJson, listType);
         }
         String partTestGridElimentsJson = intent.getStringExtra(Constants.PARTTEST_GRIDMODELS);

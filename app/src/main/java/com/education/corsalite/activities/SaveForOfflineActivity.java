@@ -187,7 +187,7 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
     // store the in-progress in db
     private void storeInProgressItemsInDb(List<OfflineContent> offlineContents, List<ExerciseOfflineModel> offlineExerciseModels) {
         if(offlineContents != null && !offlineContents.isEmpty()) {
-            dbManager.saveOfflineContents(offlineContents);
+            dbManager.save(offlineContents);
         }
         if(offlineExerciseModels != null && !offlineExerciseModels.isEmpty()) {
             dbManager.saveOfflineExerciseTests(offlineExerciseModels);
@@ -262,14 +262,12 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
     }
 
     private void storeDataInDb(String contentId, boolean isVideo) {
-        List<OfflineContent> offlineContents = new ArrayList<>();
         OfflineContent offlineContent;
         offlineContent = new OfflineContent(mCourseId, mCourseName, mSubjectId, mSubjectName, mChapterId, mChapterName,
                 null, null, contentId, null, null);
         offlineContent.status = OfflineContentStatus.WAITING;
-        offlineContents.add(offlineContent);
         AppPref.get(SaveForOfflineActivity.this).save("DATA_IN_PROGRESS", null);
-        dbManager.saveOfflineContents(offlineContents);
+        dbManager.save(offlineContent);
     }
 
     private void getBundleData() {

@@ -34,9 +34,6 @@ public class SugarDbManager {
     private static SugarDbManager instance;
     private Context context;
 
-    private List<OfflineContent> cachedOfflineContents;
-    private List<ExerciseOfflineModel> cachedOfflineExercises;
-
     private SugarDbManager() {
     }
 
@@ -55,7 +52,6 @@ public class SugarDbManager {
                 object.reflectionJsonString = Gzip.compress(Gson.get().toJson(object));
                 object.save();
                 object.reflectionJsonString = null; // clear the memory
-                updateChachedData(object);
             }
         } catch (Exception e) {
             L.error(e.getMessage(), e);
@@ -70,6 +66,26 @@ public class SugarDbManager {
                 for (T object : objects) {
                     save(object);
                 }
+            }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+    }
+
+    public <T extends BaseModel> void delete(T object) {
+        try {
+            if (object != null) {
+                object.delete();
+            }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+    }
+
+    public <T extends BaseModel> void delete(Collection<T> objectList) {
+        try {
+            if (objectList != null) {
+                SugarRecord.deleteInTx(objectList);
             }
         } catch (Exception e) {
             L.error(e.getMessage(), e);
@@ -153,30 +169,6 @@ public class SugarDbManager {
         return null;
     }
 
-    public <T extends BaseModel> void delete(T object) {
-        try {
-            if (object != null) {
-                object.delete();
-                deleteFromCachedData(object);
-            }
-        } catch (Exception e) {
-            L.error(e.getMessage(), e);
-        }
-    }
-
-    public <T extends BaseModel> void delete(Collection<T> objectList) {
-        try {
-            if (objectList != null) {
-                SugarRecord.deleteInTx(objectList);
-                for(T obj : objectList) {
-                    deleteFromCachedData(obj);
-                }
-            }
-        } catch (Exception e) {
-            L.error(e.getMessage(), e);
-        }
-    }
-
     public void addSyncModel(SyncModel model) {
         if(model != null) {
             save(model);
@@ -192,92 +184,16 @@ public class SugarDbManager {
         }
     }
 
-    private <T extends BaseModel> void updateChachedData(T object) {
-        if (object instanceof OfflineContent) {
-            if (object.getId() != null && object.getId() > 0) {
-                for (int i = 0; i < cachedOfflineContents.size(); i++) {
-                    if (cachedOfflineContents.get(i).getId().equals(object.getId())) {
-                        cachedOfflineContents.set(i, (OfflineContent) object);
-                        return;
-                    }
-                }
-            }
-            cachedOfflineContents.add((OfflineContent) object);
-        } else if (object instanceof ExerciseOfflineModel) {
-            if (object.getId() != null && object.getId() > 0) {
-                for (int i = 0; i < cachedOfflineExercises.size(); i++) {
-                    if (cachedOfflineExercises.get(i).getId().equals(object.getId())) {
-                        cachedOfflineExercises.set(i, (ExerciseOfflineModel) object);
-                        return;
-                    }
-                }
-            }
-            cachedOfflineExercises.add((ExerciseOfflineModel) object);
-        }
-    }
-
-    private <T extends BaseModel> void deleteFromCachedData(T object) {
-        if (object instanceof OfflineContent) {
-            if (object.getId() != null && object.getId() > 0) {
-                for (int i = 0; i < cachedOfflineContents.size(); i++) {
-                    if (cachedOfflineContents.get(i).getId().equals(object.getId())) {
-                        cachedOfflineContents.remove(i);
-                        return;
-                    }
-                }
-            }
-        } else if (object instanceof ExerciseOfflineModel) {
-            if (object.getId() != null && object.getId() > 0) {
-                for (int i = 0; i < cachedOfflineExercises.size(); i++) {
-                    if (cachedOfflineExercises.get(i).getId().equals(object.getId())) {
-                        cachedOfflineExercises.remove(i);
-                        return;
-                    }
-                }
-            }
-        }
-    }
-
     public List<OfflineContent> getOfflineContents(String courseId) {
         List<OfflineContent> results = new ArrayList<>();
         try {
-            List<OfflineContent> offlinecontents = getCahcedOfflineContents();
-            if (TextUtils.isEmpty(courseId)) {
-                return offlinecontents;
-            }
-            for (OfflineContent offlineContent : offlinecontents) {
-                if (offlineContent.courseId.equals(courseId)) {
-                    results.add(offlineContent);
-                }
-            }
+            return Select.from(OfflineContent.class).where(
+                                        Condition.prop("BASE_USER_ID").eq(AppPref.get(context).getUserId()),
+                                        Condition.prop("COURSE_ID").eq(courseId)).list();
         } catch (Exception e) {
             L.error(e.getMessage(), e);
         }
         return results;
-    }
-
-    private Long getOfflineContentId(List<OfflineContent> offlineContents, OfflineContent content) {
-        try {
-            for (OfflineContent offlineContent : offlineContents) {
-                if (offlineContent.equals(content)) {
-                    return offlineContent.getId();
-                }
-            }
-        } catch (Exception e) {
-            L.error(e.getMessage(), e);
-        }
-        return null;
-    }
-
-    public void saveOfflineContents(List<OfflineContent> offlineContents) {
-        List<OfflineContent> offlineContentsInDb = getCahcedOfflineContents();
-        for (OfflineContent content : offlineContents) {
-            Long id = getOfflineContentId(offlineContentsInDb, content);
-            if (id != null) {
-                content.setId(id);
-            }
-        }
-        save(offlineContents);
     }
 
     public void deleteOfflineContent(OfflineContent offlineContent) {
@@ -285,12 +201,6 @@ public class SugarDbManager {
             delete(offlineContent);
         } catch (Exception e) {
             L.error(e.getMessage(), e);
-        }
-    }
-
-    public void deleteOfflineContents(List<OfflineContent> offlineContents) {
-        for (OfflineContent content : offlineContents) {
-            deleteOfflineContent(content);
         }
     }
 
@@ -360,7 +270,7 @@ public class SugarDbManager {
         }
     }
 
-    public void updateOfflineTestModel(final String testQuestionPaperId, final int status, final long examTakenTime) {
+    public void updateOfflineTestModel(String testQuestionPaperId, int status, long examTakenTime) {
         try {
             OfflineTestObjectModel result = fetchOfflineTestRecord(testQuestionPaperId);
             if (result != null) {
@@ -396,10 +306,12 @@ public class SugarDbManager {
 
     private Long getOfflineExerciseId(ExerciseOfflineModel exercise) {
         try {
-            for (ExerciseOfflineModel offlineExercise : getCahcedExerciseTests()) {
-                if (offlineExercise.equals(exercise)) {
-                    return offlineExercise.getId();
-                }
+            ExerciseOfflineModel model = Select.from(ExerciseOfflineModel.class).where(
+                                Condition.prop("BASE_USER_ID").eq(AppPref.get(context).getUserId()),
+                                Condition.prop("TOPIC_ID").eq(exercise.topicId),
+                                Condition.prop("COURSE_ID").eq(exercise.courseId)).first();
+            if(model != null) {
+                return model.getId();
             }
         } catch (Exception e) {
             L.error(e.getMessage(), e);
@@ -409,51 +321,25 @@ public class SugarDbManager {
 
     public void saveOfflineExerciseTest(ExerciseOfflineModel exercise) {
         try {
-            List<ExerciseOfflineModel> offlineExercisesInDb = getCahcedExerciseTests();
-            for (ExerciseOfflineModel offlineExercise : offlineExercisesInDb) {
-                if (offlineExercise.equals(exercise)) {
-                    exercise.setId(offlineExercise.getId());
-                }
+            Long id = getOfflineExerciseId(exercise);
+            if(id != null && id > 0) {
+                exercise.setId(id);
             }
+            save(exercise);
         } catch (Exception e) {
             L.error(e.getMessage(), e);
         }
-        save(exercise);
     }
 
     public List<ExerciseOfflineModel> getOfflineExerciseModels(String courseId) {
-        List<ExerciseOfflineModel> offlineExercises = new ArrayList<>();
         try {
-            List<ExerciseOfflineModel> offlineTestModels = getCahcedExerciseTests();
-            if (TextUtils.isEmpty(courseId)) {
-                return offlineTestModels;
-            }
-            for (ExerciseOfflineModel model : offlineTestModels) {
-                if (!TextUtils.isEmpty(model.courseId) && model.courseId.equals(courseId)) {
-                    offlineExercises.add(model);
-                }
-            }
+            return Select.from(ExerciseOfflineModel.class).where(
+                    Condition.prop("BASE_USER_ID").eq(AppPref.get(context).getUserId()),
+                    Condition.prop("COURSE_ID").eq(courseId)).list();
         } catch (Exception e) {
             L.error(e.getMessage(), e);
         }
-        return offlineExercises;
-    }
-
-    public void getAllExamModels(Long dbRowId, final ApiCallback<OfflineTestObjectModel> callback) {
-        try {
-            OfflineTestObjectModel test = fetchRecord(OfflineTestObjectModel.class, dbRowId);
-            if (test != null && dbRowId.equals(test.getId())) {
-                if (test != null && test.scheduledTest != null && !TextUtils.isEmpty(test.scheduledTest.testQuestionPaperId)) {
-                    callback.success(test, MockUtils.getRetrofitResponse());
-                    return;
-                }
-            }
-        } catch (Exception e) {
-            CorsaliteError error = new CorsaliteError();
-            error.message = "No data found";
-            callback.failure(error);
-            L.error(e.getMessage(), e);
-        }
+        return new ArrayList<>();
     }
 
     public void deleteExpiredScheduleTests(List<ScheduledTestsArray> testsList) {
@@ -479,23 +365,4 @@ public class SugarDbManager {
         delete(model);
     }
 
-    // Cached data
-    public void clearCachedData() {
-        cachedOfflineContents = null;
-        cachedOfflineExercises = null;
-    }
-
-    private List<OfflineContent> getCahcedOfflineContents() {
-        if (cachedOfflineContents == null || cachedOfflineContents.isEmpty()) {
-            cachedOfflineContents = fetchRecords(OfflineContent.class);
-        }
-        return cachedOfflineContents;
-    }
-
-    private List<ExerciseOfflineModel> getCahcedExerciseTests() {
-        if (cachedOfflineExercises == null) {
-            cachedOfflineExercises = fetchRecords(ExerciseOfflineModel.class);
-        }
-        return cachedOfflineExercises;
-    }
 }

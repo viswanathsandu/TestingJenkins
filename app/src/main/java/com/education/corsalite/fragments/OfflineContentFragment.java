@@ -323,7 +323,7 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
         FileUtils.get(getActivity()).delete(path);
 
         //Update database
-        dbManager.deleteOfflineContents(removeList);
+        dbManager.delete(removeList);
 
         //Update treeview
         for (OfflineContent offlineContent : removeList) {

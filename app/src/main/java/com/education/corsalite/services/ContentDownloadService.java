@@ -12,6 +12,7 @@ import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.db.SugarDbManager;
 import com.education.corsalite.enums.OfflineContentStatus;
 import com.education.corsalite.event.OfflineActivityRefreshEvent;
+import com.education.corsalite.event.RefreshOfflineUiEvent;
 import com.education.corsalite.models.db.ExerciseOfflineModel;
 import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.models.responsemodels.Content;
@@ -72,8 +73,8 @@ public class ContentDownloadService extends IntentService {
             switch (content.status) {
                 case STARTED:
                 case IN_PROGRESS:
-                    if(downloadManager.query(content.downloadId) != DownloadManager.STATUS_SUCCESSFUL
-                            && downloadManager.query(content.downloadId) != DownloadManager.STATUS_RUNNING) {
+                    int status = downloadManager.query(content.downloadId);
+                    if(status != DownloadManager.STATUS_SUCCESSFUL && status != DownloadManager.STATUS_RUNNING) {
                         downloadSync(content);
                     }
                     break;
@@ -91,11 +92,11 @@ public class ContentDownloadService extends IntentService {
             List<Content> contents = ApiManager.getInstance(this).getContent(content.contentId, "");
             if(contents != null && !contents.isEmpty()) {
                 if(content.fileName.endsWith("html")) {
-                    updateOfflineContent(OfflineContentStatus.COMPLETED, contents.get(0), 100);
+                    updateOfflineContent(content, OfflineContentStatus.COMPLETED, contents.get(0), 100);
                 }
                 saveFileToDisk(content, getHtmlText(contents.get(0)), contents.get(0));
             } else {
-                updateOfflineContent(OfflineContentStatus.FAILED, null, 0);
+                updateOfflineContent(content, OfflineContentStatus.FAILED, null, 0);
             }
             downloandInProgress--;
         }
@@ -117,7 +118,7 @@ public class ContentDownloadService extends IntentService {
         }
     }
 
-    private void downloadVideo(OfflineContent offlineContent, final Content content, String videoUrl, String downloadLocation) {
+    private void downloadVideo(final OfflineContent offlineContent, final Content content, String videoUrl, String downloadLocation) {
         try {
             Uri downloadUri = Uri.parse(videoUrl);
             Uri destinationUri = Uri.parse(downloadLocation);
@@ -137,75 +138,54 @@ public class ContentDownloadService extends IntentService {
                         int preProgress = 0;
                         @Override
                         public void onDownloadComplete(DownloadRequest downloadRequest) {
-                            updateOfflineContent(OfflineContentStatus.COMPLETED, content, 100);
+                            updateOfflineContent(offlineContent, OfflineContentStatus.COMPLETED, content, 100);
                             L.info("Downloader : completed");
                             downloandInProgress--;
                         }
 
                         @Override
                         public void onDownloadFailed(DownloadRequest downloadRequest, int errorCode, String errorMessage) {
-                            updateOfflineContent(OfflineContentStatus.FAILED, content, 0);
+                            updateOfflineContent(offlineContent, OfflineContentStatus.FAILED, content, 0);
                             L.info("Downloader : failed");
                             downloandInProgress--;
                         }
 
                         public void onProgress(DownloadRequest downloadRequest, long totalBytes, long downloadedBytes, int progress) {
-                            if (progress != 0 && progress % 50 == 0  && preProgress != progress) {
+                            if (progress != 0 && progress % 10 == 0  && preProgress != progress) {
                                 preProgress = progress;
-                                updateOfflineContent(OfflineContentStatus.IN_PROGRESS, content, progress);
+                                updateOfflineContent(offlineContent, OfflineContentStatus.IN_PROGRESS, content, progress);
                                 L.info("Downloader : In progress - " + progress + "Update DB");
-                            } else if(progress % 10 == 0 && preProgress != progress){
-                                preProgress = progress;
-                                L.info("Downloader : In progress - " + progress);
                             }
                         }
                     });
-            updateDownloadIdForOfflinecontent(offlineContent, downloadManager.add(downloadRequest));
+            offlineContent.downloadId = downloadManager.add(downloadRequest);
+            dbManager.save(offlineContent);
         } catch (Exception e) {
             L.error(e.getMessage(), e);
-            updateOfflineContent(OfflineContentStatus.FAILED, content, 0);
+            updateOfflineContent(offlineContent, OfflineContentStatus.FAILED, content, 0);
         }
     }
 
-    private void updateDownloadIdForOfflinecontent(OfflineContent content, int downloadId) {
-        List<OfflineContent> offlineContents = dbManager.getOfflineContents(null);
-        List<OfflineContent> results = new ArrayList<>();
-        for (OfflineContent offlineContent : offlineContents) {
-            if(offlineContent.getId() == content.getId()) {
-                offlineContent.downloadId = downloadId;
-                results.add(offlineContent);
-            }
-        }
-        if(results != null && !results.isEmpty()) {
-            dbManager.saveOfflineContents(offlineContents);
-        }
-    }
-
-    private void updateOfflineContent(OfflineContentStatus status, Content content, int progress) {
+    private void updateOfflineContent(OfflineContent offlineContent, OfflineContentStatus status, Content content, int progress) {
         if(content == null) return;
-        List<OfflineContent> results = new ArrayList<>();
-        for (OfflineContent offlineContent : offlineContents) {
-            if (!TextUtils.isEmpty(content.idContent) && !TextUtils.isEmpty(offlineContent.contentId) && offlineContent.contentId.equalsIgnoreCase(content.idContent)) {
-                String fileName = "";
-                if (TextUtils.isEmpty(content.type)) {
-                    fileName = content.name + ".html";
-                } else if (content.type.equalsIgnoreCase("html")) {
-                    fileName = content.name + "." + content.type;
-                } else if (content.type.equalsIgnoreCase("mpg")) {
-                    fileName = content.name.replace("./", ApiClientService.getBaseUrl()) + "." + content.type;
-                }
-                if (content != null) {
-                    offlineContent.fileName = fileName;
-                    offlineContent.contentName = content.name;
-                    offlineContent.contentId = content.idContent;
-                    offlineContent.progress = progress;
-                }
-                offlineContent.status = status;
-                results.add(offlineContent);
+        if (!TextUtils.isEmpty(content.idContent) && !TextUtils.isEmpty(offlineContent.contentId) && offlineContent.contentId.equalsIgnoreCase(content.idContent)) {
+            String fileName = "";
+            if (TextUtils.isEmpty(content.type)) {
+                fileName = content.name + ".html";
+            } else if (content.type.equalsIgnoreCase("html")) {
+                fileName = content.name + "." + content.type;
+            } else if (content.type.equalsIgnoreCase("mpg")) {
+                fileName = content.name.replace("./", ApiClientService.getBaseUrl()) + "." + content.type;
             }
-        }
-        if(results != null && !results.isEmpty()) {
-            dbManager.saveOfflineContents(results);
+            if (content != null) {
+                offlineContent.fileName = fileName;
+                offlineContent.contentName = content.name;
+                offlineContent.contentId = content.idContent;
+                offlineContent.progress = progress;
+            }
+            offlineContent.status = status;
+            dbManager.save(offlineContent);
+            EventBus.getDefault().post(new RefreshOfflineUiEvent());
         }
     }
 
