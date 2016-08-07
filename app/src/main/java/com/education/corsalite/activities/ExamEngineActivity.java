@@ -1998,12 +1998,11 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private void postFlaggedQuestion() {
         FlaggedQuestionModel flaggedQuestionModel = new FlaggedQuestionModel();
         flaggedQuestionModel.flaggedYN = isFlagged ? "N" : "Y";
-        flaggedQuestionModel.idTestAnswerPaper = "";
         flaggedQuestionModel.idTestQuestion = localExamModelList.get(selectedPosition).idTestQuestion + "";
         flaggedQuestionModel.flaggedYN = isFlagged ? "N" : "Y";
-        flaggedQuestionModel.idTestAnswerPaper = "null";
+        flaggedQuestionModel.idTestAnswerPaper = testAnswerPaperId;
         flaggedQuestionModel.idTestQuestion = localExamModelList.get(selectedPosition).idTestQuestion + "";
-        flaggedQuestionModel.updateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        flaggedQuestionModel.updateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(TimeUtils.getDate(TimeUtils.currentTimeInMillis()));
 
         ApiManager.getInstance(this).postFlaggedQuestions(Gson.get().toJson(flaggedQuestionModel),
                 new ApiCallback<PostFlaggedQuestions>(this) {
