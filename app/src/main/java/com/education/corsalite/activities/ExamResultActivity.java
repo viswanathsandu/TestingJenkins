@@ -73,6 +73,10 @@ public class ExamResultActivity extends AbstractBaseActivity {
         totalQuestions = bundle.getInt("total_questions", 0);
         answered = bundle.getInt("answered_questions", 0);
         skipped = bundle.getInt("skipped_questions", 0);
+        // TODO : Hack to for skipped fix
+        if((skipped + answered) != totalQuestions) {
+            skipped = totalQuestions - answered;
+        }
         correct = bundle.getInt("correct", 0);
         wrong = bundle.getInt("wrong", 0);
         dueDateInMillis = bundle.getLong("due_date_millis", 0);
