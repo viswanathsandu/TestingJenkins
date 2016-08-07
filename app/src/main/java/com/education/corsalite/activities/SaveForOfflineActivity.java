@@ -13,7 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
@@ -32,12 +31,8 @@ import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.services.ContentDownloadService;
-import com.education.corsalite.services.TestDownloadService;
-import com.education.corsalite.utils.AppPref;
 import com.education.corsalite.utils.Constants;
-import com.education.corsalite.gson.Gson;
 import com.education.corsalite.utils.L;
-
 import com.unnamed.b.atv.model.TreeNode;
 import com.unnamed.b.atv.view.AndroidTreeView;
 
@@ -217,57 +212,11 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
         });
     }
 
-    private void startDownload(String htmlContentId, String videoContentId) {
-        String finalContentIds = "";
-        if (!htmlContentId.isEmpty()) {
-            finalContentIds += htmlContentId;
-        }
-        if (!videoContentId.isEmpty()) {
-            finalContentIds += COMMA_STRING + videoContentId;
-        }
-
-        if (offlineExerciseModels.size() > 0)
-            downloadExercises();
-        if (finalContentIds.isEmpty()) {
-            Toast.makeText(SaveForOfflineActivity.this, getResources().getString(R.string.select_content_toast), Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(SaveForOfflineActivity.this, getResources().getString(R.string.content_downloaded_toast), Toast.LENGTH_SHORT).show();
-            if(!TextUtils.isEmpty(htmlContentId)) {
-                getContent(htmlContentId, false);
-            }
-            if(!TextUtils.isEmpty(videoContentId)) {
-                getContent(videoContentId, true);
-            }
-            dialog.dismiss();
-            finish();
-        }
-    }
-
-    private void downloadExercises() {
-        Intent intent = new Intent(this, TestDownloadService.class);
-        intent.putExtra("exercise_data", Gson.get().toJson(offlineExerciseModels));
-        startService(intent);
-    }
-
     public String method(String str) {
         if (str.length() > 0 && str.charAt(str.length() - 1) == ',') {
             str = str.substring(0, str.length() - 1);
         }
         return str;
-    }
-
-    private void getContent(String contentId, boolean isVideo) {
-        storeDataInDb(contentId, isVideo);
-        EventBus.getDefault().post(new RefreshDownloadsEvent());
-    }
-
-    private void storeDataInDb(String contentId, boolean isVideo) {
-        OfflineContent offlineContent;
-        offlineContent = new OfflineContent(mCourseId, mCourseName, mSubjectId, mSubjectName, mChapterId, mChapterName,
-                null, null, contentId, null, null);
-        offlineContent.status = OfflineContentStatus.WAITING;
-        AppPref.get(SaveForOfflineActivity.this).save("DATA_IN_PROGRESS", null);
-        dbManager.save(offlineContent);
     }
 
     private void getBundleData() {
