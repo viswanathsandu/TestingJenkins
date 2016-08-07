@@ -187,9 +187,14 @@ public class SugarDbManager {
     public List<OfflineContent> getOfflineContents(String courseId) {
         List<OfflineContent> results = new ArrayList<>();
         try {
-            return Select.from(OfflineContent.class).where(
-                                        Condition.prop("BASE_USER_ID").eq(AppPref.get(context).getUserId()),
-                                        Condition.prop("COURSE_ID").eq(courseId)).list();
+            if(!TextUtils.isEmpty(courseId)) {
+                return Select.from(OfflineContent.class).where(
+                        Condition.prop("BASE_USER_ID").eq(AppPref.get(context).getUserId()),
+                        Condition.prop("COURSE_ID").eq(courseId)).list();
+            } else {
+                return Select.from(OfflineContent.class).where(
+                        Condition.prop("BASE_USER_ID").eq(AppPref.get(context).getUserId())).list();
+            }
         } catch (Exception e) {
             L.error(e.getMessage(), e);
         }
