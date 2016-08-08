@@ -11,8 +11,8 @@ android {
         minSdkVersion 15
         targetSdkVersion 20
         // Version naming specification xx xx x xx
-        versionCode 101010
-        versionName "1.1.0.10"
+        versionCode 101011
+        versionName "1.1"
         multiDexEnabled false
     }
     buildTypes {
@@ -32,6 +32,7 @@ android {
     productFlavors {
         prod {
             applicationId "com.corsalite.tabletapp"
+            minSdkVersion 19
             buildConfigField 'String', 'BASE_URL', '"http://app.corsalite.com/ws/"'
             buildConfigField 'String', 'BASE_API_URL', '"http://app.corsalite.com/ws/webservices/"'
             buildConfigField 'String', 'SOCKET_URL', '"ws://app.corsalite.com:9300"'
