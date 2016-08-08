@@ -24,6 +24,7 @@ import com.education.corsalite.models.responsemodels.QuestionPaperIndex;
 import com.education.corsalite.models.responsemodels.TestPaperIndex;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.ExamUtils;
+import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.SystemUtils;
 import com.education.corsalite.utils.TimeUtils;
 
@@ -115,8 +116,12 @@ public class TestInstructionsActivity extends AbstractBaseActivity {
         intent.putExtra("test_question_paper_id", testQuestionPaperId);
         intent.putExtra("test_answer_paper_id", testQuestionPaperId);
         intent.putExtra("Test_Instructions", Gson.get().toJson(testPaperIndex));
-        intent.putExtra("exam_name", testPaperIndex.examDetails.get(0).examName);
-        intent.putExtra("exam_template_id", testPaperIndex.examDetails.get(0).examTemplateId);
+        try {
+            intent.putExtra("exam_name", testPaperIndex.examDetails.get(0).examName);
+            intent.putExtra("exam_template_id", testPaperIndex.examDetails.get(0).examTemplateId);
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
         startActivity(intent);
         finish();
     }
