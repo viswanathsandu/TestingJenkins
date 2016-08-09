@@ -18,6 +18,7 @@ import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ExamModel;
 import com.education.corsalite.utils.Constants;
+import com.education.corsalite.utils.ExamUtils;
 import com.education.corsalite.utils.FileUtils;
 import com.education.corsalite.utils.L;
 import com.thin.downloadmanager.DefaultRetryPolicy;
@@ -39,7 +40,6 @@ public class ContentDownloadService extends IntentService {
     public static boolean isIntentServiceRunning = false;
     public static int downloandInProgress = 0;
     private List<OfflineContent> offlineContents = new ArrayList<>();
-    private List<ExerciseOfflineModel> offlineExercises = new ArrayList<>();
     private com.thin.downloadmanager.DownloadManager downloadManager = new ThinDownloadManager();
     private SugarDbManager dbManager;
 
@@ -63,8 +63,8 @@ public class ContentDownloadService extends IntentService {
 
     private void fetchOfflineContents() {
         offlineContents = dbManager.getOfflineContents(null);
-        offlineExercises = dbManager.getOfflineExerciseModels(null);
         startDownload();
+        downloadExercises();
     }
 
     private void startDownload() {
@@ -100,7 +100,6 @@ public class ContentDownloadService extends IntentService {
             }
             downloandInProgress--;
         }
-        downloadExercises();
     }
 
     private void saveFileToDisk(OfflineContent offlineContent, String htmlText, Content content) {
@@ -203,9 +202,7 @@ public class ContentDownloadService extends IntentService {
 
     private void downloadExercises() {
         try {
-            List<ExerciseOfflineModel> resultsToSave = new ArrayList<>();
-            List<ExerciseOfflineModel> resultsToDelete = new ArrayList<>();
-            List<ExerciseOfflineModel> offlineExerciseList = new ArrayList<>(offlineExercises);
+            List<ExerciseOfflineModel> offlineExerciseList = dbManager.getOfflineExerciseModels(null);
             downloandInProgress += offlineExerciseList.size();
             for (ExerciseOfflineModel model : offlineExerciseList) {
                 if(model.progress != 100) {
@@ -213,15 +210,15 @@ public class ContentDownloadService extends IntentService {
                     if (examModels != null && !examModels.isEmpty()) {
                         model.progress = 100;
                         model.questions = examModels;
-                        resultsToSave.add(model);
+                        new ExamUtils(getApplicationContext()).saveExerciseQuestionPaper(model.topicId, model);
+                        model.questions = null;
+                        dbManager.save(model);
                     } else {
-                        resultsToDelete.add(model);
+                        dbManager.delete(model);
                     }
+                    downloandInProgress--;
                 }
             }
-            dbManager.saveOfflineExerciseTests(resultsToSave);
-            dbManager.delete(resultsToDelete);
-            downloandInProgress -= offlineExerciseList.size();
         } catch (Exception e) {
             L.error(e.getMessage(), e);
         }

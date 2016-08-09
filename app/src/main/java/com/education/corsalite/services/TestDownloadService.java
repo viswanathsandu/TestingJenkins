@@ -108,6 +108,8 @@ public class TestDownloadService extends IntentService {
                         super.success(examModels, response);
                         if(examModels != null && !examModels.isEmpty()) {
                             model.questions = examModels;
+                            new ExamUtils(mContext).saveExerciseQuestionPaper(model.topicId, model);
+                            model.questions = null;
                             dbManager.saveOfflineExerciseTest(model);
                         }
                     }

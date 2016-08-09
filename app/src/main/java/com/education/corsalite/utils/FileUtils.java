@@ -87,6 +87,10 @@ public class FileUtils {
         return filePath;
     }
 
+    public String  getExerciseFileName() {
+        return "e." + Constants.TEST_FILE;
+    }
+
     public String  getTestQuestionPaperFileName() {
         return "q." + Constants.TEST_FILE;
     }

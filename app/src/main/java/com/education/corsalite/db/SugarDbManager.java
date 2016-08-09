@@ -92,6 +92,28 @@ public class SugarDbManager {
         }
     }
 
+    public <T extends BaseModel> List<T> getDeprocessedDataList(Class<T> type, List<T> list) {
+        List<T> result = new ArrayList<>();
+        while(list != null && !list.isEmpty()) {
+            result.add(getDeprocessedData(type, list.get(0)));
+        }
+        return result;
+    }
+
+    public <T extends BaseModel> T getDeprocessedData(Class<T> type, T t) {
+        try {
+            if (t.reflectionJsonString != null) {
+                T object = Gson.get().fromJson(Gzip.decompress(t.reflectionJsonString), type);
+                t.reflectionJsonString = null;
+                object.setId(t.getId());
+                return object;
+            }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+        return t;
+    }
+
     public <T extends BaseModel> List<T> fetchRecords(Class<T> type) {
         List<T> results = new ArrayList<>();
         try {
@@ -415,14 +437,30 @@ public class SugarDbManager {
     }
 
     public List<ExerciseOfflineModel> getOfflineExerciseModels(String courseId) {
+        List<ExerciseOfflineModel> results = new ArrayList<>();
         try {
-            return Select.from(ExerciseOfflineModel.class).where(
-                    Condition.prop("BASE_USER_ID").eq(AppPref.get(context).getUserId()),
-                    Condition.prop("COURSE_ID").eq(courseId)).list();
+            List<ExerciseOfflineModel> allList = null;
+            if(!TextUtils.isEmpty(courseId)) {
+                allList = Select.from(ExerciseOfflineModel.class).where(
+                                Condition.prop("BASE_USER_ID").eq(AppPref.get(context).getUserId()),
+                                Condition.prop("COURSE_ID").eq(courseId)).list();
+            } else {
+                allList = Select.from(ExerciseOfflineModel.class).where(
+                        Condition.prop("BASE_USER_ID").eq(AppPref.get(context).getUserId())).list();
+            }
+            while (allList != null && allList.size() > 0) {
+                ExerciseOfflineModel t = allList.remove(0);
+                if (t.reflectionJsonString != null) {
+                    ExerciseOfflineModel object = Gson.get().fromJson(Gzip.decompress(t.reflectionJsonString), ExerciseOfflineModel.class);
+                    t.reflectionJsonString = null;
+                    object.setId(t.getId());
+                    results.add(object);
+                }
+            }
         } catch (Exception e) {
             L.error(e.getMessage(), e);
         }
-        return new ArrayList<>();
+        return results;
     }
 
     public void deleteExpiredScheduleTests(List<ScheduledTestsArray> testsList) {

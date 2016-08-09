@@ -73,7 +73,7 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
 
     private void getExercises(final Course course) {
         emptyContentView.setVisibility(View.GONE);
-        offlineExercises = dbManager.getOfflineExerciseModels(course.courseId + "");
+        offlineExercises = dbManager.getOfflineExerciseModels(null);
         getContentIndexResponse(course);
     }
 
@@ -337,9 +337,9 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
     }
 
     private void startExerciseTest(ExerciseOfflineModel model) {
-        AbstractBaseActivity.setSharedExamModels(model.questions);
         Intent intent = new Intent(getActivity(), ExamEngineActivity.class);
         intent.putExtra(Constants.TEST_TITLE, "Exercises");
+        intent.putExtra("topic_id", model.topicId);
         intent.putExtra(Constants.SELECTED_POSITION, 0);
         startActivity(intent);
     }

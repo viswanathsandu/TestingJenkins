@@ -58,6 +58,7 @@ import com.education.corsalite.fragments.FullQuestionDialog;
 import com.education.corsalite.fragments.LeaderBoardFragment;
 import com.education.corsalite.gson.Gson;
 import com.education.corsalite.helpers.WebSocketHelper;
+import com.education.corsalite.models.db.ExerciseOfflineModel;
 import com.education.corsalite.models.db.SyncModel;
 import com.education.corsalite.models.requestmodels.ExamTemplateChapter;
 import com.education.corsalite.models.requestmodels.ExamTemplateConfig;
@@ -225,6 +226,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private String subjectId = null;
     private String chapterId = null;
     private String topicIds = null;
+    private String topicId = null;
     private String chapterName = null;
     private String subjectName = null;
     private Long dbRowId = null;
@@ -305,6 +307,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         subjectId = getIntent().getExtras().getString(Constants.SELECTED_SUBJECTID);
         chapterId = getIntent().getExtras().getString(Constants.SELECTED_CHAPTERID);
         topicIds = getIntent().getExtras().getString(Constants.SELECTED_TOPICID);
+        topicId = getIntent().getExtras().getString("topic_id");
         chapterName = getIntent().getExtras().getString(Constants.SELECTED_CHAPTER_NAME);
         subjectName = getIntent().getExtras().getString(Constants.SELECTED_SUBJECT_NAME);
         dbRowId = getIntent().getExtras().getLong(Constants.DB_ROW_ID);
@@ -486,6 +489,12 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private void loadExerciseTest() {
         imvFlag.setVisibility(View.INVISIBLE);
         localExamModelList = AbstractBaseActivity.getSharedExamModels();
+        if(localExamModelList == null && !TextUtils.isEmpty(topicId)) {
+            ExerciseOfflineModel model = new ExamUtils(this).getExerciseModel(topicId);
+            if(model != null && model.questions != null) {
+                localExamModelList = model.questions;
+            }
+        }
         webFooter.setVisibility((localExamModelList == null || localExamModelList.isEmpty()) ? View.GONE : View.VISIBLE);
         btnVerify.setVisibility(View.VISIBLE);
         imvRefresh.setVisibility(View.GONE);
@@ -2167,14 +2176,16 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         long examDuration = 0;
         if(models != null) {
             for (ExamModel model : models) {
-                long duration = 0;
-                try {
-                    duration = Integer.valueOf(model.recommendedTime);
-                } catch (Exception e) {
-                    L.error(e.getMessage(), e);
-                    duration = 0;
+                if(model.recommendedTime != null) {
+                    long duration = 0;
+                    try {
+                        duration = Integer.valueOf(model.recommendedTime);
+                    } catch (Exception e) {
+                        L.error(e.getMessage(), e);
+                        duration = 0;
+                    }
+                    examDuration += duration;
                 }
-                examDuration += duration;
             }
         }
         return examDuration;
