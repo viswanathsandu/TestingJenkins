@@ -73,7 +73,7 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
 
     private void getExercises(final Course course) {
         emptyContentView.setVisibility(View.GONE);
-        offlineExercises = dbManager.getOfflineExerciseModels(null);
+        offlineExercises = dbManager.getOfflineExerciseModels(course.courseId + "");
         getContentIndexResponse(course);
     }
 
