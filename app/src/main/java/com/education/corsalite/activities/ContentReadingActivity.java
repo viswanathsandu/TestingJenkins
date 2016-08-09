@@ -187,6 +187,18 @@ public class ContentReadingActivity extends AbstractBaseActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(SystemUtils.isNetworkConnected(this)) {
+            ivForum.setVisibility(View.VISIBLE);
+            ivEditNotes.setVisibility(View.VISIBLE);
+        } else {
+            ivForum.setVisibility(View.GONE);
+            ivEditNotes.setVisibility(View.GONE);
+        }
+    }
+
     private void loadOfflineExercises() {
         offlineExercises = dbManager.getOfflineExerciseModels(AbstractBaseActivity.getSelectedCourseId());
         for (ExerciseOfflineModel model : offlineExercises) {
