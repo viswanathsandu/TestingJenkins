@@ -36,7 +36,6 @@ public class UserProfileActivity extends AbstractBaseActivity implements UserPro
         frameLayout.addView(myView);
         initUI();
         setToolbarForProfile();
-        sendAnalytics(getString(R.string.screen_profile));
     }
 
     private void initUI() {

@@ -81,7 +81,6 @@ public class StudyCenterActivity extends AbstractBaseActivity {
         setUpViews(myView);
         setToolbarForStudyCenter();
         initUI();
-        sendAnalytics(getString(R.string.screen_studycenter));
     }
 
     @Override

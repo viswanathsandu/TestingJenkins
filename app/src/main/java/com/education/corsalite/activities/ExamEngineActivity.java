@@ -283,7 +283,6 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         initSuggestionWebView();
         setListener();
         getIntentData();
-        sendAnalytics(getString(R.string.screen_exercise));
     }
 
     private void loadLeaderBoard() {

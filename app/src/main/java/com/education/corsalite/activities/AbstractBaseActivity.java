@@ -33,7 +33,6 @@ import com.crashlytics.android.Crashlytics;
 import com.education.corsalite.BuildConfig;
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.SpinnerAdapter;
-import com.education.corsalite.analytics.GoogleAnalyticsManager;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.ApiCacheHolder;
@@ -80,6 +79,7 @@ import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.SystemUtils;
 import com.education.corsalite.utils.TimeUtils;
 import com.education.corsalite.utils.WebUrls;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.localytics.android.Localytics;
 
 import java.text.SimpleDateFormat;
@@ -102,6 +102,8 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     private static Course selectedCourse;
     private static List<ExamModel> sharedExamModels;
     private static AppConfig appConfig;
+
+    private FirebaseAnalytics mFirebaseAnalytics;
     private List<Course> courses;
     public Toolbar toolbar;
     private NavigationView navigationView;
@@ -160,6 +162,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.navigation_drawer_layout);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         frameLayout = (FrameLayout) findViewById(R.id.activity_layout_container);
         initNavigationDrawer();
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
@@ -168,6 +171,10 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 .build());
         initActivity();
         Localytics.tagScreen(this.getClass().getSimpleName());
+    }
+
+    public void logEvent(String tag) {
+        mFirebaseAnalytics.logEvent(tag, null);
         Localytics.tagEvent(this.getClass().getSimpleName());
     }
 
@@ -201,6 +208,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         try {
             String emailId = appPref.getValue("loginId");
             Crashlytics.setUserEmail(emailId);
+            mFirebaseAnalytics.setUserId(emailId);
             Localytics.setCustomerEmail(emailId);
         } catch (Exception e) {
             L.error(e.getMessage(), e);
@@ -210,6 +218,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     public void resetCrashlyticsUserData() {
         try {
             Crashlytics.setUserEmail("");
+            mFirebaseAnalytics.setUserId("");
             Localytics.setCustomerEmail("");
         } catch (Exception e) {
             L.error(e.getMessage(), e);
@@ -541,7 +550,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     return;
                 }
                 if (!(AbstractBaseActivity.this instanceof UserProfileActivity)) {
-                    Localytics.tagEvent("User Profile");
+                    logEvent("User Profile");
                     Intent intent = new Intent(AbstractBaseActivity.this, UserProfileActivity.class);
                     startActivity(intent);
                     drawerLayout.closeDrawers();
@@ -584,7 +593,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     showToast("Please Select different Course");
                     return;
                 }
-                Localytics.tagEvent("Study Center");
+                logEvent("Study Center");
                 loadStudyCenterScreen();
             }
         });
@@ -597,7 +606,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     return;
                 }
                 if (SystemUtils.isNetworkConnected(AbstractBaseActivity.this)) {
-                    Localytics.tagEvent("Analytics");
+                    logEvent("Analytics");
                     startActivity(new Intent(AbstractBaseActivity.this, NewAnalyticsActivity.class));
                 } else {
                     showToast("Analytics requires network connection");
@@ -613,7 +622,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     showToast("Please Select different Course");
                     return;
                 }
-                Localytics.tagEvent("Curriculum");
+                logEvent("Curriculum");
                 startActivity(new Intent(AbstractBaseActivity.this, CurriculumActivity.class));
                 drawerLayout.closeDrawers();
             }
@@ -626,7 +635,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     showToast("Please Select different Course");
                     return;
                 }
-                Localytics.tagEvent("Offline");
+                logEvent("Offline");
                 startActivity(new Intent(AbstractBaseActivity.this, OfflineActivity.class));
                 drawerLayout.closeDrawers();
             }
@@ -640,7 +649,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     return;
                 }
                 if (SystemUtils.isNetworkConnected(AbstractBaseActivity.this)) {
-                    Localytics.tagEvent(getString(R.string.challenge_your_friends));
+                    logEvent(getString(R.string.challenge_your_friends));
                     startActivity(new Intent(AbstractBaseActivity.this, ChallengeActivity.class));
                 } else {
                     showToast("Challenge Test requires network connection");
@@ -657,7 +666,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     return;
                 }
                 if (SystemUtils.isNetworkConnected(AbstractBaseActivity.this)) {
-                    Localytics.tagEvent(getString(R.string.exam_history));
+                    logEvent(getString(R.string.exam_history));
                     startActivity(new Intent(AbstractBaseActivity.this, ExamHistoryActivity.class));
                 } else {
                     showToast("Exam history requires network connection");
@@ -672,7 +681,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     showToast("Please Select different Course");
                     return;
                 }
-                Localytics.tagEvent(getString(R.string.menu_scheduled_test));
+                logEvent(getString(R.string.menu_scheduled_test));
                 showScheduledTestsDialog();
             }
         });
@@ -684,7 +693,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     showToast("Please Select different Course");
                     return;
                 }
-                Localytics.tagEvent(getString(R.string.menu_mock_test));
+                logEvent(getString(R.string.menu_mock_test));
                 showMockTestsDialog();
             }
         });
@@ -697,7 +706,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     return;
                 }
                 if (SystemUtils.isNetworkConnected(AbstractBaseActivity.this)) {
-                    Localytics.tagEvent(getString(R.string.forum));
+                    logEvent(getString(R.string.forum));
                     startActivity(new Intent(AbstractBaseActivity.this, ForumActivity.class));
                 } else {
                     showToast("Forum requires network connection");
@@ -708,7 +717,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_logout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Localytics.tagEvent(getString(R.string.log_out));
+                logEvent(getString(R.string.log_out));
                 showLogoutDialog();
             }
         });
@@ -1100,10 +1109,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         if (isShown() && dialog != null && dialog.isShowing()) {
             dialog.dismiss();
         }
-    }
-
-    public void sendAnalytics(String screenName) {
-        GoogleAnalyticsManager.sendOpenScreenEvent(this, this, screenName);
     }
 
     @Override

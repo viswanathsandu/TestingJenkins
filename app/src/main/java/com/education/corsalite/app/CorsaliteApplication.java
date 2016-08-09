@@ -8,11 +8,8 @@ import com.crashlytics.android.Crashlytics;
 import com.education.corsalite.R;
 import com.education.corsalite.activities.CrashHandlerActivity;
 import com.education.corsalite.utils.L;
-import com.google.android.gms.analytics.GoogleAnalytics;
-import com.google.android.gms.analytics.Tracker;
+import com.google.firebase.crash.FirebaseCrash;
 import com.localytics.android.LocalyticsActivityLifecycleCallbacks;
-
-import java.util.HashMap;
 
 import io.fabric.sdk.android.Fabric;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
@@ -21,8 +18,6 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
  * Created by vissu on 9/18/15.
  */
 public class CorsaliteApplication extends com.orm.SugarApp {
-
-    private HashMap<TrackerName, Tracker> mTrackers = new HashMap<TrackerName, Tracker>();
 
     public CorsaliteApplication() {
         super();
@@ -49,6 +44,7 @@ public class CorsaliteApplication extends com.orm.SugarApp {
     private void handleUncaughtException(Thread thread, Throwable e) {
         L.error(e.getMessage(), e);
         Crashlytics.logException(e);
+        FirebaseCrash.report(e);
         Intent intent = new Intent(getApplicationContext(), CrashHandlerActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // required when starting from Application
         startActivity(intent);
@@ -73,16 +69,4 @@ public class CorsaliteApplication extends com.orm.SugarApp {
         APP_TRACKER // Tracker used only in this app.
     }
 
-    public synchronized Tracker getTracker(TrackerName trackerId) {
-        try {
-            if (!mTrackers.containsKey(trackerId)) {
-                //analytics.setLocalDispatchPeriod(15);
-                Tracker t = GoogleAnalytics.getInstance(this).newTracker(R.xml.app_tracker);
-                mTrackers.put(trackerId, t);
-            }
-            return mTrackers.get(trackerId);
-        } catch (Exception e) {
-            return null;
-        }
-    }
 }

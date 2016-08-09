@@ -44,7 +44,6 @@ public class LoginActivity extends AbstractBaseActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         setListeners();
-        sendAnalytics(getString(R.string.screen_login));
     }
 
     private void setListeners() {
