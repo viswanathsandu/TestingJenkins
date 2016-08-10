@@ -48,6 +48,7 @@ import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.ExamModel;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.Constants;
+import com.education.corsalite.utils.ExamUtils;
 import com.education.corsalite.utils.FileUtils;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.SystemUtils;
@@ -187,16 +188,6 @@ public class ContentReadingActivity extends AbstractBaseActivity {
 
     }
 
-    private void loadOfflineExercises() {
-        offlineExercises = dbManager.getOfflineExerciseModels(AbstractBaseActivity.getSelectedCourseId());
-        for (ExerciseOfflineModel model : offlineExercises) {
-            if (model.topicId.equals(mTopicId) && model.courseId.equals(getSelectedCourseId())) {
-                AbstractBaseActivity.setSharedExamModels(model.questions);
-                showExercise();
-            }
-        }
-    }
-    
     @Override
     public void onEvent(Course course) {
         super.onEvent(course);
@@ -595,7 +586,11 @@ public class ContentReadingActivity extends AbstractBaseActivity {
     }
 
     private void getExercise(int topicPosition) {
-        if (SystemUtils.isNetworkConnected(this)) {
+        ExerciseOfflineModel exerciseModel = new ExamUtils(this).getExerciseModel(topicModelList.get(topicPosition).idTopic);
+        if(exerciseModel != null) {
+                AbstractBaseActivity.setSharedExamModels(exerciseModel.questions);
+                showExercise();
+        } else if (SystemUtils.isNetworkConnected(this)) {
             ivExercise.setVisibility(View.GONE);
             String topicId = topicModelList.get(topicPosition).idTopic;
             if (offlineExercises != null && !offlineExercises.isEmpty() && offlineExercises.contains(new ExerciseOfflineModel(getSelectedCourseId(), topicId))) {
@@ -622,6 +617,9 @@ public class ContentReadingActivity extends AbstractBaseActivity {
                             }
                         });
             }
+        } else {
+            AbstractBaseActivity.setSharedExamModels(null);
+            showExercise();
         }
     }
 
@@ -918,7 +916,6 @@ public class ContentReadingActivity extends AbstractBaseActivity {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     getExercise(position);
-                    loadOfflineExercises();
                     getContentData(position);
                     topicAdapter.setSelectedPosition(position);
                 }
