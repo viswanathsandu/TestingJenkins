@@ -71,7 +71,7 @@ public class FileUtils {
         String fileName = "v." + Constants.VIDEO_FILE;
         String folderPath = getParentFolder() + File.separator + Constants.VIDEO_FOLDER + File.separator + videoId;
         File folder = new File(folderPath);
-        if(folder.isDirectory() && !folder.exists()) {
+        if(!folder.isDirectory() && !folder.exists()) {
             folder.mkdirs();
         }
         File file = new File(folder, fileName);

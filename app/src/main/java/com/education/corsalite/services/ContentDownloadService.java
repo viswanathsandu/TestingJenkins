@@ -131,7 +131,7 @@ public class ContentDownloadService extends IntentService {
             DownloadRequest downloadRequest = new DownloadRequest(downloadUri)
                     .addCustomHeader("cookie", ApiClientService.getSetCookie())
                     .setRetryPolicy(new DefaultRetryPolicy())
-                    .setDestinationURI(destinationUri).setPriority(DownloadRequest.Priority.NORMAL)
+                    .setDestinationURI(destinationUri).setPriority(DownloadRequest.Priority.HIGH)
                     .setDownloadContext(getApplicationContext()) //Optional
                     .setStatusListener(new DownloadStatusListenerV1() {
                         int preProgress = 0;
