@@ -64,7 +64,6 @@ public class ContentDownloadService extends IntentService {
     private void fetchOfflineContents() {
         offlineContents = dbManager.getOfflineContents(null);
         startDownload();
-        downloadExercises();
     }
 
     private void startDownload() {
@@ -100,6 +99,7 @@ public class ContentDownloadService extends IntentService {
             }
             downloandInProgress--;
         }
+        downloadExercises();
     }
 
     private void saveFileToDisk(OfflineContent offlineContent, String htmlText, Content content) {
@@ -131,7 +131,7 @@ public class ContentDownloadService extends IntentService {
             DownloadRequest downloadRequest = new DownloadRequest(downloadUri)
                     .addCustomHeader("cookie", ApiClientService.getSetCookie())
                     .setRetryPolicy(new DefaultRetryPolicy())
-                    .setDestinationURI(destinationUri).setPriority(DownloadRequest.Priority.NORMAL)
+                    .setDestinationURI(destinationUri).setPriority(DownloadRequest.Priority.HIGH)
                     .setDownloadContext(getApplicationContext()) //Optional
                     .setStatusListener(new DownloadStatusListenerV1() {
                         int preProgress = 0;
@@ -203,9 +203,9 @@ public class ContentDownloadService extends IntentService {
     private void downloadExercises() {
         try {
             List<ExerciseOfflineModel> offlineExerciseList = dbManager.getOfflineExerciseModels(null);
-            downloandInProgress += offlineExerciseList.size();
             for (ExerciseOfflineModel model : offlineExerciseList) {
                 if(model.progress != 100) {
+                    downloandInProgress++;
                     List<ExamModel> examModels = ApiManager.getInstance(this).getExercise(model.topicId, model.courseId, LoginUserCache.getInstance().getStudentId(), null);
                     if (examModels != null && !examModels.isEmpty()) {
                         model.progress = 100;

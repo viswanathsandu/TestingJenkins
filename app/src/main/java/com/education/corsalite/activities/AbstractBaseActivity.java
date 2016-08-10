@@ -69,6 +69,7 @@ import com.education.corsalite.models.socket.response.ChallengeTestUpdateEvent;
 import com.education.corsalite.notifications.ChallengeUtils;
 import com.education.corsalite.receivers.NotifyReceiver;
 import com.education.corsalite.services.ApiClientService;
+import com.education.corsalite.services.ContentDownloadService;
 import com.education.corsalite.services.DataSyncService;
 import com.education.corsalite.utils.AppPref;
 import com.education.corsalite.utils.Constants;
@@ -237,6 +238,12 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             L.info("WIFICONNECT : " + event.isconnected);
             if (!(this instanceof ExamEngineActivity || this instanceof ChallengeActivity)) {
                 refreshScreen();
+            }
+            if(event.isconnected) {
+                stopService(new Intent(getApplicationContext(), ContentDownloadService.class));
+                startService(new Intent(getApplicationContext(), ContentDownloadService.class));
+            } else {
+                stopService(new Intent(getApplicationContext(), ContentDownloadService.class));
             }
         } catch (Exception e) {
             L.error(e.getMessage(), e);

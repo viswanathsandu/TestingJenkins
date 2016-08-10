@@ -70,7 +70,21 @@ public class FileUtils {
     public String getVideoDownloadPath(String videoId) {
         String fileName = "v." + Constants.VIDEO_FILE;
         String folderPath = getParentFolder() + File.separator + Constants.VIDEO_FOLDER + File.separator + videoId;
-        return folderPath + File.separator + fileName;
+        File folder = new File(folderPath);
+        if(!folder.isDirectory() && !folder.exists()) {
+            folder.mkdirs();
+        }
+        File file = new File(folder, fileName);
+        if(!file.exists()) {
+            try {
+                writer = new BufferedWriter(new FileWriter(file));
+                writer.write("");
+                writer.close();
+            } catch (Exception e) {
+                L.error(e.getMessage(), e);
+            }
+        }
+        return file.getAbsolutePath();
     }
 
     public String  getContentFileName(String contentId) {

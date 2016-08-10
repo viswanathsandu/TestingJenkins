@@ -16,9 +16,12 @@ import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.models.ContentModel;
+import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.services.ApiClientService;
+import com.education.corsalite.utils.FileUtils;
+import com.education.corsalite.utils.SystemUtils;
 
 import java.util.List;
 
@@ -61,6 +64,7 @@ public class VideoActivity extends AbstractBaseActivity {
             videoPath = getIntent().getStringExtra("videopath");
             loadLocalVideo();
         }
+
         if(selectedPosition >= 0 && mContentModels != null) {
             getContent();
             setToolbarForVideo(mContentModels, selectedPosition);
@@ -86,6 +90,13 @@ public class VideoActivity extends AbstractBaseActivity {
     private void loadWeb(final int selectedPosition) {
         // Initialize the WebView
         try {
+            OfflineContent offlineContent = dbManager.getOfflineContentWithContent(contents.get(selectedPosition).idContent);
+            if(offlineContent != null && offlineContent.progress == 100) {
+                videoPath = FileUtils.get(this).getVideoDownloadPath(offlineContent.contentId);
+                loadLocalVideo();
+                return;
+            }
+
             progress.setVisibility(View.VISIBLE);
             videoViewRelative.seekTo(0);
             //set the uri of the video to be played
@@ -125,6 +136,9 @@ public class VideoActivity extends AbstractBaseActivity {
         if(videoViewRelative != null && selectedPosition > 0) {
             videoViewRelative.seekTo(selectedPosition);
             videoViewRelative.pause();
+        }
+        if(SystemUtils.isNetworkConnected(this)) {
+
         }
     }
 

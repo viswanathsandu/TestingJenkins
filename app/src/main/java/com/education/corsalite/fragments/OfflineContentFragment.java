@@ -249,7 +249,7 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
                 if (item.text.endsWith("html")) {
                     startContentActivity(topicId, chapterId, subjectId, item.id, item.text);
                 } else {
-                    startVideoActivity(course.name, subjectName, chapterName, topicName, item.text);
+                    startVideoActivity(item.id);
                 }
             } else if (item.data != null && item.data instanceof ExerciseOfflineModel) {
                 startExerciseTest((ExerciseOfflineModel) item.data);
@@ -355,15 +355,13 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
         getActivity().startActivity(intent);
     }
 
-    private void startVideoActivity(String courseName, String mSubjectName, String mChapterName, String topicName, String contentName) {
-        String folderStructure = courseName + File.separator + mSubjectName + File.separator + mChapterName + File.separator + topicName;
-        File outDir = new File(FileUtils.get(getActivity()).getParentFolder() + File.separator + folderStructure);
-        File file = new File(outDir.getAbsolutePath() + File.separator + Constants.VIDEO_FOLDER);
-        File newFile = new File(file, contentName);
+    private void startVideoActivity(String contentId) {
+        String videoUrl = FileUtils.get(getActivity()).getVideoDownloadPath(contentId);
         Intent intent = new Intent(getActivity(), VideoActivity.class);
-        intent.putExtra("videopath", newFile.getAbsolutePath());
-        L.debug("Loading file from : " + newFile.getAbsolutePath());
-        if (newFile.exists()) {
+        intent.putExtra("videopath", videoUrl);
+        L.debug("Loading file from : " + videoUrl);
+        File file = new File(videoUrl);
+        if (file.exists()) {
             getActivity().startActivity(intent);
         } else
             showToast("File does not exist");
