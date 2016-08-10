@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "523448304994",
+    "firebase_url": "https://corsalite.firebaseio.com",
+    "project_id": "firebase-corsalite",
+    "storage_bucket": "firebase-corsalite.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:523448304994:android:6842f59d531af672",
+        "android_client_info": {
+          "package_name": "com.corsalite.tabletapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "523448304994-nfblbgv9icovog0doa90ao8l9h4mrspc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6TaGggkOGjJKYiC6VGA54Wfol3kDvnT8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
