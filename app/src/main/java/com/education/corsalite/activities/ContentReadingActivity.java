@@ -187,18 +187,6 @@ public class ContentReadingActivity extends AbstractBaseActivity {
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if(SystemUtils.isNetworkConnected(this)) {
-            ivForum.setVisibility(View.VISIBLE);
-            ivEditNotes.setVisibility(View.VISIBLE);
-        } else {
-            ivForum.setVisibility(View.GONE);
-            ivEditNotes.setVisibility(View.GONE);
-        }
-    }
-
     private void loadOfflineExercises() {
         offlineExercises = dbManager.getOfflineExerciseModels(AbstractBaseActivity.getSelectedCourseId());
         for (ExerciseOfflineModel model : offlineExercises) {
@@ -398,12 +386,20 @@ public class ContentReadingActivity extends AbstractBaseActivity {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.iv_forum:
-                    operation = "Forum";
-                    webviewContentReading.loadUrl("javascript:alert(copy())");
+                    if(SystemUtils.isNetworkConnected(ContentReadingActivity.this)) {
+                        operation = "Forum";
+                        webviewContentReading.loadUrl("javascript:alert(copy())");
+                    } else {
+                        showToast("Not available in offline mode");
+                    }
                     break;
                 case R.id.iv_editnotes:
-                    operation = "Note";
-                    webviewContentReading.loadUrl("javascript:alert(copy())");
+                    if(SystemUtils.isNetworkConnected(ContentReadingActivity.this)) {
+                        operation = "Note";
+                        webviewContentReading.loadUrl("javascript:alert(copy())");
+                    } else {
+                        showToast("Not available in offline mode");
+                    }
                     break;
                 case R.id.btn_next:
                     mContentIdPosition += 1;

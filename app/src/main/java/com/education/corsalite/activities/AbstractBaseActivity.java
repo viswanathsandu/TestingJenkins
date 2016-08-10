@@ -231,10 +231,10 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 refreshScreen();
             }
             if(event.isconnected) {
-//                stopService(new Intent(getApplicationContext(), ContentDownloadService.class));
+                stopService(new Intent(getApplicationContext(), ContentDownloadService.class));
                 startService(new Intent(getApplicationContext(), ContentDownloadService.class));
             } else {
-//                stopService(new Intent(getApplicationContext(), ContentDownloadService.class));
+                stopService(new Intent(getApplicationContext(), ContentDownloadService.class));
             }
         } catch (Exception e) {
             L.error(e.getMessage(), e);
