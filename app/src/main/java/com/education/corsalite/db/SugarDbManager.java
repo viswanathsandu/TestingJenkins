@@ -92,28 +92,6 @@ public class SugarDbManager {
         }
     }
 
-    public <T extends BaseModel> List<T> getDeprocessedDataList(Class<T> type, List<T> list) {
-        List<T> result = new ArrayList<>();
-        while(list != null && !list.isEmpty()) {
-            result.add(getDeprocessedData(type, list.get(0)));
-        }
-        return result;
-    }
-
-    public <T extends BaseModel> T getDeprocessedData(Class<T> type, T t) {
-        try {
-            if (t.reflectionJsonString != null) {
-                T object = Gson.get().fromJson(Gzip.decompress(t.reflectionJsonString), type);
-                t.reflectionJsonString = null;
-                object.setId(t.getId());
-                return object;
-            }
-        } catch (Exception e) {
-            L.error(e.getMessage(), e);
-        }
-        return t;
-    }
-
     public <T extends BaseModel> List<T> fetchRecords(Class<T> type) {
         List<T> results = new ArrayList<>();
         try {

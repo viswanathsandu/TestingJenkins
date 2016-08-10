@@ -70,7 +70,12 @@ public class FileUtils {
     public String getVideoDownloadPath(String videoId) {
         String fileName = "v." + Constants.VIDEO_FILE;
         String folderPath = getParentFolder() + File.separator + Constants.VIDEO_FOLDER + File.separator + videoId;
-        return folderPath + File.separator + fileName;
+        File folder = new File(folderPath);
+        if(folder.isDirectory()) {
+            folder.mkdirs();
+        }
+        File file = new File(folder, fileName);
+        return file.getAbsolutePath();
     }
 
     public String  getContentFileName(String contentId) {

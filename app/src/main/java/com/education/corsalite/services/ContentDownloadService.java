@@ -59,6 +59,7 @@ public class ContentDownloadService extends IntentService {
             dbManager = SugarDbManager.get(getApplicationContext());
         }
         fetchOfflineContents();
+        isIntentServiceRunning = false;
     }
 
     private void fetchOfflineContents() {

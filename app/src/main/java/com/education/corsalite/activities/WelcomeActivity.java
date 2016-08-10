@@ -69,10 +69,8 @@ public class WelcomeActivity extends AbstractBaseActivity implements View.OnClic
         // Start download service if its not started
         stopService(new Intent(getApplicationContext(), ContentDownloadService.class));
         if(loadContent) {
-            if (!ContentDownloadService.isIntentServiceRunning) {
-                stopService(new Intent(getApplicationContext(), ContentDownloadService.class));
-                startService(new Intent(getApplicationContext(), ContentDownloadService.class));
-            }
+            stopService(new Intent(getApplicationContext(), ContentDownloadService.class));
+            startService(new Intent(getApplicationContext(), ContentDownloadService.class));
             loadContent = false;
         }
     }
