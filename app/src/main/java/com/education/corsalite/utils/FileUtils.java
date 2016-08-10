@@ -71,10 +71,19 @@ public class FileUtils {
         String fileName = "v." + Constants.VIDEO_FILE;
         String folderPath = getParentFolder() + File.separator + Constants.VIDEO_FOLDER + File.separator + videoId;
         File folder = new File(folderPath);
-        if(folder.isDirectory()) {
+        if(folder.isDirectory() && !folder.exists()) {
             folder.mkdirs();
         }
         File file = new File(folder, fileName);
+        if(!file.exists()) {
+            try {
+                writer = new BufferedWriter(new FileWriter(file));
+                writer.write("");
+                writer.close();
+            } catch (Exception e) {
+                L.error(e.getMessage(), e);
+            }
+        }
         return file.getAbsolutePath();
     }
 

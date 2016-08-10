@@ -59,13 +59,11 @@ public class ContentDownloadService extends IntentService {
             dbManager = SugarDbManager.get(getApplicationContext());
         }
         fetchOfflineContents();
-        isIntentServiceRunning = false;
     }
 
     private void fetchOfflineContents() {
         offlineContents = dbManager.getOfflineContents(null);
         startDownload();
-        downloadExercises();
     }
 
     private void startDownload() {
@@ -101,6 +99,7 @@ public class ContentDownloadService extends IntentService {
             }
             downloandInProgress--;
         }
+        downloadExercises();
     }
 
     private void saveFileToDisk(OfflineContent offlineContent, String htmlText, Content content) {
