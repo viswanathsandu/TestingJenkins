@@ -13,11 +13,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.activities.VideoActivity;
 import com.education.corsalite.adapters.VideoListAdapter;
+import com.education.corsalite.db.SugarDbManager;
 import com.education.corsalite.models.ContentModel;
+import com.education.corsalite.models.db.OfflineContent;
+import com.education.corsalite.utils.FileUtils;
+import com.education.corsalite.utils.L;
+import com.education.corsalite.utils.SystemUtils;
 
 import java.io.Serializable;
 import java.util.List;
@@ -67,10 +73,25 @@ public class VideoListDialog extends DialogFragment implements VideoListAdapter.
 
     @Override
     public void onVideoSelected(int position) {
-        dismiss();
-        Intent intent = new Intent(getActivity(), VideoActivity.class);
-        intent.putExtra("selectedPosition", position);
-        intent.putExtra("videoList", (Serializable) mVideoList);
-        startActivity(intent);
+        try {
+            dismiss();
+            OfflineContent offlineContent = SugarDbManager.get(getActivity()).getOfflineContentWithContent(mVideoList.get(position).idContent);
+            if (offlineContent != null && offlineContent.progress == 100) {
+                Intent intent = new Intent(getActivity(), VideoActivity.class);
+                intent.putExtra("selectedPosition", position);
+                intent.putExtra("videopath", FileUtils.get(getActivity()).getVideoDownloadPath(mVideoList.get(position).idContent));
+                intent.putExtra("videoList", (Serializable) mVideoList);
+                startActivity(intent);
+            } else if (SystemUtils.isNetworkConnected(getActivity())) {
+                Intent intent = new Intent(getActivity(), VideoActivity.class);
+                intent.putExtra("selectedPosition", position);
+                intent.putExtra("videoList", (Serializable) mVideoList);
+                startActivity(intent);
+            } else {
+                Toast.makeText(getActivity(), "Video is not available for offline", Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
     }
 }
