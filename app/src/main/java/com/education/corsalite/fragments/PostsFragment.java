@@ -107,42 +107,52 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
         @Override
         public void success(ArrayList<ForumPost> forumPosts, Response response) {
             super.success(forumPosts, response);
-            closeProgress();
-            if (forumPosts != null && !forumPosts.isEmpty()) {
-                setForumPosts(forumPosts);
-                emptyLayout.setVisibility(View.GONE);
-            } else {
-                emptyLayout.setVisibility(View.VISIBLE);
+            if(getActivity() != null) {
+                closeProgress();
+                if (forumPosts != null && !forumPosts.isEmpty()) {
+                    setForumPosts(forumPosts);
+                    emptyLayout.setVisibility(View.GONE);
+                } else {
+                    emptyLayout.setVisibility(View.VISIBLE);
+                }
             }
         }
 
         @Override
         public void failure(CorsaliteError error) {
             super.failure(error);
-            closeProgress();
-            emptyLayout.setVisibility(View.VISIBLE);
+            if(getActivity() != null) {
+                closeProgress();
+                emptyLayout.setVisibility(View.VISIBLE);
+            }
         }
     };
 
     private void loadForumLibrary() {
-        showProgress();
-        ApiManager.getInstance(getActivity()).getMyComments(AbstractBaseActivity.getSelectedCourseId(),
-                appPref.getUserId(), "forumLibrary",
-                postsCallback);
+        if(getActivity() != null) {
+            showProgress();
+            ApiManager.getInstance(getActivity()).getMyComments(AbstractBaseActivity.getSelectedCourseId(),
+                    appPref.getUserId(), "forumLibrary",
+                    postsCallback);
+        }
     }
 
     private void loadForumPosts() {
-        showProgress();
-        ApiManager.getInstance(getActivity()).getAllPosts(AbstractBaseActivity.getSelectedCourseId(),
-                appPref.getUserId(), "AllPosts", "", "",
-                postsCallback);
+        if(getActivity() != null) {
+            showProgress();
+            ApiManager.getInstance(getActivity()).getAllPosts(AbstractBaseActivity.getSelectedCourseId(),
+                    appPref.getUserId(), "AllPosts", "", "",
+                    postsCallback);
+        }
     }
 
     private void loadForumMyPosts() {
-        showProgress();
-        ApiManager.getInstance(getActivity()).getMyPosts(AbstractBaseActivity.getSelectedCourseId(),
-                appPref.getUserId(),
-                postsCallback);
+        if(getActivity() != null) {
+            showProgress();
+            ApiManager.getInstance(getActivity()).getMyPosts(AbstractBaseActivity.getSelectedCourseId(),
+                    appPref.getUserId(),
+                    postsCallback);
+        }
     }
 
     private void setForumPosts(List<ForumPost> forumPosts) {
@@ -151,99 +161,111 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
 
     @Override
     public void onLikeClicked(final int position) {
-        final ForumPost forumPost = mPostAdapter.getItem(position);
-        ApiManager.getInstance(getActivity()).addForumLike(new ForumLikeRequest(appPref.getUserId(), forumPost.idUserPost),
-                new ApiCallback<CommonResponseModel>(getActivity()) {
-                    @Override
-                    public void success(CommonResponseModel baseResponseModel, Response response) {
-                        super.success(baseResponseModel, response);
-                        if(getActivity() instanceof ForumActivity) {
-                            ((ForumActivity) getActivity()).refreshData();
+        if(getActivity() != null) {
+            final ForumPost forumPost = mPostAdapter.getItem(position);
+            ApiManager.getInstance(getActivity()).addForumLike(new ForumLikeRequest(appPref.getUserId(), forumPost.idUserPost),
+                    new ApiCallback<CommonResponseModel>(getActivity()) {
+                        @Override
+                        public void success(CommonResponseModel baseResponseModel, Response response) {
+                            super.success(baseResponseModel, response);
+                            if (getActivity() instanceof ForumActivity) {
+                                ((ForumActivity) getActivity()).refreshData();
+                            }
                         }
-                    }
-                });
+                    });
+        }
     }
 
     @Override
     public void onCommentClicked(int position) {
-        ForumPost item = mPostAdapter.getItem(position);
-        if(TextUtils.isEmpty(item.postReplies) || item.postReplies.equals("0")) {
-            Bundle bundle = new Bundle();
-            bundle.putString("type", "Comment");
-            bundle.putString("operation", "Add");
-            bundle.putString("course_id", item.idCourse);
-            bundle.putString("subject_id", item.idCourseSubject);
-            bundle.putString("chapter_id", item.idCourseSubjectChapter);
-            bundle.putString("topic_id", item.idTopic);
-            bundle.putString("post_subject", item.PostSubject);
-            bundle.putString("post_id", item.idUserPost);
-            bundle.putString("is_author_only", item.isAuthorOnly);
-            Intent intent = new Intent(getActivity(), EditorActivity.class);
-            intent.putExtras(bundle);
-            startActivity(intent);
-        } else {
-            Bundle bundle = new Bundle();
-            bundle.putString("user_id", appPref.getUserId());
-            bundle.putString("post_id", item.idUserPost);
-            Intent intent = new Intent(getActivity(), PostDetailsActivity.class);
-            intent.putExtras(bundle);
-            startActivity(intent);
+        if(getActivity() != null) {
+            ForumPost item = mPostAdapter.getItem(position);
+            if (TextUtils.isEmpty(item.postReplies) || item.postReplies.equals("0")) {
+                Bundle bundle = new Bundle();
+                bundle.putString("type", "Comment");
+                bundle.putString("operation", "Add");
+                bundle.putString("course_id", item.idCourse);
+                bundle.putString("subject_id", item.idCourseSubject);
+                bundle.putString("chapter_id", item.idCourseSubjectChapter);
+                bundle.putString("topic_id", item.idTopic);
+                bundle.putString("post_subject", item.PostSubject);
+                bundle.putString("post_id", item.idUserPost);
+                bundle.putString("is_author_only", item.isAuthorOnly);
+                Intent intent = new Intent(getActivity(), EditorActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            } else {
+                Bundle bundle = new Bundle();
+                bundle.putString("user_id", appPref.getUserId());
+                bundle.putString("post_id", item.idUserPost);
+                Intent intent = new Intent(getActivity(), PostDetailsActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
         }
     }
 
     @Override
     public void onBookmarkClicked(final int position) {
-        final ForumPost forumPost = mPostAdapter.getItem(position);
-        final Bookmark bookmark = new Bookmark();
-        if (forumPost.bookmark == null || (forumPost.bookmark != null && forumPost.bookmark.equalsIgnoreCase("N"))) {
-            bookmark.bookmarkdelete = "Y";
-        } else {
-            bookmark.bookmarkdelete = "N";
-        }
-        bookmark.idUserPost = forumPost.idUserPost;
-        bookmark.idUser = appPref.getUserId();
-        showProgress();
-        ApiManager.getInstance(getActivity()).postBookmark(bookmark, new ApiCallback<CommonResponseModel>(getActivity()) {
-            @Override
-            public void success(CommonResponseModel bookmarkResponse, Response response) {
-                super.success(bookmarkResponse, response);
-                closeProgress();
-                if (bookmarkResponse.isSuccessful()) {
-                    forumPost.bookmark = bookmark.bookmarkdelete;
-                    if (bookmark.bookmarkdelete.equalsIgnoreCase("Y")) {
-                        Toast.makeText(getActivity(), "Post is successfully bookmarked.", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(getActivity(), "Removed bookmark successfully.", Toast.LENGTH_SHORT).show();
+        if(getActivity() != null) {
+            final ForumPost forumPost = mPostAdapter.getItem(position);
+            final Bookmark bookmark = new Bookmark();
+            if (forumPost.bookmark == null || (forumPost.bookmark != null && forumPost.bookmark.equalsIgnoreCase("N"))) {
+                bookmark.bookmarkdelete = "Y";
+            } else {
+                bookmark.bookmarkdelete = "N";
+            }
+            bookmark.idUserPost = forumPost.idUserPost;
+            bookmark.idUser = appPref.getUserId();
+            showProgress();
+            ApiManager.getInstance(getActivity()).postBookmark(bookmark, new ApiCallback<CommonResponseModel>(getActivity()) {
+                @Override
+                public void success(CommonResponseModel bookmarkResponse, Response response) {
+                    super.success(bookmarkResponse, response);
+                    if (getActivity() != null) {
+                        closeProgress();
+                        if (bookmarkResponse.isSuccessful()) {
+                            forumPost.bookmark = bookmark.bookmarkdelete;
+                            if (bookmark.bookmarkdelete.equalsIgnoreCase("Y")) {
+                                Toast.makeText(getActivity(), "Post is successfully bookmarked.", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getActivity(), "Removed bookmark successfully.", Toast.LENGTH_SHORT).show();
+                            }
+                            mPostAdapter.updateCurrentItem(position);
+                        }
                     }
-                    mPostAdapter.updateCurrentItem(position);
                 }
-            }
 
-            @Override
-            public void failure(CorsaliteError error) {
-                super.failure(error);
-                closeProgress();
-            }
-        });
+                @Override
+                public void failure(CorsaliteError error) {
+                    super.failure(error);
+                    if (getActivity() != null) {
+                        closeProgress();
+                    }
+                }
+            });
+        }
     }
 
     @Override
     public void onEditClicked(int position) {
-        ForumPost forumPost = mPostAdapter.getItem(position);
-        Bundle bundle = new Bundle();
-        bundle.putString("type", "Forum");
-        bundle.putString("operation", "Edit");
-        bundle.putString("post_id", forumPost.idUserPost);
-        bundle.putString("student_id", LoginUserCache.getInstance().getLongResponse().studentId);
-        bundle.putString("subject_id", forumPost.idCourseSubject);
-        bundle.putString("chapter_id", forumPost.idCourseSubjectChapter);
-        bundle.putString("topic_id", forumPost.idTopic);
-        bundle.putString("post_subject", forumPost.PostSubject);
-        bundle.putString("content", forumPost.htmlText);
-        bundle.putString("is_author_only", forumPost.isAuthorOnly);
-        Intent intent = new Intent(getActivity(), EditorActivity.class);
-        intent.putExtras(bundle);
-        startActivity(intent);
+        if(getActivity() != null) {
+            ForumPost forumPost = mPostAdapter.getItem(position);
+            Bundle bundle = new Bundle();
+            bundle.putString("type", "Forum");
+            bundle.putString("operation", "Edit");
+            bundle.putString("post_id", forumPost.idUserPost);
+            bundle.putString("student_id", LoginUserCache.getInstance().getLongResponse().studentId);
+            bundle.putString("subject_id", forumPost.idCourseSubject);
+            bundle.putString("chapter_id", forumPost.idCourseSubjectChapter);
+            bundle.putString("topic_id", forumPost.idTopic);
+            bundle.putString("post_subject", forumPost.PostSubject);
+            bundle.putString("content", forumPost.htmlText);
+            bundle.putString("is_author_only", forumPost.isAuthorOnly);
+            Intent intent = new Intent(getActivity(), EditorActivity.class);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -252,53 +274,61 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
 
     @Override
     public void onDeleteClicked(final int position) {
-        final ForumPost forumPost = mPostAdapter.getItem(position);
-        AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-        alert.setTitle("Confirm");
-        alert.setMessage("Do you want to delete the post?");
-        alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                deletePost(forumPost, position);
-            }
-        });
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        alert.show();
+        if(getActivity() != null) {
+            final ForumPost forumPost = mPostAdapter.getItem(position);
+            AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+            alert.setTitle("Confirm");
+            alert.setMessage("Do you want to delete the post?");
+            alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    deletePost(forumPost, position);
+                }
+            });
+            alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            alert.show();
+        }
     }
 
     private void deletePost(ForumPost forumPost, final int position) {
-        showProgress();
-        ApiManager.getInstance(getActivity()).deleteForum(new ForumLikeRequest(forumPost.idUser, forumPost.idUserPost),
-                new ApiCallback<CommonResponseModel>(getActivity()) {
-                    @Override
-                    public void success(CommonResponseModel baseResponseModel, Response response) {
-                        super.success(baseResponseModel, response);
-                        closeProgress();
-                        if (baseResponseModel.isSuccessful()) {
-                            mPostAdapter.deleteForumPost(position);
+        if(getActivity() != null) {
+            showProgress();
+            ApiManager.getInstance(getActivity()).deleteForum(new ForumLikeRequest(forumPost.idUser, forumPost.idUserPost),
+                    new ApiCallback<CommonResponseModel>(getActivity()) {
+                        @Override
+                        public void success(CommonResponseModel baseResponseModel, Response response) {
+                            super.success(baseResponseModel, response);
+                            if (getActivity() != null) {
+                                closeProgress();
+                                if (baseResponseModel.isSuccessful()) {
+                                    mPostAdapter.deleteForumPost(position);
+                                }
+                                if (getActivity() instanceof ForumActivity) {
+                                    ((ForumActivity) getActivity()).refreshData();
+                                }
+                            }
                         }
-                        if(getActivity() instanceof ForumActivity) {
-                            ((ForumActivity) getActivity()).refreshData();
-                        }
-                    }
 
-                    @Override
-                    public void failure(CorsaliteError error) {
-                        super.failure(error);
-                        closeProgress();
-                    }
-                });
+                        @Override
+                        public void failure(CorsaliteError error) {
+                            super.failure(error);
+                            if (getActivity() != null) {
+                                closeProgress();
+                            }
+                        }
+                    });
+        }
     }
 
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.new_post_btn) {
-            if (getActivity() instanceof ForumActivity) {
+            if (getActivity() != null && getActivity() instanceof ForumActivity) {
                 ((ForumActivity) getActivity()).onNewPostClicked();
             }
         }
@@ -306,11 +336,15 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
 
     @Override
     public void showProgress() {
-        progress.setVisibility(View.VISIBLE);
+        if(getActivity() != null) {
+            progress.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
     public void closeProgress() {
-        progress.setVisibility(View.GONE);
+        if(getActivity() != null) {
+            progress.setVisibility(View.GONE);
+        }
     }
 }
