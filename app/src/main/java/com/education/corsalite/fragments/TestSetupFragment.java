@@ -99,7 +99,7 @@ public class TestSetupFragment extends BaseFragment {
         loadContent();
         loadExams();
         titleTv.setText(AbstractBaseActivity.getSelectedCourseName());
-        virtCurrencyEdit.setFilters(new InputFilter[]{new InputFilterMinMax("1", "50")});
+        virtCurrencyEdit.setFilters(new InputFilter[]{new InputFilterMinMax("1", "100")});
         return view;
     }
 
