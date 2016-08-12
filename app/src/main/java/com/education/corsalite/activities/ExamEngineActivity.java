@@ -1250,19 +1250,23 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 optionRBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        for (int j = 0; j < size; j++) {
-                            optionRadioButtons[j].setChecked(false);
-                            if (optionRadioButtons[j].getId() == Integer.valueOf(answerChoiceModel.idAnswerKey)) {
-                                selectedAnswerPosition = j + 1;
-                                localExamModelList.get(selectedPosition).selectedAnswers = String.valueOf(j);
-                                if (testanswerPaper != null && testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty()) {
-                                    testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = answerChoiceModel.idAnswerKey;
-                                    testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.ANSWERED.getValue();
+                        try {
+                            for (int j = 0; j < size; j++) {
+                                optionRadioButtons[j].setChecked(false);
+                                if (optionRadioButtons[j].getId() == Integer.valueOf(answerChoiceModel.idAnswerKey)) {
+                                    selectedAnswerPosition = j + 1;
+                                    localExamModelList.get(selectedPosition).selectedAnswers = String.valueOf(j);
+                                    if (testanswerPaper != null && testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty()) {
+                                        testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = answerChoiceModel.idAnswerKey;
+                                        testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.ANSWERED.getValue();
+                                    }
                                 }
                             }
+                            ((RadioButton) v).setChecked(true);
+                            btnVerify.setEnabled(true);
+                        } catch (Exception e) {
+                            L.error(e.getMessage(), e);
                         }
-                        ((RadioButton) v).setChecked(true);
-                        btnVerify.setEnabled(true);
                     }
                 });
             } catch (Exception e) {
