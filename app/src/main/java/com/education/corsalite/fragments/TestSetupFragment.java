@@ -191,16 +191,20 @@ public class TestSetupFragment extends BaseFragment {
             @Override
             public void failure(CorsaliteError error) {
                 super.failure(error);
-                closeProgress();
-                Toast.makeText(getActivity(), "Failed to create test", Toast.LENGTH_SHORT).show();
+                if(getActivity() != null) {
+                    closeProgress();
+                    Toast.makeText(getActivity(), "Failed to create test", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
             public void success(CreateChallengeResponseModel createChallengeResponseModel, Response response) {
                 super.success(createChallengeResponseModel, response);
-                closeProgress();
-                if(createChallengeResponseModel != null && createChallengeResponseModel.testQuestionPaperId != null) {
-                    EventBus.getDefault().post(createChallengeResponseModel);
+                if(getActivity() != null) {
+                    closeProgress();
+                    if (createChallengeResponseModel != null && createChallengeResponseModel.testQuestionPaperId != null) {
+                        EventBus.getDefault().post(createChallengeResponseModel);
+                    }
                 }
             }
         });
@@ -258,17 +262,21 @@ public class TestSetupFragment extends BaseFragment {
                     @Override
                     public void success(List<ContentIndex> contentIndexList, Response response) {
                         super.success(contentIndexList, response);
-                        closeProgress();
-                        if (contentIndexList != null) {
-                            showSubjects(contentIndexList);
+                        if(getActivity() != null) {
+                            closeProgress();
+                            if (contentIndexList != null) {
+                                showSubjects(contentIndexList);
+                            }
                         }
                     }
 
                     @Override
                     public void failure(CorsaliteError error) {
                         super.failure(error);
-                        closeProgress();
-                        ((AbstractBaseActivity) getActivity()).showToast("No data available");
+                        if(getActivity() != null) {
+                            closeProgress();
+                            ((AbstractBaseActivity) getActivity()).showToast("No data available");
+                        }
                     }
                 });
     }
@@ -279,16 +287,20 @@ public class TestSetupFragment extends BaseFragment {
                     @Override
                     public void success(List<Exam> exams, Response response) {
                         super.success(exams, response);
-                        if(exams != null) {
-                            examsList = exams;
-                            showExams();
+                        if(getActivity() != null) {
+                            if (exams != null) {
+                                examsList = exams;
+                                showExams();
+                            }
                         }
                     }
 
                     @Override
                     public void failure(CorsaliteError error) {
                         super.failure(error);
-                        closeProgress();
+                        if(getActivity() != null) {
+                            closeProgress();
+                        }
                     }
                 });
     }

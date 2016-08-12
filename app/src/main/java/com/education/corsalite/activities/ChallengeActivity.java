@@ -101,8 +101,10 @@ public class ChallengeActivity extends AbstractBaseActivity {
                     new ApiCallback<UserProfileResponse>(this) {
                         @Override
                         public void success(UserProfileResponse userProfileResponse, Response response) {
-                            if(LoginUserCache.getInstance().getLongResponse() != null) {
-                                LoginUserCache.getInstance().getLongResponse().displayName = userProfileResponse.basicProfile.displayName;
+                            if(!isDestroyed()) {
+                                if (LoginUserCache.getInstance().getLongResponse() != null) {
+                                    LoginUserCache.getInstance().getLongResponse().displayName = userProfileResponse.basicProfile.displayName;
+                                }
                             }
                         }
                     });
@@ -138,13 +140,15 @@ public class ChallengeActivity extends AbstractBaseActivity {
     private FriendsListCallback mFriendsListCallback = new FriendsListCallback() {
         @Override
         public void onNextClick(ArrayList<FriendsData.Friend> selectedFriends) {
-            showToast(selectedFriends.size() + "");
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, TestSetupFragment.newInstance(mTestSetupCallback)).addToBackStack(null).commit();
+            if(!isDestroyed()) {
+                showToast(selectedFriends.size() + "");
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, TestSetupFragment.newInstance(mTestSetupCallback)).addToBackStack(null).commit();
+            }
         }
         @Override
         public void onFriendAdded(FriendsData.Friend friend) {
-            if(friend != null) {
+            if(!isDestroyed() && friend != null) {
                 selectedFriends.add(friend);
                 loadPlayers();
             }
@@ -152,7 +156,7 @@ public class ChallengeActivity extends AbstractBaseActivity {
 
         @Override
         public void onFriendRemoved(FriendsData.Friend friend) {
-            if(friend != null) {
+            if(!isDestroyed() && friend != null) {
                 selectedFriends.remove(friend);
                 loadPlayers();
             }
