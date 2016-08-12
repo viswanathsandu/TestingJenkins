@@ -74,6 +74,7 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
     private List<Course> mCourses;
     private boolean coursesSpinnerCLicked;
     private SpinnerAdapter dataAdapter;
+    private boolean enableEmailEdit = false;
 
     @Override
     public void onAttach(Context context) {
@@ -182,6 +183,7 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
         dialogFragment.setUpdateProfileDetailsListener(this);
         Bundle bundle = new Bundle();
         bundle.putString("user_profile_response", Gson.get().toJson(user));
+        bundle.putBoolean("enable_edit_email", enableEmailEdit);
         dialogFragment.setArguments(bundle);
         dialogFragment.show(getFragmentManager(), "Edit Profile");
     }
@@ -249,6 +251,7 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
                             dbManager.saveReqRes(ApiCacheHolder.getInstance().userProfile);
                             user = userProfileResponse;
                             showProfileData(userProfileResponse.basicProfile);
+                            enableEmailEdit = userProfileResponse.isEmailEnabled();
                             if (updateExamData != null) {
                                 updateExamData.getExamData(userProfileResponse.examDetails);
                             }

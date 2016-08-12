@@ -34,6 +34,7 @@ import retrofit.client.Response;
 public class EditProfileDialogFragment extends BaseDialogFragment {
 
     IUpdateProfileDetailsListener updateProfileDetailsListener;
+    private boolean enableEditEmail;
     private UserProfileResponse user;
     @Bind(R.id.username_txt) EditText usernameTxt;
     @Bind(R.id.firstname_txt) EditText firstNameTxt;
@@ -47,11 +48,22 @@ public class EditProfileDialogFragment extends BaseDialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.edit_profile_dialog_fragment, container, false);
         ButterKnife.bind(this, v);
-        user = Gson.get().fromJson(getArguments().getString("user_profile_response"), UserProfileResponse.class);
-        loadData();
-        setListeners();
-        getDialog().setTitle("Edit Profile");
+        try {
+            user = Gson.get().fromJson(getArguments().getString("user_profile_response"), UserProfileResponse.class);
+            enableEditEmail = getArguments().getBoolean("enable_edit_email");
+            loadData();
+            setListeners();
+            getDialog().setTitle("Edit Profile");
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
         return v;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        emailIdTxt.setEnabled(enableEditEmail);
     }
 
     private void setListeners() {
