@@ -488,6 +488,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
     private void loadExerciseTest() {
         imvFlag.setVisibility(View.INVISIBLE);
+        // TODO : check here if it has some impact
         localExamModelList = AbstractBaseActivity.getSharedExamModels();
         if(localExamModelList == null && !TextUtils.isEmpty(topicId)) {
             ExerciseOfflineModel model = new ExamUtils(this).getExerciseModel(topicId);
@@ -2207,6 +2208,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        AbstractBaseActivity.setSharedExamModels(null);
         if(timer != null) {
             timer.cancel();
         }
