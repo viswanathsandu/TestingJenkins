@@ -97,6 +97,7 @@ public class ChallengeActivity extends AbstractBaseActivity {
     private void fetchDisplayName() {
         try {
             ApiManager.getInstance(this).getUserProfile(LoginUserCache.getInstance().getStudentId(),
+                    LoginUserCache.getInstance().getEntityId(),
                     new ApiCallback<UserProfileResponse>(this) {
                         @Override
                         public void success(UserProfileResponse userProfileResponse, Response response) {

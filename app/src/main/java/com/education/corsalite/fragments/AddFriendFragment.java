@@ -78,33 +78,35 @@ public class AddFriendFragment extends BaseFragment implements SearchView.OnQuer
     }
 
     private void loadFriendsList(String searchKey) {
-        if(TextUtils.isEmpty(searchKey)) {
-           showToast("Plean enter the search text");
-            return;
-        }
-        this.searchKey = searchKey;
-        ApiManager.getInstance(getActivity()).searchFriends(
-                appPref.getUserId(),
-                AbstractBaseActivity.getSelectedCourseId(),
-                searchKey,
-                new ApiCallback<List<FriendsData.Friend>>(getActivity()) {
+        if(getActivity() != null) {
+            if (TextUtils.isEmpty(searchKey)) {
+                showToast("Plean enter the search text");
+                return;
+            }
+            this.searchKey = searchKey;
+            ApiManager.getInstance(getActivity()).searchFriends(
+                    appPref.getUserId(),
+                    AbstractBaseActivity.getSelectedCourseId(),
+                    searchKey,
+                    new ApiCallback<List<FriendsData.Friend>>(getActivity()) {
 
-                    @Override
-                    public void success(List<FriendsData.Friend> friends, Response response) {
-                        super.success(friends, response);
-                        if (friends != null) {
-                            AddFriendFragment.this.friends = friends;
-                            showFriendsList();
-                            fetchDisplayName();
+                        @Override
+                        public void success(List<FriendsData.Friend> friends, Response response) {
+                            super.success(friends, response);
+                            if (friends != null) {
+                                AddFriendFragment.this.friends = friends;
+                                showFriendsList();
+                                fetchDisplayName();
+                            }
                         }
-                    }
 
-                    @Override
-                    public void failure(CorsaliteError error) {
-                        super.failure(error);
-                        ((AbstractBaseActivity) getActivity()).showToast("No results found");
-                    }
-                });
+                        @Override
+                        public void failure(CorsaliteError error) {
+                            super.failure(error);
+                            ((AbstractBaseActivity) getActivity()).showToast("No results found");
+                        }
+                    });
+        }
     }
 
     private void showFriendsList() {

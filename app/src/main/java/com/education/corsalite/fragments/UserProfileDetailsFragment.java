@@ -95,8 +95,12 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
     @Override
     public void onResume() {
         super.onResume();
-        if(LoginUserCache.getInstance().getLongResponse().isRewardRedeemEnabled()) {
-            redeemBtn.setVisibility(View.VISIBLE);
+        try {
+            if (LoginUserCache.getInstance().getLongResponse().isRewardRedeemEnabled()) {
+                redeemBtn.setVisibility(View.VISIBLE);
+            }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
         }
         fetchUserProfileData();
         fetchVirtualCurrencyBalance();
@@ -224,6 +228,7 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
     private void fetchUserProfileData() {
         showProgress();
         ApiManager.getInstance(getActivity()).getUserProfile(LoginUserCache.getInstance().getStudentId(),
+                LoginUserCache.getInstance().getEntityId(),
                 new ApiCallback<UserProfileResponse>(getActivity()) {
                     @Override
                     public void failure(CorsaliteError error) {
