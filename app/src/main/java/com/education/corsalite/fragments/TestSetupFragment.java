@@ -105,47 +105,51 @@ public class TestSetupFragment extends BaseFragment {
 
     @OnClick(R.id.tv_testsetup_next)
     public void onNextClick() {
-        String selectedSubject = null, selectedChapter = null;
-        if (selectSubjSpinner.getAdapter() != null) {
-            selectedSubject = selectSubjSpinner.getSelectedItem().toString();
-        }
-        if (selectSubjSpinner.getAdapter() != null) {
-            selectedChapter = selectChapSpinner.getSelectedItem().toString();
-        }
-        String noOfQuestions = noOfQuesEdit.getText().toString();
-        String timeInMins = timeInMinsEdit.getText().toString();
-        String virCurrency = virtCurrencyEdit.getText().toString();
+        try {
+            String selectedSubject = null, selectedChapter = null;
+            if (selectSubjSpinner.getAdapter() != null) {
+                selectedSubject = selectSubjSpinner.getSelectedItem().toString();
+            }
+            if (selectSubjSpinner.getAdapter() != null) {
+                selectedChapter = selectChapSpinner.getSelectedItem().toString();
+            }
+            String noOfQuestions = noOfQuesEdit.getText().toString();
+            String timeInMins = timeInMinsEdit.getText().toString();
+            String virCurrency = virtCurrencyEdit.getText().toString();
 
-        if (selectedSubject != null && !selectedSubject.isEmpty() && !selectedSubject.equalsIgnoreCase("Select Subject")) {
-            selectSubjError.setVisibility(View.GONE);
-            if (selectedChapter != null && !selectedChapter.isEmpty() && !selectedChapter.equalsIgnoreCase("Chapter")) {
-                selectChapError.setVisibility(View.GONE);
-                if (noOfQuestions != null && !noOfQuestions.isEmpty() && isValidNoQues(noOfQuestions)) {
-                    noOfQuesError.setVisibility(View.GONE);
-                    if (timeInMins != null && !timeInMins.isEmpty() && isValidTime(timeInMins)) {
-                        timeInMinsError.setVisibility(View.GONE);
-                        if (virCurrency != null && !virCurrency.isEmpty() && isValidCurrency(virCurrency)) {
-                            virCurrencyError.setVisibility(View.GONE);
-                            challengeTest();
+            if (selectedSubject != null && !selectedSubject.isEmpty() && !selectedSubject.equalsIgnoreCase("Select Subject")) {
+                selectSubjError.setVisibility(View.GONE);
+                if (selectedChapter != null && !selectedChapter.isEmpty() && !selectedChapter.equalsIgnoreCase("Chapter")) {
+                    selectChapError.setVisibility(View.GONE);
+                    if (noOfQuestions != null && !noOfQuestions.isEmpty() && isValidNoQues(noOfQuestions)) {
+                        noOfQuesError.setVisibility(View.GONE);
+                        if (timeInMins != null && !timeInMins.isEmpty() && isValidTime(timeInMins)) {
+                            timeInMinsError.setVisibility(View.GONE);
+                            if (virCurrency != null && !virCurrency.isEmpty() && isValidCurrency(virCurrency)) {
+                                virCurrencyError.setVisibility(View.GONE);
+                                challengeTest();
+                            } else {
+                                virCurrencyError.setText("Enter Valid Currency");
+                                virCurrencyError.setVisibility(View.VISIBLE);
+                            }
                         } else {
-                            virCurrencyError.setText("Enter Valid Currency");
-                            virCurrencyError.setVisibility(View.VISIBLE);
+                            timeInMinsError.setText("Enter Valid time");
+                            timeInMinsError.setVisibility(View.VISIBLE);
                         }
                     } else {
-                        timeInMinsError.setText("Enter Valid time");
-                        timeInMinsError.setVisibility(View.VISIBLE);
+                        noOfQuesError.setText("Enter valid no. of questions");
+                        noOfQuesError.setVisibility(View.VISIBLE);
                     }
                 } else {
-                    noOfQuesError.setText("Enter valid no. of questions");
-                    noOfQuesError.setVisibility(View.VISIBLE);
+                    selectChapError.setText("Please select chapter");
+                    selectChapError.setVisibility(View.VISIBLE);
                 }
             } else {
-                selectChapError.setText("Please select chapter");
-                selectChapError.setVisibility(View.VISIBLE);
+                selectSubjError.setText("Please select subject");
+                selectSubjError.setVisibility(View.VISIBLE);
             }
-        } else {
-            selectSubjError.setText("Please select subject");
-            selectSubjError.setVisibility(View.VISIBLE);
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
         }
     }
 
