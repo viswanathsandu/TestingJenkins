@@ -1,6 +1,7 @@
 package com.education.corsalite.fragments;
 
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import com.education.corsalite.models.responsemodels.CreateChallengeResponseMode
 import com.education.corsalite.models.responsemodels.Exam;
 import com.education.corsalite.models.responsemodels.FriendsData;
 import com.education.corsalite.utils.L;
+import com.education.corsalite.views.InputFilterMinMax;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,6 +99,7 @@ public class TestSetupFragment extends BaseFragment {
         loadContent();
         loadExams();
         titleTv.setText(AbstractBaseActivity.getSelectedCourseName());
+        virtCurrencyEdit.setFilters(new InputFilter[]{new InputFilterMinMax("1", "50")});
         return view;
     }
 
