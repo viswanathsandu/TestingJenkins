@@ -316,7 +316,13 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     protected void setToolbarForVirtualCurrency() {
-        toolbar.findViewById(R.id.redeem_layout).setVisibility(View.VISIBLE);
+        try {
+            if (LoginUserCache.getInstance().getLongResponse().isRewardRedeemEnabled()) {
+                toolbar.findViewById(R.id.redeem_layout).setVisibility(View.VISIBLE);
+            }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
         setToolbarTitle(getResources().getString(R.string.virtual_currency));
     }
 

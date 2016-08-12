@@ -95,6 +95,9 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
     @Override
     public void onResume() {
         super.onResume();
+        if(LoginUserCache.getInstance().getLongResponse().isRewardRedeemEnabled()) {
+            redeemBtn.setVisibility(View.VISIBLE);
+        }
         fetchUserProfileData();
         fetchVirtualCurrencyBalance();
     }

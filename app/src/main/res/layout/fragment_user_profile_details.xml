@@ -175,7 +175,8 @@
             android:layout_marginTop="5dp"
             android:background="@drawable/redeem_btn_selector"
             android:textStyle="bold"
-            android:text="REDEEM" />
+            android:text="REDEEM"
+            android:visibility="invisible"/>
     </LinearLayout>
 
 </LinearLayout>
