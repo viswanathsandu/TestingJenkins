@@ -70,7 +70,9 @@ public class EditProfileDialogFragment extends BaseDialogFragment {
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+            if(isValidData()) {
                 updateUserProfile();
+            }
             }
         });
 
@@ -84,6 +86,18 @@ public class EditProfileDialogFragment extends BaseDialogFragment {
 
     public void setUpdateProfileDetailsListener(IUpdateProfileDetailsListener listener){
         this.updateProfileDetailsListener = listener;
+    }
+
+    private boolean isValidData() {
+        try {
+            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(emailIdTxt.getText().toString()).matches()) {
+                showToast("Please enter valid email id");
+                return false;
+            }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+        return true;
     }
 
     private void updateUserProfile() {
