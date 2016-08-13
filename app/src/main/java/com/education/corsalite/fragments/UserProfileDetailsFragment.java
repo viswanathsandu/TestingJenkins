@@ -179,6 +179,10 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
     }
 
     private void showEditProfileFragment() {
+        if(!SystemUtils.isNetworkConnected(getActivity())) {
+            showToast("This feature is not available for offline. Please come online.");
+            return;
+        }
         EditProfileDialogFragment dialogFragment = new EditProfileDialogFragment();
         dialogFragment.setUpdateProfileDetailsListener(this);
         Bundle bundle = new Bundle();

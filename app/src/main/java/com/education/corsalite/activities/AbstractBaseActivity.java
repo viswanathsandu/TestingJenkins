@@ -292,6 +292,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     if (loginResponse.isSuccessful()) {
                         setCrashlyticsUserData();
                         isLoginApiRunningInBackground = false;
+                        ApiCacheHolder.getInstance().setLoginResponse(loginResponse);
                         dbManager.saveReqRes(ApiCacheHolder.getInstance().login);
                         appPref.save("loginId", username);
                         appPref.save("passwordHash", passwordHash);

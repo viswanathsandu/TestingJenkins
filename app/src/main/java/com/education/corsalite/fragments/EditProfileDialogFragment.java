@@ -14,6 +14,7 @@ import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.db.SugarDbManager;
 import com.education.corsalite.models.requestmodels.UserProfileModel;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.EditProfileModel;
@@ -122,12 +123,14 @@ public class EditProfileDialogFragment extends BaseDialogFragment {
         if(!TextUtils.isEmpty(model.password)) {
             password = model.password;
         }
+        showProgress();
         ApiManager.getInstance(getActivity()).updateUserProfile(userProfileJson, new ApiCallback<EditProfileModel>(getActivity()) {
             @Override
             public void failure(CorsaliteError error) {
                 super.failure(error);
                 L.error(error.message);
                 if(getActivity() != null) {
+                    closeProgress();
                     showToast("Failed to Update User Profile");
                     getDialog().dismiss();
                 }
@@ -138,14 +141,18 @@ public class EditProfileDialogFragment extends BaseDialogFragment {
                 super.success(editProfileResponse, response);
                 try {
                     if (getActivity() != null && editProfileResponse.isSuccessful()) {
+                        closeProgress();
                         showToast("Updated User Profile Successfully");
                         if (updateProfileDetailsListener != null)
                             updateProfileDetailsListener.onUpdateProfileDetails(model);
-                        if (!TextUtils.isEmpty(password)
-                                && ApiCacheHolder.getInstance().login != null
-                                && ApiCacheHolder.getInstance().login.request != null) {
-                            ApiCacheHolder.getInstance().login.request.passwordHash = password;
-                        }
+                            if (!TextUtils.isEmpty(password)
+                                    && ApiCacheHolder.getInstance().login != null
+                                    && ApiCacheHolder.getInstance().login.request != null) {
+                                SugarDbManager.get(getActivity()).delete(ApiCacheHolder.getInstance().login);
+                                appPref.save("passwordHash", password);
+                                ApiCacheHolder.getInstance().login.request.passwordHash = password;
+                                SugarDbManager.get(getActivity()).saveReqRes(ApiCacheHolder.getInstance().login);
+                            }
                         getDialog().dismiss();
                     }
                 } catch (Exception e) {
