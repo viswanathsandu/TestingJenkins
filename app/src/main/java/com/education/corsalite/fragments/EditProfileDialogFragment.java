@@ -173,8 +173,7 @@ public class EditProfileDialogFragment extends BaseDialogFragment {
         if(!TextUtils.isEmpty(usernameTxt.getText().toString())) {
             model.displayName = usernameTxt.getText().toString();
         }
-        if((!passwordTxt.getText().toString().isEmpty() && !confirmPasswordTxt.getText().toString().isEmpty())
-                && (passwordTxt.getText().toString().equalsIgnoreCase(confirmPasswordTxt.getText().toString()))) {
+        if(!passwordTxt.getText().toString().isEmpty()) {
             model.password = Encrypter.md5(passwordTxt.getText().toString());
         }
         // TODO : critical. Need to remvoe this after having discusison with sunil

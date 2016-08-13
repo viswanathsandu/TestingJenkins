@@ -2,6 +2,7 @@ package com.education.corsalite.fragments;
 
 import android.os.Bundle;
 import android.text.InputFilter;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -242,6 +243,14 @@ public class TestSetupFragment extends BaseFragment {
         try {
             int currencyCount =  Integer.parseInt(virCurrency);
             if (currencyCount > 0) {
+                String userCurrency = appPref.getVirtualCurrency();
+                if(!TextUtils.isEmpty(userCurrency)) {
+                    int userVc = Integer.valueOf(userCurrency);
+                    if(currencyCount > userVc) {
+                        showToast("Please enter lower value for virtual currency");
+                        return false;
+                    }
+                }
                 // check for vc of all participants
                 List<FriendsData.Friend> selectedFriends = ((ChallengeActivity)getActivity()).selectedFriends;
                 for (FriendsData.Friend friend : selectedFriends) {

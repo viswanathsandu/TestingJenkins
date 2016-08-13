@@ -797,8 +797,10 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 public void success(VirtualCurrencyBalanceResponse virtualCurrencyBalanceResponse, Response response) {
                     super.success(virtualCurrencyBalanceResponse, response);
                     progressBar.setVisibility(View.GONE);
-                    if (virtualCurrencyBalanceResponse != null && virtualCurrencyBalanceResponse.balance != null)
+                    if (virtualCurrencyBalanceResponse != null && virtualCurrencyBalanceResponse.balance != null) {
                         textView.setText(virtualCurrencyBalanceResponse.balance.intValue() + "");
+                        appPref.setVirtualCurrency(virtualCurrencyBalanceResponse.balance.intValue() + "");
+                    }
                 }
 
                 @Override
