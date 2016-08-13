@@ -95,13 +95,20 @@ public class EditProfileDialogFragment extends BaseDialogFragment {
 
     private boolean isValidData() {
         try {
+            String passwordString = passwordTxt.getText().toString();
+            String confirmPasswordString = confirmPasswordTxt.getText().toString();
             if (!android.util.Patterns.EMAIL_ADDRESS.matcher(emailIdTxt.getText().toString()).matches()) {
                 showToast("Please enter valid email id");
                 return false;
-            } else if((!passwordTxt.getText().toString().isEmpty() || !confirmPasswordTxt.getText().toString().isEmpty())
-                    && (!passwordTxt.getText().toString().equalsIgnoreCase(confirmPasswordTxt.getText().toString()))) {
-                showToast("Please enter same password and confirm password");
-                return false;
+            } else if((!passwordString.isEmpty() || !confirmPasswordString.isEmpty())) {
+                if(passwordString.length() < 8) {
+                    showToast("Password should have at least 8 charecters");
+                    return false;
+                }
+                if((!passwordString.equalsIgnoreCase(confirmPasswordString))) {
+                    showToast("Please enter same password and confirm password");
+                    return false;
+                }
             }
         } catch (Exception e) {
             L.error(e.getMessage(), e);
