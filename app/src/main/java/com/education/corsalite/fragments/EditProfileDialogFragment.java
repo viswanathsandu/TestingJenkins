@@ -102,11 +102,11 @@ public class EditProfileDialogFragment extends BaseDialogFragment {
                 return false;
             } else if((!passwordString.isEmpty() || !confirmPasswordString.isEmpty())) {
                 if(passwordString.length() < 8) {
-                    showToast("Password should have at least 8 charecters");
+                    showToast("Password should have at least 8 characters");
                     return false;
                 }
                 if((!passwordString.equalsIgnoreCase(confirmPasswordString))) {
-                    showToast("Please enter same password and confirm password");
+                    showToast("Password and Confirm Password do not match. Try again.");
                     return false;
                 }
             }
