@@ -242,10 +242,19 @@ public class TestSetupFragment extends BaseFragment {
         try {
             int currencyCount =  Integer.parseInt(virCurrency);
             if (currencyCount > 0) {
+                // check for vc of all participants
+                List<FriendsData.Friend> selectedFriends = ((ChallengeActivity)getActivity()).selectedFriends;
+                for (FriendsData.Friend friend : selectedFriends) {
+                    int friendVc = Integer.valueOf(friend.studentVC);
+                    if(currencyCount > friendVc) {
+                        showToast("Please enter lower value for virtual currency");
+                        return false;
+                    }
+                }
                 return true;
             }
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
         }
         return false;
     }
