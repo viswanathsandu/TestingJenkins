@@ -141,7 +141,9 @@ public class EditProfileDialogFragment extends BaseDialogFragment {
                         showToast("Updated User Profile Successfully");
                         if (updateProfileDetailsListener != null)
                             updateProfileDetailsListener.onUpdateProfileDetails(model);
-                        if (!TextUtils.isEmpty(password)) {
+                        if (!TextUtils.isEmpty(password)
+                                && ApiCacheHolder.getInstance().login != null
+                                && ApiCacheHolder.getInstance().login.request != null) {
                             ApiCacheHolder.getInstance().login.request.passwordHash = password;
                         }
                         getDialog().dismiss();

@@ -351,6 +351,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         if(showButtons) {
             toolbar.findViewById(R.id.challenge_buttons_layout).setVisibility(View.VISIBLE);
         }
+        showVirtualCurrency();
         toolbar.setBackgroundColor(getResources().getColor(R.color.red));
         setToolbarTitle(getResources().getString(R.string.challenge_your_friends));
     }
@@ -776,42 +777,48 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     protected void showVirtualCurrency() {
-        if(!getAppConfig(this).isVirtualCurrencyEnabled()) {
-            return;
-        }
-        final TextView textView = (TextView) toolbar.findViewById(R.id.tv_virtual_currency);
-        final ProgressBar progressBar = (ProgressBar) toolbar.findViewById(R.id.ProgressBar);
+        final boolean enableVirtualCurrency = getAppConfig(this).isVirtualCurrencyEnabled();
         try {
-            progressBar.setVisibility(View.VISIBLE);
-            toolbar.findViewById(R.id.currency_layout).setVisibility(View.VISIBLE);
-            toolbar.findViewById(R.id.currency_layout).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(AbstractBaseActivity.this, VirtualCurrencyActivity.class);
-                    startActivity(intent);
-                }
-            });
-
+            if(enableVirtualCurrency) {
+                toolbar.findViewById(R.id.ProgressBar).setVisibility(View.VISIBLE);
+                toolbar.findViewById(R.id.currency_layout).setVisibility(View.VISIBLE);
+                toolbar.findViewById(R.id.currency_layout).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(AbstractBaseActivity.this, VirtualCurrencyActivity.class);
+                        startActivity(intent);
+                    }
+                });
+            }
             ApiManager.getInstance(this).getVirtualCurrencyBalance(LoginUserCache.getInstance().getStudentId(), new ApiCallback<VirtualCurrencyBalanceResponse>(this) {
                 @Override
                 public void success(VirtualCurrencyBalanceResponse virtualCurrencyBalanceResponse, Response response) {
                     super.success(virtualCurrencyBalanceResponse, response);
-                    progressBar.setVisibility(View.GONE);
+                    if(enableVirtualCurrency) {
+                        toolbar.findViewById(R.id.ProgressBar).setVisibility(View.GONE);
+                    }
                     if (virtualCurrencyBalanceResponse != null && virtualCurrencyBalanceResponse.balance != null) {
-                        textView.setText(virtualCurrencyBalanceResponse.balance.intValue() + "");
                         appPref.setVirtualCurrency(virtualCurrencyBalanceResponse.balance.intValue() + "");
+                        if(enableVirtualCurrency) {
+                            TextView textView = (TextView) toolbar.findViewById(R.id.tv_virtual_currency);
+                            textView.setText(virtualCurrencyBalanceResponse.balance.intValue() + "");
+                        }
                     }
                 }
 
                 @Override
                 public void failure(CorsaliteError error) {
                     super.failure(error);
-                    progressBar.setVisibility(View.GONE);
+                    if(enableVirtualCurrency) {
+                        toolbar.findViewById(R.id.ProgressBar).setVisibility(View.GONE);
+                    }
                 }
             });
         } catch (Exception e) {
             L.error(e.getMessage(), e);
-            progressBar.setVisibility(View.GONE);
+            if(enableVirtualCurrency) {
+                toolbar.findViewById(R.id.ProgressBar).setVisibility(View.GONE);
+            }
         }
     }
 
