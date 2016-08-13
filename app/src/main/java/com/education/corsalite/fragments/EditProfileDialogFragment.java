@@ -12,12 +12,14 @@ import android.widget.EditText;
 import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
+import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.requestmodels.UserProfileModel;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.EditProfileModel;
 import com.education.corsalite.models.responsemodels.UserProfileResponse;
 import com.education.corsalite.gson.Gson;
+import com.education.corsalite.security.Encrypter;
 import com.education.corsalite.utils.L;
 
 
@@ -36,12 +38,15 @@ public class EditProfileDialogFragment extends BaseDialogFragment {
     IUpdateProfileDetailsListener updateProfileDetailsListener;
     private boolean enableEditEmail;
     private UserProfileResponse user;
+    @Bind(R.id.password_txt) EditText passwordTxt;
+    @Bind(R.id.confirm_password_txt) EditText confirmPasswordTxt;
     @Bind(R.id.username_txt) EditText usernameTxt;
     @Bind(R.id.firstname_txt) EditText firstNameTxt;
     @Bind(R.id.lastname_txt) EditText lastNameTxt;
     @Bind(R.id.emailid_txt) EditText emailIdTxt;
     @Bind(R.id.btn_submit) Button submitBtn;
     @Bind(R.id.btn_cancel) Button cancelBtn;
+    private String password;
 
     @Nullable
     @Override
@@ -93,6 +98,10 @@ public class EditProfileDialogFragment extends BaseDialogFragment {
             if (!android.util.Patterns.EMAIL_ADDRESS.matcher(emailIdTxt.getText().toString()).matches()) {
                 showToast("Please enter valid email id");
                 return false;
+            } else if((!passwordTxt.getText().toString().isEmpty() || !confirmPasswordTxt.getText().toString().isEmpty())
+                    && (!passwordTxt.getText().toString().equalsIgnoreCase(confirmPasswordTxt.getText().toString()))) {
+                showToast("Please enter same password and confirm password");
+                return false;
             }
         } catch (Exception e) {
             L.error(e.getMessage(), e);
@@ -103,6 +112,9 @@ public class EditProfileDialogFragment extends BaseDialogFragment {
     private void updateUserProfile() {
         final UserProfileModel model = getUserData();
         String userProfileJson = Gson.get().toJson(model);
+        if(!TextUtils.isEmpty(model.password)) {
+            password = model.password;
+        }
         ApiManager.getInstance(getActivity()).updateUserProfile(userProfileJson, new ApiCallback<EditProfileModel>(getActivity()) {
             @Override
             public void failure(CorsaliteError error) {
@@ -117,11 +129,18 @@ public class EditProfileDialogFragment extends BaseDialogFragment {
             @Override
             public void success(EditProfileModel editProfileResponse, Response response) {
                 super.success(editProfileResponse, response);
-                if (getActivity() != null && editProfileResponse.isSuccessful()) {
-                    showToast("Updated User Profile Successfully");
-                    if(updateProfileDetailsListener != null)
-                        updateProfileDetailsListener.onUpdateProfileDetails(model);
-                    getDialog().dismiss();
+                try {
+                    if (getActivity() != null && editProfileResponse.isSuccessful()) {
+                        showToast("Updated User Profile Successfully");
+                        if (updateProfileDetailsListener != null)
+                            updateProfileDetailsListener.onUpdateProfileDetails(model);
+                        if (!TextUtils.isEmpty(password)) {
+                            ApiCacheHolder.getInstance().login.request.passwordHash = password;
+                        }
+                        getDialog().dismiss();
+                    }
+                } catch (Exception e) {
+                    L.error(e.getMessage(), e);
                 }
             }
         });
@@ -143,6 +162,13 @@ public class EditProfileDialogFragment extends BaseDialogFragment {
         }
         if(!TextUtils.isEmpty(emailIdTxt.getText().toString())) {
             model.emailId = emailIdTxt.getText().toString();
+        }
+        if(!TextUtils.isEmpty(usernameTxt.getText().toString())) {
+            model.displayName = usernameTxt.getText().toString();
+        }
+        if((!passwordTxt.getText().toString().isEmpty() && !confirmPasswordTxt.getText().toString().isEmpty())
+                && (passwordTxt.getText().toString().equalsIgnoreCase(confirmPasswordTxt.getText().toString()))) {
+            model.password = Encrypter.md5(passwordTxt.getText().toString());
         }
         // TODO : critical. Need to remvoe this after having discusison with sunil
         model.gender = "Male";
