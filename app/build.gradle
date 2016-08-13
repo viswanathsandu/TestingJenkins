@@ -47,15 +47,6 @@ android {
             buildConfigField 'String', 'PARENT_FOLDER', '".CorsaliteStaging"'
             project.ext.set("archivesBaseName", "corsalite_" + defaultConfig.versionName + "_" + defaultConfig.versionCode);
         }
-        stagingPreLollipop {
-            applicationId "com.corsalite.androidapp.stagingprelollipop"
-            minSdkVersion 19
-            buildConfigField 'String', 'BASE_URL', '"http://staging.corsalite.com/v1/"'
-            buildConfigField 'String', 'BASE_API_URL', '"http://staging.corsalite.com/v1/webservices/"'
-            buildConfigField 'String', 'SOCKET_URL', '"ws://staging.corsalite.com:9300"'
-            buildConfigField 'String', 'PARENT_FOLDER', '".CorsaliteStaging"'
-            project.ext.set("archivesBaseName", "corsalite_" + defaultConfig.versionName + "_" + defaultConfig.versionCode);
-        }
     }
 }
 
