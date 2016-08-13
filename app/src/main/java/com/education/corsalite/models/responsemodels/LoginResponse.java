@@ -25,6 +25,6 @@ public class LoginResponse extends BaseResponseModel {
     public LoginResponse() {}
 
     public boolean isRewardRedeemEnabled() {
-        return !TextUtils.isEmpty(disableRewardRedeem) && disableRewardRedeem.equalsIgnoreCase("Y");
+        return !TextUtils.isEmpty(disableRewardRedeem) && disableRewardRedeem.equalsIgnoreCase("N");
     }
 }
