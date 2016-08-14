@@ -8,11 +8,11 @@ android {
 
     defaultConfig {
         applicationId "com.education.corsalite"
-        minSdkVersion 15
+        minSdkVersion 17
         targetSdkVersion 20
         // Version naming specification xx xx x xx
-        versionCode 101100
-        versionName "1.1.1"
+        versionCode 101209
+        versionName "1.1.2.9"
         multiDexEnabled false
     }
     buildTypes {
@@ -47,13 +47,12 @@ android {
             buildConfigField 'String', 'PARENT_FOLDER', '".CorsaliteStaging"'
             project.ext.set("archivesBaseName", "corsalite_" + defaultConfig.versionName + "_" + defaultConfig.versionCode);
         }
-        stagingPreLollipop {
-            applicationId "com.corsalite.androidapp.stagingprelollipop"
-            minSdkVersion 19
-            buildConfigField 'String', 'BASE_URL', '"http://staging.corsalite.com/v1/"'
-            buildConfigField 'String', 'BASE_API_URL', '"http://staging.corsalite.com/v1/webservices/"'
+        stage {
+            applicationId "com.corsalite.androidapp.stage"
+            buildConfigField 'String', 'BASE_URL', '"http://staging.corsalite.com/stage/"'
+            buildConfigField 'String', 'BASE_API_URL', '"http://staging.corsalite.com/stage/webservices/"'
             buildConfigField 'String', 'SOCKET_URL', '"ws://staging.corsalite.com:9300"'
-            buildConfigField 'String', 'PARENT_FOLDER', '".CorsaliteStaging"'
+            buildConfigField 'String', 'PARENT_FOLDER', '".CorsaliteStage"'
             project.ext.set("archivesBaseName", "corsalite_" + defaultConfig.versionName + "_" + defaultConfig.versionCode);
         }
     }

@@ -77,6 +77,7 @@ public class SplashActivity extends AbstractBaseActivity {
                 if (loginResponse.isSuccessful()) {
                     setCrashlyticsUserData();
                     onLoginsuccess(loginResponse, fetchLocal);
+                    ApiCacheHolder.getInstance().setLoginResponse(loginResponse);
                     dbManager.saveReqRes(ApiCacheHolder.getInstance().login);
                     appPref.save("loginId", username);
                     appPref.save("passwordHash", password);

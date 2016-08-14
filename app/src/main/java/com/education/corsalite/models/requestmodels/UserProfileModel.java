@@ -28,4 +28,6 @@ public class UserProfileModel {
     public String dob;
     @SerializedName("Mobile")
     public String mobile;
+    @SerializedName("Password")
+    public String password;
 }

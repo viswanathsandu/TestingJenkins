@@ -65,11 +65,13 @@ public class ChallengeUtils {
 
     public void showChallengeUpdateNotification(ChallengeTestUpdateEvent event) {
         try {
-            Bundle extras = new Bundle();
-            String title = extras.getString("title", "Challenge");
-            String subTitle = extras.getString("sub_title", event.challengerName + " has " + event.challengerStatus);
-            Toast.makeText(context, "Notification : " + title, Toast.LENGTH_SHORT).show();
-            NotificationsUtils.NotifyUser(context, Integer.valueOf(event.challengeTestParentId), title, subTitle, getChallengeUpdateIntent(event));
+            if(!TextUtils.isEmpty(event.challengerStatus)) {
+                Bundle extras = new Bundle();
+                String title = extras.getString("title", "Challenge");
+                String subTitle = extras.getString("sub_title", event.challengerName + " has " + event.challengerStatus);
+                Toast.makeText(context, "Notification : " + title, Toast.LENGTH_SHORT).show();
+                NotificationsUtils.NotifyUser(context, Integer.valueOf(event.challengeTestParentId), title, subTitle, getChallengeUpdateIntent(event));
+            }
         } catch (Exception e) {
             L.error(e.getMessage(), e);
         }

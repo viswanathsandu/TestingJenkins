@@ -296,6 +296,7 @@ public class SugarDbManager {
             if (reqResList != null && !reqResList.isEmpty()) {
                 for (ReqRes<P, T> reqresItem : reqResList) {
                     if (reqresItem.isRequestSame(reqres)) {
+                        reqresItem.request = reqres.request;
                         reqresItem.response = reqres.response;
                         save(reqresItem);
                         return;

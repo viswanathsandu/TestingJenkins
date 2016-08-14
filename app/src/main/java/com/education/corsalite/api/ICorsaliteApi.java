@@ -80,7 +80,7 @@ public interface ICorsaliteApi {
     void getCourses(@Query("idStudent") String studentId, ApiCallback<List<Course>> callback);
 
     @GET("/StudentProfile")
-    void getUserProfile(@Query("idStudent") String studentId, ApiCallback<UserProfileResponse> callback);
+    void getUserProfile(@Query("idStudent") String studentId, @Query("idEntity") String entityId, ApiCallback<UserProfileResponse> callback);
 
     @GET("/VirtualCurrencyBalance")
     void getVirtualCurrencyBalance(@Query("idStudent") String studentId, ApiCallback<VirtualCurrencyBalanceResponse> callback);
