@@ -47,6 +47,14 @@ android {
             buildConfigField 'String', 'PARENT_FOLDER', '".CorsaliteStaging"'
             project.ext.set("archivesBaseName", "corsalite_" + defaultConfig.versionName + "_" + defaultConfig.versionCode);
         }
+        stage {
+            applicationId "com.corsalite.androidapp.stage"
+            buildConfigField 'String', 'BASE_URL', '"http://staging.corsalite.com/stage/"'
+            buildConfigField 'String', 'BASE_API_URL', '"http://staging.corsalite.com/stage/webservices/"'
+            buildConfigField 'String', 'SOCKET_URL', '"ws://staging.corsalite.com:9300"'
+            buildConfigField 'String', 'PARENT_FOLDER', '".CorsaliteStage"'
+            project.ext.set("archivesBaseName", "corsalite_" + defaultConfig.versionName + "_" + defaultConfig.versionCode);
+        }
     }
 }
 
