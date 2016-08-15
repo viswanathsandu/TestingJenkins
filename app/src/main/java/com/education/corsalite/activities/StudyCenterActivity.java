@@ -569,7 +569,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
             PartTestDialog dialog = new PartTestDialog();
             Bundle bundle = new Bundle();
             bundle.putInt("idCourseSubject", studyCenter.idCourseSubject);
-            bundle.putString("SubjectName", studyCenter.SubjectName);
+            bundle.putString(Constants.SELECTED_SUBJECT_NAME, studyCenter.SubjectName);
             dialog.setArguments(bundle);
             dialog.show(getSupportFragmentManager(), "PartTestDialog");
         } else {

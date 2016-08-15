@@ -83,7 +83,7 @@ public class PartTestDialog extends BaseDialogFragment {
     private void getIntentData() {
         Bundle bundle = getArguments();
         idCourseSubject = bundle.getInt("idCourseSubject");
-        subjectName = bundle.getString("SubjectName");
+        subjectName = bundle.getString(Constants.SELECTED_SUBJECT_NAME);
     }
 
     private void loadExamSpinner(LinkedTreeMap<String, String> examIds) {
@@ -218,7 +218,7 @@ public class PartTestDialog extends BaseDialogFragment {
         intent.putExtra(Constants.TEST_TITLE, "Part Test - " + subjectName);
         intent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.getSelectedCourseId());
         intent.putExtra(Constants.SELECTED_SUBJECTID, idCourseSubject + "");
-        intent.putExtra(Constants.SELECTED_TOPIC_NAME, subjectName);
+        intent.putExtra(Constants.SELECTED_SUBJECT_NAME, subjectName);
         intent.putExtra(Constants.ADAPIVE_LEAERNING, mIsAdaptiveTest);
         if(selectedExam != null) {
             intent.putExtra(Constants.PARTTEST_EXAMMODEL, Gson.get().toJson(selectedExam));
