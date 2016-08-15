@@ -1034,7 +1034,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void navigateToExamResultActivity(int totalQuestions, int answered, int skipped, int correct, int wrong) {
-        AbstractBaseActivity.setSharedExamModels(localExamModelList);
+        ExamResultActivity.setSharedExamModels(localExamModelList);
 
         Intent intent = new Intent(this, ExamResultActivity.class);
         intent.putExtra("exam_name", examName);
