@@ -2058,7 +2058,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         postQuestionPaper.idCollegeBatch = "";
         postQuestionPaper.idEntity = entityId;
         postQuestionPaper.idExamTemplate = examTemplateId;
-        postQuestionPaper.idSubject = "";
+        postQuestionPaper.idSubject = subjectId != null ? subjectId : "";
         postQuestionPaper.idStudent = studentId;
 
         ApiManager.getInstance(this).postQuestionPaper(Gson.get().toJson(postQuestionPaper),
