@@ -2,6 +2,7 @@ package com.education.corsalite.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.education.corsalite.R;
 import com.education.corsalite.models.responsemodels.PartTestGridElement;
+import com.education.corsalite.views.InputFilterMinMax;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,6 +82,7 @@ public class PartTestGridAdapter extends AbstractRecycleViewAdapter {
             }
             tvChapter.setText(element.chapterName);
             etRecommended.setText(element.recommendedQuestionCount + "");
+            etRecommended.setFilters(new InputFilter[]{new InputFilterMinMax("0", element.questionCount+"")});
             etRecommended.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
