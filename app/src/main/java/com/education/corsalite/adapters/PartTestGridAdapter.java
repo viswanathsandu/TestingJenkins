@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.education.corsalite.R;
 import com.education.corsalite.models.responsemodels.PartTestGridElement;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -45,7 +46,16 @@ public class PartTestGridAdapter extends AbstractRecycleViewAdapter {
     }
 
     public List<PartTestGridElement> getListData() {
-        return data;
+        List<PartTestGridElement> elements = new ArrayList<>();
+        for(Object item : data) {
+            if(item instanceof PartTestGridElement) {
+                String count = ((PartTestGridElement)item).recommendedQuestionCount;
+                if(!TextUtils.isEmpty(count) && !count.equalsIgnoreCase("0")) {
+                    elements.add((PartTestGridElement) item);
+                }
+            }
+        }
+        return elements;
     }
 
     public class GridViewHolder extends RecyclerView.ViewHolder {
@@ -72,18 +82,17 @@ public class PartTestGridAdapter extends AbstractRecycleViewAdapter {
             etRecommended.setText(element.recommendedQuestionCount + "");
             etRecommended.addTextChangedListener(new TextWatcher() {
                 @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                }
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
                 @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                }
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
                 @Override
                 public void afterTextChanged(Editable editable) {
                     if (editable.length() > 0) {
                         ((PartTestGridElement) data.get(position)).recommendedQuestionCount = editable.toString();
+                    } else {
+                        ((PartTestGridElement) data.get(position)).recommendedQuestionCount = "0";
                     }
                 }
             });
