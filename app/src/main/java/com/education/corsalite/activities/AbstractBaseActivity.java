@@ -176,6 +176,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     public void logScreen(String screenName) {
         FireBaseHelper.logScreen(screenName);
         Localytics.tagScreen(screenName);
+        Localytics.tagEvent(screenName);
     }
 
     public void logEvent(String tag) {
