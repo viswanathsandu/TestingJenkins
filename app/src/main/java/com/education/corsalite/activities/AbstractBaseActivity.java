@@ -33,6 +33,7 @@ import com.crashlytics.android.Crashlytics;
 import com.education.corsalite.BuildConfig;
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.SpinnerAdapter;
+import com.education.corsalite.analytics.FireBaseHelper;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.ApiCacheHolder;
@@ -80,7 +81,6 @@ import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.SystemUtils;
 import com.education.corsalite.utils.TimeUtils;
 import com.education.corsalite.utils.WebUrls;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.localytics.android.Localytics;
 
 import java.text.SimpleDateFormat;
@@ -104,7 +104,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     private static List<ExamModel> sharedExamModels;
     private static AppConfig appConfig;
 
-    private FirebaseAnalytics mFirebaseAnalytics;
     private List<Course> courses;
     public Toolbar toolbar;
     private NavigationView navigationView;
@@ -163,7 +162,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.navigation_drawer_layout);
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        FireBaseHelper.initFireBase(this);
         frameLayout = (FrameLayout) findViewById(R.id.activity_layout_container);
         initNavigationDrawer();
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
@@ -171,11 +170,16 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 .setFontAttrId(R.attr.fontPath)
                 .build());
         initActivity();
-        Localytics.tagScreen(this.getClass().getSimpleName());
+        logScreen(this.getClass().getSimpleName());
+    }
+
+    public void logScreen(String screenName) {
+        FireBaseHelper.logScreen(screenName);
+        Localytics.tagScreen(screenName);
     }
 
     public void logEvent(String tag) {
-        mFirebaseAnalytics.logEvent(tag, null);
+        FireBaseHelper.logEvent(tag);
         Localytics.tagEvent(this.getClass().getSimpleName());
     }
 
@@ -209,7 +213,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         try {
             String emailId = appPref.getValue("loginId");
             Crashlytics.setUserEmail(emailId);
-            mFirebaseAnalytics.setUserId(emailId);
+            FireBaseHelper.setUsername(emailId);
             Localytics.setCustomerEmail(emailId);
         } catch (Exception e) {
             L.error(e.getMessage(), e);
@@ -219,7 +223,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     public void resetCrashlyticsUserData() {
         try {
             Crashlytics.setUserEmail("");
-            mFirebaseAnalytics.setUserId("");
+            FireBaseHelper.setUsername("");
             Localytics.setCustomerEmail("");
         } catch (Exception e) {
             L.error(e.getMessage(), e);
@@ -565,7 +569,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     return;
                 }
                 if (!(AbstractBaseActivity.this instanceof UserProfileActivity)) {
-                    logEvent("User Profile");
                     Intent intent = new Intent(AbstractBaseActivity.this, UserProfileActivity.class);
                     startActivity(intent);
                     drawerLayout.closeDrawers();
@@ -608,7 +611,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     showToast("Please Select different Course");
                     return;
                 }
-                logEvent("Study Center");
                 loadStudyCenterScreen();
             }
         });
@@ -621,7 +623,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     return;
                 }
                 if (SystemUtils.isNetworkConnected(AbstractBaseActivity.this)) {
-                    logEvent("Analytics");
                     startActivity(new Intent(AbstractBaseActivity.this, NewAnalyticsActivity.class));
                 } else {
                     showToast("Analytics requires network connection");
@@ -637,7 +638,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     showToast("Please Select different Course");
                     return;
                 }
-                logEvent("Curriculum");
                 startActivity(new Intent(AbstractBaseActivity.this, CurriculumActivity.class));
                 drawerLayout.closeDrawers();
             }
@@ -650,7 +650,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     showToast("Please Select different Course");
                     return;
                 }
-                logEvent("Offline");
                 startActivity(new Intent(AbstractBaseActivity.this, OfflineActivity.class));
                 drawerLayout.closeDrawers();
             }
@@ -664,7 +663,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     return;
                 }
                 if (SystemUtils.isNetworkConnected(AbstractBaseActivity.this)) {
-                    logEvent(getString(R.string.challenge_your_friends));
                     startActivity(new Intent(AbstractBaseActivity.this, ChallengeActivity.class));
                 } else {
                     showToast("Challenge Test requires network connection");
@@ -681,7 +679,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     return;
                 }
                 if (SystemUtils.isNetworkConnected(AbstractBaseActivity.this)) {
-                    logEvent(getString(R.string.exam_history));
                     startActivity(new Intent(AbstractBaseActivity.this, ExamHistoryActivity.class));
                 } else {
                     showToast("Exam history requires network connection");
@@ -696,7 +693,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     showToast("Please Select different Course");
                     return;
                 }
-                logEvent(getString(R.string.menu_scheduled_test));
                 showScheduledTestsDialog();
             }
         });
@@ -708,7 +704,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     showToast("Please Select different Course");
                     return;
                 }
-                logEvent(getString(R.string.menu_mock_test));
                 showMockTestsDialog();
             }
         });
@@ -721,7 +716,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     return;
                 }
                 if (SystemUtils.isNetworkConnected(AbstractBaseActivity.this)) {
-                    logEvent(getString(R.string.forum));
                     startActivity(new Intent(AbstractBaseActivity.this, ForumActivity.class));
                 } else {
                     showToast("Forum requires network connection");
@@ -732,7 +726,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_logout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                logEvent(getString(R.string.log_out));
                 showLogoutDialog();
             }
         });
