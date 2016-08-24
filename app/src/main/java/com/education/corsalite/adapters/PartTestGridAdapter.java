@@ -78,7 +78,10 @@ public class PartTestGridAdapter extends AbstractRecycleViewAdapter {
 
         public void bindData(final int position, PartTestGridElement element) {
             if (TextUtils.isEmpty(element.questionCount)) {
-                ((PartTestGridElement) data.get(position)).recommendedQuestionCount = "10";
+                element.questionCount = "0";
+                element.recommendedQuestionCount = "0";
+                ((PartTestGridElement) data.get(position)).questionCount = "0";
+                ((PartTestGridElement) data.get(position)).recommendedQuestionCount = "0";
             }
             tvChapter.setText(element.chapterName);
             etRecommended.setText(element.recommendedQuestionCount + "");
@@ -92,8 +95,8 @@ public class PartTestGridAdapter extends AbstractRecycleViewAdapter {
 
                 @Override
                 public void afterTextChanged(Editable editable) {
-                    if (editable.length() > 0) {
-                        ((PartTestGridElement) data.get(position)).recommendedQuestionCount = editable.toString();
+                    if (etRecommended.getText().toString().length() > 0) {
+                        ((PartTestGridElement) data.get(position)).recommendedQuestionCount = etRecommended.getText().toString();
                     } else {
                         ((PartTestGridElement) data.get(position)).recommendedQuestionCount = "0";
                     }

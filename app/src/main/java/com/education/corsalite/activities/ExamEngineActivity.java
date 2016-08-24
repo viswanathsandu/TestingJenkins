@@ -1745,7 +1745,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
     private void postAnswer(ExamModel model) {
         PostExerciseRequestModel postExerciseRequestModel = new PostExerciseRequestModel();
-        postExerciseRequestModel.updateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        postExerciseRequestModel.updateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(TimeUtils.getCurrentDate());
         postExerciseRequestModel.idStudent = LoginUserCache.getInstance().getStudentId();
         postExerciseRequestModel.idQuestion = model.idQuestion;
         postExerciseRequestModel.studentAnswerChoice = selectedAnswerPosition + "";
@@ -2178,7 +2178,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         }
         testanswerPaper.studentId = LoginUserCache.getInstance().getStudentId();
         testanswerPaper.testQuestionPaperId = testQuestionPaperId;
-        testanswerPaper.startTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        testanswerPaper.startTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(TimeUtils.getCurrentDate());
         if(examDurationInSeconds <= 0) {
             examDurationInSeconds = getExamDurationInSeconds(localExamModelList);
         }

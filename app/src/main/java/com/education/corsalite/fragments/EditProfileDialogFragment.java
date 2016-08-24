@@ -15,17 +15,16 @@ import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.db.SugarDbManager;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.models.requestmodels.UserProfileModel;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.EditProfileModel;
 import com.education.corsalite.models.responsemodels.UserProfileResponse;
-import com.education.corsalite.gson.Gson;
 import com.education.corsalite.security.Encrypter;
 import com.education.corsalite.utils.L;
-
+import com.education.corsalite.utils.TimeUtils;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -164,7 +163,7 @@ public class EditProfileDialogFragment extends BaseDialogFragment {
 
     private UserProfileModel getUserData() {
         UserProfileModel model = new UserProfileModel();
-        model.updateTime =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        model.updateTime =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(TimeUtils.getCurrentDate());
         model.userId = appPref.getUserId();
         model.studentId = LoginUserCache.getInstance().getStudentId();
         if(!TextUtils.isEmpty(usernameTxt.getText().toString())) {
