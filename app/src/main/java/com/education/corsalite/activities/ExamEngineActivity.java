@@ -735,17 +735,19 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     public void inflateUI(int position) {
-        if (previousQuestionPosition >= 0 && !title.equalsIgnoreCase("Exercises")) {
-            setAnswerState();
-        }
-        selectedPosition = position;
-        resetExplanation();
-        if (localExamModelList != null && localExamModelList.size() > position) {
-            loadQuestion(position);
+        if(position > 0) {
+            if (previousQuestionPosition >= 0 && !title.equalsIgnoreCase("Exercises")) {
+                setAnswerState();
+            }
+            selectedPosition = position;
+            resetExplanation();
+            if (localExamModelList != null && localExamModelList.size() > position) {
+                loadQuestion(position);
 
-            String sectionName = localExamModelList.get(position).sectionName;
-            if (!TextUtils.isEmpty(sectionName) && !sectionName.equals(selectedSection)) {
-                selectSection(localExamModelList.get(position).sectionName);
+                String sectionName = localExamModelList.get(position).sectionName;
+                if (!TextUtils.isEmpty(sectionName) && !sectionName.equals(selectedSection)) {
+                    selectSection(localExamModelList.get(position).sectionName);
+                }
             }
         }
     }
