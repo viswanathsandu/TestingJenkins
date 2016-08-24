@@ -222,12 +222,34 @@ public class SugarDbManager {
         List<OfflineContent> results = new ArrayList<>();
         try {
             if(!TextUtils.isEmpty(courseId)) {
-                return Select.from(OfflineContent.class).where(
-                        Condition.prop("BASE_USER_ID").eq(AppPref.get(context).getUserId()),
-                        Condition.prop("COURSE_ID").eq(courseId)).list();
+                Long id = 0l;
+                List<OfflineContent> data;
+                do {
+                     data = Select.from(OfflineContent.class).where(
+                            Condition.prop("BASE_USER_ID").eq(AppPref.get(context).getUserId()),
+                            Condition.prop("COURSE_ID").eq(courseId),
+                            Condition.prop("ID").gt(id)).orderBy("ID").limit("10").list();
+                    if(data != null && !data.isEmpty()) {
+                        results.addAll(data);
+                        id = data.get(data.size() - 1).getId();
+                    } else {
+                        id = null;
+                    }
+                } while(id != null);
             } else {
-                return Select.from(OfflineContent.class).where(
-                        Condition.prop("BASE_USER_ID").eq(AppPref.get(context).getUserId())).list();
+                Long id = 0l;
+                List<OfflineContent> data;
+                do {
+                    data = Select.from(OfflineContent.class).where(
+                            Condition.prop("BASE_USER_ID").eq(AppPref.get(context).getUserId()),
+                            Condition.prop("ID").gt(id)).orderBy("ID").limit("10").list();
+                    if(data != null && !data.isEmpty()) {
+                        results.addAll(data);
+                        id = data.get(data.size() - 1).getId();
+                    } else {
+                        id = null;
+                    }
+                } while(id != null);
             }
         } catch (Exception e) {
             L.error(e.getMessage(), e);
