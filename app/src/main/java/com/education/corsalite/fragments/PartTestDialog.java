@@ -171,6 +171,7 @@ public class PartTestDialog extends BaseDialogFragment {
         if (recommendedList != null && !recommendedList.isEmpty()) {
             adapter = new PartTestGridAdapter(recommendedList, getActivity().getLayoutInflater());
             recyclerView.setAdapter(adapter);
+            recyclerView.setItemViewCacheSize(recommendedList.size());
         }
     }
 
@@ -178,6 +179,7 @@ public class PartTestDialog extends BaseDialogFragment {
         if (allList != null && !allList.isEmpty()) {
             adapter = new PartTestGridAdapter(allList, getActivity().getLayoutInflater());
             recyclerView.setAdapter(adapter);
+            recyclerView.setItemViewCacheSize(allList.size());
         }
     }
 
