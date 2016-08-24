@@ -751,7 +751,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void navigateButtonEnabled() {
-        if (selectedPosition == 0) {
+        if (selectedPosition <= 0) {
             btnPrevious.setVisibility(View.GONE);
             btnNext.setVisibility(View.VISIBLE);
             return;
@@ -797,23 +797,10 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.btn_next:
-                    if (selectedPosition == localExamModelList.size() - 1 && !isFlaggedQuestionsScreen() && !isViewAnswersScreen() && !title.equalsIgnoreCase("Exercises")) {
-                        updateQuestionTimeTaken(selectedPosition);
-                        showSubmitTestAlert();
-                    }else{
-                        updateQuestionTimeTaken(selectedPosition);
-                        updateTestAnswerPaper(TestanswerPaperState.STARTED);
-                        previousQuestionPosition = selectedPosition;
-                        inflateUI(selectedPosition + 1);
-                    }
-                    hideKeyboard();
+                    onNextClick();
                     break;
                 case R.id.btn_previous:
-                    hideKeyboard();
-                    updateQuestionTimeTaken(selectedPosition);
-                    updateTestAnswerPaper(TestanswerPaperState.STARTED);
-                    previousQuestionPosition = selectedPosition;
-                    inflateUI(selectedPosition - 1);
+                    onPreviousClick();
                     break;
                 case R.id.btn_verify:
                     hideKeyboard();
@@ -846,6 +833,31 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         }
     };
 
+    private void onPreviousClick() {
+        hideKeyboard();
+        updateQuestionTimeTaken(selectedPosition);
+        updateTestAnswerPaper(TestanswerPaperState.STARTED);
+        previousQuestionPosition = selectedPosition;
+        if((selectedPosition - 1) <= 0) {
+            btnPrevious.setVisibility(View.GONE);
+        }
+        inflateUI(selectedPosition - 1);
+    }
+
+    private void onNextClick() {
+        if (selectedPosition == localExamModelList.size() - 1
+                && !isFlaggedQuestionsScreen() && !isViewAnswersScreen() && !title.equalsIgnoreCase("Exercises")) {
+            updateQuestionTimeTaken(selectedPosition);
+            showSubmitTestAlert();
+        }else{
+            updateQuestionTimeTaken(selectedPosition);
+            updateTestAnswerPaper(TestanswerPaperState.STARTED);
+            previousQuestionPosition = selectedPosition;
+            inflateUI(selectedPosition + 1);
+        }
+        hideKeyboard();
+    }
+
     private void updateTestAnswerPaper(final TestanswerPaperState state) {
         if(isExerciseTest() || isFlaggedQuestionsScreen() || isViewAnswersScreen()) {
             return;
@@ -856,7 +868,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 testanswerPaper.testAnswers.get(i).status = Constants.AnswerState.FLAGGED.getValue();
             }
         }
-        testanswerPaper.endTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(TimeUtils.getDate(TimeUtils.currentTimeInMillis()));
+        testanswerPaper.endTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(TimeUtils.getCurrentDate()));
         if(!SystemUtils.isNetworkConnected(this)) {
             SyncModel syncModel = new SyncModel();
             syncModel.setTestAnswerPaperEvent(testanswerPaper);
@@ -1363,13 +1375,17 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                             for (int x = 0; x < checkBoxes.length; x++) {
                                 if (checkBoxes[x].getId() == Integer.valueOf(answerChoiceModel.idAnswerKey)) {
                                     selectedAnswerPosition = x + 1;
-                                    if (TextUtils.isEmpty(localExamModelList.get(selectedPosition).selectedAnswers)) {
-                                        localExamModelList.get(selectedPosition).selectedAnswers = String.valueOf(x);
-                                        testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.ANSWERED.getValue();
-                                        testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = answerChoiceModel.idAnswerKey;
-                                    } else {
-                                        localExamModelList.get(selectedPosition).selectedAnswers += "," + x;
-                                        testanswerPaper.testAnswers.get(selectedPosition).answerKeyId += "," + answerChoiceModel.idAnswerKey;
+                                    try {
+                                        if (TextUtils.isEmpty(localExamModelList.get(selectedPosition).selectedAnswers)) {
+                                            localExamModelList.get(selectedPosition).selectedAnswers = String.valueOf(x);
+                                            testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.ANSWERED.getValue();
+                                            testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = answerChoiceModel.idAnswerKey;
+                                        } else {
+                                            localExamModelList.get(selectedPosition).selectedAnswers += "," + x;
+                                            testanswerPaper.testAnswers.get(selectedPosition).answerKeyId += "," + answerChoiceModel.idAnswerKey;
+                                        }
+                                    } catch (Exception e) {
+                                        L.error(e.getMessage(), e);
                                     }
                                 }
                             }
@@ -1377,13 +1393,17 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                             for (int x = 0; x < size; x++) {
                                 if (checkBoxes[x].isChecked()) {
                                     selectedAnswerPosition = x + 1;
-                                    if (TextUtils.isEmpty(localExamModelList.get(selectedPosition).selectedAnswers)) {
-                                        localExamModelList.get(selectedPosition).selectedAnswers = String.valueOf(x);
-                                        testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.ANSWERED.getValue();
-                                        testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = answerChoiceModel.idAnswerKey;
-                                    } else {
-                                        localExamModelList.get(selectedPosition).selectedAnswers += "," + x;
-                                        testanswerPaper.testAnswers.get(selectedPosition).answerKeyId += "," + answerChoiceModel.idAnswerKey;
+                                    try {
+                                        if (TextUtils.isEmpty(localExamModelList.get(selectedPosition).selectedAnswers)) {
+                                            localExamModelList.get(selectedPosition).selectedAnswers = String.valueOf(x);
+                                            testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.ANSWERED.getValue();
+                                            testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = answerChoiceModel.idAnswerKey;
+                                        } else {
+                                            localExamModelList.get(selectedPosition).selectedAnswers += "," + x;
+                                            testanswerPaper.testAnswers.get(selectedPosition).answerKeyId += "," + answerChoiceModel.idAnswerKey;
+                                        }
+                                    } catch (Exception e) {
+                                        L.error(e.getMessage(), e);
                                     }
                                     isCheckedAtLeastOnce = true;
                                     break;
@@ -2161,11 +2181,11 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 timer = new CounterClass(examDurationInSeconds * 1000, 1000);
                 timer.start();
             }
+            updateTestAnswerPaper(TestanswerPaperState.STARTED);
         } else {
             headerProgress.setVisibility(View.GONE);
             tvEmptyLayout.setVisibility(View.VISIBLE);
         }
-        updateTestAnswerPaper(TestanswerPaperState.STARTED);
     }
 
     private void initTestAnswerPaper(List<ExamModel> questions) {
