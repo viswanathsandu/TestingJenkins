@@ -868,7 +868,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 testanswerPaper.testAnswers.get(i).status = Constants.AnswerState.FLAGGED.getValue();
             }
         }
-        testanswerPaper.endTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(TimeUtils.getCurrentDate()));
+        testanswerPaper.endTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(TimeUtils.getCurrentDate());
         if(!SystemUtils.isNetworkConnected(this)) {
             SyncModel syncModel = new SyncModel();
             syncModel.setTestAnswerPaperEvent(testanswerPaper);
