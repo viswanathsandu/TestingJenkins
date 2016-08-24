@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 
 import com.education.corsalite.R;
 import com.education.corsalite.models.responsemodels.ExamDetail;
+import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.TimeUtils;
 
 import java.text.ParseException;
@@ -88,14 +89,12 @@ public class AddExamScheduleDialogFragment extends DialogFragment {
                     //Update days remaininig
                     Calendar calendar = Calendar.getInstance();
                     SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-                    Date chosenDate = new Date();
-                    Date todayDate = new Date();
-                    try
-                    {
+                    Date chosenDate = TimeUtils.getCurrentDate();
+                    Date todayDate = TimeUtils.getCurrentDate();
+                    try {
                         chosenDate = formatter.parse(dateString);
-                    } catch(ParseException e)
-                    {
-
+                    } catch(ParseException e) {
+                        L.error(e.getMessage(), e);
                     }
                     examDetail.examDate = dateString;
                     examDetail.daysRemaining  = ((int)((chosenDate.getTime()/MILLISECS_PER_DAY)

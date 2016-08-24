@@ -11,8 +11,8 @@ android {
         minSdkVersion 17
         targetSdkVersion 20
         // Version naming specification xx xx x xx
-        versionCode 101209
-        versionName "1.1.2.9"
+        versionCode 101401
+        versionName "1.1.4.1"
         multiDexEnabled false
     }
     buildTypes {

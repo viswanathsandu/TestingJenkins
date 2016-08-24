@@ -13,6 +13,7 @@ import java.util.List;
 public class UserProfileResponse extends BaseResponseModel{
     @SerializedName("BasicProfile")
     public BasicProfile basicProfile;
+    @Ignore
     @SerializedName("enableStudentEmailId")
     public String enableStudentEmailId;
     @Ignore

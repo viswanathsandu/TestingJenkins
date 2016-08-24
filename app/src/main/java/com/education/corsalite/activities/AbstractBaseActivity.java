@@ -1196,7 +1196,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     public void scheduleNotificationsForScheduledTests(ScheduledTestList scheduledTestList) {
         try {
             for (int i = 0; i < scheduledTestList.MockTest.size(); i++) {
-                Date scheduledTestTime = new Date(TimeUtils.getMillisFromDate(scheduledTestList.MockTest.get(i).startTime));
+                Date scheduledTestTime = TimeUtils.getDate(TimeUtils.getMillisFromDate(scheduledTestList.MockTest.get(i).startTime));
                 examDownloadNotification(scheduledTestList.MockTest.get(i).testQuestionPaperId,
                         scheduledTestList.MockTest.get(i).examName,
                         scheduledTestTime);

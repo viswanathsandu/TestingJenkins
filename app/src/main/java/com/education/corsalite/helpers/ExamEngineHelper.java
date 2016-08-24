@@ -94,7 +94,11 @@ public class ExamEngineHelper {
                                     TakeTest takeTest = ((TakeTest) ExamEngineHelper.this.test);
                                     takeTest.exams = exams;
                                     // Load params from respective method
-                                    postCustomExamTemplate(null, null, takeTest.questionsCount, exams, callback);
+                                    String chapterId = null;
+                                    if(test != null && test.chapter != null) {
+                                        chapterId = test.chapter.idCourseSubjectchapter;
+                                    }
+                                    postCustomExamTemplate(chapterId, null, takeTest.questionsCount, exams, callback);
                                     break;
                                 case PART_TEST:
                                     PartTest partTest = ((PartTest) test);
