@@ -735,7 +735,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     public void inflateUI(int position) {
-        if(position > 0) {
+        if(position >= 0) {
             if (previousQuestionPosition >= 0 && !title.equalsIgnoreCase("Exercises")) {
                 setAnswerState();
             }

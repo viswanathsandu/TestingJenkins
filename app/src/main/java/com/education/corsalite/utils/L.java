@@ -3,7 +3,6 @@ package com.education.corsalite.utils;
 import android.util.Log;
 
 import com.education.corsalite.BuildConfig;
-import com.education.corsalite.analytics.FireBaseHelper;
 
 /**
  * Created by vissu on 9/17/15.
@@ -40,14 +39,12 @@ public class L {
         if(isInfoEnabled()) {
             Log.i(tag, message);
         }
-        FireBaseHelper.log(INFO, TAG, message);
     }
 
     public static void info(String tag, String message, Throwable throwable) {
         if(isInfoEnabled()) {
             Log.i(tag, message, throwable);
         }
-        FireBaseHelper.log(INFO, TAG, message, throwable);
     }
 
     public static void debug(String message) {
@@ -62,14 +59,12 @@ public class L {
         if(isDebugEnabled()) {
             Log.d(tag, message);
         }
-        FireBaseHelper.log(DEBUG, TAG, message);
     }
 
     public static void debug(String tag, String message, Throwable throwable) {
         if (isDebugEnabled()) {
             Log.d(tag, message, throwable);
         }
-        FireBaseHelper.log(DEBUG, TAG, message, throwable);
     }
 
     public static void error(String message) {
@@ -84,13 +79,11 @@ public class L {
         if(isErrorEnabled()) {
             Log.e(tag, message);
         }
-        FireBaseHelper.log(ERROR, TAG, message);
     }
 
     public static void error(String tag, String message, Throwable throwable) {
         if(isErrorEnabled()) {
             Log.e(tag, message, throwable);
         }
-        FireBaseHelper.log(ERROR, TAG, message, throwable);
     }
 }
