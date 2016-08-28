@@ -2,6 +2,7 @@ package com.education.corsalite.models.db;
 
 import com.education.corsalite.enums.OfflineContentStatus;
 import com.education.corsalite.models.responsemodels.BaseModel;
+import com.orm.dsl.Ignore;
 
 /**
  * Created by Girish on 29/11/15.
@@ -9,14 +10,19 @@ import com.education.corsalite.models.responsemodels.BaseModel;
 public class OfflineContent extends BaseModel {
 
     public String courseId;
+    @Ignore
     public String courseName;
     public String subjectId;
+    @Ignore
     public String subjectName;
     public String chapterId;
+    @Ignore
     public String chapterName;
     public String topicId;
+    @Ignore
     public String topicName;
     public String contentId;
+    @Ignore
     public String contentName;
     public String fileName;
     public String timeStamp;

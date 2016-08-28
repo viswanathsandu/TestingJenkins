@@ -28,16 +28,20 @@ public class ExamModel extends BaseModel implements Serializable, Comparable {
     @SerializedName("ExerciseNumber")
     public String exerciseNumber;
     public String idQuestionParagraph;
+    @Ignore
     @SerializedName("ParagraphHtml")
     public String paragraphHtml;
     public String idQuestion;
+    @Ignore
     @SerializedName("QuestionHtml")
     public String questionHtml;
+    @Ignore
     @SerializedName("HintHtml")
     public String hintHtml;
     public String idQuestionType;
     @SerializedName("QuestionType")
     public String questionType;
+    @Ignore
     @SerializedName("Comment")
     public String comment;
     @SerializedName("Complexity")

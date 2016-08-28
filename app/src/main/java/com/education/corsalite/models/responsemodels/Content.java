@@ -1,6 +1,7 @@
 package com.education.corsalite.models.responsemodels;
 
 import com.google.gson.annotations.SerializedName;
+import com.orm.dsl.Ignore;
 
 import java.io.Serializable;
 
@@ -17,6 +18,7 @@ public class Content extends BaseModel implements Serializable {
     public String name;
     @SerializedName("Url")
     public String url;
+    @Ignore
     @SerializedName("ContentHtml")
     public String contentHtml;
     @SerializedName("Status")
