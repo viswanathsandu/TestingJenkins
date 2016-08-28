@@ -6,10 +6,7 @@ import android.database.sqlite.SQLiteException;
 
 import com.education.corsalite.BuildConfig;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.File;
 
 /**
  * Created by vissu on 8/29/16.
@@ -17,38 +14,36 @@ import java.io.OutputStream;
 
 public class DbUtils {
 
-    protected void copyDataBase(Context context) throws IOException {
+    private static DbUtils instance;
+    private Context context;
 
-        //Open your local db as the input stream
-        InputStream myInput = context.getApplicationContext().getAssets().open("file.db");
-
-        // Path to the just created empty db
-        String outFileName = "/data/data/"+ BuildConfig.APPLICATION_ID+"/databases/corsalite.db";
-
-        //Open the empty db as the output stream
-        OutputStream myOutput = new FileOutputStream(outFileName);
-
-        //transfer bytes from the inputfile to the outputfile
-        byte[] buffer = new byte[1024];
-        int length;
-        while ((length = myInput.read(buffer)) > 0) {
-            myOutput.write(buffer, 0, length);
+    public static DbUtils get(Context context) {
+        if(instance == null) {
+            instance = new DbUtils();
         }
-
-        //Close the streams
-        myOutput.flush();
-        myOutput.close();
-        myInput.close();
-
+        instance.context = context;
+        return  instance;
     }
 
-    protected boolean checkDataBase() {
+    public void backupDatabase() {
+        String sourceFileName = "/data/data/"+ BuildConfig.APPLICATION_ID+"/databases/corsalite.db";
+        String destinationFileName = FileUtils.get(context).getAppRootFolder() + File.separator + "corsalite.db";
+        FileUtils.get(context).copyFile(sourceFileName, destinationFileName);
+    }
+
+    public void loadDatabaseFromBackup() {
+        String sourceFileName = FileUtils.get(context).getAppRootFolder() + File.separator + "corsalite.db";
+        String destinationFileName = "/data/data/"+ BuildConfig.APPLICATION_ID+"/databases/corsalite.db";
+        FileUtils.get(context).copyFile(sourceFileName, destinationFileName);
+    }
+
+    public boolean isDatabaseExist() {
         SQLiteDatabase checkDB = null;
         try {
-            String myPath = "/data/data/com.yourpackage/databases/" + "file.db";
+            String myPath = "/data/data/"+BuildConfig.APPLICATION_ID+"/databases/corsalite.db";
             checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
         } catch (SQLiteException e) {
-            //database does't exist yet.
+            L.error(e.getMessage(), e);
         }
         if (checkDB != null) {
             checkDB.close();

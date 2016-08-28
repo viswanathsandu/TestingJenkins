@@ -10,10 +10,13 @@ import android.widget.Toast;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Writer;
 
 /**
@@ -273,6 +276,25 @@ public class FileUtils {
     }
 
     public void copyFile(String sourceFile, String destinationFile) {
-
+        InputStream is = null;
+        OutputStream os = null;
+        try {
+            is = new FileInputStream(new File(sourceFile));
+            os = new FileOutputStream(new File(destinationFile));
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = is.read(buffer)) > 0) {
+                os.write(buffer, 0, length);
+            }
+        } catch (Exception e) {
+          L.error(e.getMessage(), e);
+        } finally {
+            try {
+                is.close();
+                os.close();
+            } catch (Exception e) {
+                L.error(e.getMessage(), e);
+            }
+        }
     }
 }

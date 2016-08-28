@@ -16,6 +16,7 @@ import com.education.corsalite.models.db.reqres.requests.AbstractBaseRequest;
 import com.education.corsalite.models.responsemodels.BaseModel;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.utils.AppPref;
+import com.education.corsalite.utils.DbUtils;
 import com.education.corsalite.utils.Gzip;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.MockUtils;
@@ -370,6 +371,7 @@ public class SugarDbManager {
             if(model != null && !TextUtils.isEmpty(model.testQuestionPaperId)
                     && TextUtils.isDigitsOnly(model.testQuestionPaperId)) {
                 save(model);
+                DbUtils.get(context).backupDatabase();
             }
         } catch (Exception e) {
             L.error(e.getMessage(), e);
