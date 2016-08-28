@@ -22,6 +22,7 @@ import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.ExamDetails;
 import com.education.corsalite.models.responsemodels.QuestionPaperIndex;
 import com.education.corsalite.models.responsemodels.TestPaperIndex;
+import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.ExamUtils;
 import com.education.corsalite.utils.L;
@@ -171,7 +172,8 @@ public class TestInstructionsActivity extends AbstractBaseActivity {
                 }
             }
             if(exam != null && exam.examInstucation != null) {
-                instuctions.loadData(testPaperIndex.examDetails.get(0).examInstucation, "text/html; charset=UTF-8", null);
+                String baseUrl = ApiClientService.getBaseUrl().replace("/v1", "");
+                instuctions.loadDataWithBaseURL(baseUrl, testPaperIndex.examDetails.get(0).examInstucation, "text/html", "UTF-8", null);
             } else {
                 navigateToExamEngine();
             }

@@ -735,7 +735,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     public void inflateUI(int position) {
-        if(position > 0) {
+        if(position >= 0) {
             if (previousQuestionPosition >= 0 && !title.equalsIgnoreCase("Exercises")) {
                 setAnswerState();
             }
@@ -799,10 +799,18 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.btn_next:
+                    btnPrevious.setClickable(false);
+                    btnNext.setClickable(false);
                     onNextClick();
+                    btnPrevious.setClickable(true);
+                    btnNext.setClickable(true);
                     break;
                 case R.id.btn_previous:
+                    btnPrevious.setClickable(false);
+                    btnNext.setClickable(false);
                     onPreviousClick();
+                    btnPrevious.setClickable(true);
+                    btnNext.setClickable(true);
                     break;
                 case R.id.btn_verify:
                     hideKeyboard();
@@ -1142,12 +1150,12 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             } else {
                 webviewParagraph.setVisibility(View.VISIBLE);
                 webQuestion = localExamModelList.get(position).paragraphHtml;
-                webviewParagraph.loadData(webQuestion, "text/html; charset=UTF-8", null);
+                webviewParagraph.loadDataWithBaseURL(null, webQuestion, "text/html", "UTF-8", null);
             }
             webviewQuestion.setVisibility(View.GONE);
             if (localExamModelList.get(position).questionHtml != null) {
                 webQuestion = localExamModelList.get(position).questionHtml;
-                webviewQuestion.loadData(webQuestion, "text/html; charset=UTF-8", null);
+                webviewQuestion.loadDataWithBaseURL(null, webQuestion, "text/html", "UTF-8", null);
                 webviewQuestion.setVisibility(View.VISIBLE);
             }
             if (localExamModelList.get(position).comment != null) {
@@ -1245,7 +1253,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             webview.getSettings().setJavaScriptEnabled(true);
             webview.setWebChromeClient(new WebChromeClient());
             webview.setWebViewClient(new MyWebViewClient(this));
-            webview.loadData(answerChoiceModel.answerChoiceTextHtml, "text/html; charset=UTF-8", null);
+            webview.loadDataWithBaseURL(null, answerChoiceModel.answerChoiceTextHtml, "text/html", "UTF-8", null);
             webview.setOnTouchListener(new View.OnTouchListener() {
                 private static final int MAX_CLICK_DURATION = 200;
                 private long startClickTime;
@@ -1362,7 +1370,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 answerChoiceModel.answerChoiceTextHtml = answerChoiceModel.answerChoiceTextHtml.replace("./", ApiClientService.getBaseUrl());
                 optionWebView.loadUrl(answerChoiceModel.answerChoiceTextHtml);
             } else {
-                optionWebView.loadData(answerChoiceModel.answerChoiceTextHtml, "text/html; charset=UTF-8", null);
+                optionWebView.loadDataWithBaseURL(null, answerChoiceModel.answerChoiceTextHtml, "text/html", "UTF-8", null);
             }
             answerLayout.addView(container);
 
@@ -1716,7 +1724,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             }
         }
         txtAnswerCount.setText(correctAnswer);
-        txtAnswerExp.loadData(webText, "text/html; charset=UTF-8", null);
+        txtAnswerExp.loadDataWithBaseURL(null, webText, "text/html", "UTF-8", null);
 
         if (gridAdapter != null) {
             gridAdapter.notifyDataSetChanged();
@@ -1730,7 +1738,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         } else {
             flaggedLayout.setVisibility(View.GONE);
         }
-        webViewFlaggedAnswer.loadData(correctAnswers, "text/html; charset=UTF-8", null);
+        webViewFlaggedAnswer.loadDataWithBaseURL(null, correctAnswers, "text/html", "UTF-8", null);
         webViewFlaggedAnswer.setBackgroundColor(0);
     }
 

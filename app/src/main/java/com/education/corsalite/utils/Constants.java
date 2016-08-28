@@ -49,8 +49,8 @@ public class Constants {
     public static final int EXAM_DOWNLOADED_REQUEST_ID = 500;
     public static final int EXAM_ADVANCED_NOTIFICATION_REQUEST_ID = 501;
     public static final int EXAM_STARTED_REQUEST_ID = 502;
-
-
+    public static final String WEBVIEW_DATA_FORMAT = "text/html; charset=UTF-8";
+//    public static final String WEBVIEW_DATA_FORMAT = "text/html; charset=ISO-8859-1";
 
     public enum AnswerState {
         UNATTEMPTED("Unattended"),

@@ -2,7 +2,6 @@ package com.education.corsalite.analytics;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
@@ -47,9 +46,9 @@ public class FireBaseHelper {
         bundle.putString(Param.LOG_TYPE, logType);
         bundle.putString(Param.LOG_NAME, tag);
         bundle.putString(Param.LOG_MESSAGE, message);
-        if(throwable != null) {
-            bundle.putString(Param.LOG_STACK_TRACE, Log.getStackTraceString(throwable));
-        }
+//        if(throwable != null) {
+//            bundle.putString(Param.LOG_STACK_TRACE, Log.getStackTraceString(throwable));
+//        }
         firebase.logEvent(Event.LOGGER, bundle);
     }
 
