@@ -65,8 +65,6 @@ public class FileUtils {
         return parent.getAbsolutePath();
     }
 
-
-
     public String getVideoDownloadPath(String videoId) {
         String fileName = "v." + Constants.VIDEO_FILE;
         String folderPath = getParentFolder() + File.separator + Constants.VIDEO_FOLDER + File.separator + videoId;
@@ -272,5 +270,9 @@ public class FileUtils {
         } catch (Exception ignore) {
         }
         return videoUrl.toString();
+    }
+
+    public void copyFile(String sourceFile, String destinationFile) {
+
     }
 }
