@@ -119,6 +119,33 @@ public class SugarDbManager {
         return results;
     }
 
+    public <T extends BaseModel> T getProcessedRecord(T data, Class<T> type) {
+        try {
+            if (data.reflectionJsonString != null) {
+                T object = Gson.get().fromJson(Gzip.decompress(data.reflectionJsonString), type);
+                data.reflectionJsonString = null;
+                object.setId(data.getId());
+                return object;
+            }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+        return data;
+    }
+
+    public <T extends BaseModel> List<T> getProcessedRecords(List<T> data, Class<T> type) {
+        try {
+            List<T> results = new ArrayList<>();
+            while(data!=null && data.size() > 0) {
+                results.add(getProcessedRecord(data.remove(0), type));
+            }
+            return results;
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+            return data;
+        }
+    }
+
     public <T extends BaseModel> T fetchRecord(Class<T> type, Long id) {
         try {
             if (type != null) {
@@ -231,8 +258,8 @@ public class SugarDbManager {
                             Condition.prop("COURSE_ID").eq(courseId),
                             Condition.prop("ID").gt(id)).orderBy("ID").limit("10").list();
                     if(data != null && !data.isEmpty()) {
-                        results.addAll(data);
                         id = data.get(data.size() - 1).getId();
+                        results.addAll(getProcessedRecords(data, OfflineContent.class));
                     } else {
                         id = null;
                     }
@@ -245,8 +272,8 @@ public class SugarDbManager {
                             Condition.prop("BASE_USER_ID").eq(AppPref.get(context).getUserId()),
                             Condition.prop("ID").gt(id)).orderBy("ID").limit("10").list();
                     if(data != null && !data.isEmpty()) {
-                        results.addAll(data);
                         id = data.get(data.size() - 1).getId();
+                        results.addAll(getProcessedRecords(data, OfflineContent.class));
                     } else {
                         id = null;
                     }
@@ -260,9 +287,10 @@ public class SugarDbManager {
 
     public OfflineContent getOfflineContentWithContent(String contentId) {
         try {
-            return Select.from(OfflineContent.class).where(
+            OfflineContent data = Select.from(OfflineContent.class).where(
                     Condition.prop("BASE_USER_ID").eq(AppPref.get(context).getUserId()),
                     Condition.prop("CONTENT_ID").eq(contentId)).first();
+            return getProcessedRecord(data, OfflineContent.class);
         } catch (Exception e) {
             L.error(e.getMessage(), e);
         }
@@ -271,9 +299,10 @@ public class SugarDbManager {
 
     public OfflineContent getOfflineContentWithTopic(String topicId) {
         try {
-            return Select.from(OfflineContent.class).where(
+            OfflineContent data = Select.from(OfflineContent.class).where(
                     Condition.prop("BASE_USER_ID").eq(AppPref.get(context).getUserId()),
                     Condition.prop("TOPIC_ID").eq(topicId)).first();
+            return getProcessedRecord(data, OfflineContent.class);
         } catch (Exception e) {
             L.error(e.getMessage(), e);
         }
@@ -282,9 +311,10 @@ public class SugarDbManager {
 
     public List<OfflineContent> getOfflineContentWithChapter(String chapterId) {
         try {
-            return Select.from(OfflineContent.class).where(
+            List<OfflineContent> data = Select.from(OfflineContent.class).where(
                     Condition.prop("BASE_USER_ID").eq(AppPref.get(context).getUserId()),
                     Condition.prop("CHAPTER_ID").eq(chapterId)).list();
+            return getProcessedRecords(data, OfflineContent.class);
         } catch (Exception e) {
             L.error(e.getMessage(), e);
         }
@@ -293,9 +323,10 @@ public class SugarDbManager {
 
     public List<OfflineContent> getOfflineContentWithSubject(String subjectId) {
         try {
-            return Select.from(OfflineContent.class).where(
+            List<OfflineContent> data = Select.from(OfflineContent.class).where(
                     Condition.prop("BASE_USER_ID").eq(AppPref.get(context).getUserId()),
                     Condition.prop("SUBJECT_ID").eq(subjectId)).list();
+            return getProcessedRecords(data, OfflineContent.class);
         } catch (Exception e) {
             L.error(e.getMessage(), e);
         }

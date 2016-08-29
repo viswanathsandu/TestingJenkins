@@ -24,6 +24,7 @@ public class OfflineContent extends BaseModel {
     public String contentId;
     @Ignore
     public String contentName;
+    @Ignore
     public String fileName;
     public String timeStamp;
     public String earnedMarks;
