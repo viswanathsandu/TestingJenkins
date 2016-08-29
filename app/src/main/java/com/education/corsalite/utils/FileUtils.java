@@ -221,10 +221,12 @@ public class FileUtils {
         File fileorDir = new File(selectedPath);
         if (fileorDir.isDirectory()) {
             deleteChildren(fileorDir);
+            L.info("Deleted path "+fileorDir);
         } else if (fileorDir.isFile()) {
             File parentFile = fileorDir.getParentFile();
             fileorDir.delete();
             deleteParent(parentFile);
+            L.info("Deleted path "+fileorDir);
         }
     }
 
@@ -237,10 +239,12 @@ public class FileUtils {
         }
         if (fileorDir.isDirectory()) {
             deleteChildren(fileorDir);
+            L.info("Deleted path "+fileorDir);
         } else if (fileorDir.isFile()) {
             File parentFile = fileorDir.getParentFile();
             fileorDir.delete();
             deleteParent(parentFile);
+            L.info("Deleted path "+fileorDir);
         }
     }
 
