@@ -275,10 +275,25 @@ public class FileUtils {
         return videoUrl.toString();
     }
 
+    public void copyFile(String sourceFile, String destinationDir, String fileName) {
+        try {
+            File dir = new File(destinationDir);
+            dir.mkdirs();
+            File destination = new File(destinationDir, fileName);
+            if (!destination.exists()) {
+                destination.createNewFile();
+            }
+            copyFile(sourceFile, destination.getAbsolutePath());
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+    }
+
     public void copyFile(String sourceFile, String destinationFile) {
         InputStream is = null;
         OutputStream os = null;
         try {
+
             is = new FileInputStream(new File(sourceFile));
             os = new FileOutputStream(new File(destinationFile));
             byte[] buffer = new byte[1024];

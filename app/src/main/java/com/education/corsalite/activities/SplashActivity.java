@@ -13,7 +13,6 @@ import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.utils.AppUpdateUtils;
-import com.education.corsalite.utils.DbUtils;
 import com.education.corsalite.utils.SystemUtils;
 
 import retrofit.client.Response;
@@ -43,13 +42,6 @@ public class SplashActivity extends AbstractBaseActivity {
             public void onTick(long millisUntilFinished) {}
         }.start();
         checkAutoLogin();
-    }
-
-    private void checkDatabase() {
-        DbUtils dbUtils = DbUtils.get(this);
-        if(!dbUtils.isDatabaseExist()) {
-            dbUtils.loadDatabaseFromBackup();
-        }
     }
 
     private void checkAutoLogin() {

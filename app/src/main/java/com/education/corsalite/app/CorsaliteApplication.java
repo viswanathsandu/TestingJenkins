@@ -1,5 +1,6 @@
 package com.education.corsalite.app;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.support.multidex.MultiDex;
@@ -7,9 +8,11 @@ import android.support.multidex.MultiDex;
 import com.crashlytics.android.Crashlytics;
 import com.education.corsalite.R;
 import com.education.corsalite.activities.CrashHandlerActivity;
+import com.education.corsalite.utils.DbUtils;
 import com.education.corsalite.utils.L;
 import com.google.firebase.crash.FirebaseCrash;
 import com.localytics.android.LocalyticsActivityLifecycleCallbacks;
+import com.orm.SugarContext;
 
 import io.fabric.sdk.android.Fabric;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
@@ -17,7 +20,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 /**
  * Created by vissu on 9/18/15.
  */
-public class CorsaliteApplication extends com.orm.SugarApp {
+public class CorsaliteApplication extends Application {
 
     public CorsaliteApplication() {
         super();
@@ -26,10 +29,23 @@ public class CorsaliteApplication extends com.orm.SugarApp {
     @Override
     public void onCreate() {
         super.onCreate();
+        initSugarDb();
         Fabric.with(this, new Crashlytics());
         registerActivityLifecycleCallbacks(
                 new LocalyticsActivityLifecycleCallbacks(this));
         registerForCrashes();
+    }
+
+    private void initSugarDb() {
+        DbUtils.get(getApplicationContext()).loadDatabaseFromBackup();
+        SugarContext.init(getApplicationContext());
+    }
+
+    @Override
+    public void onTerminate() {
+        DbUtils.get(getApplicationContext()).backupDatabase();
+        super.onTerminate();
+        SugarContext.terminate();
     }
 
     private void registerForCrashes() {

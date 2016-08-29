@@ -26,15 +26,29 @@ public class DbUtils {
     }
 
     public void backupDatabase() {
-        String sourceFileName = "/data/data/"+ BuildConfig.APPLICATION_ID+"/databases/corsalite.db";
-        String destinationFileName = FileUtils.get(context).getAppRootFolder() + File.separator + "corsalite.db";
-        FileUtils.get(context).copyFile(sourceFileName, destinationFileName);
+        try {
+            String fileName = "corsalite.db";
+            String sourceFileName = "/data/data/" + BuildConfig.APPLICATION_ID + "/databases/corsalite.db";
+            String destinationDirectory = FileUtils.get(context).getAppRootFolder();
+            FileUtils.get(context).copyFile(sourceFileName, destinationDirectory, fileName);
+            L.info("Database backup successful");
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+            L.info("Database backup failed");
+        }
     }
 
     public void loadDatabaseFromBackup() {
-        String sourceFileName = FileUtils.get(context).getAppRootFolder() + File.separator + "corsalite.db";
-        String destinationFileName = "/data/data/"+ BuildConfig.APPLICATION_ID+"/databases/corsalite.db";
-        FileUtils.get(context).copyFile(sourceFileName, destinationFileName);
+        try {
+            String fileName = "corsalite.db";
+            String sourceFileName = FileUtils.get(context).getAppRootFolder() + File.separator + "corsalite.db";
+            String destinationFileName = "/data/data/" + BuildConfig.APPLICATION_ID + "/databases";
+            FileUtils.get(context).copyFile(sourceFileName, destinationFileName, fileName);
+            L.info("successfully loaded Database from backup");
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+            L.info("failed to load Database from backup");
+        }
     }
 
     public boolean isDatabaseExist() {
@@ -45,10 +59,20 @@ public class DbUtils {
         } catch (SQLiteException e) {
             L.error(e.getMessage(), e);
         }
-        if (checkDB != null) {
+        if (checkDB != null && checkDB.isOpen()) {
             checkDB.close();
         }
         return checkDB != null;
     }
 
+    public boolean isDatabaseFileExist(Context context) {
+        try {
+            String myPath = "/data/data/"+BuildConfig.APPLICATION_ID+"/databases/corsalite.db";
+            File file = new File(myPath);
+            return file.exists();
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+        return false;
+    }
 }

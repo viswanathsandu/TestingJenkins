@@ -76,6 +76,7 @@ import com.education.corsalite.utils.AppPref;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.CookieUtils;
 import com.education.corsalite.utils.Data;
+import com.education.corsalite.utils.DbUtils;
 import com.education.corsalite.utils.FileUtils;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.SystemUtils;
@@ -193,6 +194,19 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
+        try {
+            if(this instanceof LoginActivity
+                    || this instanceof StudyCenterActivity
+                    || this instanceof ExamEngineActivity
+                    || this instanceof OfflineActivity
+                    || this instanceof SaveForOfflineActivity
+                    || this instanceof ContentReadingActivity
+                    || this instanceof WelcomeActivity) {
+                DbUtils.get(this).backupDatabase();
+            }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
         super.onPause();
         isShown = false;
     }
