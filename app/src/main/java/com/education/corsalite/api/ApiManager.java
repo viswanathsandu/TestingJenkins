@@ -189,10 +189,10 @@ public class ApiManager {
         }
     }
 
-    public void getUserProfile(String studentId, ApiCallback<UserProfileResponse> callback) {
+    public void getUserProfile(String studentId, String entityId, ApiCallback<UserProfileResponse> callback) {
         apiCacheHolder.setUserProfileRequest(studentId);
         if (isApiOnline() && isNetworkConnected()) {
-            ApiClientService.get().getUserProfile(studentId, callback);
+            ApiClientService.get().getUserProfile(studentId, entityId, callback);
         } else if (!isNetworkConnected()) {
             UserProfileReqRes reqRes = new UserProfileReqRes();
             reqRes.request = apiCacheHolder.userProfileRequest;

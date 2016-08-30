@@ -293,7 +293,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
         if (htmlUrl.endsWith(Constants.HTML_FILE)) {
             webviewContentReading.loadUrl(htmlUrl);
         } else {
-            webviewContentReading.loadDataWithBaseURL("file:///android_asset/", htmlUrl, "text/html; charset=UTF-8", null, "");
+            webviewContentReading.loadDataWithBaseURL("file:///android_asset/", htmlUrl, Constants.WEBVIEW_DATA_FORMAT, null, "");
         }
         navigateButtonEnabled();
     }

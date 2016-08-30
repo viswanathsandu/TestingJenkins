@@ -65,7 +65,6 @@ public class WebviewActivity extends AbstractBaseActivity {
         } else {
             loadWebpage();
         }
-        sendAnalytics(getString(R.string.screen_webview));
     }
 
     private void loadWebpage() {

@@ -100,7 +100,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -283,7 +282,6 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         initSuggestionWebView();
         setListener();
         getIntentData();
-        sendAnalytics(getString(R.string.screen_exercise));
     }
 
     private void loadLeaderBoard() {
@@ -488,6 +486,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
     private void loadExerciseTest() {
         imvFlag.setVisibility(View.INVISIBLE);
+        // TODO : check here if it has some impact
         localExamModelList = AbstractBaseActivity.getSharedExamModels();
         if(localExamModelList == null && !TextUtils.isEmpty(topicId)) {
             ExerciseOfflineModel model = new ExamUtils(this).getExerciseModel(topicId);
@@ -736,23 +735,25 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     public void inflateUI(int position) {
-        if (previousQuestionPosition >= 0 && !title.equalsIgnoreCase("Exercises")) {
-            setAnswerState();
-        }
-        selectedPosition = position;
-        resetExplanation();
-        if (localExamModelList != null && localExamModelList.size() > position) {
-            loadQuestion(position);
+        if(position >= 0) {
+            if (previousQuestionPosition >= 0 && !title.equalsIgnoreCase("Exercises")) {
+                setAnswerState();
+            }
+            selectedPosition = position;
+            resetExplanation();
+            if (localExamModelList != null && localExamModelList.size() > position) {
+                loadQuestion(position);
 
-            String sectionName = localExamModelList.get(position).sectionName;
-            if (!TextUtils.isEmpty(sectionName) && !sectionName.equals(selectedSection)) {
-                selectSection(localExamModelList.get(position).sectionName);
+                String sectionName = localExamModelList.get(position).sectionName;
+                if (!TextUtils.isEmpty(sectionName) && !sectionName.equals(selectedSection)) {
+                    selectSection(localExamModelList.get(position).sectionName);
+                }
             }
         }
     }
 
     private void navigateButtonEnabled() {
-        if (selectedPosition == 0) {
+        if (selectedPosition <= 0) {
             btnPrevious.setVisibility(View.GONE);
             btnNext.setVisibility(View.VISIBLE);
             return;
@@ -798,23 +799,18 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.btn_next:
-                    if (selectedPosition == localExamModelList.size() - 1 && !isFlaggedQuestionsScreen() && !isViewAnswersScreen() && !title.equalsIgnoreCase("Exercises")) {
-                        updateQuestionTimeTaken(selectedPosition);
-                        showSubmitTestAlert();
-                    }else{
-                        updateQuestionTimeTaken(selectedPosition);
-                        updateTestAnswerPaper(TestanswerPaperState.STARTED);
-                        previousQuestionPosition = selectedPosition;
-                        inflateUI(selectedPosition + 1);
-                    }
-                    hideKeyboard();
+                    btnPrevious.setClickable(false);
+                    btnNext.setClickable(false);
+                    onNextClick();
+                    btnPrevious.setClickable(true);
+                    btnNext.setClickable(true);
                     break;
                 case R.id.btn_previous:
-                    hideKeyboard();
-                    updateQuestionTimeTaken(selectedPosition);
-                    updateTestAnswerPaper(TestanswerPaperState.STARTED);
-                    previousQuestionPosition = selectedPosition;
-                    inflateUI(selectedPosition - 1);
+                    btnPrevious.setClickable(false);
+                    btnNext.setClickable(false);
+                    onPreviousClick();
+                    btnPrevious.setClickable(true);
+                    btnNext.setClickable(true);
                     break;
                 case R.id.btn_verify:
                     hideKeyboard();
@@ -847,12 +843,42 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         }
     };
 
+    private void onPreviousClick() {
+        hideKeyboard();
+        updateQuestionTimeTaken(selectedPosition);
+        updateTestAnswerPaper(TestanswerPaperState.STARTED);
+        previousQuestionPosition = selectedPosition;
+        if((selectedPosition - 1) <= 0) {
+            btnPrevious.setVisibility(View.GONE);
+        }
+        inflateUI(selectedPosition - 1);
+    }
+
+    private void onNextClick() {
+        if (selectedPosition == localExamModelList.size() - 1
+                && !isFlaggedQuestionsScreen() && !isViewAnswersScreen() && !title.equalsIgnoreCase("Exercises")) {
+            updateQuestionTimeTaken(selectedPosition);
+            showSubmitTestAlert();
+        }else{
+            updateQuestionTimeTaken(selectedPosition);
+            updateTestAnswerPaper(TestanswerPaperState.STARTED);
+            previousQuestionPosition = selectedPosition;
+            inflateUI(selectedPosition + 1);
+        }
+        hideKeyboard();
+    }
+
     private void updateTestAnswerPaper(final TestanswerPaperState state) {
         if(isExerciseTest() || isFlaggedQuestionsScreen() || isViewAnswersScreen()) {
             return;
         }
         testanswerPaper.status = state.toString();
-        testanswerPaper.endTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(TimeUtils.currentTimeInMillis()));
+        for ( int i=0; i< localExamModelList.size(); i++) {
+            if(localExamModelList.get(i).isFlagged) {
+                testanswerPaper.testAnswers.get(i).status = Constants.AnswerState.FLAGGED.getValue();
+            }
+        }
+        testanswerPaper.endTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(TimeUtils.getCurrentDate());
         if(!SystemUtils.isNetworkConnected(this)) {
             SyncModel syncModel = new SyncModel();
             syncModel.setTestAnswerPaperEvent(testanswerPaper);
@@ -894,6 +920,9 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             public void success(TestAnswerPaperResponse testAnswerPaperResponse, Response response) {
                 super.success(testAnswerPaperResponse, response);
                 sendLederBoardRequestEvent();
+                if(testAnswerPaperResponse != null && !TextUtils.isEmpty(testAnswerPaperResponse.testAnswerPaperId)) {
+                    testAnswerPaperId = testAnswerPaperResponse.testAnswerPaperId;
+                }
                 if (state == TestanswerPaperState.STARTED) {
 
                 } else if (state == TestanswerPaperState.SUSPENDED) {
@@ -1033,7 +1062,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void navigateToExamResultActivity(int totalQuestions, int answered, int skipped, int correct, int wrong) {
-        AbstractBaseActivity.setSharedExamModels(localExamModelList);
+        ExamResultActivity.setSharedExamModels(localExamModelList);
 
         Intent intent = new Intent(this, ExamResultActivity.class);
         intent.putExtra("exam_name", examName);
@@ -1103,7 +1132,9 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         try {
             isFlagged = false;
             questionStartedTime = TimeUtils.currentTimeInMillis();
-            if (testanswerPaper != null && testanswerPaper.testAnswers != null
+            if(localExamModelList.get(position).isFlagged) {
+                testanswerPaper.testAnswers.get(position).status = Constants.AnswerState.FLAGGED.getValue();
+            } else if (testanswerPaper != null && testanswerPaper.testAnswers != null
                     && testanswerPaper.testAnswers.size() > position
                     && !TextUtils.isEmpty(testanswerPaper.testAnswers.get(position).status)
                     && testanswerPaper.testAnswers.get(position).status.equalsIgnoreCase(Constants.AnswerState.UNATTEMPTED.getValue())) {
@@ -1119,12 +1150,12 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             } else {
                 webviewParagraph.setVisibility(View.VISIBLE);
                 webQuestion = localExamModelList.get(position).paragraphHtml;
-                webviewParagraph.loadData(webQuestion, "text/html; charset=UTF-8", null);
+                webviewParagraph.loadDataWithBaseURL(null, webQuestion, "text/html", "UTF-8", null);
             }
             webviewQuestion.setVisibility(View.GONE);
             if (localExamModelList.get(position).questionHtml != null) {
                 webQuestion = localExamModelList.get(position).questionHtml;
-                webviewQuestion.loadData(webQuestion, "text/html; charset=UTF-8", null);
+                webviewQuestion.loadDataWithBaseURL(null, webQuestion, "text/html", "UTF-8", null);
                 webviewQuestion.setVisibility(View.VISIBLE);
             }
             if (localExamModelList.get(position).comment != null) {
@@ -1222,7 +1253,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             webview.getSettings().setJavaScriptEnabled(true);
             webview.setWebChromeClient(new WebChromeClient());
             webview.setWebViewClient(new MyWebViewClient(this));
-            webview.loadData(answerChoiceModel.answerChoiceTextHtml, "text/html; charset=UTF-8", null);
+            webview.loadDataWithBaseURL(null, answerChoiceModel.answerChoiceTextHtml, "text/html", "UTF-8", null);
             webview.setOnTouchListener(new View.OnTouchListener() {
                 private static final int MAX_CLICK_DURATION = 200;
                 private long startClickTime;
@@ -1249,19 +1280,23 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 optionRBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        for (int j = 0; j < size; j++) {
-                            optionRadioButtons[j].setChecked(false);
-                            if (optionRadioButtons[j].getId() == Integer.valueOf(answerChoiceModel.idAnswerKey)) {
-                                selectedAnswerPosition = j + 1;
-                                localExamModelList.get(selectedPosition).selectedAnswers = String.valueOf(j);
-                                if (testanswerPaper != null && testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty()) {
-                                    testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = answerChoiceModel.idAnswerKey;
-                                    testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.ANSWERED.getValue();
+                        try {
+                            for (int j = 0; j < size; j++) {
+                                optionRadioButtons[j].setChecked(false);
+                                if (optionRadioButtons[j].getId() == Integer.valueOf(answerChoiceModel.idAnswerKey)) {
+                                    selectedAnswerPosition = j + 1;
+                                    localExamModelList.get(selectedPosition).selectedAnswers = String.valueOf(j);
+                                    if (testanswerPaper != null && testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty()) {
+                                        testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = answerChoiceModel.idAnswerKey;
+                                        testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.ANSWERED.getValue();
+                                    }
                                 }
                             }
+                            ((RadioButton) v).setChecked(true);
+                            btnVerify.setEnabled(true);
+                        } catch (Exception e) {
+                            L.error(e.getMessage(), e);
                         }
-                        ((RadioButton) v).setChecked(true);
-                        btnVerify.setEnabled(true);
                     }
                 });
             } catch (Exception e) {
@@ -1335,7 +1370,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 answerChoiceModel.answerChoiceTextHtml = answerChoiceModel.answerChoiceTextHtml.replace("./", ApiClientService.getBaseUrl());
                 optionWebView.loadUrl(answerChoiceModel.answerChoiceTextHtml);
             } else {
-                optionWebView.loadData(answerChoiceModel.answerChoiceTextHtml, "text/html; charset=UTF-8", null);
+                optionWebView.loadDataWithBaseURL(null, answerChoiceModel.answerChoiceTextHtml, "text/html", "UTF-8", null);
             }
             answerLayout.addView(container);
 
@@ -1350,13 +1385,17 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                             for (int x = 0; x < checkBoxes.length; x++) {
                                 if (checkBoxes[x].getId() == Integer.valueOf(answerChoiceModel.idAnswerKey)) {
                                     selectedAnswerPosition = x + 1;
-                                    if (TextUtils.isEmpty(localExamModelList.get(selectedPosition).selectedAnswers)) {
-                                        localExamModelList.get(selectedPosition).selectedAnswers = String.valueOf(x);
-                                        testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.ANSWERED.getValue();
-                                        testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = answerChoiceModel.idAnswerKey;
-                                    } else {
-                                        localExamModelList.get(selectedPosition).selectedAnswers += "," + x;
-                                        testanswerPaper.testAnswers.get(selectedPosition).answerKeyId += "," + answerChoiceModel.idAnswerKey;
+                                    try {
+                                        if (TextUtils.isEmpty(localExamModelList.get(selectedPosition).selectedAnswers)) {
+                                            localExamModelList.get(selectedPosition).selectedAnswers = String.valueOf(x);
+                                            testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.ANSWERED.getValue();
+                                            testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = answerChoiceModel.idAnswerKey;
+                                        } else {
+                                            localExamModelList.get(selectedPosition).selectedAnswers += "," + x;
+                                            testanswerPaper.testAnswers.get(selectedPosition).answerKeyId += "," + answerChoiceModel.idAnswerKey;
+                                        }
+                                    } catch (Exception e) {
+                                        L.error(e.getMessage(), e);
                                     }
                                 }
                             }
@@ -1364,13 +1403,17 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                             for (int x = 0; x < size; x++) {
                                 if (checkBoxes[x].isChecked()) {
                                     selectedAnswerPosition = x + 1;
-                                    if (TextUtils.isEmpty(localExamModelList.get(selectedPosition).selectedAnswers)) {
-                                        localExamModelList.get(selectedPosition).selectedAnswers = String.valueOf(x);
-                                        testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.ANSWERED.getValue();
-                                        testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = answerChoiceModel.idAnswerKey;
-                                    } else {
-                                        localExamModelList.get(selectedPosition).selectedAnswers += "," + x;
-                                        testanswerPaper.testAnswers.get(selectedPosition).answerKeyId += "," + answerChoiceModel.idAnswerKey;
+                                    try {
+                                        if (TextUtils.isEmpty(localExamModelList.get(selectedPosition).selectedAnswers)) {
+                                            localExamModelList.get(selectedPosition).selectedAnswers = String.valueOf(x);
+                                            testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.ANSWERED.getValue();
+                                            testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = answerChoiceModel.idAnswerKey;
+                                        } else {
+                                            localExamModelList.get(selectedPosition).selectedAnswers += "," + x;
+                                            testanswerPaper.testAnswers.get(selectedPosition).answerKeyId += "," + answerChoiceModel.idAnswerKey;
+                                        }
+                                    } catch (Exception e) {
+                                        L.error(e.getMessage(), e);
                                     }
                                     isCheckedAtLeastOnce = true;
                                     break;
@@ -1681,7 +1724,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             }
         }
         txtAnswerCount.setText(correctAnswer);
-        txtAnswerExp.loadData(webText, "text/html; charset=UTF-8", null);
+        txtAnswerExp.loadDataWithBaseURL(null, webText, "text/html", "UTF-8", null);
 
         if (gridAdapter != null) {
             gridAdapter.notifyDataSetChanged();
@@ -1695,7 +1738,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         } else {
             flaggedLayout.setVisibility(View.GONE);
         }
-        webViewFlaggedAnswer.loadData(correctAnswers, "text/html; charset=UTF-8", null);
+        webViewFlaggedAnswer.loadDataWithBaseURL(null, correctAnswers, "text/html", "UTF-8", null);
         webViewFlaggedAnswer.setBackgroundColor(0);
     }
 
@@ -1730,7 +1773,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
     private void postAnswer(ExamModel model) {
         PostExerciseRequestModel postExerciseRequestModel = new PostExerciseRequestModel();
-        postExerciseRequestModel.updateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        postExerciseRequestModel.updateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(TimeUtils.getCurrentDate());
         postExerciseRequestModel.idStudent = LoginUserCache.getInstance().getStudentId();
         postExerciseRequestModel.idQuestion = model.idQuestion;
         postExerciseRequestModel.studentAnswerChoice = selectedAnswerPosition + "";
@@ -1786,13 +1829,19 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private void setAnswerState() {
         try {
             localExamModelList.get(previousQuestionPosition).answerColorSelection = Constants.AnswerState.SKIPPED.getValue();
-            testanswerPaper.testAnswers.get(previousQuestionPosition).status = Constants.AnswerState.SKIPPED.getValue();
+            if(localExamModelList.get(previousQuestionPosition).isFlagged) {
+                testanswerPaper.testAnswers.get(previousQuestionPosition).status = Constants.AnswerState.FLAGGED.getValue();
+            } else {
+                testanswerPaper.testAnswers.get(previousQuestionPosition).status = Constants.AnswerState.SKIPPED.getValue();
+            }
             switch (QuestionType.getQuestionType(localExamModelList.get(previousQuestionPosition).idQuestionType)) {
                 case SINGLE_SELECT_CHOICE:
                 case MULTI_SELECT_CHOICE:
                     if (selectedAnswerPosition != -1) {
                         localExamModelList.get(previousQuestionPosition).answerColorSelection = Constants.AnswerState.ANSWERED.getValue();
-                        if (testanswerPaper != null && testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty()) {
+                        if(localExamModelList.get(previousQuestionPosition).isFlagged) {
+                            testanswerPaper.testAnswers.get(previousQuestionPosition).status = Constants.AnswerState.FLAGGED.getValue();
+                        } else if (testanswerPaper != null && testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty()) {
                             testanswerPaper.testAnswers.get(previousQuestionPosition).status = Constants.AnswerState.ANSWERED.getValue();
                         }
                     }
@@ -1800,7 +1849,9 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 case FILL_IN_THE_BLANK:
                 case ALPHANUMERIC:
                 case NUMERIC:
-                    if (testanswerPaper != null && testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty() && !TextUtils.isEmpty(testanswerPaper.testAnswers.get(previousQuestionPosition).answerKeyId)) {
+                    if(localExamModelList.get(previousQuestionPosition).isFlagged) {
+                        testanswerPaper.testAnswers.get(previousQuestionPosition).status = Constants.AnswerState.FLAGGED.getValue();
+                    } else if (testanswerPaper != null && testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty() && !TextUtils.isEmpty(testanswerPaper.testAnswers.get(previousQuestionPosition).answerKeyId)) {
                         testanswerPaper.testAnswers.get(previousQuestionPosition).status = Constants.AnswerState.ANSWERED.getValue();
                         localExamModelList.get(previousQuestionPosition).answerColorSelection = Constants.AnswerState.ANSWERED.getValue();
                     }
@@ -1810,7 +1861,9 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 case N_BLANK_MULTI_SELECT:
                 case N_BLANK_SINGLE_SELECT:
                 case GRID:
-                    if (testanswerPaper != null && testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty() && !TextUtils.isEmpty(testanswerPaper.testAnswers.get(previousQuestionPosition).answerText)) {
+                    if(localExamModelList.get(previousQuestionPosition).isFlagged) {
+                        testanswerPaper.testAnswers.get(previousQuestionPosition).status = Constants.AnswerState.FLAGGED.getValue();
+                    } else if (testanswerPaper != null && testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty() && !TextUtils.isEmpty(testanswerPaper.testAnswers.get(previousQuestionPosition).answerText)) {
                         testanswerPaper.testAnswers.get(previousQuestionPosition).status = Constants.AnswerState.ANSWERED.getValue();
                         localExamModelList.get(previousQuestionPosition).answerColorSelection = Constants.AnswerState.ANSWERED.getValue();
                     }
@@ -1823,7 +1876,6 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     break;
                 default:
                     break;
-
             }
 
         } catch (Exception e) {
@@ -2034,7 +2086,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         postQuestionPaper.idCollegeBatch = "";
         postQuestionPaper.idEntity = entityId;
         postQuestionPaper.idExamTemplate = examTemplateId;
-        postQuestionPaper.idSubject = "";
+        postQuestionPaper.idSubject = subjectId != null ? subjectId : "";
         postQuestionPaper.idStudent = studentId;
 
         ApiManager.getInstance(this).postQuestionPaper(Gson.get().toJson(postQuestionPaper),
@@ -2139,11 +2191,11 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 timer = new CounterClass(examDurationInSeconds * 1000, 1000);
                 timer.start();
             }
+            updateTestAnswerPaper(TestanswerPaperState.STARTED);
         } else {
             headerProgress.setVisibility(View.GONE);
             tvEmptyLayout.setVisibility(View.VISIBLE);
         }
-        updateTestAnswerPaper(TestanswerPaperState.STARTED);
     }
 
     private void initTestAnswerPaper(List<ExamModel> questions) {
@@ -2154,7 +2206,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         }
         testanswerPaper.studentId = LoginUserCache.getInstance().getStudentId();
         testanswerPaper.testQuestionPaperId = testQuestionPaperId;
-        testanswerPaper.startTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        testanswerPaper.startTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(TimeUtils.getCurrentDate());
         if(examDurationInSeconds <= 0) {
             examDurationInSeconds = getExamDurationInSeconds(localExamModelList);
         }
@@ -2168,6 +2220,9 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 answer.testQuestionId = question.idTestQuestion;
                 answer.sortOrder = question.queSortOrder;
                 testanswerPaper.testAnswers.add(answer);
+                if(question.isFlagged) {
+                    answer.status = Constants.AnswerState.FLAGGED.getValue();
+                }
             }
         }
     }
@@ -2207,6 +2262,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        AbstractBaseActivity.setSharedExamModels(null);
         if(timer != null) {
             timer.cancel();
         }

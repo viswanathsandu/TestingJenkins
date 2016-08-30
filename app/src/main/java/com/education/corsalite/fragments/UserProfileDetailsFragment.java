@@ -74,6 +74,7 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
     private List<Course> mCourses;
     private boolean coursesSpinnerCLicked;
     private SpinnerAdapter dataAdapter;
+    private boolean enableEmailEdit = false;
 
     @Override
     public void onAttach(Context context) {
@@ -95,6 +96,13 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
     @Override
     public void onResume() {
         super.onResume();
+        try {
+            if (LoginUserCache.getInstance().getLongResponse().isRewardRedeemEnabled()) {
+                redeemBtn.setVisibility(View.VISIBLE);
+            }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
         fetchUserProfileData();
         fetchVirtualCurrencyBalance();
     }
@@ -171,10 +179,15 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
     }
 
     private void showEditProfileFragment() {
+        if(!SystemUtils.isNetworkConnected(getActivity())) {
+            showToast("This feature is not available for offline. Please come online.");
+            return;
+        }
         EditProfileDialogFragment dialogFragment = new EditProfileDialogFragment();
         dialogFragment.setUpdateProfileDetailsListener(this);
         Bundle bundle = new Bundle();
         bundle.putString("user_profile_response", Gson.get().toJson(user));
+        bundle.putBoolean("enable_edit_email", enableEmailEdit);
         dialogFragment.setArguments(bundle);
         dialogFragment.show(getFragmentManager(), "Edit Profile");
     }
@@ -221,6 +234,7 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
     private void fetchUserProfileData() {
         showProgress();
         ApiManager.getInstance(getActivity()).getUserProfile(LoginUserCache.getInstance().getStudentId(),
+                LoginUserCache.getInstance().getEntityId(),
                 new ApiCallback<UserProfileResponse>(getActivity()) {
                     @Override
                     public void failure(CorsaliteError error) {
@@ -241,6 +255,7 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
                             dbManager.saveReqRes(ApiCacheHolder.getInstance().userProfile);
                             user = userProfileResponse;
                             showProfileData(userProfileResponse.basicProfile);
+                            enableEmailEdit = userProfileResponse.isEmailEnabled();
                             if (updateExamData != null) {
                                 updateExamData.getExamData(userProfileResponse.examDetails);
                             }

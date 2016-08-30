@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "809320529698",
+    "firebase_url": "https://project-3952866366831262469.firebaseio.com",
+    "project_id": "project-3952866366831262469",
+    "storage_bucket": "project-3952866366831262469.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:809320529698:android:d02b986d6fb27777",
+        "android_client_info": {
+          "package_name": "com.corsalite.androidapp.staging"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "809320529698-4mqjhvocf7idhuracomndpg0t1kg49cc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKJ45Gm9CH-B_gsQgjsOgY9NHhBL95RRE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -105,13 +105,13 @@ public class FullQuestionsAdapter extends AbstractRecycleViewAdapter {
                     paragraphWebview.setVisibility(View.VISIBLE);
                     paragraphWebview.setLayerType(View.LAYER_TYPE_HARDWARE, null);
                     paragraphWebview.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
-                    paragraphWebview.loadData(question.paragraphHtml, "text/html; charset=UTF-8", null);
+                    paragraphWebview.loadDataWithBaseURL(null, question.paragraphHtml, "text/html", "UTF-8", null);
                 }
                 questionWebview.setVisibility(View.GONE);
                 if (question.questionHtml != null) {
                     questionWebview.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
                     questionWebview.setLayerType(View.LAYER_TYPE_HARDWARE, null);
-                    questionWebview.loadData(question.questionHtml, "text/html; charset=UTF-8", null);
+                    questionWebview.loadDataWithBaseURL(null, question.questionHtml, "text/html", "UTF-8", null);
                     questionWebview.setVisibility(View.VISIBLE);
                 }
                 switch (QuestionType.getQuestionType(question.idQuestionType)) {
@@ -174,7 +174,7 @@ public class FullQuestionsAdapter extends AbstractRecycleViewAdapter {
                 webview.setLayerType(View.LAYER_TYPE_HARDWARE, null);
                 webview.setWebChromeClient(new WebChromeClient());
                 webview.setWebViewClient(new MyWebViewClient(mContext));
-                webview.loadData(answerChoiceModel.answerChoiceTextHtml, "text/html; charset=UTF-8", null);
+                webview.loadDataWithBaseURL(null, answerChoiceModel.answerChoiceTextHtml, "text/html", "UTF-8", null);
                 answersContainer.addView(container);
             }
         }
@@ -209,7 +209,7 @@ public class FullQuestionsAdapter extends AbstractRecycleViewAdapter {
                     answerChoiceModel.answerChoiceTextHtml = answerChoiceModel.answerChoiceTextHtml.replace("./", ApiClientService.getBaseUrl());
                     optionWebView.loadUrl(answerChoiceModel.answerChoiceTextHtml);
                 } else {
-                    optionWebView.loadData(answerChoiceModel.answerChoiceTextHtml, "text/html; charset=UTF-8", null);
+                    optionWebView.loadDataWithBaseURL(null, answerChoiceModel.answerChoiceTextHtml, "text/html", "UTF-8", null);
                 }
                 answersContainer.addView(container);
             }

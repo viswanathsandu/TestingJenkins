@@ -39,7 +39,6 @@ public class OfflineActivity extends AbstractBaseActivity {
         getIntentData();
         setToolbarForOfflineContent();
         setTabView();
-        sendAnalytics(getString(R.string.screen_offlineContent));
         if(getSelectedCourse() == null) {
             showProgress();
         }

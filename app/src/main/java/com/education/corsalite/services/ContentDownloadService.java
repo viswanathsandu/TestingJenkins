@@ -18,6 +18,7 @@ import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ExamModel;
 import com.education.corsalite.utils.Constants;
+import com.education.corsalite.utils.DbUtils;
 import com.education.corsalite.utils.ExamUtils;
 import com.education.corsalite.utils.FileUtils;
 import com.education.corsalite.utils.L;
@@ -184,6 +185,9 @@ public class ContentDownloadService extends IntentService {
             }
             offlineContent.status = status;
             dbManager.save(offlineContent);
+            if(offlineContent.progress == 100) {
+                DbUtils.get(getApplicationContext()).backupDatabase();
+            }
             EventBus.getDefault().post(new RefreshOfflineUiEvent());
         }
     }
@@ -219,6 +223,7 @@ public class ContentDownloadService extends IntentService {
                     downloandInProgress--;
                 }
             }
+            DbUtils.get(getApplicationContext()).backupDatabase();
         } catch (Exception e) {
             L.error(e.getMessage(), e);
         }

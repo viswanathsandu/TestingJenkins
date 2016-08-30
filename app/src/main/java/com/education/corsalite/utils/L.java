@@ -10,6 +10,10 @@ import com.education.corsalite.BuildConfig;
 public class L {
 
     private static final String TAG = "CORSALITE";
+    private static final String INFO = "INFO";
+    private static final String DEBUG = "DEBUG";
+    private static final String ERROR = "ERROR";
+
 
     private static boolean isInfoEnabled() {
         return (BuildConfig.DEBUG);

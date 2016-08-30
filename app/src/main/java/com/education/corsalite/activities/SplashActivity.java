@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.TextUtils;
 
+import com.education.corsalite.BuildConfig;
 import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
@@ -30,7 +31,7 @@ public class SplashActivity extends AbstractBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        new AppUpdateUtils(this).update();
+        new AppUpdateUtils(this).update(BuildConfig.VERSION_NAME);
         new CountDownTimer(getAppConfig(this).getSplashDuration(), 100) {
             @Override
             public void onFinish() {
@@ -77,6 +78,7 @@ public class SplashActivity extends AbstractBaseActivity {
                 if (loginResponse.isSuccessful()) {
                     setCrashlyticsUserData();
                     onLoginsuccess(loginResponse, fetchLocal);
+                    ApiCacheHolder.getInstance().setLoginResponse(loginResponse);
                     dbManager.saveReqRes(ApiCacheHolder.getInstance().login);
                     appPref.save("loginId", username);
                     appPref.save("passwordHash", password);

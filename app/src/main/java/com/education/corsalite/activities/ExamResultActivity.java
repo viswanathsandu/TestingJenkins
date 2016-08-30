@@ -9,8 +9,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
+import com.education.corsalite.models.responsemodels.ExamModel;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.TimeUtils;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -40,6 +43,17 @@ public class ExamResultActivity extends AbstractBaseActivity {
     @Bind(R.id.skipped_txt) TextView skippedTxt;
     @Bind(R.id.correct_txt) TextView correctTxt;
     @Bind(R.id.wrong_txt) TextView wrongTxt;
+
+    private static List<ExamModel> examModels;
+
+    public static void setSharedExamModels(List<ExamModel> examModels) {
+        ExamResultActivity.examModels = examModels;
+    }
+
+    public static List<ExamModel> getSharedExamModels() {
+        return ExamResultActivity.examModels;
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +112,9 @@ public class ExamResultActivity extends AbstractBaseActivity {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.view_answers_btn :
+                if(examModels != null) {
+                    AbstractBaseActivity.setSharedExamModels(examModels);
+                }
                 Bundle bundle = new Bundle();
                 bundle.putString(Constants.TEST_TITLE, "View Answers");
                 startActivity(ExamEngineActivity.getMyIntent(this, bundle));

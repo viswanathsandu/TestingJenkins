@@ -14,7 +14,6 @@ import com.education.corsalite.activities.ContentReadingActivity;
 import com.education.corsalite.activities.ExamEngineActivity;
 import com.education.corsalite.activities.OfflineActivity;
 import com.education.corsalite.activities.VideoActivity;
-import com.education.corsalite.db.SugarDbManager;
 import com.education.corsalite.enums.OfflineContentStatus;
 import com.education.corsalite.holders.IconTreeItemHolder;
 import com.education.corsalite.models.db.ExerciseOfflineModel;
@@ -79,7 +78,7 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
 
     private void getContentIndexResponse(final Course course) {
         emptyContentView.setVisibility(View.GONE);
-        List<OfflineContent> offlineContents = SugarDbManager.get(getActivity().getApplicationContext()).getOfflineContents(AbstractBaseActivity.getSelectedCourseId());
+        List<OfflineContent> offlineContents = dbManager.getOfflineContents(AbstractBaseActivity.getSelectedCourseId());
         offlineContentList = new ArrayList<>();
         for (OfflineContent offlineContent : offlineContents) {
             if (offlineContent.courseId.equalsIgnoreCase(course.courseId.toString())) {

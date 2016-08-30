@@ -24,7 +24,6 @@ public class VirtualCurrencyActivity extends AbstractBaseActivity {
         frameLayout.addView(myView);
         setToolbarForVirtualCurrency();
         initToolbar();
-        sendAnalytics(getString(R.string.screen_virtualcurrency));
     }
 
     protected void initToolbar() {

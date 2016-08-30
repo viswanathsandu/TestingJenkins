@@ -10,10 +10,13 @@ import android.widget.Toast;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Writer;
 
 /**
@@ -64,8 +67,6 @@ public class FileUtils {
         File parent = new File(root.getAbsolutePath() + File.separator + Constants.PARENT_FOLDER + File.separator + AppPref.get(context).getUserId());
         return parent.getAbsolutePath();
     }
-
-
 
     public String getVideoDownloadPath(String videoId) {
         String fileName = "v." + Constants.VIDEO_FILE;
@@ -220,10 +221,12 @@ public class FileUtils {
         File fileorDir = new File(selectedPath);
         if (fileorDir.isDirectory()) {
             deleteChildren(fileorDir);
+            L.info("Deleted path "+fileorDir);
         } else if (fileorDir.isFile()) {
             File parentFile = fileorDir.getParentFile();
             fileorDir.delete();
             deleteParent(parentFile);
+            L.info("Deleted path "+fileorDir);
         }
     }
 
@@ -236,10 +239,12 @@ public class FileUtils {
         }
         if (fileorDir.isDirectory()) {
             deleteChildren(fileorDir);
+            L.info("Deleted path "+fileorDir);
         } else if (fileorDir.isFile()) {
             File parentFile = fileorDir.getParentFile();
             fileorDir.delete();
             deleteParent(parentFile);
+            L.info("Deleted path "+fileorDir);
         }
     }
 
@@ -272,5 +277,43 @@ public class FileUtils {
         } catch (Exception ignore) {
         }
         return videoUrl.toString();
+    }
+
+    public void copyFile(String sourceFile, String destinationDir, String fileName) {
+        try {
+            File dir = new File(destinationDir);
+            dir.mkdirs();
+            File destination = new File(destinationDir, fileName);
+            if (!destination.exists()) {
+                destination.createNewFile();
+            }
+            copyFile(sourceFile, destination.getAbsolutePath());
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+    }
+
+    public void copyFile(String sourceFile, String destinationFile) {
+        InputStream is = null;
+        OutputStream os = null;
+        try {
+
+            is = new FileInputStream(new File(sourceFile));
+            os = new FileOutputStream(new File(destinationFile));
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = is.read(buffer)) > 0) {
+                os.write(buffer, 0, length);
+            }
+        } catch (Exception e) {
+          L.error(e.getMessage(), e);
+        } finally {
+            try {
+                is.close();
+                os.close();
+            } catch (Exception e) {
+                L.error(e.getMessage(), e);
+            }
+        }
     }
 }

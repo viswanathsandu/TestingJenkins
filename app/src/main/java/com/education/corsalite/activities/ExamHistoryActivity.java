@@ -56,7 +56,6 @@ public class ExamHistoryActivity extends AbstractBaseActivity implements ExamHis
         mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
         getExamHistory();
-        sendAnalytics(getString(R.string.screen_examhistory));
     }
 
     private void getExamHistory() {
