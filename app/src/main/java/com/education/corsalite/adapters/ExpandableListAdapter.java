@@ -256,7 +256,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             String subjectId = model.baseTest.subjectId;
             Intent intent = new Intent(context, TestInstructionsActivity.class);
             intent.putExtra(TestStartActivity.KEY_TEST_TYPE, Tests.CHAPTER.getType());
-            intent.putExtra(Constants.TEST_TITLE, chapter.chapterName);
+            intent.putExtra(Constants.TEST_TITLE, "Take Test");
             intent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.getSelectedCourseId());
             intent.putExtra(Constants.SELECTED_CHAPTERID, chapter.idCourseSubjectchapter);
             intent.putExtra(Constants.SELECTED_CHAPTER_NAME, chapter.chapterName);

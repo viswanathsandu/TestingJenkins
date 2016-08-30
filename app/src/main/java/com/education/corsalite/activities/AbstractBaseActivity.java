@@ -34,7 +34,7 @@ import com.crashlytics.android.Crashlytics;
 import com.education.corsalite.BuildConfig;
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.SpinnerAdapter;
-import com.education.corsalite.analytics.GoogleAnalyticsManager;
+import com.education.corsalite.analytics.FireBaseHelper;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.ApiCacheHolder;
@@ -71,11 +71,13 @@ import com.education.corsalite.models.socket.response.ChallengeTestUpdateEvent;
 import com.education.corsalite.notifications.ChallengeUtils;
 import com.education.corsalite.receivers.NotifyReceiver;
 import com.education.corsalite.services.ApiClientService;
+import com.education.corsalite.services.ContentDownloadService;
 import com.education.corsalite.services.DataSyncService;
 import com.education.corsalite.utils.AppPref;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.CookieUtils;
 import com.education.corsalite.utils.Data;
+import com.education.corsalite.utils.DbUtils;
 import com.education.corsalite.utils.FileUtils;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.SystemUtils;
@@ -104,6 +106,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     private static Course selectedCourse;
     private static List<ExamModel> sharedExamModels;
     private static AppConfig appConfig;
+
     private List<Course> courses;
     public Toolbar toolbar;
     private NavigationView navigationView;
@@ -114,6 +117,11 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     protected SugarDbManager dbManager;
     protected AppPref appPref;
     private boolean isLoginApiRunningInBackground = false;
+    private boolean isShown = false;
+
+    public boolean isShown() {
+        return isShown;
+    }
 
     public List<FriendsData.Friend> selectedFriends = new ArrayList<>();
 
@@ -157,6 +165,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.navigation_drawer_layout);
+        FireBaseHelper.initFireBase(this);
         frameLayout = (FrameLayout) findViewById(R.id.activity_layout_container);
         initNavigationDrawer();
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
@@ -164,8 +173,44 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 .setFontAttrId(R.attr.fontPath)
                 .build());
         initActivity();
+        logScreen(this.getClass().getSimpleName());
+    }
+
+    public void logScreen(String screenName) {
+        FireBaseHelper.logScreen(screenName);
+        Localytics.tagScreen(screenName);
+        Localytics.tagEvent(screenName);
+    }
+
+    public void logEvent(String tag) {
+        FireBaseHelper.logEvent(tag);
+        Localytics.tagEvent(this.getClass().getSimpleName());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         checkForceUpgrade();
-        Localytics.tagScreen(this.getClass().getSimpleName());
+        isShown = true;
+    }
+
+    @Override
+    protected void onPause() {
+        try {
+            if(this instanceof LoginActivity
+                    || this instanceof StudyCenterActivity
+                    || this instanceof ExamEngineActivity
+                    || this instanceof OfflineActivity
+                    || this instanceof SaveForOfflineActivity
+                    || this instanceof ContentReadingActivity
+                    || this instanceof WelcomeActivity) {
+                DbUtils.get(this).backupDatabase();
+            }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+        super.onPause();
+        isShown = false;
     }
 
     private void initActivity() {
@@ -185,6 +230,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         try {
             String emailId = appPref.getValue("loginId");
             Crashlytics.setUserEmail(emailId);
+            FireBaseHelper.setUsername(emailId);
             Localytics.setCustomerEmail(emailId);
         } catch (Exception e) {
             L.error(e.getMessage(), e);
@@ -194,6 +240,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     public void resetCrashlyticsUserData() {
         try {
             Crashlytics.setUserEmail("");
+            FireBaseHelper.setUsername("");
             Localytics.setCustomerEmail("");
         } catch (Exception e) {
             L.error(e.getMessage(), e);
@@ -213,6 +260,12 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             if (!(this instanceof ExamEngineActivity || this instanceof ChallengeActivity)) {
                 refreshScreen();
             }
+            if(event.isconnected) {
+                stopService(new Intent(getApplicationContext(), ContentDownloadService.class));
+                startService(new Intent(getApplicationContext(), ContentDownloadService.class));
+            } else {
+                stopService(new Intent(getApplicationContext(), ContentDownloadService.class));
+            }
         } catch (Exception e) {
             L.error(e.getMessage(), e);
         }
@@ -230,14 +283,14 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         super.onStop();
     }
 
-    public void loadAppConfig(String idUser) {
-        ApiManager.getInstance(this).getAppConfig(idUser, new ApiCallback<AppConfig>(this) {
+    public void loadAppConfig() {
+        ApiManager.getInstance(this).getAppConfig(new ApiCallback<AppConfig>(this) {
             @Override
             public void success(AppConfig appConfig, Response response) {
                 super.success(appConfig, response);
+                AbstractBaseActivity.appConfig = appConfig;
                 ApiCacheHolder.getInstance().setAppConfigResponse(appConfig);
                 dbManager.saveReqRes(ApiCacheHolder.getInstance().appConfigReqRes);
-                checkForceUpgrade();
             }
         });
     }
@@ -269,6 +322,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     if (loginResponse.isSuccessful()) {
                         setCrashlyticsUserData();
                         isLoginApiRunningInBackground = false;
+                        ApiCacheHolder.getInstance().setLoginResponse(loginResponse);
                         dbManager.saveReqRes(ApiCacheHolder.getInstance().login);
                         appPref.save("loginId", username);
                         appPref.save("passwordHash", passwordHash);
@@ -276,7 +330,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                         if(SystemUtils.isNetworkConnected(AbstractBaseActivity.this)) {
                             startWebSocket();
                             syncDataWithServer();
-                            loadAppConfig(loginResponse.idUser);
+                            loadAppConfig();
                         }
                         recreate();
                     } else {
@@ -293,7 +347,13 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     protected void setToolbarForVirtualCurrency() {
-        toolbar.findViewById(R.id.redeem_layout).setVisibility(View.VISIBLE);
+        try {
+            if (LoginUserCache.getInstance().getLongResponse().isRewardRedeemEnabled()) {
+                toolbar.findViewById(R.id.redeem_layout).setVisibility(View.VISIBLE);
+            }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
         setToolbarTitle(getResources().getString(R.string.virtual_currency));
     }
 
@@ -322,6 +382,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         if(showButtons) {
             toolbar.findViewById(R.id.challenge_buttons_layout).setVisibility(View.VISIBLE);
         }
+        showVirtualCurrency();
         toolbar.setBackgroundColor(getResources().getColor(R.color.red));
         setToolbarTitle(getResources().getString(R.string.challenge_your_friends));
     }
@@ -525,7 +586,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     return;
                 }
                 if (!(AbstractBaseActivity.this instanceof UserProfileActivity)) {
-                    Localytics.tagEvent("User Profile");
                     Intent intent = new Intent(AbstractBaseActivity.this, UserProfileActivity.class);
                     startActivity(intent);
                     drawerLayout.closeDrawers();
@@ -568,7 +628,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     showToast("Please Select different Course");
                     return;
                 }
-                Localytics.tagEvent("Study Center");
                 loadStudyCenterScreen();
             }
         });
@@ -581,7 +640,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     return;
                 }
                 if (SystemUtils.isNetworkConnected(AbstractBaseActivity.this)) {
-                    Localytics.tagEvent("Analytics");
                     startActivity(new Intent(AbstractBaseActivity.this, NewAnalyticsActivity.class));
                 } else {
                     showToast("Analytics requires network connection");
@@ -597,7 +655,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     showToast("Please Select different Course");
                     return;
                 }
-                Localytics.tagEvent("Curriculum");
                 startActivity(new Intent(AbstractBaseActivity.this, CurriculumActivity.class));
                 drawerLayout.closeDrawers();
             }
@@ -610,7 +667,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     showToast("Please Select different Course");
                     return;
                 }
-                Localytics.tagEvent("Offline");
                 startActivity(new Intent(AbstractBaseActivity.this, OfflineActivity.class));
                 drawerLayout.closeDrawers();
             }
@@ -624,7 +680,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     return;
                 }
                 if (SystemUtils.isNetworkConnected(AbstractBaseActivity.this)) {
-                    Localytics.tagEvent(getString(R.string.challenge_your_friends));
                     startActivity(new Intent(AbstractBaseActivity.this, ChallengeActivity.class));
                 } else {
                     showToast("Challenge Test requires network connection");
@@ -641,7 +696,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     return;
                 }
                 if (SystemUtils.isNetworkConnected(AbstractBaseActivity.this)) {
-                    Localytics.tagEvent(getString(R.string.exam_history));
                     startActivity(new Intent(AbstractBaseActivity.this, ExamHistoryActivity.class));
                 } else {
                     showToast("Exam history requires network connection");
@@ -656,7 +710,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     showToast("Please Select different Course");
                     return;
                 }
-                Localytics.tagEvent(getString(R.string.menu_scheduled_test));
                 showScheduledTestsDialog();
             }
         });
@@ -668,7 +721,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     showToast("Please Select different Course");
                     return;
                 }
-                Localytics.tagEvent(getString(R.string.menu_mock_test));
                 showMockTestsDialog();
             }
         });
@@ -681,7 +733,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     return;
                 }
                 if (SystemUtils.isNetworkConnected(AbstractBaseActivity.this)) {
-                    Localytics.tagEvent(getString(R.string.forum));
                     startActivity(new Intent(AbstractBaseActivity.this, ForumActivity.class));
                 } else {
                     showToast("Forum requires network connection");
@@ -692,7 +743,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_logout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Localytics.tagEvent(getString(R.string.log_out));
                 showLogoutDialog();
             }
         });
@@ -747,40 +797,48 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     protected void showVirtualCurrency() {
-        if(!getAppConfig(this).isVirtualCurrencyEnabled()) {
-            return;
-        }
-        final TextView textView = (TextView) toolbar.findViewById(R.id.tv_virtual_currency);
-        final ProgressBar progressBar = (ProgressBar) toolbar.findViewById(R.id.ProgressBar);
+        final boolean enableVirtualCurrency = getAppConfig(this).isVirtualCurrencyEnabled();
         try {
-            progressBar.setVisibility(View.VISIBLE);
-            toolbar.findViewById(R.id.currency_layout).setVisibility(View.VISIBLE);
-            toolbar.findViewById(R.id.currency_layout).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(AbstractBaseActivity.this, VirtualCurrencyActivity.class);
-                    startActivity(intent);
-                }
-            });
-
+            if(enableVirtualCurrency) {
+                toolbar.findViewById(R.id.ProgressBar).setVisibility(View.VISIBLE);
+                toolbar.findViewById(R.id.currency_layout).setVisibility(View.VISIBLE);
+                toolbar.findViewById(R.id.currency_layout).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(AbstractBaseActivity.this, VirtualCurrencyActivity.class);
+                        startActivity(intent);
+                    }
+                });
+            }
             ApiManager.getInstance(this).getVirtualCurrencyBalance(LoginUserCache.getInstance().getStudentId(), new ApiCallback<VirtualCurrencyBalanceResponse>(this) {
                 @Override
                 public void success(VirtualCurrencyBalanceResponse virtualCurrencyBalanceResponse, Response response) {
                     super.success(virtualCurrencyBalanceResponse, response);
-                    progressBar.setVisibility(View.GONE);
-                    if (virtualCurrencyBalanceResponse != null && virtualCurrencyBalanceResponse.balance != null)
-                        textView.setText(virtualCurrencyBalanceResponse.balance.intValue() + "");
+                    if(enableVirtualCurrency) {
+                        toolbar.findViewById(R.id.ProgressBar).setVisibility(View.GONE);
+                    }
+                    if (virtualCurrencyBalanceResponse != null && virtualCurrencyBalanceResponse.balance != null) {
+                        appPref.setVirtualCurrency(virtualCurrencyBalanceResponse.balance.intValue() + "");
+                        if(enableVirtualCurrency) {
+                            TextView textView = (TextView) toolbar.findViewById(R.id.tv_virtual_currency);
+                            textView.setText(virtualCurrencyBalanceResponse.balance.intValue() + "");
+                        }
+                    }
                 }
 
                 @Override
                 public void failure(CorsaliteError error) {
                     super.failure(error);
-                    progressBar.setVisibility(View.GONE);
+                    if(enableVirtualCurrency) {
+                        toolbar.findViewById(R.id.ProgressBar).setVisibility(View.GONE);
+                    }
                 }
             });
         } catch (Exception e) {
             L.error(e.getMessage(), e);
-            progressBar.setVisibility(View.GONE);
+            if(enableVirtualCurrency) {
+                toolbar.findViewById(R.id.ProgressBar).setVisibility(View.GONE);
+            }
         }
     }
 
@@ -873,7 +931,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         LoginUserCache.getInstance().clearCache();
         resetCrashlyticsUserData();
         deleteSessionCookie();
-        dbManager.clearCachedData();
         AbstractBaseActivity.selectedCourse = null;
         AbstractBaseActivity.selectedVideoPosition= 0;
         AbstractBaseActivity.sharedExamModels = null;
@@ -1069,24 +1126,22 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     public void showProgress() {
-        ProgressBar pbar = new ProgressBar(this);
-        pbar.setBackgroundColor(getResources().getColor(android.R.color.transparent));
-        dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(pbar);
-        dialog.setCancelable(false);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.show();
-    }
-
-    public void closeProgress() {
-        if (dialog != null && dialog.isShowing()) {
-            dialog.dismiss();
+        if(isShown()) {
+            ProgressBar pbar = new ProgressBar(this);
+            pbar.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+            dialog = new Dialog(this);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(pbar);
+            dialog.setCancelable(false);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.show();
         }
     }
 
-    public void sendAnalytics(String screenName) {
-        GoogleAnalyticsManager.sendOpenScreenEvent(this, this, screenName);
+    public void closeProgress() {
+        if (isShown() && dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+        }
     }
 
     @Override
@@ -1151,7 +1206,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     public void scheduleNotificationsForScheduledTests(ScheduledTestList scheduledTestList) {
         try {
             for (int i = 0; i < scheduledTestList.MockTest.size(); i++) {
-                Date scheduledTestTime = new Date(TimeUtils.getMillisFromDate(scheduledTestList.MockTest.get(i).startTime));
+                Date scheduledTestTime = TimeUtils.getDate(TimeUtils.getMillisFromDate(scheduledTestList.MockTest.get(i).startTime));
                 examDownloadNotification(scheduledTestList.MockTest.get(i).testQuestionPaperId,
                         scheduledTestList.MockTest.get(i).examName,
                         scheduledTestTime);
@@ -1159,6 +1214,9 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                         scheduledTestList.MockTest.get(i).examName,
                         scheduledTestTime);
                 examStartedNotification(scheduledTestList.MockTest.get(i).testQuestionPaperId,
+                        scheduledTestList.MockTest.get(i).examName,
+                        scheduledTestTime);
+                examForceStartNotification(scheduledTestList.MockTest.get(i).testQuestionPaperId,
                         scheduledTestList.MockTest.get(i).examName,
                         scheduledTestTime);
             }
@@ -1177,6 +1235,18 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         cal = Calendar.getInstance();
         Calendar expiry = Calendar.getInstance();
         expiry.setTimeInMillis(scheduledTime.getTime());
+        PugNotification.with(this)
+                .load()
+                .identifier(Data.getInt(examId+Constants.EXAM_DOWNLOADED_REQUEST_ID))
+                .title(examName)
+                .message("Exam starts at "+new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime)+". Please Download")
+                .bigTextStyle("Exam starts at "+new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime)+". Please Download")
+                .smallIcon(R.drawable.ic_launcher)
+                .largeIcon(R.drawable.ic_launcher)
+                .flags(Notification.DEFAULT_ALL)
+                .simple()
+                .build();
+        L.info("Scheduled Download Notification for "+TimeUtils.getDateString(cal.getTimeInMillis()));
         PugNotification.with(this)
                 .load()
                 .identifier(Data.getInt(examId+Constants.EXAM_DOWNLOADED_REQUEST_ID))

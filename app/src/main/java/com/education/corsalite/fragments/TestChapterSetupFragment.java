@@ -209,6 +209,9 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
         mExtras.putBoolean(Constants.ADAPIVE_LEAERNING, mIsAdaptiveLearningEnabled);
         mExtras.putString(Constants.QUESTIONS_COUNT, noOfQuestions);
         startActivity(ExamEngineActivity.getMyIntent(getActivity(), mExtras));
+        if(getActivity() != null && getActivity() instanceof AbstractBaseActivity) {
+            ((AbstractBaseActivity) getActivity()).hideKeyboard();
+        }
         getActivity().finish();
     }
 
@@ -232,6 +235,9 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
         exerciseIntent.putExtra("entityId", LoginUserCache.getInstance().getEntityId());
         getActivity().startService(exerciseIntent);
         Toast.makeText(getActivity(), "Downloading test paper in background", Toast.LENGTH_SHORT).show();
+        if(getActivity() != null && getActivity() instanceof AbstractBaseActivity) {
+            ((AbstractBaseActivity) getActivity()).hideKeyboard();
+        }
         getActivity().finish();
     }
 }

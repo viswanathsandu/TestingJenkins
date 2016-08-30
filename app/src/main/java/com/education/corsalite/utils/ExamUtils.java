@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import com.education.corsalite.db.SugarDbManager;
 import com.education.corsalite.gson.Gson;
+import com.education.corsalite.models.db.ExerciseOfflineModel;
 import com.education.corsalite.models.responsemodels.TestAnswerPaper;
 import com.education.corsalite.models.responsemodels.TestPaperIndex;
 import com.education.corsalite.models.responsemodels.TestQuestionPaperResponse;
@@ -24,6 +25,28 @@ public class ExamUtils {
     public ExamUtils(Context context) {
         this.mContext = context;
         dbManager = SugarDbManager.get(mContext);
+    }
+
+    public void saveExerciseQuestionPaper(String topicId, ExerciseOfflineModel response) {
+        if (response == null) {
+            return;
+        }
+        String testPaper = Gson.get().toJson(response);
+        try {
+            testPaper = Gzip.compress(testPaper);
+            testPaper = Encrypter.encrypt(AppPref.get(mContext).getUserId(), testPaper);
+            FileUtils fileUtils = FileUtils.get(mContext);
+            String savedFileName = fileUtils.write(fileUtils.getExerciseFileName(),
+                    testPaper, fileUtils.getTestsFolderPath(topicId));
+            if (TextUtils.isEmpty(savedFileName)) {
+                Toast.makeText(mContext, "Exercise download failed. Please try again", Toast.LENGTH_SHORT).show();
+                L.info("Failed to Save exercise with id " + topicId);
+            } else {
+                L.info("Saved exercise with id " + topicId);
+            }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
     }
 
     public void saveTestQuestionPaper(String testQuestionPaperId, TestQuestionPaperResponse response) {
@@ -110,14 +133,46 @@ public class ExamUtils {
         return null;
     }
 
+    public ExerciseOfflineModel getExerciseModel(String topicId) {
+        try {
+            FileUtils fileUtils = FileUtils.get(mContext);
+            L.info("Reading offline Test question paper from file");
+            String testPaper = fileUtils.readFromFile(fileUtils.getExerciseFileName(), fileUtils.getTestsFolderPath(topicId));
+            L.info("Completed reading offline Test question paper from file");
+            if (!TextUtils.isEmpty(testPaper)) {
+                try {
+                    L.info("Decrypting offline Test question paper from file");
+                    testPaper = Encrypter.decrypt(AppPref.get(mContext).getUserId(), testPaper);
+                    L.info("Decrypted offline Test question paper from file");
+                    L.info("Decompressing offline Test question paper from file");
+                    testPaper = Gzip.decompress(testPaper);
+                    L.info("Decompressed offline Test question paper from file");
+                    ExerciseOfflineModel response = Gson.get().fromJson(testPaper, ExerciseOfflineModel.class);
+                    return response;
+                } catch (Exception e) {
+                    L.error(e.getMessage(), e);
+                }
+            }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+        return null;
+    }
+
     public TestQuestionPaperResponse getTestQuestionPaper(String testQuestionPaperId) {
         try {
             FileUtils fileUtils = FileUtils.get(mContext);
+            L.info("Reading offline Test question paper from file");
             String testPaper = fileUtils.readFromFile(fileUtils.getTestQuestionPaperFileName(), fileUtils.getTestsFolderPath(testQuestionPaperId));
+            L.info("Completed reading offline Test question paper from file");
             if (!TextUtils.isEmpty(testPaper)) {
                 try {
+                    L.info("Decrypting offline Test question paper from file");
                     testPaper = Encrypter.decrypt(AppPref.get(mContext).getUserId(), testPaper);
+                    L.info("Decrypted offline Test question paper from file");
+                    L.info("Decompressing offline Test question paper from file");
                     testPaper = Gzip.decompress(testPaper);
+                    L.info("Decompressed offline Test question paper from file");
                     TestQuestionPaperResponse response = Gson.get().fromJson(testPaper, TestQuestionPaperResponse.class);
                     return response;
                 } catch (Exception e) {

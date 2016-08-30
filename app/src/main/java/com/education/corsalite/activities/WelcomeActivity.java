@@ -29,19 +29,31 @@ import retrofit.client.Response;
 
 public class WelcomeActivity extends AbstractBaseActivity implements View.OnClickListener {
 
-    @Bind(R.id.course_ended_txt) TextView courseEndedTxt;
-    @Bind(R.id.redeem_welcome_btn) Button redeemBtn;
-    @Bind(R.id.studycenter_btn) Button studyCenterBtn;
-    @Bind(R.id.messages_btn) Button messagesBtn;
-    @Bind(R.id.scheduled_tests_btn) Button scheduledTestsBtn;
-    @Bind(R.id.recommended_reading_btn) Button recommendedReadingBtn;
-    @Bind(R.id.name_txt)TextView fullName;
-    @Bind(R.id.lastvisit_date)TextView lastVisitDate;
-    @Bind(R.id.lastvisit_time)TextView lastVisitTime;
-    @Bind(R.id.profile_pic)ImageView profilePic;
-    @Bind(R.id.vc_totalcount)TextView vcTotal;
-    @Bind(R.id.vc_lastsessioncount)TextView vcLastSession;
-    private boolean loadContent=true;
+    @Bind(R.id.course_ended_txt)
+    TextView courseEndedTxt;
+    @Bind(R.id.redeem_welcome_btn)
+    Button redeemBtn;
+    @Bind(R.id.studycenter_btn)
+    Button studyCenterBtn;
+    @Bind(R.id.messages_btn)
+    Button messagesBtn;
+    @Bind(R.id.scheduled_tests_btn)
+    Button scheduledTestsBtn;
+    @Bind(R.id.recommended_reading_btn)
+    Button recommendedReadingBtn;
+    @Bind(R.id.name_txt)
+    TextView fullName;
+    @Bind(R.id.lastvisit_date)
+    TextView lastVisitDate;
+    @Bind(R.id.lastvisit_time)
+    TextView lastVisitTime;
+    @Bind(R.id.profile_pic)
+    ImageView profilePic;
+    @Bind(R.id.vc_totalcount)
+    TextView vcTotal;
+    @Bind(R.id.vc_lastsessioncount)
+    TextView vcLastSession;
+    private boolean loadContent = true;
     private boolean closeApp = false;
 
     @Override
@@ -57,22 +69,33 @@ public class WelcomeActivity extends AbstractBaseActivity implements View.OnClic
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        try {
+            if (LoginUserCache.getInstance().getLongResponse().isRewardRedeemEnabled()) {
+                redeemBtn.setVisibility(View.VISIBLE);
+            } else {
+                redeemBtn.setVisibility(View.GONE);
+            }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+    }
+
+    @Override
     public void onEvent(Course course) {
         super.onEvent(course);
-        if(isCourseEnded(course)) {
+        if (isCourseEnded(course)) {
             courseEndedTxt.setVisibility(View.VISIBLE);
-            courseEndedTxt.setText("This course ended on "+course.endDate);
+            courseEndedTxt.setText("This course ended on " + course.endDate);
         } else {
             courseEndedTxt.setVisibility(View.GONE);
         }
         getContentIndex(getSelectedCourseId(), LoginUserCache.getInstance().getStudentId());
         // Start download service if its not started
-        stopService(new Intent(getApplicationContext(), ContentDownloadService.class));
-        if(loadContent) {
-            if (!ContentDownloadService.isIntentServiceRunning) {
-                stopService(new Intent(getApplicationContext(), ContentDownloadService.class));
-                startService(new Intent(getApplicationContext(), ContentDownloadService.class));
-            }
+        if (loadContent) {
+            stopService(new Intent(getApplicationContext(), ContentDownloadService.class));
+            startService(new Intent(getApplicationContext(), ContentDownloadService.class));
             loadContent = false;
         }
     }
@@ -127,7 +150,7 @@ public class WelcomeActivity extends AbstractBaseActivity implements View.OnClic
 
     @Override
     public void onClick(View v) {
-        if(isCourseEnded(AbstractBaseActivity.getSelectedCourse())) {
+        if (isCourseEnded(AbstractBaseActivity.getSelectedCourse())) {
             showToast("Please select a different course");
             return;
         }
@@ -136,7 +159,7 @@ public class WelcomeActivity extends AbstractBaseActivity implements View.OnClic
                 redeem();
                 break;
             case R.id.profile_pic:
-                Intent myprofile = new Intent(this,UserProfileActivity.class);
+                Intent myprofile = new Intent(this, UserProfileActivity.class);
                 startActivity(myprofile);
                 break;
             case R.id.studycenter_btn:

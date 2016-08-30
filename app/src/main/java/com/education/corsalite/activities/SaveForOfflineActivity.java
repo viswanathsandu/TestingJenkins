@@ -2,18 +2,18 @@ package com.education.corsalite.activities;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
@@ -32,12 +32,8 @@ import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.services.ContentDownloadService;
-import com.education.corsalite.services.TestDownloadService;
-import com.education.corsalite.utils.AppPref;
 import com.education.corsalite.utils.Constants;
-import com.education.corsalite.gson.Gson;
 import com.education.corsalite.utils.L;
-
 import com.unnamed.b.atv.model.TreeNode;
 import com.unnamed.b.atv.view.AndroidTreeView;
 
@@ -148,9 +144,7 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
                                 } else {
                                     ExerciseOfflineModel model = new ExerciseOfflineModel(
                                             AbstractBaseActivity.getSelectedCourseId(), topicModel.idTopic);
-                                    if (!offlineExerciseModels.contains(model)) {
-                                        offlineExerciseModels.add(model);
-                                    }
+                                    offlineExerciseModels.add(model);
                                 }
                                 OfflineContent offlineContent = new OfflineContent(mCourseId, mCourseName,
                                         mSubjectId, mSubjectName,
@@ -187,7 +181,7 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
     // store the in-progress in db
     private void storeInProgressItemsInDb(List<OfflineContent> offlineContents, List<ExerciseOfflineModel> offlineExerciseModels) {
         if(offlineContents != null && !offlineContents.isEmpty()) {
-            dbManager.saveOfflineContents(offlineContents);
+            dbManager.save(offlineContents);
         }
         if(offlineExerciseModels != null && !offlineExerciseModels.isEmpty()) {
             dbManager.saveOfflineExerciseTests(offlineExerciseModels);
@@ -195,6 +189,30 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
     }
 
     private void setUpDialogLogic(final List<OfflineContent> offlineContents, final List<ExerciseOfflineModel> offlineExerciseModels) {
+        new AlertDialog.Builder(this)
+                .setTitle("Download Content")
+                .setMessage("Do you want to download the selected content for offline use?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        stopService(new Intent(getApplicationContext(), ContentDownloadService.class));
+                        storeInProgressItemsInDb(offlineContents, offlineExerciseModels);
+                        EventBus.getDefault().post(new RefreshDownloadsEvent());
+                        startService(new Intent(getApplicationContext(), ContentDownloadService.class));
+                        dialog.dismiss();
+                        finish();
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+                        dialog.dismiss();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setCancelable(false)
+                .show();
+        /*
+        // This code is to enable preview before downloading
         dialog.show();
         Button downloadBtn = (Button) dialog.findViewById(R.id.ok);
         Button cancelBtn = (Button) dialog.findViewById(R.id.cancel);
@@ -214,39 +232,7 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
             public void onClick(View v) {
                 dialog.dismiss();
             }
-        });
-    }
-
-    private void startDownload(String htmlContentId, String videoContentId) {
-        String finalContentIds = "";
-        if (!htmlContentId.isEmpty()) {
-            finalContentIds += htmlContentId;
-        }
-        if (!videoContentId.isEmpty()) {
-            finalContentIds += COMMA_STRING + videoContentId;
-        }
-
-        if (offlineExerciseModels.size() > 0)
-            downloadExercises();
-        if (finalContentIds.isEmpty()) {
-            Toast.makeText(SaveForOfflineActivity.this, getResources().getString(R.string.select_content_toast), Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(SaveForOfflineActivity.this, getResources().getString(R.string.content_downloaded_toast), Toast.LENGTH_SHORT).show();
-            if(!TextUtils.isEmpty(htmlContentId)) {
-                getContent(htmlContentId, false);
-            }
-            if(!TextUtils.isEmpty(videoContentId)) {
-                getContent(videoContentId, true);
-            }
-            dialog.dismiss();
-            finish();
-        }
-    }
-
-    private void downloadExercises() {
-        Intent intent = new Intent(this, TestDownloadService.class);
-        intent.putExtra("exercise_data", Gson.get().toJson(offlineExerciseModels));
-        startService(intent);
+        }); */
     }
 
     public String method(String str) {
@@ -254,22 +240,6 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
             str = str.substring(0, str.length() - 1);
         }
         return str;
-    }
-
-    private void getContent(String contentId, boolean isVideo) {
-        storeDataInDb(contentId, isVideo);
-        EventBus.getDefault().post(new RefreshDownloadsEvent());
-    }
-
-    private void storeDataInDb(String contentId, boolean isVideo) {
-        List<OfflineContent> offlineContents = new ArrayList<>();
-        OfflineContent offlineContent;
-        offlineContent = new OfflineContent(mCourseId, mCourseName, mSubjectId, mSubjectName, mChapterId, mChapterName,
-                null, null, contentId, null, null);
-        offlineContent.status = OfflineContentStatus.WAITING;
-        offlineContents.add(offlineContent);
-        AppPref.get(SaveForOfflineActivity.this).save("DATA_IN_PROGRESS", null);
-        dbManager.saveOfflineContents(offlineContents);
     }
 
     private void getBundleData() {

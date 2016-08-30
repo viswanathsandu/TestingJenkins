@@ -6,192 +6,266 @@
     android:gravity="center"
     android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/exam_name_txt"
+        fontPath="@string/roboto_regular"
+        android:layout_width="500dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="Exam Name"
+        android:textColor="@color/text_black"
+        android:textSize="24sp"
+        android:maxLines="2"
+        android:ellipsize="end"/>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:background="@color/dark_gray">
+        android:layout_marginTop="40dp"
+        android:orientation="horizontal">
 
         <LinearLayout
-            style="@style/exam_results_data_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingRight="30dp">
 
             <TextView
-                style="@style/exam_results_label"
+                fontPath="@string/roboto_regular"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Exam : " />
+                android:layout_marginBottom="10dp"
+                android:text="Exam Date    "
+                android:textColor="@color/text_gray" />
 
             <TextView
-                android:id="@+id/tv_exam_title"
-                style="@style/exam_results_value"
+                android:id="@+id/date_txt"
+                fontPath="@string/roboto_regular"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Chapter" />
+                android:gravity="center"
+                android:text="00/00/0000"
+                android:textColor="@color/black" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingRight="30dp">
+
+            <TextView
+                fontPath="@string/roboto_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="Recommended Time"
+                android:textColor="@color/text_gray" />
+
+            <TextView
+                android:id="@+id/recommended_time_txt"
+                fontPath="@string/roboto_regular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="00"
+                android:textColor="@color/text_black" />
         </LinearLayout>
 
         <LinearLayout
-            style="@style/exam_results_data_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingRight="30dp">
 
             <TextView
-                style="@style/exam_results_label"
+                fontPath="@string/roboto_regular"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Type : " />
+                android:layout_marginBottom="10dp"
+                android:text="Time Taken"
+                android:textColor="@color/text_gray" />
 
             <TextView
-                android:id="@+id/tv_exam_type"
-                style="@style/exam_results_value"
+                android:id="@+id/time_taken_txt"
+                fontPath="@string/roboto_regular"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Custom" />
+                android:gravity="center"
+                android:text="00"
+                android:textColor="@color/text_black" />
         </LinearLayout>
-
-        <LinearLayout
-            style="@style/exam_results_data_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                style="@style/exam_results_label"
-                android:layout_height="wrap_content"
-                android:text="Date : " />
-
-            <TextView
-                android:id="@+id/tv_exam_date"
-                style="@style/exam_results_value"
-                android:layout_height="wrap_content"
-                android:text="26-12-2015" />
-        </LinearLayout>
-
-        <LinearLayout
-            style="@style/exam_results_data_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                style="@style/exam_results_label"
-                android:layout_height="wrap_content"
-                android:text="Recommended Time : " />
-
-            <TextView
-                android:id="@+id/tv_recommended_time"
-                style="@style/exam_results_value"
-                android:layout_height="wrap_content"
-                android:text="00:00:00" />
-        </LinearLayout>
-
-        <LinearLayout
-            style="@style/exam_results_data_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                style="@style/exam_results_label"
-                android:layout_height="wrap_content"
-                android:text="Time Taken : " />
-
-            <TextView
-                android:id="@+id/tv_time_taken"
-                style="@style/exam_results_value"
-                android:layout_height="wrap_content"
-                android:text="00:00:00" />
-        </LinearLayout>
-
     </LinearLayout>
 
-    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:background="@color/primary_color"
+        android:orientation="horizontal"
+        android:padding="10dp">
 
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
-
-            <TextView
-                style="@style/exam_results_data_header"
-                android:layout_column="1"
-                android:text="Total Questions" />
-
-            <TextView
-                style="@style/exam_results_data_header"
-                android:layout_column="2"
-                android:text="Correct" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingRight="30dp">
 
             <TextView
-                style="@style/exam_results_data_header"
-                android:layout_column="3"
-                android:text="Wrong" />
-        </TableRow>
-
-        <TableRow>
-
-            <TextView
-                android:id="@+id/tv_total_questions"
+                fontPath="@string/roboto_light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_column="1"
-                android:layout_gravity="center_horizontal"
-                android:text="10"
-                android:textColor="@color/text_black" />
+                android:layout_marginBottom="10dp"
+                android:text="Total Questions"
+                android:textColor="@color/light_40" />
 
             <TextView
-                android:id="@+id/tv_correct"
-                android:layout_width="wrap_content"
+                android:id="@+id/total_questions_txt"
+                fontPath="@string/roboto_regular"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_column="2"
-                android:layout_gravity="center_horizontal"
-                android:text="8"
-                android:textColor="@color/text_black" />
+                android:gravity="center"
+                android:text="00"
+                android:textColor="@color/text_white" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingRight="30dp">
 
             <TextView
-                android:id="@+id/tv_wrong"
+                fontPath="@string/roboto_light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_column="3"
-                android:layout_gravity="center_horizontal"
-                android:text="2"
-                android:textColor="@color/text_black" />
-        </TableRow>
-    </TableLayout>
+                android:layout_marginBottom="10dp"
+                android:text="Answered"
+                android:textColor="@color/light_40" />
+
+            <TextView
+                android:id="@+id/answered_txt"
+                fontPath="@string/roboto_regular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="00"
+                android:textColor="@color/text_white" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingRight="30dp">
+
+            <TextView
+                fontPath="@string/roboto_light"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="Skipped"
+                android:textColor="@color/light_40" />
+
+            <TextView
+                android:id="@+id/skipped_txt"
+                fontPath="@string/roboto_regular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="00"
+                android:textColor="@color/text_white" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingRight="30dp">
+
+            <TextView
+                fontPath="@string/roboto_light"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="Correct"
+                android:textColor="@color/light_40" />
+
+            <TextView
+                android:id="@+id/correct_txt"
+                fontPath="@string/roboto_regular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="00"
+                android:textColor="@color/text_white" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                fontPath="@string/roboto_light"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="Wrong"
+                android:textColor="@color/light_40" />
+
+            <TextView
+                android:id="@+id/wrong_txt"
+                fontPath="@string/roboto_regular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="00"
+                android:textColor="@color/text_white" />
+        </LinearLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
         android:layout_marginTop="20dp">
 
         <com.education.corsalite.views.CustomButton
             android:id="@+id/view_answers_btn"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
-            android:text="View Answers"
+            android:layout_marginLeft="10dp"
             android:background="@drawable/login_button_bg"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:layout_marginLeft="10dp"/>
+            android:text="View Answers"
+            android:textColor="@color/white" />
 
         <com.education.corsalite.views.CustomButton
             android:id="@+id/exam_history_btn"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
-            android:text="Exam History"
+            android:layout_marginLeft="10dp"
             android:background="@drawable/login_button_bg"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:layout_marginLeft="10dp"
-            android:visibility="gone"/>
+            android:text="Exam History"
+            android:textColor="@color/white"
+            android:visibility="gone" />
 
         <com.education.corsalite.views.CustomButton
             android:id="@+id/course_analysis_btn"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
-            android:text="Course analysis"
+            android:layout_marginLeft="10dp"
             android:background="@drawable/login_button_bg"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:layout_marginLeft="10dp"
-            android:visibility="gone"/>
+            android:text="Course analysis"
+            android:textColor="@color/white"
+            android:visibility="gone" />
 
     </LinearLayout>
 

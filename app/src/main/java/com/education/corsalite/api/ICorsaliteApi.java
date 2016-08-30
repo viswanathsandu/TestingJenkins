@@ -80,7 +80,7 @@ public interface ICorsaliteApi {
     void getCourses(@Query("idStudent") String studentId, ApiCallback<List<Course>> callback);
 
     @GET("/StudentProfile")
-    void getUserProfile(@Query("idStudent") String studentId, ApiCallback<UserProfileResponse> callback);
+    void getUserProfile(@Query("idStudent") String studentId, @Query("idEntity") String entityId, ApiCallback<UserProfileResponse> callback);
 
     @GET("/VirtualCurrencyBalance")
     void getVirtualCurrencyBalance(@Query("idStudent") String studentId, ApiCallback<VirtualCurrencyBalanceResponse> callback);
@@ -316,7 +316,7 @@ public interface ICorsaliteApi {
     void getPartTestGrid(@Query("idStudent") String studentId, @Query("idCourse") String courseId, @Query("idSubject") String subjectId, @Query("idExam") String idExam, ApiCallback<PartTestModel> callback);
 
     @GET("/ClientAppConfig")
-    void getAppConfig(@Query("idUser") String studentId, ApiCallback<AppConfig> callback);
+    void getAppConfig(ApiCallback<AppConfig> callback);
 
     @GET("/recommendedreading")
     void getRecommendedReading(@Query("idStudent") String studentId, @Query("idCourse") String courseId, @Query("BeginRowNumber") String beginRowNumber, @Query("RowCount") String rowCount, ApiCallback<List<RecommendedModel>> callback);

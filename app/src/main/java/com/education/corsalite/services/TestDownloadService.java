@@ -67,8 +67,7 @@ public class TestDownloadService extends IntentService {
         String exerciseQuestionsListJson = intent.getStringExtra("exercise_data");
         List<ExerciseOfflineModel> exerciseModelsList = null;
         if(!TextUtils.isEmpty(exerciseQuestionsListJson)) {
-            Type listType = new TypeToken<ArrayList<ExerciseOfflineModel>>() {
-            }.getType();
+            Type listType = new TypeToken<ArrayList<ExerciseOfflineModel>>() {}.getType();
             exerciseModelsList = Gson.get().fromJson(exerciseQuestionsListJson, listType);
         }
         String partTestGridElimentsJson = intent.getStringExtra(Constants.PARTTEST_GRIDMODELS);
@@ -109,6 +108,8 @@ public class TestDownloadService extends IntentService {
                         super.success(examModels, response);
                         if(examModels != null && !examModels.isEmpty()) {
                             model.questions = examModels;
+                            new ExamUtils(mContext).saveExerciseQuestionPaper(model.topicId, model);
+                            model.questions = null;
                             dbManager.saveOfflineExerciseTest(model);
                         }
                     }
@@ -168,7 +169,7 @@ public class TestDownloadService extends IntentService {
                 model.testQuestionPaperId = test.testQuestionPaperId;
                 dbManager.saveOfflineTest(model);
                 new ExamUtils(getApplicationContext()).saveTestQuestionPaper(model.testQuestionPaperId, test.testQuestionPaperResponse);
-                EventBus.getDefault().post(new Toast("\"" + chapter.chapterName + "\" test is downloaded successfully"));
+                EventBus.getDefault().post(new Toast("\""+chapter.chapterName + "\" test is downloaded successfully"));
             }
 
             @Override
@@ -194,7 +195,7 @@ public class TestDownloadService extends IntentService {
                 dbManager.saveOfflineTest(model);
                 new ExamUtils(getApplicationContext()).saveTestQuestionPaper(model.testQuestionPaperId, test.testQuestionPaperResponse);
                 L.info("Test Saved : "+model.getClass());
-                EventBus.getDefault().post(new Toast("\"\"+subjectName + \"\" test is downloaded successfully"));
+                EventBus.getDefault().post(new Toast("\""+subjectName + "\" test is downloaded successfully"));
             }
 
             @Override

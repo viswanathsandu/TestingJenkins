@@ -2,10 +2,10 @@ package com.education.corsalite.api;
 
 import android.content.Context;
 import android.content.res.AssetManager;
-import android.text.TextUtils;
 
 import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.db.SugarDbManager;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.models.db.MockTest;
 import com.education.corsalite.models.db.ScheduledTestList;
 import com.education.corsalite.models.db.reqres.AppConfigReqRes;
@@ -71,10 +71,8 @@ import com.education.corsalite.models.responsemodels.WelcomeDetails;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.FileUtils;
 import com.education.corsalite.utils.L;
-import com.education.corsalite.gson.Gson;
 import com.education.corsalite.utils.MockUtils;
 import com.education.corsalite.utils.SystemUtils;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -191,10 +189,10 @@ public class ApiManager {
         }
     }
 
-    public void getUserProfile(String studentId, ApiCallback<UserProfileResponse> callback) {
+    public void getUserProfile(String studentId, String entityId, ApiCallback<UserProfileResponse> callback) {
         apiCacheHolder.setUserProfileRequest(studentId);
         if (isApiOnline() && isNetworkConnected()) {
-            ApiClientService.get().getUserProfile(studentId, callback);
+            ApiClientService.get().getUserProfile(studentId, entityId, callback);
         } else if (!isNetworkConnected()) {
             UserProfileReqRes reqRes = new UserProfileReqRes();
             reqRes.request = apiCacheHolder.userProfileRequest;
@@ -477,15 +475,15 @@ public class ApiManager {
         }
     }
 
-    public void postUserEvents(String insert, ApiCallback<UserEventsResponse> callback) {
+    public void postUserEvents(String update, ApiCallback<UserEventsResponse> callback) {
         if (isApiOnline()) {
-            ApiClientService.get().postUserEvents(new TypedString("Insert=" + insert), callback);
+            ApiClientService.get().postUserEvents(new TypedString("Update=" + update), callback);
         }
     }
 
-    public UserEventsResponse postUserEvents(String insert) {
+    public UserEventsResponse postUserEvents(String update) {
         if (isApiOnline()) {
-            return  ApiClientService.get().postUserEvents(new TypedString("Update=" + insert));
+            return  ApiClientService.get().postUserEvents(new TypedString("Update=" + update));
         }
         return null;
     }
@@ -570,10 +568,10 @@ public class ApiManager {
         }
     }
 
-    public void getAppConfig(String idUser, ApiCallback<com.education.corsalite.models.db.AppConfig> callback) {
-        if (isApiOnline() && !TextUtils.isEmpty(idUser)) {
-            ApiClientService.get().getAppConfig(idUser, callback);
-        }  else if(!isNetworkConnected() && !TextUtils.isEmpty(idUser)) {
+    public void getAppConfig(ApiCallback<com.education.corsalite.models.db.AppConfig> callback) {
+        if (isApiOnline()) {
+            ApiClientService.get().getAppConfig(callback);
+        }  else if(!isNetworkConnected()) {
             AppConfigReqRes reqRes = new AppConfigReqRes();
             reqRes.request = apiCacheHolder.appConfigRequest;
             SugarDbManager.get(context).getResponse(reqRes, callback);

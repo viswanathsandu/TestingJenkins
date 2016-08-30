@@ -19,6 +19,7 @@ public class AppPref {
 
     private final String KEY_USER_ID = "user_id";
     private final String KEY_STUDENT_ID = "student_id";
+    private final String KEY_VIRTUAL_CURRENCY_ID = "virtual_currency";
 
     public static AppPref get(Context context) {
         if(instance == null) {
@@ -71,5 +72,17 @@ public class AppPref {
 
     public void clearUserId() {
         remove(KEY_USER_ID);
+    }
+
+    public void setVirtualCurrency(String currency) {
+        save(KEY_VIRTUAL_CURRENCY_ID, currency);
+    }
+
+    public String getVirtualCurrency() {
+        return getValue(KEY_VIRTUAL_CURRENCY_ID);
+    }
+
+    public void clearVirtualCurrency() {
+        remove(KEY_VIRTUAL_CURRENCY_ID);
     }
 }

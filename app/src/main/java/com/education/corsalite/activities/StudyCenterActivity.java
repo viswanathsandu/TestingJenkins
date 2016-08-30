@@ -81,7 +81,6 @@ public class StudyCenterActivity extends AbstractBaseActivity {
         setUpViews(myView);
         setToolbarForStudyCenter();
         initUI();
-        sendAnalytics(getString(R.string.screen_studycenter));
     }
 
     @Override
@@ -314,7 +313,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
             }
         }
         if (saveForOffline) {
-            dbManager.saveOfflineContents(offlineContents);
+            dbManager.save(offlineContents);
         } else {
             mCourseData = new CourseData();
             mCourseData.StudyCenter = studyCenters;
@@ -569,7 +568,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
             PartTestDialog dialog = new PartTestDialog();
             Bundle bundle = new Bundle();
             bundle.putInt("idCourseSubject", studyCenter.idCourseSubject);
-            bundle.putString("SubjectName", studyCenter.SubjectName);
+            bundle.putString(Constants.SELECTED_SUBJECT_NAME, studyCenter.SubjectName);
             dialog.setArguments(bundle);
             dialog.show(getSupportFragmentManager(), "PartTestDialog");
         } else {

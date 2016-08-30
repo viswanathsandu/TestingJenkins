@@ -71,7 +71,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
             holder.rootGridLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Localytics.tagEvent(chapter.chapterName);
+
                     getAlertDialog(v, holder, chapter);
                 }
             });

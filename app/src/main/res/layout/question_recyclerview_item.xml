@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/comment_txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/golden_yellow"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:text="comment"/>
+
+    <WebView
+        android:id="@+id/paragraph_webview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_below="@+id/comment_txt"/>
+
+    <TextView
+        android:id="@+id/tv_serial_no"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/paragraph_webview"
+        android:layout_gravity="center_vertical"
+        android:padding="10dp"
+        android:text="1) "
+        android:textColor="@color/black" />
+
+    <WebView
+        android:id="@+id/question_webview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/paragraph_webview"
+        android:layout_toRightOf="@+id/tv_serial_no" />
+
+    <HorizontalScrollView
+        android:id="@+id/answer_scroll_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/question_webview"
+        android:layout_marginTop="10dp">
+
+        <LinearLayout
+            android:id="@+id/answer_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:minWidth="700dp"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+    </HorizontalScrollView>
+
+</RelativeLayout>

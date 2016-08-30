@@ -48,6 +48,7 @@ import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.ExamModel;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.Constants;
+import com.education.corsalite.utils.ExamUtils;
 import com.education.corsalite.utils.FileUtils;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.SystemUtils;
@@ -187,16 +188,6 @@ public class ContentReadingActivity extends AbstractBaseActivity {
 
     }
 
-    private void loadOfflineExercises() {
-        offlineExercises = dbManager.getOfflineExerciseModels(AbstractBaseActivity.getSelectedCourseId());
-        for (ExerciseOfflineModel model : offlineExercises) {
-            if (model.topicId.equals(mTopicId) && model.courseId.equals(getSelectedCourseId())) {
-                AbstractBaseActivity.setSharedExamModels(model.questions);
-                showExercise();
-            }
-        }
-    }
-    
     @Override
     public void onEvent(Course course) {
         super.onEvent(course);
@@ -208,10 +199,10 @@ public class ContentReadingActivity extends AbstractBaseActivity {
             eventEndDate = TimeUtils.currentTimeInMillis();
             ContentReadingEvent event = new ContentReadingEvent();
             event.idContent = contentModelList.get(0).idContent;
-            event.idStudent = appPref.getUserId();
-            event.eventStartTime = TimeUtils.getDateString(eventStartTime);
-            event.eventEndTime= TimeUtils.getDateString(eventEndDate);
-            event.updatetime = TimeUtils.getDateString(TimeUtils.currentTimeInMillis());
+            event.idStudent = LoginUserCache.getInstance().getStudentId();
+            event.eventStartTime = TimeUtils.getDateTimeString(eventStartTime);
+            event.eventEndTime= TimeUtils.getDateTimeString(eventEndDate);
+            event.updatetime = TimeUtils.getDateTimeString(TimeUtils.currentTimeInMillis());
             getEventbus().post(event);
         } catch (Exception e) {
             L.error(e.getMessage(), e);
@@ -302,7 +293,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
         if (htmlUrl.endsWith(Constants.HTML_FILE)) {
             webviewContentReading.loadUrl(htmlUrl);
         } else {
-            webviewContentReading.loadDataWithBaseURL("file:///android_asset/", htmlUrl, "text/html; charset=UTF-8", null, "");
+            webviewContentReading.loadDataWithBaseURL("file:///android_asset/", htmlUrl, Constants.WEBVIEW_DATA_FORMAT, null, "");
         }
         navigateButtonEnabled();
     }
@@ -386,12 +377,20 @@ public class ContentReadingActivity extends AbstractBaseActivity {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.iv_forum:
-                    operation = "Forum";
-                    webviewContentReading.loadUrl("javascript:alert(copy())");
+                    if(SystemUtils.isNetworkConnected(ContentReadingActivity.this)) {
+                        operation = "Forum";
+                        webviewContentReading.loadUrl("javascript:alert(copy())");
+                    } else {
+                        showToast("Not available in offline mode");
+                    }
                     break;
                 case R.id.iv_editnotes:
-                    operation = "Note";
-                    webviewContentReading.loadUrl("javascript:alert(copy())");
+                    if(SystemUtils.isNetworkConnected(ContentReadingActivity.this)) {
+                        operation = "Note";
+                        webviewContentReading.loadUrl("javascript:alert(copy())");
+                    } else {
+                        showToast("Not available in offline mode");
+                    }
                     break;
                 case R.id.btn_next:
                     mContentIdPosition += 1;
@@ -587,7 +586,11 @@ public class ContentReadingActivity extends AbstractBaseActivity {
     }
 
     private void getExercise(int topicPosition) {
-        if (SystemUtils.isNetworkConnected(this)) {
+        ExerciseOfflineModel exerciseModel = new ExamUtils(this).getExerciseModel(topicModelList.get(topicPosition).idTopic);
+        if(exerciseModel != null) {
+                AbstractBaseActivity.setSharedExamModels(exerciseModel.questions);
+                showExercise();
+        } else if (SystemUtils.isNetworkConnected(this)) {
             ivExercise.setVisibility(View.GONE);
             String topicId = topicModelList.get(topicPosition).idTopic;
             if (offlineExercises != null && !offlineExercises.isEmpty() && offlineExercises.contains(new ExerciseOfflineModel(getSelectedCourseId(), topicId))) {
@@ -614,6 +617,9 @@ public class ContentReadingActivity extends AbstractBaseActivity {
                             }
                         });
             }
+        } else {
+            AbstractBaseActivity.setSharedExamModels(null);
+            showExercise();
         }
     }
 
@@ -910,7 +916,6 @@ public class ContentReadingActivity extends AbstractBaseActivity {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     getExercise(position);
-                    loadOfflineExercises();
                     getContentData(position);
                     topicAdapter.setSelectedPosition(position);
                 }

@@ -1,6 +1,7 @@
 package com.education.corsalite.models.requestmodels;
 
 import com.google.gson.annotations.SerializedName;
+import com.orm.dsl.Ignore;
 
 /**
  * Created by vissu on 10/15/15.
@@ -28,4 +29,7 @@ public class UserProfileModel {
     public String dob;
     @SerializedName("Mobile")
     public String mobile;
+    @Ignore
+    @SerializedName("Password")
+    public String password;
 }

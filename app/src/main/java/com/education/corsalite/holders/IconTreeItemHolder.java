@@ -91,7 +91,6 @@ public class IconTreeItemHolder extends TreeNode.BaseNodeViewHolder<IconTreeItem
             arrowView.setImageDrawable(context.getResources().getDrawable(active ? R.drawable.ico_offline_arrow_down_black : R.drawable.ico_offline_arrow_black));
 
         }
-
     }
 
     public static class IconTreeItem {

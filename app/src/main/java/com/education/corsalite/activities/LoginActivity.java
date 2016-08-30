@@ -44,7 +44,6 @@ public class LoginActivity extends AbstractBaseActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         setListeners();
-        sendAnalytics(getString(R.string.screen_login));
     }
 
     private void setListeners() {
@@ -144,7 +143,7 @@ public class LoginActivity extends AbstractBaseActivity {
         if(response != null) {
             LoginUserCache.getInstance().setLoginResponse(response);
             startWebSocket();
-            loadAppConfig(response.idUser);
+            loadAppConfig();
             if(!fetchLocal) {
                 showToast(getResources().getString(R.string.login_successful));
             }

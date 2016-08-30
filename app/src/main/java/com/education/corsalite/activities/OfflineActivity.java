@@ -39,7 +39,6 @@ public class OfflineActivity extends AbstractBaseActivity {
         getIntentData();
         setToolbarForOfflineContent();
         setTabView();
-        sendAnalytics(getString(R.string.screen_offlineContent));
         if(getSelectedCourse() == null) {
             showProgress();
         }
@@ -141,7 +140,7 @@ public class OfflineActivity extends AbstractBaseActivity {
         super.onBackPressed();
     }
 
-    public void onDelete(String selectedId,String tag){
+    public void onDelete(String selectedId, String tag){
         if(offlineEventListener !=null){
             offlineEventListener.onDeleteOfflineData(selectedId,tag);
         }

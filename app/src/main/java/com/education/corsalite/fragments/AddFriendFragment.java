@@ -78,33 +78,37 @@ public class AddFriendFragment extends BaseFragment implements SearchView.OnQuer
     }
 
     private void loadFriendsList(String searchKey) {
-        if(TextUtils.isEmpty(searchKey)) {
-           showToast("Plean enter the search text");
-            return;
-        }
-        this.searchKey = searchKey;
-        ApiManager.getInstance(getActivity()).searchFriends(
-                appPref.getUserId(),
-                AbstractBaseActivity.getSelectedCourseId(),
-                searchKey,
-                new ApiCallback<List<FriendsData.Friend>>(getActivity()) {
+        if(getActivity() != null) {
+            if (TextUtils.isEmpty(searchKey)) {
+                showToast("Plean enter the search text");
+                return;
+            }
+            this.searchKey = searchKey;
+            ApiManager.getInstance(getActivity()).searchFriends(
+                    appPref.getUserId(),
+                    AbstractBaseActivity.getSelectedCourseId(),
+                    searchKey,
+                    new ApiCallback<List<FriendsData.Friend>>(getActivity()) {
 
-                    @Override
-                    public void success(List<FriendsData.Friend> friends, Response response) {
-                        super.success(friends, response);
-                        if (friends != null) {
-                            AddFriendFragment.this.friends = friends;
-                            showFriendsList();
-                            fetchDisplayName();
+                        @Override
+                        public void success(List<FriendsData.Friend> friends, Response response) {
+                            super.success(friends, response);
+                            if (getActivity() != null && friends != null) {
+                                AddFriendFragment.this.friends = friends;
+                                showFriendsList();
+                                fetchDisplayName();
+                            }
                         }
-                    }
 
-                    @Override
-                    public void failure(CorsaliteError error) {
-                        super.failure(error);
-                        ((AbstractBaseActivity) getActivity()).showToast("No results found");
-                    }
-                });
+                        @Override
+                        public void failure(CorsaliteError error) {
+                            super.failure(error);
+                            if(getActivity() != null) {
+                                ((AbstractBaseActivity) getActivity()).showToast("No results found");
+                            }
+                        }
+                    });
+        }
     }
 
     private void showFriendsList() {
@@ -181,15 +185,17 @@ public class AddFriendFragment extends BaseFragment implements SearchView.OnQuer
             @Override
             public void failure(CorsaliteError error) {
                 super.failure(error);
-                closeProgress();
-                showToast("Failed adding friend. Please try again");
+                if(getActivity() != null) {
+                    closeProgress();
+                    showToast("Failed adding friend. Please try again");
+                }
             }
 
             @Override
             public void success(CommonResponseModel commonResponseModel, Response response) {
                 super.success(commonResponseModel, response);
                 closeProgress();
-                if(commonResponseModel.status.equalsIgnoreCase("SUCCESS")) {
+                if(getActivity() != null && commonResponseModel.status.equalsIgnoreCase("SUCCESS")) {
                     loadFriendsList(searchKey);
                     showToast("Added friend successfully");
                 }
@@ -198,7 +204,9 @@ public class AddFriendFragment extends BaseFragment implements SearchView.OnQuer
             @Override
             public void failure(RetrofitError error) {
                 super.failure(error);
-                closeProgress();
+                if(getActivity() != null) {
+                    closeProgress();
+                }
             }
         });
     }
@@ -211,15 +219,17 @@ public class AddFriendFragment extends BaseFragment implements SearchView.OnQuer
             @Override
             public void failure(CorsaliteError error) {
                 super.failure(error);
-                closeProgress();
-                showToast("Failed removeing friend. Please try again");
+                if(getActivity() != null) {
+                    closeProgress();
+                    showToast("Failed removeing friend. Please try again");
+                }
             }
 
             @Override
             public void success(CommonResponseModel commonResponseModel, Response response) {
                 super.success(commonResponseModel, response);
                 closeProgress();
-                if(commonResponseModel.status.equalsIgnoreCase("SUCCESS")) {
+                if(getActivity() != null && commonResponseModel.status.equalsIgnoreCase("SUCCESS")) {
                     loadFriendsList(searchKey);
                     showToast("Removed friend successfully");
                 }
@@ -228,7 +238,9 @@ public class AddFriendFragment extends BaseFragment implements SearchView.OnQuer
             @Override
             public void failure(RetrofitError error) {
                 super.failure(error);
-                closeProgress();
+                if(getActivity() != null) {
+                    closeProgress();
+                }
             }
         });
     }

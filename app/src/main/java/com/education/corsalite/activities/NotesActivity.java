@@ -69,7 +69,6 @@ public class NotesActivity extends AbstractBaseActivity {
         getBundleData();
         initUI();
         setAdapter();
-        sendAnalytics(getString(R.string.screen_notes));
     }
 
     @Override
