@@ -598,8 +598,7 @@ public class ApiManager {
 
     public void getClientEntityAppConfig(String userId, String entityId, ApiCallback<ClientEntityAppConfig> callback) {
         if(isApiOnline()) {
-            // TODO : remove hard coded value
-            ApiClientService.get().getClientEntityAppConfig(userId, "3", callback);
+            ApiClientService.get().getClientEntityAppConfig(userId, entityId, callback);
         }
     }
 
