@@ -1,7 +1,9 @@
 package com.education.corsalite.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -18,6 +20,8 @@ import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.models.responsemodels.ClientEntityAppConfig;
+import com.education.corsalite.models.responsemodels.CommonResponseModel;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.security.Encrypter;
@@ -147,11 +151,77 @@ public class LoginActivity extends AbstractBaseActivity {
             if(!fetchLocal) {
                 showToast(getResources().getString(R.string.login_successful));
             }
-            startActivity(new Intent(LoginActivity.this, WelcomeActivity.class));
-            finish();
+            requestClientEntityConfig(response);
         } else {
             showToast(getResources().getString(R.string.login_failed));
         }
+    }
+
+    private void requestClientEntityConfig(LoginResponse loginResponse) {
+        if(loginResponse != null && !TextUtils.isEmpty(loginResponse.idUser) && !TextUtils.isEmpty(loginResponse.entitiyId)) {
+            ApiManager.getInstance(this).getClientEntityAppConfig(loginResponse.idUser, loginResponse.entitiyId,
+                    new ApiCallback<ClientEntityAppConfig>(this) {
+                        @Override
+                        public void success(ClientEntityAppConfig clientEntityAppConfig, Response response) {
+                            super.success(clientEntityAppConfig, response);
+                            checkUserDeviceValidity(clientEntityAppConfig);
+                        }
+
+                        @Override
+                        public void failure(CorsaliteError error) {
+                            super.failure(error);
+                            showToast(getResources().getString(R.string.login_failed));
+                        }
+                    });
+        }
+    }
+
+    private void checkUserDeviceValidity(ClientEntityAppConfig config) {
+        if(config != null) {
+            if (TextUtils.isEmpty(config.deviceId)) {
+                postClientEntityConfig(config.idUser);
+            } else if(config.deviceId.equalsIgnoreCase(SystemUtils.getImeiNumber(this))) {
+                navigateToWelcomeScreen();
+            } else {
+                showDeviceAffinityAlert();
+            }
+        } else {
+            navigateToWelcomeScreen();
+        }
+    }
+
+    private void showDeviceAffinityAlert() {
+        new AlertDialog.Builder(this)
+            .setTitle("Login Failure")
+            .setMessage("Please Login from your assigned device”.")
+            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    logout();
+                }
+            }).show();
+    }
+
+    private void postClientEntityConfig(String userId) {
+        ApiManager.getInstance(this).postClientEntityAppConfig(userId, SystemUtils.getImeiNumber(this),
+                new ApiCallback<CommonResponseModel>(this) {
+                    @Override
+                    public void failure(CorsaliteError error) {
+                        super.failure(error);
+                        showToast(getResources().getString(R.string.login_failed));
+                    }
+
+                    @Override
+                    public void success(CommonResponseModel commonResponseModel, Response response) {
+                        super.success(commonResponseModel, response);
+                        navigateToWelcomeScreen();
+                    }
+                });
+    }
+
+    private void navigateToWelcomeScreen() {
+        startActivity(new Intent(LoginActivity.this, WelcomeActivity.class));
+        finish();
     }
 
     private boolean checkForValidEmail(){

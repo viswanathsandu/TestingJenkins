@@ -891,7 +891,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 }).show();
     }
 
-    private void logout() {
+    protected void logout() {
         try {
             if(!SystemUtils.isNetworkConnected(this)) {
                 logoutAccount();

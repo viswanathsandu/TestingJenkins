@@ -18,6 +18,7 @@ import com.education.corsalite.models.db.reqres.UserProfileReqRes;
 import com.education.corsalite.models.db.reqres.WelcomeReqRes;
 import com.education.corsalite.models.requestmodels.AddRemoveFriendRequest;
 import com.education.corsalite.models.requestmodels.Bookmark;
+import com.education.corsalite.models.requestmodels.ClientEntityConfigRequest;
 import com.education.corsalite.models.requestmodels.CreateChallengeRequest;
 import com.education.corsalite.models.requestmodels.ForumLikeRequest;
 import com.education.corsalite.models.requestmodels.ForumModel;
@@ -26,6 +27,7 @@ import com.education.corsalite.models.responsemodels.ChallengeCompleteResponseMo
 import com.education.corsalite.models.responsemodels.ChallengeStartResponseModel;
 import com.education.corsalite.models.responsemodels.ChallengeUser;
 import com.education.corsalite.models.responsemodels.ChallengeUserListResponse;
+import com.education.corsalite.models.responsemodels.ClientEntityAppConfig;
 import com.education.corsalite.models.responsemodels.CommonResponseModel;
 import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ContentIndex;
@@ -591,6 +593,20 @@ public class ApiManager {
     public void getCurriculumData(String studentId, String courseId, String entityId, String pageType, String sortBy, ApiCallback<CurriculumResponseModel> callback) {
         if(isApiOnline()) {
             ApiClientService.get().getCurriculumData(studentId, courseId, entityId, pageType, sortBy, callback);
+        }
+    }
+
+    public void getClientEntityAppConfig(String userId, String entityId, ApiCallback<ClientEntityAppConfig> callback) {
+        if(isApiOnline()) {
+            // TODO : remove hard coded value
+            ApiClientService.get().getClientEntityAppConfig(userId, "3", callback);
+        }
+    }
+
+    public void postClientEntityAppConfig(String userId, String deviceId, ApiCallback<CommonResponseModel> callback) {
+        if(isApiOnline()) {
+            ClientEntityConfigRequest request = new ClientEntityConfigRequest(userId, deviceId);
+            ApiClientService.get().postClientEntityAppConfig(new TypedString(("Update=" + Gson.get().toJson(request))), callback);
         }
     }
 }
