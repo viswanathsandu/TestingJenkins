@@ -892,9 +892,13 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     protected void logout() {
+        logout(true);
+    }
+
+    protected void logout(final boolean navigateToLogin) {
         try {
             if(!SystemUtils.isNetworkConnected(this)) {
-                logoutAccount();
+                logoutAccount(navigateToLogin);
                 return;
             }
             LogoutModel logout = new LogoutModel();
@@ -913,29 +917,33 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 public void success(LogoutResponse logoutResponse, Response response) {
                     if (logoutResponse.isSuccessful()) {
                         resetCrashlyticsUserData();
-                        showToast(getResources().getString(R.string.logout_successful));
+                        if(navigateToLogin) {
+                            showToast(getResources().getString(R.string.logout_successful));
+                        }
                         WebSocketHelper.get(AbstractBaseActivity.this).disconnectWebSocket();
-                        logoutAccount();
+                        logoutAccount(navigateToLogin);
                     }
                 }
             });
         } catch (Exception e) {
             L.error(e.getMessage(), e);
-            logoutAccount();
+            logoutAccount(navigateToLogin);
         }
     }
 
-    private void logoutAccount() {
+    private void logoutAccount(boolean navigateToLogin) {
         LoginUserCache.getInstance().clearCache();
         resetCrashlyticsUserData();
         deleteSessionCookie();
         AbstractBaseActivity.selectedCourse = null;
         AbstractBaseActivity.selectedVideoPosition= 0;
         AbstractBaseActivity.sharedExamModels = null;
-        Intent intent = new Intent(AbstractBaseActivity.this, LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
-        finish();
+        if(navigateToLogin) {
+            Intent intent = new Intent(AbstractBaseActivity.this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
+        }
     }
 
     private void loadCoursesList() {

@@ -149,7 +149,7 @@ public class LoginActivity extends AbstractBaseActivity {
             startWebSocket();
             loadAppConfig();
             if(!fetchLocal) {
-                showToast(getResources().getString(R.string.login_successful));
+//                showToast(getResources().getString(R.string.login_successful));
             }
             requestClientEntityConfig(response);
         } else {
@@ -180,9 +180,10 @@ public class LoginActivity extends AbstractBaseActivity {
         if(config != null) {
             if (TextUtils.isEmpty(config.deviceId)) {
                 postClientEntityConfig(config.idUser);
-            } else if(config.deviceId.equalsIgnoreCase(SystemUtils.getImeiNumber(this))) {
+            } else if(config.deviceId.equalsIgnoreCase(SystemUtils.getUniqueID(this))) {
                 navigateToWelcomeScreen();
             } else {
+                logout(false);
                 showDeviceAffinityAlert();
             }
         } else {
@@ -193,17 +194,16 @@ public class LoginActivity extends AbstractBaseActivity {
     private void showDeviceAffinityAlert() {
         new AlertDialog.Builder(this)
             .setTitle("Login Failure")
-            .setMessage("Please Login from your assigned device”.")
+            .setMessage("Please Login from your assigned device")
             .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
-                    logout();
                 }
             }).show();
     }
 
     private void postClientEntityConfig(String userId) {
-        ApiManager.getInstance(this).postClientEntityAppConfig(userId, SystemUtils.getImeiNumber(this),
+        ApiManager.getInstance(this).postClientEntityAppConfig(userId, SystemUtils.getUniqueID(this),
                 new ApiCallback<CommonResponseModel>(this) {
                     @Override
                     public void failure(CorsaliteError error) {
