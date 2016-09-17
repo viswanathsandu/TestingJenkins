@@ -225,10 +225,16 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".activities.AppUpdateActivity"
+        <activity
+            android:name=".activities.AppUpdateActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="sensorLandscape"
             android:theme="@style/AppTheme" />
+
+        <activity android:name=".activities.SettingsActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="sensorLandscape"
+            android:theme="@style/UserProfileTheme" />
     </application>
 
 </manifest>

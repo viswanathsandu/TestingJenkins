@@ -55,4 +55,19 @@ public class ClientEntityAppConfig extends BaseResponseModel {
         }
         return null;
     }
+
+    public String getAppVersionName() {
+        try {
+            if (!TextUtils.isEmpty(updateUrl)) {
+                Uri uri = Uri.parse(updateUrl);
+                String apkFileName = uri.getLastPathSegment();
+                // apk file name will be in the format of "corsalite_1.1.5.6_101506-staging-debug.apk"
+                String versionNumber = apkFileName.substring(apkFileName.indexOf("_")+1, apkFileName.lastIndexOf("_"));
+                return versionNumber;
+            }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+        return null;
+    }
 }

@@ -17,6 +17,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -308,7 +309,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         });
     }
 
-    private void requestClientEntityConfig() {
+    protected void requestClientEntityConfig() {
         LoginResponse loginResponse = LoginUserCache.getInstance().getLoginResponse();
         if(loginResponse != null && !TextUtils.isEmpty(loginResponse.idUser) && !TextUtils.isEmpty(loginResponse.entitiyId)) {
             isClientEntityConfigApiFinished = false;
@@ -974,10 +975,22 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_logout) {
-            showLogoutDialog();
-            return true;
+        switch (item.getItemId()) {
+            case R.id.action_logout :
+                showLogoutDialog();
+                return true;
+            case R.id.action_settings :
+                startActivity(new Intent(this, SettingsActivity.class));
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -1189,7 +1202,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         isDaFuDialogShown = true;
     }
 
-    private void updateAppFromPlayStore() {
+    protected void updateAppFromPlayStore() {
         try {
             final String appPackageName = BuildConfig.APPLICATION_ID;
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
@@ -1198,7 +1211,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         }
     }
 
-    private void updateAppFromThirdParty(String apkUrl) {
+    protected void updateAppFromThirdParty(String apkUrl) {
         Intent intent = new Intent(this, AppUpdateActivity.class);
         intent.putExtra("apk_url", apkUrl);
         startActivity(intent);

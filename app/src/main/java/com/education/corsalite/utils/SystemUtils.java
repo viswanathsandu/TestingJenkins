@@ -30,9 +30,9 @@ public class SystemUtils {
             if (mTelephony.getDeviceId() != null) {
                 myAndroidDeviceId = mTelephony.getDeviceId();
             } else {
-                myAndroidDeviceId = Settings.Secure.getString(context.getContentResolver(), Build.SERIAL);
+                myAndroidDeviceId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
                 // TODO : delete before release
-                Toast.makeText(context, "Device Serial Number : "+Build.SERIAL, Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Device Id : "+Build.SERIAL, Toast.LENGTH_LONG).show();
             }
             return myAndroidDeviceId;
         } catch (Exception e) {
