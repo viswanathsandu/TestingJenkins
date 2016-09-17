@@ -27,7 +27,7 @@ public class LoginUserCache {
         return instance;
     }
 
-    public LoginResponse getLongResponse() {
+    public LoginResponse getLoginResponse() {
         return loginResponse;
     }
 

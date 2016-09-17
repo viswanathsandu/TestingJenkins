@@ -21,7 +21,8 @@ public class ClientEntityAppConfig extends BaseResponseModel {
     @SerializedName("UpdateMethod")
     private String updateMethod;
     @SerializedName("UpdateURL")
-    private String updateUrl;
+    public String updateUrl;
+    public String appVersion;
 
     public boolean isDeviceAffinityEnabled() {
         return !TextUtils.isEmpty(deviceAffinity) && deviceAffinity.equalsIgnoreCase("Y");
@@ -29,5 +30,13 @@ public class ClientEntityAppConfig extends BaseResponseModel {
 
     public boolean isForceUpgradeEnabled() {
         return !TextUtils.isEmpty(forceUpgrade) && deviceAffinity.equalsIgnoreCase("Y");
+    }
+
+    public boolean isUpdateAvailable() {
+        return !TextUtils.isEmpty(updateMethod);
+    }
+
+    public boolean isAppFromUnknownSources() {
+        return  isUpdateAvailable() && updateMethod.equalsIgnoreCase("Update URL") && !TextUtils.isEmpty(updateUrl);
     }
 }

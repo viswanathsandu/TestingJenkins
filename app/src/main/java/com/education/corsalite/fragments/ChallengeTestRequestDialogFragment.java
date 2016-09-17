@@ -126,11 +126,11 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
 
     private void fillData() {
         for (ChallengeUser user : mChallengeUsers) {
-            if(user.idStudent.equals(LoginUserCache.getInstance().getLongResponse().studentId)) {
+            if(user.idStudent.equals(LoginUserCache.getInstance().getLoginResponse().studentId)) {
                 mCurrentUser = user;
                 ((ChallengeActivity)getActivity()).challengeTestTimeDuration = mCurrentUser.duration;
-                if(LoginUserCache.getInstance().getLongResponse() != null) {
-                    LoginUserCache.getInstance().getLongResponse().displayName = mCurrentUser.displayName;
+                if(LoginUserCache.getInstance().getLoginResponse() != null) {
+                    LoginUserCache.getInstance().getLoginResponse().displayName = mCurrentUser.displayName;
                 }
                 courseTxt.setText(user.course);
                 subjectTxt.setText(user.subject);

@@ -36,7 +36,7 @@ public class SplashActivity extends AbstractBaseActivity {
             @Override
             public void onFinish() {
                 isTimerFinished = true;
-                navigateToNextScreen();
+                onLoginFlowCompleted();
             }
 
             @Override
@@ -90,7 +90,6 @@ public class SplashActivity extends AbstractBaseActivity {
                 } else {
                     showToast(getResources().getString(R.string.login_failed));
                 }
-                navigateToNextScreen();
             }
         }, fetchLocal);
     }
@@ -107,8 +106,16 @@ public class SplashActivity extends AbstractBaseActivity {
         }
     }
 
+    @Override
+    protected void onLoginFlowCompleted() {
+        super.onLoginFlowCompleted();
+        if(isShown() && isAppConfigApiFinished && isClientEntityConfigApiFinished) {
+            navigateToNextScreen();
+        }
+    }
+
     private void navigateToNextScreen() {
-        if(isTimerFinished && isLoginApiFinished) {
+        if(isShown() && isTimerFinished && isLoginApiFinished) {
             startActivity(new Intent(SplashActivity.this, isLoginSuccess ? WelcomeActivity.class : LoginActivity.class));
             finish();
         }

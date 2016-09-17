@@ -187,8 +187,8 @@ public class InviteFriendsFragment extends BaseFragment implements SearchView.On
     private void fetchDisplayName() {
         if (friendsData != null && friendsData.friendsList != null) {
             for (FriendsData.Friend friend : friendsData.friendsList) {
-                if (friend.idStudent.equals(LoginUserCache.getInstance().getLongResponse().studentId)) {
-                    LoginUserCache.getInstance().getLongResponse().displayName = friend.displayName;
+                if (friend.idStudent.equals(LoginUserCache.getInstance().getLoginResponse().studentId)) {
+                    LoginUserCache.getInstance().getLoginResponse().displayName = friend.displayName;
                 }
             }
         }

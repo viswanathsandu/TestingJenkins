@@ -255,7 +255,7 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
             bundle.putString("type", "Forum");
             bundle.putString("operation", "Edit");
             bundle.putString("post_id", forumPost.idUserPost);
-            bundle.putString("student_id", LoginUserCache.getInstance().getLongResponse().studentId);
+            bundle.putString("student_id", LoginUserCache.getInstance().getLoginResponse().studentId);
             bundle.putString("subject_id", forumPost.idCourseSubject);
             bundle.putString("chapter_id", forumPost.idCourseSubjectChapter);
             bundle.putString("topic_id", forumPost.idTopic);

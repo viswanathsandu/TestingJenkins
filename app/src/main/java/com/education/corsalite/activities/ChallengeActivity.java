@@ -102,8 +102,8 @@ public class ChallengeActivity extends AbstractBaseActivity {
                         @Override
                         public void success(UserProfileResponse userProfileResponse, Response response) {
                             if(!isDestroyed()) {
-                                if (LoginUserCache.getInstance().getLongResponse() != null) {
-                                    LoginUserCache.getInstance().getLongResponse().displayName = userProfileResponse.basicProfile.displayName;
+                                if (LoginUserCache.getInstance().getLoginResponse() != null) {
+                                    LoginUserCache.getInstance().getLoginResponse().displayName = userProfileResponse.basicProfile.displayName;
                                 }
                             }
                         }

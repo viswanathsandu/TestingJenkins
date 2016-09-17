@@ -229,7 +229,7 @@ public class EditorActivity extends AbstractBaseActivity {
     private ForumModel getComment() {
         ForumModel post = new ForumModel();
         post.userId = appPref.getUserId();
-        post.studentId = LoginUserCache.getInstance().getLongResponse().studentId;
+        post.studentId = LoginUserCache.getInstance().getLoginResponse().studentId;
         post.courseId = courseId;
         post.idCourseSubject = subjectId;
         post.idCourseSubjectChapter = chapterId;

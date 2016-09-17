@@ -3,8 +3,10 @@ package com.education.corsalite.utils;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
+import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 
@@ -28,7 +30,9 @@ public class SystemUtils {
             if (mTelephony.getDeviceId() != null) {
                 myAndroidDeviceId = mTelephony.getDeviceId();
             } else {
-                myAndroidDeviceId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+                myAndroidDeviceId = Settings.Secure.getString(context.getContentResolver(), Build.SERIAL);
+                // TODO : delete before release
+                Toast.makeText(context, "Device Serial Number : "+Build.SERIAL, Toast.LENGTH_LONG).show();
             }
             return myAndroidDeviceId;
         } catch (Exception e) {

@@ -56,6 +56,8 @@ import com.education.corsalite.models.db.AppConfig;
 import com.education.corsalite.models.db.OfflineTestObjectModel;
 import com.education.corsalite.models.db.ScheduledTestList;
 import com.education.corsalite.models.requestmodels.LogoutModel;
+import com.education.corsalite.models.responsemodels.ClientEntityAppConfig;
+import com.education.corsalite.models.responsemodels.CommonResponseModel;
 import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
@@ -115,6 +117,8 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     protected SugarDbManager dbManager;
     protected AppPref appPref;
     private boolean isLoginApiRunningInBackground = false;
+    protected boolean isAppConfigApiFinished = true;
+    protected boolean isClientEntityConfigApiFinished = true;
     private boolean isShown = false;
 
     public boolean isShown() {
@@ -282,15 +286,119 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     public void loadAppConfig() {
+        isAppConfigApiFinished = false;
         ApiManager.getInstance(this).getAppConfig(new ApiCallback<AppConfig>(this) {
             @Override
             public void success(AppConfig appConfig, Response response) {
                 super.success(appConfig, response);
+                isAppConfigApiFinished = true;
                 AbstractBaseActivity.appConfig = appConfig;
                 ApiCacheHolder.getInstance().setAppConfigResponse(appConfig);
                 dbManager.saveReqRes(ApiCacheHolder.getInstance().appConfigReqRes);
+                requestClientEntityConfig();
+            }
+
+            @Override
+            public void failure(CorsaliteError error) {
+                super.failure(error);
+                isAppConfigApiFinished = true;
+                onLoginFlowCompleted();
             }
         });
+    }
+
+    private void requestClientEntityConfig() {
+        LoginResponse loginResponse = LoginUserCache.getInstance().getLoginResponse();
+        if(loginResponse != null && !TextUtils.isEmpty(loginResponse.idUser) && !TextUtils.isEmpty(loginResponse.entitiyId)) {
+            isClientEntityConfigApiFinished = false;
+            ApiManager.getInstance(this).getClientEntityAppConfig(loginResponse.idUser, loginResponse.entitiyId,
+                    new ApiCallback<ClientEntityAppConfig>(this) {
+                        @Override
+                        public void success(ClientEntityAppConfig clientEntityAppConfig, Response response) {
+                            super.success(clientEntityAppConfig, response);
+                            isClientEntityConfigApiFinished = true;
+                            if(clientEntityAppConfig != null && !isDeviceAffinityOrUpgradeAlertShown(clientEntityAppConfig)) {
+                                onLoginFlowCompleted();
+                            }
+                        }
+
+                        @Override
+                        public void failure(CorsaliteError error) {
+                            super.failure(error);
+                            isClientEntityConfigApiFinished = true;
+                            onLoginFlowCompleted();
+                        }
+                    });
+        }
+    }
+
+    /**
+     * please override this method to do something after auto login
+     */
+    protected void onLoginFlowCompleted() {
+
+    }
+
+    private boolean isDeviceAffinityOrUpgradeAlertShown(ClientEntityAppConfig config) {
+        try {
+            if (config != null) {
+                if (TextUtils.isEmpty(config.deviceId)) {
+                    LoginResponse loginResponse = LoginUserCache.getInstance().getLoginResponse();
+                    postClientEntityConfig(loginResponse.idUser);
+                    if (isEntityAppUpgradeAlertShown(config)) {
+                        return true;
+                    }
+                } else if (!config.deviceId.toLowerCase().contains(SystemUtils.getUniqueID(this).toLowerCase())) {
+                    logout(false);
+                    showDeviceAffinityAlert();
+                    return true;
+                } else if (isEntityAppUpgradeAlertShown(config)) {
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+        return false;
+    }
+
+    private boolean isEntityAppUpgradeAlertShown(ClientEntityAppConfig config) {
+        if(config != null && config.isUpdateAvailable() && !TextUtils.isEmpty(config.appVersion)) {
+            int latestAppVersion = Integer.parseInt(config.appVersion);
+            if(latestAppVersion > BuildConfig.VERSION_CODE) {
+                showUpdateAlert(config.isForceUpgradeEnabled(), !config.isAppFromUnknownSources(), config.updateUrl);
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
+    private void showDeviceAffinityAlert() {
+        new AlertDialog.Builder(this)
+                .setTitle("Login Failure")
+                .setMessage("Please Login from your assigned device")
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).show();
+    }
+
+    private void postClientEntityConfig(String userId) {
+        ApiManager.getInstance(this).postClientEntityAppConfig(userId, SystemUtils.getUniqueID(this),
+                new ApiCallback<CommonResponseModel>(this) {
+                    @Override
+                    public void failure(CorsaliteError error) {
+                        super.failure(error);
+                    }
+
+                    @Override
+                    public void success(CommonResponseModel commonResponseModel, Response response) {
+                        super.success(commonResponseModel, response);
+                    }
+                });
     }
 
     private void relogin() {
@@ -321,6 +429,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                         setCrashlyticsUserData();
                         isLoginApiRunningInBackground = false;
                         ApiCacheHolder.getInstance().setLoginResponse(loginResponse);
+                        LoginUserCache.getInstance().setLoginResponse(loginResponse);
                         dbManager.saveReqRes(ApiCacheHolder.getInstance().login);
                         appPref.save("loginId", username);
                         appPref.save("passwordHash", passwordHash);
@@ -346,7 +455,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     protected void setToolbarForVirtualCurrency() {
         try {
-            if (LoginUserCache.getInstance().getLongResponse().isRewardRedeemEnabled()) {
+            if (LoginUserCache.getInstance().getLoginResponse().isRewardRedeemEnabled()) {
                 toolbar.findViewById(R.id.redeem_layout).setVisibility(View.VISIBLE);
             }
         } catch (Exception e) {
@@ -902,7 +1011,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 return;
             }
             LogoutModel logout = new LogoutModel();
-            logout.AuthToken = LoginUserCache.getInstance().getLongResponse().authtoken;
+            logout.AuthToken = LoginUserCache.getInstance().getLoginResponse().authtoken;
             appPref.remove("loginId");
             appPref.remove("passwordHash");
             appPref.clearUserId();
@@ -1036,7 +1145,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             if (SystemUtils.isNetworkConnected(AbstractBaseActivity.this)) {
                 int appVersionCode = BuildConfig.VERSION_CODE;
                 if(config.isforceUpgradeEnabled() && appVersionCode < config.getLatestVersionCode()) {
-                    showForceUpgradeAlert();
+                    showUpdateAlert(true, true, null);
                 }
             }
         } catch (Exception e) {
@@ -1044,23 +1153,52 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         }
     }
 
-    private void showForceUpgradeAlert() {
-        new AlertDialog.Builder(this)
+    private void showUpdateAlert(boolean isForceUpdrage, final boolean isPlayStoreUpdate, final String apkUrl) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setTitle("App Update")
-                .setMessage("Please update your app to continue")
                 .setPositiveButton("Update", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        final String appPackageName = BuildConfig.APPLICATION_ID;
                         try {
-                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                            if(isPlayStoreUpdate) {
+                                updateAppFromPlayStore();
+                            } else {
+                                updateAppFromThirdParty(apkUrl);
+                            }
                         } catch (Exception e) {
                             L.error(e.getMessage(), e);
                         }
                     }
                 })
                 .setIcon(android.R.drawable.ic_dialog_alert)
-                .setCancelable(false)
-                .show();
+                .setCancelable(false);
+        if(!isForceUpdrage) {
+            builder.setMessage("There is a new version of this app available, would you like to upgrade now?");
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+        } else {
+            builder.setMessage("There is a new version of this app available, please upgrade to continue");
+        }
+        builder.show();
+    }
+
+    private void updateAppFromPlayStore() {
+        try {
+            final String appPackageName = BuildConfig.APPLICATION_ID;
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+    }
+
+    private void updateAppFromThirdParty(String apkUrl) {
+        Intent intent = new Intent(this, AppUpdateActivity.class);
+        intent.putExtra("apk_url", apkUrl);
+        startActivity(intent);
+        finish();
     }
 
     // this method will be overridden by the classes that subscribes from event bus
