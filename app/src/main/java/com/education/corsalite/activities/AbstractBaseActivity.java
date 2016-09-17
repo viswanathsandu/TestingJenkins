@@ -347,7 +347,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     if (TextUtils.isEmpty(config.deviceId)) {
                         LoginResponse loginResponse = LoginUserCache.getInstance().getLoginResponse();
                         postClientEntityConfig(loginResponse.idUser);
-                    } else {
+                    } else if(!config.deviceId.toLowerCase().contains(SystemUtils.getUniqueID(this))){
                         logout(false);
                         showDeviceAffinityAlert();
                         return true;
