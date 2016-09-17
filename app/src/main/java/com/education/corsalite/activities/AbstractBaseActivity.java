@@ -343,17 +343,17 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     private boolean isDeviceAffinityOrUpgradeAlertShown(ClientEntityAppConfig config) {
         try {
             if (config != null) {
-                if (TextUtils.isEmpty(config.deviceId)) {
-                    LoginResponse loginResponse = LoginUserCache.getInstance().getLoginResponse();
-                    postClientEntityConfig(loginResponse.idUser);
-                    if (isEntityAppUpgradeAlertShown(config)) {
+                if(config.isDeviceAffinityEnabled()) {
+                    if (TextUtils.isEmpty(config.deviceId)) {
+                        LoginResponse loginResponse = LoginUserCache.getInstance().getLoginResponse();
+                        postClientEntityConfig(loginResponse.idUser);
+                    } else {
+                        logout(false);
+                        showDeviceAffinityAlert();
                         return true;
                     }
-                } else if (!config.deviceId.toLowerCase().contains(SystemUtils.getUniqueID(this).toLowerCase())) {
-                    logout(false);
-                    showDeviceAffinityAlert();
-                    return true;
-                } else if (isEntityAppUpgradeAlertShown(config)) {
+                }
+                if (isEntityAppUpgradeAlertShown(config)) {
                     return true;
                 }
             }

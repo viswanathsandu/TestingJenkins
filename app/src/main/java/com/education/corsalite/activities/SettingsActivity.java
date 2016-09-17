@@ -80,7 +80,12 @@ public class SettingsActivity extends AbstractBaseActivity {
         try {
             if (clientEntityAppConfig != null) {
                 currentVersionTxt.setText(BuildConfig.VERSION_NAME);
-                int latestAppVersion = Integer.parseInt(clientEntityAppConfig.getAppVersionNumber());
+                int latestAppVersion;
+                if(TextUtils.isEmpty(clientEntityAppConfig.getAppVersionNumber())) {
+                    latestAppVersion = Integer.parseInt(clientEntityAppConfig.getAppVersionNumber());
+                } else {
+                    latestAppVersion = AbstractBaseActivity.appConfig.getLatestVersionCode();
+                }
                 if (latestAppVersion > BuildConfig.VERSION_CODE) {
                     latestVersionLayout.setVisibility(View.VISIBLE);
                     latestVersionTxt.setText(clientEntityAppConfig.getAppVersionName());
