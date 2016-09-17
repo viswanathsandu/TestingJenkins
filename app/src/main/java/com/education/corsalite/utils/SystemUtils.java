@@ -5,7 +5,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
-import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 
@@ -30,8 +29,6 @@ public class SystemUtils {
                 myAndroidDeviceId = mTelephony.getDeviceId();
             } else {
                 myAndroidDeviceId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
-                // TODO : delete before release
-                Toast.makeText(context, "Device Id : "+myAndroidDeviceId, Toast.LENGTH_LONG).show();
             }
             return myAndroidDeviceId;
         } catch (Exception e) {

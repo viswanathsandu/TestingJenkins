@@ -105,7 +105,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     public static int selectedVideoPosition;
     private static Course selectedCourse;
     private static List<ExamModel> sharedExamModels;
-    private static AppConfig appConfig;
+    public static AppConfig appConfig;
 
     private List<Course> courses;
     public Toolbar toolbar;
@@ -1188,11 +1188,12 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 .setCancelable(false);
         if(!isForceUpdrage) {
             builder.setMessage("There is a new version of this app available, would you like to upgrade now?");
-            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            builder.setNegativeButton("Later", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     dialogInterface.dismiss();
                     AbstractBaseActivity.this.isDaFuDialogShown = false;
+                    onLoginFlowCompleted();
                 }
             });
         } else {

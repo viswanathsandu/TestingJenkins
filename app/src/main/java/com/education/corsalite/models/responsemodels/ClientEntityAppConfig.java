@@ -3,6 +3,8 @@ package com.education.corsalite.models.responsemodels;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import com.education.corsalite.activities.AbstractBaseActivity;
+import com.education.corsalite.models.db.AppConfig;
 import com.education.corsalite.utils.L;
 import com.google.gson.annotations.SerializedName;
 
@@ -63,7 +65,6 @@ public class ClientEntityAppConfig extends BaseResponseModel {
             if (!TextUtils.isEmpty(getUpdateUrl())) {
                 Uri uri = Uri.parse(getUpdateUrl());
                 String apkFileName = new String(uri.getLastPathSegment());
-//                String apkFileName = "corsalite_1.1.6_101600-staging-debug.apk"; //uri.getLastPathSegment();
                 // apk file name will be in the format of "corsalite_1.1.5.6_101506-staging-debug.apk"
                 String [] data = apkFileName.split("-");
                 String [] versionDetails = data[0].split("_");
@@ -73,11 +74,14 @@ public class ClientEntityAppConfig extends BaseResponseModel {
         } catch (Exception e) {
             L.error(e.getMessage(), e);
         }
+        AppConfig config = AbstractBaseActivity.appConfig;
+        if(config != null && config.getLatestVersionCode() != 0) {
+            return String.valueOf(config.getLatestVersionCode());
+        }
         return null;
     }
 
     public String getUpdateUrl() {
-//        return updateUrl;
-        return "http://muscatmatrimonial.com/testing/corsalite_1.1.6.7_101607-staging-release.apk";
+        return updateUrl;
     }
 }
