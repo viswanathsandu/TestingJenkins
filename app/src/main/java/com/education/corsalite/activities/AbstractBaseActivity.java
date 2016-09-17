@@ -17,7 +17,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -365,10 +364,10 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     private boolean isEntityAppUpgradeAlertShown(ClientEntityAppConfig config) {
-        if(config != null && config.isUpdateAvailable() && !TextUtils.isEmpty(config.getAppVersion())) {
-            int latestAppVersion = Integer.parseInt(config.getAppVersion());
+        if(config != null && config.isUpdateAvailable() && !TextUtils.isEmpty(config.getAppVersionNumber())) {
+            int latestAppVersion = Integer.parseInt(config.getAppVersionNumber());
             if(latestAppVersion > BuildConfig.VERSION_CODE) {
-                showUpdateAlert(config.isForceUpgradeEnabled(), !config.isAppFromUnknownSources(), config.updateUrl);
+                showUpdateAlert(config.isForceUpgradeEnabled(), !config.isAppFromUnknownSources(), config.getUpdateUrl());
                 return true;
             }
         }
@@ -648,6 +647,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             return;
         }
         navigationView.findViewById(R.id.navigation_welcome).setVisibility(View.VISIBLE);
+        navigationView.findViewById(R.id.navigation_settings).setVisibility(View.VISIBLE);
         if (config.isMyProfileEnabled()) {
             navigationView.findViewById(R.id.navigation_profile).setVisibility(View.VISIBLE);
         }
@@ -849,6 +849,17 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             }
         });
 
+        navigationView.findViewById(R.id.navigation_settings).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (SystemUtils.isNetworkConnected(AbstractBaseActivity.this)) {
+                    startActivity(new Intent(AbstractBaseActivity.this, SettingsActivity.class));
+                } else {
+                    showToast("Settings required network connection");
+                }
+            }
+        });
+
         navigationView.findViewById(R.id.navigation_logout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -975,21 +986,10 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_logout :
                 showLogoutDialog();
-                return true;
-            case R.id.action_settings :
-                startActivity(new Intent(this, SettingsActivity.class));
                 return true;
         }
         return super.onOptionsItemSelected(item);

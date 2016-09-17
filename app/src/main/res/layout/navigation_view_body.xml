@@ -89,6 +89,12 @@
                 style="@style/navigation_drawer_element" />
 
             <TextView
+                android:id="@+id/navigation_settings"
+                android:text="@string/action_settings"
+                android:drawableLeft="@drawable/ico_sidemenu_settings"
+                style="@style/navigation_drawer_element" />
+
+            <TextView
                 android:id="@+id/navigation_logout"
                 android:text="@string/log_out"
                 android:drawableLeft="@drawable/ico_sidemenu_logout"

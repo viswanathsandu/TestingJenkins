@@ -54,11 +54,13 @@ public class SettingsActivity extends AbstractBaseActivity {
     protected void requestClientEntityConfig() {
         LoginResponse loginResponse = LoginUserCache.getInstance().getLoginResponse();
         if(loginResponse != null && !TextUtils.isEmpty(loginResponse.idUser) && !TextUtils.isEmpty(loginResponse.entitiyId)) {
+            showProgress();
             ApiManager.getInstance(this).getClientEntityAppConfig(loginResponse.idUser, loginResponse.entitiyId,
                     new ApiCallback<ClientEntityAppConfig>(this) {
                         @Override
                         public void success(ClientEntityAppConfig clientEntityAppConfig, Response response) {
                             super.success(clientEntityAppConfig, response);
+                            closeProgress();
                             showData(clientEntityAppConfig);
                             SettingsActivity.this.cliententityconfig = clientEntityAppConfig;
                         }
@@ -66,7 +68,9 @@ public class SettingsActivity extends AbstractBaseActivity {
                         @Override
                         public void failure(CorsaliteError error) {
                             super.failure(error);
-                            showToast("something");
+                            closeProgress();
+                            showToast("something went wrong");
+                            finish();
                         }
                     });
         }
@@ -76,7 +80,7 @@ public class SettingsActivity extends AbstractBaseActivity {
         try {
             if (clientEntityAppConfig != null) {
                 currentVersionTxt.setText(BuildConfig.VERSION_NAME);
-                int latestAppVersion = Integer.parseInt(clientEntityAppConfig.getAppVersion());
+                int latestAppVersion = Integer.parseInt(clientEntityAppConfig.getAppVersionNumber());
                 if (latestAppVersion > BuildConfig.VERSION_CODE) {
                     latestVersionLayout.setVisibility(View.VISIBLE);
                     latestVersionTxt.setText(clientEntityAppConfig.getAppVersionName());
@@ -97,7 +101,7 @@ public class SettingsActivity extends AbstractBaseActivity {
     public void onUpgradeClicked() {
         if(cliententityconfig != null) {
             if(cliententityconfig.isAppFromUnknownSources()) {
-                updateAppFromThirdParty(cliententityconfig.updateUrl);
+                updateAppFromThirdParty(cliententityconfig.getUpdateUrl());
             } else {
                 updateAppFromPlayStore();
             }

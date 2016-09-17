@@ -3,7 +3,6 @@ package com.education.corsalite.utils;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Build;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.widget.Toast;
@@ -32,7 +31,7 @@ public class SystemUtils {
             } else {
                 myAndroidDeviceId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
                 // TODO : delete before release
-                Toast.makeText(context, "Device Id : "+Build.SERIAL, Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Device Id : "+myAndroidDeviceId, Toast.LENGTH_LONG).show();
             }
             return myAndroidDeviceId;
         } catch (Exception e) {

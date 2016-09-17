@@ -23,14 +23,14 @@ public class ClientEntityAppConfig extends BaseResponseModel {
     @SerializedName("UpdateMethod")
     private String updateMethod;
     @SerializedName("UpdateURL")
-    public String updateUrl;
+    private String updateUrl;
 
     public boolean isDeviceAffinityEnabled() {
         return !TextUtils.isEmpty(deviceAffinity) && deviceAffinity.equalsIgnoreCase("Y");
     }
 
     public boolean isForceUpgradeEnabled() {
-        return !TextUtils.isEmpty(forceUpgrade) && deviceAffinity.equalsIgnoreCase("Y");
+        return !TextUtils.isEmpty(forceUpgrade) && forceUpgrade.equalsIgnoreCase("Y");
     }
 
     public boolean isUpdateAvailable() {
@@ -41,13 +41,15 @@ public class ClientEntityAppConfig extends BaseResponseModel {
         return  isUpdateAvailable() && updateMethod.equalsIgnoreCase("Update URL") && !TextUtils.isEmpty(updateUrl);
     }
 
-    public String getAppVersion() {
+    public String getAppVersionName() {
         try {
-            if (!TextUtils.isEmpty(updateUrl)) {
-                Uri uri = Uri.parse(updateUrl);
-                String apkFileName = uri.getLastPathSegment();
+            if (!TextUtils.isEmpty(getUpdateUrl())) {
+                Uri uri = Uri.parse(getUpdateUrl());
+                String apkFileName = new String(uri.getLastPathSegment());
+                L.info("Apk File Name :" + apkFileName );
                 // apk file name will be in the format of "corsalite_1.1.5.6_101506-staging-debug.apk"
-                String versionNumber = apkFileName.substring(apkFileName.lastIndexOf("_")+1, apkFileName.indexOf("-"));
+                String[] data = apkFileName.split("_");
+                String versionNumber = data[1]; //corsalite_1.1.6_101600-staging-debug.apk
                 return versionNumber;
             }
         } catch (Exception e) {
@@ -56,18 +58,26 @@ public class ClientEntityAppConfig extends BaseResponseModel {
         return null;
     }
 
-    public String getAppVersionName() {
+    public String getAppVersionNumber() {
         try {
-            if (!TextUtils.isEmpty(updateUrl)) {
-                Uri uri = Uri.parse(updateUrl);
-                String apkFileName = uri.getLastPathSegment();
+            if (!TextUtils.isEmpty(getUpdateUrl())) {
+                Uri uri = Uri.parse(getUpdateUrl());
+                String apkFileName = new String(uri.getLastPathSegment());
+//                String apkFileName = "corsalite_1.1.6_101600-staging-debug.apk"; //uri.getLastPathSegment();
                 // apk file name will be in the format of "corsalite_1.1.5.6_101506-staging-debug.apk"
-                String versionNumber = apkFileName.substring(apkFileName.indexOf("_")+1, apkFileName.lastIndexOf("_"));
+                String [] data = apkFileName.split("-");
+                String [] versionDetails = data[0].split("_");
+                String versionNumber = versionDetails[versionDetails.length - 1];
                 return versionNumber;
             }
         } catch (Exception e) {
             L.error(e.getMessage(), e);
         }
         return null;
+    }
+
+    public String getUpdateUrl() {
+//        return updateUrl;
+        return "http://muscatmatrimonial.com/testing/corsalite_1.1.6.7_101607-staging-release.apk";
     }
 }
