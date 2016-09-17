@@ -120,6 +120,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     protected boolean isAppConfigApiFinished = true;
     protected boolean isClientEntityConfigApiFinished = true;
     private boolean isShown = false;
+    protected boolean isDaFuDialogShown = false;
 
     public boolean isShown() {
         return isShown;
@@ -363,8 +364,8 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     private boolean isEntityAppUpgradeAlertShown(ClientEntityAppConfig config) {
-        if(config != null && config.isUpdateAvailable() && !TextUtils.isEmpty(config.appVersion)) {
-            int latestAppVersion = Integer.parseInt(config.appVersion);
+        if(config != null && config.isUpdateAvailable() && !TextUtils.isEmpty(config.getAppVersion())) {
+            int latestAppVersion = Integer.parseInt(config.getAppVersion());
             if(latestAppVersion > BuildConfig.VERSION_CODE) {
                 showUpdateAlert(config.isForceUpgradeEnabled(), !config.isAppFromUnknownSources(), config.updateUrl);
                 return true;
@@ -373,8 +374,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         return false;
     }
 
-
-
     private void showDeviceAffinityAlert() {
         new AlertDialog.Builder(this)
                 .setTitle("Login Failure")
@@ -382,8 +381,10 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
+                        AbstractBaseActivity.this.isDaFuDialogShown = false;
                     }
                 }).show();
+        isDaFuDialogShown = true;
     }
 
     private void postClientEntityConfig(String userId) {
@@ -1164,6 +1165,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                             } else {
                                 updateAppFromThirdParty(apkUrl);
                             }
+                            AbstractBaseActivity.this.isDaFuDialogShown = false;
                         } catch (Exception e) {
                             L.error(e.getMessage(), e);
                         }
@@ -1177,12 +1179,14 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     dialogInterface.dismiss();
+                    AbstractBaseActivity.this.isDaFuDialogShown = false;
                 }
             });
         } else {
             builder.setMessage("There is a new version of this app available, please upgrade to continue");
         }
         builder.show();
+        isDaFuDialogShown = true;
     }
 
     private void updateAppFromPlayStore() {

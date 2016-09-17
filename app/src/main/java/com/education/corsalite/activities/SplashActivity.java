@@ -109,13 +109,13 @@ public class SplashActivity extends AbstractBaseActivity {
     @Override
     protected void onLoginFlowCompleted() {
         super.onLoginFlowCompleted();
-        if(isShown() && isAppConfigApiFinished && isClientEntityConfigApiFinished) {
+        if(isShown() && !isDaFuDialogShown && isAppConfigApiFinished && isClientEntityConfigApiFinished) {
             navigateToNextScreen();
         }
     }
 
     private void navigateToNextScreen() {
-        if(isShown() && isTimerFinished && isLoginApiFinished) {
+        if(isShown() && !isDaFuDialogShown && isTimerFinished && isLoginApiFinished) {
             startActivity(new Intent(SplashActivity.this, isLoginSuccess ? WelcomeActivity.class : LoginActivity.class));
             finish();
         }

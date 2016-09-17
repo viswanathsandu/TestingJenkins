@@ -1,7 +1,9 @@
 package com.education.corsalite.models.responsemodels;
 
+import android.net.Uri;
 import android.text.TextUtils;
 
+import com.education.corsalite.utils.L;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -22,7 +24,6 @@ public class ClientEntityAppConfig extends BaseResponseModel {
     private String updateMethod;
     @SerializedName("UpdateURL")
     public String updateUrl;
-    public String appVersion;
 
     public boolean isDeviceAffinityEnabled() {
         return !TextUtils.isEmpty(deviceAffinity) && deviceAffinity.equalsIgnoreCase("Y");
@@ -38,5 +39,20 @@ public class ClientEntityAppConfig extends BaseResponseModel {
 
     public boolean isAppFromUnknownSources() {
         return  isUpdateAvailable() && updateMethod.equalsIgnoreCase("Update URL") && !TextUtils.isEmpty(updateUrl);
+    }
+
+    public String getAppVersion() {
+        try {
+            if (!TextUtils.isEmpty(updateUrl)) {
+                Uri uri = Uri.parse(updateUrl);
+                String apkFileName = uri.getLastPathSegment();
+                // apk file name will be in the format of "corsalite_1.1.5.6_101506-staging-debug.apk"
+                String versionNumber = apkFileName.substring(apkFileName.lastIndexOf("_")+1, apkFileName.indexOf("-"));
+                return versionNumber;
+            }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+        return null;
     }
 }
