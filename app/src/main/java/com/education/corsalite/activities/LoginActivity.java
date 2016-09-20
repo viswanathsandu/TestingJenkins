@@ -147,11 +147,22 @@ public class LoginActivity extends AbstractBaseActivity {
             if(!fetchLocal) {
                 showToast(getResources().getString(R.string.login_successful));
             }
-            startActivity(new Intent(LoginActivity.this, WelcomeActivity.class));
-            finish();
         } else {
             showToast(getResources().getString(R.string.login_failed));
         }
+    }
+
+    @Override
+    protected void onLoginFlowCompleted() {
+        super.onLoginFlowCompleted();
+        if(isShown() && isAppConfigApiFinished && isClientEntityConfigApiFinished) {
+            navigateToWelcomeScreen();
+        }
+    }
+
+    private void navigateToWelcomeScreen() {
+        startActivity(new Intent(LoginActivity.this, WelcomeActivity.class));
+        finish();
     }
 
     private boolean checkForValidEmail(){

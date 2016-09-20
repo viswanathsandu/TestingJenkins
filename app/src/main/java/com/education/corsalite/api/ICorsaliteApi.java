@@ -7,6 +7,7 @@ import com.education.corsalite.models.responsemodels.ChallengeCompleteResponseMo
 import com.education.corsalite.models.responsemodels.ChallengeStartResponseModel;
 import com.education.corsalite.models.responsemodels.ChallengeUser;
 import com.education.corsalite.models.responsemodels.ChallengeUserListResponse;
+import com.education.corsalite.models.responsemodels.ClientEntityAppConfig;
 import com.education.corsalite.models.responsemodels.CommonResponseModel;
 import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ContentIndex;
@@ -323,4 +324,11 @@ public interface ICorsaliteApi {
 
     @GET("/curriculum")
     void getCurriculumData(@Query("idStudent") String studentId, @Query("idCourse") String courseId, @Query("idEntity") String entityId, @Query("pageType") String pageType, @Query("soryBy") String sortBy, ApiCallback<CurriculumResponseModel> callback);
+
+    @GET("/clientEntityAppconfig")
+    void getClientEntityAppConfig(@Query("idUser") String idUser, @Query("idEntity") String idEntity, ApiCallback<ClientEntityAppConfig> callback);
+
+    @Headers("Content-Type:application/x-www-form-urlencoded")
+    @POST("/clientEntityAppConfig")
+    void postClientEntityAppConfig(@Body TypedString update, ApiCallback<CommonResponseModel> callback);
 }

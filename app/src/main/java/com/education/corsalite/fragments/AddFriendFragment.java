@@ -170,8 +170,8 @@ public class AddFriendFragment extends BaseFragment implements SearchView.OnQuer
     private void fetchDisplayName() {
         if (friends != null ) {
             for (FriendsData.Friend friend : friends) {
-                if (friend.idStudent.equals(LoginUserCache.getInstance().getLongResponse().studentId)) {
-                    LoginUserCache.getInstance().getLongResponse().displayName = friend.displayName;
+                if (friend.idStudent.equals(LoginUserCache.getInstance().getLoginResponse().studentId)) {
+                    LoginUserCache.getInstance().getLoginResponse().displayName = friend.displayName;
                 }
             }
         }

@@ -72,7 +72,7 @@ public class WelcomeActivity extends AbstractBaseActivity implements View.OnClic
     protected void onResume() {
         super.onResume();
         try {
-            if (LoginUserCache.getInstance().getLongResponse().isRewardRedeemEnabled()) {
+            if (LoginUserCache.getInstance().getLoginResponse().isRewardRedeemEnabled()) {
                 redeemBtn.setVisibility(View.VISIBLE);
             } else {
                 redeemBtn.setVisibility(View.GONE);

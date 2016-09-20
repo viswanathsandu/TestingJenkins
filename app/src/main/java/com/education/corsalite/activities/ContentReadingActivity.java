@@ -259,7 +259,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
         Bundle bundle = new Bundle();
         bundle.putString("type", "Note");
         bundle.putString("operation", "Add");
-        bundle.putString("student_id", LoginUserCache.getInstance().getLongResponse().studentId);
+        bundle.putString("student_id", LoginUserCache.getInstance().getLoginResponse().studentId);
         bundle.putString("topic_id", topicModelList.get(spTopic.getSelectedItemPosition()).idTopic);
         bundle.putString("content_id", contentModelList.get(mContentIdPosition).idContent);
         bundle.putString("content", htmlText);
@@ -272,7 +272,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
         Bundle bundle = new Bundle();
         bundle.putString("type", "Forum");
         bundle.putString("operation", "Add");
-        bundle.putString("student_id", LoginUserCache.getInstance().getLongResponse().studentId);
+        bundle.putString("student_id", LoginUserCache.getInstance().getLoginResponse().studentId);
         bundle.putString("subject_id", subjectModelList.get(spSubject.getSelectedItemPosition()).idSubject);
         bundle.putString("chapter_id", chapterModelList.get(spChapter.getSelectedItemPosition()).idChapter);
         bundle.putString("topic_id", topicModelList.get(spTopic.getSelectedItemPosition()).idTopic);

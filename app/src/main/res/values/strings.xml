@@ -165,4 +165,17 @@
     <string name="title_activity_crash_handler">CrashHandlerActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <string name="app_update_instructions">
+
+
+        1. You may be warned that you can\'t install from unknown sources. If so, tap the Settings button in the pop-up, scroll down to the Device Administration subheading, tap Unknown Sources, and OK in the following warning pop-up. You may need to tap the back button at the bottom of the screen to return to the browser and tap the download button again \n\n
+
+        2. Tap the Next button in the permissions pop-up that appears after completing download, then tap Install \n\n
+
+        3. Once app install completed message is shown, tap Done \n\n
+
+        4. Open app from device apps
+
+    </string>
 </resources>

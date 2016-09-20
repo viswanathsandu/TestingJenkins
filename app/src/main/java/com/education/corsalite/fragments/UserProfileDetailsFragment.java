@@ -97,7 +97,7 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
     public void onResume() {
         super.onResume();
         try {
-            if (LoginUserCache.getInstance().getLongResponse().isRewardRedeemEnabled()) {
+            if (LoginUserCache.getInstance().getLoginResponse().isRewardRedeemEnabled()) {
                 redeemBtn.setVisibility(View.VISIBLE);
             }
         } catch (Exception e) {
