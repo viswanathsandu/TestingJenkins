@@ -166,6 +166,8 @@ public class WelcomeActivity extends AbstractBaseActivity implements View.OnClic
                 loadStudyCenterScreen();
                 break;
             case R.id.messages_btn:
+                Intent messagesIntent = new Intent(this, MessagesActivity.class);
+                startActivity(messagesIntent);
                 break;
             case R.id.scheduled_tests_btn:
                 showScheduledTestsDialog();

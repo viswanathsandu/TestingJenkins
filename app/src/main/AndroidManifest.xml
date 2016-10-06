@@ -230,11 +230,12 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="sensorLandscape"
             android:theme="@style/AppTheme" />
-
-        <activity android:name=".activities.SettingsActivity"
+        <activity
+            android:name=".activities.SettingsActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="sensorLandscape"
             android:theme="@style/UserProfileTheme" />
+        <activity android:name=".activities.MessagesActivity"></activity>
     </application>
 
 </manifest>

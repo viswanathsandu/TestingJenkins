@@ -119,8 +119,7 @@
                     android:layout_height="wrap_content"
                     android:background="#7195BF"
                     android:text="Messages"
-                    android:textColor="@color/text_white"
-                    android:visibility="gone" />
+                    android:textColor="@color/text_white"/>
 
                 <com.education.corsalite.views.CustomButton
                     android:id="@+id/recommended_reading_btn"
