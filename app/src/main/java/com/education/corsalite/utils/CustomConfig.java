@@ -22,5 +22,7 @@ public class CustomConfig {
     @SerializedName("ForceUpgrade")
     public String forceUpgrade = "false";
     @SerializedName("LatestVersionCode")
-    public String latestVersionCode = "70";
+    public String latestVersionCode;
+    @SerializedName("LatestVersionName")
+    public String latestVersionName;
 }

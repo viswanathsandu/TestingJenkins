@@ -11,12 +11,14 @@ public class Constants {
     public final static String CONTENT_FOLDER = "Content";
     public final static String VIDEO_FOLDER = "Videos";
     public final static String TESTS_FOLDER = "Tests";
+    public final static String APK_FOLDER = "Apks";
 
     public static final String HTML_PREFIX_URL = "file:///";
 
     public static final String HTML_FILE = "html";
     public static final String VIDEO_FILE = "mpg";
     public static final String TEST_FILE = "tst";
+    public static final String APK_FILE = "app.apk";
 
     public static final String EXERCISE_MODEL = "exercise_model";
     public static final String SELECTED_POSITION =  "selectedPosition";

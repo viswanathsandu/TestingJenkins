@@ -120,7 +120,7 @@ public class WebSocketHelper {
             if(mContext == null || !SystemUtils.isNetworkConnected(mContext)) {
                 return;
             }
-            if (LoginUserCache.getInstance().getLongResponse() != null) {
+            if (LoginUserCache.getInstance().getLoginResponse() != null) {
                 connectWebSocket();
             }
         } catch (Exception e) {

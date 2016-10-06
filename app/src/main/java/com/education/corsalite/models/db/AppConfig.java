@@ -117,6 +117,17 @@ public class AppConfig extends BaseResponseModel {
         return 0;
     }
 
+    public String getLatestVersionName() {
+        try {
+            if (customConfig != null && customConfig.get(0) != null && !TextUtils.isEmpty(customConfig.get(0).latestVersionName)) {
+                return customConfig.get(0).latestVersionName;
+            }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+        return "";
+    }
+
     private Boolean isEnabled(String text) {
         return (text != null && text.equalsIgnoreCase("true"));
     }

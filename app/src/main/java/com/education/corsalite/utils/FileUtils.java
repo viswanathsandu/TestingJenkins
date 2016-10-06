@@ -102,6 +102,16 @@ public class FileUtils {
         return filePath;
     }
 
+    public String getApkFolderPath() {
+        String filePath = getAppRootFolder() + File.separator + Constants.APK_FOLDER;
+        String fileName = Constants.APK_FILE;
+        File file = new File(filePath, fileName);
+        if(!file.exists()) {
+            file.mkdirs();
+        }
+        return file.getAbsolutePath();
+    }
+
     public String  getExerciseFileName() {
         return "e." + Constants.TEST_FILE;
     }
