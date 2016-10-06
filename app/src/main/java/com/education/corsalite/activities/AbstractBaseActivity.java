@@ -2,6 +2,7 @@ package com.education.corsalite.activities;
 
 import android.app.AlarmManager;
 import android.app.Dialog;
+import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -92,6 +93,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import br.com.goncalves.pugnotification.notification.PugNotification;
 import de.greenrobot.event.EventBus;
 import retrofit.client.Response;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
@@ -1397,21 +1399,36 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         cal = Calendar.getInstance();
         Calendar expiry = Calendar.getInstance();
         expiry.setTimeInMillis(scheduledTime.getTime());
-        Intent broadCastIntent = new Intent(this, NotifyReceiver.class);
-        broadCastIntent.putExtra("title", examName);
-        broadCastIntent.putExtra("sub_title", "Exam starts at "+new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime)+". Please Download");
-        broadCastIntent.putExtra("id", Data.getInt(examId));
-        broadCastIntent.putExtra("time", scheduledTime.getTime());
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, (int)TimeUtils.currentTimeInMillis(),
-                broadCastIntent, PendingIntent.FLAG_ONE_SHOT);
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
-        L.info("Scheduled Download Notification for "+TimeUtils.getDateTimeString(cal.getTimeInMillis()));
+        PugNotification.with(this)
+                .load()
+                .identifier(Data.getInt(examId+Constants.EXAM_DOWNLOADED_REQUEST_ID))
+                .title(examName)
+                .message("Exam starts at "+new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime)+". Please Download")
+                .bigTextStyle("Exam starts at "+new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime)+". Please Download")
+                .smallIcon(R.drawable.ic_launcher)
+                .largeIcon(R.drawable.ic_launcher)
+                .flags(Notification.DEFAULT_ALL)
+                .simple()
+                .build();
+        L.info("Scheduled Download Notification for "+TimeUtils.getDateString(cal.getTimeInMillis()));
+        PugNotification.with(this)
+                .load()
+                .identifier(Data.getInt(examId+Constants.EXAM_DOWNLOADED_REQUEST_ID))
+                .title(examName)
+                .message("Exam starts at "+new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime)+". Please Download")
+                .bigTextStyle("Exam starts at "+new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime)+". Please Download")
+                .smallIcon(R.drawable.ic_launcher)
+                .largeIcon(R.drawable.ic_launcher)
+                .flags(Notification.DEFAULT_ALL)
+                .simple()
+                .build();
+        L.info("Scheduled Download Notification for "+TimeUtils.getDateString(cal.getTimeInMillis()));
         // cancel notification
         Intent intent = new Intent(this, NotifyReceiver.class);
         intent.setAction("CANCEL_NOTIFICATION");
-        intent.putExtra("id", Data.getInt(examId));
+        intent.putExtra("id", Data.getInt(examId+Constants.EXAM_DOWNLOADED_REQUEST_ID));
         PendingIntent cancelDownloadNotifIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC_WAKEUP, expiry.getTimeInMillis(), cancelDownloadNotifIntent);
     }
 
@@ -1427,21 +1444,24 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         if(cal.getTimeInMillis() < TimeUtils.currentTimeInMillis()) {
             cal = Calendar.getInstance();
         }
-        Intent broadCastIntent = new Intent(this, NotifyReceiver.class);
-        broadCastIntent.putExtra("title", examName);
-        broadCastIntent.putExtra("sub_title", "Exam starts at "+new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime));
-        broadCastIntent.putExtra("id", Data.getInt(examId));
-        broadCastIntent.putExtra("time", scheduledTime.getTime());
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, (int)TimeUtils.currentTimeInMillis(),
-                broadCastIntent, PendingIntent.FLAG_ONE_SHOT);
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
-        L.info("Scheduled Advanced Notification for "+TimeUtils.getDateTimeString(cal.getTimeInMillis()));
+        PugNotification.with(this)
+                .load()
+                .identifier(Data.getInt(examId+Constants.EXAM_ADVANCED_NOTIFICATION_REQUEST_ID))
+                .title(examName)
+                .message("Exam starts at "+new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime))
+                .bigTextStyle("Exam starts at "+new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime))
+                .smallIcon(R.drawable.ic_launcher)
+                .largeIcon(R.drawable.ic_launcher)
+                .flags(Notification.DEFAULT_ALL)
+                .simple()
+                .build();
+        L.info("Scheduled Advanced Notification for "+TimeUtils.getDateString(cal.getTimeInMillis()));
         // cancel notification
         Intent intent = new Intent(this, NotifyReceiver.class);
         intent.setAction("CANCEL_NOTIFICATION");
-        intent.putExtra("id", Data.getInt(examId));
+        intent.putExtra("id", Data.getInt(examId+Constants.EXAM_ADVANCED_NOTIFICATION_REQUEST_ID));
         PendingIntent cancelDownloadNotifIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC_WAKEUP, expiry.getTimeInMillis(), cancelDownloadNotifIntent);
     }
 
@@ -1453,36 +1473,25 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             return;
         }
         Intent broadCastIntent = new Intent(this, NotifyReceiver.class);
-        broadCastIntent.putExtra("title", examName);
-        broadCastIntent.putExtra("sub_title", "Exam will start at "+new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime));
         broadCastIntent.putExtra("test_question_paper_id", examId);
         broadCastIntent.putExtra("start_exam", true);
-        broadCastIntent.putExtra("id", Data.getInt(examId));
-        broadCastIntent.putExtra("time", scheduledTime.getTime());
+        PugNotification.with(this)
+                .load()
+                .identifier(Data.getInt(examId+Constants.EXAM_STARTED_REQUEST_ID))
+                .when(cal.getTimeInMillis())
+                .title(examName)
+                .message("Exam will start at "+new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime))
+                .bigTextStyle("Exam will start at "+new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime))
+                .smallIcon(R.drawable.ic_launcher)
+                .largeIcon(R.drawable.ic_launcher)
+                .flags(Notification.DEFAULT_ALL)
+                .simple()
+                .build();
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, (int)TimeUtils.currentTimeInMillis(),
                 broadCastIntent, PendingIntent.FLAG_ONE_SHOT);
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
-        L.info("Scheduled Started Notification for "+TimeUtils.getDateTimeString(cal.getTimeInMillis()));
-    }
-
-    private void examForceStartNotification(String examId, String examName, Date scheduledTime) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(scheduledTime);
-        cal.add(Calendar.SECOND, -15);
-        if(TimeUtils.currentTimeInMillis() > cal.getTimeInMillis()) {
-            return;
-        }
-        Intent broadCastIntent = new Intent(this, NotifyReceiver.class);
-        broadCastIntent.putExtra("test_question_paper_id", examId);
-        broadCastIntent.putExtra("start_exam", true);
-        broadCastIntent.putExtra("id", Data.getInt(examId));
-        broadCastIntent.putExtra("time", scheduledTime.getTime());
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, (int)TimeUtils.currentTimeInMillis(),
-                broadCastIntent, PendingIntent.FLAG_ONE_SHOT);
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
-        L.info("Scheduled Started Notification for "+TimeUtils.getDateTimeString(cal.getTimeInMillis()));
+        L.info("Scheduled Started Notification for "+TimeUtils.getDateString(cal.getTimeInMillis()));
     }
 
     public void onEventMainThread(com.education.corsalite.event.Toast toast) {
