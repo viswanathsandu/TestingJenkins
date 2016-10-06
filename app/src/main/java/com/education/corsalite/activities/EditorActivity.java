@@ -246,6 +246,10 @@ public class EditorActivity extends AbstractBaseActivity {
     }
 
     private void addContent() {
+        if(updateContent.trim().isEmpty()) {
+            showToast("Content can not be empty");
+            return;
+        }
         if (type.equalsIgnoreCase("Note")) {
             addNotes();
         } else if (type.equalsIgnoreCase("Forum")) {
@@ -256,6 +260,10 @@ public class EditorActivity extends AbstractBaseActivity {
     }
 
     private void editContent() {
+        if(updateContent.trim().isEmpty()) {
+            showToast("Content can not be empty");
+            return;
+        }
         if (type.equalsIgnoreCase("Note")) {
             editNotes();
         } else if (type.equalsIgnoreCase("Forum")) {

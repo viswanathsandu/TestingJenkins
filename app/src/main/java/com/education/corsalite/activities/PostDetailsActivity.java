@@ -19,8 +19,6 @@ import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.ForumPost;
 import com.education.corsalite.models.responsemodels.FourmCommentPostModel;
 
-import java.util.ArrayList;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import retrofit.client.Response;
@@ -43,7 +41,7 @@ public class PostDetailsActivity extends AbstractBaseActivity implements Comment
         frameLayout.addView(myView);
         ButterKnife.bind(this, myView);
         setToolbarForPostcomments();
-        toolbar.findViewById(R.id.new_post_btn).setOnClickListener(new View.OnClickListener() {
+        toolbar.findViewById(R.id.comment_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onNewCommentClicked();
@@ -71,7 +69,7 @@ public class PostDetailsActivity extends AbstractBaseActivity implements Comment
     private void setUI() {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(commentsRecyclerView.getContext());
         commentsRecyclerView.setLayoutManager(mLayoutManager);
-        adapter = new PostCommentsAdapter(new ArrayList<ForumPost>(), this);
+        adapter = new PostCommentsAdapter(this, this);
         commentsRecyclerView.setAdapter(adapter);
     }
 
@@ -87,7 +85,7 @@ public class PostDetailsActivity extends AbstractBaseActivity implements Comment
                 }
                 post = commentPostModel.post;
                 if(post != null && commentPostModel.commentPosts != null) {
-                    adapter.setForumPostList(commentPostModel.commentPosts);
+                    adapter.setForumPostList(commentPostModel);
                 }
             }
 

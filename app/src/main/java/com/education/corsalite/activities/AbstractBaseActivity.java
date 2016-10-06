@@ -496,7 +496,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     protected void setToolbarForPostcomments() {
-        toolbar.findViewById(R.id.new_post).setVisibility(View.VISIBLE);
+        toolbar.findViewById(R.id.new_comment).setVisibility(View.VISIBLE);
         setToolbarTitle("Comments");
     }
 

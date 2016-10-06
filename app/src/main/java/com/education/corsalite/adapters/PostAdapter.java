@@ -146,6 +146,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
                 mSocialEventsListener.onLockClicked(position);
             }
         });
+        holder.tvQuestion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSocialEventsListener.onCommentClicked(position);
+            }
+        });
         holder.tvComments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
