@@ -1411,18 +1411,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 .simple()
                 .build();
         L.info("Scheduled Download Notification for "+TimeUtils.getDateString(cal.getTimeInMillis()));
-        PugNotification.with(this)
-                .load()
-                .identifier(Data.getInt(examId+Constants.EXAM_DOWNLOADED_REQUEST_ID))
-                .title(examName)
-                .message("Exam starts at "+new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime)+". Please Download")
-                .bigTextStyle("Exam starts at "+new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime)+". Please Download")
-                .smallIcon(R.drawable.ic_launcher)
-                .largeIcon(R.drawable.ic_launcher)
-                .flags(Notification.DEFAULT_ALL)
-                .simple()
-                .build();
-        L.info("Scheduled Download Notification for "+TimeUtils.getDateString(cal.getTimeInMillis()));
         // cancel notification
         Intent intent = new Intent(this, NotifyReceiver.class);
         intent.setAction("CANCEL_NOTIFICATION");
