@@ -1494,6 +1494,39 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         L.info("Scheduled Started Notification for "+TimeUtils.getDateString(cal.getTimeInMillis()));
     }
 
+    private void examForceStartNotification(String examId, String examName, Date scheduledTime) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(scheduledTime);
+        cal.add(Calendar.SECOND, -15);
+        if(TimeUtils.currentTimeInMillis() > cal.getTimeInMillis()) {
+            return;
+        }
+        Intent broadCastIntent = new Intent(this, NotifyReceiver.class);
+        broadCastIntent.putExtra("test_question_paper_id", examId);
+        broadCastIntent.putExtra("start_exam", true);
+        broadCastIntent.putExtra("id", Data.getInt(examId));
+        broadCastIntent.putExtra("time", scheduledTime.getTime());
+
+        PugNotification.with(this)
+                .load()
+                .identifier(Data.getInt(examId+Constants.EXAM_STARTED_REQUEST_ID))
+                .when(cal.getTimeInMillis())
+                .title(examName)
+                .message("Exam will start at "+new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime))
+                .bigTextStyle("Exam will start at "+new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime))
+                .smallIcon(R.drawable.ic_launcher)
+                .largeIcon(R.drawable.ic_launcher)
+                .flags(Notification.DEFAULT_ALL)
+                .simple()
+                .build();
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, (int)TimeUtils.currentTimeInMillis(),
+                broadCastIntent, PendingIntent.FLAG_ONE_SHOT);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
+        L.info("Scheduled Started Notification for "+TimeUtils.getDateTimeString(cal.getTimeInMillis()));
+    }
+
     public void onEventMainThread(com.education.corsalite.event.Toast toast) {
         if(!TextUtils.isEmpty(toast.message)) {
             showToast(toast.message);
