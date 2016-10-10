@@ -10,6 +10,7 @@ import com.education.corsalite.models.db.MockTest;
 import com.education.corsalite.models.db.ScheduledTestList;
 import com.education.corsalite.models.db.reqres.AppConfigReqRes;
 import com.education.corsalite.models.db.reqres.ContentIndexReqRes;
+import com.education.corsalite.models.db.reqres.ContentReqRes;
 import com.education.corsalite.models.db.reqres.CoursesReqRes;
 import com.education.corsalite.models.db.reqres.LoginReqRes;
 import com.education.corsalite.models.db.reqres.ScheduleTestsReqRes;
@@ -255,6 +256,10 @@ public class ApiManager {
         apiCacheHolder.setContentRequest(idContents, UpdateTime);
         if (isApiOnline()) {
             ApiClientService.get().getContentData(idContents, UpdateTime, callback);
+        } else if(!isNetworkConnected()) {
+            ContentReqRes reqRes = new ContentReqRes();
+            reqRes.request = apiCacheHolder.contentRequest;
+            SugarDbManager.get(context).getResponse(reqRes, callback);
         }
     }
 

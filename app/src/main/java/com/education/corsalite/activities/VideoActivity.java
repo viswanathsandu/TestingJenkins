@@ -15,6 +15,7 @@ import android.widget.ViewSwitcher;
 import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
+import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.models.ContentModel;
 import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.models.responsemodels.Content;
@@ -95,6 +96,9 @@ public class VideoActivity extends AbstractBaseActivity {
                 videoPath = FileUtils.get(this).getVideoDownloadPath(offlineContent.contentId);
                 loadLocalVideo();
                 return;
+            } else if(!SystemUtils.isNetworkConnected(this)) {
+                showToast("Video is not available for offline");
+                return;
             }
 
             progress.setVisibility(View.VISIBLE);
@@ -163,6 +167,8 @@ public class VideoActivity extends AbstractBaseActivity {
             public void success(List<Content> contentList, Response response) {
                 super.success(contents, response);
                 contents = contentList;
+                ApiCacheHolder.getInstance().setContentResponse(contentList);
+                dbManager.saveReqRes(ApiCacheHolder.getInstance().contentReqIndex);
                 if (viewSwitcher.indexOfChild(viewSwitcher.getCurrentView()) == 0) {
                     viewSwitcher.showNext();
                 }
