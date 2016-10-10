@@ -46,6 +46,7 @@ import com.education.corsalite.event.ForumPostingEvent;
 import com.education.corsalite.event.NetworkStatusChangeEvent;
 import com.education.corsalite.event.ScheduledTestStartEvent;
 import com.education.corsalite.event.TakingTestEvent;
+import com.education.corsalite.event.TimeChangedEvent;
 import com.education.corsalite.event.UpdateUserEvents;
 import com.education.corsalite.fragments.ChallengeTestRequestDialogFragment;
 import com.education.corsalite.fragments.MockTestDialog;
@@ -1403,10 +1404,12 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 .load()
                 .identifier(Data.getInt(examId+Constants.EXAM_DOWNLOADED_REQUEST_ID))
                 .title(examName)
+                .autoCancel(true)
                 .message("Exam starts at "+new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime)+". Please Download")
                 .bigTextStyle("Exam starts at "+new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime)+". Please Download")
                 .smallIcon(R.drawable.ic_launcher)
                 .largeIcon(R.drawable.ic_launcher)
+                .click(ExamEngineActivity.class, getScheduledTestBundle(examId))
                 .flags(Notification.DEFAULT_ALL)
                 .simple()
                 .build();
@@ -1440,6 +1443,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 .bigTextStyle("Exam starts at "+new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime))
                 .smallIcon(R.drawable.ic_launcher)
                 .largeIcon(R.drawable.ic_launcher)
+                .click(ExamEngineActivity.class, getScheduledTestBundle(examId))
                 .flags(Notification.DEFAULT_ALL)
                 .simple()
                 .build();
@@ -1472,6 +1476,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 .bigTextStyle("Exam will start at "+new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime))
                 .smallIcon(R.drawable.ic_launcher)
                 .largeIcon(R.drawable.ic_launcher)
+                .click(ExamEngineActivity.class, getScheduledTestBundle(examId))
                 .flags(Notification.DEFAULT_ALL)
                 .simple()
                 .build();
@@ -1480,6 +1485,13 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
         L.info("Scheduled Started Notification for "+TimeUtils.getDateString(cal.getTimeInMillis()));
+    }
+
+    private Bundle getScheduledTestBundle(String examTemplateId) {
+        Bundle bundle = new Bundle();
+        bundle.putString(Constants.TEST_TITLE, "Scheduled Test");
+        bundle.putString("test_question_paper_id", examTemplateId);
+        return bundle;
     }
 
     private void examForceStartNotification(String examId, String examName, Date scheduledTime) {
@@ -1494,20 +1506,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         broadCastIntent.putExtra("start_exam", true);
         broadCastIntent.putExtra("id", Data.getInt(examId));
         broadCastIntent.putExtra("time", scheduledTime.getTime());
-
-        PugNotification.with(this)
-                .load()
-                .identifier(Data.getInt(examId+Constants.EXAM_STARTED_REQUEST_ID))
-                .when(cal.getTimeInMillis())
-                .title(examName)
-                .message("Exam will start at "+new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime))
-                .bigTextStyle("Exam will start at "+new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime))
-                .smallIcon(R.drawable.ic_launcher)
-                .largeIcon(R.drawable.ic_launcher)
-                .flags(Notification.DEFAULT_ALL)
-                .simple()
-                .build();
-
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, (int)TimeUtils.currentTimeInMillis(),
                 broadCastIntent, PendingIntent.FLAG_ONE_SHOT);
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
@@ -1519,6 +1517,10 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         if(!TextUtils.isEmpty(toast.message)) {
             showToast(toast.message);
         }
+    }
+
+    public void onEventMainThread(TimeChangedEvent event) {
+        showToast("Time is modifed externally. Please reset the time to use the app");
     }
 
     // trigger challenge test request

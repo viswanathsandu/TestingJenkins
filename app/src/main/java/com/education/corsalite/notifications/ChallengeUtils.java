@@ -45,6 +45,7 @@ public class ChallengeUtils {
             String subTitle = extras.getString("sub_title", "Challenger : " + event.challengerName);
             Toast.makeText(context, "Notification : " + title, Toast.LENGTH_SHORT).show();
             NotificationsUtils.NotifyUser(context, Integer.valueOf(event.challengeTestParentId), title, subTitle, getChallengeRequestIntent(event));
+
         } catch (Exception e) {
             L.error(e.getMessage(), e);
         }
