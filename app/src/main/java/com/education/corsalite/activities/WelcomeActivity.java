@@ -21,6 +21,7 @@ import com.education.corsalite.models.responsemodels.WelcomeDetails;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.services.ContentDownloadService;
 import com.education.corsalite.utils.L;
+import com.education.corsalite.utils.SystemUtils;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
@@ -77,6 +78,7 @@ public class WelcomeActivity extends AbstractBaseActivity implements View.OnClic
             } else {
                 redeemBtn.setVisibility(View.GONE);
             }
+            messagesBtn.setVisibility(SystemUtils.isNetworkConnected(this) ? View.VISIBLE : View.GONE);
         } catch (Exception e) {
             L.error(e.getMessage(), e);
         }
