@@ -488,6 +488,13 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         loadCoursesList();
     }
 
+    protected void setToolbarForMessages() {
+        toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
+        setToolbarTitle("Messages");
+        showVirtualCurrency();
+        loadCoursesList();
+    }
+
     protected void setToolbarForChallengeTest(boolean showButtons) {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.GONE);
         if(showButtons) {

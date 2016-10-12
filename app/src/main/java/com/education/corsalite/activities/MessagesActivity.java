@@ -15,5 +15,6 @@ public class MessagesActivity extends AbstractBaseActivity {
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         RelativeLayout myView = (RelativeLayout) inflater.inflate(R.layout.activity_messages, null);
         frameLayout.addView(myView);
+        setToolbarForMessages();
     }
 }

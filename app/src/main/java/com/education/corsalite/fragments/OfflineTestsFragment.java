@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 
 import com.education.corsalite.R;
+import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.activities.OfflineActivity;
 import com.education.corsalite.adapters.ExpandableListAdapter;
 import com.education.corsalite.models.db.OfflineTestObjectModel;
@@ -62,7 +63,7 @@ public class OfflineTestsFragment extends BaseFragment implements OfflineActivit
 
     private void loadOfflineTests() {
         try {
-            List<OfflineTestObjectModel> offlineTestObjectModels = dbManager.fetchRecords(OfflineTestObjectModel.class);
+            List<OfflineTestObjectModel> offlineTestObjectModels = dbManager.fetchOfflineTestRecords(AbstractBaseActivity.getSelectedCourseId());
             if (offlineTestObjectModels != null && !offlineTestObjectModels.isEmpty()) {
                 emptyTestsView.setVisibility(View.GONE);
                 separateTestModel(offlineTestObjectModels);

@@ -187,15 +187,17 @@ public class SugarDbManager {
         try {
             List<OfflineTestObjectModel> allList = Select.from(OfflineTestObjectModel.class)
                     .where(Condition.prop("BASE_USER_ID").eq(AppPref.get(context).getUserId()),
-                            Condition.prop("COURSE_ID").eq(courseId)).list();
-            List<OfflineTestObjectModel> otherList = Select.from(OfflineTestObjectModel.class)
-                    .where(Condition.prop("BASE_USER_ID").eq(AppPref.get(context).getUserId()),
-                            Condition.prop("COURSE_ID").eq(null)).list();
+                            Condition.prop("COURSE_ID").eq(TextUtils.isEmpty(courseId) ? null : courseId)).list();
             if(allList == null) {
                 allList = new ArrayList<>();
             }
-            if(otherList != null && !otherList.isEmpty()) {
-                allList.addAll(otherList);
+            if(courseId != null) {
+                List<OfflineTestObjectModel> otherList = Select.from(OfflineTestObjectModel.class)
+                        .where(Condition.prop("BASE_USER_ID").eq(AppPref.get(context).getUserId()),
+                                Condition.prop("COURSE_ID").eq(null)).list();
+                if (otherList != null && !otherList.isEmpty()) {
+                    allList.addAll(otherList);
+                }
             }
             List<OfflineTestObjectModel> results = new ArrayList<>();
             while(allList!=null && allList.size() > 0) {

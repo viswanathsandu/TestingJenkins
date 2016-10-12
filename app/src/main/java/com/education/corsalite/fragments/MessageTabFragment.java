@@ -11,14 +11,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
+import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.adapters.MessageAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
+import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.Message;
 import com.education.corsalite.models.responsemodels.MessageResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit.client.Response;
@@ -29,7 +32,7 @@ import retrofit.client.Response;
 public class MessageTabFragment extends BaseFragment {
 
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private MessageAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private LinearLayout layoutEmpty;
     private TextView tvNoData;
@@ -47,22 +50,28 @@ public class MessageTabFragment extends BaseFragment {
         mRecyclerView = (RecyclerView) v.findViewById(R.id.userdetail_recyclerView);
         layoutEmpty = (LinearLayout) v.findViewById(R.id.layout_empty);
         tvNoData = (TextView)v.findViewById(R.id.tv_no_data);
-
         tvNoData.setText("No Message Found");
         tvNoData.setTextAppearance(getActivity(),R.style.user_profile_text);
-
         //mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setVisibility(View.VISIBLE);
         layoutEmpty.setVisibility(View.GONE);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
+        mAdapter = new MessageAdapter(new ArrayList<Message>(), inflater);
+        mRecyclerView.setAdapter(mAdapter);
         getMessage(inflater);
         return v;
     }
 
+    public void onEvent(Course course) {
+
+
+    }
+
     private void getMessage(final LayoutInflater inflater) {
         ApiManager.getInstance(getActivity()).getMessages(LoginUserCache.getInstance().getStudentId(),
-                new ApiCallback<List<Message>>(getActivity()) {
+                AbstractBaseActivity.getSelectedCourseId(), LoginUserCache.getInstance().getEntityId(),
+                new ApiCallback<MessageResponse>(getActivity()) {
                     @Override
                     public void failure(CorsaliteError error) {
                         super.failure(error);
@@ -73,11 +82,12 @@ public class MessageTabFragment extends BaseFragment {
                     }
 
                     @Override
-                    public void success(List<Message> messages, Response response) {
-                        super.success(messages, response);
+                    public void success(MessageResponse messageResponse, Response response) {
+                        super.success(messageResponse, response);
+                        List<Message> messages = messageResponse.messages;
                         if (messages != null && messages.size() > 0) {
-                            mAdapter = new MessageAdapter(messages, inflater);
-                            mRecyclerView.setAdapter(mAdapter);
+                            layoutEmpty.setVisibility(View.GONE);
+                            mAdapter.loadData(messages);
                         } else {
                             hideRecyclerView();
                         }
@@ -88,5 +98,4 @@ public class MessageTabFragment extends BaseFragment {
     private void hideRecyclerView() {
         layoutEmpty.setVisibility(View.VISIBLE);
     }
-
 }

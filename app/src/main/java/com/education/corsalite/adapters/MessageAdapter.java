@@ -31,6 +31,11 @@ public class MessageAdapter extends AbstractRecycleViewAdapter {
         addAll(messages);
     }
 
+    public void loadData(List<Message> messages) {
+        setData(messages);
+        notifyDataSetChanged();
+    }
+
     @Override
     public MessageDataHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view  =inflater.inflate(R.layout.row_messages_list, parent, false) ;

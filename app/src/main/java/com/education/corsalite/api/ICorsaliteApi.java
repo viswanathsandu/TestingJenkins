@@ -1,5 +1,6 @@
 package com.education.corsalite.api;
 
+import com.education.corsalite.models.db.AppConfig;
 import com.education.corsalite.models.db.MockTest;
 import com.education.corsalite.models.db.ScheduledTestList;
 import com.education.corsalite.models.responsemodels.BaseResponseModel;
@@ -28,7 +29,7 @@ import com.education.corsalite.models.responsemodels.FourmCommentPostModel;
 import com.education.corsalite.models.responsemodels.FriendsData;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
-import com.education.corsalite.models.responsemodels.Message;
+import com.education.corsalite.models.responsemodels.MessageResponse;
 import com.education.corsalite.models.responsemodels.Note;
 import com.education.corsalite.models.responsemodels.PartTestModel;
 import com.education.corsalite.models.responsemodels.PostExamTemplate;
@@ -49,7 +50,6 @@ import com.education.corsalite.models.responsemodels.UserProfileResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencyBalanceResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencySummaryResponse;
 import com.education.corsalite.models.responsemodels.WelcomeDetails;
-import com.education.corsalite.models.db.AppConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,7 +90,7 @@ public interface ICorsaliteApi {
     void getVirtualCurrencyTransactions(@Query("idStudent") String studentId, ApiCallback<VirtualCurrencySummaryResponse> callback);
 
     @GET("/Message")
-    void getMessages(@Query("idStudent") String studentId, ApiCallback<List<Message>> callback);
+    void getMessages(@Query("idStudent") String studentId, @Query("idCourse") String courseId, @Query("idEntity") String entityId, ApiCallback<MessageResponse> callback);
 
     @GET("/CourseStudyCenterData")
     void getCourseStudyCenterData(@Query("idStudent") String studentId, @Query("idCourse") String courseId, ApiCallback<List<StudyCenter>> callback);

@@ -49,7 +49,7 @@ import com.education.corsalite.models.responsemodels.FourmCommentPostModel;
 import com.education.corsalite.models.responsemodels.FriendsData;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.models.responsemodels.LogoutResponse;
-import com.education.corsalite.models.responsemodels.Message;
+import com.education.corsalite.models.responsemodels.MessageResponse;
 import com.education.corsalite.models.responsemodels.Note;
 import com.education.corsalite.models.responsemodels.PartTestModel;
 import com.education.corsalite.models.responsemodels.PostExamTemplate;
@@ -218,9 +218,9 @@ public class ApiManager {
         }
     }
 
-    public void getMessages(String studentId, ApiCallback<List<Message>> callback) {
+    public void getMessages(String studentId, String courseId, String entityId, ApiCallback<MessageResponse> callback) {
         if (isApiOnline()) {
-            ApiClientService.get().getMessages(studentId, callback);
+            ApiClientService.get().getMessages(studentId, courseId, entityId, callback);
         }
     }
 
