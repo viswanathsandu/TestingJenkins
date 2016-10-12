@@ -12,6 +12,9 @@ import java.util.List;
 public class ExerciseOfflineModel extends BaseModel {
     public String topicId;
     public String courseId;
+    @Ignore
+    public String topicName;
+
     public int progress = 0;
 
     @Ignore
@@ -19,8 +22,9 @@ public class ExerciseOfflineModel extends BaseModel {
 
     public ExerciseOfflineModel(){}
 
-    public ExerciseOfflineModel(String courseId, String topicId){
+    public ExerciseOfflineModel(String courseId, String topicId, String topicName){
         this.courseId = courseId;
         this.topicId = topicId;
+        this.topicName = topicName;
     }
 }

@@ -593,7 +593,8 @@ public class ContentReadingActivity extends AbstractBaseActivity {
         } else if (SystemUtils.isNetworkConnected(this)) {
             ivExercise.setVisibility(View.GONE);
             String topicId = topicModelList.get(topicPosition).idTopic;
-            if (offlineExercises != null && !offlineExercises.isEmpty() && offlineExercises.contains(new ExerciseOfflineModel(getSelectedCourseId(), topicId))) {
+            String topicName = topicModelList.get(topicPosition).topicName;
+            if (offlineExercises != null && !offlineExercises.isEmpty() && offlineExercises.contains(new ExerciseOfflineModel(getSelectedCourseId(), topicId, topicName))) {
                 for (ExerciseOfflineModel model : offlineExercises) {
                     if (model.topicId.equals(topicId) && model.courseId.equals(getSelectedCourseId())) {
                         AbstractBaseActivity.setSharedExamModels(model.questions);

@@ -143,7 +143,7 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
                                     htmlContentId += contentModel.idContent + ",";
                                 } else {
                                     ExerciseOfflineModel model = new ExerciseOfflineModel(
-                                            AbstractBaseActivity.getSelectedCourseId(), topicModel.idTopic);
+                                            AbstractBaseActivity.getSelectedCourseId(), topicModel.idTopic, topicModel.topicName);
                                     offlineExerciseModels.add(model);
                                 }
                                 OfflineContent offlineContent = new OfflineContent(mCourseId, mCourseName,

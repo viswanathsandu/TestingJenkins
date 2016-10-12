@@ -339,6 +339,7 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
         Intent intent = new Intent(getActivity(), ExamEngineActivity.class);
         intent.putExtra(Constants.TEST_TITLE, "Exercises");
         intent.putExtra("topic_id", model.topicId);
+        intent.putExtra(Constants.SELECTED_TOPIC_NAME, model.topicName);
         intent.putExtra(Constants.SELECTED_POSITION, 0);
         startActivity(intent);
     }
