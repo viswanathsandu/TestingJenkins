@@ -1,6 +1,7 @@
 package com.education.corsalite.fragments;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,7 +64,7 @@ public class OfflineTestsFragment extends BaseFragment implements OfflineActivit
 
     private void loadOfflineTests() {
         try {
-            List<OfflineTestObjectModel> offlineTestObjectModels = dbManager.fetchOfflineTestRecords(AbstractBaseActivity.getSelectedCourseId());
+            List<OfflineTestObjectModel> offlineTestObjectModels = dbManager.fetchRecords(OfflineTestObjectModel.class);
             if (offlineTestObjectModels != null && !offlineTestObjectModels.isEmpty()) {
                 emptyTestsView.setVisibility(View.GONE);
                 separateTestModel(offlineTestObjectModels);
@@ -89,10 +90,14 @@ public class OfflineTestsFragment extends BaseFragment implements OfflineActivit
             if (model != null && model.testType != null) {
                 switch (model.testType) {
                     case CHAPTER:
-                        chaptersList.add(model);
+                        if(isCurrentCourse(model)) {
+                            chaptersList.add(model);
+                        }
                         break;
                     case PART:
-                        partTestList.add(model);
+                        if(isCurrentCourse(model)) {
+                            partTestList.add(model);
+                        }
                         break;
                     case SCHEDULED:
                         scheduledTestModels.add(model);
@@ -103,6 +108,17 @@ public class OfflineTestsFragment extends BaseFragment implements OfflineActivit
                 }
             }
         }
+    }
+
+    private boolean isCurrentCourse(OfflineTestObjectModel model) {
+        try {
+            if (TextUtils.isEmpty(model.baseTest.courseId) || model.baseTest.courseId.equalsIgnoreCase(AbstractBaseActivity.getSelectedCourseId())) {
+                return true;
+            }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+        return false;
     }
 
     private ArrayList<String> loadAllTests() {
