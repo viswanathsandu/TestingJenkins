@@ -17,6 +17,7 @@ import com.education.corsalite.models.db.ExerciseOfflineModel;
 import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ExamModel;
+import com.education.corsalite.notifications.NotificationsUtils;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.DbUtils;
 import com.education.corsalite.utils.ExamUtils;
@@ -89,13 +90,18 @@ public class ContentDownloadService extends IntentService {
     private void downloadSync(OfflineContent content) {
         if (!TextUtils.isEmpty(content.contentId)) {
             downloandInProgress++;
+            NotificationsUtils.showContentDownloadNotification(getApplicationContext(), Integer.valueOf(content.contentId), content.contentName);
             List<Content> contents = ApiManager.getInstance(this).getContent(content.contentId, "");
             if(contents != null && !contents.isEmpty()) {
                 if(content.fileName.endsWith("html")) {
+                    NotificationsUtils.showSuccessNotification(getApplicationContext(), Integer.valueOf(content.contentId), content.contentName);
                     updateOfflineContent(content, OfflineContentStatus.COMPLETED, contents.get(0), 100);
+                } else {
+                    NotificationsUtils.cancelDownloadNotification(getApplicationContext(), Integer.valueOf(content.contentId));
                 }
                 saveFileToDisk(content, getHtmlText(contents.get(0)), contents.get(0));
             } else {
+                NotificationsUtils.showFailureNotification(getApplicationContext(), Integer.valueOf(content.contentId), content.contentName);
                 updateOfflineContent(content, OfflineContentStatus.FAILED, null, 0);
             }
             downloandInProgress--;
@@ -140,6 +146,7 @@ public class ContentDownloadService extends IntentService {
                         public void onDownloadComplete(DownloadRequest downloadRequest) {
                             updateOfflineContent(offlineContent, OfflineContentStatus.COMPLETED, content, 100);
                             L.info("Downloader : completed");
+                            NotificationsUtils.showSuccessNotification(getApplicationContext(), Integer.valueOf(content.idContent), content.name);
                             downloandInProgress--;
                         }
 
@@ -147,12 +154,14 @@ public class ContentDownloadService extends IntentService {
                         public void onDownloadFailed(DownloadRequest downloadRequest, int errorCode, String errorMessage) {
                             updateOfflineContent(offlineContent, OfflineContentStatus.FAILED, content, 0);
                             L.info("Downloader : failed");
+                            NotificationsUtils.showFailureNotification(getApplicationContext(), Integer.valueOf(content.idContent), content.name);
                             downloandInProgress--;
                         }
 
                         public void onProgress(DownloadRequest downloadRequest, long totalBytes, long downloadedBytes, int progress) {
                             if (progress != 0 && progress % 10 == 0  && preProgress != progress) {
                                 preProgress = progress;
+                                NotificationsUtils.showVideoDownloadNotification(getApplicationContext(), Integer.valueOf(content.idContent), progress, content.name);
                                 updateOfflineContent(offlineContent, OfflineContentStatus.IN_PROGRESS, content, progress);
                                 L.info("Downloader : In progress - " + progress + "Update DB");
                             }
