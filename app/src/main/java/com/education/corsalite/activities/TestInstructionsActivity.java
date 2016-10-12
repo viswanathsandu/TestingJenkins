@@ -85,6 +85,9 @@ public class TestInstructionsActivity extends AbstractBaseActivity {
         setListeners();
         getBundleData();
         fetchTestPaperIndex();
+        if(getIntent().getExtras().getBoolean("is_for_information", false)) {
+            btStart.setVisibility(View.GONE);
+        }
     }
 
     @Override

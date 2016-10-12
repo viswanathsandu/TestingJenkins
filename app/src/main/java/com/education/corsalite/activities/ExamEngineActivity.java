@@ -91,6 +91,7 @@ import com.education.corsalite.utils.SystemUtils;
 import com.education.corsalite.utils.TimeUtils;
 import com.education.corsalite.utils.WebUrls;
 import com.education.corsalite.views.CorsaliteWebViewClient;
+import com.education.corsalite.views.CustomImageButton;
 import com.education.corsalite.views.GridViewInScrollView;
 import com.google.gson.reflect.TypeToken;
 
@@ -105,6 +106,7 @@ import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit.client.Response;
 
 /**
@@ -210,6 +212,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     TextView tvPercentile;
     @Bind(R.id.imv_flag)
     ImageView imvFlag;
+    @Bind(R.id.info_button)
+    CustomImageButton inforBtn;
 
     public int selectedPosition = 0;
     public int previousQuestionPosition = -1;
@@ -2256,6 +2260,18 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         } catch (Exception e) {
             L.error(e.getMessage(), e);
             fullQuestionDialog.dismiss();
+        }
+    }
+
+    @OnClick(R.id.info_button)
+    public void onInfoClicked() {
+        showToast("Info clicked");
+        if(isMockTest() || isScheduledTest() || isChallengeTest()) {
+            Intent intent = new Intent(this, TestInstructionsActivity.class);
+            intent.putExtra(Constants.TEST_TITLE, title);
+            intent.putExtra("test_question_paper_id", testQuestionPaperId);
+            intent.putExtra("is_for_information", true);
+            startActivity(intent);
         }
     }
 
