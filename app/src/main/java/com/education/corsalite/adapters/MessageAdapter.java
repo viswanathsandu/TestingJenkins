@@ -1,6 +1,7 @@
 package com.education.corsalite.adapters;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,10 +40,8 @@ public class MessageAdapter extends AbstractRecycleViewAdapter {
     @Override
     public MessageDataHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view  =inflater.inflate(R.layout.row_messages_list, parent, false) ;
-        if((viewType+1)% 2 == 0)
-        {
+        if((viewType+1)% 2 == 0) {
             view.setBackgroundColor(inflater.getContext().getResources().getColor(R.color.tab_recycler_alternate_row));
-
         }else {
             view.setBackgroundColor(inflater.getContext().getResources().getColor(R.color.white));
         }
@@ -78,7 +77,7 @@ public class MessageAdapter extends AbstractRecycleViewAdapter {
             if((position+1)% 2 == 0) {
                 parent.setBackgroundColor(inflater.getContext().getResources().getColor(R.color.tab_recycler_alternate_row));
             }
-            messageTxt.setText(message.message);
+            messageTxt.setText(Html.fromHtml(message.message));
         }
     }
 }

@@ -59,16 +59,15 @@ public class MessageTabFragment extends BaseFragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new MessageAdapter(new ArrayList<Message>(), inflater);
         mRecyclerView.setAdapter(mAdapter);
-        getMessage(inflater);
+        getMessage();
         return v;
     }
 
     public void onEvent(Course course) {
-
-
+        getMessage();
     }
 
-    private void getMessage(final LayoutInflater inflater) {
+    private void getMessage() {
         ApiManager.getInstance(getActivity()).getMessages(LoginUserCache.getInstance().getStudentId(),
                 AbstractBaseActivity.getSelectedCourseId(), LoginUserCache.getInstance().getEntityId(),
                 new ApiCallback<MessageResponse>(getActivity()) {
