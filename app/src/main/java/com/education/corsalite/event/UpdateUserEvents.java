@@ -80,6 +80,18 @@ public class UpdateUserEvents {
         postUserEvent(activity,model);
     }
 
+    public void postLoggedInEvent(Activity activity, String eventTime){
+        UserEventsModel model = getUserEventsModel("Forum Posting", eventTime,
+                null, null, "loggedin");
+        postUserEvent(activity,model);
+    }
+
+    public void postLoggedOutEvent(Activity activity, String eventTime){
+        UserEventsModel model = getUserEventsModel("Forum Posting", eventTime,
+                null, null, "loggedin");
+        postUserEvent(activity,model);
+    }
+
     private UserEventsModel getUserEventsModel(String eventName,String eventStartTime,
                                                String eventEndTime, String eventSourceId, String pageView){
         UserEventsModel model = new UserEventsModel();
