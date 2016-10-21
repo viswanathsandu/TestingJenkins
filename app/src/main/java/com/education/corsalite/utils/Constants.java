@@ -12,6 +12,7 @@ public class Constants {
     public final static String VIDEO_FOLDER = "Videos";
     public final static String TESTS_FOLDER = "Tests";
     public final static String APK_FOLDER = "Apks";
+    public final static String LOGS_FOLDER = "Logs";
 
     public static final String HTML_PREFIX_URL = "file:///";
 

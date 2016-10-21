@@ -2,7 +2,11 @@ package com.education.corsalite.utils;
 
 import android.util.Log;
 
+import com.crashlytics.android.Crashlytics;
 import com.education.corsalite.BuildConfig;
+
+import java.io.File;
+import java.util.Date;
 
 /**
  * Created by vissu on 9/17/15.
@@ -13,7 +17,6 @@ public class L {
     private static final String INFO = "INFO";
     private static final String DEBUG = "DEBUG";
     private static final String ERROR = "ERROR";
-
 
     private static boolean isInfoEnabled() {
         return (BuildConfig.DEBUG);
@@ -84,6 +87,17 @@ public class L {
     public static void error(String tag, String message, Throwable throwable) {
         if(isErrorEnabled()) {
             Log.e(tag, message, throwable);
+        }
+    }
+
+    public static void writeLogToFile() {
+        try {
+            File file = FileUtils.get().getLogFilePath(new Date().getTime() + ".log");
+            Runtime.getRuntime().exec(new String[]{"logcat", "-f", file.getAbsolutePath()});
+//            Runtime.getRuntime().exec("logcat -f " + file);
+        } catch (Exception ex) {
+            L.error(ex.getMessage(), ex);
+            Crashlytics.logException(ex);
         }
     }
 }

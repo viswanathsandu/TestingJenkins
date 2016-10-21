@@ -61,6 +61,7 @@ public class CorsaliteApplication extends Application {
         L.error(e.getMessage(), e);
         Crashlytics.logException(e);
         FirebaseCrash.report(e);
+        L.writeLogToFile();
         Intent intent = new Intent(getApplicationContext(), CrashHandlerActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // required when starting from Application
         startActivity(intent);

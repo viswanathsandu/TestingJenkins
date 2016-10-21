@@ -217,6 +217,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         }
         super.onPause();
         isShown = false;
+        L.writeLogToFile();
     }
 
     private void initActivity() {

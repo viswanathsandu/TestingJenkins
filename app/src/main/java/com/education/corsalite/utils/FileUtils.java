@@ -29,6 +29,10 @@ public class FileUtils {
 
     public static FileUtils instance;
 
+    public static FileUtils get() {
+        return instance != null ? instance : null;
+    }
+
     public static FileUtils get(Context context) {
         if(instance == null) {
             instance = new FileUtils();
@@ -36,6 +40,8 @@ public class FileUtils {
         instance.context = context;
         return instance;
     }
+
+
 
     private FileUtils() {
         super();
@@ -102,6 +108,16 @@ public class FileUtils {
         return filePath;
     }
 
+    public File getLogFilePath(String fileName) {
+        String filePath = getAppRootFolder() + File.separator + Constants.LOGS_FOLDER;
+        File file = new File(filePath);
+        if(!file.exists()) {
+            file.mkdirs();
+        }
+        file = new File(filePath, fileName);
+        return file;
+    }
+
     public String getApkFolderPath() {
         String filePath = getAppRootFolder() + File.separator + Constants.APK_FOLDER;
         String fileName = Constants.APK_FILE;
@@ -152,8 +168,7 @@ public class FileUtils {
             return outputFile.getAbsolutePath();
         } catch (IOException e) {
             Log.w("Corsalite", e.getMessage(), e);
-            Toast.makeText(context, e.getMessage() + " Unable to write to external storage.",
-                    Toast.LENGTH_LONG).show();
+            Toast.makeText(context, e.getMessage() + " Unable to write to external storage.", Toast.LENGTH_LONG).show();
         }
         return null;
     }
