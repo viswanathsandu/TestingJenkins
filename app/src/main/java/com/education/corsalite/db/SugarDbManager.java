@@ -163,6 +163,15 @@ public class SugarDbManager {
         return null;
     }
 
+    public <T extends BaseModel> long getcount(Class<T> type) {
+        try {
+            return Select.from(type).where(Condition.prop("BASE_USER_ID").eq(AppPref.get(context).getUserId())).count();
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+        return 0;
+    }
+
     public <T extends BaseModel> T fetchFirstRecord(Class<T> type) {
         try {
             if (type != null) {

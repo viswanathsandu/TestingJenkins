@@ -240,7 +240,8 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="sensorLandscape"
             android:theme="@style/UserProfileTheme" />
-        <activity android:name=".activities.MessagesActivity"></activity>
+        <activity android:name=".activities.MessagesActivity" />
+        <activity android:name=".activities.DataSyncActivity" android:theme="@style/TransparentTheme"/>
     </application>
 
 </manifest>

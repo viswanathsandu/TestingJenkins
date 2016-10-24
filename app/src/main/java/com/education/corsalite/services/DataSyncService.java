@@ -45,16 +45,16 @@ public class DataSyncService extends IntentService {
                 return false;
             }
             if (model.getTestAnswerPaper() != null) {
-                L.info("DataSuncService : Executing SubmitAnswerPaper");
+                L.info("DataSyncService : Executing SubmitAnswerPaper");
                 TestAnswerPaperResponse response = null;
                 response = ApiManager.getInstance(getApplicationContext()).submitTestAnswerPaper(model.getTestAnswerPaper());
                 return response != null;
             } else if(model.getUserEventsModel() != null) {
-                L.info("DataSuncService : Executing UserEvents");
+                L.info("DataSyncService : Executing UserEvents");
                 UserEventsResponse response = ApiManager.getInstance(getApplicationContext()).postUserEvents(Gson.get().toJson(model.getUserEventsModel()));
                 return response != null;
             } else if(model.getContentReadingEvent() != null) {
-                L.info("DataSuncService : Executing ContentUsage");
+                L.info("DataSyncService : Executing ContentUsage");
                 BaseResponseModel response = ApiManager.getInstance(getApplicationContext()).postContentUsage(Gson.get().toJson(model.getContentReadingEvent()));
                 return response != null;
             }

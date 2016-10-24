@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.TextUtils;
 
-import com.education.corsalite.BuildConfig;
+import com.crashlytics.android.BuildConfig;
 import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;

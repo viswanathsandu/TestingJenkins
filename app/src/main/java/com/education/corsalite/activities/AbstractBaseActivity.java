@@ -57,6 +57,7 @@ import com.education.corsalite.models.ContentModel;
 import com.education.corsalite.models.db.AppConfig;
 import com.education.corsalite.models.db.OfflineTestObjectModel;
 import com.education.corsalite.models.db.ScheduledTestList;
+import com.education.corsalite.models.db.SyncModel;
 import com.education.corsalite.models.requestmodels.LogoutModel;
 import com.education.corsalite.models.responsemodels.ClientEntityAppConfig;
 import com.education.corsalite.models.responsemodels.CommonResponseModel;
@@ -75,7 +76,6 @@ import com.education.corsalite.notifications.ChallengeUtils;
 import com.education.corsalite.receivers.NotifyReceiver;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.services.ContentDownloadService;
-import com.education.corsalite.services.DataSyncService;
 import com.education.corsalite.utils.AppPref;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.CookieUtils;
@@ -197,6 +197,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         checkForceUpgrade();
+        checkDataSync();
         isShown = true;
     }
 
@@ -254,10 +255,19 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         }
     }
 
+    private void checkDataSync() {
+        if(SystemUtils.isNetworkConnected(this) && (this instanceof StudyCenterActivity || this instanceof WelcomeActivity)) {
+            long eventsCount = dbManager.getcount(SyncModel.class);
+            if (eventsCount > 0) {
+                showDataSyncAlert(eventsCount);
+            }
+        }
+    }
+
     private void syncDataWithServer() {
         // Start download service if its not started
-        stopService(new Intent(getApplicationContext(), DataSyncService.class));
-        startService(new Intent(getApplicationContext(), DataSyncService.class));
+//        stopService(new Intent(getApplicationContext(), DataSyncService.class));
+//        startService(new Intent(getApplicationContext(), DataSyncService.class));
     }
 
     public void onEventMainThread(NetworkStatusChangeEvent event) {
@@ -1176,6 +1186,40 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         } catch (Exception e) {
             L.error(e.getMessage(), e);
         }
+    }
+
+    private void showDataSyncAlert(long eventsCount) {
+        try {
+            long dataSyncTime = Long.parseLong(AppPref.get(getApplicationContext()).getValue("data_sync_later"));
+            Calendar lastTime = Calendar.getInstance();
+            lastTime.setTimeInMillis(dataSyncTime);
+            lastTime.add(Constants.DATA_SYNC_ALERT_SKIP_DURATION_UNITS, Constants.DATA_SYNC_ALERT_SKIP_DURATION);
+            Calendar currentTime = Calendar.getInstance();
+            if (currentTime.getTimeInMillis() < lastTime.getTimeInMillis()) {
+                return;
+            }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setTitle("Data Sync")
+                .setPositiveButton("Start Sync", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        AppPref.get(getApplicationContext()).remove("data_sync_later");
+                        startActivity(new Intent(AbstractBaseActivity.this, DataSyncActivity.class));
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setCancelable(false)
+                .setMessage("There are " + eventsCount + " offline events waiting for sync")
+                .setNegativeButton("Later", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        AppPref.get(getApplicationContext()).save("data_sync_later", String.valueOf(new Date().getTime()));
+                        dialogInterface.dismiss();
+                    }
+                });
+        builder.show();
     }
 
     private void showUpdateAlert(boolean isForceUpdrage, final boolean isPlayStoreUpdate, final String apkUrl) {

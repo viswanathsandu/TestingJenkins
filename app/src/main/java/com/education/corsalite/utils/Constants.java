@@ -2,6 +2,8 @@ package com.education.corsalite.utils;
 
 import com.education.corsalite.BuildConfig;
 
+import java.util.Calendar;
+
 /**
  * Created by ayush on 15/09/15.
  */
@@ -54,6 +56,9 @@ public class Constants {
     public static final int EXAM_STARTED_REQUEST_ID = 502;
     public static final String WEBVIEW_DATA_FORMAT = "text/html; charset=UTF-8";
 //    public static final String WEBVIEW_DATA_FORMAT = "text/html; charset=ISO-8859-1";
+
+    public static final int DATA_SYNC_ALERT_SKIP_DURATION_UNITS = Calendar.SECOND;
+    public static final int DATA_SYNC_ALERT_SKIP_DURATION = 30;
 
     public enum AnswerState {
         UNATTEMPTED("Unattended"),
