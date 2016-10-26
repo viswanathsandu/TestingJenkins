@@ -18,6 +18,7 @@ import com.education.corsalite.models.socket.response.UpdateLeaderBoardEvent;
 import com.education.corsalite.models.socket.response.UserListResponseEvent;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.gson.Gson;
+import com.education.corsalite.socket.CorsaliteWebsocketClient;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.SystemUtils;
 
@@ -65,7 +66,7 @@ public class WebSocketHelper {
             L.error(e.getMessage(), e);
             return;
         }
-        mWebSocketClient = new WebSocketClient(uri) {
+        mWebSocketClient = new CorsaliteWebsocketClient(uri) {
             @Override
             public void onOpen(ServerHandshake serverHandshake) {
                 L.info("Websocket", "Opened");
