@@ -78,6 +78,7 @@
                 <action android:name="android.intent.action.TIME_SET" />
             </intent-filter>
         </receiver>
+
         <activity
             android:name=".activities.SplashActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
@@ -241,7 +242,10 @@
             android:screenOrientation="sensorLandscape"
             android:theme="@style/UserProfileTheme" />
         <activity android:name=".activities.MessagesActivity" />
-        <activity android:name=".activities.DataSyncActivity" android:theme="@style/TransparentTheme"/>
+        <activity
+            android:name=".activities.DataSyncActivity"
+            android:launchMode="singleInstance"
+            android:theme="@style/TransparentTheme" />
     </application>
 
 </manifest>

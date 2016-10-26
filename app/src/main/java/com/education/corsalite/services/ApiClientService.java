@@ -58,7 +58,7 @@ public class ApiClientService {
         return client;
     }
 
-    private static void setupRestClient() {
+    public static void setupRestClient() {
 
         com.google.gson.Gson gson = new GsonBuilder()
                 .registerTypeAdapter(ExamModel.class, new ExerciseModelResponseDeserializer()) // This is the important line ;)

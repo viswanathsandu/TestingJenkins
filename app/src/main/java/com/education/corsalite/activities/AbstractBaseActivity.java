@@ -196,9 +196,10 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        isShown = true;
+        ApiClientService.setupRestClient();
         checkForceUpgrade();
         checkDataSync();
-        isShown = true;
     }
 
     @Override
@@ -256,7 +257,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     private void checkDataSync() {
-        if(SystemUtils.isNetworkConnected(this) && (this instanceof StudyCenterActivity || this instanceof WelcomeActivity)) {
+        if(SystemUtils.isNetworkConnected(this) && !(this instanceof DataSyncActivity || this instanceof SplashActivity)) {
             long eventsCount = dbManager.getcount(SyncModel.class);
             if (eventsCount > 0) {
                 showDataSyncAlert(eventsCount);
@@ -1203,16 +1204,17 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setTitle("Data Sync")
-                .setPositiveButton("Start Sync", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Sync Now", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         AppPref.get(getApplicationContext()).remove("data_sync_later");
                         startActivity(new Intent(AbstractBaseActivity.this, DataSyncActivity.class));
+                        dialog.dismiss();
                     }
                 })
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setCancelable(false)
-                .setMessage("There are " + eventsCount + " offline events waiting for sync")
-                .setNegativeButton("Later", new DialogInterface.OnClickListener() {
+                .setMessage("There are " + eventsCount + " offline events available to be synced to the server. Do you want to sync now?")
+                .setNegativeButton("Ask Later", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         AppPref.get(getApplicationContext()).save("data_sync_later", String.valueOf(new Date().getTime()));

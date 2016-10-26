@@ -15,11 +15,15 @@ import com.education.corsalite.models.responsemodels.BaseResponseModel;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.TestAnswerPaperResponse;
 import com.education.corsalite.models.responsemodels.UserEventsResponse;
+import com.education.corsalite.utils.AppPref;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.SystemUtils;
 
+import java.util.Date;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit.client.Response;
 
 /**
@@ -37,40 +41,54 @@ public class DataSyncActivity extends AbstractBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data_sync);
-        Glide.with(this).load(R.drawable.data_sync_anim).asGif().into((ImageView) findViewById(R.id.sync_anim_img));
         ButterKnife.bind(this);
-        dbManager = SugarDbManager.get(getApplicationContext());
-        totalEvents = dbManager.getcount(SyncModel.class);
-        if(totalEvents > 0) {
-            syncEvents();
-        } else {
-            finish();
-        }
+        Glide.with(this)
+                .load(R.drawable.data_sync_anim)
+                .asGif()
+                .into((ImageView) findViewById(R.id.sync_anim_img));
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         if(!SystemUtils.isNetworkConnected(this)) {
-            showToast("Network disconected, Please try again");
+            showToast("Network disconnected. Switching to offline mode.");
+            finish();
+        } else {
+            dbManager = SugarDbManager.get(getApplicationContext());
+            totalEvents = dbManager.getcount(SyncModel.class);
+            if(totalEvents > 0) {
+                syncEvents();
+            } else {
+                finish();
+            }
         }
+    }
+
+    @OnClick(R.id.sync_later_btn)
+    public void onSyncLater() {
+        AppPref.get(getApplicationContext()).save("data_sync_later", String.valueOf(new Date().getTime()));
+        showToast("Sync has been stopped");
+        finish();
     }
 
     private void updateProgress(long total, long completed) {
         long percentage = completed * 100 / total;
         progressTxt.setText(percentage + "%");
         if(total == completed) {
-            showToast("successfull synced all events");
+            showToast("All offline events have been synced successfully");
             finish();
         }
     }
 
     private void syncEvents() {
-        completedEvents = totalEvents - dbManager.getcount(SyncModel.class);
-        updateProgress(totalEvents, completedEvents);
-        currentEvent = dbManager.getFirstSyncModel();
-        if (currentEvent != null) {
-            executeApi(currentEvent);
+        if(isShown()) {
+            completedEvents = totalEvents - dbManager.getcount(SyncModel.class);
+            updateProgress(totalEvents, completedEvents);
+            currentEvent = dbManager.getFirstSyncModel();
+            if (currentEvent != null) {
+                executeApi(currentEvent);
+            }
         }
     }
 
@@ -94,7 +112,6 @@ public class DataSyncActivity extends AbstractBaseActivity {
             }
             if (model.getTestAnswerPaper() != null) {
                 L.info("DataSyncService : Executing SubmitAnswerPaper");
-                TestAnswerPaperResponse response = null;
                 ApiManager.getInstance(getApplicationContext()).submitTestAnswerPaper(model.getTestAnswerPaper(),
                         new ApiCallback<TestAnswerPaperResponse>(this) {
                             @Override
@@ -146,5 +163,10 @@ public class DataSyncActivity extends AbstractBaseActivity {
         } catch (Exception e) {
             L.error(e.getMessage(), e);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        // Do not close activity
     }
 }

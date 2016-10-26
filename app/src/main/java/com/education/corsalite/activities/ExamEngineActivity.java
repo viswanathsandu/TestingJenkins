@@ -840,6 +840,9 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     updateQuestionTimeTaken(selectedPosition);
                     showSuspendDialog();
                     break;
+                case R.id.btn_save:
+                    syncTestAnswerPaperEvent(null); // null represents use the same status as before
+                    break;
                 case R.id.imv_flag:
                     postFlaggedQuestion();
                     break;
@@ -872,6 +875,18 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         hideKeyboard();
     }
 
+    private void syncTestAnswerPaperEvent(TestanswerPaperState state) {
+        if(!SystemUtils.isNetworkConnected(this)) {
+            if(state != null) {
+                testanswerPaper.status = state.toString();
+            }
+            SyncModel syncModel = new SyncModel();
+            syncModel.setTestAnswerPaperEvent(testanswerPaper);
+            dbManager.addSyncModel(syncModel);
+            return;
+        }
+    }
+
     private void updateTestAnswerPaper(final TestanswerPaperState state) {
         if(isExerciseTest() || isFlaggedQuestionsScreen() || isViewAnswersScreen()) {
             return;
@@ -884,9 +899,6 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         }
         testanswerPaper.endTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(TimeUtils.getCurrentDate());
         if(!SystemUtils.isNetworkConnected(this)) {
-            SyncModel syncModel = new SyncModel();
-            syncModel.setTestAnswerPaperEvent(testanswerPaper);
-            dbManager.addSyncModel(syncModel);
             if(state == TestanswerPaperState.COMPLETED) {
                 new ExamUtils(this).deleteTestQuestionPaper(testQuestionPaperId);
             } else if(state == TestanswerPaperState.SUSPENDED) {
@@ -962,6 +974,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 updateTestAnswerPaper(TestanswerPaperState.SUSPENDED);
+                syncTestAnswerPaperEvent(TestanswerPaperState.SUSPENDED);
                 if(!SystemUtils.isNetworkConnected(ExamEngineActivity.this)) {
                     finish();
                 }
@@ -1046,6 +1059,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             }
             postExerciseAnsEvent();
             updateTestAnswerPaper(TestanswerPaperState.COMPLETED);
+            syncTestAnswerPaperEvent(TestanswerPaperState.COMPLETED);
             if (SystemUtils.isNetworkConnected(this)) {
                 headerProgress.setVisibility(View.VISIBLE);
                 mViewSwitcher.showNext();
@@ -2196,6 +2210,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 timer.start();
             }
             updateTestAnswerPaper(TestanswerPaperState.STARTED);
+            syncTestAnswerPaperEvent(TestanswerPaperState.STARTED);
         } else {
             headerProgress.setVisibility(View.GONE);
             tvEmptyLayout.setVisibility(View.VISIBLE);
