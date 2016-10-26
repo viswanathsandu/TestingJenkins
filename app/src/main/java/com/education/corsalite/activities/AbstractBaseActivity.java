@@ -228,6 +228,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     protected void refreshScreen() {
+        AppPref.get(getApplicationContext()).remove("data_sync_later");
         if(SystemUtils.isNetworkConnected(this)) {
             relogin();
         } else {
@@ -453,6 +454,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                         if(SystemUtils.isNetworkConnected(AbstractBaseActivity.this)) {
                             startWebSocket();
                             syncDataWithServer();
+                            checkDataSync();
                             loadAppConfig();
                         }
                         recreate();

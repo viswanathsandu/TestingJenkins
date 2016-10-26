@@ -52,7 +52,6 @@ public class AppPref {
             L.error(e.getMessage(), e);
             return null;
         }
-
     }
 
     public void remove(String key) {
@@ -60,6 +59,7 @@ public class AppPref {
         SharedPreferences.Editor editor = settings.edit();
         editor.remove(key);
         editor.apply();
+        editor.commit();
     }
 
     public void setUserId(String userID) {

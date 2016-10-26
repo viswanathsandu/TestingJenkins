@@ -22,9 +22,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:adjustViewBounds="true"
-                android:maxHeight="500dp"
-                android:maxWidth="500dp" />
+                android:adjustViewBounds="true" />
 
             <LinearLayout
                 android:layout_width="wrap_content"

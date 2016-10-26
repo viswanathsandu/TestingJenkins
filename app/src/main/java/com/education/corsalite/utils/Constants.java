@@ -58,7 +58,7 @@ public class Constants {
 //    public static final String WEBVIEW_DATA_FORMAT = "text/html; charset=ISO-8859-1";
 
     public static final int DATA_SYNC_ALERT_SKIP_DURATION_UNITS = Calendar.MINUTE;
-    public static final int DATA_SYNC_ALERT_SKIP_DURATION = 10;
+    public static final int DATA_SYNC_ALERT_SKIP_DURATION = 30;
 
     public enum AnswerState {
         UNATTEMPTED("Unattended"),

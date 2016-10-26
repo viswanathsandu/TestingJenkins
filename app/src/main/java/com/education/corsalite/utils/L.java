@@ -2,11 +2,7 @@ package com.education.corsalite.utils;
 
 import android.util.Log;
 
-import com.crashlytics.android.Crashlytics;
 import com.education.corsalite.BuildConfig;
-
-import java.io.File;
-import java.util.Date;
 
 /**
  * Created by vissu on 9/17/15.
@@ -91,13 +87,14 @@ public class L {
     }
 
     public static void writeLogToFile() {
-        try {
-            File file = FileUtils.get().getLogFilePath(new Date().getTime() + ".log");
-            Runtime.getRuntime().exec(new String[]{"logcat", "-f", file.getAbsolutePath()});
-//            Runtime.getRuntime().exec("logcat -f " + file);
-        } catch (Exception ex) {
-            L.error(ex.getMessage(), ex);
-            Crashlytics.logException(ex);
-        }
+        // TODO : enable it when we need it
+//        try {
+//            File file = FileUtils.get().getLogFilePath(new Date().getTime() + ".log");
+//            Runtime.getRuntime().exec(new String[]{"logcat", "-f", file.getAbsolutePath()});
+////            Runtime.getRuntime().exec("logcat -f " + file);
+//        } catch (Exception ex) {
+//            L.error(ex.getMessage(), ex);
+//            Crashlytics.logException(ex);
+//        }
     }
 }

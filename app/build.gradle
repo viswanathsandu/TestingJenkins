@@ -11,13 +11,13 @@ android {
         minSdkVersion 17
         targetSdkVersion 20
         // Version naming specification xx xx x xx
-        versionCode 101805
-        versionName "1.1.8.5"
+        versionCode 101809
+        versionName "1.1.8.9"
         multiDexEnabled false
     }
     buildTypes {
         release {
-            debuggable true
+            debuggable false
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

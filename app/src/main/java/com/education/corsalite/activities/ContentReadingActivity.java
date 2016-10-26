@@ -124,16 +124,13 @@ public class ContentReadingActivity extends AbstractBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        studentId = LoginUserCache.getInstance().getStudentId();
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         LinearLayout myView = (LinearLayout) inflater.inflate(R.layout.activity_web, null);
         frameLayout.addView(myView);
         ButterKnife.bind(this);
+        studentId = LoginUserCache.getInstance().getStudentId();
         setToolbarForContentReading();
-
-
-         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);

@@ -5,6 +5,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
@@ -33,6 +34,7 @@ import retrofit.client.Response;
 public class DataSyncActivity extends AbstractBaseActivity {
 
     @Bind(R.id.progress_count_txt) TextView progressTxt;
+    @Bind(R.id.sync_anim_img) ImageView aniImg;
     private SyncModel currentEvent;
     private long totalEvents = 0;
     private long completedEvents = 0;
@@ -42,10 +44,7 @@ public class DataSyncActivity extends AbstractBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data_sync);
         ButterKnife.bind(this);
-        Glide.with(this)
-                .load(R.drawable.data_sync_anim)
-                .asGif()
-                .into((ImageView) findViewById(R.id.sync_anim_img));
+        loadGif(aniImg, R.raw.data_sync_anim);
     }
 
     @Override
@@ -70,6 +69,11 @@ public class DataSyncActivity extends AbstractBaseActivity {
         AppPref.get(getApplicationContext()).save("data_sync_later", String.valueOf(new Date().getTime()));
         showToast("Sync has been stopped");
         finish();
+    }
+
+    private void loadGif(ImageView imageView, int rawGifId) {
+        GlideDrawableImageViewTarget imageViewTarget = new GlideDrawableImageViewTarget(imageView);
+        Glide.with(this).load(rawGifId).into(imageViewTarget);
     }
 
     private void updateProgress(long total, long completed) {
