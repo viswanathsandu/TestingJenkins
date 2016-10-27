@@ -2,6 +2,8 @@ package com.education.corsalite.utils;
 
 import android.text.TextUtils;
 
+import com.education.corsalite.BuildConfig;
+
 import java.util.List;
 
 import retrofit.client.Header;
@@ -16,9 +18,10 @@ public class CookieUtils {
         if(response.getStatus() == 200) {
             for (Header header : response.getHeaders()) {
                 if (!TextUtils.isEmpty(header.getName())
-                        && header.getName().equals("Set-Cookie")
-                        && !header.getValue().contains("expires")) {
-                    return header.getValue();
+                        && header.getName().equals("Set-Cookie")) {
+                    if(BuildConfig.FLAVOR.equalsIgnoreCase("staging") || !header.getValue().contains("expires")) {
+                        return header.getValue();
+                    }
                 }
             }
         }
@@ -30,7 +33,7 @@ public class CookieUtils {
             List<String> headers = response.headers("Set-Cookie");
             if (headers != null && !headers.isEmpty()) {
                 for (String header : headers) {
-                    if (!header.contains("expires")) {
+                    if(BuildConfig.FLAVOR.equalsIgnoreCase("staging") || !header.contains("expires")) {
                         return header;
                     }
                 }
