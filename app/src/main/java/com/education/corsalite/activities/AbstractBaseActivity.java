@@ -258,7 +258,8 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     private void checkDataSync() {
-        if(SystemUtils.isNetworkConnected(this) && !(this instanceof DataSyncActivity || this instanceof SplashActivity)) {
+        if(SystemUtils.isNetworkConnected(this) && !(this instanceof DataSyncActivity || this instanceof SplashActivity)
+                && LoginUserCache.getInstance().getLoginResponse() != null) {
             long eventsCount = dbManager.getcount(SyncModel.class);
             if (eventsCount > 0) {
                 showDataSyncAlert(eventsCount);
@@ -1080,6 +1081,8 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     private void logoutAccount(boolean navigateToLogin) {
         LoginUserCache.getInstance().clearCache();
+        appPref.remove("loginId");
+        appPref.remove("passwordHash");
         resetCrashlyticsUserData();
         deleteSessionCookie();
         AbstractBaseActivity.selectedCourse = null;
