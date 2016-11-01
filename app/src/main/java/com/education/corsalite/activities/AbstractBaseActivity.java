@@ -1197,39 +1197,42 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         }
     }
 
+    private AlertDialog dataSyncAlertDialog;
+
     private void showDataSyncAlert(long eventsCount) {
-        try {
-            long dataSyncTime = Long.parseLong(AppPref.get(getApplicationContext()).getValue("data_sync_later"));
-            Calendar lastTime = Calendar.getInstance();
-            lastTime.setTimeInMillis(dataSyncTime);
-            lastTime.add(Constants.DATA_SYNC_ALERT_SKIP_DURATION_UNITS, Constants.DATA_SYNC_ALERT_SKIP_DURATION);
-            Calendar currentTime = Calendar.getInstance();
-            if (currentTime.getTimeInMillis() < lastTime.getTimeInMillis()) {
-                return;
+        if(dataSyncAlertDialog == null || !dataSyncAlertDialog.isShowing()) {
+            try {
+                long dataSyncTime = Long.parseLong(AppPref.get(getApplicationContext()).getValue("data_sync_later"));
+                Calendar lastTime = Calendar.getInstance();
+                lastTime.setTimeInMillis(dataSyncTime);
+                lastTime.add(Constants.DATA_SYNC_ALERT_SKIP_DURATION_UNITS, Constants.DATA_SYNC_ALERT_SKIP_DURATION);
+                Calendar currentTime = Calendar.getInstance();
+                if (currentTime.getTimeInMillis() < lastTime.getTimeInMillis()) {
+                    return;
+                }
+            } catch (Exception e) {
+                L.error(e.getMessage(), e);
             }
-        } catch (Exception e) {
-            L.error(e.getMessage(), e);
+            dataSyncAlertDialog = new AlertDialog.Builder(this)
+                    .setTitle("Data Sync")
+                    .setPositiveButton("Sync Now", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            AppPref.get(getApplicationContext()).remove("data_sync_later");
+                            startActivity(new Intent(AbstractBaseActivity.this, DataSyncActivity.class));
+                            dialog.dismiss();
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setCancelable(false)
+                    .setMessage("There are " + eventsCount + " offline events available to be synced to the server. Do you want to sync now?")
+                    .setNegativeButton("Ask Later", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            AppPref.get(getApplicationContext()).save("data_sync_later", String.valueOf(new Date().getTime()));
+                            dialogInterface.dismiss();
+                        }
+                    }).show();
         }
-        AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                .setTitle("Data Sync")
-                .setPositiveButton("Sync Now", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        AppPref.get(getApplicationContext()).remove("data_sync_later");
-                        startActivity(new Intent(AbstractBaseActivity.this, DataSyncActivity.class));
-                        dialog.dismiss();
-                    }
-                })
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setCancelable(false)
-                .setMessage("There are " + eventsCount + " offline events available to be synced to the server. Do you want to sync now?")
-                .setNegativeButton("Ask Later", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        AppPref.get(getApplicationContext()).save("data_sync_later", String.valueOf(new Date().getTime()));
-                        dialogInterface.dismiss();
-                    }
-                });
-        builder.show();
     }
 
     private void showUpdateAlert(boolean isForceUpdrage, final boolean isPlayStoreUpdate, final String apkUrl) {
@@ -1586,8 +1589,8 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     public void onEventMainThread(ConnectExceptionEvent event) {
         if(connectAlert == null || !connectAlert.isShowing()) {
             connectAlert = new AlertDialog.Builder(this)
-                    .setTitle("Network Failure")
-                    .setMessage("Internet connection is not working. Please try again")
+                    .setTitle("Network Timeout")
+                    .setMessage("Sorry, your data connection timeout error has occurred. Click OK to retry.")
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
