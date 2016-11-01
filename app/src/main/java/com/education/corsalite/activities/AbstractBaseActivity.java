@@ -40,6 +40,7 @@ import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.db.SugarDbManager;
+import com.education.corsalite.event.ConnectExceptionEvent;
 import com.education.corsalite.event.ContentReadingEvent;
 import com.education.corsalite.event.ExerciseAnsEvent;
 import com.education.corsalite.event.ForumPostingEvent;
@@ -1059,6 +1060,8 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 public void failure(CorsaliteError error) {
                     super.failure(error);
                     showToast(getResources().getString(R.string.logout_failed));
+                    WebSocketHelper.get(AbstractBaseActivity.this).disconnectWebSocket();
+                    logoutAccount(navigateToLogin);
                 }
 
                 @Override
@@ -1575,6 +1578,22 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     public void onEventMainThread(com.education.corsalite.event.Toast toast) {
         if(!TextUtils.isEmpty(toast.message)) {
             showToast(toast.message);
+        }
+    }
+
+    private AlertDialog connectAlert;
+
+    public void onEventMainThread(ConnectExceptionEvent event) {
+        if(connectAlert == null || !connectAlert.isShowing()) {
+            connectAlert = new AlertDialog.Builder(this)
+                    .setTitle("Network Failure")
+                    .setMessage("Internet connection is not working. Please try again")
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            refreshScreen();
+                        }
+                    }).show();
         }
     }
 
