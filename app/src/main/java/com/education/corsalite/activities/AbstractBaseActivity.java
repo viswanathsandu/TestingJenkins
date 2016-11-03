@@ -59,6 +59,7 @@ import com.education.corsalite.models.db.AppConfig;
 import com.education.corsalite.models.db.OfflineTestObjectModel;
 import com.education.corsalite.models.db.ScheduledTestList;
 import com.education.corsalite.models.db.SyncModel;
+import com.education.corsalite.models.db.reqres.AppentityconfigReqRes;
 import com.education.corsalite.models.requestmodels.LogoutModel;
 import com.education.corsalite.models.responsemodels.ClientEntityAppConfig;
 import com.education.corsalite.models.responsemodels.CommonResponseModel;
@@ -340,6 +341,8 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                         public void success(ClientEntityAppConfig clientEntityAppConfig, Response response) {
                             super.success(clientEntityAppConfig, response);
                             isClientEntityConfigApiFinished = true;
+                            ApiCacheHolder.getInstance().setAppEntityConfigResponse(clientEntityAppConfig);
+                            dbManager.saveReqRes(ApiCacheHolder.getInstance().appentityconfigReqRes);
                             if (clientEntityAppConfig != null && !isDeviceAffinityOrUpgradeAlertShown(clientEntityAppConfig)) {
                                 onLoginFlowCompleted();
                             }
@@ -370,7 +373,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                         LoginResponse loginResponse = LoginUserCache.getInstance().getLoginResponse();
                         postClientEntityConfig(loginResponse.idUser);
                     } else if(!config.deviceId.toLowerCase().contains(SystemUtils.getUniqueID(this))){
-                        logout(true);
                         showDeviceAffinityAlert();
                         return true;
                     }
@@ -402,15 +404,18 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 .setMessage("Please Login from your assigned device")
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
+                        logout(true);
                         AbstractBaseActivity.this.isDaFuDialogShown = false;
+                        dialog.dismiss();
                     }
-                }).show();
+                })
+                .show();
         isDaFuDialogShown = true;
     }
 
     private void postClientEntityConfig(String userId) {
-        ApiManager.getInstance(this).postClientEntityAppConfig(userId, SystemUtils.getUniqueID(this),
+        final String uniqueId = SystemUtils.getUniqueID(this);
+        ApiManager.getInstance(this).postClientEntityAppConfig(userId, uniqueId,
                 new ApiCallback<CommonResponseModel>(this) {
                     @Override
                     public void failure(CorsaliteError error) {
@@ -420,6 +425,10 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     @Override
                     public void success(CommonResponseModel commonResponseModel, Response response) {
                         super.success(commonResponseModel, response);
+                        AppentityconfigReqRes reqRes = ApiCacheHolder.getInstance().appentityconfigReqRes;
+                        if(reqRes != null && reqRes.response != null) {
+                            reqRes.response.deviceId = uniqueId;
+                        }
                     }
                 });
     }

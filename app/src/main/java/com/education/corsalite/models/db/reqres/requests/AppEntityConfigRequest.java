@@ -10,6 +10,11 @@ public class AppEntityConfigRequest extends AbstractBaseRequest {
 
     public AppEntityConfigRequest() {}
 
+    public AppEntityConfigRequest(String userId, String entityId) {
+        this.userId = userId;
+        this.entityId = entityId;
+    }
+
     @Override
     public boolean equals(AbstractBaseRequest request) {
         return request instanceof AppEntityConfigRequest
