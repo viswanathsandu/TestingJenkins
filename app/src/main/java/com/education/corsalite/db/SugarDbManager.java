@@ -394,7 +394,7 @@ public class SugarDbManager {
                         }
                     }
                 } else {
-                    s = MockUtils.getCorsaliteError("Failure", "Notwork not available");
+                    s = MockUtils.getCorsaliteError("Failure", "Network not available");
                 }
             }
             s = MockUtils.getCorsaliteError("Failure", "No data found");

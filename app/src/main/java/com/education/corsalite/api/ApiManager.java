@@ -127,14 +127,14 @@ public class ApiManager {
         }
     }
 
-    public void getCourses(String studentId, ApiCallback<List<Course>> callback) {
+    public void getCourses(String studentId, boolean offline, ApiCallback<List<Course>> callback) {
         apiCacheHolder.setCoursesRequest(studentId);
-        if (isApiOnline() && isNetworkConnected()) {
-            ApiClientService.get().getCourses(studentId, callback);
-        } else if (!isNetworkConnected()) {
+        if (!isNetworkConnected() || offline) {
             CoursesReqRes reqRes = new CoursesReqRes();
             reqRes.request = apiCacheHolder.courseRequest;
             SugarDbManager.get(context).getResponse(reqRes, callback);
+        } else if (isApiOnline() && isNetworkConnected()) {
+            ApiClientService.get().getCourses(studentId, callback);
         }
     }
 
@@ -602,9 +602,19 @@ public class ApiManager {
     }
 
     public void getClientEntityAppConfig(String userId, String entityId, ApiCallback<ClientEntityAppConfig> callback) {
-        if(isApiOnline()) {
+        if (isApiOnline()) {
             ApiClientService.get().getClientEntityAppConfig(userId, entityId, callback);
         }
+        // TODO : uncomment it after testing
+//        else if(!isNetworkConnected()) {
+//            AppentityconfigReqRes reqRes = new AppentityconfigReqRes();
+//            reqRes.request = apiCacheHolder.appentityconfigRequest;
+//            SugarDbManager.get(context).getResponse(reqRes, callback);
+//        } else {
+//            String jsonResponse = FileUtils.get(context).loadJSONFromAsset(context.getAssets(), "config.json");
+//            ClientEntityAppConfig config = Gson.get().fromJson(jsonResponse, ClientEntityAppConfig.class);
+//            callback.success(config, MockUtils.getRetrofitResponse());
+//        }
     }
 
     public void postClientEntityAppConfig(String userId, String deviceId, ApiCallback<CommonResponseModel> callback) {
