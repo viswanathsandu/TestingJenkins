@@ -16,7 +16,7 @@ import com.education.corsalite.adapters.CurriculumAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.enums.CurriculumEntityType;
+import com.education.corsalite.enums.CurriculumTypeEntity;
 import com.education.corsalite.enums.CurriculumTabType;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.CurriculumEntity;
@@ -127,7 +127,7 @@ public class CurriculumFragment extends BaseFragment implements CurriculumAdapte
 
     @Override
     public void onItemClick(CurriculumEntity entity) {
-        CurriculumEntityType type = CurriculumEntityType.getCurriculumEntityType(entity.recType);
+        CurriculumTypeEntity type = CurriculumTypeEntity.getCurriculumEntityType(entity.recType);
         if (type != null) {
             switch (type) {
                 case READING:

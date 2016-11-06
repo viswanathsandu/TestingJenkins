@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
-import com.education.corsalite.enums.CurriculumEntityType;
+import com.education.corsalite.enums.CurriculumTypeEntity;
 import com.education.corsalite.enums.CurriculumTabType;
 import com.education.corsalite.models.responsemodels.CurriculumEntity;
 
@@ -60,7 +60,7 @@ public class CurriculumAdapter extends RecyclerView.Adapter<CurriculumAdapter.Cu
         holder.overdueTxt.setText(entity.overDueDays);
         holder.totalPointsTxt.setText(entity.points);
         Drawable typeImgDrawable = null;
-        CurriculumEntityType type = CurriculumEntityType.getCurriculumEntityType(entity.recType);
+        CurriculumTypeEntity type = CurriculumTypeEntity.getCurriculumEntityType(entity.recType);
         if (type != null) {
             switch (type) {
                 case READING:
