@@ -140,8 +140,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     TextView tv_timer;
     @Bind(R.id.btn_view_full_question)
     Button btnViewFullQuestion;
-    @Bind(R.id.btn_verify)
-    Button btnVerify;
+    @Bind(R.id.tv_verify)
+    TextView btnVerify;
     @Bind(R.id.tv_clearanswer)
     TextView tvClearAnswer;
     @Bind(R.id.btn_submit)
@@ -816,7 +816,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     btnPrevious.setClickable(true);
                     btnNext.setClickable(true);
                     break;
-                case R.id.btn_verify:
+                case R.id.tv_verify:
                     hideKeyboard();
                     verifyAnswer();
                     break;
