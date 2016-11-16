@@ -15,9 +15,7 @@ public class CookieUtils {
     public static String getCookieString(Response response) {
         if(response.getStatus() == 200) {
             for (Header header : response.getHeaders()) {
-                if (!TextUtils.isEmpty(header.getName())
-                        && header.getName().equals("Set-Cookie")
-                        && !header.getValue().contains("expires")) {
+                if (!TextUtils.isEmpty(header.getName()) && header.getName().equals("Set-Cookie")) {
                     return header.getValue();
                 }
             }
@@ -29,11 +27,7 @@ public class CookieUtils {
         if(response.isSuccessful()) {
             List<String> headers = response.headers("Set-Cookie");
             if (headers != null && !headers.isEmpty()) {
-                for (String header : headers) {
-                    if (!header.contains("expires")) {
-                        return header;
-                    }
-                }
+                return headers.get(0);
             }
         }
         return null;

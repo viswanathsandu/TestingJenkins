@@ -9,6 +9,7 @@ import com.education.corsalite.gson.Gson;
 import com.education.corsalite.models.db.MockTest;
 import com.education.corsalite.models.db.ScheduledTestList;
 import com.education.corsalite.models.db.reqres.AppConfigReqRes;
+import com.education.corsalite.models.db.reqres.AppentityconfigReqRes;
 import com.education.corsalite.models.db.reqres.ContentIndexReqRes;
 import com.education.corsalite.models.db.reqres.ContentReqRes;
 import com.education.corsalite.models.db.reqres.CoursesReqRes;
@@ -17,6 +18,8 @@ import com.education.corsalite.models.db.reqres.ScheduleTestsReqRes;
 import com.education.corsalite.models.db.reqres.StudyCenterReqRes;
 import com.education.corsalite.models.db.reqres.UserProfileReqRes;
 import com.education.corsalite.models.db.reqres.WelcomeReqRes;
+import com.education.corsalite.models.db.reqres.requests.AppConfigRequest;
+import com.education.corsalite.models.db.reqres.requests.AppEntityConfigRequest;
 import com.education.corsalite.models.requestmodels.AddRemoveFriendRequest;
 import com.education.corsalite.models.requestmodels.Bookmark;
 import com.education.corsalite.models.requestmodels.ClientEntityConfigRequest;
@@ -127,14 +130,14 @@ public class ApiManager {
         }
     }
 
-    public void getCourses(String studentId, ApiCallback<List<Course>> callback) {
+    public void getCourses(String studentId, boolean offline, ApiCallback<List<Course>> callback) {
         apiCacheHolder.setCoursesRequest(studentId);
-        if (isApiOnline() && isNetworkConnected()) {
-            ApiClientService.get().getCourses(studentId, callback);
-        } else if (!isNetworkConnected()) {
+        if (!isNetworkConnected() || offline) {
             CoursesReqRes reqRes = new CoursesReqRes();
             reqRes.request = apiCacheHolder.courseRequest;
             SugarDbManager.get(context).getResponse(reqRes, callback);
+        } else if (isApiOnline() && isNetworkConnected()) {
+            ApiClientService.get().getCourses(studentId, callback);
         }
     }
 
@@ -576,6 +579,7 @@ public class ApiManager {
     }
 
     public void getAppConfig(ApiCallback<com.education.corsalite.models.db.AppConfig> callback) {
+        apiCacheHolder.appConfigRequest = new AppConfigRequest();
         if (isApiOnline()) {
             ApiClientService.get().getAppConfig(callback);
         }  else if(!isNetworkConnected()) {
@@ -602,8 +606,18 @@ public class ApiManager {
     }
 
     public void getClientEntityAppConfig(String userId, String entityId, ApiCallback<ClientEntityAppConfig> callback) {
-        if(isApiOnline()) {
+        // TODO : uncomment it after testing
+        apiCacheHolder.appentityconfigRequest = new AppEntityConfigRequest(userId, entityId);
+        if (isApiOnline()) {
             ApiClientService.get().getClientEntityAppConfig(userId, entityId, callback);
+        } else if(!isNetworkConnected()) {
+            AppentityconfigReqRes reqRes = new AppentityconfigReqRes();
+            reqRes.request = apiCacheHolder.appentityconfigRequest;
+            SugarDbManager.get(context).getResponse(reqRes, callback);
+        } else {
+            String jsonResponse = FileUtils.get(context).loadJSONFromAsset(context.getAssets(), "config.json");
+            ClientEntityAppConfig config = Gson.get().fromJson(jsonResponse, ClientEntityAppConfig.class);
+            callback.success(config, MockUtils.getRetrofitResponse());
         }
     }
 

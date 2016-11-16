@@ -26,7 +26,8 @@ public class DbUtils {
     }
 
     public void backupDatabase() {
-        try {
+        // TODO : disabling the db backup temporarily
+        /*try {
             String fileName = "corsalite.db";
             String sourceFileName = "/data/data/" + BuildConfig.APPLICATION_ID + "/databases/corsalite.db";
             String destinationDirectory = FileUtils.get(context).getAppRootFolder();
@@ -35,11 +36,12 @@ public class DbUtils {
         } catch (Exception e) {
             L.error(e.getMessage(), e);
             L.info("Database backup failed");
-        }
+        }*/
     }
 
     public void loadDatabaseFromBackup() {
-        try {
+        // TODO : disabling the db restore temporarily
+        /*try {
             String fileName = "corsalite.db";
             String sourceFileName = FileUtils.get(context).getAppRootFolder() + File.separator + "corsalite.db";
             String destinationFileName = "/data/data/" + BuildConfig.APPLICATION_ID + "/databases";
@@ -48,7 +50,7 @@ public class DbUtils {
         } catch (Exception e) {
             L.error(e.getMessage(), e);
             L.info("failed to load Database from backup");
-        }
+        }*/
     }
 
     public boolean isDatabaseExist() {

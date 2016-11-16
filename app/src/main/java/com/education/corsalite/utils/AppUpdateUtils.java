@@ -27,7 +27,7 @@ public class AppUpdateUtils {
         File file = new File(versionsFolderPath, filename);
         if(!file.exists()) {
             // App opened for the first time with this version
-            if(BuildConfig.VERSION_CODE >= 101500 && BuildConfig.VERSION_CODE <= 101599) {
+            if(BuildConfig.VERSION_CODE >= 102000 && BuildConfig.VERSION_CODE <= 102099) {
                 // delete all content and database
                 fileUtils.deleteRootLevel(fileUtils.getAppRootFolder());
                 fileUtils.deleteRootLevel("/data/data/"+BuildConfig.APPLICATION_ID+"/databases/corsalite.db");
