@@ -59,6 +59,7 @@ import com.education.corsalite.models.db.AppConfig;
 import com.education.corsalite.models.db.OfflineTestObjectModel;
 import com.education.corsalite.models.db.ScheduledTestList;
 import com.education.corsalite.models.db.SyncModel;
+import com.education.corsalite.models.db.reqres.AppentityconfigReqRes;
 import com.education.corsalite.models.requestmodels.LogoutModel;
 import com.education.corsalite.models.responsemodels.ClientEntityAppConfig;
 import com.education.corsalite.models.responsemodels.CommonResponseModel;
@@ -259,12 +260,16 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     private void checkDataSync() {
-        if(SystemUtils.isNetworkConnected(this) && !(this instanceof DataSyncActivity || this instanceof SplashActivity)
-                && LoginUserCache.getInstance().getLoginResponse() != null) {
-            long eventsCount = dbManager.getcount(SyncModel.class);
-            if (eventsCount > 0) {
-                showDataSyncAlert(eventsCount);
+        if (SystemUtils.isNetworkConnected(this)) {
+            if (!(this instanceof DataSyncActivity || this instanceof SplashActivity)
+                    && LoginUserCache.getInstance().getLoginResponse() != null) {
+                long eventsCount = dbManager.getcount(SyncModel.class);
+                if (eventsCount > 0) {
+                    showDataSyncAlert(eventsCount);
+                }
             }
+        } else if (dataSyncAlertDialog != null && dataSyncAlertDialog.isShowing()){
+            dataSyncAlertDialog.dismiss();
         }
     }
 
@@ -328,7 +333,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     protected void requestClientEntityConfig() {
         LoginResponse loginResponse = LoginUserCache.getInstance().getLoginResponse();
-        if(loginResponse != null && !TextUtils.isEmpty(loginResponse.idUser) && !TextUtils.isEmpty(loginResponse.entitiyId)) {
+        if (loginResponse != null && !TextUtils.isEmpty(loginResponse.idUser) && !TextUtils.isEmpty(loginResponse.entitiyId)) {
             isClientEntityConfigApiFinished = false;
             ApiManager.getInstance(this).getClientEntityAppConfig(loginResponse.idUser, loginResponse.entitiyId,
                     new ApiCallback<ClientEntityAppConfig>(this) {
@@ -336,7 +341,9 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                         public void success(ClientEntityAppConfig clientEntityAppConfig, Response response) {
                             super.success(clientEntityAppConfig, response);
                             isClientEntityConfigApiFinished = true;
-                            if(clientEntityAppConfig != null && !isDeviceAffinityOrUpgradeAlertShown(clientEntityAppConfig)) {
+                            ApiCacheHolder.getInstance().setAppEntityConfigResponse(clientEntityAppConfig);
+                            dbManager.saveReqRes(ApiCacheHolder.getInstance().appentityconfigReqRes);
+                            if (clientEntityAppConfig != null && !isDeviceAffinityOrUpgradeAlertShown(clientEntityAppConfig)) {
                                 onLoginFlowCompleted();
                             }
                         }
@@ -366,7 +373,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                         LoginResponse loginResponse = LoginUserCache.getInstance().getLoginResponse();
                         postClientEntityConfig(loginResponse.idUser);
                     } else if(!config.deviceId.toLowerCase().contains(SystemUtils.getUniqueID(this))){
-                        logout(false);
                         showDeviceAffinityAlert();
                         return true;
                     }
@@ -398,15 +404,18 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 .setMessage("Please Login from your assigned device")
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
+                        logout(true);
                         AbstractBaseActivity.this.isDaFuDialogShown = false;
+                        dialog.dismiss();
                     }
-                }).show();
+                })
+                .show();
         isDaFuDialogShown = true;
     }
 
     private void postClientEntityConfig(String userId) {
-        ApiManager.getInstance(this).postClientEntityAppConfig(userId, SystemUtils.getUniqueID(this),
+        final String uniqueId = SystemUtils.getUniqueID(this);
+        ApiManager.getInstance(this).postClientEntityAppConfig(userId, uniqueId,
                 new ApiCallback<CommonResponseModel>(this) {
                     @Override
                     public void failure(CorsaliteError error) {
@@ -416,6 +425,10 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     @Override
                     public void success(CommonResponseModel commonResponseModel, Response response) {
                         super.success(commonResponseModel, response);
+                        AppentityconfigReqRes reqRes = ApiCacheHolder.getInstance().appentityconfigReqRes;
+                        if(reqRes != null && reqRes.response != null) {
+                            reqRes.response.deviceId = uniqueId;
+                        }
                     }
                 });
     }
@@ -513,7 +526,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     protected void setToolbarForChallengeTest(boolean showButtons) {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.GONE);
-        if(showButtons) {
+        if (showButtons) {
             toolbar.findViewById(R.id.challenge_buttons_layout).setVisibility(View.VISIBLE);
         }
         showVirtualCurrency();
@@ -603,7 +616,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     protected void setToolbarForExercise(String title, boolean showDrawer) {
         setToolbarTitle(title);
         showVirtualCurrency();
-        if(!showDrawer) {
+        if (!showDrawer) {
             hideDrawerIcon();
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         }
@@ -701,13 +714,13 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         if (config.isLogoutEnabled()) {
             navigationView.findViewById(R.id.navigation_logout).setVisibility(View.VISIBLE);
         }
-        if(config.isScheduledTestsEnabled()) {
+        if (config.isScheduledTestsEnabled()) {
             navigationView.findViewById(R.id.navigation_scheduled_tests).setVisibility(View.VISIBLE);
         }
-        if(config.isMockTestsEnabled()) {
+        if (config.isMockTestsEnabled()) {
             navigationView.findViewById(R.id.navigation_mock_tests).setVisibility(View.VISIBLE);
         }
-        if(config.isExamHistoryEnabled()) {
+        if (config.isExamHistoryEnabled()) {
             navigationView.findViewById(R.id.navigation_exam_history).setVisibility(View.VISIBLE);
         }
     }
@@ -716,7 +729,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_profile).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isCourseEnded(selectedCourse)) {
+                if (isCourseEnded(selectedCourse)) {
                     showToast("Please Select different Course");
                     return;
                 }
@@ -731,7 +744,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_welcome).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isCourseEnded(selectedCourse)) {
+                if (isCourseEnded(selectedCourse)) {
                     showToast("Please Select different Course");
                     return;
                 }
@@ -743,7 +756,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_smart_class).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isCourseEnded(selectedCourse)) {
+                if (isCourseEnded(selectedCourse)) {
                     showToast("Please Select different Course");
                     return;
                 }
@@ -759,7 +772,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_study_center).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isCourseEnded(selectedCourse)) {
+                if (isCourseEnded(selectedCourse)) {
                     showToast("Please Select different Course");
                     return;
                 }
@@ -770,7 +783,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_analytics).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isCourseEnded(selectedCourse)) {
+                if (isCourseEnded(selectedCourse)) {
                     showToast("Please Select different Course");
                     return;
                 }
@@ -786,7 +799,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_curriculum).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isCourseEnded(selectedCourse)) {
+                if (isCourseEnded(selectedCourse)) {
                     showToast("Please Select different Course");
                     return;
                 }
@@ -798,7 +811,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_offline).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isCourseEnded(selectedCourse)) {
+                if (isCourseEnded(selectedCourse)) {
                     showToast("Please Select different Course");
                     return;
                 }
@@ -810,7 +823,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_challenge_your_friends).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isCourseEnded(selectedCourse)) {
+                if (isCourseEnded(selectedCourse)) {
                     showToast("Please Select different Course");
                     return;
                 }
@@ -826,7 +839,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_exam_history).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isCourseEnded(selectedCourse)) {
+                if (isCourseEnded(selectedCourse)) {
                     showToast("Please Select different Course");
                     return;
                 }
@@ -841,7 +854,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_scheduled_tests).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isCourseEnded(selectedCourse)) {
+                if (isCourseEnded(selectedCourse)) {
                     showToast("Please Select different Course");
                     return;
                 }
@@ -852,7 +865,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_mock_tests).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isCourseEnded(selectedCourse)) {
+                if (isCourseEnded(selectedCourse)) {
                     showToast("Please Select different Course");
                     return;
                 }
@@ -863,7 +876,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         navigationView.findViewById(R.id.navigation_forum).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isCourseEnded(selectedCourse)) {
+                if (isCourseEnded(selectedCourse)) {
                     showToast("Please Select different Course");
                     return;
                 }
@@ -945,7 +958,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     protected void showVirtualCurrency() {
         final boolean enableVirtualCurrency = getAppConfig(this).isVirtualCurrencyEnabled();
         try {
-            if(enableVirtualCurrency) {
+            if (enableVirtualCurrency) {
                 toolbar.findViewById(R.id.ProgressBar).setVisibility(View.VISIBLE);
                 toolbar.findViewById(R.id.currency_layout).setVisibility(View.VISIBLE);
                 toolbar.findViewById(R.id.currency_layout).setOnClickListener(new View.OnClickListener() {
@@ -960,12 +973,12 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 @Override
                 public void success(VirtualCurrencyBalanceResponse virtualCurrencyBalanceResponse, Response response) {
                     super.success(virtualCurrencyBalanceResponse, response);
-                    if(enableVirtualCurrency) {
+                    if (enableVirtualCurrency) {
                         toolbar.findViewById(R.id.ProgressBar).setVisibility(View.GONE);
                     }
                     if (virtualCurrencyBalanceResponse != null && virtualCurrencyBalanceResponse.balance != null) {
                         appPref.setVirtualCurrency(virtualCurrencyBalanceResponse.balance.intValue() + "");
-                        if(enableVirtualCurrency) {
+                        if (enableVirtualCurrency) {
                             TextView textView = (TextView) toolbar.findViewById(R.id.tv_virtual_currency);
                             textView.setText(virtualCurrencyBalanceResponse.balance.intValue() + "");
                         }
@@ -975,14 +988,14 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 @Override
                 public void failure(CorsaliteError error) {
                     super.failure(error);
-                    if(enableVirtualCurrency) {
+                    if (enableVirtualCurrency) {
                         toolbar.findViewById(R.id.ProgressBar).setVisibility(View.GONE);
                     }
                 }
             });
         } catch (Exception e) {
             L.error(e.getMessage(), e);
-            if(enableVirtualCurrency) {
+            if (enableVirtualCurrency) {
                 toolbar.findViewById(R.id.ProgressBar).setVisibility(View.GONE);
             }
         }
@@ -1006,7 +1019,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     public void showLongToast(String message) {
-        if (this!= null && !TextUtils.isEmpty(message)) {
+        if (this != null && !TextUtils.isEmpty(message)) {
             Toast.makeText(this, message, Toast.LENGTH_LONG).show();
         }
     }
@@ -1014,7 +1027,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_logout :
+            case R.id.action_logout:
                 showLogoutDialog();
                 return true;
         }
@@ -1040,13 +1053,13 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 }).show();
     }
 
-    protected void logout() {
+    private void logout() {
         logout(true);
     }
 
     protected void logout(final boolean navigateToLogin) {
         try {
-            if(!SystemUtils.isNetworkConnected(this)) {
+            if (!SystemUtils.isNetworkConnected(this)) {
                 logoutAccount(navigateToLogin);
                 return;
             }
@@ -1059,27 +1072,23 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 @Override
                 public void failure(CorsaliteError error) {
                     super.failure(error);
-                    showToast(getResources().getString(R.string.logout_failed));
                     WebSocketHelper.get(AbstractBaseActivity.this).disconnectWebSocket();
-                    logoutAccount(navigateToLogin);
                 }
 
                 @Override
                 public void success(LogoutResponse logoutResponse, Response response) {
                     if (logoutResponse.isSuccessful()) {
-                        resetCrashlyticsUserData();
-                        if(navigateToLogin) {
+                        if (navigateToLogin) {
                             showToast(getResources().getString(R.string.logout_successful));
                         }
                         WebSocketHelper.get(AbstractBaseActivity.this).disconnectWebSocket();
-                        logoutAccount(navigateToLogin);
                     }
                 }
             });
         } catch (Exception e) {
             L.error(e.getMessage(), e);
-            logoutAccount(navigateToLogin);
         }
+        logoutAccount(navigateToLogin);
     }
 
     private void logoutAccount(boolean navigateToLogin) {
@@ -1089,9 +1098,9 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         resetCrashlyticsUserData();
         deleteSessionCookie();
         AbstractBaseActivity.selectedCourse = null;
-        AbstractBaseActivity.selectedVideoPosition= 0;
+        AbstractBaseActivity.selectedVideoPosition = 0;
         AbstractBaseActivity.sharedExamModels = null;
-        if(navigateToLogin) {
+        if (navigateToLogin) {
             Intent intent = new Intent(AbstractBaseActivity.this, LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
@@ -1100,25 +1109,27 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     private void loadCoursesList() {
-        ApiManager.getInstance(this).getCourses(LoginUserCache.getInstance().getStudentId(), new ApiCallback<List<Course>>(this) {
-            @Override
-            public void failure(CorsaliteError error) {
-                super.failure(error);
-                L.error(error.message);
-                showToast("Failed to fetch courses");
-            }
+        ApiManager.getInstance(this).getCourses(LoginUserCache.getInstance().getStudentId(),
+                !(this instanceof WelcomeActivity || this instanceof StudyCenterActivity),
+                new ApiCallback<List<Course>>(this) {
+                    @Override
+                    public void failure(CorsaliteError error) {
+                        super.failure(error);
+                        L.error(error.message);
+                        showToast("Failed to fetch courses");
+                    }
 
-            @Override
-            public void success(List<Course> courses, Response response) {
-                super.success(courses, response);
-                if (courses != null) {
-                    AbstractBaseActivity.this.courses = courses;
-                    ApiCacheHolder.getInstance().setCoursesResponse(courses);
-                    dbManager.saveReqRes(ApiCacheHolder.getInstance().courses);
-                    showCoursesInToolbar(courses);
-                }
-            }
-        });
+                    @Override
+                    public void success(List<Course> courses, Response response) {
+                        super.success(courses, response);
+                        if (courses != null) {
+                            AbstractBaseActivity.this.courses = courses;
+                            ApiCacheHolder.getInstance().setCoursesResponse(courses);
+                            dbManager.saveReqRes(ApiCacheHolder.getInstance().courses);
+                            showCoursesInToolbar(courses);
+                        }
+                    }
+                });
     }
 
     public void showVideoInToolbar(final List<ContentModel> videos, int selectedPosition) {
@@ -1188,7 +1199,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             AppConfig config = getAppConfig(this);
             if (SystemUtils.isNetworkConnected(AbstractBaseActivity.this)) {
                 int appVersionCode = BuildConfig.VERSION_CODE;
-                if(config.isforceUpgradeEnabled() && appVersionCode < config.getLatestVersionCode()) {
+                if (config.isforceUpgradeEnabled() && appVersionCode < config.getLatestVersionCode()) {
                     showUpdateAlert(true, true, null);
                 }
             }
@@ -1197,10 +1208,10 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         }
     }
 
-    private AlertDialog dataSyncAlertDialog;
+    private static AlertDialog dataSyncAlertDialog;
 
     private void showDataSyncAlert(long eventsCount) {
-        if(dataSyncAlertDialog == null || !dataSyncAlertDialog.isShowing()) {
+        if (dataSyncAlertDialog == null || !dataSyncAlertDialog.isShowing()) {
             try {
                 long dataSyncTime = Long.parseLong(AppPref.get(getApplicationContext()).getValue("data_sync_later"));
                 Calendar lastTime = Calendar.getInstance();
@@ -1241,7 +1252,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 .setPositiveButton("Update", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         try {
-                            if(isPlayStoreUpdate) {
+                            if (isPlayStoreUpdate) {
                                 updateAppFromPlayStore();
                             } else {
                                 updateAppFromThirdParty(apkUrl);
@@ -1254,7 +1265,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 })
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setCancelable(false);
-        if(!isForceUpdrage) {
+        if (!isForceUpdrage) {
             builder.setMessage("There is a new version of this app available, would you like to upgrade now?");
             builder.setNegativeButton("Later", new DialogInterface.OnClickListener() {
                 @Override
@@ -1289,7 +1300,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     // this method will be overridden by the classes that subscribes from event bus
     public void onEvent(Course course) {
-        if(course != null && (selectedCourse == null || (selectedCourse.courseId != course.courseId))) {
+        if (course != null && (selectedCourse == null || (selectedCourse.courseId != course.courseId))) {
             selectedCourse = course;
             if (isCourseEnded(course)) {
                 if (!(this instanceof WelcomeActivity)) {
@@ -1349,14 +1360,14 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     public boolean isCourseEnded(Course course) {
-        if(course != null && course.isEnded()) {
+        if (course != null && course.isEnded()) {
             return true;
         }
         return false;
     }
 
     public void showProgress() {
-        if(isShown()) {
+        if (isShown()) {
             ProgressBar pbar = new ProgressBar(this);
             pbar.setBackgroundColor(getResources().getColor(android.R.color.transparent));
             dialog = new Dialog(this);
@@ -1459,7 +1470,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         Calendar cal = Calendar.getInstance();
         cal.setTime(scheduledTime);
         cal.add(Calendar.MINUTE, -15);
-        if(TimeUtils.currentTimeInMillis() > cal.getTimeInMillis()) {
+        if (TimeUtils.currentTimeInMillis() > cal.getTimeInMillis()) {
             return;
         }
         cal = Calendar.getInstance();
@@ -1467,22 +1478,22 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         expiry.setTimeInMillis(scheduledTime.getTime());
         PugNotification.with(this)
                 .load()
-                .identifier(Data.getInt(examId+Constants.EXAM_DOWNLOADED_REQUEST_ID))
+                .identifier(Data.getInt(examId + Constants.EXAM_DOWNLOADED_REQUEST_ID))
                 .title(examName)
                 .autoCancel(true)
-                .message("Exam starts at "+new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime)+". Please Download")
-                .bigTextStyle("Exam starts at "+new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime)+". Please Download")
+                .message("Exam starts at " + new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime) + ". Please Download")
+                .bigTextStyle("Exam starts at " + new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime) + ". Please Download")
                 .smallIcon(R.drawable.ic_launcher)
                 .largeIcon(R.drawable.ic_launcher)
                 .click(ExamEngineActivity.class, getScheduledTestBundle(examId))
                 .flags(Notification.DEFAULT_ALL)
                 .simple()
                 .build();
-        L.info("Scheduled Download Notification for "+TimeUtils.getDateString(cal.getTimeInMillis()));
+        L.info("Scheduled Download Notification for " + TimeUtils.getDateString(cal.getTimeInMillis()));
         // cancel notification
         Intent intent = new Intent(this, NotifyReceiver.class);
         intent.setAction("CANCEL_NOTIFICATION");
-        intent.putExtra("id", Data.getInt(examId+Constants.EXAM_DOWNLOADED_REQUEST_ID));
+        intent.putExtra("id", Data.getInt(examId + Constants.EXAM_DOWNLOADED_REQUEST_ID));
         PendingIntent cancelDownloadNotifIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC_WAKEUP, expiry.getTimeInMillis(), cancelDownloadNotifIntent);
@@ -1492,31 +1503,31 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         Calendar cal = Calendar.getInstance();
         cal.setTime(scheduledTime);
         cal.add(Calendar.MINUTE, -15);
-        if(TimeUtils.currentTimeInMillis() > cal.getTimeInMillis()) {
+        if (TimeUtils.currentTimeInMillis() > cal.getTimeInMillis()) {
             return;
         }
         Calendar expiry = Calendar.getInstance();
         expiry.setTimeInMillis(scheduledTime.getTime());
-        if(cal.getTimeInMillis() < TimeUtils.currentTimeInMillis()) {
+        if (cal.getTimeInMillis() < TimeUtils.currentTimeInMillis()) {
             cal = Calendar.getInstance();
         }
         PugNotification.with(this)
                 .load()
-                .identifier(Data.getInt(examId+Constants.EXAM_ADVANCED_NOTIFICATION_REQUEST_ID))
+                .identifier(Data.getInt(examId + Constants.EXAM_ADVANCED_NOTIFICATION_REQUEST_ID))
                 .title(examName)
-                .message("Exam starts at "+new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime))
-                .bigTextStyle("Exam starts at "+new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime))
+                .message("Exam starts at " + new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime))
+                .bigTextStyle("Exam starts at " + new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime))
                 .smallIcon(R.drawable.ic_launcher)
                 .largeIcon(R.drawable.ic_launcher)
                 .click(ExamEngineActivity.class, getScheduledTestBundle(examId))
                 .flags(Notification.DEFAULT_ALL)
                 .simple()
                 .build();
-        L.info("Scheduled Advanced Notification for "+TimeUtils.getDateString(cal.getTimeInMillis()));
+        L.info("Scheduled Advanced Notification for " + TimeUtils.getDateString(cal.getTimeInMillis()));
         // cancel notification
         Intent intent = new Intent(this, NotifyReceiver.class);
         intent.setAction("CANCEL_NOTIFICATION");
-        intent.putExtra("id", Data.getInt(examId+Constants.EXAM_ADVANCED_NOTIFICATION_REQUEST_ID));
+        intent.putExtra("id", Data.getInt(examId + Constants.EXAM_ADVANCED_NOTIFICATION_REQUEST_ID));
         PendingIntent cancelDownloadNotifIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC_WAKEUP, expiry.getTimeInMillis(), cancelDownloadNotifIntent);
@@ -1526,7 +1537,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         Calendar cal = Calendar.getInstance();
         cal.setTime(scheduledTime);
         cal.add(Calendar.MINUTE, -5);
-        if(TimeUtils.currentTimeInMillis() > cal.getTimeInMillis()) {
+        if (TimeUtils.currentTimeInMillis() > cal.getTimeInMillis()) {
             return;
         }
         Intent broadCastIntent = new Intent(this, NotifyReceiver.class);
@@ -1534,22 +1545,22 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         broadCastIntent.putExtra("start_exam", true);
         PugNotification.with(this)
                 .load()
-                .identifier(Data.getInt(examId+Constants.EXAM_STARTED_REQUEST_ID))
+                .identifier(Data.getInt(examId + Constants.EXAM_STARTED_REQUEST_ID))
                 .when(cal.getTimeInMillis())
                 .title(examName)
-                .message("Exam will start at "+new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime))
-                .bigTextStyle("Exam will start at "+new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime))
+                .message("Exam will start at " + new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime))
+                .bigTextStyle("Exam will start at " + new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime))
                 .smallIcon(R.drawable.ic_launcher)
                 .largeIcon(R.drawable.ic_launcher)
                 .click(ExamEngineActivity.class, getScheduledTestBundle(examId))
                 .flags(Notification.DEFAULT_ALL)
                 .simple()
                 .build();
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, (int)TimeUtils.currentTimeInMillis(),
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, (int) TimeUtils.currentTimeInMillis(),
                 broadCastIntent, PendingIntent.FLAG_ONE_SHOT);
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
-        L.info("Scheduled Started Notification for "+TimeUtils.getDateString(cal.getTimeInMillis()));
+        L.info("Scheduled Started Notification for " + TimeUtils.getDateString(cal.getTimeInMillis()));
     }
 
     private Bundle getScheduledTestBundle(String examTemplateId) {
@@ -1563,7 +1574,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         Calendar cal = Calendar.getInstance();
         cal.setTime(scheduledTime);
         cal.add(Calendar.SECOND, -15);
-        if(TimeUtils.currentTimeInMillis() > cal.getTimeInMillis()) {
+        if (TimeUtils.currentTimeInMillis() > cal.getTimeInMillis()) {
             return;
         }
         Intent broadCastIntent = new Intent(this, NotifyReceiver.class);
@@ -1571,15 +1582,15 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         broadCastIntent.putExtra("start_exam", true);
         broadCastIntent.putExtra("id", Data.getInt(examId));
         broadCastIntent.putExtra("time", scheduledTime.getTime());
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, (int)TimeUtils.currentTimeInMillis(),
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, (int) TimeUtils.currentTimeInMillis(),
                 broadCastIntent, PendingIntent.FLAG_ONE_SHOT);
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
-        L.info("Scheduled Started Notification for "+TimeUtils.getDateTimeString(cal.getTimeInMillis()));
+        L.info("Scheduled Started Notification for " + TimeUtils.getDateTimeString(cal.getTimeInMillis()));
     }
 
     public void onEventMainThread(com.education.corsalite.event.Toast toast) {
-        if(!TextUtils.isEmpty(toast.message)) {
+        if (!TextUtils.isEmpty(toast.message)) {
             showToast(toast.message);
         }
     }
@@ -1587,7 +1598,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     private AlertDialog connectAlert;
 
     public void onEventMainThread(ConnectExceptionEvent event) {
-        if(connectAlert == null || !connectAlert.isShowing()) {
+        if (connectAlert == null || !connectAlert.isShowing()) {
             connectAlert = new AlertDialog.Builder(this)
                     .setTitle("Network Timeout")
                     .setMessage("Sorry, your data connection timeout error has occurred. Click OK to retry.")
@@ -1610,19 +1621,19 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     public void onEventMainThread(ChallengeTestUpdateEvent event) {
-        if(!TextUtils.isEmpty(event.challengerStatus) && event.challengerStatus.equalsIgnoreCase("Canceled")) {
+        if (!TextUtils.isEmpty(event.challengerStatus) && event.challengerStatus.equalsIgnoreCase("Canceled")) {
             ChallengeUtils.get(this).clearChallengeNotifications(event.challengeTestParentId);
-            if(this instanceof ChallengeActivity) {
+            if (this instanceof ChallengeActivity) {
                 finish();
                 showToast("Challenger has cancelled the challenge");
             }
-        } else if(!(this instanceof ChallengeActivity)) {
+        } else if (!(this instanceof ChallengeActivity)) {
             ChallengeUtils.get(this).showChallengeUpdateNotification(event);
         }
     }
 
     public void onEventMainThread(ChallengeTestStartEvent event) {
-        if(!(this instanceof ExamEngineActivity) && !ChallengeUtils.get(this).challengeStarted) {
+        if (!(this instanceof ExamEngineActivity) && !ChallengeUtils.get(this).challengeStarted) {
             ChallengeUtils.get(this).challengeStarted = true;
             ChallengeUtils.get(this).clearChallengeNotifications(event.challengeTestParentId);
             Intent intent = new Intent(this, ExamEngineActivity.class);
@@ -1630,14 +1641,14 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             intent.putExtra("test_question_paper_id", event.testQuestionPaperId);
             startActivity(intent);
         }
-        if(this instanceof ChallengeActivity) {
+        if (this instanceof ChallengeActivity) {
             finish();
         }
     }
 
     public void onEventMainThread(ScheduledTestStartEvent event) {
         try {
-            if(this instanceof TestInstructionsActivity || this instanceof ExamEngineActivity) {
+            if (this instanceof TestInstructionsActivity || this instanceof ExamEngineActivity) {
                 return;
             }
             OfflineTestObjectModel model = dbManager.fetchOfflineTestRecord(event.testQuestionPaperId);
@@ -1646,7 +1657,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 intent.putExtra(Constants.TEST_TITLE, "Scheduled Test");
                 intent.putExtra("test_question_paper_id", model.testQuestionPaperId);
                 intent.putExtra("test_answer_paper_id", model.testAnswerPaperId);
-                if(model.status == Constants.STATUS_SUSPENDED) {
+                if (model.status == Constants.STATUS_SUSPENDED) {
                     intent.putExtra("test_status", "Suspended");
                 }
                 startActivity(intent);
@@ -1659,7 +1670,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 startActivity(examIntent);
             }
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             L.error(e.getMessage(), e);
         }
     }

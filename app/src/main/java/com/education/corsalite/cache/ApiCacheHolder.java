@@ -2,6 +2,7 @@ package com.education.corsalite.cache;
 
 import com.education.corsalite.models.db.ScheduledTestList;
 import com.education.corsalite.models.db.reqres.AppConfigReqRes;
+import com.education.corsalite.models.db.reqres.AppentityconfigReqRes;
 import com.education.corsalite.models.db.reqres.ContentIndexReqRes;
 import com.education.corsalite.models.db.reqres.ContentReqRes;
 import com.education.corsalite.models.db.reqres.CoursesReqRes;
@@ -12,6 +13,7 @@ import com.education.corsalite.models.db.reqres.UserProfileReqRes;
 import com.education.corsalite.models.db.reqres.VirtualCurrencyBalanceReqRes;
 import com.education.corsalite.models.db.reqres.WelcomeReqRes;
 import com.education.corsalite.models.db.reqres.requests.AppConfigRequest;
+import com.education.corsalite.models.db.reqres.requests.AppEntityConfigRequest;
 import com.education.corsalite.models.db.reqres.requests.ContentIndexRequest;
 import com.education.corsalite.models.db.reqres.requests.ContentRequest;
 import com.education.corsalite.models.db.reqres.requests.CourseRequest;
@@ -21,6 +23,7 @@ import com.education.corsalite.models.db.reqres.requests.StudyCenterRequest;
 import com.education.corsalite.models.db.reqres.requests.UserProfileRequest;
 import com.education.corsalite.models.db.reqres.requests.VirtualCurrencyBalanceRequest;
 import com.education.corsalite.models.db.reqres.requests.WelcomeRequest;
+import com.education.corsalite.models.responsemodels.ClientEntityAppConfig;
 import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.Course;
@@ -40,6 +43,8 @@ public class ApiCacheHolder {
 
     private static ApiCacheHolder instance;
 
+    public AppentityconfigReqRes appentityconfigReqRes = null;
+    public AppEntityConfigRequest appentityconfigRequest = null;
     public AppConfigRequest appConfigRequest = null;
     public AppConfigReqRes appConfigReqRes = null;
     public LoginRequest loginRequest = null;
@@ -68,15 +73,19 @@ public class ApiCacheHolder {
         return instance;
     }
 
-    public void setAppConfigRequest(String userId) {
-        appConfigRequest = new AppConfigRequest(userId);
-    }
-
     public void setAppConfigResponse(AppConfig response) {
         if(appConfigRequest != null && response != null) {
             appConfigReqRes = new AppConfigReqRes();
             appConfigReqRes.request = appConfigRequest;
             appConfigReqRes.response = response;
+        }
+    }
+
+    public void setAppEntityConfigResponse(ClientEntityAppConfig response) {
+        if(appentityconfigRequest != null && response != null) {
+            appentityconfigReqRes = new AppentityconfigReqRes();
+            appentityconfigReqRes.request = appentityconfigRequest;
+            appentityconfigReqRes.response = response;
         }
     }
 

@@ -18,6 +18,7 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
@@ -76,6 +77,9 @@ public class ApiClientService {
 
     private static OkHttpClient getOkHttpClient() {
         OkHttpClient client = new OkHttpClient();
+        client.setConnectTimeout(1, TimeUnit.MINUTES);
+        client.setReadTimeout(1, TimeUnit.MINUTES);
+        client.setWriteTimeout(1, TimeUnit.MINUTES);
         client.interceptors().add(new Interceptor() {
             int tryCount = 0;
             @Override
