@@ -132,8 +132,7 @@ public class PostDetailsActivity extends AbstractBaseActivity implements Comment
                     public void success(CommonResponseModel baseResponseModel, Response response) {
                         super.success(baseResponseModel, response);
                         closeProgress();
-                        post.IsLiked = (!TextUtils.isEmpty(post.IsLiked) && post.IsLiked.equalsIgnoreCase("Y")) ? "N" : "Y";
-                        adapter.updatePost(post);
+                        getPostDetails(userId, postId);
                     }
 
                     @Override
@@ -164,7 +163,7 @@ public class PostDetailsActivity extends AbstractBaseActivity implements Comment
                     } else {
                         showToast("Removed bookmark successfully.");
                     }
-                    adapter.updatePost(post);
+                    getPostDetails(userId, postId);
                 }
             }
 
@@ -229,6 +228,7 @@ public class PostDetailsActivity extends AbstractBaseActivity implements Comment
                         super.success(baseResponseModel, response);
                         closeProgress();
                         showToast("Post deleted successfully");
+                        finish();
                     }
 
                     @Override
