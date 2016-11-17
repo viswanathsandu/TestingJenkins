@@ -1669,6 +1669,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                             testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.SKIPPED.getValue();
                         }
                         testanswerPaper.testAnswers.get(selectedPosition).answerText = answersText;
+                        btnVerify.setEnabled(!answersText.toString().trim().isEmpty());
                     }
                 });
             }
