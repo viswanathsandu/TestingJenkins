@@ -1440,7 +1440,9 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                         }
                         if (!isCheckedAtLeastOnce) {
                             selectedAnswerPosition = -1;
-                            localExamModelList.get(selectedPosition).selectedAnswers = null;
+                            if(localExamModelList.size() > selectedPosition) {
+                                localExamModelList.get(selectedPosition).selectedAnswers = null;
+                            }
                         }
                         btnVerify.setEnabled(isCheckedAtLeastOnce);
                     }
