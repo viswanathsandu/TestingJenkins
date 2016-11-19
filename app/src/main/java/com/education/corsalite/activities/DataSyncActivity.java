@@ -86,26 +86,34 @@ public class DataSyncActivity extends AbstractBaseActivity {
     }
 
     private void syncEvents() {
-        if(isShown()) {
-            completedEvents = totalEvents - dbManager.getcount(SyncModel.class);
-            updateProgress(totalEvents, completedEvents);
-            currentEvent = dbManager.getFirstSyncModel();
-            if (currentEvent != null) {
-                executeApi(currentEvent);
+        try {
+            if (isShown()) {
+                completedEvents = totalEvents - dbManager.getcount(SyncModel.class);
+                updateProgress(totalEvents, completedEvents);
+                currentEvent = dbManager.getFirstSyncModel();
+                if (currentEvent != null) {
+                    executeApi(currentEvent);
+                }
             }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
         }
     }
 
     private void success() {
-        dbManager.delete(currentEvent);
-        syncEvents();
+        if(currentEvent != null) {
+            dbManager.delete(currentEvent);
+            syncEvents();
+        }
     }
 
     private void failure() {
-        dbManager.delete(currentEvent);
-        currentEvent.setId(null);
-        dbManager.addSyncModel(currentEvent);
-        syncEvents();
+        if(currentEvent != null) {
+            dbManager.delete(currentEvent);
+            currentEvent.setId(null);
+            dbManager.addSyncModel(currentEvent);
+            syncEvents();
+        }
     }
 
 
