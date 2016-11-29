@@ -8,8 +8,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="5dp"
-        android:background="@android:color/white"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/white_shape"
         android:orientation="horizontal">
 
         <ImageView
@@ -34,9 +36,8 @@
                 android:ellipsize="middle"
                 android:maxLines="1"
                 android:text="how to solve the given problem. and also can I get a clear explanations for these sums?"
-                android:textColor="@android:color/black"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textColor="@android:color/holo_blue_light"
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/tv_comment_date"
@@ -101,9 +102,4 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/dark_gray" />
 </LinearLayout>
