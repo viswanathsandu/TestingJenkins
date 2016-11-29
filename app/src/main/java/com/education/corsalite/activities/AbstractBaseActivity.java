@@ -1497,7 +1497,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 .bigTextStyle("Exam starts at " + new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime) + ". Please Download")
                 .smallIcon(R.drawable.ic_launcher)
                 .largeIcon(R.drawable.ic_launcher)
-                .click(ExamEngineActivity.class, getScheduledTestBundle(examId))
+                .click(TestInstructionsActivity.class, getScheduledTestBundle(examId))
                 .flags(Notification.DEFAULT_ALL)
                 .simple()
                 .build();
@@ -1531,7 +1531,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 .bigTextStyle("Exam starts at " + new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime))
                 .smallIcon(R.drawable.ic_launcher)
                 .largeIcon(R.drawable.ic_launcher)
-                .click(ExamEngineActivity.class, getScheduledTestBundle(examId))
+                .click(TestInstructionsActivity.class, getScheduledTestBundle(examId))
                 .flags(Notification.DEFAULT_ALL)
                 .simple()
                 .build();
@@ -1564,7 +1564,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 .bigTextStyle("Exam will start at " + new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime))
                 .smallIcon(R.drawable.ic_launcher)
                 .largeIcon(R.drawable.ic_launcher)
-                .click(ExamEngineActivity.class, getScheduledTestBundle(examId))
+                .click(TestInstructionsActivity.class, getScheduledTestBundle(examId))
                 .flags(Notification.DEFAULT_ALL)
                 .simple()
                 .build();
