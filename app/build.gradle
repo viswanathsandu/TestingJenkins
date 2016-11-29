@@ -4,15 +4,15 @@ apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion '24'
+    buildToolsVersion '25'
 
     defaultConfig {
         applicationId "com.education.corsalite"
         minSdkVersion 17
         targetSdkVersion 20
         // Version naming specification xx xx x xx
-        versionCode 102200
-        versionName "1.2.2"
+        versionCode 102303
+        versionName "1.2.3.3"
         multiDexEnabled false
     }
     buildTypes {

@@ -257,6 +257,9 @@ public class FileUtils {
 
     public void delete(String selectedPath) {
         File fileorDir;
+        if(TextUtils.isEmpty(selectedPath)) {
+            return;
+        }
         if(selectedPath.startsWith("/")) {
             fileorDir = new File(getParentFolder() + selectedPath);
         } else {

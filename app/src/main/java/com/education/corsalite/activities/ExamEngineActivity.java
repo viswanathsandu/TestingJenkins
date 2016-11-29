@@ -140,8 +140,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     TextView tv_timer;
     @Bind(R.id.btn_view_full_question)
     Button btnViewFullQuestion;
-    @Bind(R.id.btn_verify)
-    Button btnVerify;
+    @Bind(R.id.tv_verify)
+    TextView btnVerify;
     @Bind(R.id.tv_clearanswer)
     TextView tvClearAnswer;
     @Bind(R.id.btn_submit)
@@ -816,7 +816,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     btnPrevious.setClickable(true);
                     btnNext.setClickable(true);
                     break;
-                case R.id.btn_verify:
+                case R.id.tv_verify:
                     hideKeyboard();
                     verifyAnswer();
                     break;
@@ -1440,7 +1440,9 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                         }
                         if (!isCheckedAtLeastOnce) {
                             selectedAnswerPosition = -1;
-                            localExamModelList.get(selectedPosition).selectedAnswers = null;
+                            if(localExamModelList.size() > selectedPosition) {
+                                localExamModelList.get(selectedPosition).selectedAnswers = null;
+                            }
                         }
                         btnVerify.setEnabled(isCheckedAtLeastOnce);
                     }
@@ -1669,6 +1671,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                             testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.SKIPPED.getValue();
                         }
                         testanswerPaper.testAnswers.get(selectedPosition).answerText = answersText;
+                        btnVerify.setEnabled(!answersText.toString().trim().isEmpty());
                     }
                 });
             }

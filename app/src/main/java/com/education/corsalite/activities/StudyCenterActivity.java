@@ -468,26 +468,28 @@ public class StudyCenterActivity extends AbstractBaseActivity {
     }
 
     private void showAlertDialog(View v, StudyCenter studyCenter) {
+        try {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            LayoutInflater li = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View dialogView = li.inflate(R.layout.layout_list_item_view_popup, null);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        LayoutInflater li = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View dialogView = li.inflate(R.layout.layout_list_item_view_popup, null);
+            TextView saveOfflineText = (TextView) dialogView.findViewById(R.id.offline_content);
+            saveOfflineText.setVisibility(View.GONE);
 
-        TextView saveOfflineText = (TextView) dialogView.findViewById(R.id.offline_content);
-        saveOfflineText.setVisibility(View.GONE);
-
-        builder.setView(dialogView);
-        setDataForAlert(dialogView, studyCenter);
-        alertDialog = builder.create();
-        WindowManager.LayoutParams wmlp = alertDialog.getWindow().getAttributes();
-        wmlp.gravity = Gravity.TOP | Gravity.LEFT;
-        // position the alertDialog
-        wmlp.x = (int) v.getX() + 15;
-        wmlp.y = (int) v.getY() + 140;
-        alertDialog.show();
-        alertDialog.getWindow().setAttributes(wmlp);
-        alertDialog.getWindow().setLayout(300, ViewGroup.LayoutParams.WRAP_CONTENT);
-
+            builder.setView(dialogView);
+            setDataForAlert(dialogView, studyCenter);
+            alertDialog = builder.create();
+            WindowManager.LayoutParams wmlp = alertDialog.getWindow().getAttributes();
+            wmlp.gravity = Gravity.TOP | Gravity.LEFT;
+            // position the alertDialog
+            wmlp.x = (int) v.getX() + 15;
+            wmlp.y = (int) v.getY() + 140;
+            alertDialog.show();
+            alertDialog.getWindow().setAttributes(wmlp);
+            alertDialog.getWindow().setLayout(300, ViewGroup.LayoutParams.WRAP_CONTENT);
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
     }
 
     private void startContentActivity(StudyCenter studyCenter) {

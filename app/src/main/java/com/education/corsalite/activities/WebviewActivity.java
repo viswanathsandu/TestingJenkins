@@ -176,7 +176,14 @@ public class WebviewActivity extends AbstractBaseActivity {
                 }
                 return false;
             }
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+            try {
+                intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                if (intent != null) {
+                    startActivity(intent);
+                }
+            } catch ( Exception e) {
+                L.error(e.getMessage(), e);
+            }
             return true;
         }
 
