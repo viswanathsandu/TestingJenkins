@@ -122,7 +122,7 @@ public class TestDownloadService extends IntentService {
                                       final MockTest mockTest, final ScheduledTestsArray scheduledTestsArray) {
         try {
             TestPaperIndex testPaperIndexResponse = ApiManager.getInstance(this).getTestPaperIndex(testQuestionPaperId, testAnswerPaperId, "N");
-            TestQuestionPaperResponse questionPaperResponse = ApiManager.getInstance(this).getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId);
+            TestQuestionPaperResponse questionPaperResponse = ApiManager.getInstance(this).getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, LoginUserCache.getInstance().getStudentId());
             if (questionPaperResponse != null) {
                 OfflineTestObjectModel model = new OfflineTestObjectModel();
                 String testName = "";

@@ -344,16 +344,16 @@ public class ApiManager {
         }
     }
 
-    public TestQuestionPaperResponse getTestQuestionPaper(String testQuestionPaperId, String testAnswerPaperId) {
+    public TestQuestionPaperResponse getTestQuestionPaper(String testQuestionPaperId, String testAnswerPaperId, String studentId) {
         if (isApiOnline()) {
-            return ApiClientService.get().getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId);
+            return ApiClientService.get().getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, studentId);
         }
         return null;
     }
 
-    public void getTestQuestionPaper(String testQuestionPaperId, String testAnswerPaperId, ApiCallback<TestQuestionPaperResponse> callback) {
+    public void getTestQuestionPaper(String testQuestionPaperId, String testAnswerPaperId, String studentId, ApiCallback<TestQuestionPaperResponse> callback) {
         if (isApiOnline()) {
-            ApiClientService.get().getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, callback);
+            ApiClientService.get().getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, studentId, callback);
         }
     }
 

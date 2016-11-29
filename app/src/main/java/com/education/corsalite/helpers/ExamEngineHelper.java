@@ -215,7 +215,7 @@ public class ExamEngineHelper {
                         }
                     }
                 });
-        ApiManager.getInstance(mActivity).getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId,
+        ApiManager.getInstance(mActivity).getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, LoginUserCache.getInstance().getStudentId(),
                 new ApiCallback<TestQuestionPaperResponse>(mActivity) {
                     @Override
                     public void success(TestQuestionPaperResponse questionPaperResponse, Response response) {

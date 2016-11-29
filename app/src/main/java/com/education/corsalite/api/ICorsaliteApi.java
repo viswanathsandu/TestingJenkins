@@ -173,10 +173,10 @@ public interface ICorsaliteApi {
     void getScheduledTestsList(@Query("idStudent") String idStudent, ApiCallback<ScheduledTestList> callback);
 
     @GET("/TestQuestionPaper")
-    TestQuestionPaperResponse getTestQuestionPaper(@Query("idTestQuestionPaper") String idTestQuestionPaper, @Query("idTestAnswerPaper") String idTestAnswerPaper);
+    TestQuestionPaperResponse getTestQuestionPaper(@Query("idTestQuestionPaper") String idTestQuestionPaper, @Query("idTestAnswerPaper") String idTestAnswerPaper, @Query("idStudent") String studentId);
 
     @GET("/TestQuestionPaper")
-    void getTestQuestionPaper(@Query("idTestQuestionPaper") String idTestQuestionPaper, @Query("idTestAnswerPaper") String idTestAnswerPaper, ApiCallback<TestQuestionPaperResponse> callback);
+    void getTestQuestionPaper(@Query("idTestQuestionPaper") String idTestQuestionPaper, @Query("idTestAnswerPaper") String idTestAnswerPaper, @Query("idStudent") String studentId, ApiCallback<TestQuestionPaperResponse> callback);
 
     @Headers("Content-Type:application/x-www-form-urlencoded")
     @POST("/TestAnswerPaper")
