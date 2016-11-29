@@ -260,16 +260,20 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     private void checkDataSync() {
-        if (SystemUtils.isNetworkConnected(this)) {
-            if (!(this instanceof DataSyncActivity || this instanceof SplashActivity)
-                    && LoginUserCache.getInstance().getLoginResponse() != null) {
-                long eventsCount = dbManager.getcount(SyncModel.class);
-                if (eventsCount > 0) {
-                    showDataSyncAlert(eventsCount);
+        try {
+            if (SystemUtils.isNetworkConnected(this)) {
+                if (!(this instanceof DataSyncActivity || this instanceof SplashActivity)
+                        && LoginUserCache.getInstance().getLoginResponse() != null) {
+                    long eventsCount = dbManager.getcount(SyncModel.class);
+                    if (eventsCount > 0) {
+                        showDataSyncAlert(eventsCount);
+                    }
                 }
+            } else if (dataSyncAlertDialog != null && dataSyncAlertDialog.isShowing()) {
+                dataSyncAlertDialog.dismiss();
             }
-        } else if (dataSyncAlertDialog != null && dataSyncAlertDialog.isShowing()){
-            dataSyncAlertDialog.dismiss();
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
         }
     }
 
@@ -1228,9 +1232,13 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     .setTitle("Data Sync")
                     .setPositiveButton("Sync Now", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            AppPref.get(getApplicationContext()).remove("data_sync_later");
-                            startActivity(new Intent(AbstractBaseActivity.this, DataSyncActivity.class));
-                            dialog.dismiss();
+                            try {
+                                AppPref.get(getApplicationContext()).remove("data_sync_later");
+                                startActivity(new Intent(AbstractBaseActivity.this, DataSyncActivity.class));
+                                dialog.dismiss();
+                            } catch (Exception e) {
+                                L.error(e.getMessage(), e);
+                            }
                         }
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
@@ -1239,8 +1247,12 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     .setNegativeButton("Ask Later", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            AppPref.get(getApplicationContext()).save("data_sync_later", String.valueOf(new Date().getTime()));
-                            dialogInterface.dismiss();
+                            try {
+                                AppPref.get(getApplicationContext()).save("data_sync_later", String.valueOf(new Date().getTime()));
+                                dialogInterface.dismiss();
+                            }catch (Exception e) {
+                                L.error(e.getMessage(), e);
+                            }
                         }
                     }).show();
         }
@@ -1485,7 +1497,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 .bigTextStyle("Exam starts at " + new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime) + ". Please Download")
                 .smallIcon(R.drawable.ic_launcher)
                 .largeIcon(R.drawable.ic_launcher)
-                .click(ExamEngineActivity.class, getScheduledTestBundle(examId))
+                .click(TestInstructionsActivity.class, getScheduledTestBundle(examId))
                 .flags(Notification.DEFAULT_ALL)
                 .simple()
                 .build();
@@ -1519,7 +1531,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 .bigTextStyle("Exam starts at " + new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime))
                 .smallIcon(R.drawable.ic_launcher)
                 .largeIcon(R.drawable.ic_launcher)
-                .click(ExamEngineActivity.class, getScheduledTestBundle(examId))
+                .click(TestInstructionsActivity.class, getScheduledTestBundle(examId))
                 .flags(Notification.DEFAULT_ALL)
                 .simple()
                 .build();
@@ -1552,7 +1564,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 .bigTextStyle("Exam will start at " + new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime))
                 .smallIcon(R.drawable.ic_launcher)
                 .largeIcon(R.drawable.ic_launcher)
-                .click(ExamEngineActivity.class, getScheduledTestBundle(examId))
+                .click(TestInstructionsActivity.class, getScheduledTestBundle(examId))
                 .flags(Notification.DEFAULT_ALL)
                 .simple()
                 .build();
