@@ -160,6 +160,19 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
     }
 
     @Override
+    public void onTitleClicked(int position) {
+        if(getActivity() != null) {
+            ForumPost item = mPostAdapter.getItem(position);
+            Bundle bundle = new Bundle();
+            bundle.putString("user_id", appPref.getUserId());
+            bundle.putString("post_id", item.idUserPost);
+            Intent intent = new Intent(getActivity(), PostDetailsActivity.class);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }
+    }
+
+    @Override
     public void onLikeClicked(final int position) {
         if(getActivity() != null) {
             final ForumPost forumPost = mPostAdapter.getItem(position);

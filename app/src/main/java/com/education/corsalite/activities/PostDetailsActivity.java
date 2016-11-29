@@ -124,6 +124,11 @@ public class PostDetailsActivity extends AbstractBaseActivity implements Comment
     }
 
     @Override
+    public void onTitleClicked(int position) {
+        // Do nothing
+    }
+
+    @Override
     public void onLikeClicked(final int position) {
         showProgress();
         ApiManager.getInstance(this).addForumLike(new ForumLikeRequest(appPref.getUserId(), post.idUserPost),
