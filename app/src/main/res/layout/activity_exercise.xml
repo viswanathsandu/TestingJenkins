@@ -229,6 +229,7 @@
                     </HorizontalScrollView>
 
                     <LinearLayout
+                        android:id="@+id/action_buttons_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
@@ -277,7 +278,7 @@
                         android:id="@+id/layout_choice"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_below="@id/answer_scroll_layout"
+                        android:layout_below="@+id/action_buttons_layout"
                         android:background="@drawable/table_row"
                         android:orientation="horizontal"
                         android:padding="5dp"
@@ -306,7 +307,7 @@
                         android:id="@+id/explanation_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/layout_choice"
+                        android:layout_below="@+id/layout_choice"
                         android:background="@drawable/table_row"
                         android:orientation="horizontal"
                         android:padding="5dp"
