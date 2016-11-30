@@ -85,6 +85,7 @@ import com.education.corsalite.models.responsemodels.TestQuestionPaperResponse;
 import com.education.corsalite.models.socket.requests.UpdateLeaderBoardEvent;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.Constants;
+import com.education.corsalite.utils.Data;
 import com.education.corsalite.utils.ExamUtils;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.SystemUtils;
@@ -104,6 +105,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import br.com.goncalves.pugnotification.notification.PugNotification;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -286,6 +288,11 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         initSuggestionWebView();
         setListener();
         getIntentData();
+        clearNotifications();
+    }
+
+    private void clearNotifications() {
+        PugNotification.with(this).cancel(Data.getInt(testQuestionPaperId));
     }
 
     private void loadLeaderBoard() {
