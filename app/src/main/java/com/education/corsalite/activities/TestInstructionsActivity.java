@@ -73,6 +73,7 @@ public class TestInstructionsActivity extends AbstractBaseActivity {
     private String testAnswerPaperId;
     private String testStatus;
     private CountDownTimer timer;
+    boolean isFromExamEngine = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +87,8 @@ public class TestInstructionsActivity extends AbstractBaseActivity {
         getBundleData();
         fetchTestPaperIndex();
         hideDrawerIcon();
-        if(getIntent().getExtras().getBoolean("is_for_information", false)) {
+        isFromExamEngine = getIntent().getExtras().getBoolean("is_for_information", false);
+        if(isFromExamEngine) {
             btStart.setVisibility(View.GONE);
         }
     }
@@ -147,32 +149,36 @@ public class TestInstructionsActivity extends AbstractBaseActivity {
 
     private void showData() {
         setToolbarTitle(testPaperIndex.examDetails.get(0).examName);
-        if (!TextUtils.isEmpty(testStatus) && testStatus.equalsIgnoreCase("Suspended")) {
-            btStart.setText("Restart");
-        } else {
-            btStart.setText("Start");
+        if(!isFromExamEngine) {
+            if (!TextUtils.isEmpty(testStatus) && testStatus.equalsIgnoreCase("Suspended")) {
+                btStart.setText("Restart");
+            } else {
+                btStart.setText("Start");
+            }
         }
         if (testPaperIndex != null && testPaperIndex.examDetails != null && !testPaperIndex.examDetails.isEmpty()) {
             ExamDetails exam = testPaperIndex.examDetails.get(0);
-            if(!TextUtils.isEmpty(exam.dueDateTime)) {
-                long dueDateInMillis = TimeUtils.getMillisFromDate(exam.dueDateTime);
-                if (dueDateInMillis < TimeUtils.currentTimeInMillis()) {
-                    showToast("Exam time is over. Removed from offline screen");
-                    new ExamUtils(this).deleteTestQuestionPaper(testQuestionPaperId);
-                    finish();
-                    return;
+            if(!isFromExamEngine) {
+                if (!TextUtils.isEmpty(exam.dueDateTime)) {
+                    long dueDateInMillis = TimeUtils.getMillisFromDate(exam.dueDateTime);
+                    if (dueDateInMillis < TimeUtils.currentTimeInMillis()) {
+                        showToast("Exam time is over. Removed from offline screen");
+                        new ExamUtils(this).deleteTestQuestionPaper(testQuestionPaperId);
+                        finish();
+                        return;
+                    }
                 }
-            }
-            if (exam != null && !TextUtils.isEmpty(exam.timeTostart)) {
-                long scheduledTime = TimeUtils.getMillisFromDate(exam.scheduledTime);
-                long timeToStart = scheduledTime - TimeUtils.currentTimeInMillis();
-                if (timeToStart < 0) {
-                    timerLayout.setVisibility(View.GONE);
-                    btStart.setVisibility(View.VISIBLE);
-                } else {
-                    timerLayout.setVisibility(View.VISIBLE);
-                    setTimer(timeToStart);
-                    btStart.setVisibility(View.GONE);
+                if (exam != null && !TextUtils.isEmpty(exam.timeTostart)) {
+                    long scheduledTime = TimeUtils.getMillisFromDate(exam.scheduledTime);
+                    long timeToStart = scheduledTime - TimeUtils.currentTimeInMillis();
+                    if (timeToStart < 0) {
+                        timerLayout.setVisibility(View.GONE);
+                        btStart.setVisibility(View.VISIBLE);
+                    } else {
+                        timerLayout.setVisibility(View.VISIBLE);
+                        setTimer(timeToStart);
+                        btStart.setVisibility(View.GONE);
+                    }
                 }
             }
             if(exam != null && exam.examInstucation != null) {
