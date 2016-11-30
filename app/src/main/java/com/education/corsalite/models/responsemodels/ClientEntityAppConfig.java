@@ -44,7 +44,7 @@ public class ClientEntityAppConfig extends BaseResponseModel {
     }
 
     public boolean isAppFromPlayStore() {
-        return  isUpdateAvailable() && updateMethod.equalsIgnoreCase("Play Store");
+        return  isUpdateAvailable() && updateMethod.equalsIgnoreCase("Play tore");
     }
 
     public String getAppVersionName() {

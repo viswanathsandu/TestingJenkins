@@ -108,6 +108,11 @@ public class FileUtils {
         return filePath;
     }
 
+    public String getLogFolderPath() {
+        String filePath = getAppRootFolder() + File.separator + Constants.LOGS_FOLDER;
+        return filePath;
+    }
+
     public File getLogFilePath(String fileName) {
         String filePath = getAppRootFolder() + File.separator + Constants.LOGS_FOLDER;
         File file = new File(filePath);

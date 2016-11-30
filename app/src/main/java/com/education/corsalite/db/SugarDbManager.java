@@ -412,8 +412,8 @@ public class SugarDbManager {
         try {
             if(model != null && !TextUtils.isEmpty(model.testQuestionPaperId) && TextUtils.isDigitsOnly(model.testQuestionPaperId)) {
                 OfflineTestObjectModel result = fetchOfflineTestRecord(model.testQuestionPaperId);
-                if (result != null) {
-                    delete(result);
+                if (result != null && result.getId() != null) {
+                    model.setId(result.getId());
                 }
                 save(model);
                 DbUtils.get(context).backupDatabase();
