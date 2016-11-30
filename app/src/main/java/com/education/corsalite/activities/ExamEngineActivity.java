@@ -2290,12 +2290,11 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
     @OnClick(R.id.info_button)
     public void onInfoClicked() {
-        showToast("Info clicked");
         if(isMockTest() || isScheduledTest() || isChallengeTest()) {
             Intent intent = new Intent(this, TestInstructionsActivity.class);
             intent.putExtra(Constants.TEST_TITLE, title);
-            intent.putExtra("test_question_paper_id", testQuestionPaperId);
             intent.putExtra("is_for_information", true);
+            intent.putExtra("test_question_paper_id", testQuestionPaperId);
             startActivity(intent);
         }
     }
