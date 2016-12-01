@@ -152,6 +152,7 @@ public class MockTestDialog extends DialogFragment implements MockTestsListAdapt
                 Intent intent = new Intent(getActivity(), TestDownloadService.class);
                 intent.putExtra(Constants.TEST_TITLE, "Mock Test");
                 intent.putExtra("testQuestionPaperId", testQuestionPaperId);
+                intent.putExtra("studentId", LoginUserCache.getInstance().getStudentId());
                 intent.putExtra("selectedMockTest", Gson.get().toJson(selectedMockTest));
                 getActivity().startService(intent);
                 Toast.makeText(getActivity(), "Downloading Mock test paper in background", Toast.LENGTH_SHORT).show();

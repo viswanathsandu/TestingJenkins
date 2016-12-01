@@ -55,6 +55,7 @@ public class TestDownloadService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         dbManager = SugarDbManager.get(getApplicationContext());
         examUtils = new ExamUtils(getApplicationContext());
+        String studentId = intent.getStringExtra("studentId");
         String testQuestionPaperId = intent.getStringExtra("testQuestionPaperId");
         String testAnswerPaperId = intent.getStringExtra("testAnswerPaperId");
         String mockTestStr = intent.getStringExtra("selectedMockTest");
@@ -78,10 +79,10 @@ public class TestDownloadService extends IntentService {
         }
         if (mockTestStr != null) {
             MockTest mockTest = Gson.get().fromJson(mockTestStr, MockTest.class);
-            getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, mockTest, null);
+            getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, mockTest, null, studentId);
         } else if (scheduledTestStr != null) {
             ScheduledTestsArray scheduledTest = Gson.get().fromJson(scheduledTestStr, ScheduledTestsArray.class);
-            getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, null, scheduledTest);
+            getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, null, scheduledTest, studentId);
         } else if(takeTestStr != null){
             Chapter chapter = Gson.get().fromJson(takeTestStr,Chapter.class);
             loadTakeTest(chapter,null, questionsCount, subjectId);
@@ -118,11 +119,12 @@ public class TestDownloadService extends IntentService {
     }
 
 
-    private void getTestQuestionPaper(final String testQuestionPaperId, final String testAnswerPaperId,
-                                      final MockTest mockTest, final ScheduledTestsArray scheduledTestsArray) {
+    private void getTestQuestionPaper(final String testQuestionPaperId, final String testAnswerPaperId, final MockTest mockTest,
+                                      final ScheduledTestsArray scheduledTestsArray, String studentId) {
         try {
             TestPaperIndex testPaperIndexResponse = ApiManager.getInstance(this).getTestPaperIndex(testQuestionPaperId, testAnswerPaperId, "N");
-            TestQuestionPaperResponse questionPaperResponse = ApiManager.getInstance(this).getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, LoginUserCache.getInstance().getStudentId());
+            TestQuestionPaperResponse questionPaperResponse = ApiManager.getInstance(this)
+                    .getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, studentId);
             if (questionPaperResponse != null) {
                 OfflineTestObjectModel model = new OfflineTestObjectModel();
                 String testName = "";
