@@ -22,6 +22,7 @@ import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.ExamHistory;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.SystemUtils;
+import com.education.corsalite.utils.TimeUtils;
 import com.education.corsalite.utils.WebUrls;
 
 import java.util.List;
@@ -97,6 +98,10 @@ public class ExamHistoryActivity extends AbstractBaseActivity implements ExamHis
         ExamHistory examHistory = (ExamHistory) examHistoryAdapter.getItem(position);
         if (SystemUtils.isNetworkConnected(this)) {
             if(!TextUtils.isEmpty(examHistory.totalScore) && examHistory.totalScore.equalsIgnoreCase("suspended")) {
+                if(!TextUtils.isEmpty(examHistory.dueDate) && TimeUtils.currentTimeInMillis() >= TimeUtils.getMillisFromDate(examHistory.dueDate)) {
+                    showToast("Test could not be started as the due date is exceeded");
+                    return;
+                }
                 Intent intent = new Intent(ExamHistoryActivity.this, TestInstructionsActivity.class);
                 intent.putExtra("exam_name", examHistory.examName);
                 intent.putExtra("test_question_paper_id", examHistory.idTestQuestionPaper);

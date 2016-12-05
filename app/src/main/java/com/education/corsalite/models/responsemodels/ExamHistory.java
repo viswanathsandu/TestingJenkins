@@ -27,6 +27,8 @@ public class ExamHistory {
     public String totalScore;
     @SerializedName("idTestQuestionPaper")
     public String idTestQuestionPaper;
+    @SerializedName("DueDateTime")
+    public String dueDate;
 
     public String getTime() {
         try {
