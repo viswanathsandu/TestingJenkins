@@ -1,6 +1,7 @@
 package com.education.corsalite.fragments.examengine;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,8 +16,12 @@ import com.education.corsalite.event.UpdateAnswerEvent;
 import com.education.corsalite.models.responsemodels.AnswerChoiceModel;
 import com.education.corsalite.utils.ExamEngineWebViewClient;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import de.greenrobot.event.EventBus;
 
@@ -27,6 +32,8 @@ import de.greenrobot.event.EventBus;
 public abstract class ChoiceQuestionFragment extends BaseQuestionFragment {
 
     protected CompoundButton[] options;
+
+    protected Set<Integer> selectedAnswers = new HashSet<>();
 
     protected abstract CompoundButton[] createOptions(int size);
 
@@ -107,14 +114,38 @@ public abstract class ChoiceQuestionFragment extends BaseQuestionFragment {
     @Override
     public void updateAnswer() {
         for(int i=0; i<options.length; i++) {
-            options[i].setChecked(String.valueOf(i).equals(question.selectedAnswers));
+            options[i].setChecked(selectedAnswers.contains(i));
         }
     }
 
     public void updateAnswer(AnswerChoiceModel model) {
-        question.selectedAnswers = String.valueOf(question.answerChoice.indexOf(model));
+        selectedAnswers.add(question.answerChoice.indexOf(model));
+        formatSelectedAnswers();
         updateAnswer();
         EventBus.getDefault().post(new UpdateAnswerEvent());
     }
 
+    private void formatSelectedAnswers() {
+        question.selectedAnswers = null;
+        List<Integer> answerList = new ArrayList<Integer>(selectedAnswers);
+        Collections.sort(answerList);
+        for(int i=0; i<answerList.size(); i++) {
+            if(TextUtils.isEmpty(question.selectedAnswers)) {
+                question.selectedAnswers = String.valueOf(answerList.get(i));
+                question.selectedAnswerKeyIds = question.answerChoice.get(answerList.get(i)).idAnswerKey;
+            } else {
+                question.selectedAnswers += String.format(",%s", answerList.get(i));
+                question.selectedAnswerKeyIds += String.format(",%s", question.answerChoice.get(answerList.get(i)).idAnswerKey);
+            }
+        }
+    }
+
+    @Override
+    public void clearAnswer() {
+        selectedAnswers.clear();
+        question.selectedAnswers = null;
+        question.selectedAnswerKeyIds = null;
+        updateAnswer();
+        EventBus.getDefault().post(new UpdateAnswerEvent());
+    }
 }

@@ -2,8 +2,8 @@ package com.education.corsalite.fragments.examengine;
 
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.RadioButton;
 
 import com.education.corsalite.R;
 import com.education.corsalite.models.responsemodels.AnswerChoiceModel;
@@ -19,7 +19,7 @@ public class MultipleChoiceQuestionFragment extends ChoiceQuestionFragment {
         String answer = null;
         for (int i = 0; i < question.answerChoice.size(); i++) {
             if (question.answerChoice.get(i).isCorrectAnswer.equalsIgnoreCase("Y")) {
-                answer = (answer == null) ? String.valueOf(i) : String.format(",%s", i);
+                answer = (answer == null) ? String.valueOf(i) : String.format("%s,%s", answer, i);
             }
         }
         return answer;
@@ -32,15 +32,15 @@ public class MultipleChoiceQuestionFragment extends ChoiceQuestionFragment {
 
     @Override
     protected CompoundButton getOption(View container, AnswerChoiceModel choice) {
-        RadioButton optionRBtn = (RadioButton) container.findViewById(R.id.option_radio_button);
-        optionRBtn.setId(Integer.valueOf(choice.idAnswerKey));
-        optionRBtn.setTag(choice);
-        return optionRBtn;
+        CheckBox optionChk = (CheckBox) container.findViewById(R.id.option_check_box);
+        optionChk.setId(Integer.valueOf(choice.idAnswerKey));
+        optionChk.setTag(choice);
+        return optionChk;
     }
 
     @Override
     protected int getOptionsLayoutId() {
-        return R.layout.exam_engine_radio_btn;
+        return R.layout.exam_engine_check_box;
     }
 
     @Override

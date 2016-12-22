@@ -10,20 +10,29 @@ import android.webkit.JavascriptInterface;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
 import com.education.corsalite.enums.QuestionType;
+import com.education.corsalite.event.FlagEvent;
+import com.education.corsalite.event.FlagUpdatedEvent;
 import com.education.corsalite.fragments.BaseFragment;
 import com.education.corsalite.gson.Gson;
+import com.education.corsalite.models.responsemodels.AnswerChoiceModel;
 import com.education.corsalite.models.responsemodels.ExamModel;
+import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.ExamEngineWebViewClient;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.TimeUtils;
 
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by vissu on 12/21/16.
@@ -33,6 +42,8 @@ public abstract class BaseQuestionFragment extends BaseFragment {
 
     private static final String KEY_QUESTION = "QUESTION";
     private static final String KEY_QUESTION_NUMBER = "QUESTION_NUMBER";
+    private static final String KEY_ENABLE_VERIFY = "ENABLE_VERIFY";
+    private static final String KEY_IS_FLAGGED = "IS_FLAGGED";
 
     @Bind(R.id.webview_question) protected WebView webviewQuestion;
     @Bind(R.id.webview_paragraph) protected WebView webviewParagraph;
@@ -44,18 +55,27 @@ public abstract class BaseQuestionFragment extends BaseFragment {
     @Bind(R.id.layout_choice) protected LinearLayout layoutChoice;
     @Bind(R.id.tv_serial_no) protected TextView tvSerialNo;
     @Bind(R.id.answer_layout) protected LinearLayout answerLayout;
+    @Bind(R.id.imv_flag) protected ImageView flaggedImg;
 
     protected long mStartedTime;
     protected boolean isFlagged;
+    protected boolean isVerifyEnabled;
     protected int questionNumber;
     protected ExamModel question;
+
+    public void enableVerify() {
+        getArguments().putBoolean(KEY_ENABLE_VERIFY, true);
+    }
+
+    public void setFlagged(boolean isFlagged) {
+        getArguments().putBoolean(KEY_IS_FLAGGED, isFlagged);
+    }
 
     public static BaseQuestionFragment getInstance(ExamModel question, int questionNumber) {
         BaseQuestionFragment fragment;
         Bundle args = new Bundle();
         args.putString(KEY_QUESTION, Gson.get().toJson(question));
         args.putInt(KEY_QUESTION_NUMBER, questionNumber);
-
         switch (QuestionType.getQuestionType(question.idQuestionType)) {
             case SINGLE_SELECT_CHOICE:
                 fragment = new SingleChoiceQuestionFragment();
@@ -95,20 +115,29 @@ public abstract class BaseQuestionFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_question_layout, container, false);
         ButterKnife.bind(this, view);
+        initData();
         initUi();
-        initQuestion();
         loadQuestion();
         return view;
     }
 
     private void initUi() {
         initWebView();
+        setExplanationLayout();
+        btnVerify.setVisibility(isVerifyEnabled ? View.VISIBLE : View.GONE);
+        updateFlagStatus();
     }
 
-    private void initQuestion() {
+    private void updateFlagStatus() {
+        flaggedImg.setImageResource(isFlagged ? R.drawable.btn_flag_select : R.drawable.btn_flag_unselect);
+    }
+
+    private void initData() {
         questionNumber = getArguments().getInt(KEY_QUESTION_NUMBER);
         String questionGson = getArguments().getString(KEY_QUESTION);
         question = Gson.get().fromJson(questionGson, ExamModel.class);
+        isFlagged = getArguments().getBoolean(KEY_IS_FLAGGED);
+        isVerifyEnabled = getArguments().getBoolean(KEY_ENABLE_VERIFY);
     }
 
     public void loadQuestion() {
@@ -171,10 +200,71 @@ public abstract class BaseQuestionFragment extends BaseFragment {
         webviewQuestion.setWebViewClient(new ExamEngineWebViewClient(getActivity()));
     }
 
+    public String getSelectedAnswer() {
+        return question.selectedAnswers;
+    }
+
+    public String getSelectedAnswerKeyIds() {
+        return question.selectedAnswerKeyIds;
+    }
+
+    public String getAnswerState() {
+        return TextUtils.isEmpty(question.selectedAnswers)
+                ? Constants.AnswerState.SKIPPED.getValue()
+                : Constants.AnswerState.ANSWERED.getValue();
+    }
+
+    protected void setExplanationLayout() {
+        String webText = "";
+        String correctAnswer = "";
+        String correctAnswerText = "";
+        List<AnswerChoiceModel> answerChoiceModels = question.answerChoice;
+        int counter = 0;
+        for (AnswerChoiceModel answerChoiceModel : answerChoiceModels) {
+            if (answerChoiceModel.isCorrectAnswer.equalsIgnoreCase("Y")) {
+                correctAnswer = String.valueOf(counter);
+                correctAnswerText = answerChoiceModel.answerChoiceTextHtml;
+                webText = answerChoiceModel.answerChoiceExplanationHtml;
+                break;
+            }
+        }
+        txtAnswerCount.setText(getCorrectAnswer());
+        txtAnswerExp.loadDataWithBaseURL(null, webText, "text/html", "UTF-8", null);
+
+//        if (gridAdapter != null) {
+//            gridAdapter.notifyDataSetChanged();
+//        }
+//        setFlaggedQuestionLayout(correctAnswerText);
+    }
+
+
+    @OnClick(R.id.tv_clearanswer)
+    public void onClearAnswer(View view) {
+        clearAnswer();
+    }
+
+    @OnClick(R.id.tv_verify)
+    public void onVerifyClicked(View view) {
+        btnVerify.setEnabled(false);
+        explanationLayout.setVisibility(View.VISIBLE);
+        layoutChoice.setVisibility(View.VISIBLE);
+    }
+
+    @OnClick(R.id.imv_flag)
+    public void onFlagClicked(View view) {
+        EventBus.getDefault().post(new FlagEvent(!isFlagged));
+    }
+
     public abstract void loadAnswerLayout();
 
+    public abstract void clearAnswer();
+
+    public abstract void updateAnswer();
+
+    public abstract String getCorrectAnswer();
+
     public boolean isAnswered() {
-        return false;
+        return !TextUtils.isEmpty(question.selectedAnswers);
     }
 
     public boolean isFlagged() {
@@ -188,13 +278,11 @@ public abstract class BaseQuestionFragment extends BaseFragment {
                 && question.selectedAnswers.equalsIgnoreCase(getCorrectAnswer());
     }
 
-    public abstract void updateAnswer();
-
-    public abstract String getCorrectAnswer();
-
-    public String getEnteredAnswer() {
-        return question.selectedAnswers;
+    public void onEventMainThread(FlagUpdatedEvent event) {
+        if(isAdded()) {
+            isFlagged = !isFlagged;
+            question.isFlagged = isFlagged;
+            updateFlagStatus();
+        }
     }
-
-
 }

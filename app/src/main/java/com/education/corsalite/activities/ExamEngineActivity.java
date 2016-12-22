@@ -54,6 +54,8 @@ import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.enums.QuestionType;
 import com.education.corsalite.enums.TestanswerPaperState;
 import com.education.corsalite.event.ExerciseAnsEvent;
+import com.education.corsalite.event.FlagEvent;
+import com.education.corsalite.event.FlagUpdatedEvent;
 import com.education.corsalite.event.UpdateAnswerEvent;
 import com.education.corsalite.fragments.FullQuestionDialog;
 import com.education.corsalite.fragments.LeaderBoardFragment;
@@ -111,6 +113,7 @@ import br.com.goncalves.pugnotification.notification.PugNotification;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 import retrofit.client.Response;
 
 /**
@@ -853,7 +856,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     syncTestAnswerPaperEvent(null); // null represents use the same status as before
                     break;
                 case R.id.imv_flag:
-                    postFlaggedQuestion();
+                    postFlaggedQuestion(isFlagged);
                     break;
             }
         }
@@ -1159,16 +1162,41 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
     public void onEventMainThread(UpdateAnswerEvent event) {
         if(questionFragment != null) {
-            localExamModelList.get(selectedPosition).selectedAnswers = questionFragment.getEnteredAnswer();
+            localExamModelList.get(selectedPosition).selectedAnswers = questionFragment.getSelectedAnswer();
+            localExamModelList.get(selectedPosition).selectedAnswerKeyIds = questionFragment.getSelectedAnswerKeyIds();
+
+
+            testanswerPaper.testAnswers.get(selectedPosition).status = questionFragment.getAnswerState();
+            testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = localExamModelList.get(selectedPosition).answerChoice.get(0).idAnswerKey;
+            testanswerPaper.testAnswers.get(selectedPosition).answerText = questionFragment.getSelectedAnswer();
         }
     }
 
     private void loadQuestion(int position) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         questionFragment = BaseQuestionFragment.getInstance(localExamModelList.get(position), position+1);
+        if(isExerciseTest()) {
+            questionFragment.enableVerify();
+        }
+        questionFragment.setFlagged(localExamModelList.get(position).isFlagged);
+        if(localExamModelList.get(position).isFlagged) {
+            testanswerPaper.testAnswers.get(position).status = Constants.AnswerState.FLAGGED.getValue();
+        } else if (testanswerPaper != null && testanswerPaper.testAnswers != null
+                && testanswerPaper.testAnswers.size() > position
+                && !TextUtils.isEmpty(testanswerPaper.testAnswers.get(position).status)
+                && testanswerPaper.testAnswers.get(position).status.equalsIgnoreCase(Constants.AnswerState.UNATTEMPTED.getValue())) {
+            testanswerPaper.testAnswers.get(position).status = Constants.AnswerState.SKIPPED.getValue();
+        }
+        if (localExamModelList.get(position).comment != null) {
+            tvComment.setText(localExamModelList.get(position).comment);
+            tvComment.setVisibility(View.VISIBLE);
+        } else {
+            tvComment.setVisibility(View.GONE);
+        }
         if(questionFragment != null) {
             transaction.replace(R.id.question_layout, questionFragment).commit();
         }
+        navigateButtonEnabled();
         if (mViewSwitcher.indexOfChild(mViewSwitcher.getCurrentView()) == 0) {
             mViewSwitcher.showNext();
         }
@@ -2105,9 +2133,12 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         finish();
     }
 
-    private void postFlaggedQuestion() {
+    public void onEventMainThread(FlagEvent event) {
+        postFlaggedQuestion(event.isFlagged);
+    }
+
+    private void postFlaggedQuestion(final boolean isFlagged) {
         FlaggedQuestionModel flaggedQuestionModel = new FlaggedQuestionModel();
-        flaggedQuestionModel.flaggedYN = isFlagged ? "N" : "Y";
         flaggedQuestionModel.idTestQuestion = localExamModelList.get(selectedPosition).idTestQuestion + "";
         flaggedQuestionModel.flaggedYN = isFlagged ? "N" : "Y";
         flaggedQuestionModel.idTestAnswerPaper = testAnswerPaperId;
@@ -2119,9 +2150,9 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     @Override
                     public void success(PostFlaggedQuestions postFlaggedQuestions, Response response) {
                         super.success(postFlaggedQuestions, response);
-                        isFlagged = !isFlagged;
-                        localExamModelList.get(selectedPosition).isFlagged = isFlagged;
-                        updateFlaggedQuestion(isFlagged);
+                        localExamModelList.get(selectedPosition).isFlagged = !isFlagged;
+                        updateFlaggedQuestion(!isFlagged);
+                        EventBus.getDefault().post(new FlagUpdatedEvent());
                     }
                 });
     }

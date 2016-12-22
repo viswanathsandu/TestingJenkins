@@ -51,7 +51,7 @@ public abstract class TextBoxQuestionFragment extends BaseQuestionFragment {
             @Override
             public void afterTextChanged(Editable s) {
                 question.selectedAnswers = s.toString();
-                updateAnswer();
+                question.selectedAnswerKeyIds = question.answerChoice.get(0).idAnswerKey;
                 EventBus.getDefault().post(new UpdateAnswerEvent());
             }
         };
@@ -64,6 +64,14 @@ public abstract class TextBoxQuestionFragment extends BaseQuestionFragment {
 
     @Override
     public String getCorrectAnswer() {
-        return null;
+        return question.answerChoice.get(0).answerChoiceTextHtml;
+    }
+
+    @Override
+    public void clearAnswer() {
+        question.selectedAnswers = null;
+        question.selectedAnswerKeyIds = null;
+        updateAnswer();
+        EventBus.getDefault().post(new UpdateAnswerEvent());
     }
 }
