@@ -54,8 +54,10 @@ import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.enums.QuestionType;
 import com.education.corsalite.enums.TestanswerPaperState;
 import com.education.corsalite.event.ExerciseAnsEvent;
+import com.education.corsalite.event.UpdateAnswerEvent;
 import com.education.corsalite.fragments.FullQuestionDialog;
 import com.education.corsalite.fragments.LeaderBoardFragment;
+import com.education.corsalite.fragments.examengine.BaseQuestionFragment;
 import com.education.corsalite.gson.Gson;
 import com.education.corsalite.helpers.WebSocketHelper;
 import com.education.corsalite.models.db.ExerciseOfflineModel;
@@ -1127,7 +1129,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         getEventbus().post(event);
     }
 
-    private class MyWebViewClient extends CorsaliteWebViewClient {
+    public class MyWebViewClient extends CorsaliteWebViewClient {
 
         public MyWebViewClient(Context context) {
             super(context);
@@ -1153,7 +1155,26 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         }
     }
 
+    BaseQuestionFragment questionFragment;
+
+    public void onEventMainThread(UpdateAnswerEvent event) {
+        if(questionFragment != null) {
+            localExamModelList.get(selectedPosition).selectedAnswers = questionFragment.getEnteredAnswer();
+        }
+    }
+
     private void loadQuestion(int position) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        questionFragment = BaseQuestionFragment.getInstance(localExamModelList.get(position), position+1);
+        if(questionFragment != null) {
+            transaction.replace(R.id.question_layout, questionFragment).commit();
+        }
+        if (mViewSwitcher.indexOfChild(mViewSwitcher.getCurrentView()) == 0) {
+            mViewSwitcher.showNext();
+        }
+    }
+
+    private void loadQuestionOld(int position) {
         try {
             isFlagged = false;
             questionStartedTime = TimeUtils.currentTimeInMillis();
