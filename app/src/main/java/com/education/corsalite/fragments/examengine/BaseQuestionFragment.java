@@ -72,42 +72,43 @@ public abstract class BaseQuestionFragment extends BaseFragment {
     }
 
     public static BaseQuestionFragment getInstance(ExamModel question, int questionNumber) {
-        BaseQuestionFragment fragment;
+        BaseQuestionFragment fragment = null;
         Bundle args = new Bundle();
         args.putString(KEY_QUESTION, Gson.get().toJson(question));
         args.putInt(KEY_QUESTION_NUMBER, questionNumber);
         switch (QuestionType.getQuestionType(question.idQuestionType)) {
             case SINGLE_SELECT_CHOICE:
                 fragment = new SingleChoiceQuestionFragment();
-                fragment.setArguments(args);
-                return fragment;
+                break;
             case MULTI_SELECT_CHOICE:
                 fragment = new MultipleChoiceQuestionFragment();
-                fragment.setArguments(args);
-                return fragment;
+                break;
             case ALPHANUMERIC:
                 fragment = new AlphaNumericQuestionFragment();
-                fragment.setArguments(args);
-                return fragment;
+                break;
             case NUMERIC:
                 fragment = new NumericQuestionFragment();
-                fragment.setArguments(args);
-                return fragment;
+                break;
             case FILL_IN_THE_BLANK:
                 fragment = new FillInTheBlankQuestionFragment();
-                fragment.setArguments(args);
-                return fragment;
+                break;
             case N_BLANK_SINGLE_SELECT:
             case N_BLANK_MULTI_SELECT:
+                fragment = new NBlankQuestionFragment();
+                break;
             case GRID:
+                fragment = new GridQuestionFragment();
+                break;
             case FRACTION:
             case PICK_A_SENTENCE:
             case WORD_PROPERTIES:
             default:
                 break;
         }
-
-        return null;
+        if(fragment != null) {
+            fragment.setArguments(args);
+        }
+        return fragment;
     }
 
     @Nullable

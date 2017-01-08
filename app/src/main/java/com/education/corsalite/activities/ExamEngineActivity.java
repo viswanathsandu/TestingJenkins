@@ -12,35 +12,19 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.InputType;
 import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.RadioButton;
 import android.widget.RelativeLayout;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
@@ -70,7 +54,6 @@ import com.education.corsalite.models.requestmodels.FlaggedQuestionModel;
 import com.education.corsalite.models.requestmodels.PostCustomExamTemplate;
 import com.education.corsalite.models.requestmodels.PostExerciseRequestModel;
 import com.education.corsalite.models.requestmodels.PostQuestionPaperRequest;
-import com.education.corsalite.models.responsemodels.AnswerChoiceModel;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Exam;
 import com.education.corsalite.models.responsemodels.ExamModel;
@@ -87,7 +70,6 @@ import com.education.corsalite.models.responsemodels.TestAnswerPaperResponse;
 import com.education.corsalite.models.responsemodels.TestPaperIndex;
 import com.education.corsalite.models.responsemodels.TestQuestionPaperResponse;
 import com.education.corsalite.models.socket.requests.UpdateLeaderBoardEvent;
-import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.Data;
 import com.education.corsalite.utils.ExamUtils;
@@ -104,8 +86,6 @@ import java.lang.reflect.Type;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -260,6 +240,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private CounterClass timer;
     private long questionStartedTime = 0;
     private long timeSpent = 0;
+
+    private BaseQuestionFragment questionFragment;
 
     public static Intent getMyIntent(Context context, @Nullable Bundle extras) {
         Intent intent = new Intent(context, ExamEngineActivity.class);
@@ -756,7 +738,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 setAnswerState();
             }
             selectedPosition = position;
-            resetExplanation();
+//            resetExplanation();
             if (localExamModelList != null && localExamModelList.size() > position) {
                 loadQuestion(position);
 
@@ -828,13 +810,6 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     btnPrevious.setClickable(true);
                     btnNext.setClickable(true);
                     break;
-                case R.id.tv_verify:
-                    hideKeyboard();
-                    verifyAnswer();
-                    break;
-                case R.id.tv_clearanswer:
-                    clearAnswers();
-                    break;
                 case R.id.btn_slider_test:
                 case R.id.shadow_view:
                     toggleSlider();
@@ -854,9 +829,6 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     break;
                 case R.id.btn_save:
                     syncTestAnswerPaperEvent(null); // null represents use the same status as before
-                    break;
-                case R.id.imv_flag:
-                    postFlaggedQuestion(isFlagged);
                     break;
             }
         }
@@ -1158,8 +1130,6 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         }
     }
 
-    BaseQuestionFragment questionFragment;
-
     public void onEventMainThread(UpdateAnswerEvent event) {
         if(questionFragment != null) {
             localExamModelList.get(selectedPosition).selectedAnswers = questionFragment.getSelectedAnswer();
@@ -1173,6 +1143,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void loadQuestion(int position) {
+        L.info("Question : " + Gson.get().toJson(localExamModelList.get(position)));
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         questionFragment = BaseQuestionFragment.getInstance(localExamModelList.get(position), position+1);
         if(isExerciseTest()) {
@@ -1241,30 +1212,6 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             navigateButtonEnabled();
 
             switch (QuestionType.getQuestionType(localExamModelList.get(position).idQuestionType)) {
-                case SINGLE_SELECT_CHOICE:
-                    loadSingleSelectChoiceAnswers(position);
-                    break;
-                case MULTI_SELECT_CHOICE:
-                    loadMultiSelectChoiceAnswers(position);
-                    break;
-                case ALPHANUMERIC:
-                    loadEditTextAnswer(QuestionType.ALPHANUMERIC, position);
-                    break;
-                case NUMERIC:
-                    loadEditTextAnswer(QuestionType.NUMERIC, position);
-                    break;
-                case FILL_IN_THE_BLANK:
-                    loadEditTextAnswer(QuestionType.FILL_IN_THE_BLANK, position);
-                    break;
-                case N_BLANK_SINGLE_SELECT:
-                    loadNBlankAnswer(QuestionType.N_BLANK_SINGLE_SELECT, position);
-                    break;
-                case N_BLANK_MULTI_SELECT:
-                    loadNBlankAnswer(QuestionType.N_BLANK_MULTI_SELECT, position);
-                    break;
-                case GRID:
-                    loadGridTypeAnswer(position);
-                    break;
                 case FRACTION:
                 case PICK_A_SENTENCE:
                 case WORD_PROPERTIES:
@@ -1290,525 +1237,6 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         }
     }
 
-    private void loadSingleSelectChoiceAnswers(int position) {
-        resetExplanation();
-        answerLayout.removeAllViews();
-        answerLayout.setOrientation(LinearLayout.VERTICAL);
-        List<AnswerChoiceModel> answerChoiceModels = localExamModelList.get(position).answerChoice;
-        final int size = answerChoiceModels.size();
-        final RadioButton[] optionRadioButtons = new RadioButton[size];
-        String preselectedAnswers = null;
-        if (!title.equalsIgnoreCase("Exercises") && !TextUtils.isEmpty(localExamModelList.get(selectedPosition).selectedAnswers)) {
-            preselectedAnswers = localExamModelList.get(selectedPosition).selectedAnswers;
-        }
-        for (int i = 0; i < size; i++) {
-            final AnswerChoiceModel answerChoiceModel = answerChoiceModels.get(i);
-            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            LinearLayout container = (LinearLayout) inflater.inflate(R.layout.exam_engine_radio_btn, null);
-            TextView optionNumberTxt = (TextView) container.findViewById(R.id.option_number_txt);
-            optionNumberTxt.setText((i + 1) + "");
-            final RadioButton optionRBtn = (RadioButton) container.findViewById(R.id.option_radio_button);
-            optionRBtn.setId(Integer.valueOf(answerChoiceModel.idAnswerKey));
-            optionRBtn.setTag(answerChoiceModel);
-            if (!TextUtils.isEmpty(preselectedAnswers) && i == Integer.valueOf(preselectedAnswers)) {
-                optionRBtn.setChecked(true);
-                selectedAnswerPosition = Integer.valueOf(preselectedAnswers) + 1;
-            }
-            if (isFlaggedQuestionsScreen() || isViewAnswersScreen()) {
-                if (!optionRBtn.isChecked()) {
-                    optionRBtn.setEnabled(false);
-                }
-                optionRBtn.setClickable(false);
-            }
-            optionRadioButtons[i] = optionRBtn;
-            WebView webview = (WebView) container.findViewById(R.id.webview);
-            webview.setScrollbarFadingEnabled(true);
-            webview.getSettings().setLoadsImagesAutomatically(true);
-            webview.getSettings().setJavaScriptEnabled(true);
-            webview.setWebChromeClient(new WebChromeClient());
-            webview.setWebViewClient(new MyWebViewClient(this));
-            webview.loadDataWithBaseURL(null, answerChoiceModel.answerChoiceTextHtml, "text/html", "UTF-8", null);
-            webview.setOnTouchListener(new View.OnTouchListener() {
-                private static final int MAX_CLICK_DURATION = 200;
-                private long startClickTime;
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    switch (event.getAction()) {
-                        case MotionEvent.ACTION_DOWN: {
-                            startClickTime = Calendar.getInstance().getTimeInMillis();
-                            break;
-                        }
-                        case MotionEvent.ACTION_UP: {
-                            long clickDuration = Calendar.getInstance().getTimeInMillis() - startClickTime;
-                            if(clickDuration < MAX_CLICK_DURATION) {
-                                optionRBtn.performClick();
-                            }
-                        }
-                    }
-                    return true;
-                }
-            });
-            answerLayout.addView(container);
-
-            try {
-                optionRBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        try {
-                            for (int j = 0; j < size; j++) {
-                                optionRadioButtons[j].setChecked(false);
-                                if (optionRadioButtons[j].getId() == Integer.valueOf(answerChoiceModel.idAnswerKey)) {
-                                    selectedAnswerPosition = j + 1;
-                                    localExamModelList.get(selectedPosition).selectedAnswers = String.valueOf(j);
-                                    if (testanswerPaper != null && testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty()) {
-                                        testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = answerChoiceModel.idAnswerKey;
-                                        testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.ANSWERED.getValue();
-                                    }
-                                }
-                            }
-                            ((RadioButton) v).setChecked(true);
-                            btnVerify.setEnabled(true);
-                        } catch (Exception e) {
-                            L.error(e.getMessage(), e);
-                        }
-                    }
-                });
-            } catch (Exception e) {
-                L.error(e.getMessage(), e);
-            }
-        }
-        setExplanationLayout();
-    }
-
-    private void loadMultiSelectChoiceAnswers(int position) {
-        resetExplanation();
-        answerLayout.removeAllViews();
-        answerLayout.setOrientation(LinearLayout.VERTICAL);
-        List<AnswerChoiceModel> answerChoiceModels = localExamModelList.get(position).answerChoice;
-        final int size = answerChoiceModels.size();
-        final CheckBox[] checkBoxes = new CheckBox[size];
-
-        String[] preselectedAnswers = null;
-        if (!title.equalsIgnoreCase("Exercises") &&
-                !TextUtils.isEmpty(localExamModelList.get(selectedPosition).selectedAnswers)) {
-            preselectedAnswers = localExamModelList.get(selectedPosition).selectedAnswers.split(",");
-        }
-
-        for (int i = 0; i < size; i++) {
-
-            final AnswerChoiceModel answerChoiceModel = answerChoiceModels.get(i);
-            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            LinearLayout container = (LinearLayout) inflater.inflate(R.layout.exam_engine_check_box, null);
-            TextView optionNumberTxt = (TextView) container.findViewById(R.id.option_number_txt);
-            optionNumberTxt.setText((i + 1) + "");
-            final CheckBox optionCheckbox = (CheckBox) container.findViewById(R.id.option_check_box);
-            optionCheckbox.setId(Integer.valueOf(answerChoiceModel.idAnswerKey));
-            optionCheckbox.setTag(answerChoiceModel);
-            checkBoxes[i] = optionCheckbox;
-            checkBoxes[i].setId(Integer.valueOf(answerChoiceModel.idAnswerKey));
-            checkBoxes[i].setTag(answerChoiceModel);
-
-            if (isFlaggedQuestionsScreen() || isViewAnswersScreen()) {
-                checkBoxes[i].setEnabled(false);
-                checkBoxes[i].setClickable(false);
-            }
-            WebView optionWebView = (WebView) container.findViewById(R.id.webview);
-            optionWebView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
-            optionWebView.setScrollbarFadingEnabled(true);
-            optionWebView.getSettings().setLoadsImagesAutomatically(true);
-            optionWebView.getSettings().setJavaScriptEnabled(true);
-            optionWebView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-            optionWebView.setWebChromeClient(new WebChromeClient());
-            optionWebView.setWebViewClient(new MyWebViewClient(this));
-            optionWebView.setOnTouchListener(new View.OnTouchListener() {
-                private static final int MAX_CLICK_DURATION = 200;
-                private long startClickTime;
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    switch (event.getAction()) {
-                        case MotionEvent.ACTION_DOWN: {
-                            startClickTime = Calendar.getInstance().getTimeInMillis();
-                            break;
-                        }
-                        case MotionEvent.ACTION_UP: {
-                            long clickDuration = Calendar.getInstance().getTimeInMillis() - startClickTime;
-                            if(clickDuration < MAX_CLICK_DURATION) {
-                                optionCheckbox.performClick();
-                            }
-                        }
-                    }
-                    return true;
-                }
-            });
-            if (answerChoiceModel.answerChoiceTextHtml.startsWith("./") && answerChoiceModel.answerChoiceTextHtml.endsWith(".html")) {
-                answerChoiceModel.answerChoiceTextHtml = answerChoiceModel.answerChoiceTextHtml.replace("./", ApiClientService.getBaseUrl());
-                optionWebView.loadUrl(answerChoiceModel.answerChoiceTextHtml);
-            } else {
-                optionWebView.loadDataWithBaseURL(null, answerChoiceModel.answerChoiceTextHtml, "text/html", "UTF-8", null);
-            }
-            answerLayout.addView(container);
-
-            try {
-                checkBoxes[i].setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        boolean isCheckedAtLeastOnce = false;
-                        CheckBox chkBox = (CheckBox) v;
-                        if (chkBox.isChecked()) {
-                            isCheckedAtLeastOnce = true;
-                            for (int x = 0; x < checkBoxes.length; x++) {
-                                if (checkBoxes[x].getId() == Integer.valueOf(answerChoiceModel.idAnswerKey)) {
-                                    selectedAnswerPosition = x + 1;
-                                    try {
-                                        if (TextUtils.isEmpty(localExamModelList.get(selectedPosition).selectedAnswers)) {
-                                            localExamModelList.get(selectedPosition).selectedAnswers = String.valueOf(x);
-                                            testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.ANSWERED.getValue();
-                                            testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = answerChoiceModel.idAnswerKey;
-                                        } else {
-                                            localExamModelList.get(selectedPosition).selectedAnswers += "," + x;
-                                            testanswerPaper.testAnswers.get(selectedPosition).answerKeyId += "," + answerChoiceModel.idAnswerKey;
-                                        }
-                                    } catch (Exception e) {
-                                        L.error(e.getMessage(), e);
-                                    }
-                                }
-                            }
-                        } else {
-                            for (int x = 0; x < size; x++) {
-                                if (checkBoxes[x].isChecked()) {
-                                    selectedAnswerPosition = x + 1;
-                                    try {
-                                        if (TextUtils.isEmpty(localExamModelList.get(selectedPosition).selectedAnswers)) {
-                                            localExamModelList.get(selectedPosition).selectedAnswers = String.valueOf(x);
-                                            testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.ANSWERED.getValue();
-                                            testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = answerChoiceModel.idAnswerKey;
-                                        } else {
-                                            localExamModelList.get(selectedPosition).selectedAnswers += "," + x;
-                                            testanswerPaper.testAnswers.get(selectedPosition).answerKeyId += "," + answerChoiceModel.idAnswerKey;
-                                        }
-                                    } catch (Exception e) {
-                                        L.error(e.getMessage(), e);
-                                    }
-                                    isCheckedAtLeastOnce = true;
-                                    break;
-                                }
-                            }
-                        }
-                        if (!isCheckedAtLeastOnce) {
-                            selectedAnswerPosition = -1;
-                            if(localExamModelList.size() > selectedPosition) {
-                                localExamModelList.get(selectedPosition).selectedAnswers = null;
-                            }
-                        }
-                        btnVerify.setEnabled(isCheckedAtLeastOnce);
-                    }
-                });
-            } catch (Exception ignored) {
-                ignored.printStackTrace();
-            }
-        }
-
-        //set checkBox check
-        if (preselectedAnswers != null && preselectedAnswers.length > 0) {
-            for (String selectedChoice : preselectedAnswers) {
-                checkBoxes[Integer.valueOf(selectedChoice)].setEnabled(true);
-                checkBoxes[Integer.valueOf(selectedChoice)].setChecked(true);
-                selectedAnswerPosition = Integer.valueOf(selectedChoice) + 1;
-            }
-        }
-        setExplanationLayout();
-    }
-
-    private void loadEditTextAnswer(QuestionType type, int position) {
-        resetExplanation();
-        answerLayout.removeAllViews();
-        answerLayout.setOrientation(LinearLayout.VERTICAL);
-        List<AnswerChoiceModel> answerChoiceModels = localExamModelList.get(position).answerChoice;
-        String previousAnswer = "";
-        if (!title.equalsIgnoreCase("Exercises") && !TextUtils.isEmpty(localExamModelList.get(selectedPosition).selectedAnswers)) {
-            previousAnswer = localExamModelList.get(selectedPosition).selectedAnswers;
-        }
-        if (!answerChoiceModels.isEmpty()) {
-            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            LinearLayout container = (LinearLayout) inflater.inflate(R.layout.exam_engine_alphanumeric, null);
-            EditText answerTxt = (EditText) container.findViewById(R.id.answer_txt);
-            answerTxt.setText(previousAnswer);
-            switch (type) {
-                case ALPHANUMERIC:
-                case FILL_IN_THE_BLANK:
-                    answerTxt.setInputType(InputType.TYPE_CLASS_TEXT);
-                    break;
-                case NUMERIC:
-                    answerTxt.setInputType(InputType.TYPE_CLASS_NUMBER);
-                    answerTxt.setHint("Numeric");
-                    break;
-            }
-            answerTxt.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    localExamModelList.get(selectedPosition).selectedAnswers = s.toString();
-                    if (testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty()) {
-                        testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.ANSWERED.getValue();
-                        testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = localExamModelList.get(selectedPosition).answerChoice.get(0).idAnswerKey;
-                        testanswerPaper.testAnswers.get(selectedPosition).answerText = s.toString();
-                    }
-                    btnVerify.setEnabled(!s.toString().trim().isEmpty());
-                }
-            });
-            answerLayout.addView(container);
-        }
-        setExplanationLayout();
-    }
-
-    private void loadNBlankAnswer(QuestionType type, int position) {
-        resetExplanation();
-        answerLayout.removeAllViews();
-        List<AnswerChoiceModel> answerChoiceModels = localExamModelList.get(position).answerChoice;
-        if (answerChoiceModels == null || answerChoiceModels.isEmpty()) {
-            return;
-        }
-        AnswerChoiceModel answerModel = answerChoiceModels.get(0);
-        String[] lists = answerModel.answerChoiceTextHtml.split(":");
-        final ListView[] listViews = new ListView[lists.length];
-        answerLayout.setOrientation(LinearLayout.HORIZONTAL);
-        for (int i = 0; i < lists.length; i++) {
-            String list = lists[i];
-            String[] data = list.split("~");
-            String header = data[0];
-            String[] items = data[1].split(",");
-            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            LinearLayout container = (LinearLayout) inflater.inflate(R.layout.exam_engine_n_blank_answer, null);
-            TextView headerTxt = (TextView) container.findViewById(R.id.header_txt);
-            headerTxt.setText(header);
-            ListView optionsListView = (ListView) container.findViewById(R.id.options_listview);
-            optionsListView.setTag(header);
-            listViews[i] = optionsListView;
-            optionsListView.setChoiceMode(type == QuestionType.N_BLANK_SINGLE_SELECT
-                    ? AbsListView.CHOICE_MODE_SINGLE
-                    : AbsListView.CHOICE_MODE_MULTIPLE);
-            optionsListView.setAdapter(new ArrayAdapter<String>(this,
-                    android.R.layout.simple_list_item_multiple_choice, android.R.id.text1, items));
-            answerLayout.addView(container);
-        }
-        setupNBlankAnswerLogic(listViews);
-        loadAnswersInToNBlankType(listViews, localExamModelList.get(selectedPosition).selectedAnswers);
-        setExplanationLayout();
-    }
-
-    private void setupNBlankAnswerLogic(final ListView[] listviews) {
-        for(int i=0; i<listviews.length; i++) {
-            listviews[i].setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    String answersText = getAnswerForNBlankType(listviews);
-                    localExamModelList.get(selectedPosition).selectedAnswers = answersText;
-                    testanswerPaper.testAnswers.get(selectedPosition).status = answersText.isEmpty()
-                            ? Constants.AnswerState.SKIPPED.getValue()
-                            : Constants.AnswerState.ANSWERED.getValue();
-                    testanswerPaper.testAnswers.get(selectedPosition).answerText = answersText;
-                }
-            });
-        }
-    }
-
-    private void loadAnswersInToNBlankType(ListView[] listviews, String answer) {
-        if (listviews == null || TextUtils.isEmpty(answer)) {
-            return;
-        }
-        String[] lists = answer.split(":");
-        for (int i = 0; i < lists.length; i++) {
-            String[] data = lists[i].split("~");
-            String header = data[0];
-            List<String> items = Arrays.asList(data[1].split(","));
-            for (ListView listView : listviews) {
-                if (listView.getTag().equals(header)) {
-                    for (int j = 0; j < listView.getAdapter().getCount(); j++) {
-                        for (String item : items) {
-                            if (item.equals(listView.getAdapter().getItem(j))) {
-                                listView.setItemChecked(j, true);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private String getAnswerForNBlankType(ListView[] listviews) {
-        String answer = "";
-        for (int i = 0; i < listviews.length; i++) {
-            String blankAnswer = "";
-            SparseBooleanArray checkedItems = listviews[i].getCheckedItemPositions();
-            for (int j = 0; j < checkedItems.size(); j++) {
-                int key = checkedItems.keyAt(j);
-                if (checkedItems.get(key)) {
-                    blankAnswer += blankAnswer.isEmpty() ? "" : ",";
-                    blankAnswer += listviews[i].getItemAtPosition(key);
-                }
-            }
-            if (!blankAnswer.isEmpty()) {
-                answer += answer.isEmpty() ? "" : ":";
-                answer += listviews[i].getTag() + "~" + blankAnswer;
-            }
-        }
-        return answer;
-    }
-
-    private void loadGridTypeAnswer(int position) {
-        try {
-            resetExplanation();
-            answerLayout.removeAllViews();
-            List<AnswerChoiceModel> answerChoiceModels = localExamModelList.get(position).answerChoice;
-            if (answerChoiceModels == null || answerChoiceModels.isEmpty()) {
-                return;
-            }
-            AnswerChoiceModel answerModel = answerChoiceModels.get(0);
-            final String[] leftLabels = answerModel.answerChoiceTextHtml.split("-")[0].split(",");
-            final String[] topLabels = answerModel.answerChoiceTextHtml.split("-")[1].split(",");
-            CheckBox[][] checkBoxes = new CheckBox[leftLabels.length][topLabels.length];
-            View container = getLayoutInflater().inflate(R.layout.grid_table_layout, null);
-            TableLayout tableLayout = (TableLayout) container.findViewById(R.id.grid_layout);
-            for (int i = 0; i < leftLabels.length; i++) {
-                if (i == 0) {
-                    TableRow row = new TableRow(this);
-                    row.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-                    for (int j = 0; j < topLabels.length + 1; j++) {
-                        View titleLayout = getLayoutInflater().inflate(R.layout.grid_question_title_layout, null);
-                        TextView titleTxt = (TextView) titleLayout.findViewById(R.id.title_txt);
-                        titleTxt.setText(j == 0 ? "" : topLabels[j - 1]);
-                        row.addView(titleLayout);
-                    }
-                    tableLayout.addView(row);
-                }
-                TableRow row = new TableRow(this);
-                row.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-                for (int j = 0; j < topLabels.length; j++) {
-                    if (j == 0) {
-                        View titleLayout = getLayoutInflater().inflate(R.layout.grid_question_title_layout, null);
-                        TextView titleTxt = (TextView) titleLayout.findViewById(R.id.title_txt);
-                        titleTxt.setText(leftLabels[i]);
-                        row.addView(titleLayout);
-                    }
-                    View checkBoxLayout = getLayoutInflater().inflate(R.layout.grid_question_checkbox_layout, null);
-                    CheckBox checkBox = (CheckBox) checkBoxLayout.findViewById(R.id.checkbox);
-                    checkBoxes[i][j] = checkBox;
-                    row.addView(checkBoxLayout);
-                }
-                tableLayout.addView(row);
-            }
-            setupAnswerLogic(leftLabels, topLabels, checkBoxes);
-            answerLayout.addView(container);
-            loadAnswersIntoGridType(checkBoxes, leftLabels, topLabels, localExamModelList.get(selectedPosition).selectedAnswers);
-            setExplanationLayout();
-        } catch (Exception e) {
-            L.error(e.getMessage(), e);
-        }
-    }
-
-    private void setupAnswerLogic(final String[] leftLabels, final String[] topLabels, final CheckBox[][] checkboxes) {
-        for (int i = 0; i < checkboxes.length; i++) {
-            for (int j = 0; j < checkboxes[i].length; j++) {
-                checkboxes[i][j].setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        String answersText = getAnswerForGridType(leftLabels, topLabels, checkboxes);
-                        localExamModelList.get(selectedPosition).selectedAnswers = answersText;
-                        if (!answersText.isEmpty()) {
-                            testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.ANSWERED.getValue();
-                        } else {
-                            testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.SKIPPED.getValue();
-                        }
-                        testanswerPaper.testAnswers.get(selectedPosition).answerText = answersText;
-                        btnVerify.setEnabled(!answersText.toString().trim().isEmpty());
-                    }
-                });
-            }
-        }
-    }
-
-    private String getAnswerForGridType(String[] leftLabels, String[] topLabels, final CheckBox[][] checkboxes) {
-        String answers = "";
-        for (int i = 0; i < checkboxes.length; i++) {
-            for (int j = 0; j < checkboxes[i].length; j++) {
-                if (checkboxes[i][j].isChecked()) {
-                    answers += (answers.isEmpty() ? "" : ",") + leftLabels[i] + "-" + topLabels[j];
-                }
-            }
-        }
-        return answers;
-    }
-
-    private void loadAnswersIntoGridType(CheckBox[][] checkboxes, String[] leftLabels, String[] topLabels, String answers) {
-        try {
-            if (TextUtils.isEmpty(answers)) {
-                return;
-            }
-            List<String> leftLabelsList = Arrays.asList(leftLabels);
-            List<String> topLabelsList = Arrays.asList(topLabels);
-            String[] answersArr = answers.split(",");
-            if (answersArr != null) {
-                for (int i = 0; i < answersArr.length; i++) {
-                    String[] labels = answersArr[i].split("-");
-                    if (labels != null && labels.length >= 2) {
-                        checkboxes[leftLabelsList.indexOf(labels[0])][topLabelsList.indexOf(labels[1])].setChecked(true);
-                    }
-                }
-            }
-        } catch (Exception e) {
-            L.error(e.getMessage(), e);
-        }
-    }
-
-    private void clearAnswers() {
-        try {
-            localExamModelList.get(selectedPosition).selectedAnswers = "";
-            if (testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty()) {
-                testanswerPaper.testAnswers.get(selectedPosition).answerText = null;
-                testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = null;
-                if (!title.equals("Exercises")) {
-                    testanswerPaper.testAnswers.get(selectedPosition).status = Constants.AnswerState.SKIPPED.getValue();
-                    localExamModelList.get(selectedPosition).answerColorSelection = Constants.AnswerState.SKIPPED.getValue();
-                }
-            }
-        } catch (Exception e) {
-            L.error(e.getMessage());
-        }
-        loadQuestion(selectedPosition);
-        resetExplanation();
-    }
-
-    private void setExplanationLayout() {
-        String webText = "";
-        String correctAnswer = "";
-        String correctAnswerText = "";
-        List<AnswerChoiceModel> answerChoiceModels = localExamModelList.get(selectedPosition).answerChoice;
-        int counter = 0;
-        for (AnswerChoiceModel answerChoiceModel : answerChoiceModels) {
-            counter = counter + 1;
-            if (answerChoiceModel.isCorrectAnswer.equalsIgnoreCase("Y")) {
-                correctAnswer = String.valueOf(counter);
-                correctAnswerText = answerChoiceModel.answerChoiceTextHtml;
-                webText = answerChoiceModel.answerChoiceExplanationHtml;
-                break;
-            }
-        }
-        txtAnswerCount.setText(correctAnswer);
-        txtAnswerExp.loadDataWithBaseURL(null, webText, "text/html", "UTF-8", null);
-
-        if (gridAdapter != null) {
-            gridAdapter.notifyDataSetChanged();
-        }
-        setFlaggedQuestionLayout(correctAnswerText);
-    }
-
     private void setFlaggedQuestionLayout(String correctAnswers) {
         if (isFlaggedQuestionsScreen()) {
             flaggedLayout.setVisibility(View.VISIBLE);
@@ -1817,20 +1245,6 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         }
         webViewFlaggedAnswer.loadDataWithBaseURL(null, correctAnswers, "text/html", "UTF-8", null);
         webViewFlaggedAnswer.setBackgroundColor(0);
-    }
-
-    private void resetExplanation() {
-        selectedAnswerPosition = -1;
-        btnVerify.setEnabled(false);
-        if (isViewAnswersScreen()) {
-            explanationLayout.setVisibility(View.VISIBLE);
-            flaggedLayout.setVisibility(View.VISIBLE);
-            layoutChoice.setVisibility(View.VISIBLE);
-        } else {
-            explanationLayout.setVisibility(View.GONE);
-            flaggedLayout.setVisibility(View.GONE);
-            layoutChoice.setVisibility(View.GONE);
-        }
     }
 
     private int getScore(ExamModel model) {
