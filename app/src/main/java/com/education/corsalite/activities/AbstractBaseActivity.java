@@ -1244,17 +1244,18 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .setCancelable(false)
                     .setMessage("There are " + eventsCount + " offline events available to be synced to the server. Do you want to sync now?")
-//                    .setNegativeButton("Ask Later", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialogInterface, int i) {
-//                            try {
-//                                AppPref.get(getApplicationContext()).save("data_sync_later", String.valueOf(new Date().getTime()));
-//                                dialogInterface.dismiss();
-//                            }catch (Exception e) {
-//                                L.error(e.getMessage(), e);
-//                            }
-//                        }
-//                    })
+                    // TODO : uncomment this to enable cancel option
+                    /*.setNegativeButton("Ask Later", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            try {
+                                AppPref.get(getApplicationContext()).save("data_sync_later", String.valueOf(new Date().getTime()));
+                                dialogInterface.dismiss();
+                            }catch (Exception e) {
+                                L.error(e.getMessage(), e);
+                            }
+                        }
+                    })*/
                     .show();
         }
     }
