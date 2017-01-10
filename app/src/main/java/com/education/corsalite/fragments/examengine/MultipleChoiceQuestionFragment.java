@@ -6,7 +6,10 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
 import com.education.corsalite.R;
+import com.education.corsalite.event.UpdateAnswerEvent;
 import com.education.corsalite.models.responsemodels.AnswerChoiceModel;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by vissu on 12/21/16.
@@ -20,6 +23,17 @@ public class MultipleChoiceQuestionFragment extends ChoiceQuestionFragment {
         for (int i = 0; i < question.answerChoice.size(); i++) {
             if (question.answerChoice.get(i).isCorrectAnswer.equalsIgnoreCase("Y")) {
                 answer = (answer == null) ? String.valueOf(i) : String.format("%s,%s", answer, i);
+            }
+        }
+        return answer;
+    }
+
+    @Override
+    public String getDisplayedCorrectAnswer() {
+        String answer = null;
+        for (int i = 0; i < question.answerChoice.size(); i++) {
+            if (question.answerChoice.get(i).isCorrectAnswer.equalsIgnoreCase("Y")) {
+                answer = (answer == null) ? String.valueOf(i+1) : String.format("%s,%s", answer, i+1);
             }
         }
         return answer;
@@ -57,5 +71,13 @@ public class MultipleChoiceQuestionFragment extends ChoiceQuestionFragment {
                 }
             }
         }
+    }
+
+    @Override
+    public void updateAnswer(AnswerChoiceModel model) {
+        selectedAnswers.add(question.answerChoice.indexOf(model));
+        formatSelectedAnswers();
+        updateAnswer();
+        EventBus.getDefault().post(new UpdateAnswerEvent());
     }
 }

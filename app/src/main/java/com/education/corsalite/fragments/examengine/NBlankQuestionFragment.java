@@ -138,6 +138,11 @@ public class NBlankQuestionFragment extends BaseQuestionFragment {
     }
 
     @Override
+    public String getDisplayedCorrectAnswer() {
+        return getCorrectAnswer();
+    }
+
+    @Override
     public void clearAnswer() {
         question.selectedAnswers = null;
         question.selectedAnswerKeyIds = null;

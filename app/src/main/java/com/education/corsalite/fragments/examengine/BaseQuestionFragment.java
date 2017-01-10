@@ -264,6 +264,8 @@ public abstract class BaseQuestionFragment extends BaseFragment {
 
     public abstract String getCorrectAnswer();
 
+    public abstract String getDisplayedCorrectAnswer();
+
     public boolean isAnswered() {
         return !TextUtils.isEmpty(question.selectedAnswers);
     }

@@ -6,7 +6,10 @@ import android.widget.CompoundButton;
 import android.widget.RadioButton;
 
 import com.education.corsalite.R;
+import com.education.corsalite.event.UpdateAnswerEvent;
 import com.education.corsalite.models.responsemodels.AnswerChoiceModel;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by vissu on 12/21/16.
@@ -19,6 +22,16 @@ public class SingleChoiceQuestionFragment extends ChoiceQuestionFragment {
         for (int i=0; i<question.answerChoice.size(); i++) {
             if(question.answerChoice.get(i).isCorrectAnswer.equalsIgnoreCase("Y")) {
                 return String.valueOf(i);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public String getDisplayedCorrectAnswer() {
+        for (int i=0; i<question.answerChoice.size(); i++) {
+            if(question.answerChoice.get(i).isCorrectAnswer.equalsIgnoreCase("Y")) {
+                return String.valueOf(i+1);
             }
         }
         return null;
@@ -48,5 +61,14 @@ public class SingleChoiceQuestionFragment extends ChoiceQuestionFragment {
             int index = Integer.parseInt(question.selectedAnswers);
             options[index].setChecked(true);
         }
+    }
+
+    @Override
+    public void updateAnswer(AnswerChoiceModel model) {
+        selectedAnswers.clear();
+        selectedAnswers.add(question.answerChoice.indexOf(model));
+        formatSelectedAnswers();
+        updateAnswer();
+        EventBus.getDefault().post(new UpdateAnswerEvent());
     }
 }

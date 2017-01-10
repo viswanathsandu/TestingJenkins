@@ -48,7 +48,6 @@ public abstract class ChoiceQuestionFragment extends BaseQuestionFragment {
         options = createOptions(question.answerChoice.size());
         answerLayout.setOrientation(LinearLayout.VERTICAL);
         List<AnswerChoiceModel> answerChoiceModels = question.answerChoice;
-        String preselectedAnswers = question.selectedAnswers;
 
         for (int i = 0; i < options.length; i++) {
             AnswerChoiceModel answerChoiceModel = answerChoiceModels.get(i);
@@ -118,14 +117,9 @@ public abstract class ChoiceQuestionFragment extends BaseQuestionFragment {
         }
     }
 
-    public void updateAnswer(AnswerChoiceModel model) {
-        selectedAnswers.add(question.answerChoice.indexOf(model));
-        formatSelectedAnswers();
-        updateAnswer();
-        EventBus.getDefault().post(new UpdateAnswerEvent());
-    }
+    public abstract void updateAnswer(AnswerChoiceModel model);
 
-    private void formatSelectedAnswers() {
+    protected void formatSelectedAnswers() {
         question.selectedAnswers = null;
         List<Integer> answerList = new ArrayList<Integer>(selectedAnswers);
         Collections.sort(answerList);

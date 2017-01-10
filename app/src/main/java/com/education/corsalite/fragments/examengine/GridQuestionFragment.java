@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -29,20 +28,21 @@ import de.greenrobot.event.EventBus;
 public class GridQuestionFragment extends BaseQuestionFragment {
 
     private QuestionType type;
-    private ListView[] listViews;
+    private String[] leftLabels;
+    private String[] topLabels;
+    private CheckBox[][] checkBoxes;
 
     @Override
     public void loadAnswerLayout() {
-
         answerLayout.removeAllViews();
         List<AnswerChoiceModel> answerChoiceModels = question.answerChoice;
         if (answerChoiceModels == null || answerChoiceModels.isEmpty()) {
             return;
         }
         AnswerChoiceModel answerModel = answerChoiceModels.get(0);
-        final String[] leftLabels = answerModel.answerChoiceTextHtml.split("-")[0].split(",");
-        final String[] topLabels = answerModel.answerChoiceTextHtml.split("-")[1].split(",");
-        CheckBox[][] checkBoxes = new CheckBox[leftLabels.length][topLabels.length];
+        leftLabels = answerModel.answerChoiceTextHtml.split("-")[0].split(",");
+        topLabels = answerModel.answerChoiceTextHtml.split("-")[1].split(",");
+        checkBoxes = new CheckBox[leftLabels.length][topLabels.length];
         View container = getActivity().getLayoutInflater().inflate(R.layout.grid_table_layout, null);
         TableLayout tableLayout = (TableLayout) container.findViewById(R.id.grid_layout);
         LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -69,45 +69,48 @@ public class GridQuestionFragment extends BaseQuestionFragment {
                 }
                 View checkBoxLayout = inflater.inflate(R.layout.grid_question_checkbox_layout, null);
                 CheckBox checkBox = (CheckBox) checkBoxLayout.findViewById(R.id.checkbox);
+                checkBox.setTag(String.format("%s-%s", leftLabels[i], topLabels[j]));
                 checkBoxes[i][j] = checkBox;
                 row.addView(checkBoxLayout);
             }
             tableLayout.addView(row);
         }
-        setupAnswerLogic(leftLabels, topLabels, checkBoxes);
+        setupAnswerLogic();
         answerLayout.addView(container);
-        loadAnswersIntoGridType(checkBoxes, leftLabels, topLabels, question.selectedAnswers);
+        loadAnswersIntoGridType();
     }
 
-    private void setupAnswerLogic(final String[] leftLabels, final String[] topLabels, final CheckBox[][] checkboxes) {
-        for (int i = 0; i < checkboxes.length; i++) {
-            for (int j = 0; j < checkboxes[i].length; j++) {
-                checkboxes[i][j].setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+    private void setupAnswerLogic() {
+        for (int i = 0; i < checkBoxes.length; i++) {
+            for (int j = 0; j < checkBoxes[i].length; j++) {
+                checkBoxes[i][j].setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        String answersText = getAnswerForGridType(leftLabels, topLabels, checkboxes);
+                        String answersText = getAnswerForGridType();
                         question.selectedAnswers = answersText;
                         btnVerify.setEnabled(!answersText.toString().trim().isEmpty());
+                        updateAnswer();
                     }
                 });
             }
         }
     }
 
-    private String getAnswerForGridType(String[] leftLabels, String[] topLabels, final CheckBox[][] checkboxes) {
+    private String getAnswerForGridType() {
         String answers = "";
-        for (int i = 0; i < checkboxes.length; i++) {
-            for (int j = 0; j < checkboxes[i].length; j++) {
-                if (checkboxes[i][j].isChecked()) {
-                    answers += (answers.isEmpty() ? "" : ",") + leftLabels[i] + "-" + topLabels[j];
+        for (int i = 0; i < checkBoxes.length; i++) {
+            for (int j = 0; j < checkBoxes[i].length; j++) {
+                if (checkBoxes[i][j].isChecked()) {
+                    answers += (answers.isEmpty() ? "" : ",") + checkBoxes[i][j].getTag().toString();
                 }
             }
         }
         return answers;
     }
 
-    private void loadAnswersIntoGridType(CheckBox[][] checkboxes, String[] leftLabels, String[] topLabels, String answers) {
+    private void loadAnswersIntoGridType() {
         try {
+            String answers = question.selectedAnswers;
             if (TextUtils.isEmpty(answers)) {
                 return;
             }
@@ -118,7 +121,7 @@ public class GridQuestionFragment extends BaseQuestionFragment {
                 for (int i = 0; i < answersArr.length; i++) {
                     String[] labels = answersArr[i].split("-");
                     if (labels != null && labels.length >= 2) {
-                        checkboxes[leftLabelsList.indexOf(labels[0])][topLabelsList.indexOf(labels[1])].setChecked(true);
+                        checkBoxes[leftLabelsList.indexOf(labels[0])][topLabelsList.indexOf(labels[1])].setChecked(true);
                     }
                 }
             }
@@ -130,39 +133,29 @@ public class GridQuestionFragment extends BaseQuestionFragment {
     @Override
     public void updateAnswer() {
         String answer = question.selectedAnswers;
-        if (listViews == null) {
+        if (checkBoxes == null) {
             return;
         }
         if (TextUtils.isEmpty(answer)) {
-            for (ListView listView : listViews) {
-                for (int j = 0; j < listView.getAdapter().getCount(); j++) {
-                    listView.setItemChecked(j, false);
+            for (int i = 0; i < checkBoxes.length; i++) {
+                for (int j = 0; j < checkBoxes[i].length; j++) {
+                    checkBoxes[i][j].setChecked(false);
                 }
             }
         } else {
-            String[] lists = answer.split(":");
-            for (int i = 0; i < lists.length; i++) {
-                String[] data = lists[i].split("~");
-                String header = data[0];
-                List<String> items = Arrays.asList(data[1].split(","));
-                for (ListView listView : listViews) {
-                    if (listView.getTag().equals(header)) {
-                        for (int j = 0; j < listView.getAdapter().getCount(); j++) {
-                            for (String item : items) {
-                                if (item.equals(listView.getAdapter().getItem(j))) {
-                                    listView.setItemChecked(j, true);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            loadAnswersIntoGridType();
         }
+        EventBus.getDefault().post(new UpdateAnswerEvent());
     }
 
     @Override
     public String getCorrectAnswer() {
         return question.answerChoice.get(0).answerKeyText;
+    }
+
+    @Override
+    public String getDisplayedCorrectAnswer() {
+        return getCorrectAnswer();
     }
 
     @Override

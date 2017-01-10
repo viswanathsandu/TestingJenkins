@@ -776,13 +776,13 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 long currentTime = TimeUtils.currentTimeInMillis();
                 long diff = currentTime - questionStartedTime;
                 long diffInSeconds = diff / 1000;
-                int timeTakenPreviously = 0;
-                int testTimeTaken = 0;
+                long timeTakenPreviously = 0;
+                long testTimeTaken = 0;
                 if(!TextUtils.isEmpty(testanswerPaper.testAnswers.get(position).timeTaken)) {
-                    timeTakenPreviously = Integer.parseInt(testanswerPaper.testAnswers.get(position).timeTaken);
+                    timeTakenPreviously = Long.parseLong(testanswerPaper.testAnswers.get(position).timeTaken);
                 }
                 if(!TextUtils.isEmpty(testanswerPaper.timeTaken)) {
-                    testTimeTaken = Integer.parseInt(testanswerPaper.timeTaken);
+                    testTimeTaken = Long.parseLong(testanswerPaper.timeTaken);
                 }
                 testanswerPaper.testAnswers.get(position).timeTaken = String.valueOf(timeTakenPreviously + diffInSeconds);
                 testanswerPaper.timeTaken = String.valueOf(testTimeTaken + diffInSeconds);

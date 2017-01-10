@@ -37,6 +37,7 @@ public abstract class TextBoxQuestionFragment extends BaseQuestionFragment {
             answerTxt.addTextChangedListener(getTextWatcher());
             answerLayout.addView(container);
         }
+        setTextProperties();
         updateAnswer();
     }
 
@@ -65,6 +66,11 @@ public abstract class TextBoxQuestionFragment extends BaseQuestionFragment {
     @Override
     public String getCorrectAnswer() {
         return question.answerChoice.get(0).answerChoiceTextHtml;
+    }
+
+    @Override
+    public String getDisplayedCorrectAnswer() {
+        return getCorrectAnswer();
     }
 
     @Override
