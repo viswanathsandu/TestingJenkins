@@ -229,7 +229,7 @@ public abstract class BaseQuestionFragment extends BaseFragment {
                 break;
             }
         }
-        txtAnswerCount.setText(getCorrectAnswer());
+        txtAnswerCount.setText(getDisplayedCorrectAnswer());
         txtAnswerExp.loadDataWithBaseURL(null, webText, "text/html", "UTF-8", null);
 
 //        if (gridAdapter != null) {

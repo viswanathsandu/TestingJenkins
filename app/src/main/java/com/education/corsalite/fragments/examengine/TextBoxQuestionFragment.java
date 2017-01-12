@@ -65,7 +65,7 @@ public abstract class TextBoxQuestionFragment extends BaseQuestionFragment {
 
     @Override
     public String getCorrectAnswer() {
-        return question.answerChoice.get(0).answerChoiceTextHtml;
+        return question.answerChoice.get(0).answerKeyText;
     }
 
     @Override
