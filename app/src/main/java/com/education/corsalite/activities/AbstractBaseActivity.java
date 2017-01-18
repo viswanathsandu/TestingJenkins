@@ -1,6 +1,7 @@
 package com.education.corsalite.activities;
 
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -44,6 +45,7 @@ import com.education.corsalite.event.ConnectExceptionEvent;
 import com.education.corsalite.event.ContentReadingEvent;
 import com.education.corsalite.event.ExerciseAnsEvent;
 import com.education.corsalite.event.ForumPostingEvent;
+import com.education.corsalite.event.InvalidAuthenticationEvent;
 import com.education.corsalite.event.NetworkStatusChangeEvent;
 import com.education.corsalite.event.ScheduledTestStartEvent;
 import com.education.corsalite.event.TakingTestEvent;
@@ -1198,6 +1200,13 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         selectedVideoPosition = position;
     }
 
+    public void onEventMainThread(InvalidAuthenticationEvent event) {
+        dbManager.deleteAuthentication(appPref.getValue("loginId"));
+        showToast("Authentication failed. Please login to continue");
+        startActivity(new Intent(this, LoginActivity.class));
+        finish();
+    }
+
     public void checkForceUpgrade() {
         try {
             AppConfig config = getAppConfig(this);
@@ -1244,7 +1253,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .setCancelable(false)
                     .setMessage("There are " + eventsCount + " offline events available to be synced to the server. Do you want to sync now?")
-                    .setNegativeButton("Ask Later", new DialogInterface.OnClickListener() {
+                    /*.setNegativeButton("Ask Later", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             try {
@@ -1254,7 +1263,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                                 L.error(e.getMessage(), e);
                             }
                         }
-                    }).show();
+                    })*/.show();
         }
     }
 

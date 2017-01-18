@@ -5,12 +5,12 @@ import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.api.ICorsaliteApi;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.deserializer.ExerciseModelResponseDeserializer;
+import com.education.corsalite.event.InvalidAuthenticationEvent;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.interceptors.SessionRequestInterceptor;
 import com.education.corsalite.models.responsemodels.ExamModel;
 import com.education.corsalite.utils.CookieUtils;
-import com.education.corsalite.gson.Gson;
 import com.education.corsalite.utils.L;
-
 import com.google.gson.GsonBuilder;
 import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.OkHttpClient;
@@ -20,6 +20,7 @@ import com.squareup.okhttp.Response;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import de.greenrobot.event.EventBus;
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
 import retrofit.converter.GsonConverter;
@@ -112,6 +113,8 @@ public class ApiClientService {
                                 L.info("Intercept : Request : " + Gson.get().toJson(request));
                                 response = chain.proceed(request);
                                 L.info("Intercept : Response : " + response.code()+ " -- " + Gson.get().toJson(response));
+                            } else {
+                                break;
                             }
                         }
                         tryCount = 0;
@@ -141,6 +144,8 @@ public class ApiClientService {
                         L.info("Intercept : Auth call saving session cookie");
                         AbstractBaseActivity.saveSessionCookie(loginResponse);
                         return getSessionCookie(loginResponse);
+                    } else {
+                        EventBus.getDefault().post(new InvalidAuthenticationEvent());
                     }
                 }
                 return null;

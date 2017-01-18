@@ -11,8 +11,8 @@ android {
         minSdkVersion 17
         targetSdkVersion 20
         // Version naming specification xx xx x xx
-        versionCode 102302
-        versionName "1.2.3.2"
+        versionCode 102501
+        versionName "1.2.5.1"
         multiDexEnabled false
     }
     buildTypes {
@@ -100,7 +100,6 @@ dependencies {
     compile 'org.java-websocket:Java-WebSocket:1.3.0'
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.mani:ThinDownloadManager:1.2.5'
-    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha1'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.github.halysongoncalves:pugnotification:1.8.1'
     compile 'com.scottyab:aescrypt:0.0.1'
