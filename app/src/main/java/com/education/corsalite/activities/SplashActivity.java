@@ -11,11 +11,13 @@ import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.event.InvalidAuthenticationEvent;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.utils.AppUpdateUtils;
 import com.education.corsalite.utils.SystemUtils;
 
+import de.greenrobot.event.EventBus;
 import retrofit.client.Response;
 
 /**
@@ -89,6 +91,7 @@ public class SplashActivity extends AbstractBaseActivity {
                     }
                 } else {
                     showToast(getResources().getString(R.string.login_failed));
+                    EventBus.getDefault().post(new InvalidAuthenticationEvent());
                 }
             }
         }, fetchLocal);
@@ -103,6 +106,7 @@ public class SplashActivity extends AbstractBaseActivity {
             }
         } else {
             showToast(getResources().getString(R.string.login_failed));
+            EventBus.getDefault().post(new InvalidAuthenticationEvent());
         }
     }
 
