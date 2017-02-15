@@ -277,7 +277,7 @@
                     <LinearLayout
                         android:id="@+id/layout_choice"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_below="@+id/action_buttons_layout"
                         android:background="@drawable/table_row"
                         android:orientation="horizontal"

@@ -7,10 +7,10 @@ import android.text.TextUtils;
 import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
-import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.db.SugarDbManager;
 import com.education.corsalite.enums.Tests;
 import com.education.corsalite.event.Toast;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.helpers.ExamEngineHelper;
 import com.education.corsalite.listener.OnExamLoadCallback;
 import com.education.corsalite.models.db.ExerciseOfflineModel;
@@ -26,10 +26,8 @@ import com.education.corsalite.models.responsemodels.TestPaperIndex;
 import com.education.corsalite.models.responsemodels.TestQuestionPaperResponse;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.ExamUtils;
-import com.education.corsalite.gson.Gson;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.TimeUtils;
-
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
@@ -96,7 +94,7 @@ public class TestDownloadService extends IntentService {
 
     private void downloadExercises(List<ExerciseOfflineModel> models) {
         for(final ExerciseOfflineModel model : models) {
-            ApiManager.getInstance(this).getExercise(model.topicId, model.courseId, LoginUserCache.getInstance().getStudentId(), null,
+            ApiManager.getInstance(this).getExercise(model.topicId, model.courseId, null, null,
                 new ApiCallback<List<ExamModel>>(this) {
                     @Override
                     public void failure(CorsaliteError error) {

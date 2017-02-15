@@ -2140,7 +2140,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         if(response != null) {
             showQuestionPaper(response.questions, response.examDetails);
         } else {
-            ApiManager.getInstance(this).getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, LoginUserCache.getInstance().getStudentId(),
+            ApiManager.getInstance(this).getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId,
+                    isExerciseTest() ? null : LoginUserCache.getInstance().getStudentId(),
                 new ApiCallback<TestQuestionPaperResponse>(this) {
                     @Override
                     public void success(TestQuestionPaperResponse questionPaperResponse, Response response) {

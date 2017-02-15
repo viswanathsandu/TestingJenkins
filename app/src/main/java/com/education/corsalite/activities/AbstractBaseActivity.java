@@ -396,7 +396,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         if(config != null && config.isUpdateAvailable() && !TextUtils.isEmpty(config.getAppVersionNumber())) {
             int latestAppVersion = Integer.parseInt(config.getAppVersionNumber());
             if(latestAppVersion > BuildConfig.VERSION_CODE) {
-                showUpdateAlert(config.isForceUpgradeEnabled(), !config.isAppFromUnknownSources(), config.getUpdateUrl());
+                showUpdateAlert(config.isForceUpgradeEnabled(), config.isAppFromPlayStore(), config.getUpdateUrl());
                 return true;
             }
         }

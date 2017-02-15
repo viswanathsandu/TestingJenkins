@@ -6,12 +6,11 @@ import com.education.corsalite.api.ICorsaliteApi;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.deserializer.ExerciseModelResponseDeserializer;
 import com.education.corsalite.event.InvalidAuthenticationEvent;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.interceptors.SessionRequestInterceptor;
 import com.education.corsalite.models.responsemodels.ExamModel;
 import com.education.corsalite.utils.CookieUtils;
-import com.education.corsalite.gson.Gson;
 import com.education.corsalite.utils.L;
-
 import com.google.gson.GsonBuilder;
 import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.OkHttpClient;
