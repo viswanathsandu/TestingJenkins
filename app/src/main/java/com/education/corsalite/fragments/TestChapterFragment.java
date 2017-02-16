@@ -90,6 +90,14 @@ public class TestChapterFragment extends BaseFragment {
         return rootView;
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(getActivity() != null && getActivity() instanceof AbstractBaseActivity) {
+            ((AbstractBaseActivity) getActivity()).hideKeyboard();
+        }
+    }
+
     @OnClick({R.id.btn_header_test_cancel, R.id.btn_header_test_next})
     public void onClick(View view) {
         switch (view.getId()) {

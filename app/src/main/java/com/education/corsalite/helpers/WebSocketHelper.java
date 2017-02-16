@@ -1,6 +1,7 @@
 package com.education.corsalite.helpers;
 
 import android.content.Context;
+import android.os.Handler;
 import android.text.TextUtils;
 
 import com.education.corsalite.cache.LoginUserCache;
@@ -85,7 +86,13 @@ public class WebSocketHelper {
             public void onClose(int i, String s, boolean b) {
                 L.info("Websocket", "Closed " + s);
                 isWebsocketConnected = false;
-                reconnectWebSocket();
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        reconnectWebSocket();
+                    }
+                }, 20000);
             }
 
             @Override

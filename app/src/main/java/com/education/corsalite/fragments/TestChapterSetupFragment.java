@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -22,14 +23,13 @@ import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.activities.ExamEngineActivity;
 import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.models.responsemodels.Chapter;
 import com.education.corsalite.models.responsemodels.TestCoverage;
 import com.education.corsalite.services.TestDownloadService;
 import com.education.corsalite.utils.Constants;
-import com.education.corsalite.gson.Gson;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.views.InputFilterMinMax;
-
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
@@ -79,7 +79,6 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         mExtras = getArguments();
         mChapterLevels = mExtras.getStringArrayList(EXTRAS_CHAPTER_LEVELS);
         subjectId = mExtras.getString(Constants.SELECTED_SUBJECTID, "");
@@ -100,6 +99,7 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_chapter_test_setup, container, false);
         ButterKnife.bind(this, rootView);
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         loadLevels();
         getDialog().setTitle("Test Option");
         getDialog().getWindow().setBackgroundDrawableResource(R.color.white);
@@ -111,6 +111,14 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
             }
         });
         return rootView;
+    }
+
+    @Override
+    public void onPause() {
+        if(getActivity() != null && getActivity() instanceof AbstractBaseActivity) {
+            ((AbstractBaseActivity) getActivity()).hideKeyboard();
+        }
+        super.onPause();
     }
 
     private void loadLevels() {
@@ -167,6 +175,9 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
 
     @OnClick({R.id.btn_cancel, R.id.btn_download, R.id.btn_next})
     public void onClick(View view) {
+        if(getActivity() != null && getActivity() instanceof AbstractBaseActivity) {
+            ((AbstractBaseActivity) getActivity()).hideKeyboard();
+        }
         switch (view.getId()) {
             case R.id.btn_cancel:
                 getDialog().dismiss();
@@ -209,9 +220,6 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
         mExtras.putBoolean(Constants.ADAPIVE_LEAERNING, mIsAdaptiveLearningEnabled);
         mExtras.putString(Constants.QUESTIONS_COUNT, noOfQuestions);
         startActivity(ExamEngineActivity.getMyIntent(getActivity(), mExtras));
-        if(getActivity() != null && getActivity() instanceof AbstractBaseActivity) {
-            ((AbstractBaseActivity) getActivity()).hideKeyboard();
-        }
         getActivity().finish();
     }
 
@@ -235,9 +243,6 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
         exerciseIntent.putExtra("entityId", LoginUserCache.getInstance().getEntityId());
         getActivity().startService(exerciseIntent);
         Toast.makeText(getActivity(), "Downloading test paper in background", Toast.LENGTH_SHORT).show();
-        if(getActivity() != null && getActivity() instanceof AbstractBaseActivity) {
-            ((AbstractBaseActivity) getActivity()).hideKeyboard();
-        }
         getActivity().finish();
     }
 }
