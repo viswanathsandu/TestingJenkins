@@ -550,6 +550,10 @@ public class StudyCenterActivity extends AbstractBaseActivity {
     }
 
     private void startFlaggedQuestionView(StudyCenter studyCenter) {
+        if(!SystemUtils.isNetworkConnected(this)) {
+            showToast("This feature is not available for offline. Please come online.");
+            return;
+        }
         Intent exerciseIntent = new Intent(this, ExamEngineActivity.class);
         exerciseIntent.putExtra(Constants.TEST_TITLE, "Flagged Questions");
         exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.getSelectedCourseId());

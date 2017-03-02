@@ -60,11 +60,21 @@ public abstract class BaseQuestionFragment extends BaseFragment {
     protected long mStartedTime;
     protected boolean isFlagged;
     protected boolean isVerifyEnabled;
+    protected boolean isExplanationShown;
+    protected boolean isFlaggedQuestionShown;
     protected int questionNumber;
     protected ExamModel question;
 
     public void enableVerify() {
         getArguments().putBoolean(KEY_ENABLE_VERIFY, true);
+    }
+
+    public void showExplanation() {
+        isExplanationShown = true;
+    }
+
+    public void showFlaggedQuestionShown() {
+        isFlaggedQuestionShown = true;
     }
 
     public void setFlagged(boolean isFlagged) {
@@ -129,6 +139,16 @@ public abstract class BaseQuestionFragment extends BaseFragment {
         updateFlagStatus();
     }
 
+    private void controlViewAnswers(ViewGroup viewGroup) {
+        for (int i=0; i<viewGroup.getChildCount(); i++) {
+            View view = viewGroup.getChildAt(i);
+            view.setEnabled(false);
+            if(view instanceof ViewGroup) {
+                controlViewAnswers((ViewGroup) view);
+            }
+        }
+    }
+
     private void updateFlagStatus() {
         flaggedImg.setImageResource(isFlagged ? R.drawable.btn_flag_select : R.drawable.btn_flag_unselect);
     }
@@ -156,6 +176,13 @@ public abstract class BaseQuestionFragment extends BaseFragment {
                 webviewQuestion.loadDataWithBaseURL(null, question.questionHtml, "text/html", "UTF-8", null);
             }
             loadAnswerLayout();
+            if(isExplanationShown) {
+                onVerifyClicked(null);
+            }
+            if(isExplanationShown || isFlaggedQuestionShown) {
+                controlViewAnswers(answerLayout);
+                tvClearAnswer.setVisibility(View.INVISIBLE);
+            }
         } catch (Exception e) {
             L.error(e.getMessage(), e);
         }

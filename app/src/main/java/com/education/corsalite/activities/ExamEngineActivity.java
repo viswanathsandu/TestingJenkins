@@ -1149,6 +1149,10 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             questionFragment = BaseQuestionFragment.getInstance(localExamModelList.get(position), position + 1);
             if (isExerciseTest()) {
                 questionFragment.enableVerify();
+            } else if(isViewAnswersScreen()) {
+                questionFragment.showExplanation();
+            } else if(isFlaggedQuestionsScreen()) {
+                questionFragment.showFlaggedQuestionShown();
             }
             questionFragment.setFlagged(localExamModelList.get(position).isFlagged);
             if (localExamModelList.get(position).isFlagged) {
