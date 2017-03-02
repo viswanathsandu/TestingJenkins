@@ -148,7 +148,7 @@ public class ChallengeActivity extends AbstractBaseActivity {
         }
         @Override
         public void onFriendAdded(FriendsData.Friend friend) {
-            if(!isDestroyed() && friend != null) {
+            if(!isDestroyed() && friend != null && !selectedFriends.contains(friend)) {
                 selectedFriends.add(friend);
                 loadPlayers();
             }
