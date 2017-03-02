@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.api.ApiManager;
+import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.db.SugarDbManager;
 import com.education.corsalite.enums.OfflineContentStatus;
 import com.education.corsalite.event.OfflineActivityRefreshEvent;
@@ -218,7 +219,7 @@ public class ContentDownloadService extends IntentService {
             for (ExerciseOfflineModel model : offlineExerciseList) {
                 if(model.progress != 100) {
                     downloandInProgress++;
-                    List<ExamModel> examModels = ApiManager.getInstance(this).getExercise(model.topicId, model.courseId, null, null);
+                    List<ExamModel> examModels = ApiManager.getInstance(this).getExercise(model.topicId, model.courseId, LoginUserCache.getInstance().getStudentId(), null);
                     if (examModels != null && !examModels.isEmpty()) {
                         model.progress = 100;
                         model.questions = examModels;

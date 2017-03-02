@@ -600,7 +600,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
                 }
             } else {
                 ApiManager.getInstance(this).getExercise(topicModelList.get(topicPosition).idTopic, getSelectedCourseId(),
-                        null, "", new ApiCallback<List<ExamModel>>(this) {
+                        studentId, "", new ApiCallback<List<ExamModel>>(this) {
                             @Override
                             public void success(List<ExamModel> examModels, Response response) {
                                 super.success(examModels, response);
