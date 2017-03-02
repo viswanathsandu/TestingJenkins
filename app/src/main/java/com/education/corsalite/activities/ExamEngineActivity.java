@@ -1143,33 +1143,37 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void loadQuestion(int position) {
-        L.info("Question : " + Gson.get().toJson(localExamModelList.get(position)));
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        questionFragment = BaseQuestionFragment.getInstance(localExamModelList.get(position), position+1);
-        if(isExerciseTest()) {
-            questionFragment.enableVerify();
-        }
-        questionFragment.setFlagged(localExamModelList.get(position).isFlagged);
-        if(localExamModelList.get(position).isFlagged) {
-            testanswerPaper.testAnswers.get(position).status = Constants.AnswerState.FLAGGED.getValue();
-        } else if (testanswerPaper != null && testanswerPaper.testAnswers != null
-                && testanswerPaper.testAnswers.size() > position
-                && !TextUtils.isEmpty(testanswerPaper.testAnswers.get(position).status)
-                && testanswerPaper.testAnswers.get(position).status.equalsIgnoreCase(Constants.AnswerState.UNATTEMPTED.getValue())) {
-            testanswerPaper.testAnswers.get(position).status = Constants.AnswerState.SKIPPED.getValue();
-        }
-        if (localExamModelList.get(position).comment != null) {
-            tvComment.setText(localExamModelList.get(position).comment);
-            tvComment.setVisibility(View.VISIBLE);
-        } else {
-            tvComment.setVisibility(View.GONE);
-        }
-        if(questionFragment != null) {
-            transaction.replace(R.id.question_layout, questionFragment).commit();
-        }
-        navigateButtonEnabled();
-        if (mViewSwitcher.indexOfChild(mViewSwitcher.getCurrentView()) == 0) {
-            mViewSwitcher.showNext();
+        try {
+            L.info("Question : " + Gson.get().toJson(localExamModelList.get(position)));
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            questionFragment = BaseQuestionFragment.getInstance(localExamModelList.get(position), position + 1);
+            if (isExerciseTest()) {
+                questionFragment.enableVerify();
+            }
+            questionFragment.setFlagged(localExamModelList.get(position).isFlagged);
+            if (localExamModelList.get(position).isFlagged) {
+                testanswerPaper.testAnswers.get(position).status = Constants.AnswerState.FLAGGED.getValue();
+            } else if (testanswerPaper != null && testanswerPaper.testAnswers != null
+                    && testanswerPaper.testAnswers.size() > position
+                    && !TextUtils.isEmpty(testanswerPaper.testAnswers.get(position).status)
+                    && testanswerPaper.testAnswers.get(position).status.equalsIgnoreCase(Constants.AnswerState.UNATTEMPTED.getValue())) {
+                testanswerPaper.testAnswers.get(position).status = Constants.AnswerState.SKIPPED.getValue();
+            }
+            if (localExamModelList.get(position).comment != null) {
+                tvComment.setText(localExamModelList.get(position).comment);
+                tvComment.setVisibility(View.VISIBLE);
+            } else {
+                tvComment.setVisibility(View.GONE);
+            }
+            if (questionFragment != null) {
+                transaction.replace(R.id.question_layout, questionFragment).commit();
+            }
+            navigateButtonEnabled();
+            if (mViewSwitcher.indexOfChild(mViewSwitcher.getCurrentView()) == 0) {
+                mViewSwitcher.showNext();
+            }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
         }
     }
 
@@ -1635,12 +1639,12 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         localExamModelList = examModels;
         initTestAnswerPaper(localExamModelList);
         getFlaggedQuestion(false);
-        if (mockTestPaperIndex != null && mockTestPaperIndex.questionPaperIndecies != null) {
-            for (int i = 0; i < mockTestPaperIndex.questionPaperIndecies.size() && i < localExamModelList.size(); i++) {
-                localExamModelList.get(i).sectionName = mockTestPaperIndex.questionPaperIndecies.get(i).sectionName;
-            }
-        }
         if (localExamModelList != null) {
+            if (mockTestPaperIndex != null && mockTestPaperIndex.questionPaperIndecies != null) {
+                for (int i = 0; i < mockTestPaperIndex.questionPaperIndecies.size() && i < localExamModelList.size(); i++) {
+                    localExamModelList.get(i).sectionName = mockTestPaperIndex.questionPaperIndecies.get(i).sectionName;
+                }
+            }
             if (localExamModelList.size() > 1) {
                 webFooter.setVisibility(View.VISIBLE);
             } else {
