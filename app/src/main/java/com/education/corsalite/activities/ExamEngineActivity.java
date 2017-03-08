@@ -733,6 +733,9 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
     public void inflateUI(int position) {
         if(position >= 0) {
+            if(gridAdapter != null) {
+                gridAdapter.notifyDataSetChanged();
+            }
             if (previousQuestionPosition >= 0 && !title.equalsIgnoreCase("Exercises")) {
                 setAnswerState();
             }
