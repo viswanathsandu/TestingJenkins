@@ -52,7 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/webview_paragraph"
-                android:minHeight="20dp"
+                android:minHeight="40dp"
                 android:layout_toRightOf="@+id/tv_serial_no" />
 
             <HorizontalScrollView

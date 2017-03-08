@@ -556,7 +556,6 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             if (mockTestPaperIndex != null) {
                 for (int i = 0; i < mockTestPaperIndex.questionPaperIndecies.size(); i++) {
                     if (!TextUtils.isEmpty(section) && mockTestPaperIndex.questionPaperIndecies.get(i).sectionName.equalsIgnoreCase(section)) {
-                        // TODO : implement select the item in grid
                         gvTest.setSelection(i);
                         gvTest.setItemChecked(i, true);
                         inflateUI(i);
@@ -1564,6 +1563,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         flaggedQuestionModel.idTestQuestion = localExamModelList.get(selectedPosition).idTestQuestion + "";
         flaggedQuestionModel.flaggedYN = isFlagged ? "N" : "Y";
         flaggedQuestionModel.idTestAnswerPaper = testAnswerPaperId;
+        flaggedQuestionModel.idStudent = LoginUserCache.getInstance().getStudentId();
         flaggedQuestionModel.idTestQuestion = localExamModelList.get(selectedPosition).idTestQuestion + "";
         flaggedQuestionModel.updateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(TimeUtils.getDate(TimeUtils.currentTimeInMillis()));
 
@@ -1777,7 +1777,9 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        AbstractBaseActivity.setSharedExamModels(null);
+        if(!isExerciseTest() && !isViewAnswersScreen()) {
+            AbstractBaseActivity.setSharedExamModels(null);
+        }
         if(timer != null) {
             timer.cancel();
         }
