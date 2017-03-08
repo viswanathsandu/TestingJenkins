@@ -1561,7 +1561,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     private void postFlaggedQuestion(final boolean isFlagged) {
         FlaggedQuestionModel flaggedQuestionModel = new FlaggedQuestionModel();
         flaggedQuestionModel.idTestQuestion = localExamModelList.get(selectedPosition).idTestQuestion + "";
-        flaggedQuestionModel.flaggedYN = isFlagged ? "N" : "Y";
+        flaggedQuestionModel.flaggedYN = isFlagged ? "Y" : "N";
         flaggedQuestionModel.idTestAnswerPaper = testAnswerPaperId;
         flaggedQuestionModel.idStudent = LoginUserCache.getInstance().getStudentId();
         flaggedQuestionModel.idTestQuestion = localExamModelList.get(selectedPosition).idTestQuestion + "";
@@ -1572,7 +1572,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                     @Override
                     public void success(PostFlaggedQuestions postFlaggedQuestions, Response response) {
                         super.success(postFlaggedQuestions, response);
-                        localExamModelList.get(selectedPosition).isFlagged = !isFlagged;
+                        localExamModelList.get(selectedPosition).isFlagged = isFlagged;
                         updateFlaggedQuestion(!isFlagged);
                         EventBus.getDefault().post(new FlagUpdatedEvent());
                     }
