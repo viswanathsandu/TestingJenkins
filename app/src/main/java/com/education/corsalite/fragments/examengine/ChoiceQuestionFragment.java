@@ -57,7 +57,11 @@ public abstract class ChoiceQuestionFragment extends BaseQuestionFragment {
             TextView optionNumberTxt = (TextView) container.findViewById(R.id.option_number_txt);
             optionNumberTxt.setText(String.format("%s", i + 1));
             options[i] = getOption(container, answerChoiceModel);
-            options[i].setOnClickListener(getOptionClickListener());
+            if(this instanceof MultipleChoiceQuestionFragment) {
+                options[i].setOnCheckedChangeListener(getCheckedChangeListener());
+            } else if(this instanceof SingleChoiceQuestionFragment) {
+                options[i].setOnClickListener(getOptionClickListener());
+            }
             loadChoice(webview, answerChoiceModel);
             setTouchListener(webview, options[i]);
             options[i].setChecked(false);
@@ -98,13 +102,25 @@ public abstract class ChoiceQuestionFragment extends BaseQuestionFragment {
         });
     }
 
+    private CompoundButton.OnCheckedChangeListener getCheckedChangeListener() {
+        return new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton v, boolean isChecked) {
+                Object tag = v.getTag();
+                if(tag != null && tag instanceof AnswerChoiceModel) {
+                    updateAnswer((AnswerChoiceModel) tag, isChecked);
+                }
+            }
+        };
+    }
+
     private View.OnClickListener getOptionClickListener() {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Object tag = v.getTag();
                 if(tag != null && tag instanceof AnswerChoiceModel) {
-                    updateAnswer((AnswerChoiceModel) tag);
+                    updateAnswer((AnswerChoiceModel) tag, true);
                 }
             }
         };
@@ -117,7 +133,7 @@ public abstract class ChoiceQuestionFragment extends BaseQuestionFragment {
         }
     }
 
-    public abstract void updateAnswer(AnswerChoiceModel model);
+    public abstract void updateAnswer(AnswerChoiceModel model, boolean isSelected);
 
     protected void formatSelectedAnswers() {
         question.selectedAnswers = null;

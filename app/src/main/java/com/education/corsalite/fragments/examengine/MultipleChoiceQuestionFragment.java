@@ -74,8 +74,12 @@ public class MultipleChoiceQuestionFragment extends ChoiceQuestionFragment {
     }
 
     @Override
-    public void updateAnswer(AnswerChoiceModel model) {
-        selectedAnswers.add(question.answerChoice.indexOf(model));
+    public void updateAnswer(AnswerChoiceModel model, boolean isSelected) {
+        if(isSelected) {
+            selectedAnswers.add(question.answerChoice.indexOf(model));
+        } else {
+            selectedAnswers.remove(question.answerChoice.indexOf(model));
+        }
         formatSelectedAnswers();
         updateAnswer();
         EventBus.getDefault().post(new UpdateAnswerEvent());

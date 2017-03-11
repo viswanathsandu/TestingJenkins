@@ -735,7 +735,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             if(gridAdapter != null) {
                 gridAdapter.notifyDataSetChanged();
             }
-            if (previousQuestionPosition >= 0 && !title.equalsIgnoreCase("Exercises")) {
+            if (previousQuestionPosition >= 0) {
                 onEventMainThread(new UpdateAnswerEvent());
             }
             selectedPosition = position;

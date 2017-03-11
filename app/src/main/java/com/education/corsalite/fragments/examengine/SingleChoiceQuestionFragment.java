@@ -64,7 +64,7 @@ public class SingleChoiceQuestionFragment extends ChoiceQuestionFragment {
     }
 
     @Override
-    public void updateAnswer(AnswerChoiceModel model) {
+    public void updateAnswer(AnswerChoiceModel model, boolean isSelected) {
         selectedAnswers.clear();
         selectedAnswers.add(question.answerChoice.indexOf(model));
         formatSelectedAnswers();
