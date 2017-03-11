@@ -236,6 +236,14 @@ public abstract class BaseQuestionFragment extends BaseFragment {
         return question.selectedAnswerKeyIds;
     }
 
+    public String getQuestionState() {
+        if(question.isFlagged) {
+            return Constants.AnswerState.FLAGGED.getValue();
+        } else {
+            return getAnswerState();
+        }
+    }
+
     public String getAnswerState() {
         return TextUtils.isEmpty(question.selectedAnswers)
                 ? Constants.AnswerState.SKIPPED.getValue()
