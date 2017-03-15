@@ -237,7 +237,7 @@ public abstract class BaseQuestionFragment extends BaseFragment {
     }
 
     public String getQuestionState() {
-        if(question.isFlagged) {
+        if(question != null && question.isFlagged) {
             return Constants.AnswerState.FLAGGED.getValue();
         } else {
             return getAnswerState();
@@ -252,38 +252,36 @@ public abstract class BaseQuestionFragment extends BaseFragment {
 
     protected void setExplanationLayout() {
         String webText = "";
-        String correctAnswer = "";
-        String correctAnswerText = "";
         List<AnswerChoiceModel> answerChoiceModels = question.answerChoice;
-        int counter = 0;
         for (AnswerChoiceModel answerChoiceModel : answerChoiceModels) {
             if (answerChoiceModel.isCorrectAnswer.equalsIgnoreCase("Y")) {
-                correctAnswer = String.valueOf(counter);
-                correctAnswerText = answerChoiceModel.answerChoiceTextHtml;
                 webText = answerChoiceModel.answerChoiceExplanationHtml;
                 break;
             }
         }
         txtAnswerCount.setText(getDisplayedCorrectAnswer());
         txtAnswerExp.loadDataWithBaseURL(null, webText, "text/html", "UTF-8", null);
-
-//        if (gridAdapter != null) {
-//            gridAdapter.notifyDataSetChanged();
-//        }
-//        setFlaggedQuestionLayout(correctAnswerText);
     }
 
 
     @OnClick(R.id.tv_clearanswer)
     public void onClearAnswer(View view) {
-        clearAnswer();
+        if(isAnswered()) {
+            clearAnswer();
+        } else {
+            showToast("Please select an option");
+        }
     }
 
     @OnClick(R.id.tv_verify)
     public void onVerifyClicked(View view) {
-        btnVerify.setEnabled(false);
-        explanationLayout.setVisibility(View.VISIBLE);
-        layoutChoice.setVisibility(View.VISIBLE);
+        if(isAnswered()) {
+            btnVerify.setEnabled(false);
+            explanationLayout.setVisibility(View.VISIBLE);
+            layoutChoice.setVisibility(View.VISIBLE);
+        } else {
+            showToast("Please select an option");
+        }
     }
 
     @OnClick(R.id.imv_flag)

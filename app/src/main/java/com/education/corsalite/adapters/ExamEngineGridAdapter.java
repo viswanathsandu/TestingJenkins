@@ -22,10 +22,10 @@ import java.util.List;
 public class ExamEngineGridAdapter extends BaseAdapter {
 
     private ExamEngineActivity mActivity;
-    private View grid;
     private LayoutInflater inflater;
     private List<ExamModel> mModelList;
     private String selectedSectionName;
+    private boolean isColorsDisabled;
 
     public ExamEngineGridAdapter(ExamEngineActivity activity, List<ExamModel> modelList) {
         this.mActivity = activity;
@@ -35,6 +35,10 @@ public class ExamEngineGridAdapter extends BaseAdapter {
 
     public void setSelectedSectionName(String sectionName) {
         this.selectedSectionName = sectionName;
+    }
+
+    public void disableColors() {
+        this.isColorsDisabled = true;
     }
 
     @Override
@@ -76,8 +80,12 @@ public class ExamEngineGridAdapter extends BaseAdapter {
             if(mModelList.get(position).isFlagged) {
                 btnCounter.setBackgroundResource(R.drawable.rounded_corners_yellow);
                 btnCounter.setTextColor(mActivity.getResources().getColor(R.color.black));
-            } else {
+            } else if(!isColorsDisabled) {
                 switch (Constants.AnswerState.getEnum(mModelList.get(position).answerColorSelection)) {
+                    case UNATTEMPTED:
+                        btnCounter.setBackgroundResource(R.drawable.rounded_corners_gray);
+                        btnCounter.setTextColor(mActivity.getResources().getColor(R.color.black));
+                        break;
                     case ANSWERED:
                         btnCounter.setBackgroundResource(R.drawable.rounded_corners_green);
                         btnCounter.setTextColor(mActivity.getResources().getColor(R.color.white));
@@ -86,11 +94,10 @@ public class ExamEngineGridAdapter extends BaseAdapter {
                         btnCounter.setBackgroundResource(R.drawable.rounded_corners_red);
                         btnCounter.setTextColor(mActivity.getResources().getColor(R.color.white));
                         break;
-                    case UNATTEMPTED:
-                        btnCounter.setBackgroundResource(R.drawable.rounded_corners_gray);
-                        btnCounter.setTextColor(mActivity.getResources().getColor(R.color.black));
-                        break;
                 }
+            } else {
+                btnCounter.setBackgroundResource(R.drawable.rounded_corners_gray);
+                btnCounter.setTextColor(mActivity.getResources().getColor(R.color.black));
             }
             if (position == mActivity.selectedPosition) {
                 btnCounter.setPaintFlags(btnCounter.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
