@@ -10,9 +10,6 @@ android {
         applicationId "com.education.corsalite"
         minSdkVersion 17
         targetSdkVersion 20
-        // Version naming specification xx xx x xx
-        versionCode 102606
-        versionName "1.2.6.6"
         multiDexEnabled false
     }
     buildTypes {
@@ -32,28 +29,63 @@ android {
     productFlavors {
         prod {
             applicationId "com.corsalite.tabletapp"
+            // Version naming specification xx xx x xx
+            versionCode 102606
+            versionName "1.2.6.6"
             minSdkVersion 19
             buildConfigField 'String', 'BASE_URL', '"http://app.corsalite.com/ws/"'
             buildConfigField 'String', 'BASE_API_URL', '"http://app.corsalite.com/ws/webservices/"'
             buildConfigField 'String', 'SOCKET_URL', '"ws://app.corsalite.com:9300"'
             buildConfigField 'String', 'PARENT_FOLDER', '".Corsalite"'
-            project.ext.set("archivesBaseName", "corsalite_" + defaultConfig.versionName + "_" + defaultConfig.versionCode);
+            project.ext.set("archivesBaseName", "corsalite_" + versionName + "_" + versionCode);
         }
         staging {
             applicationId "com.corsalite.androidapp.staging"
+            // Version naming specification xx xx x xx
+            versionCode 102606
+            versionName "1.2.6.6"
             buildConfigField 'String', 'BASE_URL', '"http://staging.corsalite.com/v1/"'
             buildConfigField 'String', 'BASE_API_URL', '"http://staging.corsalite.com/v1/webservices/"'
             buildConfigField 'String', 'SOCKET_URL', '"ws://staging.corsalite.com:9300"'
             buildConfigField 'String', 'PARENT_FOLDER', '".CorsaliteStaging"'
-            project.ext.set("archivesBaseName", "corsalite_" + defaultConfig.versionName + "_" + defaultConfig.versionCode);
+            project.ext.set("archivesBaseName", "corsalite_" + versionName + "_" + versionCode);
         }
+        fgaprod {
+            applicationId "com.corsalite.fga"
+            // Version naming specification xx xx x xx
+            versionCode 000001
+            versionName "0.0.0.1"
+            minSdkVersion 19
+            buildConfigField 'String', 'BASE_URL', '"http://app.corsalite.com/ws/"'
+            buildConfigField 'String', 'BASE_API_URL', '"http://app.corsalite.com/ws/webservices/"'
+            buildConfigField 'String', 'SOCKET_URL', '"ws://app.corsalite.com:9300"'
+            buildConfigField 'String', 'PARENT_FOLDER', '".Corsalite"'
+            project.ext.set("archivesBaseName", "corsalite_fga_" + versionName + "_" + versionCode);
+        }
+        fgastaging {
+            applicationId "com.corsalite.fga.staging"
+            // Version naming specification xx xx x xx
+            versionCode 000001
+            versionName "0.0.0.1"
+            buildConfigField 'String', 'BASE_URL', '"http://staging.corsalite.com/v1/"'
+            buildConfigField 'String', 'BASE_API_URL', '"http://staging.corsalite.com/v1/webservices/"'
+            buildConfigField 'String', 'SOCKET_URL', '"ws://staging.corsalite.com:9300"'
+            buildConfigField 'String', 'PARENT_FOLDER', '".CorsaliteStaging"'
+            project.ext.set("archivesBaseName", "corsalite_fga_" + versionName + "_" + versionCode);
+        }
+
+
+        // This will be used occassionally
         stage {
             applicationId "com.corsalite.androidapp.stage"
+            // Version naming specification xx xx x xx
+            versionCode 102606
+            versionName "1.2.6.6"
             buildConfigField 'String', 'BASE_URL', '"http://staging.corsalite.com/stage/"'
             buildConfigField 'String', 'BASE_API_URL', '"http://staging.corsalite.com/stage/webservices/"'
             buildConfigField 'String', 'SOCKET_URL', '"ws://staging.corsalite.com:9300"'
             buildConfigField 'String', 'PARENT_FOLDER', '".CorsaliteStage"'
-            project.ext.set("archivesBaseName", "corsalite_" + defaultConfig.versionName + "_" + defaultConfig.versionCode);
+            project.ext.set("archivesBaseName", "corsalite_" + versionName + "_" + versionCode);
         }
     }
 }

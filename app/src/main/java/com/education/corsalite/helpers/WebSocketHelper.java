@@ -99,6 +99,13 @@ public class WebSocketHelper {
             public void onError(Exception e) {
                 L.info("Websocket", "Error " + e.getMessage());
                 isWebsocketConnected = false;
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        reconnectWebSocket();
+                    }
+                }, 20000);
             }
         };
         try {
