@@ -30,25 +30,25 @@ android {
         prod {
             applicationId "com.corsalite.tabletapp"
             // Version naming specification xx xx x xx
-            versionCode 102606
-            versionName "1.2.6.6"
+            versionCode 102607
+            versionName "1.2.6.7"
             minSdkVersion 19
             buildConfigField 'String', 'BASE_URL', '"http://app.corsalite.com/ws/"'
             buildConfigField 'String', 'BASE_API_URL', '"http://app.corsalite.com/ws/webservices/"'
             buildConfigField 'String', 'SOCKET_URL', '"ws://app.corsalite.com:9300"'
             buildConfigField 'String', 'PARENT_FOLDER', '".Corsalite"'
-            project.ext.set("archivesBaseName", "corsalite_" + versionName + "_" + versionCode);
+            project.ext.set("archivesBaseName", "corsalite_" + prod.versionName + "_" + prod.versionCode);
         }
         staging {
             applicationId "com.corsalite.androidapp.staging"
             // Version naming specification xx xx x xx
-            versionCode 102606
-            versionName "1.2.6.6"
+            versionCode 102607
+            versionName "1.2.6.7"
             buildConfigField 'String', 'BASE_URL', '"http://staging.corsalite.com/v1/"'
             buildConfigField 'String', 'BASE_API_URL', '"http://staging.corsalite.com/v1/webservices/"'
             buildConfigField 'String', 'SOCKET_URL', '"ws://staging.corsalite.com:9300"'
             buildConfigField 'String', 'PARENT_FOLDER', '".CorsaliteStaging"'
-            project.ext.set("archivesBaseName", "corsalite_" + versionName + "_" + versionCode);
+            project.ext.set("archivesBaseName", "corsalite_" + staging.versionName + "_" + staging.versionCode);
         }
         fgaprod {
             applicationId "com.corsalite.fga"
@@ -60,7 +60,7 @@ android {
             buildConfigField 'String', 'BASE_API_URL', '"http://app.corsalite.com/ws/webservices/"'
             buildConfigField 'String', 'SOCKET_URL', '"ws://app.corsalite.com:9300"'
             buildConfigField 'String', 'PARENT_FOLDER', '".Corsalite"'
-            project.ext.set("archivesBaseName", "corsalite_fga_" + versionName + "_" + versionCode);
+            project.ext.set("archivesBaseName", "corsalite_fga_" + fgaprod.versionName + "_" + fgaprod.versionCode);
         }
         fgastaging {
             applicationId "com.corsalite.fga.staging"
@@ -71,7 +71,7 @@ android {
             buildConfigField 'String', 'BASE_API_URL', '"http://staging.corsalite.com/v1/webservices/"'
             buildConfigField 'String', 'SOCKET_URL', '"ws://staging.corsalite.com:9300"'
             buildConfigField 'String', 'PARENT_FOLDER', '".CorsaliteStaging"'
-            project.ext.set("archivesBaseName", "corsalite_fga_" + versionName + "_" + versionCode);
+            project.ext.set("archivesBaseName", "corsalite_fga_" + fgastaging.versionName + "_" + fgastaging.versionCode);
         }
 
 
@@ -79,13 +79,13 @@ android {
         stage {
             applicationId "com.corsalite.androidapp.stage"
             // Version naming specification xx xx x xx
-            versionCode 102606
-            versionName "1.2.6.6"
+            versionCode 102607
+            versionName "1.2.6.7"
             buildConfigField 'String', 'BASE_URL', '"http://staging.corsalite.com/stage/"'
             buildConfigField 'String', 'BASE_API_URL', '"http://staging.corsalite.com/stage/webservices/"'
             buildConfigField 'String', 'SOCKET_URL', '"ws://staging.corsalite.com:9300"'
             buildConfigField 'String', 'PARENT_FOLDER', '".CorsaliteStage"'
-            project.ext.set("archivesBaseName", "corsalite_" + versionName + "_" + versionCode);
+            project.ext.set("archivesBaseName", "corsalite_" + stage.versionName + "_" + stage.versionCode);
         }
     }
 }

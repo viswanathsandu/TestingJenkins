@@ -1,10 +1,10 @@
 package com.education.corsalite.helpers;
 
 import android.content.Context;
-import android.os.Handler;
 import android.text.TextUtils;
 
 import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.models.socket.requests.ChallengeTestStartRequestEvent;
 import com.education.corsalite.models.socket.requests.ChallengeTestUpdateRequestEvent;
 import com.education.corsalite.models.socket.requests.NewChallengeTestRequestEvent;
@@ -18,11 +18,9 @@ import com.education.corsalite.models.socket.response.ChallengeUserList;
 import com.education.corsalite.models.socket.response.UpdateLeaderBoardEvent;
 import com.education.corsalite.models.socket.response.UserListResponseEvent;
 import com.education.corsalite.services.ApiClientService;
-import com.education.corsalite.gson.Gson;
 import com.education.corsalite.socket.CorsaliteWebsocketClient;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.SystemUtils;
-
 
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
@@ -86,26 +84,13 @@ public class WebSocketHelper {
             public void onClose(int i, String s, boolean b) {
                 L.info("Websocket", "Closed " + s);
                 isWebsocketConnected = false;
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        reconnectWebSocket();
-                    }
-                }, 5000);
+                reconnectWebSocket();
             }
 
             @Override
             public void onError(Exception e) {
                 L.info("Websocket", "Error " + e.getMessage());
                 isWebsocketConnected = false;
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        reconnectWebSocket();
-                    }
-                }, 5000);
             }
         };
         try {

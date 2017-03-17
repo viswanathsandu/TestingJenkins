@@ -90,6 +90,8 @@ public class ExamHistoryAdapter extends AbstractRecycleViewAdapter {
                 } else {
                     this.status.setText(examHistory.totalScore);
                 }
+            } else if(!TextUtils.isEmpty(examHistory.status)) {
+                this.status.setText(examHistory.status);
             }
             parent.setOnClickListener(new View.OnClickListener() {
                 @Override
