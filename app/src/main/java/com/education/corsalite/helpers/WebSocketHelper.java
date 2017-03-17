@@ -92,7 +92,7 @@ public class WebSocketHelper {
                     public void run() {
                         reconnectWebSocket();
                     }
-                }, 20000);
+                }, 5000);
             }
 
             @Override
@@ -105,7 +105,7 @@ public class WebSocketHelper {
                     public void run() {
                         reconnectWebSocket();
                     }
-                }, 20000);
+                }, 5000);
             }
         };
         try {
