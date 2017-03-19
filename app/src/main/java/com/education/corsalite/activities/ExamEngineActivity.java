@@ -1141,7 +1141,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 localExamModelList.get(selectedPosition).selectedAnswerKeyIds = questionFragment.getSelectedAnswerKeyIds();
 
                 testanswerPaper.testAnswers.get(selectedPosition).status = questionFragment.getAnswerState();
-                testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = localExamModelList.get(selectedPosition).answerChoice.get(0).idAnswerKey;
+                testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = questionFragment.getSelectedAnswerKeyIds();// localExamModelList.get(selectedPosition).answerChoice.get(0).idAnswerKey;
                 testanswerPaper.testAnswers.get(selectedPosition).answerText = questionFragment.getSelectedAnswer();
                 gridAdapter.notifyDataSetChanged();
             }
