@@ -2,4 +2,5 @@
 <resources>
     <string name="app_name">First Guide Academy</string>
     <string name="localytics_api_key">ba5633656f7601afc7f8a17-7a748b06-0a71-11e7-eaa7-004ca8463ac9</string>
+    <string name="powered_by">Powered by Corsalite</string>
 </resources>

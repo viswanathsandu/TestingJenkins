@@ -57,7 +57,7 @@ android {
             project.ext.set("archivesBaseName", "corsalite_" + defaultConfig.versionName + "_" + defaultConfig.versionCode);
         }
         fgaprod {
-            applicationId "com.corsalite.fgaprod"
+            applicationId "com.corsalite.fga"
             // Version naming specification xx xx x xx
             versionCode 000001
             versionName "0.0.0.1"
@@ -69,7 +69,7 @@ android {
             project.ext.set("archivesBaseName", "corsalite_fga_" + defaultConfig.versionName + "_" + defaultConfig.versionCode);
         }
         fgastaging {
-            applicationId "com.corsalite.fgastaging"
+            applicationId "com.corsalite.fga.staging"
             // Version naming specification xx xx x xx
             versionCode 000001
             versionName "0.0.0.1"

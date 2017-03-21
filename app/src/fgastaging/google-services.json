@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:1015306701153:android:334a72bfe620b5f4",
         "android_client_info": {
-          "package_name": "com.corsalite.fgastaging"
+          "package_name": "com.corsalite.fga.staging"
         }
       },
       "oauth_client": [
