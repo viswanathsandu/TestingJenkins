@@ -1,27 +1,27 @@
 {
   "project_info": {
-    "project_number": "1015306701153",
-    "firebase_url": "https://corsalite-fga-staging.firebaseio.com",
-    "project_id": "corsalite-fga-staging",
-    "storage_bucket": "corsalite-fga-staging.appspot.com"
+    "project_number": "139962759895",
+    "firebase_url": "https://corsalite-fga-prod.firebaseio.com",
+    "project_id": "corsalite-fga-prod",
+    "storage_bucket": "corsalite-fga-prod.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1015306701153:android:334a72bfe620b5f4",
+        "mobilesdk_app_id": "1:139962759895:android:4545a2bf9ede3394",
         "android_client_info": {
-          "package_name": "com.corsalite.fga.staging"
+          "package_name": "com.corsalite.fgaprod"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1015306701153-s36s4q9g49rfi3ejaoroc2659qn2vs1k.apps.googleusercontent.com",
+          "client_id": "139962759895-8qh0342bgdimp0ll61jct20qq72u7bjb.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDEerIkpbPCfEsqGinOFCGIR3bIJRrMkEI"
+          "current_key": "AIzaSyAFOSBbW4FroiX88MJcoHAZ9X3e3KVrogI"
         }
       ],
       "services": {

@@ -1,0 +1,22 @@
+{
+  "SplashDuration":"2000",
+  "EnableStudyCenter": "true",
+  "EnableAnalytics":"false",
+  "EnableSmartClass":"true",
+  "EnableMyProfile":"true",
+  "EnableOffline":"true",
+  "EnableChallengeTest":"true",
+  "EnableLogout":"true",
+  "CustomConfig": [
+    {
+      "EnableVirtualCurrency": "true",
+      "EnableForum": "true",
+      "EnableScheduleTests": "true",
+      "EnableMockTests": "true",
+      "EnableExamHistory": "true",
+      "EnableCurriculum":"true",
+      "ForceUpgrade":"false",
+      "LatestVersionCode":"1"
+    }
+  ]
+}

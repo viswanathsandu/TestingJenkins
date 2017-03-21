@@ -98,7 +98,7 @@ public class ExamHistoryActivity extends AbstractBaseActivity implements ExamHis
         ExamHistory examHistory = (ExamHistory) examHistoryAdapter.getItem(position);
         if (SystemUtils.isNetworkConnected(this)) {
             if((!TextUtils.isEmpty(examHistory.status) && examHistory.status.equalsIgnoreCase("Not Started"))
-                    || (!TextUtils.isEmpty(examHistory.totalScore) && examHistory.totalScore.equalsIgnoreCase("suspended"))) {
+                    || (!TextUtils.isEmpty(examHistory.totalScore) && examHistory.status.equalsIgnoreCase("Suspended"))) {
                 if(!TextUtils.isEmpty(examHistory.dueDate) && TimeUtils.currentTimeInMillis() >= TimeUtils.getMillisFromDate(examHistory.dueDate)) {
                     showToast("Test could not be started as the due date is exceeded");
                     return;
