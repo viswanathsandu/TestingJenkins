@@ -556,7 +556,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     protected void setToolbarForWelcomeScreen() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
-        setToolbarTitle("Corsalite");
+        setToolbarTitle(getString(R.string.app_name));
         loadCoursesList();
     }
 

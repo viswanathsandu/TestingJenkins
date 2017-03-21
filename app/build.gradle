@@ -11,11 +11,11 @@ android {
         minSdkVersion 17
         targetSdkVersion 20
         // Version naming specification xx xx x xx
-        versionCode 102700
-        versionName "1.2.7"
+//        versionCode 102700
+//        versionName "1.2.7"
 
-//        versionCode 1
-//        versionName "0.0.0.1"
+        versionCode 2
+        versionName "0.0.0.1"
         multiDexEnabled false
     }
     buildTypes {
@@ -59,25 +59,25 @@ android {
         fgaprod {
             applicationId "com.corsalite.fga"
             // Version naming specification xx xx x xx
-            versionCode 000001
+            versionCode 000002
             versionName "0.0.0.1"
             minSdkVersion 19
             buildConfigField 'String', 'BASE_URL', '"http://app.corsalite.com/ws/"'
             buildConfigField 'String', 'BASE_API_URL', '"http://app.corsalite.com/ws/webservices/"'
             buildConfigField 'String', 'SOCKET_URL', '"ws://app.corsalite.com:9300"'
-            buildConfigField 'String', 'PARENT_FOLDER', '".Corsalite"'
+            buildConfigField 'String', 'PARENT_FOLDER', '".FGA"'
             project.ext.set("archivesBaseName", "corsalite_fga_" + defaultConfig.versionName + "_" + defaultConfig.versionCode);
         }
         fgastaging {
             applicationId "com.corsalite.fga.staging"
             // Version naming specification xx xx x xx
-            versionCode 000001
+            versionCode 000002
             versionName "0.0.0.1"
             buildConfigField 'String', 'BASE_URL', '"http://staging.corsalite.com/v1/"'
             buildConfigField 'String', 'BASE_API_URL', '"http://staging.corsalite.com/v1/webservices/"'
             buildConfigField 'String', 'SOCKET_URL', '"ws://staging.corsalite.com:9300"'
-            buildConfigField 'String', 'PARENT_FOLDER', '".CorsaliteStaging"'
-            project.ext.set("archivesBaseName", "corsalite_fga_" + defaultConfig.versionName + "_" + defaultConfig.versionCode);
+            buildConfigField 'String', 'PARENT_FOLDER', '".FGAStaging"'
+            project.ext.set("archivesBaseName", "corsalite_fgastaging_" + defaultConfig.versionName + "_" + defaultConfig.versionCode);
         }
 
 
