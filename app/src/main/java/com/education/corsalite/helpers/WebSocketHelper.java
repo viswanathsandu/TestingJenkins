@@ -75,7 +75,6 @@ public class WebSocketHelper {
 
             @Override
             public void onMessage(String message) {
-                // TODO : send events through event bus
                 L.info("Websocket", "message : "+message);
                 postResponseEvents(message);
             }
@@ -97,10 +96,8 @@ public class WebSocketHelper {
             mWebSocketClient.connect();
         } catch (AssertionError e) {
             L.error(e.getMessage(), e);
-            return;
         } catch (Exception e) {
             L.error(e.getMessage(), e);
-            return;
         }
     }
 

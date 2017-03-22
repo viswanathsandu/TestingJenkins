@@ -91,8 +91,6 @@ import com.education.corsalite.utils.TimeUtils;
 import com.education.corsalite.utils.WebUrls;
 import com.localytics.android.Localytics;
 
-import de.greenrobot.event.EventBus;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -100,6 +98,7 @@ import java.util.Date;
 import java.util.List;
 
 import br.com.goncalves.pugnotification.notification.PugNotification;
+import de.greenrobot.event.EventBus;
 import retrofit.client.Response;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;

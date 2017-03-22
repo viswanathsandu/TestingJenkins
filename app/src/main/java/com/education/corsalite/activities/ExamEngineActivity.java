@@ -86,6 +86,7 @@ import java.lang.reflect.Type;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import br.com.goncalves.pugnotification.notification.PugNotification;
@@ -1152,6 +1153,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
     private void loadQuestion(int position) {
         try {
+            questionStartedTime = Calendar.getInstance().getTimeInMillis();
             L.info("Question : " + Gson.get().toJson(localExamModelList.get(position)));
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             questionFragment = BaseQuestionFragment.getInstance(localExamModelList.get(position), position + 1);
