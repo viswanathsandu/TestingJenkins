@@ -37,5 +37,9 @@ public class FriendsData extends BaseModel {
             return idUser != null && obj != null && obj instanceof Friend
                     && ((Friend) obj).idUser.equalsIgnoreCase(idUser);
         }
+
+        public boolean isOnline() {
+            return isOnline || emailID.equalsIgnoreCase("corbot@corsalite.com");
+        }
     }
 }

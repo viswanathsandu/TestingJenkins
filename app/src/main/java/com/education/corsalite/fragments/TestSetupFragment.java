@@ -138,7 +138,7 @@ public class TestSetupFragment extends BaseFragment {
                             timeInMinsError.setVisibility(View.VISIBLE);
                         }
                     } else {
-                        noOfQuesError.setText("Enter valid no. of questions");
+                        noOfQuesError.setText("Min 10 questions should be there");
                         noOfQuesError.setVisibility(View.VISIBLE);
                     }
                 } else {
@@ -218,7 +218,7 @@ public class TestSetupFragment extends BaseFragment {
     private boolean isValidNoQues(String noOfQuestions) {
         try {
             int quesCount =  Integer.parseInt(noOfQuestions);
-            if (quesCount > 0) {
+            if (quesCount >= 10) {
                 return true;
             }
         } catch (NumberFormatException e) {
