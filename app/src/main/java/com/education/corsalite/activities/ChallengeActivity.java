@@ -141,7 +141,6 @@ public class ChallengeActivity extends AbstractBaseActivity {
         @Override
         public void onNextClick(ArrayList<FriendsData.Friend> selectedFriends) {
             if(!isDestroyed()) {
-                showToast(selectedFriends.size() + "");
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment_container, TestSetupFragment.newInstance(mTestSetupCallback)).addToBackStack(null).commit();
             }
