@@ -517,6 +517,13 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         loadCoursesList();
     }
 
+    protected void setToolbarForTestSeries() {
+        toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
+        setToolbarTitle(getResources().getString(R.string.test_series));
+        showVirtualCurrency();
+        loadCoursesList();
+    }
+
     protected void setToolbarForAnalytics() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
         setToolbarTitle(getResources().getString(R.string.analytics));
@@ -731,6 +738,52 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         if (config.isExamHistoryEnabled()) {
             navigationView.findViewById(R.id.navigation_exam_history).setVisibility(View.VISIBLE);
         }
+
+        if(selectedCourse == null || !selectedCourse.isTestSeries()) {
+            loadGeneralNavigationOptions();
+        } else {
+            loadTestSeriesNavigationOptions();
+        }
+    }
+
+    private void loadTestSeriesNavigationOptions() {
+        navigationView.findViewById(R.id.navigation_welcome).setVisibility(View.VISIBLE);
+        navigationView.findViewById(R.id.navigation_profile).setVisibility(View.VISIBLE);
+        navigationView.findViewById(R.id.navigation_study_center).setVisibility(View.GONE);
+        navigationView.findViewById(R.id.navigation_test_series).setVisibility(View.VISIBLE);
+        navigationView.findViewById(R.id.navigation_recommended_reading).setVisibility(View.VISIBLE);
+        navigationView.findViewById(R.id.navigation_progress_report).setVisibility(View.VISIBLE);
+        navigationView.findViewById(R.id.navigation_time_management).setVisibility(View.VISIBLE);
+        navigationView.findViewById(R.id.navigation_analytics).setVisibility(View.GONE);
+        navigationView.findViewById(R.id.navigation_offline).setVisibility(View.VISIBLE);
+        navigationView.findViewById(R.id.navigation_curriculum).setVisibility(View.GONE);
+        navigationView.findViewById(R.id.navigation_scheduled_tests).setVisibility(View.GONE);
+        navigationView.findViewById(R.id.navigation_mock_tests).setVisibility(View.GONE);
+        navigationView.findViewById(R.id.navigation_challenge_your_friends).setVisibility(View.GONE);
+        navigationView.findViewById(R.id.navigation_forum).setVisibility(View.GONE);
+        navigationView.findViewById(R.id.navigation_smart_class).setVisibility(View.GONE);
+        navigationView.findViewById(R.id.navigation_settings).setVisibility(View.VISIBLE);
+        navigationView.findViewById(R.id.navigation_logout).setVisibility(View.VISIBLE);
+    }
+
+    private void loadGeneralNavigationOptions() {
+        navigationView.findViewById(R.id.navigation_welcome).setVisibility(View.VISIBLE);
+        navigationView.findViewById(R.id.navigation_profile).setVisibility(View.VISIBLE);
+        navigationView.findViewById(R.id.navigation_study_center).setVisibility(View.VISIBLE);
+        navigationView.findViewById(R.id.navigation_test_series).setVisibility(View.GONE);
+        navigationView.findViewById(R.id.navigation_recommended_reading).setVisibility(View.GONE);
+        navigationView.findViewById(R.id.navigation_progress_report).setVisibility(View.GONE);
+        navigationView.findViewById(R.id.navigation_time_management).setVisibility(View.GONE);
+        navigationView.findViewById(R.id.navigation_analytics).setVisibility(View.GONE);
+        navigationView.findViewById(R.id.navigation_offline).setVisibility(View.VISIBLE);
+        navigationView.findViewById(R.id.navigation_curriculum).setVisibility(View.VISIBLE);
+        navigationView.findViewById(R.id.navigation_scheduled_tests).setVisibility(View.VISIBLE);
+        navigationView.findViewById(R.id.navigation_mock_tests).setVisibility(View.VISIBLE);
+        navigationView.findViewById(R.id.navigation_challenge_your_friends).setVisibility(View.VISIBLE);
+        navigationView.findViewById(R.id.navigation_forum).setVisibility(View.VISIBLE);
+        navigationView.findViewById(R.id.navigation_smart_class).setVisibility(View.VISIBLE);
+        navigationView.findViewById(R.id.navigation_settings).setVisibility(View.VISIBLE);
+        navigationView.findViewById(R.id.navigation_logout).setVisibility(View.VISIBLE);
     }
 
     private void setNavigationClickListeners() {
@@ -788,6 +841,17 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             }
         });
 
+        navigationView.findViewById(R.id.navigation_test_series).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isCourseEnded(selectedCourse)) {
+                    showToast("Please Select different Course");
+                    return;
+                }
+                loadStudyCenterScreen();
+            }
+        });
+
         navigationView.findViewById(R.id.navigation_analytics).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -799,6 +863,54 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     startActivity(new Intent(AbstractBaseActivity.this, NewAnalyticsActivity.class));
                 } else {
                     showToast("Analytics requires network connection");
+                }
+                drawerLayout.closeDrawers();
+            }
+        });
+
+        navigationView.findViewById(R.id.navigation_recommended_reading).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isCourseEnded(selectedCourse)) {
+                    showToast("Please Select different Course");
+                    return;
+                }
+                if (SystemUtils.isNetworkConnected(AbstractBaseActivity.this)) {
+                    loadRecommendedReading();
+                } else {
+                    showToast("Recommended Reading requires network connection");
+                }
+                drawerLayout.closeDrawers();
+            }
+        });
+
+        navigationView.findViewById(R.id.navigation_progress_report).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isCourseEnded(selectedCourse)) {
+                    showToast("Please Select different Course");
+                    return;
+                }
+                if (SystemUtils.isNetworkConnected(AbstractBaseActivity.this)) {
+                    loadProgressReport();
+                } else {
+                    showToast("Progress Report requires network connection");
+                }
+                drawerLayout.closeDrawers();
+            }
+        });
+
+        navigationView.findViewById(R.id.navigation_time_management).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isCourseEnded(selectedCourse)) {
+                    showToast("Please Select different Course");
+                    return;
+                }
+                if (SystemUtils.isNetworkConnected(AbstractBaseActivity.this)) {
+                    loadTimeManagement();
+                } else {
+                    showToast("Time Management requires network connection");
                 }
                 drawerLayout.closeDrawers();
             }
@@ -916,8 +1028,11 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     protected void loadStudyCenterScreen() {
-        Intent intent = new Intent(AbstractBaseActivity.this, StudyCenterActivity.class);
-        startActivity(intent);
+        if(selectedCourse.isTestSeries()) {
+            startActivity(new Intent(this, TestSeriesActivity.class));
+        } else {
+            startActivity(new Intent(AbstractBaseActivity.this, StudyCenterActivity.class));
+        }
         finish();
     }
 
@@ -955,6 +1070,27 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         Intent intent = new Intent(this, WebviewActivity.class);
         intent.putExtra(LoginActivity.TITLE, "Smart Class");
         intent.putExtra(LoginActivity.URL, WebUrls.getSmartClassUrl());
+        startActivity(intent);
+    }
+
+    private void loadRecommendedReading() {
+        Intent intent = new Intent(this, WebviewActivity.class);
+        intent.putExtra(LoginActivity.TITLE, "Recommended Reading");
+        intent.putExtra(LoginActivity.URL, WebUrls.getRecommendedReadingUrl(getSelectedCourseId()));
+        startActivity(intent);
+    }
+
+    private void loadProgressReport() {
+        Intent intent = new Intent(this, WebviewActivity.class);
+        intent.putExtra(LoginActivity.TITLE, "Progress Report");
+        intent.putExtra(LoginActivity.URL, WebUrls.getProgressReportUrl(getSelectedCourseId()));
+        startActivity(intent);
+    }
+
+    private void loadTimeManagement() {
+        Intent intent = new Intent(this, WebviewActivity.class);
+        intent.putExtra(LoginActivity.TITLE, "Time Management");
+        intent.putExtra(LoginActivity.URL, WebUrls.getTimeManagementUrl(getSelectedCourseId()));
         startActivity(intent);
     }
 
@@ -1334,13 +1470,21 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     finish();
                 }
             }
+            if(course.isTestSeries()) {
+                loadTestSeriesNavigationOptions();
+            } else {
+                loadGeneralNavigationOptions();
+            }
         } else {
             return;
         }
     }
 
-    protected void getContentIndex(String courseId, String studentId) {
-        ApiManager.getInstance(this).getContentIndex(courseId, studentId,
+    protected void getContentIndex(Course course, String studentId) {
+        if(course == null || course.courseId == null || course.isTestSeries()) {
+            return;
+        }
+        ApiManager.getInstance(this).getContentIndex(course.courseId.toString(), studentId,
                 new ApiCallback<List<ContentIndex>>(this) {
                     @Override
                     public void failure(CorsaliteError error) {

@@ -550,6 +550,10 @@ public class ContentReadingActivity extends AbstractBaseActivity {
     }
 
     @Override
+    protected void getContentIndex(Course course, String studentId) {
+        // Do nothing
+    }
+
     protected void getContentIndex(String courseId, String studentId) {
         if (mViewSwitcher.indexOfChild(mViewSwitcher.getCurrentView()) == 1) {
             mViewSwitcher.showPrevious();

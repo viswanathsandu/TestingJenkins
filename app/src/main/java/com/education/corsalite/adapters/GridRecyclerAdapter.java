@@ -28,15 +28,13 @@ import com.education.corsalite.activities.SaveForOfflineActivity;
 import com.education.corsalite.activities.StudyCenterActivity;
 import com.education.corsalite.activities.TestStartActivity;
 import com.education.corsalite.enums.Tests;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.models.responsemodels.Chapter;
 import com.education.corsalite.services.ContentDownloadService;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.Data;
-import com.education.corsalite.gson.Gson;
 import com.education.corsalite.utils.SystemUtils;
 import com.github.lzyzsd.circleprogress.DonutProgress;
-
-import com.localytics.android.Localytics;
 
 import java.util.List;
 
@@ -230,7 +228,6 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
             exerciseIntent.putExtra("selection", 1);
             studyCenterActivity.startActivity(exerciseIntent);
         }
-
     }
 
     private void startNotesActivity(Chapter chapter) {

@@ -96,7 +96,12 @@ public class StudyCenterActivity extends AbstractBaseActivity {
     @Override
     public void onEvent(Course course) {
         super.onEvent(course);
-        getStudyCentreData(course.courseId.toString());
+        if(course.isTestSeries()) {
+            startActivity(new Intent(this, TestSeriesActivity.class));
+            finish();
+        } else {
+            getStudyCentreData(course.courseId.toString());
+        }
     }
 
     private void setUpViews(RelativeLayout myView) {

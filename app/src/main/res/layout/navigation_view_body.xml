@@ -35,6 +35,12 @@
                 style="@style/navigation_drawer_element" />
 
             <TextView
+                android:id="@+id/navigation_test_series"
+                android:drawableLeft="@drawable/ico_scheduled_tests"
+                android:text="Test Series"
+                style="@style/navigation_drawer_element" />
+
+            <TextView
                 android:id="@+id/navigation_analytics"
                 android:drawableLeft="@drawable/ico_sidemenu_analytics"
                 android:text="Analytics"
@@ -44,6 +50,24 @@
                 android:id="@+id/navigation_offline"
                 android:drawableLeft="@drawable/ico_sidemenu_offline"
                 android:text="Offline"
+                style="@style/navigation_drawer_element" />
+
+            <TextView
+                android:id="@+id/navigation_recommended_reading"
+                android:drawableLeft="@drawable/ico_sidemenu_studycenter"
+                android:text="Recommended Reading"
+                style="@style/navigation_drawer_element" />
+
+            <TextView
+                android:id="@+id/navigation_progress_report"
+                android:drawableLeft="@drawable/ico_sidemenu_analytics"
+                android:text="Progress Report"
+                style="@style/navigation_drawer_element" />
+
+            <TextView
+                android:id="@+id/navigation_time_management"
+                android:drawableLeft="@drawable/ico_sidemenu_calendar"
+                android:text="Time Management"
                 style="@style/navigation_drawer_element" />
 
             <TextView

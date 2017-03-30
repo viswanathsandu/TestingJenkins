@@ -93,7 +93,7 @@ public class WelcomeActivity extends AbstractBaseActivity implements View.OnClic
         } else {
             courseEndedTxt.setVisibility(View.GONE);
         }
-        getContentIndex(getSelectedCourseId(), LoginUserCache.getInstance().getStudentId());
+        getContentIndex(getSelectedCourse(), LoginUserCache.getInstance().getStudentId());
         // Start download service if its not started
         if (loadContent) {
             stopService(new Intent(getApplicationContext(), ContentDownloadService.class));

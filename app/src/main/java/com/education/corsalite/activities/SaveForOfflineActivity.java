@@ -31,6 +31,7 @@ import com.education.corsalite.models.db.ExerciseOfflineModel;
 import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
+import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.services.ContentDownloadService;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.L;
@@ -273,6 +274,10 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
     }
 
     @Override
+    protected void getContentIndex(Course course, String studentId) {
+        // Do nothing
+    }
+
     protected void getContentIndex(String courseId, String studentId) {
         ApiManager.getInstance(this).getContentIndex(courseId, studentId,
                 new ApiCallback<List<ContentIndex>>(this) {

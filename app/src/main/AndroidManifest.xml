@@ -246,6 +246,7 @@
             android:name=".activities.DataSyncActivity"
             android:launchMode="singleTop"
             android:theme="@style/TransparentTheme" />
+        <activity android:name=".activities.TestSeriesActivity"></activity>
     </application>
 
 </manifest>

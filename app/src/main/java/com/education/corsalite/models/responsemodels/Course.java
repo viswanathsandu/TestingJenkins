@@ -3,6 +3,7 @@ package com.education.corsalite.models.responsemodels;
 import android.text.TextUtils;
 
 import com.google.gson.annotations.SerializedName;
+import com.orm.dsl.Ignore;
 
 import java.io.Serializable;
 
@@ -21,6 +22,9 @@ public class Course extends BaseModel  implements Serializable {
     public String endDate;
     @SerializedName("IsCourseEnded")
     public String isCourseEnded;
+    @Ignore
+    @SerializedName("isTestSeries")
+    public String testSeriesId;
 
     public boolean isDefault() {
         return (!TextUtils.isEmpty(isDefault) && isDefault.equals("Y"));
@@ -28,6 +32,10 @@ public class Course extends BaseModel  implements Serializable {
 
     public boolean isEnded() {
         return (!TextUtils.isEmpty(isCourseEnded) && isCourseEnded.equalsIgnoreCase("Y"));
+    }
+
+    public boolean isTestSeries() {
+        return !TextUtils.isEmpty(testSeriesId) && !testSeriesId.equalsIgnoreCase("0");
     }
 
     @Override

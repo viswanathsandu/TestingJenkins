@@ -26,6 +26,7 @@ import com.education.corsalite.models.requestmodels.ClientEntityConfigRequest;
 import com.education.corsalite.models.requestmodels.CreateChallengeRequest;
 import com.education.corsalite.models.requestmodels.ForumLikeRequest;
 import com.education.corsalite.models.requestmodels.ForumModel;
+import com.education.corsalite.models.requestmodels.TestSeriesRequest;
 import com.education.corsalite.models.responsemodels.BaseResponseModel;
 import com.education.corsalite.models.responsemodels.ChallengeCompleteResponseModel;
 import com.education.corsalite.models.responsemodels.ChallengeStartResponseModel;
@@ -67,6 +68,7 @@ import com.education.corsalite.models.responsemodels.TestAnswerPaperResponse;
 import com.education.corsalite.models.responsemodels.TestCoverage;
 import com.education.corsalite.models.responsemodels.TestPaperIndex;
 import com.education.corsalite.models.responsemodels.TestQuestionPaperResponse;
+import com.education.corsalite.models.responsemodels.TestSubject;
 import com.education.corsalite.models.responsemodels.UpdateExamDetailsResponse;
 import com.education.corsalite.models.responsemodels.UsageAnalysis;
 import com.education.corsalite.models.responsemodels.UserEventsResponse;
@@ -606,7 +608,6 @@ public class ApiManager {
     }
 
     public void getClientEntityAppConfig(String userId, String entityId, ApiCallback<ClientEntityAppConfig> callback) {
-        // TODO : uncomment it after testing
         apiCacheHolder.appentityconfigRequest = new AppEntityConfigRequest(userId, entityId);
         if (isApiOnline()) {
             ApiClientService.get().getClientEntityAppConfig(userId, entityId, callback);
@@ -624,7 +625,14 @@ public class ApiManager {
     public void postClientEntityAppConfig(String userId, String deviceId, ApiCallback<CommonResponseModel> callback) {
         if(isApiOnline()) {
             ClientEntityConfigRequest request = new ClientEntityConfigRequest(userId, deviceId);
-            ApiClientService.get().postClientEntityAppConfig(new TypedString(("Update=" + Gson.get().toJson(request))), callback);
+            ApiClientService.get().postClientEntityAppConfig(new TypedString("Update=" + Gson.get().toJson(request)), callback);
+        }
+    }
+
+    public void getTestSeries(String idStudent, String idCourse, String idCourseInstance, ApiCallback<List<TestSubject>> callback) {
+        if(isApiOnline()) {
+            TestSeriesRequest request = new TestSeriesRequest(idStudent, idCourse, idCourseInstance);
+            ApiClientService.get().getTestSeries(new TypedString("Update=" + Gson.get().toJson(request)), callback);
         }
     }
 }
