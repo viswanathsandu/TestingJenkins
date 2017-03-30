@@ -6,17 +6,17 @@ package com.education.corsalite.models.responsemodels;
 
 public class TestChapter {
 
-    public String TimeTaken;
+    public Double TimeTaken;
 
     public String NumberOfQuestions;
 
-    public String TotalTestedMarks;
+    public Integer TotalTestedMarks;
 
     public String idCourseSubjectChapter;
 
     public String TestCountTaken;
 
-    public String EarnedMarks;
+    public Integer EarnedMarks;
 
     public String ChapterName;
 
@@ -24,5 +24,5 @@ public class TestChapter {
 
     public String TestType;
 
-    public String AvailableTests;
+    public Integer AvailableTests;
 }

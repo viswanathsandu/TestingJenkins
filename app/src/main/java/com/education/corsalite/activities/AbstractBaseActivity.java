@@ -50,7 +50,6 @@ import com.education.corsalite.event.ScheduledTestStartEvent;
 import com.education.corsalite.event.TakingTestEvent;
 import com.education.corsalite.event.TimeChangedEvent;
 import com.education.corsalite.event.UpdateUserEvents;
-import com.education.corsalite.fragments.ChallengeTestRequestDialogFragment;
 import com.education.corsalite.fragments.MockTestDialog;
 import com.education.corsalite.fragments.ScheduledTestDialog;
 import com.education.corsalite.gson.Gson;
@@ -134,8 +133,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     public List<FriendsData.Friend> selectedFriends = new ArrayList<>();
 
-    ChallengeTestRequestDialogFragment challengeTestRequestDialogFragment;
-
     public static void setSharedExamModels(List<ExamModel> examModels) {
         sharedExamModels = examModels;
     }
@@ -176,12 +173,12 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         setContentView(R.layout.navigation_drawer_layout);
         FireBaseHelper.initFireBase(this);
         frameLayout = (FrameLayout) findViewById(R.id.activity_layout_container);
-        initNavigationDrawer();
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
                 .setDefaultFontPath(getString(R.string.roboto_medium))
                 .setFontAttrId(R.attr.fontPath)
                 .build());
         initActivity();
+        initNavigationDrawer();
         logScreen(this.getClass().getSimpleName());
     }
 
@@ -393,12 +390,16 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     private boolean isEntityAppUpgradeAlertShown(ClientEntityAppConfig config) {
-        if(config != null && config.isUpdateAvailable() && !TextUtils.isEmpty(config.getAppVersionNumber())) {
-            int latestAppVersion = Integer.parseInt(config.getAppVersionNumber());
-            if(latestAppVersion > BuildConfig.VERSION_CODE) {
-                showUpdateAlert(config.isForceUpgradeEnabled(), config.isAppFromPlayStore(), config.getUpdateUrl());
-                return true;
+        try {
+            if (config != null && config.isUpdateAvailable() && !TextUtils.isEmpty(config.getAppVersionNumber())) {
+                int latestAppVersion = Integer.parseInt(config.getAppVersionNumber());
+                if (latestAppVersion > BuildConfig.VERSION_CODE) {
+                    showUpdateAlert(config.isForceUpgradeEnabled(), config.isAppFromPlayStore(), config.getUpdateUrl());
+                    return true;
+                }
             }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
         }
         return false;
     }
@@ -739,10 +740,10 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             navigationView.findViewById(R.id.navigation_exam_history).setVisibility(View.VISIBLE);
         }
 
-        if(selectedCourse == null || !selectedCourse.isTestSeries()) {
-            loadGeneralNavigationOptions();
-        } else {
+        if(selectedCourse != null && selectedCourse.isTestSeries()) {
             loadTestSeriesNavigationOptions();
+        } else {
+            loadGeneralNavigationOptions();
         }
     }
 
@@ -1254,7 +1255,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     private void loadCoursesList() {
         ApiManager.getInstance(this).getCourses(LoginUserCache.getInstance().getStudentId(),
-                !(this instanceof WelcomeActivity || this instanceof StudyCenterActivity),
+                !(this instanceof WelcomeActivity || this instanceof StudyCenterActivity || this instanceof TestSeriesActivity),
                 new ApiCallback<List<Course>>(this) {
                     @Override
                     public void failure(CorsaliteError error) {
@@ -1459,21 +1460,22 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     // this method will be overridden by the classes that subscribes from event bus
     public void onEvent(Course course) {
-        if (course != null && (selectedCourse == null || (selectedCourse.courseId != course.courseId))) {
+        if(selectedCourse == null) {
             selectedCourse = course;
-            if (isCourseEnded(course)) {
-                if (!(this instanceof WelcomeActivity)) {
-                    Intent newIntent = new Intent(this, WelcomeActivity.class);
-                    newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(newIntent);
-                    finish();
-                }
-            }
+        }
+        if (selectedCourse != null && selectedCourse.courseId != course.courseId) {
             if(course.isTestSeries()) {
                 loadTestSeriesNavigationOptions();
             } else {
                 loadGeneralNavigationOptions();
+            }
+            if (isCourseEnded(course) && !(this instanceof WelcomeActivity)) {
+                Intent newIntent = new Intent(this, WelcomeActivity.class);
+                newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(newIntent);
+                finish();
+                return;
             }
         } else {
             return;

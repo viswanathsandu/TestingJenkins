@@ -8,19 +8,19 @@ import java.util.List;
 
 public class TestSubject
 {
-    public String TimeTaken;
+    public Double TimeTaken;
 
     public String subjectName;
 
     public String idCourseSubject;
 
-    public String TotalTestedMarks;
+    public Integer TotalTestedMarks;
 
     public List<TestChapter> SubjectChapters;
 
-    public String TestCountTaken;
+    public Integer TestCountTaken;
 
-    public String EarnedMarks;
+    public Integer EarnedMarks;
 
     public String ScoreAmber;
 

@@ -113,7 +113,7 @@ public class TestSeriesActivity extends AbstractBaseActivity implements iTestSer
                 mSubject = subject;
                 mSelectedSubjectTxt = view;
                 mSelectedSubjectTxt.setSelected(true);
-                showData(subject.SubjectChapters);
+                showData(subject);
             }
         });
     }
@@ -140,7 +140,7 @@ public class TestSeriesActivity extends AbstractBaseActivity implements iTestSer
     private void loadTestSeries() {
         showProgress();
         ApiManager.getInstance(this).getTestSeries(LoginUserCache.getInstance().getStudentId(),
-                getSelectedCourseId(), "237",
+                getSelectedCourseId(), getSelectedCourse().courseInstanceId,
                 new ApiCallback<List<TestSubject>>(this) {
                     @Override
                     public void failure(CorsaliteError error) {
@@ -159,8 +159,8 @@ public class TestSeriesActivity extends AbstractBaseActivity implements iTestSer
                 });
     }
 
-    private void showData(List<TestChapter> chapters) {
-        mAdapter.update(chapters);
+    private void showData(TestSubject subject) {
+        mAdapter.update(subject);
         recyclerView.scrollToPosition(0);
     }
 

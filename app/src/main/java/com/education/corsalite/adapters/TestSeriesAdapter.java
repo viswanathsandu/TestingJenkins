@@ -11,51 +11,100 @@ import android.widget.TextView;
 import com.education.corsalite.R;
 import com.education.corsalite.listener.iTestSeriesClickListener;
 import com.education.corsalite.models.responsemodels.TestChapter;
+import com.education.corsalite.models.responsemodels.TestSubject;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by vissu on 3/28/17.
  */
 
-public class TestSeriesAdapter extends RecyclerView.Adapter<TestSeriesAdapter.TestViewHolder> {
+public class TestSeriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<TestChapter> mChapters;
+    private TestSubject mSubject;
     private iTestSeriesClickListener mListener;
+
+    private static final int HEADER_TYPE = 0;
+    private static final int ITEM_TYPE = 1;
 
     public TestSeriesAdapter(iTestSeriesClickListener listener) {
         super();
-        mChapters = new ArrayList<>();
         this.mListener = listener;
     }
 
-    public void update(List<TestChapter> chapters) {
-        if(mChapters != null) {
-            mChapters.clear();;
-            mChapters.addAll(chapters);
-        } else {
-            mChapters = new ArrayList<>();
-        }
+    public void update(TestSubject subject) {
+        mSubject = subject;
         notifyDataSetChanged();
     }
 
     @Override
-    public TestViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.test_series_item, parent, false);
-        TestViewHolder viewHolder = new TestViewHolder(v);
-        return viewHolder;
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        switch (viewType) {
+            case HEADER_TYPE:
+                View headerView = LayoutInflater.from(parent.getContext()).inflate(R.layout.test_series_header_item, parent, false);
+                TestHeaderViewHolder headerViewHolder = new TestHeaderViewHolder(headerView);
+                return headerViewHolder;
+            case ITEM_TYPE:
+                View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.test_series_item, parent, false);
+                TestViewHolder viewHolder = new TestViewHolder(v);
+                return viewHolder;
+        }
+        return null;
     }
 
     @Override
-    public void onBindViewHolder(TestViewHolder holder, int position) {
-        holder.bindData(mListener, mChapters.get(position));
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        switch (getItemViewType(position)) {
+            case HEADER_TYPE:
+                ((TestHeaderViewHolder)holder).bindData(mListener, mSubject);
+                break;
+            case ITEM_TYPE:
+                ((TestViewHolder)holder).bindData(mListener, mSubject.SubjectChapters.get(position));
+                break;
+        }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position == 0 ? HEADER_TYPE : ITEM_TYPE;
     }
 
     @Override
     public int getItemCount() {
-        return mChapters == null ? 0 : mChapters.size();
+        if(mSubject == null || mSubject.SubjectChapters == null) {
+            return 0;
+        } else {
+            return mSubject.SubjectChapters.size() + 1;
+        }
+    }
+
+    public static class TestHeaderViewHolder extends RecyclerView.ViewHolder {
+
+        TextView percentageTxt;
+        TextView accuracyTxt;
+        TextView marksTxt;
+        TextView speedTxt;
+
+        public TestHeaderViewHolder(View view) {
+            super(view);
+            percentageTxt = (TextView) view.findViewById(R.id.percentage_txt);
+            marksTxt = (TextView) view.findViewById(R.id.marks_txt);
+            speedTxt = (TextView) view.findViewById(R.id.speed_txt);
+            accuracyTxt = (TextView) view.findViewById(R.id.accuracy_txt);
+        }
+
+        public void bindData(final iTestSeriesClickListener listener, final TestSubject subject) {
+            if (subject != null) {
+
+                marksTxt.setText(subject.EarnedMarks + "/" + subject.TotalTestedMarks);
+                double timeTakenInMins = subject.TimeTaken;
+                double speed = subject.EarnedMarks / timeTakenInMins;
+                DecimalFormat df = new DecimalFormat("####0.00");
+                speedTxt.setText(df.format(speed));
+                double accuracy = subject.EarnedMarks / subject.TotalTestedMarks * 100;
+                accuracyTxt.setText(Double.toString(accuracy));
+            }
+        }
     }
 
     public static class TestViewHolder extends RecyclerView.ViewHolder {
@@ -80,36 +129,40 @@ public class TestSeriesAdapter extends RecyclerView.Adapter<TestSeriesAdapter.Te
         }
 
         public void bindData(final iTestSeriesClickListener listener, final TestChapter chapter) {
-            if(chapter != null) {
-                if(!TextUtils.isEmpty(chapter.TestType)) {
+            if (chapter != null) {
+                if (!TextUtils.isEmpty(chapter.TestType)) {
                     if (chapter.TestType.equalsIgnoreCase("Chapter")) {
                         takeTestBTn.setText("Take Test");
                     } else if (chapter.TestType.toLowerCase().contains("mock")) {
                         takeTestBTn.setText("Mock Test");
                     }
                 }
-                takeTestBTn.setEnabled(!TextUtils.isEmpty(chapter.AvailableTests) && !chapter.AvailableTests.equalsIgnoreCase("0"));
-                if(takeTestBTn.isEnabled()) {
+                takeTestBTn.setEnabled(chapter.AvailableTests != 0);
+                if (takeTestBTn.isEnabled()) {
                     takeTestBTn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            if(takeTestBTn.getText().toString().equalsIgnoreCase("Take Test")) {
+                            if (takeTestBTn.getText().toString().equalsIgnoreCase("Take Test")) {
                                 listener.onTakeTest(chapter);
-                            } else if(takeTestBTn.getText().toString().equalsIgnoreCase("Mock Test")) {
+                            } else if (takeTestBTn.getText().toString().equalsIgnoreCase("Mock Test")) {
                                 listener.onMockTest(chapter);
                             }
                         }
                     });
                 }
                 titleTxt.setText(chapter.ChapterName);
-                remainingTxt.setText(chapter.AvailableTests + " remaining");
+                int allowedTests = Integer.parseInt(chapter.TestCountAllowed);
+                int testsTaken = Integer.parseInt(chapter.TestCountTaken);
+                int remainingTests = allowedTests - testsTaken;
+                remainingTxt.setText(remainingTests + " of " + allowedTests + " remaining");
                 maxQuestionsTxt.setText(chapter.NumberOfQuestions);
                 marksTxt.setText(chapter.EarnedMarks + "/" + chapter.TotalTestedMarks);
-                double timeTakenInMins = Double.parseDouble(chapter.TimeTaken);
-                double earnedMarks = Double.parseDouble(chapter.EarnedMarks);
-                double speed = earnedMarks / timeTakenInMins;
+                double timeTakenInMins = chapter.TimeTaken;
+                double speed = chapter.EarnedMarks / timeTakenInMins;
                 DecimalFormat df = new DecimalFormat("####0.00");
                 speedTxt.setText(df.format(speed));
+                double accuracy = chapter.EarnedMarks / chapter.TotalTestedMarks * 100;
+                accuracyTxt.setText(Double.toString(accuracy));
             }
         }
     }
