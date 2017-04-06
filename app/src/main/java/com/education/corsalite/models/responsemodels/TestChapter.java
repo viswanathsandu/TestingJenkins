@@ -25,4 +25,6 @@ public class TestChapter {
     public String TestType;
 
     public Integer AvailableTests;
+
+    public String idExamTemplate;
 }

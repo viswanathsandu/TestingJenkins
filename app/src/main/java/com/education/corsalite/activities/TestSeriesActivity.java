@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -20,9 +21,11 @@ import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.enums.Tests;
 import com.education.corsalite.gson.Gson;
 import com.education.corsalite.listener.iTestSeriesClickListener;
+import com.education.corsalite.models.db.MockTest;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.TestChapter;
+import com.education.corsalite.models.responsemodels.TestSeriesMockData;
 import com.education.corsalite.models.responsemodels.TestSeriesResponse;
 import com.education.corsalite.models.responsemodels.TestSubject;
 import com.education.corsalite.utils.Constants;
@@ -45,6 +48,7 @@ public class TestSeriesActivity extends AbstractBaseActivity implements iTestSer
     private List<View> mSubjectViews = new ArrayList<>();
     private View mSelectedSubjectTxt;
     private TestSubject mSubject;
+    private List<TestSeriesMockData> mMockData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,6 +161,7 @@ public class TestSeriesActivity extends AbstractBaseActivity implements iTestSer
                         closeProgress();
                         if(testSeriesResponse != null) {
                             mSubjects = testSeriesResponse.getSubjectList();
+                            mMockData = testSeriesResponse.mockTests;
                             addSubjectsAndCreateViews();
                         }
                     }
@@ -191,6 +196,28 @@ public class TestSeriesActivity extends AbstractBaseActivity implements iTestSer
 
     @Override
     public void onMockTest(TestChapter chapter) {
-
+        if(TextUtils.isEmpty(chapter.idExamTemplate)) {
+            return;
+        }
+        TestSeriesMockData mock = null;
+        if(mMockData != null && !mMockData.isEmpty()) {
+            for (TestSeriesMockData mockItem : mMockData) {
+                if(mockItem.idExamTemplate != null && mockItem.idExamTemplate.equalsIgnoreCase(chapter.idExamTemplate)) {
+                    mock = mockItem;
+                    break;
+                }
+            }
+        }
+        if(mock == null) {
+            return;
+        }
+        MockTest mockTest = new MockTest();
+        mockTest.examTemplateId = mock.idExamTemplate;
+        mockTest.displayName = mock.testName;
+        mockTest.subjectId = mock.subjectId;
+        mockTest.subjectName = mock.testName;
+        List<MockTest> tests = new ArrayList<>();
+        tests.add(mockTest);
+        showMockTestsDialog(tests);
     }
 }

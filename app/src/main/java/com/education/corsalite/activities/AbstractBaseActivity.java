@@ -1052,6 +1052,12 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     protected void showMockTestsDialog(List<MockTest> mockTests) {
         if (SystemUtils.isNetworkConnected(this)) {
             MockTestDialog dialog = new MockTestDialog();
+            if(mockTests != null) {
+                String mockTestsGson = Gson.get().toJson(mockTests);
+                Bundle bundle = new Bundle();
+                bundle.putString("mock_tests", mockTestsGson);
+                dialog.setArguments(bundle);
+            }
             dialog.show(getFragmentManager(), "MockTestsListDialog");
         } else {
             Intent exerciseIntent = new Intent(this, OfflineActivity.class);
