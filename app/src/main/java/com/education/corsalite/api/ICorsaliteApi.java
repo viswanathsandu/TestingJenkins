@@ -43,6 +43,7 @@ import com.education.corsalite.models.responsemodels.TestAnswerPaperResponse;
 import com.education.corsalite.models.responsemodels.TestCoverage;
 import com.education.corsalite.models.responsemodels.TestPaperIndex;
 import com.education.corsalite.models.responsemodels.TestQuestionPaperResponse;
+import com.education.corsalite.models.responsemodels.TestSeriesResponse;
 import com.education.corsalite.models.responsemodels.TestSubject;
 import com.education.corsalite.models.responsemodels.UpdateExamDetailsResponse;
 import com.education.corsalite.models.responsemodels.UsageAnalysis;
@@ -335,6 +336,6 @@ public interface ICorsaliteApi {
 
     @Headers("Content-Type:application/x-www-form-urlencoded")
     @POST("/GetTestSeries")
-    void getTestSeries(@Body TypedString Update, ApiCallback<List<TestSubject>> callback);
+    void getTestSeries(@Body TypedString Update, ApiCallback<TestSeriesResponse> callback);
 
 }

@@ -12,6 +12,7 @@ import com.education.corsalite.R;
 import com.education.corsalite.listener.iTestSeriesClickListener;
 import com.education.corsalite.models.responsemodels.TestChapter;
 import com.education.corsalite.models.responsemodels.TestSubject;
+import com.education.corsalite.utils.L;
 
 import java.text.DecimalFormat;
 
@@ -56,10 +57,10 @@ public class TestSeriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         switch (getItemViewType(position)) {
             case HEADER_TYPE:
-                ((TestHeaderViewHolder)holder).bindData(mListener, mSubject);
+                ((TestHeaderViewHolder) holder).bindData(mListener, mSubject);
                 break;
             case ITEM_TYPE:
-                ((TestViewHolder)holder).bindData(mListener, mSubject.SubjectChapters.get(position));
+                ((TestViewHolder) holder).bindData(mListener, mSubject.SubjectChapters.get(position - 1));
                 break;
         }
     }
@@ -71,7 +72,7 @@ public class TestSeriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public int getItemCount() {
-        if(mSubject == null || mSubject.SubjectChapters == null) {
+        if (mSubject == null || mSubject.SubjectChapters == null) {
             return 0;
         } else {
             return mSubject.SubjectChapters.size() + 1;
@@ -129,40 +130,49 @@ public class TestSeriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
 
         public void bindData(final iTestSeriesClickListener listener, final TestChapter chapter) {
+
             if (chapter != null) {
                 if (!TextUtils.isEmpty(chapter.TestType)) {
                     if (chapter.TestType.equalsIgnoreCase("Chapter")) {
                         takeTestBTn.setText("Take Test");
+                        takeTestBTn.setEnabled(chapter.AvailableTests != null && chapter.AvailableTests != 0);
                     } else if (chapter.TestType.toLowerCase().contains("mock")) {
                         takeTestBTn.setText("Mock Test");
+                        takeTestBTn.setEnabled(true);
                     }
                 }
-                takeTestBTn.setEnabled(chapter.AvailableTests != 0);
-                if (takeTestBTn.isEnabled()) {
-                    takeTestBTn.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if (takeTestBTn.getText().toString().equalsIgnoreCase("Take Test")) {
-                                listener.onTakeTest(chapter);
-                            } else if (takeTestBTn.getText().toString().equalsIgnoreCase("Mock Test")) {
-                                listener.onMockTest(chapter);
+                try {
+                    if (takeTestBTn.isEnabled()) {
+                        takeTestBTn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (takeTestBTn.getText().toString().equalsIgnoreCase("Take Test")) {
+                                    listener.onTakeTest(chapter);
+                                } else if (takeTestBTn.getText().toString().equalsIgnoreCase("Mock Test")) {
+                                    listener.onMockTest(chapter);
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
+                    titleTxt.setText(chapter.ChapterName);
+                    int allowedTests = Integer.parseInt(chapter.TestCountAllowed);
+                    int testsTaken = Integer.parseInt(chapter.TestCountTaken);
+                    int remainingTests = allowedTests - testsTaken;
+                    remainingTxt.setText(remainingTests + " of " + allowedTests + " remaining");
+                    maxQuestionsTxt.setText(chapter.NumberOfQuestions);
+                    marksTxt.setText(chapter.EarnedMarks + "/" + chapter.TotalTestedMarks);
+                    double timeTakenInMins = chapter.TimeTaken;
+                    double speed = chapter.EarnedMarks / timeTakenInMins;
+                    DecimalFormat df = new DecimalFormat("####0.00");
+                    speedTxt.setText(df.format(speed));
+                    double accuracy = 0;
+                    if (chapter.TotalTestedMarks > 0) {
+                        accuracy = chapter.EarnedMarks / chapter.TotalTestedMarks * 100;
+                    }
+                    accuracyTxt.setText(Double.toString(accuracy));
+                } catch (Exception e) {
+                    L.error(e.getMessage(), e);
                 }
-                titleTxt.setText(chapter.ChapterName);
-                int allowedTests = Integer.parseInt(chapter.TestCountAllowed);
-                int testsTaken = Integer.parseInt(chapter.TestCountTaken);
-                int remainingTests = allowedTests - testsTaken;
-                remainingTxt.setText(remainingTests + " of " + allowedTests + " remaining");
-                maxQuestionsTxt.setText(chapter.NumberOfQuestions);
-                marksTxt.setText(chapter.EarnedMarks + "/" + chapter.TotalTestedMarks);
-                double timeTakenInMins = chapter.TimeTaken;
-                double speed = chapter.EarnedMarks / timeTakenInMins;
-                DecimalFormat df = new DecimalFormat("####0.00");
-                speedTxt.setText(df.format(speed));
-                double accuracy = chapter.EarnedMarks / chapter.TotalTestedMarks * 100;
-                accuracyTxt.setText(Double.toString(accuracy));
             }
         }
     }

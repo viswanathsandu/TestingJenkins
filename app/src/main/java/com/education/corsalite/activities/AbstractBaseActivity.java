@@ -56,6 +56,7 @@ import com.education.corsalite.gson.Gson;
 import com.education.corsalite.helpers.WebSocketHelper;
 import com.education.corsalite.models.ContentModel;
 import com.education.corsalite.models.db.AppConfig;
+import com.education.corsalite.models.db.MockTest;
 import com.education.corsalite.models.db.OfflineTestObjectModel;
 import com.education.corsalite.models.db.ScheduledTestList;
 import com.education.corsalite.models.db.SyncModel;
@@ -1045,6 +1046,10 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     protected void showMockTestsDialog() {
+        showMockTestsDialog(null);
+    }
+
+    protected void showMockTestsDialog(List<MockTest> mockTests) {
         if (SystemUtils.isNetworkConnected(this)) {
             MockTestDialog dialog = new MockTestDialog();
             dialog.show(getFragmentManager(), "MockTestsListDialog");
@@ -1464,18 +1469,17 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             selectedCourse = course;
         }
         if (selectedCourse != null && selectedCourse.courseId != course.courseId) {
-            if(course.isTestSeries()) {
-                loadTestSeriesNavigationOptions();
-            } else {
-                loadGeneralNavigationOptions();
-            }
+            selectedCourse = course;
             if (isCourseEnded(course) && !(this instanceof WelcomeActivity)) {
                 Intent newIntent = new Intent(this, WelcomeActivity.class);
                 newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(newIntent);
                 finish();
-                return;
+            } else if(course.isTestSeries()) {
+                loadTestSeriesNavigationOptions();
+            } else {
+                loadGeneralNavigationOptions();
             }
         } else {
             return;

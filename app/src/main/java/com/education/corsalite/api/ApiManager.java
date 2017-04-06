@@ -68,6 +68,7 @@ import com.education.corsalite.models.responsemodels.TestAnswerPaperResponse;
 import com.education.corsalite.models.responsemodels.TestCoverage;
 import com.education.corsalite.models.responsemodels.TestPaperIndex;
 import com.education.corsalite.models.responsemodels.TestQuestionPaperResponse;
+import com.education.corsalite.models.responsemodels.TestSeriesResponse;
 import com.education.corsalite.models.responsemodels.TestSubject;
 import com.education.corsalite.models.responsemodels.UpdateExamDetailsResponse;
 import com.education.corsalite.models.responsemodels.UsageAnalysis;
@@ -629,7 +630,7 @@ public class ApiManager {
         }
     }
 
-    public void getTestSeries(String idStudent, String idCourse, String idCourseInstance, ApiCallback<List<TestSubject>> callback) {
+    public void getTestSeries(String idStudent, String idCourse, String idCourseInstance, ApiCallback<TestSeriesResponse> callback) {
         if(isApiOnline()) {
             TestSeriesRequest request = new TestSeriesRequest(idStudent, idCourse, idCourseInstance);
             ApiClientService.get().getTestSeries(new TypedString("Update=" + Gson.get().toJson(request)), callback);

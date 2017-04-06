@@ -17,13 +17,13 @@ import com.education.corsalite.R;
 import com.education.corsalite.adapters.TestSeriesAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
-import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.enums.Tests;
 import com.education.corsalite.gson.Gson;
 import com.education.corsalite.listener.iTestSeriesClickListener;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.TestChapter;
+import com.education.corsalite.models.responsemodels.TestSeriesResponse;
 import com.education.corsalite.models.responsemodels.TestSubject;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.L;
@@ -91,6 +91,7 @@ public class TestSeriesActivity extends AbstractBaseActivity implements iTestSer
 
     private View getSubjectView(TestSubject subject) {
         View v = getView();
+        v.findViewById(R.id.arrow_img).setVisibility(View.GONE);
         v.findViewById(R.id.subjectLayout).setBackgroundDrawable(getSubjectColor(subject));
         TextView tv = (TextView) v.findViewById(R.id.subject);
         tv.setTypeface(Typeface.createFromAsset(getAssets(), getString(R.string.roboto_regular)));
@@ -139,9 +140,10 @@ public class TestSeriesActivity extends AbstractBaseActivity implements iTestSer
 
     private void loadTestSeries() {
         showProgress();
-        ApiManager.getInstance(this).getTestSeries(LoginUserCache.getInstance().getStudentId(),
-                getSelectedCourseId(), getSelectedCourse().courseInstanceId,
-                new ApiCallback<List<TestSubject>>(this) {
+        ApiManager.getInstance(this).getTestSeries(/*LoginUserCache.getInstance().getStudentId(),
+                getSelectedCourseId(), getSelectedCourse().courseInstanceId*/
+                "17765", "13", "237",
+                new ApiCallback<TestSeriesResponse>(this) {
                     @Override
                     public void failure(CorsaliteError error) {
                         super.failure(error);
@@ -150,11 +152,13 @@ public class TestSeriesActivity extends AbstractBaseActivity implements iTestSer
                     }
 
                     @Override
-                    public void success(List<TestSubject> testSubjects, Response response) {
-                        super.success(testSubjects, response);
+                    public void success(TestSeriesResponse testSeriesResponse, Response response) {
+                        super.success(testSeriesResponse, response);
                         closeProgress();
-                        mSubjects = testSubjects;
-                        addSubjectsAndCreateViews();
+                        if(testSeriesResponse != null) {
+                            mSubjects = testSeriesResponse.getSubjectList();
+                            addSubjectsAndCreateViews();
+                        }
                     }
                 });
     }

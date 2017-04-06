@@ -3,11 +3,11 @@ apply plugin: 'io.fabric'
 apply plugin: 'com.google.gms.google-services'
 
 // Version naming specification xx xx x xx
-def versionCodeCorsalite = 102803
-def versionNameCorsalite = "1.2.8.3"
+def versionCodeCorsalite = 102804
+def versionNameCorsalite = "1.2.8.4"
 
-def versionCodeFGA = 5
-def versionNameFGA = "0.0.0.5"
+def versionCodeFGA = 6
+def versionNameFGA = "0.0.0.6"
 
 android {
     compileSdkVersion 24
@@ -79,7 +79,17 @@ android {
             buildConfigField 'String', 'PARENT_FOLDER', '".FGAStaging"'
         }
 
-        // This will be used occassionally
+        // These will be used occassionally
+        CorsaliteStageNewChanges {
+            applicationId "com.corsalite.androidapp.stagenewchanges"
+            // Version naming specification xx xx x xx
+            versionCode versionCodeCorsalite
+            versionName versionNameCorsalite
+            buildConfigField 'String', 'BASE_URL', '"http://staging.corsalite.com/stagenewchanges/"'
+            buildConfigField 'String', 'BASE_API_URL', '"http://staging.corsalite.com/stagenewchanges/webservices/"'
+            buildConfigField 'String', 'SOCKET_URL', '"ws://staging.corsalite.com:9300"'
+            buildConfigField 'String', 'PARENT_FOLDER', '".CorsaliteStageNewChanges"'
+        }
         CorsaliteStage {
             applicationId "com.corsalite.androidapp.stage"
             // Version naming specification xx xx x xx

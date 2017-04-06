@@ -84,7 +84,7 @@ public class ClientEntityAppConfig extends BaseResponseModel {
                     String[] data = apkFileName.split("-");
                     String[] versionDetails = data[0].split("_");
                     String versionNumber = versionDetails[versionDetails.length - 1];
-                    return versionNumber;
+                    return TextUtils.isDigitsOnly(versionNumber) ? versionNumber : "1";
                 }
             }
         } catch (Exception e) {

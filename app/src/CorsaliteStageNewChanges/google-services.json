@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "993344571741",
+    "firebase_url": "https://corsalite-stagenewchanges.firebaseio.com",
+    "project_id": "corsalite-stagenewchanges",
+    "storage_bucket": "corsalite-stagenewchanges.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:993344571741:android:b63e292203ee563d",
+        "android_client_info": {
+          "package_name": "com.corsalite.androidapp.stagenewchanges"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "993344571741-ocoink6gfvlkr7slhqk3cf0cdmc6r17p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqPovKEhASnEGKhRiY_sZS8evV2U_tJVk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

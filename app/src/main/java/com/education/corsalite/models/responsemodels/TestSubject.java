@@ -6,8 +6,7 @@ import java.util.List;
  * Created by vissu on 3/27/17.
  */
 
-public class TestSubject
-{
+public class TestSubject extends BaseModel {
     public Double TimeTaken;
 
     public String subjectName;
