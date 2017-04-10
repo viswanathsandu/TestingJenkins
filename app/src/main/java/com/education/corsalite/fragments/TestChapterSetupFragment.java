@@ -65,6 +65,7 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
     private String subjectId;
     private int levelCrossed;
     private int questionCount;
+    private Integer maxQuestionLimit;
 
     public static TestChapterSetupFragment newInstance(Bundle bundle) {
         TestChapterSetupFragment fragment = new TestChapterSetupFragment();
@@ -84,6 +85,7 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
         subjectId = mExtras.getString(Constants.SELECTED_SUBJECTID, "");
         String chapterStr = mExtras.getString("chapter");
         levelCrossed = mExtras.getInt(Constants.LEVEL_CROSSED, 0);
+        maxQuestionLimit = mExtras.getInt(Constants.QUESTIONS_COUNT, questionCount);
         if (chapterStr != null) {
             chapter = Gson.get().fromJson(chapterStr, Chapter.class);
         }
@@ -129,14 +131,15 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
                 txt.setText("Level " + level);
                 final CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkbox);
                 checkBox.setTag("Level " + level);
-                if (level.equals(levelCrossed + "")) {
+                if (Integer.parseInt(level) <= levelCrossed) {
                     checkBox.setChecked(true);
                     if (testCoverages != null) {
                         for (TestCoverage coverage : testCoverages) {
                             if (coverage.level.equalsIgnoreCase(level + "")) {
                                 questionCount += Integer.valueOf(coverage.questionCount);
-                                mNoOfQuestionsEditTxt.setFilters(new InputFilter[]{new InputFilterMinMax("1", questionCount+"")});
-                                mNoOfQuestionsEditTxt.setText(questionCount+"");
+                                int maxCount = maxQuestionLimit < questionCount ? maxQuestionLimit : questionCount;
+                                mNoOfQuestionsEditTxt.setFilters(new InputFilter[]{new InputFilterMinMax("1", maxCount+"")});
+                                mNoOfQuestionsEditTxt.setText(maxCount+"");
                                 break;
                             }
                         }
@@ -162,8 +165,9 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
                             } else {
                                 questionCount -= Integer.valueOf(testCoverage.questionCount);
                             }
-                            mNoOfQuestionsEditTxt.setFilters(new InputFilter[]{new InputFilterMinMax("1", questionCount+"")});
-                            mNoOfQuestionsEditTxt.setText(questionCount + "");
+                            int maxCount = maxQuestionLimit < questionCount ? maxQuestionLimit : questionCount;
+                            mNoOfQuestionsEditTxt.setFilters(new InputFilter[]{new InputFilterMinMax("1", maxCount+"")});
+                            mNoOfQuestionsEditTxt.setText(maxCount+ "");
                         }
                     }
                 });
@@ -198,7 +202,9 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
         if (testCoverages != null) {
             for (TestCoverage coverage : testCoverages) {
                 if (coverage.level.equalsIgnoreCase(chapterLevel + "")) {
-                    mNoOfQuestionsEditTxt.setText(coverage.questionCount);
+                    Integer count = Integer.parseInt(coverage.questionCount);
+                    int maxCount = maxQuestionLimit < count ? maxQuestionLimit : count;
+                    mNoOfQuestionsEditTxt.setText(maxCount + "");
                     break;
                 }
             }

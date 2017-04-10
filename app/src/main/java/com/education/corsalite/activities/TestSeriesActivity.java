@@ -175,7 +175,8 @@ public class TestSeriesActivity extends AbstractBaseActivity implements iTestSer
             exerciseIntent.putExtra(Constants.SELECTED_SUBJECT_NAME, mSubject.subjectName);
             exerciseIntent.putExtra(Constants.SELECTED_CHAPTERID, chapter.idCourseSubjectChapter);
             exerciseIntent.putExtra(Constants.SELECTED_CHAPTER_NAME, chapter.ChapterName);
-            exerciseIntent.putExtra(Constants.LEVEL_CROSSED, 5);
+            exerciseIntent.putExtra(Constants.LEVEL_CROSSED, 4);
+            exerciseIntent.putExtra(Constants.QUESTIONS_COUNT, Integer.parseInt(chapter.NumberOfQuestions));
             exerciseIntent.putExtra("chapter", Gson.get().toJson(chapter));
             startActivity(exerciseIntent);
         }else {
