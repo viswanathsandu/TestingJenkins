@@ -3,11 +3,11 @@ apply plugin: 'io.fabric'
 apply plugin: 'com.google.gms.google-services'
 
 // Version naming specification xx xx x xx
-def versionCodeCorsalite = 102804
-def versionNameCorsalite = "1.2.8.4"
+def versionCodeCorsalite = 102805
+def versionNameCorsalite = "1.2.8.5"
 
-def versionCodeFGA = 6
-def versionNameFGA = "0.0.0.6"
+def versionCodeFGA = 7
+def versionNameFGA = "0.0.0.7"
 
 android {
     compileSdkVersion 24

@@ -118,12 +118,15 @@ public class TestSeriesActivity extends AbstractBaseActivity implements iTestSer
                 mSubject = subject;
                 mSelectedSubjectTxt = view;
                 mSelectedSubjectTxt.setSelected(true);
-                showData(subject);
+                showData(subject, mMockData);
             }
         });
     }
 
     private Drawable getSubjectColor(TestSubject subject) {
+        if(TextUtils.isEmpty(subject.btncolor)) {
+            return getResources().getDrawable(R.drawable.blueshape);
+        }
         switch (subject.btncolor) {
             case "btn-red":
                 return getResources().getDrawable(R.drawable.redshape);
@@ -144,9 +147,9 @@ public class TestSeriesActivity extends AbstractBaseActivity implements iTestSer
 
     private void loadTestSeries() {
         showProgress();
-        ApiManager.getInstance(this).getTestSeries(/*LoginUserCache.getInstance().getStudentId(),
-                getSelectedCourseId(), getSelectedCourse().courseInstanceId*/
-                "17765", "13", "237",
+        ApiManager.getInstance(this).getTestSeries("17765", //LoginUserCache.getInstance().getStudentId(),
+//                getSelectedCourseId(), getSelectedCourse().courseInstanceId,
+                "13","237",
                 new ApiCallback<TestSeriesResponse>(this) {
                     @Override
                     public void failure(CorsaliteError error) {
@@ -159,8 +162,8 @@ public class TestSeriesActivity extends AbstractBaseActivity implements iTestSer
                     public void success(TestSeriesResponse testSeriesResponse, Response response) {
                         super.success(testSeriesResponse, response);
                         closeProgress();
-                        if(testSeriesResponse != null) {
-                            mSubjects = testSeriesResponse.getSubjectList();
+                        if(testSeriesResponse != null && testSeriesResponse.subjects != null) {
+                            mSubjects = testSeriesResponse.subjects;
                             mMockData = testSeriesResponse.mockTests;
                             addSubjectsAndCreateViews();
                         }
@@ -168,8 +171,8 @@ public class TestSeriesActivity extends AbstractBaseActivity implements iTestSer
                 });
     }
 
-    private void showData(TestSubject subject) {
-        mAdapter.update(subject);
+    private void showData(TestSubject subject, List<TestSeriesMockData> mockTests) {
+        mAdapter.update(subject, mockTests);
         recyclerView.scrollToPosition(0);
     }
 
@@ -195,29 +198,41 @@ public class TestSeriesActivity extends AbstractBaseActivity implements iTestSer
     }
 
     @Override
-    public void onMockTest(TestChapter chapter) {
-        if(TextUtils.isEmpty(chapter.idExamTemplate)) {
-            return;
-        }
-        TestSeriesMockData mock = null;
-        if(mMockData != null && !mMockData.isEmpty()) {
-            for (TestSeriesMockData mockItem : mMockData) {
-                if(mockItem.idExamTemplate != null && mockItem.idExamTemplate.equalsIgnoreCase(chapter.idExamTemplate)) {
-                    mock = mockItem;
-                    break;
-                }
-            }
-        }
-        if(mock == null) {
+    public void onMockTest(TestSeriesMockData mock) {
+        if(TextUtils.isEmpty(mock.idExamTemplate)) {
             return;
         }
         MockTest mockTest = new MockTest();
         mockTest.examTemplateId = mock.idExamTemplate;
         mockTest.displayName = mock.testName;
-        mockTest.subjectId = mock.subjectId;
-        mockTest.subjectName = mock.testName;
+        mockTest.subjectId = mSubject.idCourseSubject;
+        mockTest.subjectName = mSubject.subjectName;
         List<MockTest> tests = new ArrayList<>();
         tests.add(mockTest);
         showMockTestsDialog(tests);
+    }
+
+    @Override
+    public void onMockTest(TestChapter chapter) {
+        if(TextUtils.isEmpty(chapter.idExamTemplate)) {
+            return;
+        }
+        MockTest mockTest = new MockTest();
+        mockTest.examTemplateId = chapter.idExamTemplate;
+        mockTest.displayName = chapter.ChapterName;
+        mockTest.subjectId = mSubject.idCourseSubject;
+        mockTest.subjectName = chapter.ChapterName;
+        List<MockTest> tests = new ArrayList<>();
+        tests.add(mockTest);
+        showMockTestsDialog(tests);
+    }
+
+    @Override
+    public void onRecommendedReading(TestChapter chapter) {
+        Intent intent = new Intent(this, ContentReadingActivity.class);
+        intent.putExtra("courseId", AbstractBaseActivity.getSelectedCourseId());
+        intent.putExtra("subjectId", mSubject.idCourseSubject);
+        intent.putExtra("chapterId", chapter.idCourseSubjectChapter);
+        startActivity(intent);
     }
 }

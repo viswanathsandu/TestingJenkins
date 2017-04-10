@@ -143,7 +143,8 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
                     }
                 } else if (Integer.valueOf(level) > levelCrossed) {
                     checkBox.setEnabled(false);
-                }
+                }        getDialog().setTitle("Test Option");
+
                 checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

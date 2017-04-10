@@ -1035,7 +1035,9 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         } else {
             startActivity(new Intent(AbstractBaseActivity.this, StudyCenterActivity.class));
         }
-        finish();
+        if(!(this instanceof StudyCenterActivity)) {
+            finish();
+        }
     }
 
     protected void loadWelcomeScreen() {

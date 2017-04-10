@@ -13,13 +13,13 @@ public class TestSubject extends BaseModel {
 
     public String idCourseSubject;
 
-    public Integer TotalTestedMarks;
+    public Double TotalTestedMarks;
 
     public List<TestChapter> SubjectChapters;
 
     public Integer TestCountTaken;
 
-    public Integer EarnedMarks;
+    public Double EarnedMarks;
 
     public String ScoreAmber;
 

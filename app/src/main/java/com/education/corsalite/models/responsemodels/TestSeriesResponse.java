@@ -2,7 +2,6 @@ package com.education.corsalite.models.responsemodels;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,13 +11,8 @@ import java.util.List;
 public class TestSeriesResponse extends BaseResponseModel {
 
     @SerializedName("subjectData")
-    public TestSubject subject;
+    public List<TestSubject> subjects;
     @SerializedName("mockTestData")
     public List<TestSeriesMockData> mockTests;
 
-    public List<TestSubject> getSubjectList() {
-        List<TestSubject> subjects = new ArrayList<>();
-        subjects.add(subject);
-        return subjects;
-    }
 }

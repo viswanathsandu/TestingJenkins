@@ -223,6 +223,7 @@ public class TestChapterFragment extends BaseFragment {
         if(testCoverages != null) {
             mExtras.putString(Constants.TEST_COVERAGE_LIST_GSON, Gson.get().toJson(testCoverages));
         }
+
         TestChapterSetupFragment fragment = TestChapterSetupFragment.newInstance(mExtras);
         fragment.show(getFragmentManager(), TestChapterSetupFragment.getMyTag());
     }

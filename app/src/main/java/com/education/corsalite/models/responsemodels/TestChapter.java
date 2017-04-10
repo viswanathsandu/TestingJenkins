@@ -10,13 +10,13 @@ public class TestChapter {
 
     public String NumberOfQuestions;
 
-    public Integer TotalTestedMarks;
+    public Double TotalTestedMarks;
 
     public String idCourseSubjectChapter;
 
     public String TestCountTaken;
 
-    public Integer EarnedMarks;
+    public Double EarnedMarks;
 
     public String ChapterName;
 
