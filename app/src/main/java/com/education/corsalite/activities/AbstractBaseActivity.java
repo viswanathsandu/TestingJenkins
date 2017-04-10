@@ -740,52 +740,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         if (config.isExamHistoryEnabled()) {
             navigationView.findViewById(R.id.navigation_exam_history).setVisibility(View.VISIBLE);
         }
-
-        if(selectedCourse != null && selectedCourse.isTestSeries()) {
-            loadTestSeriesNavigationOptions();
-        } else {
-            loadGeneralNavigationOptions();
-        }
-    }
-
-    private void loadTestSeriesNavigationOptions() {
-        navigationView.findViewById(R.id.navigation_welcome).setVisibility(View.VISIBLE);
-        navigationView.findViewById(R.id.navigation_profile).setVisibility(View.VISIBLE);
-        navigationView.findViewById(R.id.navigation_study_center).setVisibility(View.GONE);
-        navigationView.findViewById(R.id.navigation_test_series).setVisibility(View.VISIBLE);
-        navigationView.findViewById(R.id.navigation_recommended_reading).setVisibility(View.VISIBLE);
-        navigationView.findViewById(R.id.navigation_progress_report).setVisibility(View.VISIBLE);
-        navigationView.findViewById(R.id.navigation_time_management).setVisibility(View.VISIBLE);
-        navigationView.findViewById(R.id.navigation_analytics).setVisibility(View.GONE);
-        navigationView.findViewById(R.id.navigation_offline).setVisibility(View.VISIBLE);
-        navigationView.findViewById(R.id.navigation_curriculum).setVisibility(View.GONE);
-        navigationView.findViewById(R.id.navigation_scheduled_tests).setVisibility(View.GONE);
-        navigationView.findViewById(R.id.navigation_mock_tests).setVisibility(View.GONE);
-        navigationView.findViewById(R.id.navigation_challenge_your_friends).setVisibility(View.GONE);
-        navigationView.findViewById(R.id.navigation_forum).setVisibility(View.GONE);
-        navigationView.findViewById(R.id.navigation_smart_class).setVisibility(View.GONE);
-        navigationView.findViewById(R.id.navigation_settings).setVisibility(View.VISIBLE);
-        navigationView.findViewById(R.id.navigation_logout).setVisibility(View.VISIBLE);
-    }
-
-    private void loadGeneralNavigationOptions() {
-        navigationView.findViewById(R.id.navigation_welcome).setVisibility(View.VISIBLE);
-        navigationView.findViewById(R.id.navigation_profile).setVisibility(View.VISIBLE);
-        navigationView.findViewById(R.id.navigation_study_center).setVisibility(View.VISIBLE);
-        navigationView.findViewById(R.id.navigation_test_series).setVisibility(View.GONE);
-        navigationView.findViewById(R.id.navigation_recommended_reading).setVisibility(View.GONE);
-        navigationView.findViewById(R.id.navigation_progress_report).setVisibility(View.GONE);
-        navigationView.findViewById(R.id.navigation_time_management).setVisibility(View.GONE);
-        navigationView.findViewById(R.id.navigation_analytics).setVisibility(View.GONE);
-        navigationView.findViewById(R.id.navigation_offline).setVisibility(View.VISIBLE);
-        navigationView.findViewById(R.id.navigation_curriculum).setVisibility(View.VISIBLE);
-        navigationView.findViewById(R.id.navigation_scheduled_tests).setVisibility(View.VISIBLE);
-        navigationView.findViewById(R.id.navigation_mock_tests).setVisibility(View.VISIBLE);
-        navigationView.findViewById(R.id.navigation_challenge_your_friends).setVisibility(View.VISIBLE);
-        navigationView.findViewById(R.id.navigation_forum).setVisibility(View.VISIBLE);
-        navigationView.findViewById(R.id.navigation_smart_class).setVisibility(View.VISIBLE);
-        navigationView.findViewById(R.id.navigation_settings).setVisibility(View.VISIBLE);
-        navigationView.findViewById(R.id.navigation_logout).setVisibility(View.VISIBLE);
     }
 
     private void setNavigationClickListeners() {
@@ -1478,20 +1432,30 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         }
         if (selectedCourse != null && selectedCourse.courseId != course.courseId) {
             selectedCourse = course;
+            enableNavigationOpitons(selectedCourse);
             if (isCourseEnded(course) && !(this instanceof WelcomeActivity)) {
                 Intent newIntent = new Intent(this, WelcomeActivity.class);
                 newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(newIntent);
                 finish();
-            } else if(course.isTestSeries()) {
-                loadTestSeriesNavigationOptions();
-            } else {
-                loadGeneralNavigationOptions();
             }
         } else {
             return;
         }
+    }
+
+    private void enableNavigationOpitons(Course course) {
+        navigationView.findViewById(R.id.navigation_study_center).setVisibility(isTrue(course.isContentReading) ? View.VISIBLE : View.GONE);
+        navigationView.findViewById(R.id.navigation_forum).setVisibility(isTrue(course.isForums) ? View.VISIBLE : View.GONE);
+        navigationView.findViewById(R.id.navigation_mock_tests).setVisibility(isTrue(course.isMockTest) ? View.VISIBLE : View.GONE);
+        navigationView.findViewById(R.id.navigation_smart_class).setVisibility(isTrue(course.isSmartClass) ? View.VISIBLE : View.GONE);
+        navigationView.findViewById(R.id.navigation_scheduled_tests).setVisibility(isTrue(course.isPracticeTest) ? View.VISIBLE : View.GONE);
+        navigationView.findViewById(R.id.navigation_test_series).setVisibility(course.isTestSeries() ? View.VISIBLE : View.GONE);
+    }
+
+    private boolean isTrue(Integer value) {
+        return  value != null && value == 1;
     }
 
     protected void getContentIndex(Course course, String studentId) {

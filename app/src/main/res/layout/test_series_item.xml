@@ -22,7 +22,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_margin="5dp"
-            android:text="Take Test" />
+            android:text="Take Test"/>
 
         <LinearLayout
             android:id="@+id/title_container"
@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
                 android:text="Title"
-                android:textColor="@color/black"
+                android:textColor="@color/text_black"
                 android:textSize="24sp"
                 android:maxLines="1"
                 android:ellipsize="end"/>
@@ -53,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:text="Remaining tests"
-                android:textColor="@color/black"
+                android:textColor="@color/text_gray"
                 android:textSize="20sp" />
         </LinearLayout>
 
@@ -75,7 +75,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Max Questions : "
-                    android:textColor="@color/black"
+                    android:textColor="@color/text_gray"
                     android:textSize="20sp" />
 
                 <TextView
@@ -84,7 +84,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="-"
-                    android:textColor="@color/black"
+                    android:textColor="@color/text_gray"
                     android:textSize="20sp" />
 
             </LinearLayout>
@@ -99,7 +99,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Marks/Total : "
-                    android:textColor="@color/black"
+                    android:textColor="@color/text_gray"
                     android:textSize="20sp" />
 
                 <TextView
@@ -108,7 +108,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="-"
-                    android:textColor="@color/black"
+                    android:textColor="@color/text_gray"
                     android:textSize="20sp" />
 
             </LinearLayout>
@@ -123,7 +123,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Accuracy : "
-                    android:textColor="@color/black"
+                    android:textColor="@color/text_gray"
                     android:textSize="20sp" />
 
                 <TextView
@@ -132,7 +132,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="-"
-                    android:textColor="@color/black"
+                    android:textColor="@color/text_gray"
                     android:textSize="20sp" />
 
             </LinearLayout>
@@ -147,7 +147,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Speed : "
-                    android:textColor="@color/black"
+                    android:textColor="@color/text_gray"
                     android:textSize="20sp" />
 
                 <TextView
@@ -156,7 +156,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="-"
-                    android:textColor="@color/black"
+                    android:textColor="@color/text_gray"
                     android:textSize="20sp" />
 
             </LinearLayout>

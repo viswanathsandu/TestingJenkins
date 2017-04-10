@@ -23,7 +23,6 @@ import com.education.corsalite.gson.Gson;
 import com.education.corsalite.listener.iTestSeriesClickListener;
 import com.education.corsalite.models.db.MockTest;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
-import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.TestChapter;
 import com.education.corsalite.models.responsemodels.TestSeriesMockData;
 import com.education.corsalite.models.responsemodels.TestSeriesResponse;
@@ -69,17 +68,6 @@ public class TestSeriesActivity extends AbstractBaseActivity implements iTestSer
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(mAdapter);
-    }
-
-    @Override
-    public void onEvent(Course course) {
-        super.onEvent(course);
-        if (!course.isTestSeries()) {
-            startActivity(new Intent(this, StudyCenterActivity.class));
-            finish();
-        } else {
-            loadTestSeries();
-        }
     }
 
     private void addSubjectsAndCreateViews() {
@@ -234,5 +222,14 @@ public class TestSeriesActivity extends AbstractBaseActivity implements iTestSer
         intent.putExtra("subjectId", mSubject.idCourseSubject);
         intent.putExtra("chapterId", chapter.idCourseSubjectChapter);
         startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isTaskRoot()) {
+            loadWelcomeScreen();
+        } else {
+            super.onBackPressed();
+        }
     }
 }

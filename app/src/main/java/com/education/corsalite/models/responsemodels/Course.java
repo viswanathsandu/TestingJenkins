@@ -29,6 +29,21 @@ public class Course extends BaseModel  implements Serializable {
     @SerializedName("idCourseInstance")
     public String courseInstanceId;
 
+    @Ignore
+    public Integer isContentReading;
+    @Ignore
+    public Integer isVideos;
+    @Ignore
+    public Integer isForums;
+    @Ignore
+    public Integer isSmartClass;
+    @Ignore
+    public Integer isPracticeTest;
+    @Ignore
+    public Integer isReward;
+    @Ignore
+    public Integer isMockTest;
+
     public boolean isDefault() {
         return (!TextUtils.isEmpty(isDefault) && isDefault.equals("Y"));
     }
