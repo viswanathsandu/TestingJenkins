@@ -43,7 +43,29 @@ public class Course extends BaseModel  implements Serializable {
     public Integer isReward;
     @Ignore
     public Integer isMockTest;
-
+    @Ignore
+    public Integer isWelcome;
+    @Ignore
+    public Integer isProfile;
+    @Ignore
+    public Integer isOffline;
+    @Ignore
+    public Integer isScheduledTests;
+    @Ignore
+    public Integer isCurriculum;
+    @Ignore
+    public Integer isStudyCenter;
+    @Ignore
+    public Integer isChallengeTest;
+    @Ignore
+    public Integer isAnalytics;
+    @Ignore
+    public Integer isRecommendedReading;
+    @Ignore
+    public Integer isProgressReport;
+    @Ignore
+    public Integer isTimeManagement;
+    
     public boolean isDefault() {
         return (!TextUtils.isEmpty(isDefault) && isDefault.equals("Y"));
     }

@@ -24,7 +24,7 @@
             android:drawableLeft="@drawable/exam_student_icon"
             android:drawablePadding="10dp"
             android:gravity="center_vertical"
-            android:text="87"
+            android:text="-"
             android:textColor="@color/text_black"
             android:textSize="20sp" />
 
@@ -36,7 +36,7 @@
             android:drawableLeft="@drawable/marks_icon"
             android:drawablePadding="10dp"
             android:gravity="center_vertical"
-            android:text="114/2017"
+            android:text="-/-"
             android:textColor="@color/text_black"
             android:textSize="20sp" />
 
@@ -48,7 +48,7 @@
             android:drawableLeft="@drawable/accuracy_icon"
             android:drawablePadding="10dp"
             android:gravity="center_vertical"
-            android:text="4.75%"
+            android:text="0%"
             android:textColor="@color/text_black"
             android:textSize="20sp" />
 
@@ -59,7 +59,7 @@
             android:drawableLeft="@drawable/meter_icon"
             android:drawablePadding="10dp"
             android:gravity="center_vertical"
-            android:text="2.34 marks/min"
+            android:text="- marks/min"
             android:textColor="@color/text_black"
             android:textSize="20sp" />
 

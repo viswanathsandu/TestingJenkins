@@ -18,6 +18,7 @@ import com.education.corsalite.R;
 import com.education.corsalite.adapters.TestSeriesAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
+import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.enums.Tests;
 import com.education.corsalite.gson.Gson;
 import com.education.corsalite.listener.iTestSeriesClickListener;
@@ -135,9 +136,8 @@ public class TestSeriesActivity extends AbstractBaseActivity implements iTestSer
 
     private void loadTestSeries() {
         showProgress();
-        ApiManager.getInstance(this).getTestSeries("17765", //LoginUserCache.getInstance().getStudentId(),
-//                getSelectedCourseId(), getSelectedCourse().courseInstanceId,
-                "13","237",
+        ApiManager.getInstance(this).getTestSeries(LoginUserCache.getInstance().getStudentId(),
+                getSelectedCourseId(), getSelectedCourse().courseInstanceId,
                 new ApiCallback<TestSeriesResponse>(this) {
                     @Override
                     public void failure(CorsaliteError error) {

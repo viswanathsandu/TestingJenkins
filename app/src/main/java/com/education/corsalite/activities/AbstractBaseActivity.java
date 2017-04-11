@@ -1446,11 +1446,19 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     private void enableNavigationOpitons(Course course) {
-        navigationView.findViewById(R.id.navigation_study_center).setVisibility(isTrue(course.isContentReading) ? View.VISIBLE : View.GONE);
+        navigationView.findViewById(R.id.navigation_study_center).setVisibility(isTrue(course.isStudyCenter) ? View.VISIBLE : View.GONE);
         navigationView.findViewById(R.id.navigation_forum).setVisibility(isTrue(course.isForums) ? View.VISIBLE : View.GONE);
         navigationView.findViewById(R.id.navigation_mock_tests).setVisibility(isTrue(course.isMockTest) ? View.VISIBLE : View.GONE);
         navigationView.findViewById(R.id.navigation_smart_class).setVisibility(isTrue(course.isSmartClass) ? View.VISIBLE : View.GONE);
-        navigationView.findViewById(R.id.navigation_scheduled_tests).setVisibility(isTrue(course.isPracticeTest) ? View.VISIBLE : View.GONE);
+        navigationView.findViewById(R.id.navigation_scheduled_tests).setVisibility(isTrue(course.isScheduledTests) ? View.VISIBLE : View.GONE);
+        navigationView.findViewById(R.id.navigation_analytics).setVisibility(isTrue(course.isAnalytics) ? View.VISIBLE : View.GONE);
+        navigationView.findViewById(R.id.navigation_challenge_your_friends).setVisibility(isTrue(course.isChallengeTest) ? View.VISIBLE : View.GONE);
+        navigationView.findViewById(R.id.navigation_curriculum).setVisibility(isTrue(course.isCurriculum) ? View.VISIBLE : View.GONE);
+        navigationView.findViewById(R.id.navigation_offline).setVisibility(isTrue(course.isOffline) ? View.VISIBLE : View.GONE);
+        navigationView.findViewById(R.id.navigation_profile).setVisibility(isTrue(course.isProfile) ? View.VISIBLE : View.GONE);
+        navigationView.findViewById(R.id.navigation_recommended_reading).setVisibility(isTrue(course.isRecommendedReading) ? View.VISIBLE : View.GONE);
+        navigationView.findViewById(R.id.navigation_time_management).setVisibility(isTrue(course.isTimeManagement) ? View.VISIBLE : View.GONE);
+        navigationView.findViewById(R.id.navigation_welcome).setVisibility(isTrue(course.isWelcome) ? View.VISIBLE : View.GONE);
         navigationView.findViewById(R.id.navigation_test_series).setVisibility(course.isTestSeries() ? View.VISIBLE : View.GONE);
     }
 
