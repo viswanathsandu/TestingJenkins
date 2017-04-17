@@ -465,7 +465,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 public void success(LoginResponse loginResponse, Response response) {
                     super.success(loginResponse, response);
                     closeProgress();
-                    if (loginResponse.isSuccessful()) {
+                    if (loginResponse.isSuccessful(AbstractBaseActivity.this)) {
                         setCrashlyticsUserData();
                         isLoginApiRunningInBackground = false;
                         ApiCacheHolder.getInstance().setLoginResponse(loginResponse);

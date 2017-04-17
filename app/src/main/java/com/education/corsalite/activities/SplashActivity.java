@@ -77,7 +77,7 @@ public class SplashActivity extends AbstractBaseActivity {
                 super.success(loginResponse, response);
                 closeProgress();
                 isLoginApiFinished = true;
-                if (loginResponse.isSuccessful()) {
+                if (loginResponse.isSuccessful(SplashActivity.this)) {
                     setCrashlyticsUserData();
                     onLoginsuccess(loginResponse, fetchLocal);
                     ApiCacheHolder.getInstance().setLoginResponse(loginResponse);
