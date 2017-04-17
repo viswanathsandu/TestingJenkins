@@ -67,7 +67,7 @@ public class ApiClientService {
                 .create();
 
         RestAdapter restAdapter = new RestAdapter.Builder()
-                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .setLogLevel(BuildConfig.BUILD_TYPE.equalsIgnoreCase("debug") ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE)
                 .setEndpoint(BuildConfig.BASE_API_URL)
                 .setClient(new OkClient(getOkHttpClient()))
                 .setRequestInterceptor(new SessionRequestInterceptor())
@@ -85,7 +85,10 @@ public class ApiClientService {
             int tryCount = 0;
             @Override
             public Response intercept(Chain chain) throws IOException {
-                Request request = chain.request();
+                Request request = chain.request()
+                        .newBuilder()
+                        .addHeader("appId", BuildConfig.APPLICATION_ID)
+                        .build();
 
                 // try the request
                 Response response = chain.proceed(request);
