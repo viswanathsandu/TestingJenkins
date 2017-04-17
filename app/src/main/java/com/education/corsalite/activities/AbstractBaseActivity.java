@@ -703,7 +703,9 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             return;
         }
         navigationView.findViewById(R.id.navigation_welcome).setVisibility(View.VISIBLE);
+        navigationView.findViewById(R.id.navigation_exam_history).setVisibility(View.VISIBLE);
         navigationView.findViewById(R.id.navigation_settings).setVisibility(View.VISIBLE);
+        navigationView.findViewById(R.id.navigation_logout).setVisibility(View.VISIBLE);
     }
 
     private void setNavigationClickListeners() {

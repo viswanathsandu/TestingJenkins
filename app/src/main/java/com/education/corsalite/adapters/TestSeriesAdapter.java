@@ -168,6 +168,7 @@ public class TestSeriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                             }
                         });
                     }
+                    speedTxt.setText("-");
                     titleTxt.setText(mockTest.testName);
                     int allowedTests = Integer.parseInt(mockTest.testCountAllowed);
                     int testsTaken = Integer.parseInt(mockTest.testCountTaken);

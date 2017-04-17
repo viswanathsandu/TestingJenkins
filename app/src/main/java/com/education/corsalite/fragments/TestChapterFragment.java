@@ -176,7 +176,7 @@ public class TestChapterFragment extends BaseFragment {
         }
 
         BarDataSet barDataSet = new BarDataSet(entries, "");
-        barDataSet.setColors(new int[]{getResources().getColor(R.color.green), getResources().getColor(R.color.red), getResources().getColor(R.color.skyblue)});
+        barDataSet.setColors(new int[]{getResources().getColor(R.color.green), getResources().getColor(R.color.skyblue), getResources().getColor(R.color.red)});
         barDataSet.setDrawValues(false);
         barDataSet.setBarSpacePercent(20f);
 

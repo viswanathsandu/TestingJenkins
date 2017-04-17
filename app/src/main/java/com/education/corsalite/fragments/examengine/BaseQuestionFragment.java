@@ -177,7 +177,7 @@ public abstract class BaseQuestionFragment extends BaseFragment {
             }
             loadAnswerLayout();
             if(isExplanationShown) {
-                onVerifyClicked(null);
+                onViewAnswer();
             }
             if(isExplanationShown || isFlaggedQuestionShown) {
                 controlViewAnswers(answerLayout);
@@ -271,6 +271,11 @@ public abstract class BaseQuestionFragment extends BaseFragment {
         } else {
             showToast("Please select an option");
         }
+    }
+
+    private void onViewAnswer() {
+        explanationLayout.setVisibility(View.VISIBLE);
+        layoutChoice.setVisibility(View.VISIBLE);
     }
 
     @OnClick(R.id.tv_verify)

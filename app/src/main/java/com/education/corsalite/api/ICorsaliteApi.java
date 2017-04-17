@@ -44,7 +44,6 @@ import com.education.corsalite.models.responsemodels.TestCoverage;
 import com.education.corsalite.models.responsemodels.TestPaperIndex;
 import com.education.corsalite.models.responsemodels.TestQuestionPaperResponse;
 import com.education.corsalite.models.responsemodels.TestSeriesResponse;
-import com.education.corsalite.models.responsemodels.TestSubject;
 import com.education.corsalite.models.responsemodels.UpdateExamDetailsResponse;
 import com.education.corsalite.models.responsemodels.UsageAnalysis;
 import com.education.corsalite.models.responsemodels.UserEventsResponse;
@@ -131,11 +130,13 @@ public interface ICorsaliteApi {
     @GET("/FriendsList")
     void getFriendsList(@Query("idUser") String userId,
                         @Query("idCourse") String courseId,
+                        @Query("idCourseInstance") String courseInstanceId,
                         ApiCallback<FriendsData> callback);
 
     @GET("/SearchFriends")
     void searchFriends(@Query("idUser") String userId,
                         @Query("idCourse") String courseId,
+                        @Query("idCourseInstance") String courseInstanceId,
                         @Query("searchKey") String searchKey,
                         ApiCallback<List<FriendsData.Friend>> callback);
 

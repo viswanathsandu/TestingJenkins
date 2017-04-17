@@ -69,7 +69,6 @@ import com.education.corsalite.models.responsemodels.TestCoverage;
 import com.education.corsalite.models.responsemodels.TestPaperIndex;
 import com.education.corsalite.models.responsemodels.TestQuestionPaperResponse;
 import com.education.corsalite.models.responsemodels.TestSeriesResponse;
-import com.education.corsalite.models.responsemodels.TestSubject;
 import com.education.corsalite.models.responsemodels.UpdateExamDetailsResponse;
 import com.education.corsalite.models.responsemodels.UsageAnalysis;
 import com.education.corsalite.models.responsemodels.UserEventsResponse;
@@ -321,15 +320,15 @@ public class ApiManager {
         }
     }
 
-    public void getFriendsList(String userId, String courseId, ApiCallback<FriendsData> callback) {
+    public void getFriendsList(String userId, String courseId, String courseInstanceId, ApiCallback<FriendsData> callback) {
         if (isApiOnline()) {
-            ApiClientService.get().getFriendsList(userId, courseId, callback);
+            ApiClientService.get().getFriendsList(userId, courseId, courseInstanceId, callback);
         }
     }
 
-    public void searchFriends(String userId, String courseId, String searchKey, ApiCallback<List<FriendsData.Friend>> callback) {
+    public void searchFriends(String userId, String courseId, String searchKey, String courseInstanceId, ApiCallback<List<FriendsData.Friend>> callback) {
         if (isApiOnline()) {
-            ApiClientService.get().searchFriends(userId, courseId, searchKey, callback);
+            ApiClientService.get().searchFriends(userId, courseId, courseInstanceId, searchKey, callback);
         }
     }
 

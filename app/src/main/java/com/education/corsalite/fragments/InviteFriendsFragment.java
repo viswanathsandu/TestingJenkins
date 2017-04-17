@@ -103,6 +103,7 @@ public class InviteFriendsFragment extends BaseFragment implements SearchView.On
         ApiManager.getInstance(getActivity()).getFriendsList(
                 appPref.getUserId(),
                 AbstractBaseActivity.getSelectedCourseId(),
+                AbstractBaseActivity.getSelectedCourse().courseInstanceId,
                 new ApiCallback<FriendsData>(getActivity()) {
 
                     @Override

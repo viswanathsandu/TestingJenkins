@@ -85,7 +85,7 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
         subjectId = mExtras.getString(Constants.SELECTED_SUBJECTID, "");
         String chapterStr = mExtras.getString("chapter");
         levelCrossed = mExtras.getInt(Constants.LEVEL_CROSSED, 0);
-        maxQuestionLimit = mExtras.getInt(Constants.QUESTIONS_COUNT, questionCount);
+        maxQuestionLimit = mExtras.getInt(Constants.QUESTIONS_COUNT, -1);
         if (chapterStr != null) {
             chapter = Gson.get().fromJson(chapterStr, Chapter.class);
         }
@@ -137,7 +137,7 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
                         for (TestCoverage coverage : testCoverages) {
                             if (coverage.level.equalsIgnoreCase(level + "")) {
                                 questionCount += Integer.valueOf(coverage.questionCount);
-                                int maxCount = maxQuestionLimit < questionCount ? maxQuestionLimit : questionCount;
+                                int maxCount = (maxQuestionLimit >= 0 && maxQuestionLimit < questionCount) ? maxQuestionLimit : questionCount;
                                 mNoOfQuestionsEditTxt.setFilters(new InputFilter[]{new InputFilterMinMax("1", maxCount+"")});
                                 mNoOfQuestionsEditTxt.setText(maxCount+"");
                                 break;
