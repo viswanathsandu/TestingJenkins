@@ -1380,9 +1380,9 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     // this method will be overridden by the classes that subscribes from event bus
     public void onEvent(Course course) {
+        enableNavigationOpitons(course);
         if (selectedCourse == null || (selectedCourse != null && selectedCourse.courseId != course.courseId)) {
             selectedCourse = course;
-            enableNavigationOpitons(selectedCourse);
             if (isCourseEnded(course) && !(this instanceof WelcomeActivity)) {
                 Intent newIntent = new Intent(this, WelcomeActivity.class);
                 newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
