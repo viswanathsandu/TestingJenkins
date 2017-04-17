@@ -84,7 +84,7 @@ public class TestSeriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     private int getHeaderCount() {
-        return 1;
+        return getChapterCount() == 0 && getMockCount() == 0 ? 0 : 1;
     }
 
     private int getChapterCount() {

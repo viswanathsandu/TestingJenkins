@@ -704,42 +704,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         }
         navigationView.findViewById(R.id.navigation_welcome).setVisibility(View.VISIBLE);
         navigationView.findViewById(R.id.navigation_settings).setVisibility(View.VISIBLE);
-        if (config.isMyProfileEnabled()) {
-            navigationView.findViewById(R.id.navigation_profile).setVisibility(View.VISIBLE);
-        }
-        if (config.isStudyCenterEnabled()) {
-            navigationView.findViewById(R.id.navigation_study_center).setVisibility(View.VISIBLE);
-        }
-        if (config.isSmartClassEnabled()) {
-            navigationView.findViewById(R.id.navigation_smart_class).setVisibility(View.VISIBLE);
-        }
-        if (config.isAnalyticsEnabled()) {
-            navigationView.findViewById(R.id.navigation_analytics).setVisibility(View.VISIBLE);
-        }
-        if (config.isCurriculumEnabled()) {
-            navigationView.findViewById(R.id.navigation_curriculum).setVisibility(View.VISIBLE);
-        }
-        if (config.isOfflineEnabled()) {
-            navigationView.findViewById(R.id.navigation_offline).setVisibility(View.VISIBLE);
-        }
-        if (config.isChallengeTestEnabled()) {
-            navigationView.findViewById(R.id.navigation_challenge_your_friends).setVisibility(View.VISIBLE);
-        }
-        if (config.isForumEnabled()) {
-            navigationView.findViewById(R.id.navigation_forum).setVisibility(View.VISIBLE);
-        }
-        if (config.isLogoutEnabled()) {
-            navigationView.findViewById(R.id.navigation_logout).setVisibility(View.VISIBLE);
-        }
-        if (config.isScheduledTestsEnabled()) {
-            navigationView.findViewById(R.id.navigation_scheduled_tests).setVisibility(View.VISIBLE);
-        }
-        if (config.isMockTestsEnabled()) {
-            navigationView.findViewById(R.id.navigation_mock_tests).setVisibility(View.VISIBLE);
-        }
-        if (config.isExamHistoryEnabled()) {
-            navigationView.findViewById(R.id.navigation_exam_history).setVisibility(View.VISIBLE);
-        }
     }
 
     private void setNavigationClickListeners() {
@@ -1068,48 +1032,37 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     protected void showVirtualCurrency() {
-        final boolean enableVirtualCurrency = getAppConfig(this).isVirtualCurrencyEnabled();
         try {
-            if (enableVirtualCurrency) {
-                toolbar.findViewById(R.id.ProgressBar).setVisibility(View.VISIBLE);
-                toolbar.findViewById(R.id.currency_layout).setVisibility(View.VISIBLE);
-                toolbar.findViewById(R.id.currency_layout).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(AbstractBaseActivity.this, VirtualCurrencyActivity.class);
-                        startActivity(intent);
-                    }
-                });
-            }
+            toolbar.findViewById(R.id.ProgressBar).setVisibility(View.VISIBLE);
+            toolbar.findViewById(R.id.currency_layout).setVisibility(View.VISIBLE);
+            toolbar.findViewById(R.id.currency_layout).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(AbstractBaseActivity.this, VirtualCurrencyActivity.class);
+                    startActivity(intent);
+                }
+            });
             ApiManager.getInstance(this).getVirtualCurrencyBalance(LoginUserCache.getInstance().getStudentId(), new ApiCallback<VirtualCurrencyBalanceResponse>(this) {
                 @Override
                 public void success(VirtualCurrencyBalanceResponse virtualCurrencyBalanceResponse, Response response) {
                     super.success(virtualCurrencyBalanceResponse, response);
-                    if (enableVirtualCurrency) {
                         toolbar.findViewById(R.id.ProgressBar).setVisibility(View.GONE);
-                    }
                     if (virtualCurrencyBalanceResponse != null && virtualCurrencyBalanceResponse.balance != null) {
                         appPref.setVirtualCurrency(virtualCurrencyBalanceResponse.balance.intValue() + "");
-                        if (enableVirtualCurrency) {
-                            TextView textView = (TextView) toolbar.findViewById(R.id.tv_virtual_currency);
-                            textView.setText(virtualCurrencyBalanceResponse.balance.intValue() + "");
-                        }
+                        TextView textView = (TextView) toolbar.findViewById(R.id.tv_virtual_currency);
+                        textView.setText(virtualCurrencyBalanceResponse.balance.intValue() + "");
                     }
                 }
 
                 @Override
                 public void failure(CorsaliteError error) {
                     super.failure(error);
-                    if (enableVirtualCurrency) {
-                        toolbar.findViewById(R.id.ProgressBar).setVisibility(View.GONE);
-                    }
+                    toolbar.findViewById(R.id.ProgressBar).setVisibility(View.GONE);
                 }
             });
         } catch (Exception e) {
             L.error(e.getMessage(), e);
-            if (enableVirtualCurrency) {
-                toolbar.findViewById(R.id.ProgressBar).setVisibility(View.GONE);
-            }
+            toolbar.findViewById(R.id.ProgressBar).setVisibility(View.GONE);
         }
     }
 
@@ -1427,10 +1380,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     // this method will be overridden by the classes that subscribes from event bus
     public void onEvent(Course course) {
-        if(selectedCourse == null) {
-            selectedCourse = course;
-        }
-        if (selectedCourse != null && selectedCourse.courseId != course.courseId) {
+        if (selectedCourse == null || (selectedCourse != null && selectedCourse.courseId != course.courseId)) {
             selectedCourse = course;
             enableNavigationOpitons(selectedCourse);
             if (isCourseEnded(course) && !(this instanceof WelcomeActivity)) {

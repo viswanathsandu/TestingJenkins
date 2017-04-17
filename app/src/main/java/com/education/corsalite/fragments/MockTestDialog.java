@@ -92,7 +92,10 @@ public class MockTestDialog extends DialogFragment implements MockTestsListAdapt
     }
 
     private void loadMockTests() {
-        String mockTestsGson = getArguments().getString("mock_tests", null);
+        String mockTestsGson = null;
+        if(getArguments() != null) {
+             mockTestsGson = getArguments().getString("mock_tests", null);
+        }
         if(!TextUtils.isEmpty(mockTestsGson)) {
             try {
                 Type listType = new TypeToken<List<MockTest>>() {

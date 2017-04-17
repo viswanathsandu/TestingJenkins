@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    app:cardBackgroundColor="#E6E6E6"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="8dp">
+
+    <LinearLayout
+        android:id="@+id/subject_data_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/white"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/percentage_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="30dp"
+            android:drawableLeft="@drawable/exam_student_icon"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:text="-"
+            android:textColor="@color/text_black"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/marks_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="30dp"
+            android:drawableLeft="@drawable/marks_icon"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:text="-/-"
+            android:textColor="@color/text_black"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/accuracy_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="30dp"
+            android:drawableLeft="@drawable/accuracy_icon"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:text="0%"
+            android:textColor="@color/text_black"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/speed_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/meter_icon"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:text="- marks/min"
+            android:textColor="@color/text_black"
+            android:textSize="20sp" />
+
+
+    </LinearLayout>
+</android.support.v7.widget.CardView>

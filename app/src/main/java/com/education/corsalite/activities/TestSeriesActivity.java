@@ -58,6 +58,11 @@ public class TestSeriesActivity extends AbstractBaseActivity implements iTestSer
         frameLayout.addView(myView);
         setToolbarForTestSeries();
         initUi();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         loadTestSeries();
     }
 

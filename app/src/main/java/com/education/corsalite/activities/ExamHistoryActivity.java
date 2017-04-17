@@ -73,12 +73,13 @@ public class ExamHistoryActivity extends AbstractBaseActivity implements ExamHis
 
             @Override
             public void success(List<ExamHistory> examHistories, Response response) {
-                if (examHistories == null) {
-                    return;
-                }
                 mLoading = false;
                 super.success(examHistories, response);
                 mProgressBar.setVisibility(View.GONE);
+                if (examHistories == null || examHistories.isEmpty()) {
+                    mTextView.setVisibility(View.VISIBLE);
+                    return;
+                }
                 mHeaderLayout.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.VISIBLE);
 
