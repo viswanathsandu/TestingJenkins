@@ -168,7 +168,8 @@ public class TestSeriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                             }
                         });
                     }
-                    speedTxt.setText("-");
+                    speedTxt.setText("0");
+                    accuracyTxt.setText("0");
                     titleTxt.setText(mockTest.testName);
                     int allowedTests = Integer.parseInt(mockTest.testCountAllowed);
                     int testsTaken = Integer.parseInt(mockTest.testCountTaken);
@@ -204,7 +205,15 @@ public class TestSeriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         takeTestBTn.setEnabled(chapter.AvailableTests != null && chapter.AvailableTests != 0);
                     } else if (chapter.TestType.toLowerCase().contains("mock")) {
                         takeTestBTn.setText("Mock Test");
-                        takeTestBTn.setEnabled(true);
+                        try {
+                            int testsCount = Integer.parseInt(chapter.TestCountAllowed);
+                            int testsTaken = Integer.parseInt(chapter.TestCountTaken);
+                            int remainingTests = testsCount - testsTaken;
+                            takeTestBTn.setEnabled(remainingTests > 0);
+                        } catch (NumberFormatException e) {
+                            L.error(e.getMessage(), e);
+                            takeTestBTn.setEnabled(false);
+                        }
                     }
                 }
                 try {

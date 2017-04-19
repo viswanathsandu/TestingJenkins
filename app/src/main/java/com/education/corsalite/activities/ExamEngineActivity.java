@@ -418,6 +418,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void loadViewAnswers() {
+        onEvent(AbstractBaseActivity.getSelectedCourse());
         selectedPosition = 0;
         headerLayout.setVisibility(View.GONE);
         localExamModelList = AbstractBaseActivity.getSharedExamModels();
@@ -484,6 +485,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
     private void loadExerciseTest() {
         imvFlag.setVisibility(View.INVISIBLE);
+        onEvent(AbstractBaseActivity.getSelectedCourse());
         // TODO : check here if it has some impact
         localExamModelList = AbstractBaseActivity.getSharedExamModels();
         if (localExamModelList == null && !TextUtils.isEmpty(topicId)) {
@@ -502,6 +504,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     private void loadFlaggedQuestions() {
+        onEvent(AbstractBaseActivity.getSelectedCourse());
         headerLayout.setVisibility(View.GONE);
         imvFlag.setVisibility(View.VISIBLE);
         getFlaggedQuestion(true);
