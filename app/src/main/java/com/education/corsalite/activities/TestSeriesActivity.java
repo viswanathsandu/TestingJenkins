@@ -18,12 +18,15 @@ import com.education.corsalite.R;
 import com.education.corsalite.adapters.TestSeriesAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
+import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.enums.Tests;
+import com.education.corsalite.event.TestDownloadCompletedEvent;
 import com.education.corsalite.gson.Gson;
 import com.education.corsalite.listener.iTestSeriesClickListener;
 import com.education.corsalite.models.db.MockTest;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
+import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.TestChapter;
 import com.education.corsalite.models.responsemodels.TestSeriesMockData;
 import com.education.corsalite.models.responsemodels.TestSeriesResponse;
@@ -61,8 +64,23 @@ public class TestSeriesActivity extends AbstractBaseActivity implements iTestSer
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onPause() {
+        super.onPause();
+        closeProgress();
+    }
+
+    @Override
+    public void onEvent(Course course) {
+        super.onEvent(course);
+        if(course.isTestSeries()) {
+            loadTestSeries();
+        } else {
+            startActivity(new Intent(this, StudyCenterActivity.class));
+            finish();
+        }
+    }
+
+    public void onEventMainThread(TestDownloadCompletedEvent event) {
         loadTestSeries();
     }
 
@@ -70,7 +88,7 @@ public class TestSeriesActivity extends AbstractBaseActivity implements iTestSer
         findViewById(R.id.all_colors).setVisibility(View.GONE);
         linearLayout = (LinearLayout) findViewById(R.id.subjects_name_id);
         recyclerView = (RecyclerView) findViewById(R.id.grid_recycler_view);
-        mAdapter = new TestSeriesAdapter(this);
+        mAdapter = new TestSeriesAdapter(this, this);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(mAdapter);
@@ -156,6 +174,10 @@ public class TestSeriesActivity extends AbstractBaseActivity implements iTestSer
                         super.success(testSeriesResponse, response);
                         closeProgress();
                         if(testSeriesResponse != null && testSeriesResponse.subjects != null) {
+                            if(SystemUtils.isNetworkConnected(TestSeriesActivity.this)) {
+                                ApiCacheHolder.getInstance().setTestSeriesResponse(testSeriesResponse);
+                                dbManager.saveReqRes(ApiCacheHolder.getInstance().testSeriesReqRes);
+                            }
                             mSubjects = testSeriesResponse.subjects;
                             mMockData = testSeriesResponse.mockTests;
                             addSubjectsAndCreateViews();

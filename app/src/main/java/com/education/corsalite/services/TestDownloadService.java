@@ -9,6 +9,7 @@ import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.db.SugarDbManager;
 import com.education.corsalite.enums.Tests;
+import com.education.corsalite.event.TestDownloadCompletedEvent;
 import com.education.corsalite.event.Toast;
 import com.education.corsalite.gson.Gson;
 import com.education.corsalite.helpers.ExamEngineHelper;
@@ -148,8 +149,10 @@ public class TestDownloadService extends IntentService {
                 dbManager.saveOfflineTest(model);
                 if (!TextUtils.isEmpty(testName)) {
                     EventBus.getDefault().post(new Toast("Test \"" + testName + "\" has been downloaded successfully"));
+                    EventBus.getDefault().post(new TestDownloadCompletedEvent());
                 } else {
                     EventBus.getDefault().post(new Toast("Test has been downloaded successfully"));
+                    EventBus.getDefault().post(new TestDownloadCompletedEvent());
                 }
             }
         } catch (Exception e) {
@@ -170,6 +173,7 @@ public class TestDownloadService extends IntentService {
                 dbManager.saveOfflineTest(model);
                 new ExamUtils(getApplicationContext()).saveTestQuestionPaper(model.testQuestionPaperId, test.testQuestionPaperResponse);
                 EventBus.getDefault().post(new Toast("\""+chapter.chapterName + "\" test is downloaded successfully"));
+                EventBus.getDefault().post(new TestDownloadCompletedEvent());
             }
 
             @Override
@@ -196,6 +200,7 @@ public class TestDownloadService extends IntentService {
                 new ExamUtils(getApplicationContext()).saveTestQuestionPaper(model.testQuestionPaperId, test.testQuestionPaperResponse);
                 L.info("Test Saved : "+model.getClass());
                 EventBus.getDefault().post(new Toast("\""+subjectName + "\" test is downloaded successfully"));
+                EventBus.getDefault().post(new TestDownloadCompletedEvent());
             }
 
             @Override

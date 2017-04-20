@@ -1,5 +1,6 @@
 package com.education.corsalite.adapters;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import com.education.corsalite.models.responsemodels.TestChapter;
 import com.education.corsalite.models.responsemodels.TestSeriesMockData;
 import com.education.corsalite.models.responsemodels.TestSubject;
 import com.education.corsalite.utils.L;
+import com.education.corsalite.utils.SystemUtils;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -24,6 +26,7 @@ import java.util.List;
 
 public class TestSeriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    private Context mContext;
     private TestSubject mSubject;
     private List<TestSeriesMockData> mMockTexts;
     private iTestSeriesClickListener mListener;
@@ -31,8 +34,9 @@ public class TestSeriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private static final int HEADER_TYPE = 0;
     private static final int ITEM_TYPE = 1;
 
-    public TestSeriesAdapter(iTestSeriesClickListener listener) {
+    public TestSeriesAdapter(Context context, iTestSeriesClickListener listener) {
         super();
+        this.mContext = context;
         this.mListener = listener;
     }
 
@@ -130,8 +134,9 @@ public class TestSeriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
     }
 
-    public static class TestViewHolder extends RecyclerView.ViewHolder {
+    public class TestViewHolder extends RecyclerView.ViewHolder {
 
+        ViewGroup containerLayout;
         TextView titleTxt;
         TextView remainingTxt;
         TextView accuracyTxt;
@@ -142,6 +147,7 @@ public class TestSeriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         public TestViewHolder(View view) {
             super(view);
+            containerLayout = (ViewGroup) view.findViewById(R.id.container_layout);
             titleTxt = (TextView) view.findViewById(R.id.title_txt);
             remainingTxt = (TextView) view.findViewById(R.id.remaining_txt);
             maxQuestionsTxt = (TextView) view.findViewById(R.id.max_questions_txt);
@@ -168,6 +174,12 @@ public class TestSeriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     }
                 }
                 try {
+                    if(!SystemUtils.isNetworkConnected(mContext)) {
+                        takeTestBTn.setEnabled(false);
+                        containerLayout.setBackgroundResource(R.color.gray);
+                    } else {
+                        containerLayout.setBackgroundResource(R.color.white);
+                    }
                     if (takeTestBTn.isEnabled()) {
                         takeTestBTn.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -223,6 +235,12 @@ public class TestSeriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                             takeTestBTn.setEnabled(false);
                         }
                     }
+                }
+                if(!SystemUtils.isNetworkConnected(mContext)) {
+                    takeTestBTn.setEnabled(false);
+                    containerLayout.setBackgroundResource(R.color.gray);
+                } else {
+                    containerLayout.setBackgroundResource(R.color.white);
                 }
                 try {
                     if (takeTestBTn.isEnabled()) {

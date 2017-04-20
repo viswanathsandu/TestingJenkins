@@ -1,5 +1,7 @@
 package com.education.corsalite.models.responsemodels;
 
+import com.orm.dsl.Ignore;
+
 import java.util.List;
 
 /**
@@ -15,6 +17,7 @@ public class TestSubject extends BaseModel {
 
     public Double TotalTestedMarks;
 
+    @Ignore
     public List<TestChapter> SubjectChapters;
 
     public Integer TestCountTaken;

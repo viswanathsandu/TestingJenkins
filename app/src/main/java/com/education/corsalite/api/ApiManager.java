@@ -16,6 +16,7 @@ import com.education.corsalite.models.db.reqres.CoursesReqRes;
 import com.education.corsalite.models.db.reqres.LoginReqRes;
 import com.education.corsalite.models.db.reqres.ScheduleTestsReqRes;
 import com.education.corsalite.models.db.reqres.StudyCenterReqRes;
+import com.education.corsalite.models.db.reqres.TestSeriesReqRes;
 import com.education.corsalite.models.db.reqres.UserProfileReqRes;
 import com.education.corsalite.models.db.reqres.WelcomeReqRes;
 import com.education.corsalite.models.db.reqres.requests.AppConfigRequest;
@@ -630,9 +631,14 @@ public class ApiManager {
     }
 
     public void getTestSeries(String idStudent, String idCourse, String idCourseInstance, ApiCallback<TestSeriesResponse> callback) {
+        TestSeriesRequest request = new TestSeriesRequest(idStudent, idCourse, idCourseInstance);
+        apiCacheHolder.testSeriesRequest = request;
         if(isApiOnline()) {
-            TestSeriesRequest request = new TestSeriesRequest(idStudent, idCourse, idCourseInstance);
             ApiClientService.get().getTestSeries(new TypedString("Update=" + Gson.get().toJson(request)), callback);
+        } else if(!isNetworkConnected()) {
+            TestSeriesReqRes reqRes = new TestSeriesReqRes();
+            reqRes.request = apiCacheHolder.testSeriesRequest;
+            SugarDbManager.get(context).getResponse(reqRes, callback);
         }
     }
 }

@@ -36,7 +36,7 @@
             android:value="corsalite.db" />
         <meta-data
             android:name="VERSION"
-            android:value="5" />
+            android:value="6" />
         <meta-data
             android:name="QUERY_LOG"
             android:value="true" />
@@ -247,7 +247,7 @@
             android:launchMode="singleTop"
             android:theme="@style/TransparentTheme" />
         <activity
-            android:name=".activities.TestSeriesActivity"></activity>
+            android:name=".activities.TestSeriesActivity"  />
     </application>
 
 </manifest>

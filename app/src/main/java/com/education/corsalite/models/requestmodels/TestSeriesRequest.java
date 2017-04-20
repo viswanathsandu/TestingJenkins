@@ -1,7 +1,6 @@
 package com.education.corsalite.models.requestmodels;
 
 import com.education.corsalite.models.db.reqres.requests.AbstractBaseRequest;
-import com.education.corsalite.models.db.reqres.requests.AppEntityConfigRequest;
 
 /**
  * Created by vissu on 3/27/17.
@@ -21,7 +20,7 @@ public class TestSeriesRequest extends AbstractBaseRequest {
 
     @Override
     public boolean equals(AbstractBaseRequest request) {
-        return request instanceof AppEntityConfigRequest
+        return request instanceof TestSeriesRequest
                 && idStudent != null && ((TestSeriesRequest) request).idStudent != null
                 && idStudent.equals(((TestSeriesRequest) request).idStudent)
                 && idCourse != null && ((TestSeriesRequest) request).idCourse != null
