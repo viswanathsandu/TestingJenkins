@@ -181,6 +181,9 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         initActivity();
         initNavigationDrawer();
         logScreen(this.getClass().getSimpleName());
+        if(selectedCourse != null) {
+            enableNavigationOpitons(selectedCourse);
+        }
     }
 
     public void logScreen(String screenName) {

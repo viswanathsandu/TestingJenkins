@@ -199,8 +199,8 @@ public class TestSeriesActivity extends AbstractBaseActivity implements iTestSer
         MockTest mockTest = new MockTest();
         mockTest.examTemplateId = mock.idExamTemplate;
         mockTest.displayName = mock.testName;
-        mockTest.subjectId = mSubject.idCourseSubject;
-        mockTest.subjectName = mSubject.subjectName;
+        mockTest.subjectId = mock.subjectId;
+        mockTest.subjectName = null;
         List<MockTest> tests = new ArrayList<>();
         tests.add(mockTest);
         showMockTestsDialog(tests);

@@ -65,7 +65,7 @@ public class TestSeriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 break;
             case ITEM_TYPE:
                 if(position < (getHeaderCount() + getChapterCount())) {
-                    ((TestViewHolder) holder).bindData(mListener, mSubject.SubjectChapters.get(position - 1));
+                    ((TestViewHolder) holder).bindData(mListener, mSubject.SubjectChapters.get(position - getHeaderCount()));
                 } else {
                     ((TestViewHolder) holder).bindData(mListener, mMockTexts.get(position - getChapterCount() - getHeaderCount()));
                 }
@@ -156,7 +156,15 @@ public class TestSeriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 if (!TextUtils.isEmpty(mockTest.testType)) {
                     if (mockTest.testType.toLowerCase().contains("mock")) {
                         takeTestBTn.setText("Mock Test");
-                        takeTestBTn.setEnabled(true);
+                        try {
+                            int testsCount = Integer.parseInt(mockTest.testCountAllowed);
+                            int testsTaken = Integer.parseInt(mockTest.testCountTaken);
+                            int remainingTests = testsCount - testsTaken;
+                            takeTestBTn.setEnabled(remainingTests > 0);
+                        } catch (NumberFormatException e) {
+                            L.error(e.getMessage(), e);
+                            takeTestBTn.setEnabled(false);
+                        }
                     }
                 }
                 try {
