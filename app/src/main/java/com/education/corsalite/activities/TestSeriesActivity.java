@@ -64,14 +64,20 @@ public class TestSeriesActivity extends AbstractBaseActivity implements iTestSer
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        loadTestSeries();
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
         closeProgress();
     }
 
     @Override
-    public void onEvent(Course course) {
-        super.onEvent(course);
+    protected void onCourseChanged(Course course) {
+        super.onCourseChanged(course);
         if(course.isTestSeries()) {
             loadTestSeries();
         } else {
@@ -222,7 +228,7 @@ public class TestSeriesActivity extends AbstractBaseActivity implements iTestSer
         mockTest.examTemplateId = mock.idExamTemplate;
         mockTest.displayName = mock.testName;
         mockTest.subjectId = mock.subjectId;
-        mockTest.subjectName = null;
+        mockTest.subjectName = mSubject.subjectName;
         List<MockTest> tests = new ArrayList<>();
         tests.add(mockTest);
         showMockTestsDialog(tests);

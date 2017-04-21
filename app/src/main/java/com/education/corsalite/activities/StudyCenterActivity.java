@@ -88,14 +88,17 @@ public class StudyCenterActivity extends AbstractBaseActivity {
         super.onResume();
         // fetch schedule tests and configure the notifications
         loadScheduledTests();
+        if(getSelectedCourse() != null) {
+            getStudyCentreData(getSelectedCourse().courseId.toString());
+        }
         if (mAdapter != null) {
             recyclerView.invalidate();
         }
     }
 
     @Override
-    public void onEvent(Course course) {
-        super.onEvent(course);
+    protected void onCourseChanged(Course course) {
+        super.onCourseChanged(course);
         if(course.isTestSeries()) {
             startActivity(new Intent(this, TestSeriesActivity.class));
             finish();

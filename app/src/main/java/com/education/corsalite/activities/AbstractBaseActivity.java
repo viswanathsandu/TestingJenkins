@@ -525,7 +525,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     protected void setToolbarForTestSeries() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
         setToolbarTitle(getResources().getString(R.string.test_series));
-        showVirtualCurrency();
         loadCoursesList();
     }
 
@@ -1388,16 +1387,23 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         enableNavigationOpitons(course);
         if (selectedCourse == null || (selectedCourse != null && selectedCourse.courseId != course.courseId)) {
             selectedCourse = course;
-            if (isCourseEnded(course) && !(this instanceof WelcomeActivity)) {
+            if (isCourseEnded(course) && !(this instanceof WelcomeActivity)
+                    && !(this instanceof TestSeriesActivity) && !(this instanceof StudyCenterActivity)) {
                 Intent newIntent = new Intent(this, WelcomeActivity.class);
                 newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(newIntent);
                 finish();
+                return;
             }
+            onCourseChanged(course);
         } else {
             return;
         }
+    }
+
+    protected void onCourseChanged(Course course) {
+        // This method will be overridden in all activities
     }
 
     private void enableNavigationOpitons(Course course) {
