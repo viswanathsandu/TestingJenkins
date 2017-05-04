@@ -247,7 +247,7 @@
             android:launchMode="singleTop"
             android:theme="@style/TransparentTheme" />
         <activity
-            android:name=".activities.TestSeriesActivity"  />
+            android:name=".activities.TestSeriesActivity" />
     </application>
 
 </manifest>

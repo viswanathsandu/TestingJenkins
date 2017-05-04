@@ -34,6 +34,7 @@ import com.education.corsalite.models.responsemodels.TestSubject;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.SystemUtils;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,12 +62,40 @@ public class TestSeriesActivity extends AbstractBaseActivity implements iTestSer
         frameLayout.addView(myView);
         setToolbarForTestSeries();
         initUi();
+        if(savedInstanceState != null) {
+            String subjectsJson = savedInstanceState.getString("subjects");
+            if(!TextUtils.isEmpty(subjectsJson)) {
+                mSubjects = Gson.get().fromJson(subjectsJson, new TypeToken<List<TestSubject>>() {}.getType());
+            }
+            String mockJson = savedInstanceState.getString("mockdata");
+            if(!TextUtils.isEmpty(mockJson)) {
+                mMockData = Gson.get().fromJson(mockJson, new TypeToken<List<TestSeriesMockData>>(){}.getType());
+            }
+            if(mSubjects != null) {
+                addSubjectsAndCreateViews();
+            }
+        } else {
+            loadTestSeries();
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        loadTestSeries();
+        if(mSubjects == null) {
+            loadTestSeries();
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        if(mSubjects != null) {
+            outState.putString("subjects", Gson.get().toJson(mSubjects));
+        }
+        if(mMockData != null) {
+            outState.putString("mockdata", Gson.get().toJson(mMockData));
+        }
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -217,6 +246,8 @@ public class TestSeriesActivity extends AbstractBaseActivity implements iTestSer
             exerciseIntent.putExtra("selection", 1);
             startActivity(exerciseIntent);
         }
+        mSubjects = null;
+        mMockData = null;
     }
 
     @Override
@@ -232,6 +263,8 @@ public class TestSeriesActivity extends AbstractBaseActivity implements iTestSer
         List<MockTest> tests = new ArrayList<>();
         tests.add(mockTest);
         showMockTestsDialog(tests);
+        mSubjects = null;
+        mMockData = null;
     }
 
     @Override
@@ -247,10 +280,14 @@ public class TestSeriesActivity extends AbstractBaseActivity implements iTestSer
         List<MockTest> tests = new ArrayList<>();
         tests.add(mockTest);
         showMockTestsDialog(tests);
+        mSubjects = null;
+        mMockData = null;
     }
 
     @Override
     public void onRecommendedReading(TestChapter chapter) {
+        mSubjects = null;
+        mMockData = null;
         Intent intent = new Intent(this, ContentReadingActivity.class);
         intent.putExtra("courseId", AbstractBaseActivity.getSelectedCourseId());
         intent.putExtra("subjectId", mSubject.idCourseSubject);
