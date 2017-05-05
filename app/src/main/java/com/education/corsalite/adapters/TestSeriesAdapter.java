@@ -264,15 +264,17 @@ public class TestSeriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     remainingTxt.setText(remainingTests + " of " + allowedTests + " remaining");
                     maxQuestionsTxt.setText(chapter.NumberOfQuestions);
                     DecimalFormat intFormat = new DecimalFormat("####0");
-                    marksTxt.setText(intFormat.format(chapter.EarnedMarks) + "/" + intFormat.format(chapter.TotalTestedMarks));
-                    double timeTakenInSecs = chapter.TimeTaken;
                     DecimalFormat df = new DecimalFormat("####0.00");
-                    if(timeTakenInSecs > 0) {
-                        double speed = chapter.EarnedMarks / (timeTakenInSecs/60);
-                        speedTxt.setText(df.format(speed));
+                    if(chapter.EarnedMarks != null) {
+                        marksTxt.setText(intFormat.format(chapter.EarnedMarks) + "/" + intFormat.format(chapter.TotalTestedMarks));
+                        double timeTakenInSecs = chapter.TimeTaken;
+                        if(timeTakenInSecs > 0) {
+                            double speed = chapter.EarnedMarks / (timeTakenInSecs/60);
+                            speedTxt.setText(df.format(speed));
+                        }
                     }
                     double accuracy = 0;
-                    if (chapter.TotalTestedMarks > 0) {
+                    if (chapter.TotalTestedMarks != null && chapter.TotalTestedMarks > 0) {
                         accuracy = chapter.EarnedMarks / chapter.TotalTestedMarks * 100;
                     }
                     accuracyTxt.setText((accuracy == 0 ? intFormat : df).format(accuracy));

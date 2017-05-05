@@ -151,9 +151,9 @@ public class ScheduledTestDialog extends DialogFragment implements ScheduledTest
                 public void failure(CorsaliteError error) {
                     super.failure(error);
                     try {
-                        ((AbstractBaseActivity) getActivity()).showToast("No scheduled tests available");
                         dialog.dismiss();
                         dismiss();
+                        ((AbstractBaseActivity) getActivity()).showToast("No scheduled tests available");
                     } catch (Exception e) {
                         L.error(e.getMessage(), e);
                     }

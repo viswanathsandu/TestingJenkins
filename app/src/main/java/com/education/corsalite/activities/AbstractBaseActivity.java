@@ -994,6 +994,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     protected void showScheduledTestsDialog() {
         if (SystemUtils.isNetworkConnected(this)) {
             ScheduledTestDialog dialog = new ScheduledTestDialog();
+            dialog.setCancelable(false);
             dialog.show(getFragmentManager(), "ScheduledTestsListDialog");
         } else {
             Intent exerciseIntent = new Intent(this, OfflineActivity.class);
