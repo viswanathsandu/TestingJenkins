@@ -25,6 +25,7 @@ import com.education.corsalite.models.responsemodels.ExamModel;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.ExamEngineWebViewClient;
 import com.education.corsalite.utils.L;
+import com.education.corsalite.utils.SystemUtils;
 import com.education.corsalite.utils.TimeUtils;
 
 import java.util.List;
@@ -62,10 +63,12 @@ public abstract class BaseQuestionFragment extends BaseFragment {
     protected boolean isVerifyEnabled;
     protected boolean isExplanationShown;
     protected boolean isFlaggedQuestionShown;
+    protected boolean isExerciseTest = false;
     protected int questionNumber;
     protected ExamModel question;
 
     public void enableVerify() {
+        isExerciseTest = true;
         getArguments().putBoolean(KEY_ENABLE_VERIFY, true);
     }
 
@@ -150,7 +153,7 @@ public abstract class BaseQuestionFragment extends BaseFragment {
     }
 
     private void updateFlagStatus() {
-        flaggedImg.setImageResource(isFlagged ? R.drawable.btn_flag_select : R.drawable.btn_flag_unselect);
+        flaggedImg.setImageResource((!isExerciseTest && isFlagged) ? R.drawable.btn_flag_select : R.drawable.btn_flag_unselect);
     }
 
     private void initData() {
@@ -291,7 +294,11 @@ public abstract class BaseQuestionFragment extends BaseFragment {
 
     @OnClick(R.id.imv_flag)
     public void onFlagClicked(View view) {
-        EventBus.getDefault().post(new FlagEvent(!isFlagged));
+        if(SystemUtils.isNetworkConnected(getActivity())) {
+            EventBus.getDefault().post(new FlagEvent(!isFlagged));
+        } else {
+            showToast("Flagging is available not available in offline");
+        }
     }
 
     public abstract void loadAnswerLayout();
