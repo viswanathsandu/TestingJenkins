@@ -206,7 +206,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.getSelectedCourseId());
         exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, studyCenterActivity.getSelectedSubjectId());
         exerciseIntent.putExtra(Constants.SELECTED_SUBJECT_NAME, mSubjectName);
-        exerciseIntent.putExtra(Constants.SELECTED_CHAPTERID, chapter.idCourseSubjectchapter);
+        exerciseIntent.putExtra(Constants.SELECTED_CHAPTERID, chapter.idCourseSubjectChapter);
         studyCenterActivity.startActivity(exerciseIntent);
     }
 
@@ -218,7 +218,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
             exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.getSelectedCourseId());
             exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, studyCenterActivity.getSelectedSubjectId());
             exerciseIntent.putExtra(Constants.SELECTED_SUBJECT_NAME, mSubjectName);
-            exerciseIntent.putExtra(Constants.SELECTED_CHAPTERID, chapter.idCourseSubjectchapter);
+            exerciseIntent.putExtra(Constants.SELECTED_CHAPTERID, chapter.idCourseSubjectChapter);
             exerciseIntent.putExtra(Constants.SELECTED_CHAPTER_NAME, chapter.chapterName);
             exerciseIntent.putExtra(Constants.LEVEL_CROSSED, chapter.passedComplexity);
             exerciseIntent.putExtra("chapter", Gson.get().toJson(chapter));
@@ -254,7 +254,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
     private void putIntentExtras(Chapter chapter, Intent intent, String courseId, String subjectId, String chapterId) {
         intent.putExtra(courseId, AbstractBaseActivity.getSelectedCourseId());
         intent.putExtra(subjectId, studyCenterActivity.getSelectedSubjectId());
-        intent.putExtra(chapterId, chapter.idCourseSubjectchapter);
+        intent.putExtra(chapterId, chapter.idCourseSubjectChapter);
     }
 
     private double getCompletedTopicsPercentage(Chapter chapter) {

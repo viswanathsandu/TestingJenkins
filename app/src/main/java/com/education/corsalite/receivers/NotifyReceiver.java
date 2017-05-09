@@ -3,7 +3,9 @@ package com.education.corsalite.receivers;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 
+import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.event.ScheduledTestStartEvent;
 import com.education.corsalite.notifications.NotificationsUtils;
 import com.education.corsalite.utils.L;
@@ -16,6 +18,9 @@ public class NotifyReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         try {
+            if(TextUtils.isEmpty(LoginUserCache.getInstance().getStudentId())) {
+                return;
+            }
             String action = intent.getAction();
             String testQuestionPaperId = intent.getExtras().getString("test_question_paper_id", "");
             boolean startExam = intent.getExtras().getBoolean("start_exam", false);

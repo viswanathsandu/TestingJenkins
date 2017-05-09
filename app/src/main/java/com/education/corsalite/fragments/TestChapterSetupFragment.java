@@ -89,6 +89,9 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
         if (chapterStr != null) {
             chapter = Gson.get().fromJson(chapterStr, Chapter.class);
         }
+        if(chapter != null && TextUtils.isEmpty(chapter.idCourseSubjectChapter)) {
+            chapter.idCourseSubjectChapter = mExtras.getString(Constants.SELECTED_CHAPTERID);
+        }
         String testCoveragesGson = mExtras.getString(Constants.TEST_COVERAGE_LIST_GSON);
         if (!TextUtils.isEmpty(testCoveragesGson)) {
             testCoverages = Gson.get().fromJson(testCoveragesGson, new TypeToken<List<TestCoverage>>() {
@@ -241,7 +244,7 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
         }
         Intent exerciseIntent = new Intent(getActivity(), TestDownloadService.class);
         exerciseIntent.putExtra("subjectId", subjectId);
-        exerciseIntent.putExtra("chapterId", chapter.idCourseSubjectchapter);
+        exerciseIntent.putExtra("chapterId", chapter.idCourseSubjectChapter);
         exerciseIntent.putExtra("selectedTakeTest", Gson.get().toJson(chapter));
         exerciseIntent.putExtra("courseId", AbstractBaseActivity.getSelectedCourseId());
         if (!TextUtils.isEmpty(noOfQuestions) && TextUtils.isDigitsOnly(noOfQuestions)) {

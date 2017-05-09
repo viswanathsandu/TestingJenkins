@@ -303,7 +303,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
             for (Chapter chapter : studyCenter.chapters) {
                 boolean idMatchFound = false;
                 for (OfflineContent offlineContent : offlineContents) {
-                    if (chapter.idCourseSubjectchapter.equals(offlineContent.chapterId)) {
+                    if (chapter.idCourseSubjectChapter.equals(offlineContent.chapterId)) {
                         idMatchFound = true;
                     }
                     offlineContent.earnedMarks = chapter.earnedMarks;
@@ -505,7 +505,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
             Intent intent = new Intent(this, ContentReadingActivity.class);
             intent.putExtra("courseId", AbstractBaseActivity.getSelectedCourseId());
             intent.putExtra("subjectId", studyCenter.idCourseSubject + "");
-            intent.putExtra("chapterId", studyCenter.chapters.get(0).idCourseSubjectchapter + "");
+            intent.putExtra("chapterId", studyCenter.chapters.get(0).idCourseSubjectChapter + "");
             startActivity(intent);
         }
     }
@@ -633,7 +633,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
                                 for (Chapter chapter : getChaptersForSubject()) {
                                     boolean idMatchFound = false;
                                     for (OfflineContent offlineContent : offlineContents) {
-                                        if (chapter.idCourseSubjectchapter.equals(offlineContent.chapterId)) {
+                                        if (chapter.idCourseSubjectChapter.equals(offlineContent.chapterId)) {
                                             idMatchFound = true;
                                         }
                                     }

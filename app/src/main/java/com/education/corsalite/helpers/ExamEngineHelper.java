@@ -96,7 +96,7 @@ public class ExamEngineHelper {
                                     // Load params from respective method
                                     String chapterId = null;
                                     if(test != null && test.chapter != null) {
-                                        chapterId = test.chapter.idCourseSubjectchapter;
+                                        chapterId = test.chapter.idCourseSubjectChapter;
                                     }
                                     postCustomExamTemplate(chapterId, null, takeTest.questionsCount, exams, callback);
                                     break;

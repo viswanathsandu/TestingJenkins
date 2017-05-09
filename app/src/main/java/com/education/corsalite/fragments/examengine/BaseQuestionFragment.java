@@ -153,7 +153,11 @@ public abstract class BaseQuestionFragment extends BaseFragment {
     }
 
     private void updateFlagStatus() {
-        flaggedImg.setImageResource((!isExerciseTest && isFlagged) ? R.drawable.btn_flag_select : R.drawable.btn_flag_unselect);
+        if(isExerciseTest) {
+            flaggedImg.setVisibility(View.INVISIBLE);
+        } else {
+            flaggedImg.setImageResource(isFlagged ? R.drawable.btn_flag_select : R.drawable.btn_flag_unselect);
+        }
     }
 
     private void initData() {
