@@ -77,6 +77,8 @@ public class ExamHistoryAdapter extends AbstractRecycleViewAdapter {
             this.exam.setText(examHistory.examName);
             this.type.setText(examHistory.testType);
             this.rank.setText(examHistory.rank);
+            this.status.setText("");
+            this.score.setText("-");
             if(!TextUtils.isEmpty(examHistory.totalScore) && examHistory.totalScore.contains(".")) {
                 int scoreInt = -1;
                 try {
