@@ -471,10 +471,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
                 "<head>" +
                 "<script type='text/javascript' src='file:///android_asset/jquery/jquery-latest.js'></script>" +
                 "<script type='text/javascript' src='file:///android_asset/jquery/jquery.selection.js'></script>" +
-                "<script type='text/javascript' src='file:///android_asset/MathJax/MathJax.js'></script>" +
-                "" +
-                "" +
-                "" +
+                "<script type='text/javascript' src='file:///android_asset/MathJax/MathJax.js?config=default'></script>" +
                 "" +
                 "<script type='text/x-mathjax-config'>"
                     +"MathJax.Hub.Config({ "
@@ -485,17 +482,14 @@ public class ContentReadingActivity extends AbstractBaseActivity {
                     +"'noErrors.js','noUndefined.js'] } "
                 +"});</script>" +
                 "" +
-                "" +
-                "" +
-                "" +
                 "<script>" +
                 "   function copy() {" +
                 "       return $.selection('html');" +
                 "   }" +
                 "</script>" +
                 "</head>" +
-                "<body>"
-                + doubleEscapeTeX(content) +
+                "<body>" +
+                    content +
                 "</body>" +
                 "</html>";
         return htmlContent;
