@@ -953,7 +953,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     protected void loadStudyCenterScreen() {
-        if(selectedCourse.isTestSeries()) {
+        if(selectedCourse != null && selectedCourse.isTestSeries()) {
             startActivity(new Intent(this, TestSeriesActivity.class));
         } else {
             startActivity(new Intent(AbstractBaseActivity.this, StudyCenterActivity.class));
@@ -1794,6 +1794,28 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     protected void startWebSocket() {
         WebSocketHelper.get(this).connectWebSocket();
+    }
+
+    private AlertDialog socketAlert;
+
+    protected void showSocketDisconnectionAlert(boolean isConnected) {
+        if(!isConnected && socketAlert == null) {
+            socketAlert = new AlertDialog.Builder(this)
+                    .setTitle("Connection Failure")
+                    .setMessage("Failed to connect with server. Please try later")
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    }).show();
+            socketAlert.setCancelable(false);
+        } else {
+            if (!isConnected) {
+                socketAlert.show();
+            } else {
+                socketAlert.dismiss();
+            }
+        }
     }
 
     public void hideKeyboard() {

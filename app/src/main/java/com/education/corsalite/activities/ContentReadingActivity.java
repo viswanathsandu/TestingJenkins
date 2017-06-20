@@ -455,20 +455,47 @@ public class ContentReadingActivity extends AbstractBaseActivity {
         }
     }
 
+    private String doubleEscapeTeX(String s) {
+        String t="";
+        for (int i=0; i < s.length(); i++) {
+            if (s.charAt(i) == '\'') t += '\\';
+            if (s.charAt(i) != '\n') t += s.charAt(i);
+            if (s.charAt(i) == '\\') t += "\\";
+        }
+        return t;
+    }
+
     private String getHtmlcontent(String content) {
         String htmlContent = "<!DOCTYPE html>" +
                 "<html>" +
                 "<head>" +
                 "<script type='text/javascript' src='file:///android_asset/jquery/jquery-latest.js'></script>" +
                 "<script type='text/javascript' src='file:///android_asset/jquery/jquery.selection.js'></script>" +
+                "<script type='text/javascript' src='file:///android_asset/MathJax/MathJax.js'></script>" +
+                "" +
+                "" +
+                "" +
+                "" +
+                "<script type='text/x-mathjax-config'>"
+                    +"MathJax.Hub.Config({ "
+                    +"showMathMenu: false, "
+                    +"jax: ['input/TeX','output/HTML-CSS'], "
+                    +"extensions: ['tex2jax.js'], "
+                    +"TeX: { extensions: ['AMSmath.js','AMSsymbols.js',"
+                    +"'noErrors.js','noUndefined.js'] } "
+                +"});</script>" +
+                "" +
+                "" +
+                "" +
+                "" +
                 "<script>" +
-                "function copy() {" +
-                "return $.selection('html');" +
-                "}" +
+                "   function copy() {" +
+                "       return $.selection('html');" +
+                "   }" +
                 "</script>" +
                 "</head>" +
                 "<body>"
-                + content +
+                + doubleEscapeTeX(content) +
                 "</body>" +
                 "</html>";
         return htmlContent;
@@ -701,7 +728,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
             public void success(List<Content> contents, Response response) {
                 super.success(contents, response);
                 try {
-                    if (TextUtils.isEmpty(mContentId) || !mContentId.equalsIgnoreCase(contents.get(0).idContent)) {
+                    if (TextUtils.isEmpty(mContentId) || !mContentId.contains(contents.get(0).idContent)) {
                         return;
                     }
                 } catch (Exception e) {
@@ -766,7 +793,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
         for (int i = 0; i < htmlFile.length; i++) {
             fileName = htmlFile[i];
             f = getFile(fileName);
-            if (f.exists()) {
+            if (f != null && f.exists()) {
                 if (htmlFile.length == contentModelList.size()) {
                     mContentIdPosition = i;
                 }
@@ -792,7 +819,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
             String[] data = fileName.split(".");
             if(data.length > 0) {
                 f = getFile(data[0]);
-                if (f.exists() && !TextUtils.isEmpty(mContentId) && mContentId.equalsIgnoreCase(data[0])) {
+                if (f != null && f.exists() && !TextUtils.isEmpty(mContentId) && mContentId.equalsIgnoreCase(data[0])) {
                     if (htmlFiles.length == contentModelList.size()) {
                         mContentIdPosition = i;
                     }

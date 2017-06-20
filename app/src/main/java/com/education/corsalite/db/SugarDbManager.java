@@ -121,7 +121,7 @@ public class SugarDbManager {
 
     public <T extends BaseModel> T getProcessedRecord(T data, Class<T> type) {
         try {
-            if (data.reflectionJsonString != null) {
+            if (data != null && data.reflectionJsonString != null) {
                 T object = Gson.get().fromJson(Gzip.decompress(data.reflectionJsonString), type);
                 data.reflectionJsonString = null;
                 object.setId(data.getId());

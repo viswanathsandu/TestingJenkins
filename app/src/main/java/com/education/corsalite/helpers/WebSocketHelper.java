@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.event.SocketConnectionStatusEvent;
 import com.education.corsalite.gson.Gson;
 import com.education.corsalite.models.socket.requests.ChallengeTestStartRequestEvent;
 import com.education.corsalite.models.socket.requests.ChallengeTestUpdateRequestEvent;
@@ -50,11 +51,16 @@ public class WebSocketHelper {
         return instance;
     }
 
+    public boolean isConnected() {
+        return isWebsocketConnected;
+    }
+
     public void connectWebSocket() {
         if(mContext == null || !SystemUtils.isNetworkConnected(mContext)) {
             return;
         }
         URI uri;
+        isWebsocketConnected = false;
         try {
             uri = new URI(ApiClientService.getSocketUrl());
             L.info("Websocket", "Url : "+ApiClientService.getSocketUrl());
@@ -69,7 +75,10 @@ public class WebSocketHelper {
             @Override
             public void onOpen(ServerHandshake serverHandshake) {
                 L.info("Websocket", "Opened");
-                isWebsocketConnected = true;
+                if(!isWebsocketConnected) {
+                    isWebsocketConnected = true;
+                    EventBus.getDefault().post(new SocketConnectionStatusEvent(isWebsocketConnected));
+                }
                 sendSubscribeEvent();
             }
 
@@ -82,14 +91,20 @@ public class WebSocketHelper {
             @Override
             public void onClose(int i, String s, boolean b) {
                 L.info("Websocket", "Closed " + s);
-                isWebsocketConnected = false;
+                if(isWebsocketConnected) {
+                    isWebsocketConnected = false;
+                    EventBus.getDefault().post(new SocketConnectionStatusEvent(isWebsocketConnected));
+                }
                 reconnectWebSocket();
             }
 
             @Override
             public void onError(Exception e) {
                 L.info("Websocket", "Error " + e.getMessage());
-                isWebsocketConnected = false;
+                if(isWebsocketConnected) {
+                    isWebsocketConnected = false;
+                    EventBus.getDefault().post(new SocketConnectionStatusEvent(isWebsocketConnected));
+                }
             }
         };
         try {

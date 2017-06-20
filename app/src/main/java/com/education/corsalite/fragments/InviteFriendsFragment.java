@@ -100,10 +100,12 @@ public class InviteFriendsFragment extends BaseFragment implements SearchView.On
     }
 
     private void loadFriendsList() {
+        String courseId = null;
+
         ApiManager.getInstance(getActivity()).getFriendsList(
                 appPref.getUserId(),
                 AbstractBaseActivity.getSelectedCourseId(),
-                AbstractBaseActivity.getSelectedCourse().courseInstanceId,
+                AbstractBaseActivity.getSelectedCourse() != null ? AbstractBaseActivity.getSelectedCourse().courseInstanceId : null,
                 new ApiCallback<FriendsData>(getActivity()) {
 
                     @Override
