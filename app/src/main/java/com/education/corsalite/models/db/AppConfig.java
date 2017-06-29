@@ -18,22 +18,6 @@ public class AppConfig extends BaseResponseModel {
     public String idClientAppConfig;
     @SerializedName("SplashDuration")
     public String splashDuration = "2000";
-    @SerializedName("EnableStudyCenter")
-    public String enableStudyCenter = "true";
-    @SerializedName("EnableAnalytics")
-    public String enableAnalytics = "false";
-    @SerializedName("EnableSmartClass")
-    public String enableSmartClass = "true";
-    @SerializedName("EnableMyProfile")
-    public String enableMyProfile = "true";
-    @SerializedName("EnableOffline")
-    public String enableOffline = "true";
-    @SerializedName("EnableUsageAnalysis")
-    public String enableUsageAnalysis = "true";
-    @SerializedName("EnableChallengeTest")
-    public String enableChallangeTest = "true";
-    @SerializedName("EnableLogout")
-    public String enableLogout = "true";
     @SerializedName("CustomConfig")
     public List<CustomConfig> customConfig;
 
@@ -48,58 +32,6 @@ public class AppConfig extends BaseResponseModel {
             L.error(e.getMessage(), e);
         }
         return defaultTime;
-    }
-
-    public boolean isStudyCenterEnabled() {
-        return isEnabled(enableStudyCenter);
-    }
-
-    public boolean isAnalyticsEnabled() {
-        return isEnabled(enableAnalytics);
-    }
-
-    public boolean isSmartClassEnabled() {
-        return isEnabled(enableSmartClass);
-    }
-
-    public boolean isMyProfileEnabled() {
-        return isEnabled(enableMyProfile);
-    }
-
-    public boolean isOfflineEnabled() {
-        return isEnabled(enableOffline);
-    }
-
-    public boolean isLogoutEnabled() {
-        return isEnabled(enableLogout);
-    }
-
-    public boolean isChallengeTestEnabled() {
-        return isEnabled(enableChallangeTest);
-    }
-
-    public boolean isVirtualCurrencyEnabled() {
-        return customConfig != null && customConfig.get(0) != null && isEnabled(customConfig.get(0).enableVirtualCurrency);
-    }
-
-    public boolean isCurriculumEnabled() {
-        return customConfig != null && customConfig.get(0) != null && isEnabled(customConfig.get(0).enableCurriculum);
-    }
-
-    public boolean isScheduledTestsEnabled() {
-        return customConfig != null && customConfig.get(0) != null && isEnabled(customConfig.get(0).enableScheduleTests);
-    }
-
-    public boolean isMockTestsEnabled() {
-        return customConfig != null && customConfig.get(0) != null && isEnabled(customConfig.get(0).enableMockTests);
-    }
-
-    public boolean isExamHistoryEnabled() {
-        return customConfig != null && customConfig.get(0) != null && isEnabled(customConfig.get(0).enableExamHistory);
-    }
-
-    public boolean isForumEnabled() {
-        return customConfig != null && customConfig.get(0) != null && isEnabled(customConfig.get(0).enableForum);
     }
 
     public boolean isforceUpgradeEnabled() {

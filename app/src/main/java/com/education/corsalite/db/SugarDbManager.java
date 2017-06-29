@@ -408,10 +408,27 @@ public class SugarDbManager {
         }
     }
 
+    public void deleteAuthentication(String username) {
+        if(!TextUtils.isEmpty(username)) {
+            List<LoginReqRes> reqResList = fetchRecords(LoginReqRes.class);
+            if(reqResList != null && !reqResList.isEmpty()) {
+                for(LoginReqRes reqRes : reqResList) {
+                    if(reqRes.request != null && reqRes.request.loginId.equalsIgnoreCase(username)) {
+                        delete(reqRes);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
     public void saveOfflineTest(final OfflineTestObjectModel model) {
         try {
-            if(model != null && !TextUtils.isEmpty(model.testQuestionPaperId)
-                    && TextUtils.isDigitsOnly(model.testQuestionPaperId)) {
+            if(model != null && !TextUtils.isEmpty(model.testQuestionPaperId) && TextUtils.isDigitsOnly(model.testQuestionPaperId)) {
+                OfflineTestObjectModel result = fetchOfflineTestRecord(model.testQuestionPaperId);
+                if (result != null && result.getId() != null) {
+                    model.setId(result.getId());
+                }
                 save(model);
                 DbUtils.get(context).backupDatabase();
             }

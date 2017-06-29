@@ -108,6 +108,11 @@ public class FileUtils {
         return filePath;
     }
 
+    public String getLogFolderPath() {
+        String filePath = getAppRootFolder() + File.separator + Constants.LOGS_FOLDER;
+        return filePath;
+    }
+
     public File getLogFilePath(String fileName) {
         String filePath = getAppRootFolder() + File.separator + Constants.LOGS_FOLDER;
         File file = new File(filePath);
@@ -257,6 +262,9 @@ public class FileUtils {
 
     public void delete(String selectedPath) {
         File fileorDir;
+        if(TextUtils.isEmpty(selectedPath)) {
+            return;
+        }
         if(selectedPath.startsWith("/")) {
             fileorDir = new File(getParentFolder() + selectedPath);
         } else {

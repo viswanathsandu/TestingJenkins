@@ -14,7 +14,7 @@ public class Chapter extends BaseModel {
     @SerializedName("TotalTestedMarks")
     public String totalTestedMarks;
     @SerializedName("IdCourseSubjectchapter")
-    public String idCourseSubjectchapter;
+    public String idCourseSubjectChapter;
     @SerializedName("PendingExerciseTopics")
     public String pendingExerciseTopics;
     @SerializedName("CompletedTopics")

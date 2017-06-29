@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Corsalite</string>
     <string name="localytics_api_key">53219e39511fbd4230deb55-401673cc-52a8-11e6-18db-00cef1388a40</string>
+    // This will be overridden for fga
+    <string name="entityId"></string>
 
     <string name="in_progress">In Progress</string>
     <string name="action_logout">Logout</string>
@@ -39,6 +41,7 @@
     <string name="virtual_currency_fetched">Virtual currency fetched successfully</string>
     <string name="virtual_currency_fetch_failed">Failed to fetch virtual currency information</string>
     <string name="study_centre">Study Center</string>
+    <string name="test_series">Test Series</string>
     <string name="offline_content">Offline Content</string>
     <string name="usage_analysis">Usage Analysis</string>
     <string name="analytics">Analytics</string>
@@ -178,4 +181,5 @@
         4. Open app from device apps
 
     </string>
+    <string name="powered_by"></string>
 </resources>

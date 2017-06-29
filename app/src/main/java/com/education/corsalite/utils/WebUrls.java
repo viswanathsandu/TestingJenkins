@@ -21,6 +21,9 @@ public class WebUrls {
     private final static String COMPUTER_ADAPTIVE_TEST_URL = "examination/loadExam/0/0/%s";
     private final static String HANDLER_URL_PATTERN = "handler";
     private final static String STUDY_CENTER_URL_PATTERN = "student";
+    private final static String RECOMMENDED_READING_URL_PATTERN = "dashboard/courseAnalysis/%s/recommendedreading";
+    private final static String  PROGRESS_REPORT_URL_PATTERN = "dashboard/courseAnalysis/%s/progressreport";
+    private final static String  TIME_MANAGEMENT_URL_PATTERN = "dashboard/courseAnalysis/13/timemanagementbysubject";
 
     public static String getForgotPasswordUrl() {
         return ApiClientService.getBaseUrl()+FORGOT_PASSWORD_URL;
@@ -64,6 +67,18 @@ public class WebUrls {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public static String getProgressReportUrl(String courseId) {
+        return ApiClientService.getBaseUrl() + String.format(PROGRESS_REPORT_URL_PATTERN, courseId);
+    }
+
+    public static String getRecommendedReadingUrl(String courseId) {
+        return ApiClientService.getBaseUrl() + String.format(RECOMMENDED_READING_URL_PATTERN, courseId);
+    }
+
+    public static String getTimeManagementUrl(String courseId) {
+        return ApiClientService.getBaseUrl() + String.format(TIME_MANAGEMENT_URL_PATTERN, courseId);
     }
 
     public static Intent getIntent(Activity activity, String url) {

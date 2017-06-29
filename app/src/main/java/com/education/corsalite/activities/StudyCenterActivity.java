@@ -88,15 +88,23 @@ public class StudyCenterActivity extends AbstractBaseActivity {
         super.onResume();
         // fetch schedule tests and configure the notifications
         loadScheduledTests();
+        if(getSelectedCourse() != null) {
+            getStudyCentreData(getSelectedCourse().courseId.toString());
+        }
         if (mAdapter != null) {
             recyclerView.invalidate();
         }
     }
 
     @Override
-    public void onEvent(Course course) {
-        super.onEvent(course);
-        getStudyCentreData(course.courseId.toString());
+    protected void onCourseChanged(Course course) {
+        super.onCourseChanged(course);
+        if(course.isTestSeries()) {
+            startActivity(new Intent(this, TestSeriesActivity.class));
+            finish();
+        } else {
+            getStudyCentreData(course.courseId.toString());
+        }
     }
 
     private void setUpViews(RelativeLayout myView) {
@@ -295,7 +303,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
             for (Chapter chapter : studyCenter.chapters) {
                 boolean idMatchFound = false;
                 for (OfflineContent offlineContent : offlineContents) {
-                    if (chapter.idCourseSubjectchapter.equals(offlineContent.chapterId)) {
+                    if (chapter.idCourseSubjectChapter.equals(offlineContent.chapterId)) {
                         idMatchFound = true;
                     }
                     offlineContent.earnedMarks = chapter.earnedMarks;
@@ -468,26 +476,28 @@ public class StudyCenterActivity extends AbstractBaseActivity {
     }
 
     private void showAlertDialog(View v, StudyCenter studyCenter) {
+        try {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            LayoutInflater li = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View dialogView = li.inflate(R.layout.layout_list_item_view_popup, null);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        LayoutInflater li = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View dialogView = li.inflate(R.layout.layout_list_item_view_popup, null);
+            TextView saveOfflineText = (TextView) dialogView.findViewById(R.id.offline_content);
+            saveOfflineText.setVisibility(View.GONE);
 
-        TextView saveOfflineText = (TextView) dialogView.findViewById(R.id.offline_content);
-        saveOfflineText.setVisibility(View.GONE);
-
-        builder.setView(dialogView);
-        setDataForAlert(dialogView, studyCenter);
-        alertDialog = builder.create();
-        WindowManager.LayoutParams wmlp = alertDialog.getWindow().getAttributes();
-        wmlp.gravity = Gravity.TOP | Gravity.LEFT;
-        // position the alertDialog
-        wmlp.x = (int) v.getX() + 15;
-        wmlp.y = (int) v.getY() + 140;
-        alertDialog.show();
-        alertDialog.getWindow().setAttributes(wmlp);
-        alertDialog.getWindow().setLayout(300, ViewGroup.LayoutParams.WRAP_CONTENT);
-
+            builder.setView(dialogView);
+            setDataForAlert(dialogView, studyCenter);
+            alertDialog = builder.create();
+            WindowManager.LayoutParams wmlp = alertDialog.getWindow().getAttributes();
+            wmlp.gravity = Gravity.TOP | Gravity.LEFT;
+            // position the alertDialog
+            wmlp.x = (int) v.getX() + 15;
+            wmlp.y = (int) v.getY() + 140;
+            alertDialog.show();
+            alertDialog.getWindow().setAttributes(wmlp);
+            alertDialog.getWindow().setLayout(300, ViewGroup.LayoutParams.WRAP_CONTENT);
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
     }
 
     private void startContentActivity(StudyCenter studyCenter) {
@@ -495,7 +505,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
             Intent intent = new Intent(this, ContentReadingActivity.class);
             intent.putExtra("courseId", AbstractBaseActivity.getSelectedCourseId());
             intent.putExtra("subjectId", studyCenter.idCourseSubject + "");
-            intent.putExtra("chapterId", studyCenter.chapters.get(0).idCourseSubjectchapter + "");
+            intent.putExtra("chapterId", studyCenter.chapters.get(0).idCourseSubjectChapter + "");
             startActivity(intent);
         }
     }
@@ -548,6 +558,10 @@ public class StudyCenterActivity extends AbstractBaseActivity {
     }
 
     private void startFlaggedQuestionView(StudyCenter studyCenter) {
+        if(!SystemUtils.isNetworkConnected(this)) {
+            showToast("This feature is not available for offline. Please come online.");
+            return;
+        }
         Intent exerciseIntent = new Intent(this, ExamEngineActivity.class);
         exerciseIntent.putExtra(Constants.TEST_TITLE, "Flagged Questions");
         exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.getSelectedCourseId());
@@ -619,7 +633,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
                                 for (Chapter chapter : getChaptersForSubject()) {
                                     boolean idMatchFound = false;
                                     for (OfflineContent offlineContent : offlineContents) {
-                                        if (chapter.idCourseSubjectchapter.equals(offlineContent.chapterId)) {
+                                        if (chapter.idCourseSubjectChapter.equals(offlineContent.chapterId)) {
                                             idMatchFound = true;
                                         }
                                     }

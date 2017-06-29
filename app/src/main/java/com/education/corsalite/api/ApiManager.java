@@ -16,6 +16,7 @@ import com.education.corsalite.models.db.reqres.CoursesReqRes;
 import com.education.corsalite.models.db.reqres.LoginReqRes;
 import com.education.corsalite.models.db.reqres.ScheduleTestsReqRes;
 import com.education.corsalite.models.db.reqres.StudyCenterReqRes;
+import com.education.corsalite.models.db.reqres.TestSeriesReqRes;
 import com.education.corsalite.models.db.reqres.UserProfileReqRes;
 import com.education.corsalite.models.db.reqres.WelcomeReqRes;
 import com.education.corsalite.models.db.reqres.requests.AppConfigRequest;
@@ -26,6 +27,7 @@ import com.education.corsalite.models.requestmodels.ClientEntityConfigRequest;
 import com.education.corsalite.models.requestmodels.CreateChallengeRequest;
 import com.education.corsalite.models.requestmodels.ForumLikeRequest;
 import com.education.corsalite.models.requestmodels.ForumModel;
+import com.education.corsalite.models.requestmodels.TestSeriesRequest;
 import com.education.corsalite.models.responsemodels.BaseResponseModel;
 import com.education.corsalite.models.responsemodels.ChallengeCompleteResponseModel;
 import com.education.corsalite.models.responsemodels.ChallengeStartResponseModel;
@@ -67,6 +69,7 @@ import com.education.corsalite.models.responsemodels.TestAnswerPaperResponse;
 import com.education.corsalite.models.responsemodels.TestCoverage;
 import com.education.corsalite.models.responsemodels.TestPaperIndex;
 import com.education.corsalite.models.responsemodels.TestQuestionPaperResponse;
+import com.education.corsalite.models.responsemodels.TestSeriesResponse;
 import com.education.corsalite.models.responsemodels.UpdateExamDetailsResponse;
 import com.education.corsalite.models.responsemodels.UsageAnalysis;
 import com.education.corsalite.models.responsemodels.UserEventsResponse;
@@ -318,15 +321,15 @@ public class ApiManager {
         }
     }
 
-    public void getFriendsList(String userId, String courseId, ApiCallback<FriendsData> callback) {
+    public void getFriendsList(String userId, String courseId, String courseInstanceId, ApiCallback<FriendsData> callback) {
         if (isApiOnline()) {
-            ApiClientService.get().getFriendsList(userId, courseId, callback);
+            ApiClientService.get().getFriendsList(userId, courseId, courseInstanceId, callback);
         }
     }
 
-    public void searchFriends(String userId, String courseId, String searchKey, ApiCallback<List<FriendsData.Friend>> callback) {
+    public void searchFriends(String userId, String courseId, String searchKey, String courseInstanceId, ApiCallback<List<FriendsData.Friend>> callback) {
         if (isApiOnline()) {
-            ApiClientService.get().searchFriends(userId, courseId, searchKey, callback);
+            ApiClientService.get().searchFriends(userId, courseId, courseInstanceId, searchKey, callback);
         }
     }
 
@@ -344,16 +347,16 @@ public class ApiManager {
         }
     }
 
-    public TestQuestionPaperResponse getTestQuestionPaper(String testQuestionPaperId, String testAnswerPaperId) {
+    public TestQuestionPaperResponse getTestQuestionPaper(String testQuestionPaperId, String testAnswerPaperId, String studentId) {
         if (isApiOnline()) {
-            return ApiClientService.get().getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId);
+            return ApiClientService.get().getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, studentId);
         }
         return null;
     }
 
-    public void getTestQuestionPaper(String testQuestionPaperId, String testAnswerPaperId, ApiCallback<TestQuestionPaperResponse> callback) {
+    public void getTestQuestionPaper(String testQuestionPaperId, String testAnswerPaperId, String studentId, ApiCallback<TestQuestionPaperResponse> callback) {
         if (isApiOnline()) {
-            ApiClientService.get().getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, callback);
+            ApiClientService.get().getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, studentId, callback);
         }
     }
 
@@ -606,7 +609,6 @@ public class ApiManager {
     }
 
     public void getClientEntityAppConfig(String userId, String entityId, ApiCallback<ClientEntityAppConfig> callback) {
-        // TODO : uncomment it after testing
         apiCacheHolder.appentityconfigRequest = new AppEntityConfigRequest(userId, entityId);
         if (isApiOnline()) {
             ApiClientService.get().getClientEntityAppConfig(userId, entityId, callback);
@@ -624,7 +626,19 @@ public class ApiManager {
     public void postClientEntityAppConfig(String userId, String deviceId, ApiCallback<CommonResponseModel> callback) {
         if(isApiOnline()) {
             ClientEntityConfigRequest request = new ClientEntityConfigRequest(userId, deviceId);
-            ApiClientService.get().postClientEntityAppConfig(new TypedString(("Update=" + Gson.get().toJson(request))), callback);
+            ApiClientService.get().postClientEntityAppConfig(new TypedString("Update=" + Gson.get().toJson(request)), callback);
+        }
+    }
+
+    public void getTestSeries(String idStudent, String idCourse, String idCourseInstance, ApiCallback<TestSeriesResponse> callback) {
+        TestSeriesRequest request = new TestSeriesRequest(idStudent, idCourse, idCourseInstance);
+        apiCacheHolder.testSeriesRequest = request;
+        if(isApiOnline()) {
+            ApiClientService.get().getTestSeries(new TypedString("Update=" + Gson.get().toJson(request)), callback);
+        } else if(!isNetworkConnected()) {
+            TestSeriesReqRes reqRes = new TestSeriesReqRes();
+            reqRes.request = apiCacheHolder.testSeriesRequest;
+            SugarDbManager.get(context).getResponse(reqRes, callback);
         }
     }
 }

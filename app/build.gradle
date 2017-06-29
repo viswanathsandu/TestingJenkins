@@ -2,17 +2,23 @@ apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 apply plugin: 'com.google.gms.google-services'
 
+// Version naming specification xx xx x xx
+def versionCodeCorsalite = 103000
+def versionNameCorsalite = "1.3.0"
+
+def versionCodeFGA = 3000
+def versionNameFGA = "0.3"
+
 android {
     compileSdkVersion 24
-    buildToolsVersion '24'
+    buildToolsVersion '25.0.0'
 
     defaultConfig {
         applicationId "com.education.corsalite"
         minSdkVersion 17
         targetSdkVersion 20
-        // Version naming specification xx xx x xx
-        versionCode 102200
-        versionName "1.2.2"
+        versionCode = versionCodeCorsalite
+        versionName = versionNameCorsalite
         multiDexEnabled false
     }
     buildTypes {
@@ -30,30 +36,82 @@ android {
     }
 
     productFlavors {
-        prod {
+        CorsaliteProd {
             applicationId "com.corsalite.tabletapp"
+            // Version naming specification xx xx x xx
+            versionCode versionCodeCorsalite
+            versionName versionNameCorsalite
             minSdkVersion 19
             buildConfigField 'String', 'BASE_URL', '"http://app.corsalite.com/ws/"'
             buildConfigField 'String', 'BASE_API_URL', '"http://app.corsalite.com/ws/webservices/"'
             buildConfigField 'String', 'SOCKET_URL', '"ws://app.corsalite.com:9300"'
             buildConfigField 'String', 'PARENT_FOLDER', '".Corsalite"'
-            project.ext.set("archivesBaseName", "corsalite_" + defaultConfig.versionName + "_" + defaultConfig.versionCode);
         }
-        staging {
+        CorsaliteStaging {
             applicationId "com.corsalite.androidapp.staging"
+            // Version naming specification xx xx x xx
+            versionCode versionCodeCorsalite
+            versionName versionNameCorsalite
             buildConfigField 'String', 'BASE_URL', '"http://staging.corsalite.com/v1/"'
             buildConfigField 'String', 'BASE_API_URL', '"http://staging.corsalite.com/v1/webservices/"'
             buildConfigField 'String', 'SOCKET_URL', '"ws://staging.corsalite.com:9300"'
             buildConfigField 'String', 'PARENT_FOLDER', '".CorsaliteStaging"'
-            project.ext.set("archivesBaseName", "corsalite_" + defaultConfig.versionName + "_" + defaultConfig.versionCode);
         }
-        stage {
+        FgaProd {
+            applicationId "com.corsalite.fga"
+            // Version naming specification xx xx x xx
+            versionCode versionCodeFGA
+            versionName versionNameFGA
+            minSdkVersion 19
+            buildConfigField 'String', 'BASE_URL', '"http://app.corsalite.com/ws/"'
+            buildConfigField 'String', 'BASE_API_URL', '"http://app.corsalite.com/ws/webservices/"'
+            buildConfigField 'String', 'SOCKET_URL', '"ws://app.corsalite.com:9300"'
+            buildConfigField 'String', 'PARENT_FOLDER', '".FGA"'
+        }
+        FgaStaging {
+            applicationId "com.corsalite.fga.staging"
+            // Version naming specification xx xx x xx
+            versionCode versionCodeFGA
+            versionName versionNameFGA
+            buildConfigField 'String', 'BASE_URL', '"http://staging.corsalite.com/v1/"'
+            buildConfigField 'String', 'BASE_API_URL', '"http://staging.corsalite.com/v1/webservices/"'
+            buildConfigField 'String', 'SOCKET_URL', '"ws://staging.corsalite.com:9300"'
+            buildConfigField 'String', 'PARENT_FOLDER', '".FGAStaging"'
+        }
+
+        // These will be used occassionally
+        CorsaliteStageNewChanges {
+            applicationId "com.corsalite.androidapp.stagenewchanges"
+            // Version naming specification xx xx x xx
+            versionCode versionCodeCorsalite
+            versionName versionNameCorsalite
+            buildConfigField 'String', 'BASE_URL', '"http://staging.corsalite.com/stagenewchanges/"'
+            buildConfigField 'String', 'BASE_API_URL', '"http://staging.corsalite.com/stagenewchanges/webservices/"'
+            buildConfigField 'String', 'SOCKET_URL', '"ws://staging.corsalite.com:9300"'
+            buildConfigField 'String', 'PARENT_FOLDER', '".CorsaliteStageNewChanges"'
+        }
+        CorsaliteStage {
             applicationId "com.corsalite.androidapp.stage"
+            // Version naming specification xx xx x xx
+            versionCode versionCodeCorsalite
+            versionName versionNameCorsalite
             buildConfigField 'String', 'BASE_URL', '"http://staging.corsalite.com/stage/"'
             buildConfigField 'String', 'BASE_API_URL', '"http://staging.corsalite.com/stage/webservices/"'
             buildConfigField 'String', 'SOCKET_URL', '"ws://staging.corsalite.com:9300"'
             buildConfigField 'String', 'PARENT_FOLDER', '".CorsaliteStage"'
-            project.ext.set("archivesBaseName", "corsalite_" + defaultConfig.versionName + "_" + defaultConfig.versionCode);
+        }
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def SEP = "_"
+            def flavor = variant.productFlavors[0].name
+            def buildType = variant.variantData.variantConfiguration.buildType.name
+            def versionName = variant.productFlavors[0].versionName
+            def versionCode = variant.productFlavors[0].versionCode
+            def newApkName = flavor + SEP + versionName + SEP + versionCode + SEP + buildType + ".apk"
+
+            output.outputFile = new File(output.outputFile.parent, newApkName)
         }
     }
 }
@@ -95,16 +153,17 @@ dependencies {
     compile 'com.github.johnkil.print:print:1.2.2'
     compile 'de.greenrobot:eventbus:2.4.0'
     compile 'org.solovyev.android.views:linear-layout-manager:0.5@aar'
-    compile 'com.localytics.android:library:3.6.0'
+    compile 'com.localytics.android:library:4.2.+'
     compile 'com.github.lzyzsd:circleprogress:1.1.0@aar'
     compile 'org.java-websocket:Java-WebSocket:1.3.0'
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.mani:ThinDownloadManager:1.2.5'
-    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha1'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.github.halysongoncalves:pugnotification:1.8.1'
     compile 'com.scottyab:aescrypt:0.0.1'
     compile 'commons-codec:commons-codec:1.3'
     compile 'com.google.firebase:firebase-core:9.2.1'
     compile 'com.google.firebase:firebase-crash:9.2.1'
+    compile 'com.android.support.constraint:constraint-layout:1.0.0'
+    compile 'com.android.support:cardview-v7:24.0.0'
 }

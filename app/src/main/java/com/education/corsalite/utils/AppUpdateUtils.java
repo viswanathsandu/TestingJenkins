@@ -32,6 +32,8 @@ public class AppUpdateUtils {
                 fileUtils.deleteRootLevel(fileUtils.getAppRootFolder());
                 fileUtils.deleteRootLevel("/data/data/"+BuildConfig.APPLICATION_ID+"/databases/corsalite.db");
                 SugarContext.init(mContext.getApplicationContext());
+            } else if(BuildConfig.VERSION_CODE >= 102400 && BuildConfig.VERSION_CODE <= 102499) {
+                fileUtils.deleteRootLevel(fileUtils.getLogFolderPath());
             }
             // create directories
             File dir = new File(versionsFolderPath);

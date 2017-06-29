@@ -5,6 +5,7 @@
     <color name="colorPrimaryDark">#1E589A</color>
     <color name="dark_blue_selector">#0B4A8E</color>
     <color name="blue">#125291</color>
+    <color name="bg_login">#125291</color>
     <color name="royalblue">#4169E1</color>
     <color name="skyblue">#1799F3</color>
     <color name="light_yellow">#FAFAC8</color>

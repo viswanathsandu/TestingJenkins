@@ -9,6 +9,7 @@ import com.education.corsalite.models.db.reqres.CoursesReqRes;
 import com.education.corsalite.models.db.reqres.LoginReqRes;
 import com.education.corsalite.models.db.reqres.ScheduleTestsReqRes;
 import com.education.corsalite.models.db.reqres.StudyCenterReqRes;
+import com.education.corsalite.models.db.reqres.TestSeriesReqRes;
 import com.education.corsalite.models.db.reqres.UserProfileReqRes;
 import com.education.corsalite.models.db.reqres.VirtualCurrencyBalanceReqRes;
 import com.education.corsalite.models.db.reqres.WelcomeReqRes;
@@ -23,12 +24,14 @@ import com.education.corsalite.models.db.reqres.requests.StudyCenterRequest;
 import com.education.corsalite.models.db.reqres.requests.UserProfileRequest;
 import com.education.corsalite.models.db.reqres.requests.VirtualCurrencyBalanceRequest;
 import com.education.corsalite.models.db.reqres.requests.WelcomeRequest;
+import com.education.corsalite.models.requestmodels.TestSeriesRequest;
 import com.education.corsalite.models.responsemodels.ClientEntityAppConfig;
 import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.LoginResponse;
 import com.education.corsalite.models.responsemodels.StudyCenter;
+import com.education.corsalite.models.responsemodels.TestSeriesResponse;
 import com.education.corsalite.models.responsemodels.UserProfileResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencyBalanceResponse;
 import com.education.corsalite.models.responsemodels.WelcomeDetails;
@@ -65,6 +68,8 @@ public class ApiCacheHolder {
     public ScheduleTestsReqRes scheduleTests;
     public VirtualCurrencyBalanceRequest virtualCurrencyBalanceRequest = null;
     public VirtualCurrencyBalanceReqRes virtualCurrencyBalance = null;
+    public TestSeriesRequest testSeriesRequest;
+    public TestSeriesReqRes testSeriesReqRes;
 
     public static ApiCacheHolder getInstance() {
         if(instance == null) {
@@ -195,6 +200,18 @@ public class ApiCacheHolder {
             virtualCurrencyBalance = new VirtualCurrencyBalanceReqRes();
             virtualCurrencyBalance.request = virtualCurrencyBalanceRequest;
             virtualCurrencyBalance.response = response;
+        }
+    }
+
+    public void setTestSeriesRequest(TestSeriesRequest request) {
+        testSeriesRequest = request;
+    }
+
+    public void setTestSeriesResponse(TestSeriesResponse response) {
+        if(testSeriesRequest != null && response != null) {
+            testSeriesReqRes = new TestSeriesReqRes();
+            testSeriesReqRes.request = testSeriesRequest;
+            testSeriesReqRes.response = response;
         }
     }
 }

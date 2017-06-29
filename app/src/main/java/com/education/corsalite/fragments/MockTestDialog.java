@@ -30,7 +30,9 @@ import com.education.corsalite.models.responsemodels.PostQuestionPaper;
 import com.education.corsalite.services.TestDownloadService;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.L;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 import butterknife.Bind;
@@ -90,6 +92,25 @@ public class MockTestDialog extends DialogFragment implements MockTestsListAdapt
     }
 
     private void loadMockTests() {
+        String mockTestsGson = null;
+        if(getArguments() != null) {
+             mockTestsGson = getArguments().getString("mock_tests", null);
+        }
+        if(!TextUtils.isEmpty(mockTestsGson)) {
+            try {
+                Type listType = new TypeToken<List<MockTest>>() {
+                }.getType();
+                mMockTestList = Gson.get().fromJson(mockTestsGson, listType);
+                showMockTests();
+            } catch (Exception e) {
+                if (getActivity() != null) {
+                    ((AbstractBaseActivity) getActivity()).showToast("No mock tests available");
+                    dismiss();
+                }
+            }
+            return;
+        }
+
         ApiManager.getInstance(getActivity()).getMockTests(
                 AbstractBaseActivity.getSelectedCourseId(),
                 LoginUserCache.getInstance().getStudentId(),
@@ -152,6 +173,7 @@ public class MockTestDialog extends DialogFragment implements MockTestsListAdapt
                 Intent intent = new Intent(getActivity(), TestDownloadService.class);
                 intent.putExtra(Constants.TEST_TITLE, "Mock Test");
                 intent.putExtra("testQuestionPaperId", testQuestionPaperId);
+                intent.putExtra("studentId", LoginUserCache.getInstance().getStudentId());
                 intent.putExtra("selectedMockTest", Gson.get().toJson(selectedMockTest));
                 getActivity().startService(intent);
                 Toast.makeText(getActivity(), "Downloading Mock test paper in background", Toast.LENGTH_SHORT).show();

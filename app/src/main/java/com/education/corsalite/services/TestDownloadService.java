@@ -7,10 +7,11 @@ import android.text.TextUtils;
 import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
-import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.db.SugarDbManager;
 import com.education.corsalite.enums.Tests;
+import com.education.corsalite.event.TestDownloadCompletedEvent;
 import com.education.corsalite.event.Toast;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.helpers.ExamEngineHelper;
 import com.education.corsalite.listener.OnExamLoadCallback;
 import com.education.corsalite.models.db.ExerciseOfflineModel;
@@ -26,10 +27,8 @@ import com.education.corsalite.models.responsemodels.TestPaperIndex;
 import com.education.corsalite.models.responsemodels.TestQuestionPaperResponse;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.ExamUtils;
-import com.education.corsalite.gson.Gson;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.TimeUtils;
-
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
@@ -55,6 +54,7 @@ public class TestDownloadService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         dbManager = SugarDbManager.get(getApplicationContext());
         examUtils = new ExamUtils(getApplicationContext());
+        String studentId = intent.getStringExtra("studentId");
         String testQuestionPaperId = intent.getStringExtra("testQuestionPaperId");
         String testAnswerPaperId = intent.getStringExtra("testAnswerPaperId");
         String mockTestStr = intent.getStringExtra("selectedMockTest");
@@ -78,10 +78,10 @@ public class TestDownloadService extends IntentService {
         }
         if (mockTestStr != null) {
             MockTest mockTest = Gson.get().fromJson(mockTestStr, MockTest.class);
-            getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, mockTest, null);
+            getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, mockTest, null, studentId);
         } else if (scheduledTestStr != null) {
             ScheduledTestsArray scheduledTest = Gson.get().fromJson(scheduledTestStr, ScheduledTestsArray.class);
-            getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, null, scheduledTest);
+            getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, null, scheduledTest, studentId);
         } else if(takeTestStr != null){
             Chapter chapter = Gson.get().fromJson(takeTestStr,Chapter.class);
             loadTakeTest(chapter,null, questionsCount, subjectId);
@@ -95,7 +95,7 @@ public class TestDownloadService extends IntentService {
 
     private void downloadExercises(List<ExerciseOfflineModel> models) {
         for(final ExerciseOfflineModel model : models) {
-            ApiManager.getInstance(this).getExercise(model.topicId, model.courseId, LoginUserCache.getInstance().getStudentId(), null,
+            ApiManager.getInstance(this).getExercise(model.topicId, model.courseId, null, null,
                 new ApiCallback<List<ExamModel>>(this) {
                     @Override
                     public void failure(CorsaliteError error) {
@@ -118,11 +118,12 @@ public class TestDownloadService extends IntentService {
     }
 
 
-    private void getTestQuestionPaper(final String testQuestionPaperId, final String testAnswerPaperId,
-                                      final MockTest mockTest, final ScheduledTestsArray scheduledTestsArray) {
+    private void getTestQuestionPaper(final String testQuestionPaperId, final String testAnswerPaperId, final MockTest mockTest,
+                                      final ScheduledTestsArray scheduledTestsArray, String studentId) {
         try {
             TestPaperIndex testPaperIndexResponse = ApiManager.getInstance(this).getTestPaperIndex(testQuestionPaperId, testAnswerPaperId, "N");
-            TestQuestionPaperResponse questionPaperResponse = ApiManager.getInstance(this).getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId);
+            TestQuestionPaperResponse questionPaperResponse = ApiManager.getInstance(this)
+                    .getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, studentId);
             if (questionPaperResponse != null) {
                 OfflineTestObjectModel model = new OfflineTestObjectModel();
                 String testName = "";
@@ -148,8 +149,10 @@ public class TestDownloadService extends IntentService {
                 dbManager.saveOfflineTest(model);
                 if (!TextUtils.isEmpty(testName)) {
                     EventBus.getDefault().post(new Toast("Test \"" + testName + "\" has been downloaded successfully"));
+                    EventBus.getDefault().post(new TestDownloadCompletedEvent());
                 } else {
                     EventBus.getDefault().post(new Toast("Test has been downloaded successfully"));
+                    EventBus.getDefault().post(new TestDownloadCompletedEvent());
                 }
             }
         } catch (Exception e) {
@@ -170,6 +173,7 @@ public class TestDownloadService extends IntentService {
                 dbManager.saveOfflineTest(model);
                 new ExamUtils(getApplicationContext()).saveTestQuestionPaper(model.testQuestionPaperId, test.testQuestionPaperResponse);
                 EventBus.getDefault().post(new Toast("\""+chapter.chapterName + "\" test is downloaded successfully"));
+                EventBus.getDefault().post(new TestDownloadCompletedEvent());
             }
 
             @Override
@@ -196,6 +200,7 @@ public class TestDownloadService extends IntentService {
                 new ExamUtils(getApplicationContext()).saveTestQuestionPaper(model.testQuestionPaperId, test.testQuestionPaperResponse);
                 L.info("Test Saved : "+model.getClass());
                 EventBus.getDefault().post(new Toast("\""+subjectName + "\" test is downloaded successfully"));
+                EventBus.getDefault().post(new TestDownloadCompletedEvent());
             }
 
             @Override

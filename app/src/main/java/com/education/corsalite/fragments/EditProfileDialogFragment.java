@@ -61,8 +61,10 @@ public class EditProfileDialogFragment extends BaseDialogFragment {
             getDialog().setTitle("Edit Profile");
         } catch (Exception e) {
             L.error(e.getMessage(), e);
+        } catch(OutOfMemoryError e) {
+            L.error(e.getMessage(), e);
         }
-        return v;
+         return v;
     }
 
     @Override

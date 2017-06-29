@@ -33,6 +33,7 @@ import com.education.corsalite.models.requestmodels.UpdateNoteRequest;
 import com.education.corsalite.models.responsemodels.CommonResponseModel;
 import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
+import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.DefaultForumResponse;
 import com.education.corsalite.models.responsemodels.DefaultNoteResponse;
 import com.education.corsalite.gson.Gson;
@@ -144,7 +145,7 @@ public class EditorActivity extends AbstractBaseActivity {
             forumHeaderLayout.setVisibility(View.GONE);
         } else if (type.equals("Forum")) {
             forumHeaderLayout.setVisibility(View.VISIBLE);
-            getContentIndex(AbstractBaseActivity.getSelectedCourseId(), LoginUserCache.getInstance().getStudentId());
+            getContentIndex(getSelectedCourseId(), LoginUserCache.getInstance().getStudentId());
         }
         isAuthorOnlyCkb = (CheckBox) findViewById(R.id.is_author_only_ckb);
         if (isAuthorOnly.equals("Y")) {
@@ -370,6 +371,10 @@ public class EditorActivity extends AbstractBaseActivity {
     }
 
     @Override
+    protected void getContentIndex(Course course, String studentId) {
+        // Do nothing
+    }
+
     protected void getContentIndex(String courseId, String studentId) {
         showProgress();
         ApiManager.getInstance(EditorActivity.this).getContentIndex(courseId, studentId,

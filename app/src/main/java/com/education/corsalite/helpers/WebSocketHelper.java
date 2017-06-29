@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.models.socket.requests.ChallengeTestStartRequestEvent;
 import com.education.corsalite.models.socket.requests.ChallengeTestUpdateRequestEvent;
 import com.education.corsalite.models.socket.requests.NewChallengeTestRequestEvent;
@@ -17,11 +18,9 @@ import com.education.corsalite.models.socket.response.ChallengeUserList;
 import com.education.corsalite.models.socket.response.UpdateLeaderBoardEvent;
 import com.education.corsalite.models.socket.response.UserListResponseEvent;
 import com.education.corsalite.services.ApiClientService;
-import com.education.corsalite.gson.Gson;
 import com.education.corsalite.socket.CorsaliteWebsocketClient;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.SystemUtils;
-
 
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
@@ -76,7 +75,6 @@ public class WebSocketHelper {
 
             @Override
             public void onMessage(String message) {
-                // TODO : send events through event bus
                 L.info("Websocket", "message : "+message);
                 postResponseEvents(message);
             }
@@ -98,10 +96,8 @@ public class WebSocketHelper {
             mWebSocketClient.connect();
         } catch (AssertionError e) {
             L.error(e.getMessage(), e);
-            return;
         } catch (Exception e) {
             L.error(e.getMessage(), e);
-            return;
         }
     }
 

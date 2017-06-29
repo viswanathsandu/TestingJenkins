@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blue"
+    android:background="@color/bg_login"
     android:focusableInTouchMode="true">
 
     <ImageView
@@ -40,11 +40,11 @@
                 fontPath="@string/roboto_regular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Email"
-                android:textColor="@color/black"
-                android:inputType="textEmailAddress"
                 android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@._-"
-                android:maxLines="1"/>
+                android:hint="Email"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:textColor="@color/black" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -59,12 +59,12 @@
                 fontPath="@string/roboto_regular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Password"
-                android:textColor="@color/black"
-                android:drawableRight="@drawable/view"
                 android:drawablePadding="6dp"
+                android:drawableRight="@drawable/view"
+                android:hint="Password"
                 android:inputType="textPassword"
-                android:maxLines="1"/>
+                android:maxLines="1"
+                android:textColor="@color/black" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -88,6 +88,16 @@
             android:layout_marginTop="27dp"
             android:text="Forgot Password?"
             android:textColor="@color/red" />
+
+        <TextView
+            android:id="@+id/powered_by_txt"
+            fontPath="@string/roboto_regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:paddingTop="20dp"
+            android:text="@string/powered_by" />
 
     </LinearLayout>
 

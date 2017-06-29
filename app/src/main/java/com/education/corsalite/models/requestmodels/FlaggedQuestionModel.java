@@ -15,4 +15,5 @@ public class FlaggedQuestionModel {
     public String idTestAnswerPaper;
     @SerializedName("FlaggedYN")
     public String flaggedYN;
+    public String idStudent;
 }

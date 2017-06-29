@@ -87,6 +87,7 @@ public class AddFriendFragment extends BaseFragment implements SearchView.OnQuer
             ApiManager.getInstance(getActivity()).searchFriends(
                     appPref.getUserId(),
                     AbstractBaseActivity.getSelectedCourseId(),
+                    AbstractBaseActivity.getSelectedCourse().courseInstanceId,
                     searchKey,
                     new ApiCallback<List<FriendsData.Friend>>(getActivity()) {
 

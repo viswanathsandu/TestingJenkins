@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.event.ConnectExceptionEvent;
+import com.education.corsalite.event.InvalidAuthenticationEvent;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.utils.L;
 
@@ -50,6 +51,7 @@ public abstract class ApiCallback<T> implements Callback<T> {
                 CorsaliteError corsaliteError = new CorsaliteError();
                 corsaliteError.message = "Unathorized session.";
                 failure(corsaliteError);
+                EventBus.getDefault().post(new InvalidAuthenticationEvent());
             } else {
                 if(error.getCause() instanceof ConnectException || error.getCause() instanceof UnknownHostException) {
                     EventBus.getDefault().post(new ConnectExceptionEvent());

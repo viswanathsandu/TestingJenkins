@@ -34,6 +34,7 @@ import com.education.corsalite.models.db.ScheduledTestsArray;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.services.TestDownloadService;
 import com.education.corsalite.utils.L;
+import com.education.corsalite.utils.SystemUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -109,9 +110,14 @@ public class ScheduledTestDialog extends DialogFragment implements ScheduledTest
     @Override
     public void onSchedledDownload(int position) {
         try {
+            if(SystemUtils.isServiceRunning(getActivity(), TestDownloadService.class)) {
+                EventBus.getDefault().post(new com.education.corsalite.event.Toast("Currently downloads are in progress. Please try again"));
+                return;
+            }
             ScheduledTestsArray exam = mScheduledTestList.MockTest.get(position);
             Intent intent = new Intent(getActivity(), TestDownloadService.class);
             intent.putExtra("testQuestionPaperId", exam.testQuestionPaperId);
+            intent.putExtra("studentId", LoginUserCache.getInstance().getStudentId());
             intent.putExtra("selectedScheduledTest", Gson.get().toJson(exam));
             getActivity().startService(intent);
             Toast.makeText(getActivity(), "Downloading Scheduled test paper in background", Toast.LENGTH_SHORT).show();
@@ -145,9 +151,9 @@ public class ScheduledTestDialog extends DialogFragment implements ScheduledTest
                 public void failure(CorsaliteError error) {
                     super.failure(error);
                     try {
-                        ((AbstractBaseActivity) getActivity()).showToast("No scheduled tests available");
                         dialog.dismiss();
                         dismiss();
+                        ((AbstractBaseActivity) getActivity()).showToast("No scheduled tests available");
                     } catch (Exception e) {
                         L.error(e.getMessage(), e);
                     }

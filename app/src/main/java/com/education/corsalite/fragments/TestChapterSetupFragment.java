@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -22,14 +23,13 @@ import com.education.corsalite.R;
 import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.activities.ExamEngineActivity;
 import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.models.responsemodels.Chapter;
 import com.education.corsalite.models.responsemodels.TestCoverage;
 import com.education.corsalite.services.TestDownloadService;
 import com.education.corsalite.utils.Constants;
-import com.education.corsalite.gson.Gson;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.views.InputFilterMinMax;
-
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
@@ -65,6 +65,7 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
     private String subjectId;
     private int levelCrossed;
     private int questionCount;
+    private Integer maxQuestionLimit;
 
     public static TestChapterSetupFragment newInstance(Bundle bundle) {
         TestChapterSetupFragment fragment = new TestChapterSetupFragment();
@@ -79,14 +80,17 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         mExtras = getArguments();
         mChapterLevels = mExtras.getStringArrayList(EXTRAS_CHAPTER_LEVELS);
         subjectId = mExtras.getString(Constants.SELECTED_SUBJECTID, "");
         String chapterStr = mExtras.getString("chapter");
         levelCrossed = mExtras.getInt(Constants.LEVEL_CROSSED, 0);
+        maxQuestionLimit = mExtras.getInt(Constants.QUESTIONS_COUNT, -1);
         if (chapterStr != null) {
             chapter = Gson.get().fromJson(chapterStr, Chapter.class);
+        }
+        if(chapter != null && TextUtils.isEmpty(chapter.idCourseSubjectChapter)) {
+            chapter.idCourseSubjectChapter = mExtras.getString(Constants.SELECTED_CHAPTERID);
         }
         String testCoveragesGson = mExtras.getString(Constants.TEST_COVERAGE_LIST_GSON);
         if (!TextUtils.isEmpty(testCoveragesGson)) {
@@ -100,6 +104,7 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_chapter_test_setup, container, false);
         ButterKnife.bind(this, rootView);
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         loadLevels();
         getDialog().setTitle("Test Option");
         getDialog().getWindow().setBackgroundDrawableResource(R.color.white);
@@ -113,6 +118,14 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
         return rootView;
     }
 
+    @Override
+    public void onPause() {
+        if(getActivity() != null && getActivity() instanceof AbstractBaseActivity) {
+            ((AbstractBaseActivity) getActivity()).hideKeyboard();
+        }
+        super.onPause();
+    }
+
     private void loadLevels() {
         try {
             for (final String level : mChapterLevels) {
@@ -121,21 +134,23 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
                 txt.setText("Level " + level);
                 final CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkbox);
                 checkBox.setTag("Level " + level);
-                if (level.equals(levelCrossed + "")) {
+                if (Integer.parseInt(level) <= levelCrossed) {
                     checkBox.setChecked(true);
                     if (testCoverages != null) {
                         for (TestCoverage coverage : testCoverages) {
                             if (coverage.level.equalsIgnoreCase(level + "")) {
                                 questionCount += Integer.valueOf(coverage.questionCount);
-                                mNoOfQuestionsEditTxt.setFilters(new InputFilter[]{new InputFilterMinMax("1", questionCount+"")});
-                                mNoOfQuestionsEditTxt.setText(questionCount+"");
+                                int maxCount = (maxQuestionLimit >= 0 && maxQuestionLimit < questionCount) ? maxQuestionLimit : questionCount;
+                                mNoOfQuestionsEditTxt.setFilters(new InputFilter[]{new InputFilterMinMax("1", maxCount+"")});
+                                mNoOfQuestionsEditTxt.setText(maxCount+"");
                                 break;
                             }
                         }
                     }
                 } else if (Integer.valueOf(level) > levelCrossed) {
                     checkBox.setEnabled(false);
-                }
+                }        getDialog().setTitle("Test Option");
+
                 checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -153,8 +168,9 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
                             } else {
                                 questionCount -= Integer.valueOf(testCoverage.questionCount);
                             }
-                            mNoOfQuestionsEditTxt.setFilters(new InputFilter[]{new InputFilterMinMax("1", questionCount+"")});
-                            mNoOfQuestionsEditTxt.setText(questionCount + "");
+                            int maxCount = maxQuestionLimit < questionCount ? maxQuestionLimit : questionCount;
+                            mNoOfQuestionsEditTxt.setFilters(new InputFilter[]{new InputFilterMinMax("1", maxCount+"")});
+                            mNoOfQuestionsEditTxt.setText(maxCount+ "");
                         }
                     }
                 });
@@ -167,6 +183,9 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
 
     @OnClick({R.id.btn_cancel, R.id.btn_download, R.id.btn_next})
     public void onClick(View view) {
+        if(getActivity() != null && getActivity() instanceof AbstractBaseActivity) {
+            ((AbstractBaseActivity) getActivity()).hideKeyboard();
+        }
         switch (view.getId()) {
             case R.id.btn_cancel:
                 getDialog().dismiss();
@@ -186,7 +205,9 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
         if (testCoverages != null) {
             for (TestCoverage coverage : testCoverages) {
                 if (coverage.level.equalsIgnoreCase(chapterLevel + "")) {
-                    mNoOfQuestionsEditTxt.setText(coverage.questionCount);
+                    Integer count = Integer.parseInt(coverage.questionCount);
+                    int maxCount = maxQuestionLimit < count ? maxQuestionLimit : count;
+                    mNoOfQuestionsEditTxt.setText(maxCount + "");
                     break;
                 }
             }
@@ -209,9 +230,6 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
         mExtras.putBoolean(Constants.ADAPIVE_LEAERNING, mIsAdaptiveLearningEnabled);
         mExtras.putString(Constants.QUESTIONS_COUNT, noOfQuestions);
         startActivity(ExamEngineActivity.getMyIntent(getActivity(), mExtras));
-        if(getActivity() != null && getActivity() instanceof AbstractBaseActivity) {
-            ((AbstractBaseActivity) getActivity()).hideKeyboard();
-        }
         getActivity().finish();
     }
 
@@ -226,7 +244,7 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
         }
         Intent exerciseIntent = new Intent(getActivity(), TestDownloadService.class);
         exerciseIntent.putExtra("subjectId", subjectId);
-        exerciseIntent.putExtra("chapterId", chapter.idCourseSubjectchapter);
+        exerciseIntent.putExtra("chapterId", chapter.idCourseSubjectChapter);
         exerciseIntent.putExtra("selectedTakeTest", Gson.get().toJson(chapter));
         exerciseIntent.putExtra("courseId", AbstractBaseActivity.getSelectedCourseId());
         if (!TextUtils.isEmpty(noOfQuestions) && TextUtils.isDigitsOnly(noOfQuestions)) {
@@ -235,9 +253,6 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
         exerciseIntent.putExtra("entityId", LoginUserCache.getInstance().getEntityId());
         getActivity().startService(exerciseIntent);
         Toast.makeText(getActivity(), "Downloading test paper in background", Toast.LENGTH_SHORT).show();
-        if(getActivity() != null && getActivity() instanceof AbstractBaseActivity) {
-            ((AbstractBaseActivity) getActivity()).hideKeyboard();
-        }
         getActivity().finish();
     }
 }
