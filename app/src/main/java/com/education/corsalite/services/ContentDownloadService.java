@@ -203,14 +203,34 @@ public class ContentDownloadService extends IntentService {
     }
 
     private String getHtmlText(Content content) {
-        String text = content.type.equalsIgnoreCase(Constants.VIDEO_FILE) ?
-                content.originalUrl :
-                "<script type='text/javascript'>" +
-                        "function copy() {" +
-                        "    var t = (document.all) ? document.selection.createRange().text : document.getSelection();" +
-                        "    return t;" +
-                        "}" +
-                        "</script>" + content.contentHtml;
+        String text = content.type.equalsIgnoreCase(Constants.VIDEO_FILE)
+                ? content.originalUrl
+                : "<!DOCTYPE html>" +
+                "<html>" +
+                "<head>" +
+                "<script type='text/javascript' src='file:///android_asset/jquery/jquery-latest.js'></script>" +
+                "<script type='text/javascript' src='file:///android_asset/jquery/jquery.selection.js'></script>" +
+                "<script type='text/javascript' src='file:///android_asset/MathJax/MathJax.js?config=default'></script>" +
+                "" +
+                "<script type='text/x-mathjax-config'>"
+                +"MathJax.Hub.Config({ "
+                +"showMathMenu: false, "
+                +"jax: ['input/TeX','output/HTML-CSS'], "
+                +"extensions: ['tex2jax.js'], "
+                +"TeX: { extensions: ['AMSmath.js','AMSsymbols.js',"
+                +"'noErrors.js','noUndefined.js'] } "
+                +"});</script>" +
+                "" +
+                "<script>" +
+                "   function copy() {" +
+                "       return $.selection('html');" +
+                "   }" +
+                "</script>" +
+                "</head>" +
+                "<body>" +
+                    content.contentHtml +
+                "</body>" +
+                "</html>";
         return text;
     }
 
