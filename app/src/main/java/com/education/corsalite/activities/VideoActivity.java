@@ -1,17 +1,17 @@
 package com.education.corsalite.activities;
 
 import android.content.Context;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.MediaController;
-import android.widget.VideoView;
 import android.widget.ViewSwitcher;
 
+import com.devbrackets.android.exomedia.core.exoplayer.ExoMediaPlayer;
+import com.devbrackets.android.exomedia.listener.OnPreparedListener;
+import com.devbrackets.android.exomedia.ui.widget.VideoView;
 import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
@@ -40,11 +40,9 @@ public class VideoActivity extends AbstractBaseActivity {
     @Bind(R.id.progress) View progress;
 
     List<ContentModel> mContentModels;
-    int selectedPosition = 0;
+    long selectedPosition = 0;
     List<Content> contents;
     private String videoPath;
-
-    private MediaController mediaControls;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,7 +66,7 @@ public class VideoActivity extends AbstractBaseActivity {
 
         if(selectedPosition >= 0 && mContentModels != null) {
             getContent();
-            setToolbarForVideo(mContentModels, selectedPosition);
+            setToolbarForVideo(mContentModels, (int)selectedPosition);
         }
     }
 
@@ -81,11 +79,7 @@ public class VideoActivity extends AbstractBaseActivity {
     }
 
     private void initVideoView() {
-        //set the media controller buttons
-        if (mediaControls == null) {
-            mediaControls = new MediaController(this);
-        }
-        videoViewRelative.setMediaController(mediaControls);
+
     }
 
     private void loadWeb(final int selectedPosition) {
@@ -104,11 +98,12 @@ public class VideoActivity extends AbstractBaseActivity {
             progress.setVisibility(View.VISIBLE);
             videoViewRelative.seekTo(0);
             //set the uri of the video to be played
-            videoViewRelative.setVideoURI(Uri.parse(ApiClientService.getBaseUrl() + contents.get(selectedPosition).url.replace("./", "")));
+//            videoViewRelative.setVideoURI(Uri.parse(ApiClientService.getBaseUrl() + contents.get(selectedPosition).url.replace("./", "")));
+            videoViewRelative.setVideoURI(Uri.parse("http://staging.corsalite.com/stagenewchanges/files/topics/1315/sunil/output.mpd"));
             videoViewRelative.requestFocus();
-            videoViewRelative.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            videoViewRelative.setOnPreparedListener(new OnPreparedListener() {
 
-                public void onPrepared(MediaPlayer mediaPlayer) {
+                public void onPrepared() {
                     // close the progress bar and play the video
                     progress.setVisibility(View.GONE);
                     videoViewRelative.seekTo(selectedPosition);
@@ -172,7 +167,7 @@ public class VideoActivity extends AbstractBaseActivity {
                 if (viewSwitcher.indexOfChild(viewSwitcher.getCurrentView()) == 0) {
                     viewSwitcher.showNext();
                 }
-                onEvent(selectedPosition);
+                onEvent((int)selectedPosition);
             }
         });
     }
