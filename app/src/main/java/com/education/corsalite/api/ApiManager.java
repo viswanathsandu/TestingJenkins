@@ -23,7 +23,7 @@ import com.education.corsalite.models.db.reqres.requests.AppConfigRequest;
 import com.education.corsalite.models.db.reqres.requests.AppEntityConfigRequest;
 import com.education.corsalite.models.requestmodels.AddRemoveFriendRequest;
 import com.education.corsalite.models.requestmodels.Bookmark;
-import com.education.corsalite.models.requestmodels.ClientEntityConfigRequest1;
+import com.education.corsalite.models.requestmodels.ClientEntityConfigRequest;
 import com.education.corsalite.models.requestmodels.CreateChallengeRequest;
 import com.education.corsalite.models.requestmodels.ForumLikeRequest;
 import com.education.corsalite.models.requestmodels.ForumModel;
@@ -625,7 +625,7 @@ public class ApiManager {
 
     public void postClientEntityAppConfig(String userId, String deviceId, ApiCallback<CommonResponseModel> callback) {
         if(isApiOnline()) {
-            ClientEntityConfigRequest1 request = new ClientEntityConfigRequest1(userId, deviceId);
+            ClientEntityConfigRequest request = new ClientEntityConfigRequest(userId, deviceId);
             ApiClientService.get().postClientEntityAppConfig(new TypedString("Update=" + Gson.get().toJson(request)), callback);
         }
     }
