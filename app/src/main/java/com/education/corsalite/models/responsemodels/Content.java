@@ -19,6 +19,9 @@ public class Content extends BaseModel implements Serializable {
     @SerializedName("Url")
     public String url;
     @Ignore
+    @SerializedName("Original_url")
+    public String originalUrl;
+    @Ignore
     @SerializedName("ContentHtml")
     public String contentHtml;
     @SerializedName("Status")

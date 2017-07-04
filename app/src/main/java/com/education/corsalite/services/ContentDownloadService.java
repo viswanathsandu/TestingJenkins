@@ -112,7 +112,8 @@ public class ContentDownloadService extends IntentService {
     private void saveFileToDisk(OfflineContent offlineContent, String htmlText, Content content) {
         FileUtils fileUtils = FileUtils.get(this);
         if (content.type.equalsIgnoreCase(Constants.VIDEO_FILE)) {
-            downloadVideo(offlineContent, content, ApiClientService.getBaseUrl() + htmlText.replaceFirst("./", ""),
+            downloadVideo(offlineContent, content,
+                    ApiClientService.getBaseUrl() + htmlText.replaceFirst("./", ""),
                     FileUtils.get(getApplicationContext()).getVideoDownloadPath(content.idContent));
         } else if (TextUtils.isEmpty(htmlText) || htmlText.endsWith(Constants.HTML_FILE)) {
             Toast.makeText(this, getString(R.string.file_exists), Toast.LENGTH_SHORT).show();
@@ -203,7 +204,7 @@ public class ContentDownloadService extends IntentService {
 
     private String getHtmlText(Content content) {
         String text = content.type.equalsIgnoreCase(Constants.VIDEO_FILE) ?
-                content.url :
+                content.originalUrl :
                 "<script type='text/javascript'>" +
                         "function copy() {" +
                         "    var t = (document.all) ? document.selection.createRange().text : document.getSelection();" +
