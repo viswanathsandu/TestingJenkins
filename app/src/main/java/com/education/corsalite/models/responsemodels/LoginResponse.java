@@ -1,7 +1,9 @@
 package com.education.corsalite.models.responsemodels;
 
+import android.content.Context;
 import android.text.TextUtils;
 
+import com.education.corsalite.R;
 import com.google.gson.annotations.SerializedName;
 import com.orm.dsl.Ignore;
 
@@ -25,6 +27,12 @@ public class LoginResponse extends BaseResponseModel {
     public String displayName = "";
 
     public LoginResponse() {}
+
+    public boolean isSuccessful(Context context) {
+        String fgaEntityId = context.getString(R.string.entityId);
+        return super.isSuccessful() && (TextUtils.isEmpty(fgaEntityId)
+                    || fgaEntityId.equalsIgnoreCase(entitiyId));
+    }
 
     public boolean isRewardRedeemEnabled() {
         return !TextUtils.isEmpty(disableRewardRedeem) && disableRewardRedeem.equalsIgnoreCase("N");

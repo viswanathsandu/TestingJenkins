@@ -1,0 +1,9 @@
+{
+  "SplashDuration":"2000",
+  "CustomConfig": [
+    {
+      "ForceUpgrade":"false",
+      "LatestVersionCode":"1"
+    }
+  ]
+}

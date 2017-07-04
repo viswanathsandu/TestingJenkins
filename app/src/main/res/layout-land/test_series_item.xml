@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    app:cardBackgroundColor="#E6E6E6"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="8dp">
+
+    <RelativeLayout
+        android:id="@+id/container_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="10dp">
+
+        <Button
+            android:id="@+id/take_test_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="5dp"
+            android:text="Take Test"/>
+
+        <LinearLayout
+            android:id="@+id/title_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/take_test_btn"
+            android:paddingBottom="20dp"
+            android:paddingTop="10dp"
+            android:weightSum="5">
+
+            <TextView
+                android:id="@+id/title_txt"
+                fontPath="@string/roboto_regular"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:text="Title"
+                android:textColor="@color/text_black"
+                android:textSize="24sp"
+                android:maxLines="1"
+                android:ellipsize="end"/>
+
+            <TextView
+                android:id="@+id/remaining_txt"
+                fontPath="@string/roboto_regular"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Remaining tests"
+                android:textColor="@color/text_gray"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/title_container"
+            android:layout_toLeftOf="@+id/take_test_btn"
+            android:weightSum="4">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    fontPath="@string/roboto_regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Max Questions : "
+                    android:textColor="@color/text_gray"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/max_questions_txt"
+                    fontPath="@string/roboto_regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-"
+                    android:textColor="@color/text_gray"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    fontPath="@string/roboto_regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Marks/Total : "
+                    android:textColor="@color/text_gray"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/marks_txt"
+                    fontPath="@string/roboto_regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-"
+                    android:textColor="@color/text_gray"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    fontPath="@string/roboto_regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Accuracy : "
+                    android:textColor="@color/text_gray"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/accuracy_txt"
+                    fontPath="@string/roboto_regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-"
+                    android:textColor="@color/text_gray"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    fontPath="@string/roboto_regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Speed : "
+                    android:textColor="@color/text_gray"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/speed_txt"
+                    fontPath="@string/roboto_regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-"
+                    android:textColor="@color/text_gray"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

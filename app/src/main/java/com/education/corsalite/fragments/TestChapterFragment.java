@@ -15,12 +15,11 @@ import com.education.corsalite.activities.AbstractBaseActivity;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.models.responsemodels.Chapter;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.TestCoverage;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.Data;
-import com.education.corsalite.gson.Gson;
 import com.education.corsalite.utils.L;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Legend;
@@ -61,7 +60,6 @@ public class TestChapterFragment extends BaseFragment {
     private String chapterID, chapterName, subjectId;
     private int levelCrossed;
     private List<TestCoverage> testCoverages;
-    private Chapter chapter;
 
     public static TestChapterFragment newInstance(Bundle bundle) {
         TestChapterFragment fragment = new TestChapterFragment();
@@ -90,6 +88,14 @@ public class TestChapterFragment extends BaseFragment {
         return rootView;
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(getActivity() != null && getActivity() instanceof AbstractBaseActivity) {
+            ((AbstractBaseActivity) getActivity()).hideKeyboard();
+        }
+    }
+
     @OnClick({R.id.btn_header_test_cancel, R.id.btn_header_test_next})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -110,9 +116,6 @@ public class TestChapterFragment extends BaseFragment {
         subjectId = mExtras.getString(Constants.SELECTED_SUBJECTID, "");
         levelCrossed = mExtras.getInt(Constants.LEVEL_CROSSED, 0) + 1;
         String chapterStr = mExtras.getString("chapter");
-        if(chapterStr != null){
-            chapter = Gson.get().fromJson(chapterStr,Chapter.class);
-        }
         if (TextUtils.isEmpty(chapterID) || TextUtils.isEmpty(chapterName) || TextUtils.isEmpty(subjectId)) {
             //In case data is missing finish this activity,
             getActivity().finish();
@@ -173,7 +176,7 @@ public class TestChapterFragment extends BaseFragment {
         }
 
         BarDataSet barDataSet = new BarDataSet(entries, "");
-        barDataSet.setColors(new int[]{getResources().getColor(R.color.green), getResources().getColor(R.color.red), getResources().getColor(R.color.skyblue)});
+        barDataSet.setColors(new int[]{getResources().getColor(R.color.green), getResources().getColor(R.color.skyblue), getResources().getColor(R.color.red)});
         barDataSet.setDrawValues(false);
         barDataSet.setBarSpacePercent(20f);
 
@@ -220,6 +223,7 @@ public class TestChapterFragment extends BaseFragment {
         if(testCoverages != null) {
             mExtras.putString(Constants.TEST_COVERAGE_LIST_GSON, Gson.get().toJson(testCoverages));
         }
+
         TestChapterSetupFragment fragment = TestChapterSetupFragment.newInstance(mExtras);
         fragment.show(getFragmentManager(), TestChapterSetupFragment.getMyTag());
     }

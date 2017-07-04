@@ -85,7 +85,8 @@ public class FriendsAdapter extends AbstractRecycleViewAdapter {
         public void bindData(final int position, final FriendsData.Friend clickedFriend) {
             tvName.setText(clickedFriend.displayName);
             tvEmail.setText(clickedFriend.emailID);
-            statusView.setBackgroundColor(mActivity.getResources().getColor(clickedFriend.isOnline ? R.color.green : R.color.gray));
+            statusView.setBackgroundColor(mActivity.getResources()
+                    .getColor(clickedFriend.isOnline() ? R.color.green : R.color.gray));
 //            ivActionBtn.setVisibility(clickedFriend.isOnline ? View.VISIBLE : View.GONE);
 //            if (selectedFriends.contains(clickedFriend)) {
 //                ivActionBtn.setImageResource(android.R.drawable.ic_delete);
@@ -95,7 +96,7 @@ public class FriendsAdapter extends AbstractRecycleViewAdapter {
             if (!TextUtils.isEmpty(clickedFriend.photoUrl)) {
                 Glide.with(mActivity).load(ApiClientService.getBaseUrl() + clickedFriend.photoUrl.replaceFirst("./", "")).into(ivProfilePic);
             }
-            if(clickedFriend.isOnline) {
+            if(clickedFriend.isOnline()) {
                 parent.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

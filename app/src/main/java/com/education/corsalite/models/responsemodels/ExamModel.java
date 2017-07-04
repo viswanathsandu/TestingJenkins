@@ -65,7 +65,8 @@ public class ExamModel extends BaseModel implements Serializable, Comparable {
 
     public String answerColorSelection = Constants.AnswerState.UNATTEMPTED.getValue();
     public String selectedAnswers;
-
+    @Ignore
+    public String selectedAnswerKeyIds;
     public ExamModel() {}
 
     @Override

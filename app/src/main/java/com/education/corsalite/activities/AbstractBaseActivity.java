@@ -1,6 +1,7 @@
 package com.education.corsalite.activities;
 
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -14,7 +15,6 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -44,18 +44,19 @@ import com.education.corsalite.event.ConnectExceptionEvent;
 import com.education.corsalite.event.ContentReadingEvent;
 import com.education.corsalite.event.ExerciseAnsEvent;
 import com.education.corsalite.event.ForumPostingEvent;
+import com.education.corsalite.event.InvalidAuthenticationEvent;
 import com.education.corsalite.event.NetworkStatusChangeEvent;
 import com.education.corsalite.event.ScheduledTestStartEvent;
 import com.education.corsalite.event.TakingTestEvent;
 import com.education.corsalite.event.TimeChangedEvent;
 import com.education.corsalite.event.UpdateUserEvents;
-import com.education.corsalite.fragments.ChallengeTestRequestDialogFragment;
 import com.education.corsalite.fragments.MockTestDialog;
 import com.education.corsalite.fragments.ScheduledTestDialog;
 import com.education.corsalite.gson.Gson;
 import com.education.corsalite.helpers.WebSocketHelper;
 import com.education.corsalite.models.ContentModel;
 import com.education.corsalite.models.db.AppConfig;
+import com.education.corsalite.models.db.MockTest;
 import com.education.corsalite.models.db.OfflineTestObjectModel;
 import com.education.corsalite.models.db.ScheduledTestList;
 import com.education.corsalite.models.db.SyncModel;
@@ -133,8 +134,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     public List<FriendsData.Friend> selectedFriends = new ArrayList<>();
 
-    ChallengeTestRequestDialogFragment challengeTestRequestDialogFragment;
-
     public static void setSharedExamModels(List<ExamModel> examModels) {
         sharedExamModels = examModels;
     }
@@ -175,13 +174,16 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         setContentView(R.layout.navigation_drawer_layout);
         FireBaseHelper.initFireBase(this);
         frameLayout = (FrameLayout) findViewById(R.id.activity_layout_container);
-        initNavigationDrawer();
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
                 .setDefaultFontPath(getString(R.string.roboto_medium))
                 .setFontAttrId(R.attr.fontPath)
                 .build());
         initActivity();
+        initNavigationDrawer();
         logScreen(this.getClass().getSimpleName());
+        if(selectedCourse != null) {
+            enableNavigationOpitons(selectedCourse);
+        }
     }
 
     public void logScreen(String screenName) {
@@ -260,16 +262,20 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     private void checkDataSync() {
-        if (SystemUtils.isNetworkConnected(this)) {
-            if (!(this instanceof DataSyncActivity || this instanceof SplashActivity)
-                    && LoginUserCache.getInstance().getLoginResponse() != null) {
-                long eventsCount = dbManager.getcount(SyncModel.class);
-                if (eventsCount > 0) {
-                    showDataSyncAlert(eventsCount);
+        try {
+            if (SystemUtils.isNetworkConnected(this)) {
+                if (!(this instanceof DataSyncActivity || this instanceof SplashActivity)
+                        && LoginUserCache.getInstance().getLoginResponse() != null) {
+                    long eventsCount = dbManager.getcount(SyncModel.class);
+                    if (eventsCount > 0) {
+                        showDataSyncAlert(eventsCount);
+                    }
                 }
+            } else if (dataSyncAlertDialog != null && dataSyncAlertDialog.isShowing()) {
+                dataSyncAlertDialog.dismiss();
             }
-        } else if (dataSyncAlertDialog != null && dataSyncAlertDialog.isShowing()){
-            dataSyncAlertDialog.dismiss();
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
         }
     }
 
@@ -388,12 +394,16 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     private boolean isEntityAppUpgradeAlertShown(ClientEntityAppConfig config) {
-        if(config != null && config.isUpdateAvailable() && !TextUtils.isEmpty(config.getAppVersionNumber())) {
-            int latestAppVersion = Integer.parseInt(config.getAppVersionNumber());
-            if(latestAppVersion > BuildConfig.VERSION_CODE) {
-                showUpdateAlert(config.isForceUpgradeEnabled(), !config.isAppFromUnknownSources(), config.getUpdateUrl());
-                return true;
+        try {
+            if (config != null && config.isUpdateAvailable() && !TextUtils.isEmpty(config.getAppVersionNumber())) {
+                int latestAppVersion = Integer.parseInt(config.getAppVersionNumber());
+                if (latestAppVersion > BuildConfig.VERSION_CODE) {
+                    showUpdateAlert(config.isForceUpgradeEnabled(), config.isAppFromPlayStore(), config.getUpdateUrl());
+                    return true;
+                }
             }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
         }
         return false;
     }
@@ -450,6 +460,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     isLoginApiRunningInBackground = false;
                     if (error != null && !TextUtils.isEmpty(error.message)) {
                         showToast(error.message);
+                        EventBus.getDefault().post(new InvalidAuthenticationEvent());
                     }
                 }
 
@@ -457,7 +468,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                 public void success(LoginResponse loginResponse, Response response) {
                     super.success(loginResponse, response);
                     closeProgress();
-                    if (loginResponse.isSuccessful()) {
+                    if (loginResponse.isSuccessful(AbstractBaseActivity.this)) {
                         setCrashlyticsUserData();
                         isLoginApiRunningInBackground = false;
                         ApiCacheHolder.getInstance().setLoginResponse(loginResponse);
@@ -475,6 +486,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                         recreate();
                     } else {
                         showToast(getResources().getString(R.string.login_failed));
+                        EventBus.getDefault().post(new InvalidAuthenticationEvent());
                     }
                 }
             }, !SystemUtils.isNetworkConnected(this));
@@ -507,6 +519,12 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
         setToolbarTitle(getResources().getString(R.string.study_centre));
         showVirtualCurrency();
+        loadCoursesList();
+    }
+
+    protected void setToolbarForTestSeries() {
+        toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
+        setToolbarTitle(getResources().getString(R.string.test_series));
         loadCoursesList();
     }
 
@@ -548,7 +566,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     protected void setToolbarForWelcomeScreen() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
-        setToolbarTitle("Corsalite");
+        setToolbarTitle(getString(R.string.app_name));
         loadCoursesList();
     }
 
@@ -572,8 +590,9 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     protected void setToolbarForExamHistory() {
-        toolbar.findViewById(R.id.spinner_layout).setVisibility(View.GONE);
+        toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
         setToolbarTitle(getResources().getString(R.string.exam_history));
+        loadCoursesList();
     }
 
     protected void setToolbarForNotes() {
@@ -641,6 +660,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     protected void showDrawerIcon() {
         actionBarDrawerToggle.setDrawerIndicatorEnabled(true);
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
     }
 
     private void initNavigationDrawer() {
@@ -686,43 +706,9 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             return;
         }
         navigationView.findViewById(R.id.navigation_welcome).setVisibility(View.VISIBLE);
+        navigationView.findViewById(R.id.navigation_exam_history).setVisibility(View.VISIBLE);
         navigationView.findViewById(R.id.navigation_settings).setVisibility(View.VISIBLE);
-        if (config.isMyProfileEnabled()) {
-            navigationView.findViewById(R.id.navigation_profile).setVisibility(View.VISIBLE);
-        }
-        if (config.isStudyCenterEnabled()) {
-            navigationView.findViewById(R.id.navigation_study_center).setVisibility(View.VISIBLE);
-        }
-        if (config.isSmartClassEnabled()) {
-            navigationView.findViewById(R.id.navigation_smart_class).setVisibility(View.VISIBLE);
-        }
-        if (config.isAnalyticsEnabled()) {
-            navigationView.findViewById(R.id.navigation_analytics).setVisibility(View.VISIBLE);
-        }
-        if (config.isCurriculumEnabled()) {
-            navigationView.findViewById(R.id.navigation_curriculum).setVisibility(View.VISIBLE);
-        }
-        if (config.isOfflineEnabled()) {
-            navigationView.findViewById(R.id.navigation_offline).setVisibility(View.VISIBLE);
-        }
-        if (config.isChallengeTestEnabled()) {
-            navigationView.findViewById(R.id.navigation_challenge_your_friends).setVisibility(View.VISIBLE);
-        }
-        if (config.isForumEnabled()) {
-            navigationView.findViewById(R.id.navigation_forum).setVisibility(View.VISIBLE);
-        }
-        if (config.isLogoutEnabled()) {
-            navigationView.findViewById(R.id.navigation_logout).setVisibility(View.VISIBLE);
-        }
-        if (config.isScheduledTestsEnabled()) {
-            navigationView.findViewById(R.id.navigation_scheduled_tests).setVisibility(View.VISIBLE);
-        }
-        if (config.isMockTestsEnabled()) {
-            navigationView.findViewById(R.id.navigation_mock_tests).setVisibility(View.VISIBLE);
-        }
-        if (config.isExamHistoryEnabled()) {
-            navigationView.findViewById(R.id.navigation_exam_history).setVisibility(View.VISIBLE);
-        }
+        navigationView.findViewById(R.id.navigation_logout).setVisibility(View.VISIBLE);
     }
 
     private void setNavigationClickListeners() {
@@ -780,6 +766,17 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             }
         });
 
+        navigationView.findViewById(R.id.navigation_test_series).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isCourseEnded(selectedCourse)) {
+                    showToast("Please Select different Course");
+                    return;
+                }
+                loadStudyCenterScreen();
+            }
+        });
+
         navigationView.findViewById(R.id.navigation_analytics).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -791,6 +788,54 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     startActivity(new Intent(AbstractBaseActivity.this, NewAnalyticsActivity.class));
                 } else {
                     showToast("Analytics requires network connection");
+                }
+                drawerLayout.closeDrawers();
+            }
+        });
+
+        navigationView.findViewById(R.id.navigation_recommended_reading).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isCourseEnded(selectedCourse)) {
+                    showToast("Please Select different Course");
+                    return;
+                }
+                if (SystemUtils.isNetworkConnected(AbstractBaseActivity.this)) {
+                    loadRecommendedReading();
+                } else {
+                    showToast("Recommended Reading requires network connection");
+                }
+                drawerLayout.closeDrawers();
+            }
+        });
+
+        navigationView.findViewById(R.id.navigation_progress_report).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isCourseEnded(selectedCourse)) {
+                    showToast("Please Select different Course");
+                    return;
+                }
+                if (SystemUtils.isNetworkConnected(AbstractBaseActivity.this)) {
+                    loadProgressReport();
+                } else {
+                    showToast("Progress Report requires network connection");
+                }
+                drawerLayout.closeDrawers();
+            }
+        });
+
+        navigationView.findViewById(R.id.navigation_time_management).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isCourseEnded(selectedCourse)) {
+                    showToast("Please Select different Course");
+                    return;
+                }
+                if (SystemUtils.isNetworkConnected(AbstractBaseActivity.this)) {
+                    loadTimeManagement();
+                } else {
+                    showToast("Time Management requires network connection");
                 }
                 drawerLayout.closeDrawers();
             }
@@ -908,9 +953,14 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     protected void loadStudyCenterScreen() {
-        Intent intent = new Intent(AbstractBaseActivity.this, StudyCenterActivity.class);
-        startActivity(intent);
-        finish();
+        if(selectedCourse.isTestSeries()) {
+            startActivity(new Intent(this, TestSeriesActivity.class));
+        } else {
+            startActivity(new Intent(AbstractBaseActivity.this, StudyCenterActivity.class));
+        }
+        if(!(this instanceof StudyCenterActivity)) {
+            finish();
+        }
     }
 
     protected void loadWelcomeScreen() {
@@ -921,8 +971,18 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     protected void showMockTestsDialog() {
+        showMockTestsDialog(null);
+    }
+
+    protected void showMockTestsDialog(List<MockTest> mockTests) {
         if (SystemUtils.isNetworkConnected(this)) {
             MockTestDialog dialog = new MockTestDialog();
+            if(mockTests != null) {
+                String mockTestsGson = Gson.get().toJson(mockTests);
+                Bundle bundle = new Bundle();
+                bundle.putString("mock_tests", mockTestsGson);
+                dialog.setArguments(bundle);
+            }
             dialog.show(getFragmentManager(), "MockTestsListDialog");
         } else {
             Intent exerciseIntent = new Intent(this, OfflineActivity.class);
@@ -950,54 +1010,64 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private void loadRecommendedReading() {
+        Intent intent = new Intent(this, WebviewActivity.class);
+        intent.putExtra(LoginActivity.TITLE, "Recommended Reading");
+        intent.putExtra(LoginActivity.URL, WebUrls.getRecommendedReadingUrl(getSelectedCourseId()));
+        startActivity(intent);
+    }
+
+    private void loadProgressReport() {
+        Intent intent = new Intent(this, WebviewActivity.class);
+        intent.putExtra(LoginActivity.TITLE, "Progress Report");
+        intent.putExtra(LoginActivity.URL, WebUrls.getProgressReportUrl(getSelectedCourseId()));
+        startActivity(intent);
+    }
+
+    private void loadTimeManagement() {
+        Intent intent = new Intent(this, WebviewActivity.class);
+        intent.putExtra(LoginActivity.TITLE, "Time Management");
+        intent.putExtra(LoginActivity.URL, WebUrls.getTimeManagementUrl(getSelectedCourseId()));
+        startActivity(intent);
+    }
+
     protected void setToolbarTitle(String title) {
         TextView textView = (TextView) toolbar.findViewById(R.id.toolbar_title);
         textView.setText(title);
     }
 
     protected void showVirtualCurrency() {
-        final boolean enableVirtualCurrency = getAppConfig(this).isVirtualCurrencyEnabled();
         try {
-            if (enableVirtualCurrency) {
-                toolbar.findViewById(R.id.ProgressBar).setVisibility(View.VISIBLE);
-                toolbar.findViewById(R.id.currency_layout).setVisibility(View.VISIBLE);
-                toolbar.findViewById(R.id.currency_layout).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(AbstractBaseActivity.this, VirtualCurrencyActivity.class);
-                        startActivity(intent);
-                    }
-                });
-            }
+            toolbar.findViewById(R.id.ProgressBar).setVisibility(View.VISIBLE);
+            toolbar.findViewById(R.id.currency_layout).setVisibility(View.VISIBLE);
+            toolbar.findViewById(R.id.currency_layout).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(AbstractBaseActivity.this, VirtualCurrencyActivity.class);
+                    startActivity(intent);
+                }
+            });
             ApiManager.getInstance(this).getVirtualCurrencyBalance(LoginUserCache.getInstance().getStudentId(), new ApiCallback<VirtualCurrencyBalanceResponse>(this) {
                 @Override
                 public void success(VirtualCurrencyBalanceResponse virtualCurrencyBalanceResponse, Response response) {
                     super.success(virtualCurrencyBalanceResponse, response);
-                    if (enableVirtualCurrency) {
                         toolbar.findViewById(R.id.ProgressBar).setVisibility(View.GONE);
-                    }
                     if (virtualCurrencyBalanceResponse != null && virtualCurrencyBalanceResponse.balance != null) {
                         appPref.setVirtualCurrency(virtualCurrencyBalanceResponse.balance.intValue() + "");
-                        if (enableVirtualCurrency) {
-                            TextView textView = (TextView) toolbar.findViewById(R.id.tv_virtual_currency);
-                            textView.setText(virtualCurrencyBalanceResponse.balance.intValue() + "");
-                        }
+                        TextView textView = (TextView) toolbar.findViewById(R.id.tv_virtual_currency);
+                        textView.setText(virtualCurrencyBalanceResponse.balance.intValue() + "");
                     }
                 }
 
                 @Override
                 public void failure(CorsaliteError error) {
                     super.failure(error);
-                    if (enableVirtualCurrency) {
-                        toolbar.findViewById(R.id.ProgressBar).setVisibility(View.GONE);
-                    }
+                    toolbar.findViewById(R.id.ProgressBar).setVisibility(View.GONE);
                 }
             });
         } catch (Exception e) {
             L.error(e.getMessage(), e);
-            if (enableVirtualCurrency) {
-                toolbar.findViewById(R.id.ProgressBar).setVisibility(View.GONE);
-            }
+            toolbar.findViewById(R.id.ProgressBar).setVisibility(View.GONE);
         }
     }
 
@@ -1110,7 +1180,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     private void loadCoursesList() {
         ApiManager.getInstance(this).getCourses(LoginUserCache.getInstance().getStudentId(),
-                !(this instanceof WelcomeActivity || this instanceof StudyCenterActivity),
+                !(this instanceof WelcomeActivity || this instanceof StudyCenterActivity || this instanceof TestSeriesActivity),
                 new ApiCallback<List<Course>>(this) {
                     @Override
                     public void failure(CorsaliteError error) {
@@ -1194,6 +1264,13 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         selectedVideoPosition = position;
     }
 
+    public void onEventMainThread(InvalidAuthenticationEvent event) {
+        dbManager.deleteAuthentication(appPref.getValue("loginId"));
+        showToast("Authentication failed. Please login to continue");
+        startActivity(new Intent(this, LoginActivity.class));
+        finish();
+    }
+
     public void checkForceUpgrade() {
         try {
             AppConfig config = getAppConfig(this);
@@ -1228,21 +1305,29 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     .setTitle("Data Sync")
                     .setPositiveButton("Sync Now", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            AppPref.get(getApplicationContext()).remove("data_sync_later");
-                            startActivity(new Intent(AbstractBaseActivity.this, DataSyncActivity.class));
-                            dialog.dismiss();
+                            try {
+                                AppPref.get(getApplicationContext()).remove("data_sync_later");
+                                startActivity(new Intent(AbstractBaseActivity.this, DataSyncActivity.class));
+                                dialog.dismiss();
+                            } catch (Exception e) {
+                                L.error(e.getMessage(), e);
+                            }
                         }
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .setCancelable(false)
                     .setMessage("There are " + eventsCount + " offline events available to be synced to the server. Do you want to sync now?")
-                    .setNegativeButton("Ask Later", new DialogInterface.OnClickListener() {
+                    /*.setNegativeButton("Ask Later", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            AppPref.get(getApplicationContext()).save("data_sync_later", String.valueOf(new Date().getTime()));
-                            dialogInterface.dismiss();
+                            try {
+                                AppPref.get(getApplicationContext()).save("data_sync_later", String.valueOf(new Date().getTime()));
+                                dialogInterface.dismiss();
+                            }catch (Exception e) {
+                                L.error(e.getMessage(), e);
+                            }
                         }
-                    }).show();
+                    })*/.show();
         }
     }
 
@@ -1300,24 +1385,56 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     // this method will be overridden by the classes that subscribes from event bus
     public void onEvent(Course course) {
-        if (course != null && (selectedCourse == null || (selectedCourse.courseId != course.courseId))) {
+        enableNavigationOpitons(course);
+        if (selectedCourse == null || (selectedCourse != null && selectedCourse.courseId != course.courseId)) {
             selectedCourse = course;
-            if (isCourseEnded(course)) {
-                if (!(this instanceof WelcomeActivity)) {
-                    Intent newIntent = new Intent(this, WelcomeActivity.class);
-                    newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(newIntent);
-                    finish();
-                }
+            if (isCourseEnded(course) && !(this instanceof WelcomeActivity)
+                    && !(this instanceof TestSeriesActivity) && !(this instanceof StudyCenterActivity)) {
+                Intent newIntent = new Intent(this, WelcomeActivity.class);
+                newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(newIntent);
+                finish();
+                return;
             }
+            onCourseChanged(course);
         } else {
             return;
         }
     }
 
-    protected void getContentIndex(String courseId, String studentId) {
-        ApiManager.getInstance(this).getContentIndex(courseId, studentId,
+    protected void onCourseChanged(Course course) {
+        // This method will be overridden in all activities
+    }
+
+    private void enableNavigationOpitons(Course course) {
+        if(course != null) {
+            navigationView.findViewById(R.id.navigation_study_center).setVisibility(isTrue(course.isStudyCenter) ? View.VISIBLE : View.GONE);
+            navigationView.findViewById(R.id.navigation_forum).setVisibility(isTrue(course.isForums) ? View.VISIBLE : View.GONE);
+            navigationView.findViewById(R.id.navigation_mock_tests).setVisibility(isTrue(course.isMockTest) ? View.VISIBLE : View.GONE);
+            navigationView.findViewById(R.id.navigation_smart_class).setVisibility(isTrue(course.isSmartClass) ? View.VISIBLE : View.GONE);
+            navigationView.findViewById(R.id.navigation_scheduled_tests).setVisibility(isTrue(course.isScheduledTests) ? View.VISIBLE : View.GONE);
+            navigationView.findViewById(R.id.navigation_analytics).setVisibility(isTrue(course.isAnalytics) ? View.VISIBLE : View.GONE);
+            navigationView.findViewById(R.id.navigation_challenge_your_friends).setVisibility(isTrue(course.isChallengeTest) ? View.VISIBLE : View.GONE);
+            navigationView.findViewById(R.id.navigation_curriculum).setVisibility(isTrue(course.isCurriculum) ? View.VISIBLE : View.GONE);
+            navigationView.findViewById(R.id.navigation_offline).setVisibility(isTrue(course.isOffline) ? View.VISIBLE : View.GONE);
+            navigationView.findViewById(R.id.navigation_profile).setVisibility(isTrue(course.isProfile) ? View.VISIBLE : View.GONE);
+            navigationView.findViewById(R.id.navigation_recommended_reading).setVisibility(isTrue(course.isRecommendedReading) ? View.VISIBLE : View.GONE);
+            navigationView.findViewById(R.id.navigation_time_management).setVisibility(isTrue(course.isTimeManagement) ? View.VISIBLE : View.GONE);
+            navigationView.findViewById(R.id.navigation_welcome).setVisibility(isTrue(course.isWelcome) ? View.VISIBLE : View.GONE);
+            navigationView.findViewById(R.id.navigation_test_series).setVisibility(course.isTestSeries() ? View.VISIBLE : View.GONE);
+        }
+    }
+
+    private boolean isTrue(Integer value) {
+        return  value != null && value == 1;
+    }
+
+    protected void getContentIndex(Course course, String studentId) {
+        if(course == null || course.courseId == null || course.isTestSeries()) {
+            return;
+        }
+        ApiManager.getInstance(this).getContentIndex(course.courseId.toString(), studentId,
                 new ApiCallback<List<ContentIndex>>(this) {
                     @Override
                     public void failure(CorsaliteError error) {
@@ -1478,14 +1595,14 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         expiry.setTimeInMillis(scheduledTime.getTime());
         PugNotification.with(this)
                 .load()
-                .identifier(Data.getInt(examId + Constants.EXAM_DOWNLOADED_REQUEST_ID))
+                .identifier(Data.getInt(examId))
                 .title(examName)
                 .autoCancel(true)
-                .message("Exam starts at " + new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime) + ". Please Download")
-                .bigTextStyle("Exam starts at " + new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime) + ". Please Download")
+                .message("Exam starts at " + new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime) + ". Please open app and Download")
+                .bigTextStyle("Exam starts at " + new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime) + ". Please open app and Download")
                 .smallIcon(R.drawable.ic_launcher)
                 .largeIcon(R.drawable.ic_launcher)
-                .click(ExamEngineActivity.class, getScheduledTestBundle(examId))
+//                .click(TestInstructionsActivity.class, getScheduledTestBundle(examId))
                 .flags(Notification.DEFAULT_ALL)
                 .simple()
                 .build();
@@ -1513,13 +1630,13 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         }
         PugNotification.with(this)
                 .load()
-                .identifier(Data.getInt(examId + Constants.EXAM_ADVANCED_NOTIFICATION_REQUEST_ID))
+                .identifier(Data.getInt(examId))
                 .title(examName)
                 .message("Exam starts at " + new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime))
                 .bigTextStyle("Exam starts at " + new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime))
                 .smallIcon(R.drawable.ic_launcher)
                 .largeIcon(R.drawable.ic_launcher)
-                .click(ExamEngineActivity.class, getScheduledTestBundle(examId))
+//                .click(TestInstructionsActivity.class, getScheduledTestBundle(examId))
                 .flags(Notification.DEFAULT_ALL)
                 .simple()
                 .build();
@@ -1545,14 +1662,14 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         broadCastIntent.putExtra("start_exam", true);
         PugNotification.with(this)
                 .load()
-                .identifier(Data.getInt(examId + Constants.EXAM_STARTED_REQUEST_ID))
+                .identifier(Data.getInt(examId))
                 .when(cal.getTimeInMillis())
                 .title(examName)
                 .message("Exam will start at " + new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime))
                 .bigTextStyle("Exam will start at " + new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(scheduledTime))
                 .smallIcon(R.drawable.ic_launcher)
                 .largeIcon(R.drawable.ic_launcher)
-                .click(ExamEngineActivity.class, getScheduledTestBundle(examId))
+//                .click(TestInstructionsActivity.class, getScheduledTestBundle(examId))
                 .flags(Notification.DEFAULT_ALL)
                 .simple()
                 .build();

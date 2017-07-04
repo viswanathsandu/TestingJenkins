@@ -31,5 +31,15 @@ public class FriendsData extends BaseModel {
         public String friendRequest;
         public boolean isOnline = false;
         public String status = "";
+
+        @Override
+        public boolean equals(Object obj) {
+            return idUser != null && obj != null && obj instanceof Friend
+                    && ((Friend) obj).idUser.equalsIgnoreCase(idUser);
+        }
+
+        public boolean isOnline() {
+            return isOnline || emailID.equalsIgnoreCase("corbot@corsalite.com");
+        }
     }
 }

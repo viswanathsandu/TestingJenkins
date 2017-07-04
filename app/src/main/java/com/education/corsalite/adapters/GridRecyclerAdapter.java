@@ -28,15 +28,13 @@ import com.education.corsalite.activities.SaveForOfflineActivity;
 import com.education.corsalite.activities.StudyCenterActivity;
 import com.education.corsalite.activities.TestStartActivity;
 import com.education.corsalite.enums.Tests;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.models.responsemodels.Chapter;
 import com.education.corsalite.services.ContentDownloadService;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.Data;
-import com.education.corsalite.gson.Gson;
 import com.education.corsalite.utils.SystemUtils;
 import com.github.lzyzsd.circleprogress.DonutProgress;
-
-import com.localytics.android.Localytics;
 
 import java.util.List;
 
@@ -208,7 +206,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.getSelectedCourseId());
         exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, studyCenterActivity.getSelectedSubjectId());
         exerciseIntent.putExtra(Constants.SELECTED_SUBJECT_NAME, mSubjectName);
-        exerciseIntent.putExtra(Constants.SELECTED_CHAPTERID, chapter.idCourseSubjectchapter);
+        exerciseIntent.putExtra(Constants.SELECTED_CHAPTERID, chapter.idCourseSubjectChapter);
         studyCenterActivity.startActivity(exerciseIntent);
     }
 
@@ -220,7 +218,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
             exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.getSelectedCourseId());
             exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, studyCenterActivity.getSelectedSubjectId());
             exerciseIntent.putExtra(Constants.SELECTED_SUBJECT_NAME, mSubjectName);
-            exerciseIntent.putExtra(Constants.SELECTED_CHAPTERID, chapter.idCourseSubjectchapter);
+            exerciseIntent.putExtra(Constants.SELECTED_CHAPTERID, chapter.idCourseSubjectChapter);
             exerciseIntent.putExtra(Constants.SELECTED_CHAPTER_NAME, chapter.chapterName);
             exerciseIntent.putExtra(Constants.LEVEL_CROSSED, chapter.passedComplexity);
             exerciseIntent.putExtra("chapter", Gson.get().toJson(chapter));
@@ -230,7 +228,6 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
             exerciseIntent.putExtra("selection", 1);
             studyCenterActivity.startActivity(exerciseIntent);
         }
-
     }
 
     private void startNotesActivity(Chapter chapter) {
@@ -257,7 +254,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
     private void putIntentExtras(Chapter chapter, Intent intent, String courseId, String subjectId, String chapterId) {
         intent.putExtra(courseId, AbstractBaseActivity.getSelectedCourseId());
         intent.putExtra(subjectId, studyCenterActivity.getSelectedSubjectId());
-        intent.putExtra(chapterId, chapter.idCourseSubjectchapter);
+        intent.putExtra(chapterId, chapter.idCourseSubjectChapter);
     }
 
     private double getCompletedTopicsPercentage(Chapter chapter) {

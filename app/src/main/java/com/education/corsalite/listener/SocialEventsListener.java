@@ -5,6 +5,8 @@ package com.education.corsalite.listener;
  */
 public interface SocialEventsListener {
 
+    void onTitleClicked(int position);
+
     void onLikeClicked(int position);
 
     void onCommentClicked(int position);

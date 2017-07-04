@@ -133,36 +133,7 @@
                     android:text=" | "
                     android:visibility="gone" />
 
-
-                <com.education.corsalite.views.CustomButton
-                    android:id="@+id/btn_verify"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:enabled="false"
-                    android:text="Verify Answer"
-                    android:visibility="gone" />
-
             </LinearLayout>
-
-
-            <TextView
-                android:id="@+id/tv_clearanswer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@id/layout_header"
-                android:layout_marginBottom="5dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/shape_rounded_corners_black"
-                android:drawablePadding="5dp"
-                android:paddingBottom="5dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:paddingTop="5dp"
-                android:text="Clear Answer"
-                android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/tv_level"
@@ -172,16 +143,16 @@
                 android:layout_below="@id/layout_header"
                 android:layout_marginLeft="40dp"
                 android:layout_marginTop="5dp"
-                android:layout_toLeftOf="@id/tv_clearanswer" />
+                android:layout_alignParentRight="true" />
 
             <TextView
                 android:id="@+id/tv_comment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
                 android:layout_below="@id/tv_level"
                 android:layout_marginLeft="40dp"
-                android:layout_toLeftOf="@+id/tv_clearanswer"
                 android:ellipsize="end"
                 android:gravity="center_vertical"
                 android:maxLines="2"
@@ -189,10 +160,19 @@
                 android:textColor="@color/black" />
 
 
+            <RelativeLayout
+                android:id="@+id/question_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/tv_comment">
+
+            </RelativeLayout>
+
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@id/tv_comment"
+                android:visibility="gone"
                 android:fillViewport="true">
 
                 <RelativeLayout
@@ -258,10 +238,56 @@
                     </HorizontalScrollView>
 
                     <LinearLayout
+                        android:id="@+id/action_buttons_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginLeft="40dp"
+                        android:layout_below="@+id/answer_scroll_layout">
+
+                        <TextView
+                            android:id="@+id/tv_verify"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_below="@id/layout_header"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginRight="20dp"
+                            android:background="@drawable/login_button_bg"
+                            android:drawablePadding="5dp"
+                            android:paddingBottom="5dp"
+                            android:paddingLeft="20dp"
+                            android:paddingRight="20dp"
+                            android:paddingTop="5dp"
+                            android:text="Verify Answer"
+                            android:textColor="@color/white"
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:id="@+id/tv_clearanswer"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_below="@id/layout_header"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/login_button_bg"
+                            android:drawablePadding="5dp"
+                            android:paddingBottom="5dp"
+                            android:paddingLeft="20dp"
+                            android:paddingRight="20dp"
+                            android:paddingTop="5dp"
+                            android:text="Clear Answer"
+                            android:textColor="@color/white" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:id="@+id/layout_choice"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_below="@id/answer_scroll_layout"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/action_buttons_layout"
                         android:background="@drawable/table_row"
                         android:orientation="horizontal"
                         android:padding="5dp"
@@ -290,7 +316,7 @@
                         android:id="@+id/explanation_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/layout_choice"
+                        android:layout_below="@+id/layout_choice"
                         android:background="@drawable/table_row"
                         android:orientation="horizontal"
                         android:padding="5dp"

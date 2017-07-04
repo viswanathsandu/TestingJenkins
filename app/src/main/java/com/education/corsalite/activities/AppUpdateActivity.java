@@ -48,6 +48,10 @@ public class AppUpdateActivity extends AbstractBaseActivity {
         }
     }
 
+    @Override
+    public void checkForceUpgrade() {
+        // do nothing
+    }
 
     private void downloadApk(){
         Uri downloadUri = Uri.parse(apkUrl);

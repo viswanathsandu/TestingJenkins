@@ -77,19 +77,19 @@ public class ExamHistoryAdapter extends AbstractRecycleViewAdapter {
             this.exam.setText(examHistory.examName);
             this.type.setText(examHistory.testType);
             this.rank.setText(examHistory.rank);
-            if(!TextUtils.isEmpty(examHistory.totalScore)) {
-                if(examHistory.totalScore.contains(".")) {
-                    this.status.setText("Completed");
-                    int scoreInt = -1;
-                    try {
-                        scoreInt = (int) (Double.parseDouble(examHistory.totalScore));
-                    } catch (Exception e) {
-                        L.error(e.getMessage(), e);
-                    }
-                    this.score.setText(scoreInt == -1 ? "-" : scoreInt+"");
-                } else {
-                    this.status.setText(examHistory.totalScore);
+            this.status.setText("");
+            this.score.setText("-");
+            if(!TextUtils.isEmpty(examHistory.totalScore) && examHistory.totalScore.contains(".")) {
+                int scoreInt = -1;
+                try {
+                    scoreInt = (int) (Double.parseDouble(examHistory.totalScore));
+                } catch (Exception e) {
+                    L.error(e.getMessage(), e);
                 }
+                this.score.setText(scoreInt == -1 ? "-" : scoreInt+"");
+            }
+            if(!TextUtils.isEmpty(examHistory.status)) {
+                this.status.setText(examHistory.status);
             }
             parent.setOnClickListener(new View.OnClickListener() {
                 @Override

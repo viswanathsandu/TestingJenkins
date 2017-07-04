@@ -18,7 +18,8 @@
             android:gravity="center_vertical"
             android:minHeight="?android:attr/listPreferredItemHeight"
             android:paddingEnd="8dp"
-            android:paddingStart="8dp">
+            android:paddingStart="8dp"
+            android:focusableInTouchMode="true">
 
             <TextView
                 style="?android:attr/spinnerItemStyle"

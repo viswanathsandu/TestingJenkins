@@ -1,6 +1,7 @@
 package com.education.corsalite.adapters;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -14,9 +15,11 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.education.corsalite.R;
 import com.education.corsalite.listener.CommentEventsListener;
+import com.education.corsalite.listener.SocialEventsListener;
 import com.education.corsalite.models.responsemodels.ForumPost;
 import com.education.corsalite.models.responsemodels.FourmCommentPostModel;
 import com.education.corsalite.services.ApiClientService;
+import com.education.corsalite.utils.AppPref;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,12 +35,14 @@ public class PostCommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private ForumPost post;
     private List<ForumPost> mForumPostList;
     private CommentEventsListener mCommentsEventsListener;
+    private SocialEventsListener mSocialEventsListener;
     private Context mActivity;
 
-    public PostCommentsAdapter(Context activity, CommentEventsListener listener) {
+    public PostCommentsAdapter(Context activity, SocialEventsListener socialEventsListener, CommentEventsListener listener) {
         this.mActivity = activity;
         mForumPostList = new ArrayList<>();
         mCommentsEventsListener = listener;
+        this.mSocialEventsListener = socialEventsListener;
     }
 
     @Override
@@ -66,6 +71,15 @@ public class PostCommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
             ForumPost forumPost = post;
             HeaderHolder holder = (HeaderHolder) viewHolder;
+            holder.tvActionLock.setVisibility(View.GONE);
+            holder.tvActionComment.setVisibility(View.INVISIBLE);
+
+            if (forumPost.idUser.equals(AppPref.get(mActivity).getUserId())) {
+                holder.tvActionDelete.setVisibility(View.VISIBLE);
+                holder.tvActionEdit.setVisibility(View.VISIBLE);
+            }
+            setupPostActionListener(holder, position);
+
             holder.tvQuestion.setText(forumPost.PostSubject);
             holder.tvDate.setText(forumPost.Datetime + " by");
             holder.tvUserName.setText(forumPost.DisplayName);
@@ -96,25 +110,35 @@ public class PostCommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 holder.tvTopicName.setText(forumPost.TopicName);
             }
 
-            holder.llTags.setVisibility(View.GONE);
-            holder.tvLikes.setVisibility(View.GONE);
-            holder.tvActionLock.setVisibility(View.GONE);
-            holder.tvActionComment.setVisibility(View.GONE);
-            holder.tvComments.setVisibility(View.GONE);
-            holder.tvViews.setVisibility(View.GONE);
-            holder.tvActionBookmark.setVisibility(View.GONE);
-            holder.ivUserPic.setVisibility(View.GONE);
-//            Glide.with(holder.ivUserPic.getContext())
-//                    .load(ApiClientService.getBaseUrl() + forumPost.PhotoUrl)
-//                    .centerCrop()
-//                    .placeholder(R.drawable.profile_pic)
-//                    .crossFade()
-//                    .into(holder.ivUserPic);
+            holder.tvComments.setText(forumPost.postReplies + " Comments");
+            holder.tvViews.setText(forumPost.postViews + " Views");
 
+
+            if (!TextUtils.isEmpty(forumPost.IsLiked) && forumPost.IsLiked.equalsIgnoreCase("Y")) {
+                holder.tvLikes.setClickable(false);
+                Drawable img = mActivity.getResources().getDrawable(R.drawable.like_green);
+                holder.tvLikes.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
+                holder.tvLikes.setText(forumPost.postLikes + " Likes");
+            } else {
+                holder.tvLikes.setClickable(true);
+                Drawable img = mActivity.getResources().getDrawable(R.drawable.like);
+                holder.tvLikes.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
+                holder.tvLikes.setText("Like");
+            }
+
+            Drawable img = mActivity.getResources().getDrawable(!TextUtils.isEmpty(forumPost.bookmark) ? R.drawable.bookmark_green : R.drawable.bookmark);
+            holder.tvActionBookmark.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
+
+            Glide.with(holder.ivUserPic.getContext())
+                    .load(ApiClientService.getBaseUrl() + forumPost.PhotoUrl)
+                    .centerCrop()
+                    .placeholder(R.drawable.profile_pic)
+                    .crossFade()
+                    .into(holder.ivUserPic);
         } else {
             final ForumPost forumPost = mForumPostList.get(position-1);
             CommentHolder holder = (CommentHolder)viewHolder;
-            setupActionListener(holder, position);
+            setupCommentsActionListener(holder, position);
             // TODO : uncomment it after implementing the edit/delete functionality
             //    if (forumPost.idUser.equals(LoginUserCache.get().getLoginResponse().idUser)) {
             //        holder.tvActionDelete.setVisibility(View.VISIBLE);
@@ -134,7 +158,7 @@ public class PostCommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
-    private void setupActionListener(CommentHolder holder, final int position) {
+    private void setupCommentsActionListener(CommentHolder holder, final int position) {
         holder.tvActionEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -148,6 +172,52 @@ public class PostCommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
         });
     }
+
+    private void setupPostActionListener(HeaderHolder holder, final int position) {
+        holder.tvActionBookmark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSocialEventsListener.onBookmarkClicked(position);
+            }
+        });
+        holder.tvLikes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSocialEventsListener.onLikeClicked(position);
+            }
+        });
+        holder.tvActionDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSocialEventsListener.onDeleteClicked(position);
+            }
+        });
+        holder.tvActionLock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSocialEventsListener.onLockClicked(position);
+            }
+        });
+        holder.tvQuestion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSocialEventsListener.onCommentClicked(position);
+            }
+        });
+        holder.tvComments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSocialEventsListener.onCommentClicked(position);
+            }
+        });
+        holder.tvActionEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSocialEventsListener.onEditClicked(position);
+            }
+        });
+    }
+
 
     @Override
     public int getItemCount() {
@@ -167,8 +237,8 @@ public class PostCommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         notifyDataSetChanged();
     }
 
-    public void deleteForumPost(int position) {
-        mForumPostList.remove(position);
+    public void updatePost(ForumPost post) {
+        this.post = post;
         notifyDataSetChanged();
     }
 
