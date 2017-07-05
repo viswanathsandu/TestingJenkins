@@ -5,17 +5,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
         <com.devbrackets.android.exomedia.ui.widget.VideoView
             android:id="@+id/videoViewRelative"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_centerInParent="true"
             app:useDefaultControls="true" />
-
-    </RelativeLayout>
 
 </LinearLayout>

@@ -89,11 +89,10 @@ public class VideoActivity extends AbstractBaseActivity {
             //set the uri of the video to be played
             videoViewRelative.setVideoURI(Uri.parse(ApiClientService.getBaseUrl() + contents.get(selectedPosition).url.replace("./", "")));
             // videoViewRelative.setVideoURI(Uri.parse("http://staging.corsalite.com/stagenewchanges/files/topics/1315/sunil/output.mpd"));
-            videoViewRelative.requestFocus();
             videoViewRelative.setOnPreparedListener(new OnPreparedListener() {
 
                 public void onPrepared() {
-                    videoViewRelative.seekTo(selectedPosition);
+                    // videoViewRelative.seekTo(selectedPosition);
                     videoViewRelative.start();
                 }
             });
@@ -129,17 +128,20 @@ public class VideoActivity extends AbstractBaseActivity {
             }
             contentId = contentId + contentModel.idContent;
         }
+        showProgress();
         ApiManager.getInstance(this).getContent(contentId, "", new ApiCallback<List<Content>>(this) {
             @Override
             public void failure(CorsaliteError error) {
                 super.failure(error);
                 showToast("Sorry. Couldn't fetch video details");
+                closeProgress();
                 finish();
             }
 
             @Override
             public void success(List<Content> contentList, Response response) {
                 super.success(contents, response);
+                closeProgress();
                 contents = contentList;
                 ApiCacheHolder.getInstance().setContentResponse(contentList);
                 dbManager.saveReqRes(ApiCacheHolder.getInstance().contentReqIndex);
