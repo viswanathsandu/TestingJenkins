@@ -5,36 +5,17 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ViewSwitcher
-        android:id="@+id/vs_container"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <RelativeLayout
+        <com.devbrackets.android.exomedia.ui.widget.VideoView
+            android:id="@+id/videoViewRelative"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            app:useDefaultControls="true" />
 
-            <com.devbrackets.android.exomedia.ui.widget.VideoView
-                android:id="@+id/videoViewRelative"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_centerInParent="true"
-                app:useDefaultControls="true"/>
-
-            <LinearLayout
-                android:id="@+id/progress"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/black"
-                android:gravity="center">
-
-                <ProgressBar
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true" />
-            </LinearLayout>
-        </RelativeLayout>
-
-    </ViewSwitcher>
+    </RelativeLayout>
 
 </LinearLayout>

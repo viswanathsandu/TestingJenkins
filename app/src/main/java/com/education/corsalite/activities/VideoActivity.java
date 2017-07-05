@@ -7,9 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.ViewSwitcher;
 
-import com.devbrackets.android.exomedia.core.exoplayer.ExoMediaPlayer;
 import com.devbrackets.android.exomedia.listener.OnPreparedListener;
 import com.devbrackets.android.exomedia.ui.widget.VideoView;
 import com.education.corsalite.R;
@@ -35,9 +33,7 @@ import retrofit.client.Response;
  */
 public class VideoActivity extends AbstractBaseActivity {
 
-    @Bind(R.id.vs_container) ViewSwitcher viewSwitcher;
     @Bind(R.id.videoViewRelative) VideoView videoViewRelative;
-    @Bind(R.id.progress) View progress;
 
     List<ContentModel> mContentModels;
     long selectedPosition = 0;
@@ -51,7 +47,6 @@ public class VideoActivity extends AbstractBaseActivity {
         LinearLayout myView = (LinearLayout) inflater.inflate(R.layout.activity_videoview, null);
         frameLayout.addView(myView);
         ButterKnife.bind(this);
-        initVideoView();
         if(getIntent().hasExtra("selectedPosition")) {
             selectedPosition = getIntent().getExtras().getInt("selectedPosition");
         }
@@ -78,10 +73,6 @@ public class VideoActivity extends AbstractBaseActivity {
         }
     }
 
-    private void initVideoView() {
-
-    }
-
     private void loadWeb(final int selectedPosition) {
         // Initialize the WebView
         try {
@@ -94,8 +85,6 @@ public class VideoActivity extends AbstractBaseActivity {
                 showToast("Video is not available for offline");
                 return;
             }
-
-            progress.setVisibility(View.VISIBLE);
             videoViewRelative.seekTo(0);
             //set the uri of the video to be played
             videoViewRelative.setVideoURI(Uri.parse(ApiClientService.getBaseUrl() + contents.get(selectedPosition).url.replace("./", "")));
@@ -104,16 +93,10 @@ public class VideoActivity extends AbstractBaseActivity {
             videoViewRelative.setOnPreparedListener(new OnPreparedListener() {
 
                 public void onPrepared() {
-                    // close the progress bar and play the video
-                    progress.setVisibility(View.GONE);
                     videoViewRelative.seekTo(selectedPosition);
                     videoViewRelative.start();
                 }
             });
-            if (viewSwitcher.indexOfChild(viewSwitcher.getCurrentView()) == 0) {
-                viewSwitcher.showNext();
-            }
-
         } catch (Exception e) {
             Log.e("Error", e.getMessage());
             e.printStackTrace();
@@ -136,9 +119,6 @@ public class VideoActivity extends AbstractBaseActivity {
             videoViewRelative.seekTo(selectedPosition);
             videoViewRelative.pause();
         }
-        if(SystemUtils.isNetworkConnected(this)) {
-
-        }
     }
 
     private void getContent() {
@@ -153,9 +133,8 @@ public class VideoActivity extends AbstractBaseActivity {
             @Override
             public void failure(CorsaliteError error) {
                 super.failure(error);
-                if (viewSwitcher.indexOfChild(viewSwitcher.getCurrentView()) == 0) {
-                    viewSwitcher.showNext();
-                }
+                showToast("Sorry. Couldn't fetch video details");
+                finish();
             }
 
             @Override
@@ -164,16 +143,12 @@ public class VideoActivity extends AbstractBaseActivity {
                 contents = contentList;
                 ApiCacheHolder.getInstance().setContentResponse(contentList);
                 dbManager.saveReqRes(ApiCacheHolder.getInstance().contentReqIndex);
-                if (viewSwitcher.indexOfChild(viewSwitcher.getCurrentView()) == 0) {
-                    viewSwitcher.showNext();
-                }
                 onEvent((int)selectedPosition);
             }
         });
     }
 
     private void loadLocalVideo(){
-        progress.setVisibility(View.GONE);
         videoViewRelative.requestFocus();
         videoViewRelative.setVideoPath(videoPath);
         videoViewRelative.start();
