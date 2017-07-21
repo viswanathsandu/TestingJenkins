@@ -258,10 +258,10 @@ public class ApiManager {
         }
     }
 
-    public void getContent(String idContents, String UpdateTime, ApiCallback<List<Content>> callback) {
+    public void getContent(String idStudent, String idContents, String UpdateTime, ApiCallback<List<Content>> callback) {
         apiCacheHolder.setContentRequest(idContents, UpdateTime);
         if (isApiOnline()) {
-            ApiClientService.get().getContentData(idContents, UpdateTime, callback);
+            ApiClientService.get().getContentData(idStudent, idContents, UpdateTime, callback);
         } else if(!isNetworkConnected()) {
             ContentReqRes reqRes = new ContentReqRes();
             reqRes.request = apiCacheHolder.contentRequest;
@@ -269,11 +269,11 @@ public class ApiManager {
         }
     }
 
-    public List<Content> getContent(String idContent, String updateTime) {
+    public List<Content> getContent(String idStudent, String idContent, String updateTime) {
         apiCacheHolder.setContentRequest(idContent, updateTime);
         if (isApiOnline()) {
             try {
-                return ApiClientService.get().getContentData(idContent, updateTime);
+                return ApiClientService.get().getContentData(idStudent, idContent, updateTime);
             } catch (Exception e) {
                 L.error(e.getMessage(), e);
             }
@@ -329,7 +329,7 @@ public class ApiManager {
 
     public void searchFriends(String userId, String courseId, String searchKey, String courseInstanceId, ApiCallback<List<FriendsData.Friend>> callback) {
         if (isApiOnline()) {
-            ApiClientService.get().searchFriends(userId, courseId, courseInstanceId, searchKey, callback);
+            ApiClientService.get().searchFriends(userId, courseId, searchKey, courseInstanceId, callback);
         }
     }
 

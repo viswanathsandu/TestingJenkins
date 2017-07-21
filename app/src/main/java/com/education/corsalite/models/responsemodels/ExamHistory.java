@@ -33,7 +33,7 @@ public class ExamHistory {
     public String getTime() {
         try {
             Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateTime);
-            return new SimpleDateFormat("dd/MM/yyyy\nhh:mm a").format(date);
+            return new SimpleDateFormat("dd/MM/yyyy hh:mm a").format(date);
         } catch (Exception e) {
             L.error(e.getMessage(), e);
             return "";

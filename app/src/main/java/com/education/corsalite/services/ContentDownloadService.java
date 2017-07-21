@@ -91,7 +91,7 @@ public class ContentDownloadService extends IntentService {
         if (!TextUtils.isEmpty(content.contentId)) {
             downloandInProgress++;
             NotificationsUtils.showContentDownloadNotification(getApplicationContext(), Integer.valueOf(content.contentId), content.contentName);
-            List<Content> contents = ApiManager.getInstance(this).getContent(content.contentId, "");
+            List<Content> contents = ApiManager.getInstance(this).getContent(LoginUserCache.getInstance().getStudentId(), content.contentId, "");
             if(contents != null && !contents.isEmpty()) {
                 if(content.fileName.endsWith("html")) {
                     NotificationsUtils.showSuccessNotification(getApplicationContext(), Integer.valueOf(content.contentId), content.contentName);

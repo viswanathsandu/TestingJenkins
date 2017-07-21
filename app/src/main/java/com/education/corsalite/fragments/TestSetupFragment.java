@@ -86,14 +86,6 @@ public class TestSetupFragment extends BaseFragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mTestSetupCallback = (ChallengeActivity.TestSetupCallback) getArguments().getSerializable(ARG_CALLBACK);
-        }
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_test_setup, container, false);
         ButterKnife.bind(this, view);

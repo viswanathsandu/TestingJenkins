@@ -39,7 +39,6 @@ public class ExamHistoryActivity extends AbstractBaseActivity implements ExamHis
     @Bind(R.id.rv_exam_history) RecyclerView recyclerView;
     @Bind(R.id.progress_bar_tab) ProgressBar mProgressBar;
     @Bind(R.id.tv_failure_text) TextView mTextView;
-    @Bind(R.id.headerLayout) LinearLayout mHeaderLayout;
     private LinearLayoutManager mLayoutManager;
     private static final int MAX_ROW_COUNT = 10;
     private boolean mLoading = true;
@@ -80,7 +79,6 @@ public class ExamHistoryActivity extends AbstractBaseActivity implements ExamHis
                     mTextView.setVisibility(View.VISIBLE);
                     return;
                 }
-                mHeaderLayout.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.VISIBLE);
 
                 if (examHistoryAdapter == null) {

@@ -155,10 +155,10 @@ public interface ICorsaliteApi {
     void getContentIndexData(@Query("idCourse") String courseId, @Query("idStudent") String studentId, ApiCallback<List<ContentIndex>> callback);
 
     @GET("/Content")
-    void getContentData(@Query("idContents") String idContents, @Query("UpdateTime") String UpdateTime, ApiCallback<List<Content>> callback);
+    void getContentData(@Query("idStudent") String idStudent, @Query("idContents") String idContents, @Query("UpdateTime") String UpdateTime, ApiCallback<List<Content>> callback);
 
     @GET("/Content")
-    List<Content> getContentData(@Query("idContents") String idContents, @Query("UpdateTime") String UpdateTime);
+    List<Content> getContentData(@Query("idStudent") String idStudent, @Query("idContents") String idContents, @Query("UpdateTime") String UpdateTime);
 
     @GET("/Exercise")
     void getExerciseData(@Query("idTopic") String idTopics, @Query("idCourse") String idCourse, @Query("idStudent") String idStudent, @Query("UpdateTime") String UpdateTime, ApiCallback<List<ExamModel>> callback);

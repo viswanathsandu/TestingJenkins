@@ -103,7 +103,9 @@ public class ChallengeResultActivity extends AbstractBaseActivity {
                     public void success(ChallengeCompleteResponseModel challengeCompleteResponseModel, Response response) {
                         super.success(challengeCompleteResponseModel, response);
                         if(challengeCompleteResponseModel.leaderBoardUsers != null) {
-                            getChallengeResults();
+                            if(challengeCompleteResponseModel.examRemainUsers == null || challengeCompleteResponseModel.examRemainUsers == 0) {
+                                getChallengeResults();
+                            }
                             updateChallengeStatus("Completed");
                         }
                     }

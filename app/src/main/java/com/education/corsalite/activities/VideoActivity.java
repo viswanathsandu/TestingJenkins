@@ -14,6 +14,7 @@ import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.ApiCacheHolder;
+import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.ContentModel;
 import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.models.responsemodels.Content;
@@ -129,7 +130,7 @@ public class VideoActivity extends AbstractBaseActivity {
             contentId = contentId + contentModel.idContent;
         }
         showProgress();
-        ApiManager.getInstance(this).getContent(contentId, "", new ApiCallback<List<Content>>(this) {
+        ApiManager.getInstance(this).getContent(LoginUserCache.getInstance().getStudentId(), contentId, "", new ApiCallback<List<Content>>(this) {
             @Override
             public void failure(CorsaliteError error) {
                 super.failure(error);

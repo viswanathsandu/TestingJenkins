@@ -690,7 +690,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
 
     private void getContent(final String contentId, final boolean updatePosition) {
         mContentId = contentId;
-        ApiManager.getInstance(this).getContent(contentId, "", new ApiCallback<List<Content>>(this) {
+        ApiManager.getInstance(this).getContent(studentId, contentId, "", new ApiCallback<List<Content>>(this) {
             @Override
             public void failure(CorsaliteError error) {
                 super.failure(error);

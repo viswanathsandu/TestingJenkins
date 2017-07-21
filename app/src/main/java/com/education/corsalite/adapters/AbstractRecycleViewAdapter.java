@@ -44,6 +44,15 @@ public abstract class AbstractRecycleViewAdapter<V, K extends RecyclerView.ViewH
         }
     }
 
+    public void removeAllData() {
+        if(data.size() == 0){
+            return;
+        }
+        for(int i = this.data.size() - 1; i >= 0; --i){
+            removeItem(i);
+        }
+    }
+
     public void setData(List<V> data){
         if(data == null || data.size() == 0){
             return;
