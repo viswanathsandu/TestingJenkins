@@ -34,7 +34,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
+    dataBinding {
+        enabled = true
+    }
     productFlavors {
         CorsaliteProd {
             applicationId "com.corsalite.tabletapp"
@@ -101,7 +103,6 @@ android {
             buildConfigField 'String', 'PARENT_FOLDER', '".CorsaliteStage"'
         }
     }
-
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
             def SEP = "_"
