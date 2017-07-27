@@ -69,12 +69,6 @@ public class ExamHistoryAdapter extends AbstractRecycleViewAdapter {
         }
 
         public void bindData(final int position, final ExamHistory examHistory) {
-            // different color for alternate rows
-            if ((position + 1) % 2 == 0) {
-                parent.setBackgroundColor(inflater.getContext().getResources().getColor(R.color.tab_recycler_alternate_row));
-            } else {
-                parent.setBackgroundColor(inflater.getContext().getResources().getColor(R.color.white));
-            }
             this.date.setText(examHistory.getDate());
             this.time.setText(examHistory.getTime());
             this.monthYear.setText(examHistory.getMonthYear());

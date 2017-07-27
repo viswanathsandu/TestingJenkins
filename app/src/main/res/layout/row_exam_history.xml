@@ -4,6 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
+    android:background="@color/beige"
+    android:foreground="?android:attr/selectableItemBackground"
     android:orientation="horizontal"
     app:cardBackgroundColor="#E6E6E6"
     app:cardCornerRadius="18dp"
@@ -12,22 +14,23 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/cyan"
+                android:background="@color/blue"
                 android:minWidth="40dp"
                 android:orientation="vertical"
-                android:padding="1dp">
+                android:padding="1dp"
+                android:layout_marginLeft="10dp">
 
                 <TextView
                     android:id="@+id/month_year_txt"
@@ -61,132 +64,137 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center_vertical"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/tv_exam"
+                    fontPath="@string/roboto_regular"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3"
                     android:ellipsize="end"
                     android:gravity="left"
-                    android:padding="10dp"
+                    android:paddingLeft="15dp"
                     android:text="Exam"
-                    android:textColor="@color/text_black" />
-
+                    android:textColor="@color/gray_dark_border"
+                    android:textSize="20sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:weightSum="2">
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
 
                         <TextView
                             style="@style/exam_history_label_text"
+                            fontPath="@string/roboto_regular"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="15dp"
-                            android:text="Type" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="-"
-                            android:textColor="@color/text_gray" />
+                            android:text="Type"
+                            android:textSize="16sp" />
 
                         <TextView
                             android:id="@+id/tv_type"
+                            fontPath="@string/roboto_regular"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="15dp"
-                            android:text=""
-                            android:textColor="@color/gray_dark_border" />
+                            android:text="-"
+                            android:textColor="@color/gray_dark_border"
+                            android:textSize="16sp" />
 
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
 
                         <TextView
                             style="@style/exam_history_label_text"
+                            fontPath="@string/roboto_regular"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="15dp"
-                            android:text="Score" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="-"
-                            android:textColor="@color/text_gray" />
-
+                            android:text="Score"
+                            android:textSize="16sp" />
 
                         <TextView
                             android:id="@+id/tv_score"
+                            fontPath="@string/roboto_regular"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="15dp"
-                            android:text=""
-                            android:textColor="@color/gray_dark_border" />
+                            android:text="-"
+                            android:textColor="@color/gray_dark_border"
+                            android:textSize="16sp" />
                     </LinearLayout>
 
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
                     <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
 
                         <TextView
                             style="@style/exam_history_label_text"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="15dp"
-                            android:text="Rank" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="-"
-                            android:textColor="@color/text_gray" />
-
-
-                        <TextView
-                            android:id="@+id/tv_rank"
+                            fontPath="@string/roboto_regular"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="15dp"
                             android:text="Rank"
-                            android:textColor="@color/text_gray" />
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/tv_rank"
+                            fontPath="@string/roboto_regular"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="15dp"
+                            android:text="-"
+                            android:textColor="@color/gray_dark_border"
+                            android:textSize="16sp" />
 
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
 
                         <TextView
                             style="@style/exam_history_label_text"
+                            fontPath="@string/roboto_regular"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="15dp"
-                            android:text="Status" />
-
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="-"
-                            android:textColor="@color/text_gray" />
+                            android:text="Status"
+                            android:textSize="16sp" />
 
                         <TextView
                             android:id="@+id/tv_status"
+                            fontPath="@string/roboto_regular"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="15dp"
                             android:text="-"
-                            android:textColor="@color/text_gray" />
+                            android:textColor="@color/gray_dark_border"
+                            android:textSize="16sp" />
                     </LinearLayout>
 
                 </LinearLayout>
