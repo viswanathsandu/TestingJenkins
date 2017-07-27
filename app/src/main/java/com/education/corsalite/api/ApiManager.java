@@ -490,26 +490,26 @@ public class ApiManager {
 
     public void postUserEvents(String update, ApiCallback<UserEventsResponse> callback) {
         if (isApiOnline()) {
-            ApiClientService.get().postUserEvents(new TypedString("Update=" + update), callback);
+            ApiClientService.get().postUserEvents(new TypedString("Insert=" + update), callback);
         }
     }
 
     public UserEventsResponse postUserEvents(String update) {
         if (isApiOnline()) {
-            return  ApiClientService.get().postUserEvents(new TypedString("Update=" + update));
+            return  ApiClientService.get().postUserEvents(new TypedString("Insert=" + update));
         }
         return null;
     }
 
     public void postContentUsage(String insert, ApiCallback<BaseResponseModel> callback) {
         if (isApiOnline()) {
-            ApiClientService.get().postContentUsage(new TypedString("Update=" + insert), callback);
+            ApiClientService.get().postContentUsage(new TypedString("Insert=" + insert), callback);
         }
     }
 
     public BaseResponseModel postContentUsage(String insert) {
         if (isApiOnline()) {
-            return  ApiClientService.get().postContentUsage(new TypedString("Update=" + insert));
+            return  ApiClientService.get().postContentUsage(new TypedString("Insert=" + insert));
         }
         return null;
     }
