@@ -190,6 +190,9 @@ public class EditorActivity extends AbstractBaseActivity {
                         L.info("UpdatedContent : " + updateContent);
                         try {
 //                            updateContent = updateContent.replace("+", "%2B");
+                            if(updateContent.endsWith("\n")) {
+                                updateContent = updateContent.substring(0, updateContent.lastIndexOf("\n"));
+                            }
                             updateContent = URLEncoder.encode(updateContent, "UTF-8");
                         } catch (Exception e) {
                             L.error(e.getMessage(), e);
