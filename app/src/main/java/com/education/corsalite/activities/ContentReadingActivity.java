@@ -364,7 +364,6 @@ public class ContentReadingActivity extends AbstractBaseActivity {
         tvVideo.setOnClickListener(mClickListener);
         ivExercise.setOnClickListener(mClickListener);
         topicSpinnerArrow.setOnClickListener(mClickListener);
-
     }
 
     private String operation = "";

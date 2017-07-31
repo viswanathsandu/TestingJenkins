@@ -230,9 +230,9 @@ public class ApiManager {
         }
     }
 
-    public void getExamHistory(String studentId, String beginRowNumber, String numRows, ApiCallback<List<ExamHistory>> callback) {
+    public void getExamHistory(String courseId, String studentId, String beginRowNumber, String numRows, ApiCallback<List<ExamHistory>> callback) {
         if (isApiOnline()) {
-            ApiClientService.get().getExamHistory(studentId, beginRowNumber, numRows, callback);
+            ApiClientService.get().getExamHistory(courseId, studentId, beginRowNumber, numRows, callback);
         }
     }
 

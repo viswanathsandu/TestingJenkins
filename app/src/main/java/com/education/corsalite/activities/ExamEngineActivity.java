@@ -341,6 +341,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             loadFlaggedQuestions();
         } else if (isExerciseTest()) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            slider.setVisibility(View.GONE);
             if (!TextUtils.isEmpty(topicName)) {
                 setToolbarForExercise(title + " - " + topicName, true);
             }

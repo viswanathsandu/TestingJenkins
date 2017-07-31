@@ -232,7 +232,7 @@ public interface ICorsaliteApi {
     void deleteNote(@Body TypedString delete, ApiCallback<DefaultNoteResponse> callback);
 
     @GET("/ExamHistory")
-    void getExamHistory(@Query("idStudent") String studentId, @Query("BeginRowNumber") String beginRowNum, @Query("RowCount") String rowCount, ApiCallback<List<ExamHistory>> callback);
+    void getExamHistory(@Query("idCourse") String corseId, @Query("idStudent") String studentId, @Query("BeginRowNumber") String beginRowNum, @Query("RowCount") String rowCount, ApiCallback<List<ExamHistory>> callback);
 
     @GET("/UsageAnalysis")
     void getUsageAnalysis(@Query("idUser") String userId, ApiCallback<UsageAnalysis> callback);
