@@ -53,7 +53,9 @@ public class ExamHistoryAdapter extends AbstractRecycleViewAdapter {
     public class ExamHistoryViewHolder extends RecyclerView.ViewHolder {
 
         View parent;
-        @Bind(R.id.tv_examhistory_date) TextView examHistoryDate;
+        @Bind(R.id.date_txt) TextView date;
+        @Bind(R.id.month_year_txt) TextView monthYear;
+        @Bind(R.id.time_txt) TextView time;
         @Bind(R.id.tv_score) TextView score;
         @Bind(R.id.tv_exam) TextView exam;
         @Bind(R.id.tv_type) TextView type;
@@ -67,13 +69,9 @@ public class ExamHistoryAdapter extends AbstractRecycleViewAdapter {
         }
 
         public void bindData(final int position, final ExamHistory examHistory) {
-            // different color for alternate rows
-            if ((position + 1) % 2 == 0) {
-                parent.setBackgroundColor(inflater.getContext().getResources().getColor(R.color.tab_recycler_alternate_row));
-            } else {
-                parent.setBackgroundColor(inflater.getContext().getResources().getColor(R.color.white));
-            }
-            this.examHistoryDate.setText(examHistory.getTime());
+            this.date.setText(examHistory.getDate());
+            this.time.setText(examHistory.getTime());
+            this.monthYear.setText(examHistory.getMonthYear());
             this.exam.setText(examHistory.examName);
             this.type.setText(examHistory.testType);
             this.rank.setText(examHistory.rank);

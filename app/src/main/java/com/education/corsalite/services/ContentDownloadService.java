@@ -91,7 +91,7 @@ public class ContentDownloadService extends IntentService {
         if (!TextUtils.isEmpty(content.contentId)) {
             downloandInProgress++;
             NotificationsUtils.showContentDownloadNotification(getApplicationContext(), Integer.valueOf(content.contentId), content.contentName);
-            List<Content> contents = ApiManager.getInstance(this).getContent(content.contentId, "");
+            List<Content> contents = ApiManager.getInstance(this).getContent(LoginUserCache.getInstance().getStudentId(), content.contentId, "");
             if(contents != null && !contents.isEmpty()) {
                 if(content.fileName.endsWith("html")) {
                     NotificationsUtils.showSuccessNotification(getApplicationContext(), Integer.valueOf(content.contentId), content.contentName);
@@ -112,7 +112,8 @@ public class ContentDownloadService extends IntentService {
     private void saveFileToDisk(OfflineContent offlineContent, String htmlText, Content content) {
         FileUtils fileUtils = FileUtils.get(this);
         if (content.type.equalsIgnoreCase(Constants.VIDEO_FILE)) {
-            downloadVideo(offlineContent, content, ApiClientService.getBaseUrl() + htmlText.replaceFirst("./", ""),
+            downloadVideo(offlineContent, content,
+                    ApiClientService.getBaseUrl() + htmlText.replaceFirst("./", ""),
                     FileUtils.get(getApplicationContext()).getVideoDownloadPath(content.idContent));
         } else if (TextUtils.isEmpty(htmlText) || htmlText.endsWith(Constants.HTML_FILE)) {
             Toast.makeText(this, getString(R.string.file_exists), Toast.LENGTH_SHORT).show();
@@ -202,14 +203,34 @@ public class ContentDownloadService extends IntentService {
     }
 
     private String getHtmlText(Content content) {
-        String text = content.type.equalsIgnoreCase(Constants.VIDEO_FILE) ?
-                content.url :
-                "<script type='text/javascript'>" +
-                        "function copy() {" +
-                        "    var t = (document.all) ? document.selection.createRange().text : document.getSelection();" +
-                        "    return t;" +
-                        "}" +
-                        "</script>" + content.contentHtml;
+        String text = content.type.equalsIgnoreCase(Constants.VIDEO_FILE)
+                ? content.originalUrl
+                : "<!DOCTYPE html>" +
+                "<html>" +
+                "<head>" +
+                "<script type='text/javascript' src='file:///android_asset/jquery/jquery-latest.js'></script>" +
+                "<script type='text/javascript' src='file:///android_asset/jquery/jquery.selection.js'></script>" +
+                "<script type='text/javascript' src='file:///android_asset/MathJax/MathJax.js?config=default'></script>" +
+                "" +
+                "<script type='text/x-mathjax-config'>"
+                +"MathJax.Hub.Config({ "
+                +"showMathMenu: false, "
+                +"jax: ['input/TeX','output/HTML-CSS'], "
+                +"extensions: ['tex2jax.js'], "
+                +"TeX: { extensions: ['AMSmath.js','AMSsymbols.js',"
+                +"'noErrors.js','noUndefined.js'] } "
+                +"});</script>" +
+                "" +
+                "<script>" +
+                "   function copy() {" +
+                "       return $.selection('html');" +
+                "   }" +
+                "</script>" +
+                "</head>" +
+                "<body>" +
+                    content.contentHtml +
+                "</body>" +
+                "</html>";
         return text;
     }
 

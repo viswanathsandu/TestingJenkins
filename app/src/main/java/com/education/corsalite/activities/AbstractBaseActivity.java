@@ -147,21 +147,21 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     public static String getSelectedCourseId() {
-        if(selectedCourse != null && selectedCourse.courseId != null) {
+        if (selectedCourse != null && selectedCourse.courseId != null) {
             return selectedCourse.courseId.toString();
         }
         return "";
     }
 
     public static String getSelectedCourseName() {
-        if(selectedCourse != null && selectedCourse.name != null) {
+        if (selectedCourse != null && selectedCourse.name != null) {
             return selectedCourse.name;
         }
         return "";
     }
 
     public static AppConfig getAppConfig(Context context) {
-        if(appConfig == null) {
+        if (appConfig == null) {
             String jsonResponse = FileUtils.get(context).loadJSONFromAsset(context.getAssets(), "config.json");
             appConfig = Gson.get().fromJson(jsonResponse, com.education.corsalite.models.db.AppConfig.class);
         }
@@ -181,7 +181,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         initActivity();
         initNavigationDrawer();
         logScreen(this.getClass().getSimpleName());
-        if(selectedCourse != null) {
+        if (selectedCourse != null) {
             enableNavigationOpitons(selectedCourse);
         }
     }
@@ -209,7 +209,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         try {
-            if(this instanceof LoginActivity
+            if (this instanceof LoginActivity
                     || this instanceof StudyCenterActivity
                     || this instanceof ExamEngineActivity
                     || this instanceof OfflineActivity
@@ -233,7 +233,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     protected void refreshScreen() {
         AppPref.get(getApplicationContext()).remove("data_sync_later");
-        if(SystemUtils.isNetworkConnected(this)) {
+        if (SystemUtils.isNetworkConnected(this)) {
             relogin();
         } else {
             recreate();
@@ -292,7 +292,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             if (!(this instanceof ExamEngineActivity || this instanceof ChallengeActivity)) {
                 refreshScreen();
             }
-            if(event.isconnected) {
+            if (event.isconnected) {
                 stopService(new Intent(getApplicationContext(), ContentDownloadService.class));
                 startService(new Intent(getApplicationContext(), ContentDownloadService.class));
             } else {
@@ -374,11 +374,11 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     private boolean isDeviceAffinityOrUpgradeAlertShown(ClientEntityAppConfig config) {
         try {
             if (config != null) {
-                if(config.isDeviceAffinityEnabled()) {
+                if (config.isDeviceAffinityEnabled()) {
                     if (TextUtils.isEmpty(config.deviceId)) {
                         LoginResponse loginResponse = LoginUserCache.getInstance().getLoginResponse();
                         postClientEntityConfig(loginResponse.idUser);
-                    } else if(!config.deviceId.toLowerCase().contains(SystemUtils.getUniqueID(this))){
+                    } else if (!config.deviceId.toLowerCase().contains(SystemUtils.getUniqueID(this))) {
                         showDeviceAffinityAlert();
                         return true;
                     }
@@ -436,7 +436,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     public void success(CommonResponseModel commonResponseModel, Response response) {
                         super.success(commonResponseModel, response);
                         AppentityconfigReqRes reqRes = ApiCacheHolder.getInstance().appentityconfigReqRes;
-                        if(reqRes != null && reqRes.response != null) {
+                        if (reqRes != null && reqRes.response != null) {
                             reqRes.response.deviceId = uniqueId;
                         }
                     }
@@ -444,14 +444,14 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     private void relogin() {
-        if(isLoginApiRunningInBackground || this instanceof LoginActivity || this instanceof SplashActivity) {
-           return;
+        if (isLoginApiRunningInBackground || this instanceof LoginActivity || this instanceof SplashActivity) {
+            return;
         }
         isLoginApiRunningInBackground = true;
         showProgress();
         final String username = appPref.getValue("loginId");
-        final String passwordHash =  appPref.getValue("passwordHash");
-        if(!TextUtils.isEmpty(username) && !TextUtils.isEmpty(passwordHash)) {
+        final String passwordHash = appPref.getValue("passwordHash");
+        if (!TextUtils.isEmpty(username) && !TextUtils.isEmpty(passwordHash)) {
             ApiManager.getInstance(this).login(username, passwordHash, new ApiCallback<LoginResponse>(this) {
                 @Override
                 public void failure(CorsaliteError error) {
@@ -477,7 +477,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                         appPref.save("loginId", username);
                         appPref.save("passwordHash", passwordHash);
                         appPref.setUserId(loginResponse.idUser);
-                        if(SystemUtils.isNetworkConnected(AbstractBaseActivity.this)) {
+                        if (SystemUtils.isNetworkConnected(AbstractBaseActivity.this)) {
                             startWebSocket();
                             syncDataWithServer();
                             checkDataSync();
@@ -953,12 +953,12 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     protected void loadStudyCenterScreen() {
-        if(selectedCourse.isTestSeries()) {
+        if (selectedCourse != null && selectedCourse.isTestSeries()) {
             startActivity(new Intent(this, TestSeriesActivity.class));
         } else {
             startActivity(new Intent(AbstractBaseActivity.this, StudyCenterActivity.class));
         }
-        if(!(this instanceof StudyCenterActivity)) {
+        if (!(this instanceof StudyCenterActivity)) {
             finish();
         }
     }
@@ -977,7 +977,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     protected void showMockTestsDialog(List<MockTest> mockTests) {
         if (SystemUtils.isNetworkConnected(this)) {
             MockTestDialog dialog = new MockTestDialog();
-            if(mockTests != null) {
+            if (mockTests != null) {
                 String mockTestsGson = Gson.get().toJson(mockTests);
                 Bundle bundle = new Bundle();
                 bundle.putString("mock_tests", mockTestsGson);
@@ -1038,33 +1038,36 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     protected void showVirtualCurrency() {
         try {
-            toolbar.findViewById(R.id.ProgressBar).setVisibility(View.VISIBLE);
-            toolbar.findViewById(R.id.currency_layout).setVisibility(View.VISIBLE);
-            toolbar.findViewById(R.id.currency_layout).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(AbstractBaseActivity.this, VirtualCurrencyActivity.class);
-                    startActivity(intent);
-                }
-            });
-            ApiManager.getInstance(this).getVirtualCurrencyBalance(LoginUserCache.getInstance().getStudentId(), new ApiCallback<VirtualCurrencyBalanceResponse>(this) {
-                @Override
-                public void success(VirtualCurrencyBalanceResponse virtualCurrencyBalanceResponse, Response response) {
-                    super.success(virtualCurrencyBalanceResponse, response);
-                        toolbar.findViewById(R.id.ProgressBar).setVisibility(View.GONE);
-                    if (virtualCurrencyBalanceResponse != null && virtualCurrencyBalanceResponse.balance != null) {
-                        appPref.setVirtualCurrency(virtualCurrencyBalanceResponse.balance.intValue() + "");
-                        TextView textView = (TextView) toolbar.findViewById(R.id.tv_virtual_currency);
-                        textView.setText(virtualCurrencyBalanceResponse.balance.intValue() + "");
+            // Enable Vc for Welcome activity. do not display anywhere else
+            if (this instanceof WelcomeActivity) {
+                toolbar.findViewById(R.id.ProgressBar).setVisibility(View.VISIBLE);
+                toolbar.findViewById(R.id.currency_layout).setVisibility(View.VISIBLE);
+                toolbar.findViewById(R.id.currency_layout).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(AbstractBaseActivity.this, VirtualCurrencyActivity.class);
+                        startActivity(intent);
                     }
-                }
+                });
+                ApiManager.getInstance(this).getVirtualCurrencyBalance(LoginUserCache.getInstance().getStudentId(), new ApiCallback<VirtualCurrencyBalanceResponse>(this) {
+                    @Override
+                    public void success(VirtualCurrencyBalanceResponse virtualCurrencyBalanceResponse, Response response) {
+                        super.success(virtualCurrencyBalanceResponse, response);
+                        toolbar.findViewById(R.id.ProgressBar).setVisibility(View.GONE);
+                        if (virtualCurrencyBalanceResponse != null && virtualCurrencyBalanceResponse.balance != null) {
+                            appPref.setVirtualCurrency(virtualCurrencyBalanceResponse.balance.intValue() + "");
+                            TextView textView = (TextView) toolbar.findViewById(R.id.tv_virtual_currency);
+                            textView.setText(virtualCurrencyBalanceResponse.balance.intValue() + "");
+                        }
+                    }
 
-                @Override
-                public void failure(CorsaliteError error) {
-                    super.failure(error);
-                    toolbar.findViewById(R.id.ProgressBar).setVisibility(View.GONE);
-                }
-            });
+                    @Override
+                    public void failure(CorsaliteError error) {
+                        super.failure(error);
+                        toolbar.findViewById(R.id.ProgressBar).setVisibility(View.GONE);
+                    }
+                });
+            }
         } catch (Exception e) {
             L.error(e.getMessage(), e);
             toolbar.findViewById(R.id.ProgressBar).setVisibility(View.GONE);
@@ -1408,7 +1411,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     private void enableNavigationOpitons(Course course) {
-        if(course != null) {
+        if (course != null) {
             navigationView.findViewById(R.id.navigation_study_center).setVisibility(isTrue(course.isStudyCenter) ? View.VISIBLE : View.GONE);
             navigationView.findViewById(R.id.navigation_forum).setVisibility(isTrue(course.isForums) ? View.VISIBLE : View.GONE);
             navigationView.findViewById(R.id.navigation_mock_tests).setVisibility(isTrue(course.isMockTest) ? View.VISIBLE : View.GONE);
@@ -1427,11 +1430,11 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     private boolean isTrue(Integer value) {
-        return  value != null && value == 1;
+        return value != null && value == 1;
     }
 
     protected void getContentIndex(Course course, String studentId) {
-        if(course == null || course.courseId == null || course.isTestSeries()) {
+        if (course == null || course.courseId == null || course.isTestSeries()) {
             return;
         }
         ApiManager.getInstance(this).getContentIndex(course.courseId.toString(), studentId,
@@ -1794,6 +1797,28 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     protected void startWebSocket() {
         WebSocketHelper.get(this).connectWebSocket();
+    }
+
+    private AlertDialog socketAlert;
+
+    protected void showSocketDisconnectionAlert(boolean isConnected) {
+        if (!isConnected && socketAlert == null) {
+            socketAlert = new AlertDialog.Builder(this)
+                    .setTitle("Connection Failure")
+                    .setMessage("Failed to connect with server. Please try later")
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    }).show();
+            socketAlert.setCancelable(false);
+        } else {
+            if (!isConnected) {
+                socketAlert.show();
+            } else {
+                socketAlert.dismiss();
+            }
+        }
     }
 
     public void hideKeyboard() {

@@ -19,6 +19,7 @@ import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
+import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.ExamHistory;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.SystemUtils;
@@ -39,7 +40,6 @@ public class ExamHistoryActivity extends AbstractBaseActivity implements ExamHis
     @Bind(R.id.rv_exam_history) RecyclerView recyclerView;
     @Bind(R.id.progress_bar_tab) ProgressBar mProgressBar;
     @Bind(R.id.tv_failure_text) TextView mTextView;
-    @Bind(R.id.headerLayout) LinearLayout mHeaderLayout;
     private LinearLayoutManager mLayoutManager;
     private static final int MAX_ROW_COUNT = 10;
     private boolean mLoading = true;
@@ -56,11 +56,18 @@ public class ExamHistoryActivity extends AbstractBaseActivity implements ExamHis
         setToolbarForExamHistory();
         mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
+    }
+
+    @Override
+    public void onEvent(Course course) {
+        super.onEvent(course);
         getExamHistory();
     }
 
     private void getExamHistory() {
-        ApiManager.getInstance(this).getExamHistory(LoginUserCache.getInstance().getStudentId(),
+        mProgressBar.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
+        ApiManager.getInstance(this).getExamHistory(getSelectedCourseId(), LoginUserCache.getInstance().getStudentId(),
                 null, null,
                 new ApiCallback<List<ExamHistory>>(this) {
             @Override
@@ -80,7 +87,6 @@ public class ExamHistoryActivity extends AbstractBaseActivity implements ExamHis
                     mTextView.setVisibility(View.VISIBLE);
                     return;
                 }
-                mHeaderLayout.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.VISIBLE);
 
                 if (examHistoryAdapter == null) {

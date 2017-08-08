@@ -65,11 +65,15 @@ public class L {
     }
 
     public static void error(String message) {
-        error(TAG, message);
+        if(message != null) {
+            error(TAG, message);
+        }
     }
 
     public static void error(String message, Throwable throwable) {
-        error(TAG, message, throwable);
+        if(message != null) {
+            error(TAG, message, throwable);
+        }
     }
 
     public static void error(String tag, String message) {

@@ -1,5 +1,5 @@
 ﻿/**
- * Copyright (c) 2003-2015, CKSource - Frederico Knabben. All rights reserved.
+ * Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.md or http://ckeditor.com/license
  */
 
@@ -10,7 +10,7 @@ if ( CKEDITOR.env.ie && CKEDITOR.env.version < 9 )
 
 // The trick to keep the editor in the sample quite small
 // unless user specified own height.
-CKEDITOR.config.height = 150;
+CKEDITOR.config.height = 400;
 CKEDITOR.config.width = 'auto';
 
 var initSample = ( function() {

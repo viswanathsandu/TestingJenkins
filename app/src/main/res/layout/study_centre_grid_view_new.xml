@@ -8,7 +8,7 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="16dp"
     android:layout_marginRight="16dp"
-    android:background="@color/transparent"
+    android:background="?android:attr/selectableItemBackground"
     android:orientation="vertical">
 
     <LinearLayout
@@ -16,17 +16,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/redshape"
+        android:foreground="?android:attr/selectableItemBackground"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/subject_name"
             style="@style/grid_text_style"
             android:layout_width="match_parent"
-            android:layout_height="45dp"
+            android:layout_height="wrap_content"
             android:ellipsize="end"
             android:gravity="center_vertical|center"
             android:lineSpacingMultiplier="1.2"
             android:maxLines="2"
+            android:lines="2"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:text="Subject name"
@@ -136,6 +138,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/grayshape"
+        android:foreground="?android:attr/selectableItemBackground"
         android:orientation="vertical">
 
         <TextView
@@ -143,11 +146,12 @@
             style="@style/grid_text_style"
             fontPath="@string/roboto_bold"
             android:layout_width="match_parent"
-            android:layout_height="45dp"
+            android:layout_height="wrap_content"
             android:ellipsize="end"
             android:gravity="center|center_vertical"
             android:lineSpacingMultiplier="1.2"
             android:maxLines="2"
+            android:lines="2"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:text="Subject name"

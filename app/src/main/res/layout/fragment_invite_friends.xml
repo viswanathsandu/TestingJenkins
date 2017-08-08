@@ -10,8 +10,6 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_friends_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/ll_action_buttons"
-        android:layout_below="@+id/sv_friend_search" />
+        android:layout_height="match_parent"/>
 
 </RelativeLayout>
