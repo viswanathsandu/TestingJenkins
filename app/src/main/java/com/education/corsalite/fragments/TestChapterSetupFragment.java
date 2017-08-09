@@ -140,8 +140,8 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
                         for (TestCoverage coverage : testCoverages) {
                             if (coverage.level.equalsIgnoreCase(level + "")) {
                                 questionCount += Integer.valueOf(coverage.questionCount);
-                                int maxCount = (maxQuestionLimit >= 0 && maxQuestionLimit < questionCount) ? maxQuestionLimit : questionCount;
-                                mNoOfQuestionsEditTxt.setFilters(new InputFilter[]{new InputFilterMinMax("1", maxCount+"")});
+                                int maxCount = (maxQuestionLimit > 0 && maxQuestionLimit < questionCount) ? maxQuestionLimit : questionCount;
+                                mNoOfQuestionsEditTxt.setFilters(new InputFilter[]{new InputFilterMinMax(maxCount > 0 ? "1" : "0", maxCount+"")});
                                 mNoOfQuestionsEditTxt.setText(maxCount+"");
                                 break;
                             }
@@ -168,8 +168,8 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
                             } else {
                                 questionCount -= Integer.valueOf(testCoverage.questionCount);
                             }
-                            int maxCount = maxQuestionLimit < questionCount ? maxQuestionLimit : questionCount;
-                            mNoOfQuestionsEditTxt.setFilters(new InputFilter[]{new InputFilterMinMax("1", maxCount+"")});
+                            int maxCount = (maxQuestionLimit > 0 && maxQuestionLimit < questionCount) ? maxQuestionLimit : questionCount;
+                            mNoOfQuestionsEditTxt.setFilters(new InputFilter[]{new InputFilterMinMax(maxCount > 0 ? "1" : "0", maxCount+"")});
                             mNoOfQuestionsEditTxt.setText(maxCount+ "");
                         }
                     }

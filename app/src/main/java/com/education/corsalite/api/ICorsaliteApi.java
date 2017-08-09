@@ -155,10 +155,10 @@ public interface ICorsaliteApi {
     void getContentIndexData(@Query("idCourse") String courseId, @Query("idStudent") String studentId, ApiCallback<List<ContentIndex>> callback);
 
     @GET("/Content")
-    void getContentData(@Query("idContents") String idContents, @Query("UpdateTime") String UpdateTime, ApiCallback<List<Content>> callback);
+    void getContentData(@Query("idStudent") String idStudent, @Query("idContents") String idContents, @Query("UpdateTime") String UpdateTime, ApiCallback<List<Content>> callback);
 
     @GET("/Content")
-    List<Content> getContentData(@Query("idContents") String idContents, @Query("UpdateTime") String UpdateTime);
+    List<Content> getContentData(@Query("idStudent") String idStudent, @Query("idContents") String idContents, @Query("UpdateTime") String UpdateTime);
 
     @GET("/Exercise")
     void getExerciseData(@Query("idTopic") String idTopics, @Query("idCourse") String idCourse, @Query("idStudent") String idStudent, @Query("UpdateTime") String UpdateTime, ApiCallback<List<ExamModel>> callback);
@@ -232,7 +232,7 @@ public interface ICorsaliteApi {
     void deleteNote(@Body TypedString delete, ApiCallback<DefaultNoteResponse> callback);
 
     @GET("/ExamHistory")
-    void getExamHistory(@Query("idStudent") String studentId, @Query("BeginRowNumber") String beginRowNum, @Query("RowCount") String rowCount, ApiCallback<List<ExamHistory>> callback);
+    void getExamHistory(@Query("idCourse") String corseId, @Query("idStudent") String studentId, @Query("BeginRowNumber") String beginRowNum, @Query("RowCount") String rowCount, ApiCallback<List<ExamHistory>> callback);
 
     @GET("/UsageAnalysis")
     void getUsageAnalysis(@Query("idUser") String userId, ApiCallback<UsageAnalysis> callback);

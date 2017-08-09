@@ -37,7 +37,7 @@ import retrofit.client.Response;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class InviteFriendsFragment extends BaseFragment implements SearchView.OnQueryTextListener, SearchView.OnCloseListener {
+public class InviteFriendsFragment extends BaseFragment {
 
     private static final String ARG_CALLBACK = "ARG_CALLBACK";
     private RecyclerView mRecyclerView;
@@ -66,6 +66,9 @@ public class InviteFriendsFragment extends BaseFragment implements SearchView.On
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new GridLayoutManager(getActivity(), 4);
         mRecyclerView.setLayoutManager(mLayoutManager);
+        mAdapter = new FriendsAdapter(getActivity(), friendsData, mFriendsListCallback);
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), R.drawable.horizontal_line, true, true));
+        mRecyclerView.setAdapter(mAdapter);
         setListeners();
         return view;
     }
@@ -100,16 +103,18 @@ public class InviteFriendsFragment extends BaseFragment implements SearchView.On
     }
 
     private void loadFriendsList() {
+        showProgress();
         ApiManager.getInstance(getActivity()).getFriendsList(
                 appPref.getUserId(),
                 AbstractBaseActivity.getSelectedCourseId(),
-                AbstractBaseActivity.getSelectedCourse().courseInstanceId,
+                AbstractBaseActivity.getSelectedCourse() != null ? AbstractBaseActivity.getSelectedCourse().courseInstanceId : null,
                 new ApiCallback<FriendsData>(getActivity()) {
 
                     @Override
                     public void success(FriendsData friendsData, Response response) {
                         super.success(friendsData, response);
                         if (getActivity() != null && friendsData != null) {
+                            closeProgress();
                             InviteFriendsFragment.this.friendsData = friendsData;
                             showFriendsList();
                             fetchDisplayName();
@@ -120,6 +125,7 @@ public class InviteFriendsFragment extends BaseFragment implements SearchView.On
                     public void failure(CorsaliteError error) {
                         super.failure(error);
                         if(getActivity() != null) {
+                            closeProgress();
                             ((AbstractBaseActivity) getActivity()).showToast("No friends available");
                         }
                     }
@@ -129,29 +135,12 @@ public class InviteFriendsFragment extends BaseFragment implements SearchView.On
     private void showFriendsList() {
         updateFriendsListStatus();
         if(friendsData != null && friendsData.friendsList != null) {
-            mAdapter = new FriendsAdapter(getActivity(), friendsData, mFriendsListCallback);
-            mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), R.drawable.horizontal_line, true, true));
-            mRecyclerView.setAdapter(mAdapter);
+//            mAdapter = new FriendsAdapter(getActivity(), friendsData, mFriendsListCallback);
+            mAdapter.updateData(friendsData);
+//            mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), R.drawable.horizontal_line, true, true));
+//            mRecyclerView.setAdapter(mAdapter);
+//            mAdapter.notifyDataSetChanged();
         }
-    }
-
-    @Override
-    public boolean onClose() {
-        if (friendsData != null && friendsData.friendsList != null && friendsData.friendsList.size() > 0)
-            mAdapter.setFilter(friendsData.friendsList);
-        return false;
-    }
-
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-        return false;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String newText) {
-        final List<FriendsData.Friend> filteredModelList = filter(newText);
-        mAdapter.setFilter((ArrayList<FriendsData.Friend>) filteredModelList);
-        return true;
     }
 
     private List<FriendsData.Friend> filter(String query) {

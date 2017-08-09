@@ -230,9 +230,9 @@ public class ApiManager {
         }
     }
 
-    public void getExamHistory(String studentId, String beginRowNumber, String numRows, ApiCallback<List<ExamHistory>> callback) {
+    public void getExamHistory(String courseId, String studentId, String beginRowNumber, String numRows, ApiCallback<List<ExamHistory>> callback) {
         if (isApiOnline()) {
-            ApiClientService.get().getExamHistory(studentId, beginRowNumber, numRows, callback);
+            ApiClientService.get().getExamHistory(courseId, studentId, beginRowNumber, numRows, callback);
         }
     }
 
@@ -258,10 +258,10 @@ public class ApiManager {
         }
     }
 
-    public void getContent(String idContents, String UpdateTime, ApiCallback<List<Content>> callback) {
+    public void getContent(String idStudent, String idContents, String UpdateTime, ApiCallback<List<Content>> callback) {
         apiCacheHolder.setContentRequest(idContents, UpdateTime);
         if (isApiOnline()) {
-            ApiClientService.get().getContentData(idContents, UpdateTime, callback);
+            ApiClientService.get().getContentData(idStudent, idContents, UpdateTime, callback);
         } else if(!isNetworkConnected()) {
             ContentReqRes reqRes = new ContentReqRes();
             reqRes.request = apiCacheHolder.contentRequest;
@@ -269,11 +269,11 @@ public class ApiManager {
         }
     }
 
-    public List<Content> getContent(String idContent, String updateTime) {
+    public List<Content> getContent(String idStudent, String idContent, String updateTime) {
         apiCacheHolder.setContentRequest(idContent, updateTime);
         if (isApiOnline()) {
             try {
-                return ApiClientService.get().getContentData(idContent, updateTime);
+                return ApiClientService.get().getContentData(idStudent, idContent, updateTime);
             } catch (Exception e) {
                 L.error(e.getMessage(), e);
             }
@@ -329,7 +329,7 @@ public class ApiManager {
 
     public void searchFriends(String userId, String courseId, String searchKey, String courseInstanceId, ApiCallback<List<FriendsData.Friend>> callback) {
         if (isApiOnline()) {
-            ApiClientService.get().searchFriends(userId, courseId, courseInstanceId, searchKey, callback);
+            ApiClientService.get().searchFriends(userId, courseId, searchKey, courseInstanceId, callback);
         }
     }
 
@@ -490,26 +490,26 @@ public class ApiManager {
 
     public void postUserEvents(String update, ApiCallback<UserEventsResponse> callback) {
         if (isApiOnline()) {
-            ApiClientService.get().postUserEvents(new TypedString("Update=" + update), callback);
+            ApiClientService.get().postUserEvents(new TypedString("Insert=" + update), callback);
         }
     }
 
     public UserEventsResponse postUserEvents(String update) {
         if (isApiOnline()) {
-            return  ApiClientService.get().postUserEvents(new TypedString("Update=" + update));
+            return  ApiClientService.get().postUserEvents(new TypedString("Insert=" + update));
         }
         return null;
     }
 
     public void postContentUsage(String insert, ApiCallback<BaseResponseModel> callback) {
         if (isApiOnline()) {
-            ApiClientService.get().postContentUsage(new TypedString("Update=" + insert), callback);
+            ApiClientService.get().postContentUsage(new TypedString("Insert=" + insert), callback);
         }
     }
 
     public BaseResponseModel postContentUsage(String insert) {
         if (isApiOnline()) {
-            return  ApiClientService.get().postContentUsage(new TypedString("Update=" + insert));
+            return  ApiClientService.get().postContentUsage(new TypedString("Insert=" + insert));
         }
         return null;
     }

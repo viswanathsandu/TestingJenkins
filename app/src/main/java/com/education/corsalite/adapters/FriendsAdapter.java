@@ -13,8 +13,10 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.education.corsalite.R;
 import com.education.corsalite.activities.ChallengeActivity;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.models.responsemodels.FriendsData;
 import com.education.corsalite.services.ApiClientService;
+import com.education.corsalite.utils.L;
 
 import java.util.ArrayList;
 
@@ -32,11 +34,11 @@ public class FriendsAdapter extends AbstractRecycleViewAdapter {
     ChallengeActivity.FriendsListCallback mFriendsListCallback;
 
     public FriendsAdapter(Activity activity, FriendsData friendsData, ChallengeActivity.FriendsListCallback friendsListCallback) {
-        this(friendsData);
         this.mActivity = activity;
         if(mActivity != null) {
             this.inflater = activity.getLayoutInflater();
         }
+        updateData(friendsData);
         this.mFriendsListCallback = friendsListCallback;
         selectedFriends = new ArrayList<>();
     }
@@ -48,19 +50,18 @@ public class FriendsAdapter extends AbstractRecycleViewAdapter {
         return fvh;
     }
 
-    private FriendsAdapter(FriendsData friendsData) {
-        addAll(friendsData.friendsList);
+    public void updateData(FriendsData friendsData) {
+        if(friendsData != null) {
+            removeAllData();
+            addAll(friendsData.friendsList);
+            notifyDataSetChanged();
+        }
     }
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, final int position) {
         ((FriendViewHolder) viewHolder).bindData(position, (FriendsData.Friend) getItem(position));
-    }
-
-    public void setFilter(ArrayList<FriendsData.Friend> filterList) {
-        removeAll();
-        addAll(filterList);
-        notifyDataSetChanged();
+        L.info("ChallengeLog", Gson.get().toJson((FriendsData.Friend) getItem(position)));
     }
 
     public class FriendViewHolder extends RecyclerView.ViewHolder {
@@ -85,18 +86,15 @@ public class FriendsAdapter extends AbstractRecycleViewAdapter {
         public void bindData(final int position, final FriendsData.Friend clickedFriend) {
             tvName.setText(clickedFriend.displayName);
             tvEmail.setText(clickedFriend.emailID);
-            statusView.setBackgroundColor(mActivity.getResources()
-                    .getColor(clickedFriend.isOnline() ? R.color.green : R.color.gray));
-//            ivActionBtn.setVisibility(clickedFriend.isOnline ? View.VISIBLE : View.GONE);
-//            if (selectedFriends.contains(clickedFriend)) {
-//                ivActionBtn.setImageResource(android.R.drawable.ic_delete);
-//            } else {
-//                ivActionBtn.setImageResource(android.R.drawable.ic_input_add);
-//            }
+            statusView.setBackgroundColor(mActivity.getResources().getColor(clickedFriend.isOnline() ? R.color.green : R.color.gray));
             if (!TextUtils.isEmpty(clickedFriend.photoUrl)) {
                 Glide.with(mActivity).load(ApiClientService.getBaseUrl() + clickedFriend.photoUrl.replaceFirst("./", "")).into(ivProfilePic);
             }
             if(clickedFriend.isOnline()) {
+                if (selectedFriends.contains(clickedFriend)) {
+                    tileView.setBackgroundColor(mActivity.getResources().getColor(R.color.green));
+                    ivActionBtn.setImageResource(android.R.drawable.ic_delete);
+                }
                 parent.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

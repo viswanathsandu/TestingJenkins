@@ -24,22 +24,10 @@
         android:textColor="@color/text_black"
         android:visibility="gone" />
 
-    <LinearLayout
-        android:id="@+id/headerLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/tab_recycler_header"
-        android:visibility="gone">
-
-        <include layout="@layout/row_exam_history_header" />
-    </LinearLayout>
-
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_exam_history"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/headerLayout"
         android:visibility="gone" />
 
 </RelativeLayout>

@@ -30,10 +30,31 @@ public class ExamHistory {
     @SerializedName("DueDateTime")
     public String dueDate;
 
+
+    public String getMonthYear() {
+        try {
+            Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateTime);
+            return new SimpleDateFormat("MMM yyyy").format(date);
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+            return "";
+        }
+    }
+
+    public String getDate() {
+        try {
+            Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateTime);
+            return new SimpleDateFormat("dd").format(date);
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+            return "";
+        }
+    }
+
     public String getTime() {
         try {
             Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateTime);
-            return new SimpleDateFormat("dd/MM/yyyy\nhh:mm a").format(date);
+            return new SimpleDateFormat("hh:mm a").format(date);
         } catch (Exception e) {
             L.error(e.getMessage(), e);
             return "";

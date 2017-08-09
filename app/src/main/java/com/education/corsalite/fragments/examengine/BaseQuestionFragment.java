@@ -291,6 +291,7 @@ public abstract class BaseQuestionFragment extends BaseFragment {
             btnVerify.setEnabled(false);
             explanationLayout.setVisibility(View.VISIBLE);
             layoutChoice.setVisibility(View.VISIBLE);
+            showToast(isCorrect() ? "Congrats. Correct answer" : "Sorry. Wrong answer.");
         } else {
             showToast("Please select an option");
         }

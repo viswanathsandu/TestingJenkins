@@ -17,9 +17,11 @@ import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.event.SocketConnectionStatusEvent;
 import com.education.corsalite.fragments.ChallengeTestRequestDialogFragment;
 import com.education.corsalite.fragments.InviteFriendsFragment;
 import com.education.corsalite.fragments.TestSetupFragment;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.helpers.WebSocketHelper;
 import com.education.corsalite.models.responsemodels.CreateChallengeResponseModel;
 import com.education.corsalite.models.responsemodels.FriendsData;
@@ -29,9 +31,7 @@ import com.education.corsalite.models.socket.response.ChallengeTestRequestEvent;
 import com.education.corsalite.models.socket.response.ChallengeTestStartEvent;
 import com.education.corsalite.models.socket.response.ChallengeTestUpdateEvent;
 import com.education.corsalite.utils.Constants;
-import com.education.corsalite.gson.Gson;
 import com.education.corsalite.utils.L;
-
 
 import java.util.ArrayList;
 
@@ -92,6 +92,18 @@ public class ChallengeActivity extends AbstractBaseActivity {
                 showChallengeTestRequestFragment(getRequestEvent(event));
             }
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(!WebSocketHelper.get(this).isConnected()) {
+            showSocketDisconnectionAlert(false);
+        }
+    }
+
+    public void onEventMainThread(SocketConnectionStatusEvent event) {
+        showSocketDisconnectionAlert(event.isConnected);
     }
 
     private void fetchDisplayName() {

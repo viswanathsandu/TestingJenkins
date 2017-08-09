@@ -40,6 +40,7 @@ import com.education.corsalite.enums.TestanswerPaperState;
 import com.education.corsalite.event.ExerciseAnsEvent;
 import com.education.corsalite.event.FlagEvent;
 import com.education.corsalite.event.FlagUpdatedEvent;
+import com.education.corsalite.event.SocketConnectionStatusEvent;
 import com.education.corsalite.event.UpdateAnswerEvent;
 import com.education.corsalite.fragments.FullQuestionDialog;
 import com.education.corsalite.fragments.LeaderBoardFragment;
@@ -267,6 +268,14 @@ public class ExamEngineActivity extends AbstractBaseActivity {
         loadExamEngine();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(isChallengeTest() && !WebSocketHelper.get(this).isConnected()) {
+            showSocketDisconnectionAlert(false);
+        }
+    }
+
     private void loadExamEngine() {
         toggleSlider();
         initWebView();
@@ -332,6 +341,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             loadFlaggedQuestions();
         } else if (isExerciseTest()) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            slider.setVisibility(View.GONE);
             if (!TextUtils.isEmpty(topicName)) {
                 setToolbarForExercise(title + " - " + topicName, true);
             }
@@ -397,6 +407,12 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 
     private boolean isViewAnswersScreen() {
         return title.equalsIgnoreCase("View Answers");
+    }
+
+    public void onEventMainThread(SocketConnectionStatusEvent event) {
+        if(isChallengeTest()) {
+            showSocketDisconnectionAlert(event.isConnected);
+        }
     }
 
     private void loadDefaultExam() {

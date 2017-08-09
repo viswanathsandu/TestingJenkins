@@ -18,6 +18,7 @@ import com.education.corsalite.adapters.ChallengeResultsAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.event.SocketConnectionStatusEvent;
 import com.education.corsalite.helpers.WebSocketHelper;
 import com.education.corsalite.models.requestmodels.ChallengeStatusRequest;
 import com.education.corsalite.models.responsemodels.ChallengeCompleteResponseModel;
@@ -70,6 +71,18 @@ public class ChallengeResultActivity extends AbstractBaseActivity {
         loadScreen();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(!WebSocketHelper.get(this).isConnected()) {
+            showSocketDisconnectionAlert(false);
+        }
+    }
+
+    public void onEventMainThread(SocketConnectionStatusEvent event) {
+        showSocketDisconnectionAlert(event.isConnected);
+    }
+
     private void loadScreen() {
         challengeTestId = getIntent().getStringExtra("challenge_test_id");
         testQuestionPaperId = getIntent().getStringExtra("test_question_paper_id");
@@ -90,7 +103,9 @@ public class ChallengeResultActivity extends AbstractBaseActivity {
                     public void success(ChallengeCompleteResponseModel challengeCompleteResponseModel, Response response) {
                         super.success(challengeCompleteResponseModel, response);
                         if(challengeCompleteResponseModel.leaderBoardUsers != null) {
-                            getChallengeResults();
+                            if(challengeCompleteResponseModel.examRemainUsers == null || challengeCompleteResponseModel.examRemainUsers == 0) {
+                                getChallengeResults();
+                            }
                             updateChallengeStatus("Completed");
                         }
                     }

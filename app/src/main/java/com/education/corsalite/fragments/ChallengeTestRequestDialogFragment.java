@@ -309,7 +309,7 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
         declinedTxt.setText(String.valueOf(declined));
         initiatedTxt.setText(String.valueOf(initiated));
         startBtn.setVisibility(mCurrentUser.role.equalsIgnoreCase("Challenger") ? View.VISIBLE : View.GONE);
-        startBtn.setEnabled(initiated + accepted >= 1);
+        startBtn.setEnabled(initiated + accepted > 1);
     }
 
     public void onEventMainThread(ChallengeTestUpdateEvent event) {

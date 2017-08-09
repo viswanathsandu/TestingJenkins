@@ -23,6 +23,7 @@ import com.education.corsalite.adapters.TopicAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.models.ChapterModel;
 import com.education.corsalite.models.SubjectModel;
 import com.education.corsalite.models.TopicModel;
@@ -36,11 +37,10 @@ import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.DefaultForumResponse;
 import com.education.corsalite.models.responsemodels.DefaultNoteResponse;
-import com.education.corsalite.gson.Gson;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.views.CustomButton;
 
-
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -188,7 +188,15 @@ public class EditorActivity extends AbstractBaseActivity {
                     @Override
                     public void run() {
                         L.info("UpdatedContent : " + updateContent);
-                        updateContent = updateContent.replace("+", "%2B");
+                        try {
+//                            updateContent = updateContent.replace("+", "%2B");
+                            if(updateContent.endsWith("\n")) {
+                                updateContent = updateContent.substring(0, updateContent.lastIndexOf("\n"));
+                            }
+                            updateContent = URLEncoder.encode(updateContent, "UTF-8");
+                        } catch (Exception e) {
+                            L.error(e.getMessage(), e);
+                        }
                         if (operation.equalsIgnoreCase("Add")) {
                             addContent();
                         } else if (operation.equalsIgnoreCase("Edit")) {
