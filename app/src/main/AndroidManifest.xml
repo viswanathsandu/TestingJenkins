@@ -91,6 +91,7 @@
         </activity>
         <activity
             android:name=".activities.LoginActivity"
+            android:screenOrientation="fullSensor"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:theme="@style/UserProfileTheme" />
         <activity
