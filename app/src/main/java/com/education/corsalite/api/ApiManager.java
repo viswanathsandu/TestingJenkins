@@ -49,6 +49,7 @@ import com.education.corsalite.models.responsemodels.EditProfileModel;
 import com.education.corsalite.models.responsemodels.Exam;
 import com.education.corsalite.models.responsemodels.ExamHistory;
 import com.education.corsalite.models.responsemodels.ExamModel;
+import com.education.corsalite.models.responsemodels.ExamResultSummaryResponse;
 import com.education.corsalite.models.responsemodels.ForumPost;
 import com.education.corsalite.models.responsemodels.FourmCommentPostModel;
 import com.education.corsalite.models.responsemodels.FriendsData;
@@ -639,6 +640,12 @@ public class ApiManager {
             TestSeriesReqRes reqRes = new TestSeriesReqRes();
             reqRes.request = apiCacheHolder.testSeriesRequest;
             SugarDbManager.get(context).getResponse(reqRes, callback);
+        }
+    }
+
+    public void getExamResultSummaryData(String testAnswerPAperIds, String studentId, ApiCallback<ExamResultSummaryResponse> callback) {
+        if(isApiOnline()) {
+            ApiClientService.get().getExamResultSummary(testAnswerPAperIds, studentId, callback);
         }
     }
 }
