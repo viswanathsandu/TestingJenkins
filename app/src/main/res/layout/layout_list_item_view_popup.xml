@@ -1,110 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/list_item_popup_layout"
-    android:layout_width="200dp"
-    android:layout_height="wrap_content"
-    android:background="@drawable/white_shape"
-    android:orientation="vertical"
-    android:padding="16dp">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-    <RelativeLayout style="@style/tiles_menu_item_rl">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/list_item_popup_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/white_shape"
+        android:orientation="vertical"
+        android:padding="16dp">
 
-        <TextView
-            style="@style/tiles_menu_title_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/completed_topics"
-            android:text="@string/completed_topics" />
+        <RelativeLayout style="@style/tiles_menu_item_rl">
 
-        <TextView
-            android:id="@+id/completed_topics"
-            style="@style/tiles_menu_value_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/yellow_selector" />
+            <TextView
+                style="@style/tiles_menu_title_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/completed_topics"
+                android:text="@string/completed_topics" />
 
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/completed_topics"
+                style="@style/tiles_menu_value_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/yellow_selector" />
 
-    <RelativeLayout style="@style/tiles_menu_item_rl">
+        </RelativeLayout>
 
-
-        <TextView
-            style="@style/tiles_menu_title_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/score"
-            android:text="@string/score" />
+        <RelativeLayout style="@style/tiles_menu_item_rl">
 
 
-        <TextView
-            android:id="@+id/score"
-            style="@style/tiles_menu_value_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/red_selector" />
+            <TextView
+                style="@style/tiles_menu_title_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/score"
+                android:text="@string/score" />
 
-    </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/notes_layout"
-        style="@style/tiles_menu_item_rl">
+            <TextView
+                android:id="@+id/score"
+                style="@style/tiles_menu_value_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/red_selector" />
 
-        <TextView
-            style="@style/tiles_menu_title_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/notes"
-            android:text="@string/notes" />
+        </RelativeLayout>
 
-        <TextView
-            android:id="@+id/notes"
-            style="@style/tiles_menu_value_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/blue_selector" />
+        <RelativeLayout
+            android:id="@+id/notes_layout"
+            style="@style/tiles_menu_item_rl">
 
-    </RelativeLayout>
+            <TextView
+                style="@style/tiles_menu_title_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/notes"
+                android:text="@string/notes" />
 
-    <RelativeLayout style="@style/tiles_menu_item_rl">
+            <TextView
+                android:id="@+id/notes"
+                style="@style/tiles_menu_value_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/blue_selector" />
 
-        <TextView
-            android:id="@+id/start_reading"
-            style="@style/tiles_menu_title_txt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/option_item_selector"
-            android:text="@string/start_reading" />
-    </RelativeLayout>
+        </RelativeLayout>
 
-    <RelativeLayout style="@style/tiles_menu_item_rl">
+        <RelativeLayout style="@style/tiles_menu_item_rl">
 
-        <TextView
-            android:id="@+id/flagged_questions"
-            style="@style/tiles_menu_title_txt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/option_item_selector"
-            android:text="@string/flagged_questions" />
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/start_reading"
+                style="@style/tiles_menu_title_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/option_item_selector"
+                android:text="@string/start_reading" />
+        </RelativeLayout>
 
-    <RelativeLayout style="@style/tiles_menu_item_rl">
+        <RelativeLayout style="@style/tiles_menu_item_rl">
 
-        <TextView
-            android:id="@+id/take_test"
-            style="@style/tiles_menu_title_txt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/option_item_selector"
-            android:text="@string/menu_take_test" />
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/flagged_questions"
+                style="@style/tiles_menu_title_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/option_item_selector"
+                android:text="@string/flagged_questions" />
+        </RelativeLayout>
 
-    <RelativeLayout style="@style/tiles_menu_item_rl">
+        <RelativeLayout style="@style/tiles_menu_item_rl">
 
-        <TextView
-            android:id="@+id/offline_content"
-            style="@style/tiles_menu_title_txt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Save for Offline" />
-    </RelativeLayout>
-</LinearLayout>
+            <TextView
+                android:id="@+id/take_test"
+                style="@style/tiles_menu_title_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/option_item_selector"
+                android:text="@string/menu_take_test" />
+        </RelativeLayout>
+
+        <RelativeLayout style="@style/tiles_menu_item_rl">
+
+            <TextView
+                android:id="@+id/offline_content"
+                style="@style/tiles_menu_title_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Save for Offline" />
+        </RelativeLayout>
+    </LinearLayout>
+</ScrollView>

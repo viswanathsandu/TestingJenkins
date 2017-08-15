@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.GridRecyclerAdapter;
@@ -225,10 +226,18 @@ public class StudyCenterActivity extends AbstractBaseActivity {
     private void initUI() {
         recyclerView = (RecyclerView) findViewById(R.id.grid_recycler_view);
         recyclerView.setHasFixedSize(true);
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        if (getResources().getBoolean(R.bool.isTablet)) {
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+            } else {
+                recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+            }
         } else {
-            recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+            } else {
+                recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
+            }
         }
         recyclerView.setAdapter(mAdapter);
         progressBar = (ProgressBar) findViewById(R.id.headerProgress);
@@ -238,10 +247,18 @@ public class StudyCenterActivity extends AbstractBaseActivity {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
-        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        if (getResources().getBoolean(R.bool.isTablet)) {
+            if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+            } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+            }
+        } else {
+            if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+            } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
+            }
         }
     }
 
