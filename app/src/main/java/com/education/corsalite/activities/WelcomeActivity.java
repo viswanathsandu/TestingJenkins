@@ -65,7 +65,7 @@ public class WelcomeActivity extends AbstractBaseActivity implements View.OnClic
         RelativeLayout myView = (RelativeLayout) inflater.inflate(R.layout.welcome_activity, null);
         frameLayout.addView(myView);
         ButterKnife.bind(this);
-        if(getResources().getBoolean(R.bool.portrait_only)){
+        if(!getResources().getBoolean(R.bool.isTablet)){
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
         }
         setToolbarForWelcomeScreen();

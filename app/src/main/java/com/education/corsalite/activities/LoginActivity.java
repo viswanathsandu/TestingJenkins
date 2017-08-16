@@ -44,7 +44,7 @@ public class LoginActivity extends AbstractBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-        if(getResources().getBoolean(R.bool.portrait_only)){
+        if(!getResources().getBoolean(R.bool.isTablet)){
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
         }
         setListeners();
