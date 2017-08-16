@@ -155,8 +155,7 @@
         <activity
             android:name=".activities.ExamHistoryActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
-            android:label="ExamHistory"
-            android:screenOrientation="sensorLandscape" />
+            android:label="ExamHistory" />
         <activity
             android:name=".activities.ExamEngineActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
