@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/welcome_bg"
+            android:gravity="center_horizontal|bottom"
+            android:orientation="vertical"
+            android:paddingBottom="30dp">
+
+
+            <ImageView
+                android:id="@+id/profile_pic"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginBottom="30dp"
+                android:src="@drawable/profile_pic" />
+
+            <TextView
+                fontPath="@string/roboto_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Welcome"
+                android:textColor="@color/text_white"
+                android:textSize="22sp" />
+
+            <TextView
+                android:id="@+id/name_txt"
+                fontPath="@string/roboto_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="----- ----- ----- -----"
+                android:textAllCaps="true"
+                android:textColor="@color/text_white"
+                android:textSize="26sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="40dp"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    fontPath="@string/roboto_regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Last Visit : "
+                    android:textColor="@color/text_white"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/lastvisit_date"
+                    fontPath="@string/roboto_regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:text="--/--/----"
+                    android:textColor="@color/text_white"
+                    android:textSize="18sp" />
+
+
+                <TextView
+                    android:id="@+id/lastvisit_time"
+                    fontPath="@string/roboto_regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="--:-- --"
+                    android:textColor="@color/text_white"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <com.education.corsalite.views.CustomButton
+                    android:id="@+id/redeem_welcome_btn"
+                    style="@style/welcome_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/voilet_button_selector"
+                    android:text="Redeem"
+                    android:textColor="@color/text_white" />
+
+                <com.education.corsalite.views.CustomButton
+                    android:id="@+id/studycenter_btn"
+                    style="@style/welcome_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/green_button_selector"
+                    android:text="Study Center"
+                    android:textColor="@color/text_white" />
+
+                <com.education.corsalite.views.CustomButton
+                    android:id="@+id/scheduled_tests_btn"
+                    style="@style/welcome_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/schedule_test_selector"
+                    android:text="Scheduled Tests"
+                    android:textColor="@color/text_white" />
+
+                <com.education.corsalite.views.CustomButton
+                    android:id="@+id/messages_btn"
+                    style="@style/welcome_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#7195BF"
+                    android:text="Messages"
+                    android:textColor="@color/text_white"/>
+
+                <com.education.corsalite.views.CustomButton
+                    android:id="@+id/recommended_reading_btn"
+                    style="@style/welcome_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#FFBA4D"
+                    android:text="Recommended Reading"
+                    android:textColor="@color/text_white"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/course_ended_txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/yellow"
+        android:gravity="center_horizontal"
+        android:text="This course is ended on 20/1/2016"
+        android:textColor="@color/red"
+        fontPath="@string/roboto_regular"
+        android:textSize="30sp"
+        android:visibility="gone"/>
+
+</RelativeLayout>
