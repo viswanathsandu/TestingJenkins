@@ -1,43 +1,48 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_user_profile_main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/activity_user_profile_main_layout"
     android:orientation="vertical">
 
-    <RelativeLayout
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.education.corsalite.activities.UserProfileActivity">
+        android:fillViewport="true">
 
-        <fragment
-            android:id="@+id/user_profile_fragment"
-            android:name="com.education.corsalite.fragments.UserProfileDetailsFragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@id/user_profile_fragment"
-            android:background="@color/dark_gray" />
-
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tl_userprofile"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/user_profile_fragment"
-            android:layout_marginTop="2dp"
-            app:tabGravity="center"
-            style="@style/UserProfileCustomTabLayout"
-            android:background="@color/white" />
+            android:orientation="vertical"
+            tools:context="com.education.corsalite.activities.UserProfileActivity">
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/pager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/tl_userprofile"
-            android:background="@color/white" />
-    </RelativeLayout>
+            <fragment
+                android:id="@+id/user_profile_fragment"
+                android:name="com.education.corsalite.fragments.UserProfileDetailsFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/dark_gray" />
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tl_userprofile"
+                style="@style/UserProfileCustomTabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:background="@color/white"
+                app:tabGravity="center" />
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/pager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:minHeight="300dp" />
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
 </LinearLayout>
