@@ -2,6 +2,7 @@ package com.education.corsalite.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -64,6 +65,9 @@ public class WelcomeActivity extends AbstractBaseActivity implements View.OnClic
         RelativeLayout myView = (RelativeLayout) inflater.inflate(R.layout.welcome_activity, null);
         frameLayout.addView(myView);
         ButterKnife.bind(this);
+        if(getResources().getBoolean(R.bool.portrait_only)){
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
+        }
         setToolbarForWelcomeScreen();
         setListeners();
         getWelcomeDetails();
