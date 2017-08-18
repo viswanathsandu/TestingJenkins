@@ -587,8 +587,8 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         showVirtualCurrency();
         if(getResources().getBoolean(R.bool.isTablet)) {
             toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
-            loadCoursesList();
         }
+        loadCoursesList();
     }
 
     protected void setToolbarForExamHistory() {
