@@ -33,10 +33,20 @@
         <item name="android:backgroundDimEnabled">false</item>
     </style>
 
+    <style name="CustomDialog" parent="android:Theme.Dialog">
+
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowNoTitle">true</item>
+
+    </style>
+
     <style name="title_style">
         <item name="android:textColor">@color/bright_foreground_inverse_material_light</item>
         <item name="fontPath">fonts/Roboto-Regular.ttf</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:paddingLeft">8dp</item>
         <item name="android:textAllCaps">false</item>
     </style>
 
@@ -127,7 +137,7 @@
     <style name="grid_child_text_style">
         <item name="android:textColor">@color/white</item>
         <item name="fontPath">@string/roboto_medium</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">12sp</item>
         <item name="android:textAllCaps">false</item>
     </style>
 
@@ -183,7 +193,7 @@
     </style>
 
     <style name="tiles_menu_item_rl">
-        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:padding">5dp</item>
         <item name="android:gravity">center_vertical</item>
@@ -194,8 +204,7 @@
         <item name="fontPath">@string/roboto_regular</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:layout_alignParentLeft">true</item>
-        <item name="android:padding">5dp</item>
+        <item name="android:padding">10dp</item>
         <item name="android:singleLine">true</item>
     </style>
 
@@ -205,7 +214,7 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:layout_centerVertical">true</item>
         <item name="android:padding">5dp</item>
-        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:gravity">center</item>
     </style>
 
     <style name="user_profile_heading_bold">
@@ -239,7 +248,7 @@
 
     <style name="exam_history_label_text">
         <item name="fontPath">@string/roboto_regular</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">@dimen/normal_text_size</item>
         <item name="android:textColor">@color/text_gray</item>
         <item name="android:gravity">center</item>
     </style>
@@ -274,13 +283,13 @@
         <item name="android:background">?android:attr/selectableItemBackground</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:drawablePadding">20dp</item>
+        <item name="android:drawablePadding">10dp</item>
         <item name="android:gravity">center_vertical</item>
-        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingLeft">8dp</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/text_white</item>
-        <item name="android:paddingTop">15dp</item>
-        <item name="android:paddingBottom">15dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
         <item name="fontPath">@string/roboto_regular</item>
         <item name="android:visibility">gone</item>
     </style>

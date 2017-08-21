@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -132,7 +133,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
     }
 
     private void getAlertDialog(View v, StudyCenterSubjectViewHolder holder, Chapter chapter) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(holder.gridLayout.getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(holder.gridLayout.getContext(), R.style.CustomDialog);
         LayoutInflater li = (LayoutInflater) studyCenterActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View dialogView = li.inflate(R.layout.layout_list_item_view_popup, null);
         builder.setView(dialogView);
@@ -142,10 +143,14 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         wmlp.gravity = Gravity.TOP | Gravity.LEFT;
         // position the dialog
         wmlp.x = (int) v.getX() + 15;
-        wmlp.y = (int) v.getY() + 140;
+        wmlp.y = (int) (v.getY() + +15
+                 + v.getContext().getResources().getDimension(R.dimen.abc_action_bar_default_height_material)
+                 + v.getContext().getResources().getDimension(R.dimen.topbar_height));
+        wmlp.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+        wmlp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
         dialog.show();
         dialog.getWindow().setAttributes(wmlp);
-        dialog.getWindow().setLayout(300, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 
     private void setDataForAlert(final AlertDialog dialog, View dialogView, StudyCenterSubjectViewHolder holder, final Chapter chapter) {
@@ -172,7 +177,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
                 startContentActivity(chapter);
             }
         });
-        dialogView.findViewById(R.id.notes_layout).setOnClickListener(new View.OnClickListener() {
+        dialogView.findViewById(R.id.notes).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();

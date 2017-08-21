@@ -1,110 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/list_item_popup_layout"
-    android:layout_width="200dp"
-    android:layout_height="wrap_content"
-    android:background="@drawable/white_shape"
-    android:orientation="vertical"
-    android:padding="16dp">
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <RelativeLayout style="@style/tiles_menu_item_rl">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <TextView
-            style="@style/tiles_menu_title_txt"
+        <TableLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/completed_topics"
-            android:text="@string/completed_topics" />
+            android:background="@drawable/white_shape">
 
-        <TextView
-            android:id="@+id/completed_topics"
-            style="@style/tiles_menu_value_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/yellow_selector" />
+            <TableRow>
+                <TextView
+                    style="@style/tiles_menu_title_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/completed_topics" />
 
-    </RelativeLayout>
+                <TextView
+                    android:id="@+id/completed_topics"
+                    style="@style/tiles_menu_value_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/yellow_selector" />
+            </TableRow>
 
-    <RelativeLayout style="@style/tiles_menu_item_rl">
+            <TableRow>
+                <TextView
+                    style="@style/tiles_menu_title_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/score" />
 
 
-        <TextView
-            style="@style/tiles_menu_title_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/score"
-            android:text="@string/score" />
+                <TextView
+                    android:id="@+id/score"
+                    style="@style/tiles_menu_value_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/red_selector" />
 
+            </TableRow>
 
-        <TextView
-            android:id="@+id/score"
-            style="@style/tiles_menu_value_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/red_selector" />
+            <TableRow>
+                <TextView
+                    style="@style/tiles_menu_title_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLength="16"
+                    android:text="Notes                     " />
 
-    </RelativeLayout>
+                <TextView
+                    android:id="@+id/notes"
+                    style="@style/tiles_menu_value_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/blue_selector" />
 
-    <RelativeLayout
-        android:id="@+id/notes_layout"
-        style="@style/tiles_menu_item_rl">
+            </TableRow>
 
-        <TextView
-            style="@style/tiles_menu_title_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/notes"
-            android:text="@string/notes" />
+            <TableRow>
+                <TextView
+                    android:id="@+id/start_reading"
+                    style="@style/tiles_menu_title_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_span="2"
+                    android:background="@drawable/option_item_selector"
+                    android:text="@string/start_reading" />
 
-        <TextView
-            android:id="@+id/notes"
-            style="@style/tiles_menu_value_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/blue_selector" />
+            </TableRow>
 
-    </RelativeLayout>
+            <TableRow>
+                <TextView
+                    android:id="@+id/flagged_questions"
+                    style="@style/tiles_menu_title_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_span="2"
+                    android:background="@drawable/option_item_selector"
+                    android:text="@string/flagged_questions" />
+            </TableRow>
 
-    <RelativeLayout style="@style/tiles_menu_item_rl">
+            <TableRow>
+                <TextView
+                    android:id="@+id/take_test"
+                    style="@style/tiles_menu_title_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_span="2"
+                    android:background="@drawable/option_item_selector"
+                    android:text="@string/menu_take_test" />
+            </TableRow>
 
-        <TextView
-            android:id="@+id/start_reading"
-            style="@style/tiles_menu_title_txt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/option_item_selector"
-            android:text="@string/start_reading" />
-    </RelativeLayout>
+            <TableRow>
+                <TextView
+                    android:id="@+id/offline_content"
+                    style="@style/tiles_menu_title_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_span="2"
+                    android:text="Save for Offline" />
+            </TableRow>
+        </TableLayout>
 
-    <RelativeLayout style="@style/tiles_menu_item_rl">
-
-        <TextView
-            android:id="@+id/flagged_questions"
-            style="@style/tiles_menu_title_txt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/option_item_selector"
-            android:text="@string/flagged_questions" />
-    </RelativeLayout>
-
-    <RelativeLayout style="@style/tiles_menu_item_rl">
-
-        <TextView
-            android:id="@+id/take_test"
-            style="@style/tiles_menu_title_txt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/option_item_selector"
-            android:text="@string/menu_take_test" />
-    </RelativeLayout>
-
-    <RelativeLayout style="@style/tiles_menu_item_rl">
-
-        <TextView
-            android:id="@+id/offline_content"
-            style="@style/tiles_menu_title_txt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Save for Offline" />
-    </RelativeLayout>
-</LinearLayout>
+    </ScrollView></LinearLayout>

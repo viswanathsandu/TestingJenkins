@@ -21,7 +21,7 @@
             android:padding="10dp"
             android:text="Virtual currency earned in last session"
             android:textColor="@color/text_white"
-            android:textSize="16sp" />
+            android:textSize="22sp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -30,8 +30,8 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_margin="10dp"
                 android:src="@drawable/ico_currency_profile" />
 
@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:text="----"
                 android:textColor="@color/text_white"
-                android:textSize="20sp" />
+                android:textSize="40sp" />
 
         </LinearLayout>
 
@@ -63,7 +63,7 @@
             android:padding="10dp"
             android:text="Total Virtual currency is"
             android:textColor="@color/text_white"
-            android:textSize="16sp" />
+            android:textSize="22sp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -72,8 +72,8 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_margin="10dp"
                 android:src="@drawable/ico_currency_profile" />
 
@@ -83,7 +83,7 @@
                 android:layout_height="wrap_content"
                 android:text="----"
                 android:textColor="@color/text_white"
-                android:textSize="20sp" />
+                android:textSize="40sp" />
 
         </LinearLayout>
 

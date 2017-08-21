@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -225,10 +226,18 @@ public class StudyCenterActivity extends AbstractBaseActivity {
     private void initUI() {
         recyclerView = (RecyclerView) findViewById(R.id.grid_recycler_view);
         recyclerView.setHasFixedSize(true);
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        if (getResources().getBoolean(R.bool.isTablet)) {
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+            } else {
+                recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+            }
         } else {
-            recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+            } else {
+                recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
+            }
         }
         recyclerView.setAdapter(mAdapter);
         progressBar = (ProgressBar) findViewById(R.id.headerProgress);
@@ -238,10 +247,18 @@ public class StudyCenterActivity extends AbstractBaseActivity {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
-        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        if (getResources().getBoolean(R.bool.isTablet)) {
+            if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+            } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+            }
+        } else {
+            if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+            } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
+            }
         }
     }
 
@@ -477,7 +494,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
 
     private void showAlertDialog(View v, StudyCenter studyCenter) {
         try {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomDialog);
             LayoutInflater li = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View dialogView = li.inflate(R.layout.layout_list_item_view_popup, null);
 
@@ -491,10 +508,13 @@ public class StudyCenterActivity extends AbstractBaseActivity {
             wmlp.gravity = Gravity.TOP | Gravity.LEFT;
             // position the alertDialog
             wmlp.x = (int) v.getX() + 15;
-            wmlp.y = (int) v.getY() + 140;
+            wmlp.y = (int) (v.getY() + +15
+                    + v.getContext().getResources().getDimension(R.dimen.abc_action_bar_default_height_material));
+            wmlp.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+            wmlp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
             alertDialog.show();
             alertDialog.getWindow().setAttributes(wmlp);
-            alertDialog.getWindow().setLayout(300, ViewGroup.LayoutParams.WRAP_CONTENT);
+            alertDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         } catch (Exception e) {
             L.error(e.getMessage(), e);
         }
@@ -528,7 +548,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
                 showPartTestGrid(studyCenter);
             }
         });
-        dialogView.findViewById(R.id.notes_layout).setOnClickListener(new View.OnClickListener() {
+        dialogView.findViewById(R.id.notes).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (alertDialog != null) {

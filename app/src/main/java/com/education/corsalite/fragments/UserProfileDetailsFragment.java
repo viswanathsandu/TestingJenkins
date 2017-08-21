@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -66,7 +67,7 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
     @Bind(R.id.btn_default_course) TextView coursesBtn;
     @Bind(R.id.redeem_btn)Button redeemBtn;
     @Bind(R.id.btn_edit_pic)ImageView editProfilePic;
-    @Bind(R.id.ll_user_details)LinearLayout mainLayout;
+    @Bind(R.id.ll_user_details)View mainLayout;
 
     private UserProfileResponse user;
     private UpdateExamData updateExamData;

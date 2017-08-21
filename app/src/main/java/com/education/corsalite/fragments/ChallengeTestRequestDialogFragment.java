@@ -79,7 +79,7 @@ public class ChallengeTestRequestDialogFragment extends BaseDialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_challenge_test_request, container, false);
         ButterKnife.bind(this, v);
-        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+//        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         mChallengeTestRequestEvent = Gson.get().fromJson(getArguments().getString("message"), ChallengeTestRequestEvent.class);
         return v;

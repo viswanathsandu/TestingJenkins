@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_vertical"
     android:background="@drawable/curve_shape"
     android:orientation="vertical"
     android:padding="10dp">
@@ -13,27 +11,26 @@
         fontPath="@string/roboto_medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:gravity="center_horizontal"
         android:minWidth="500dp"
+        android:gravity="center_horizontal"
+        android:layout_marginBottom="30dp"
         android:text="Challenge"
         android:textColor="@color/text_white"
-        android:textSize="25sp" />
+        android:textSize="30sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp"
-        android:gravity="center_vertical"
+        android:minHeight="250dp"
         android:orientation="horizontal"
-        android:weightSum="4">
+        android:weightSum="4"
+        android:gravity="center_vertical">
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
+            android:layout_height="match_parent"
             android:gravity="center_vertical"
+            android:layout_weight="3"
             android:orientation="vertical">
 
             <LinearLayout
@@ -185,7 +182,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="30dp"
                 android:orientation="horizontal"
                 android:weightSum="3">
 
@@ -344,6 +341,7 @@
             android:id="@+id/start_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
             android:background="@drawable/image_button_selector"
             android:src="@drawable/ico_flag_start"
             android:visibility="gone" />
