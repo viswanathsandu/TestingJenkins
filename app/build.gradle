@@ -137,7 +137,7 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
         transitive = true;
     }
-    compile files('libs/mpandroidchartlibrary-2-1-6.jar')
+    compile 'com.github.PhilJay:MPAndroidChart:v2.1.6'
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'
     compile 'com.android.support:recyclerview-v7:25.3.1'

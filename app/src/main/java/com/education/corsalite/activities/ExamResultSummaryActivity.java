@@ -20,7 +20,7 @@ import retrofit.client.Response;
 
 public class ExamResultSummaryActivity extends AbstractBaseActivity {
 
-    ActivityExamResultSummaryBinding binding;
+    private ActivityExamResultSummaryBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
