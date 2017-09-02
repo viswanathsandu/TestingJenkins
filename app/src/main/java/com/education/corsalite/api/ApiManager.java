@@ -124,7 +124,7 @@ public class ApiManager {
             reqRes.request = apiCacheHolder.loginRequest;
             SugarDbManager.get(context).getResponse(reqRes, callback);
         } else if (isApiOnline() && isNetworkConnected()) {
-            ApiClientService.get().login(loginId, passwordHash, callback);
+            ApiClientService.get().login(loginId, passwordHash, passwordHash, callback);
         }
     }
 

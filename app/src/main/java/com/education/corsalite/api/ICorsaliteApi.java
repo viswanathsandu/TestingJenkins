@@ -69,7 +69,7 @@ import retrofit.mime.TypedString;
 public interface ICorsaliteApi {
 
     @GET("/AuthToken")
-    void login(@Query("LoginID") String loginId, @Query("PasswordHash") String passwordHash, ApiCallback<LoginResponse> callback);
+    void login(@Query("LoginID") String loginId, @Query("PasswordHash") String passwordHash, @Query("ClientAccesssKey") String clientAccessKey, ApiCallback<LoginResponse> callback);
 
     @Headers("Content-Type:application/x-www-form-urlencoded")
     @POST("/AuthToken")
