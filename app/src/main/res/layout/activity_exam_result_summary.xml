@@ -1,161 +1,266 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context="com.education.corsalite.activities.ExamResultSummaryActivity">
 
-    <data>
-        <variable
-            name="exam"
-            type="com.education.corsalite.models.db.ExamResultDetails" />
-    </data>
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/white"
-        tools:context="com.education.corsalite.activities.ExamResultSummaryActivity">
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center_vertical"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:gravity="center_vertical"
-                android:orientation="vertical">
+                android:orientation="horizontal"
+                android:weightSum="2">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
+                    android:layout_weight="1">
 
-                    <LinearLayout
-                        android:layout_width="0dp"
+                    <TextView
+                        style="@style/exam_history_label_text"
+                        fontPath="@string/roboto_regular"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1">
+                        android:padding="15dp"
+                        android:text="Exam"
+                        android:textSize="16sp" />
 
-                        <TextView
-                            style="@style/exam_history_label_text"
-                            fontPath="@string/roboto_regular"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="15dp"
-                            android:text="Exam"
-                            android:textSize="16sp" />
-
-                        <TextView
-                            android:id="@+id/tv_type"
-                            fontPath="@string/roboto_regular"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="15dp"
-                            android:text="@{exam.examName}"
-                            android:textColor="@color/gray_dark_border"
-                            android:textSize="16sp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
+                    <TextView
+                        android:id="@+id/tv_examname"
+                        fontPath="@string/roboto_regular"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1">
-
-                        <TextView
-                            style="@style/exam_history_label_text"
-                            fontPath="@string/roboto_regular"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="15dp"
-                            android:text="Type"
-                            android:textSize="16sp" />
-
-                        <TextView
-                            android:id="@+id/tv_score"
-                            fontPath="@string/roboto_regular"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="15dp"
-                            android:text="@{exam.templateType}"
-                            android:textColor="@color/gray_dark_border"
-                            android:textSize="16sp" />
-                    </LinearLayout>
+                        android:padding="15dp"
+                        android:text="-"
+                        android:textColor="@color/gray_dark_border"
+                        android:textSize="16sp" />
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
+                    android:layout_weight="1">
 
-                    <LinearLayout
-                        android:layout_width="0dp"
+                    <TextView
+                        style="@style/exam_history_label_text"
+                        fontPath="@string/roboto_regular"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1">
+                        android:padding="15dp"
+                        android:text="Type"
+                        android:textSize="16sp" />
 
-                        <TextView
-                            style="@style/exam_history_label_text"
-                            fontPath="@string/roboto_regular"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="15dp"
-                            android:text="Time Taken"
-                            android:textSize="16sp" />
-
-                        <TextView
-                            android:id="@+id/tv_rank"
-                            fontPath="@string/roboto_regular"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="15dp"
-                            android:text="@{exam.timeTaken}"
-                            android:textColor="@color/gray_dark_border"
-                            android:textSize="16sp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
+                    <TextView
+                        android:id="@+id/tv_type"
+                        fontPath="@string/roboto_regular"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1">
-
-                        <TextView
-                            style="@style/exam_history_label_text"
-                            fontPath="@string/roboto_regular"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="15dp"
-                            android:text="Date"
-                            android:textSize="16sp" />
-
-                        <TextView
-                            android:id="@+id/tv_status"
-                            fontPath="@string/roboto_regular"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="15dp"
-                            android:text="@{exam.examDate}"
-                            android:textColor="@color/gray_dark_border"
-                            android:textSize="16sp" />
-                    </LinearLayout>
-
+                        android:padding="15dp"
+                        android:text="-"
+                        android:textColor="@color/gray_dark_border"
+                        android:textSize="16sp" />
                 </LinearLayout>
 
             </LinearLayout>
 
-            <FrameLayout
-                android:id="@+id/graph_container"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <TextView
+                        style="@style/exam_history_label_text"
+                        fontPath="@string/roboto_regular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="15dp"
+                        android:text="Time Taken"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tv_time_taken"
+                        fontPath="@string/roboto_regular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="15dp"
+                        android:text="-"
+                        android:textColor="@color/gray_dark_border"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <TextView
+                        style="@style/exam_history_label_text"
+                        fontPath="@string/roboto_regular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="15dp"
+                        android:text="Date"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tv_date"
+                        fontPath="@string/roboto_regular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="15dp"
+                        android:text="-"
+                        android:textColor="@color/gray_dark_border"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
+        <HorizontalScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-</layout>
+            <TableLayout
+                android:id="@+id/result_table_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/light_green">
+
+                    <TextView
+                        style="@style/exam_result_table_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="1dp"
+                        android:layout_span="1" />
+
+
+                    <TextView
+                        style="@style/exam_result_table_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_span="3"
+                        android:text="Questions" />
+
+                    <TextView
+                        style="@style/exam_result_table_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_span="4"
+                        android:text="Marks" />
+
+                    <TextView
+                        style="@style/exam_result_table_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_span="2"
+                        android:text="Time" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white">
+
+                    <TextView
+                        style="@style/exam_result_table_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="1dp"
+                        android:text="Subject" />
+
+                    <TextView
+                        style="@style/exam_result_table_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Total" />
+
+                    <TextView
+                        style="@style/exam_result_table_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Correct" />
+
+                    <TextView
+                        style="@style/exam_result_table_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Wrong" />
+
+                    <TextView
+                        style="@style/exam_result_table_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Max Marks" />
+
+                    <TextView
+                        style="@style/exam_result_table_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="+ve" />
+
+                    <TextView
+                        style="@style/exam_result_table_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-ve" />
+
+
+                    <TextView
+                        style="@style/exam_result_table_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Total" />
+
+                    <TextView
+                        style="@style/exam_result_table_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Recommended Reading" />
+
+                    <TextView
+                        style="@style/exam_result_table_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Actual" />
+                </TableRow>
+
+            </TableLayout>
+        </HorizontalScrollView>
+
+        <FrameLayout
+            android:id="@+id/graph_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+</LinearLayout>

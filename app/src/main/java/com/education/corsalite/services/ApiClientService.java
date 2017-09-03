@@ -97,9 +97,9 @@ public class ApiClientService {
                         String url = request.httpUrl().toString();
                         /****************************************************************************/
                         // Remove this after fixing exam result summary issue on server
-                        String length = response.header("Content-Length");
-                        if(length != null) {
-                            response.newBuilder().removeHeader("Content-Length");
+                        String length = response.header("Transfer-Encoding");
+                        if(length == null) {
+                            response = response.newBuilder().addHeader("Transfer-Encoding", "chunked").build();
                         }
                         /****************************************************************************/
                         L.info("Intercept : URL - "+url);

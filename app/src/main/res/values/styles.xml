@@ -402,4 +402,30 @@
         <item name="android:background">@color/black_overlay</item>
     </style>
 
+    <style name="exam_result_table_header">
+        <item name="android:padding">5dp</item>
+        <item name="android:layout_marginRight">1dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:background">@color/blue</item>
+    </style>
+
+    <style name="exam_result_table_title">
+        <item name="android:textColor">@color/green</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:layout_marginRight">1dp</item>
+        <item name="android:background">@color/bg_chart</item>
+        <item name="android:gravity">center_horizontal</item>
+    </style>
+
+    <style name="exam_result_table_data">
+        <item name="android:padding">5dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_marginRight">1dp</item>
+        <item name="android:layout_marginBottom">1dp</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:textColor">@color/text_black</item>
+    </style>
+
+
 </resources>
