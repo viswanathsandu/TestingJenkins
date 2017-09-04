@@ -95,6 +95,13 @@ public class ApiClientService {
                 if(response != null ) {
                     if (response.isSuccessful()) {
                         String url = request.httpUrl().toString();
+                        /****************************************************************************/
+                        // Remove this after fixing exam result summary issue on server
+                        String length = response.header("Transfer-Encoding");
+                        if(length == null) {
+                            response = response.newBuilder().addHeader("Transfer-Encoding", "chunked").build();
+                        }
+                        /****************************************************************************/
                         L.info("Intercept : URL - "+url);
                         if (url.contains("webservices/AuthToken")
                                 && url.contains("LoginID") && url.contains("PasswordHash")) {

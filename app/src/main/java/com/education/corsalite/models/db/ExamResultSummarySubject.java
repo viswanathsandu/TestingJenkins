@@ -3,6 +3,8 @@ package com.education.corsalite.models.db;
 import com.education.corsalite.models.responsemodels.BaseModel;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 /**
  * Created by vissu on 11-08-2017.
  */
@@ -19,15 +21,15 @@ public class ExamResultSummarySubject extends BaseModel {
     @SerializedName("QuestionCorrect")
     public String questionCorrect;
     @SerializedName("QuestionWrong")
-    public Integer questionWrong;
+    public String questionWrong;
     @SerializedName("MarkMax")
-    public Integer markMax;
+    public String markMax;
     @SerializedName("ScorePositive")
-    public Integer scorePositive;
+    public String scorePositive;
     @SerializedName("ScoreNegative")
-    public Integer scoreNegative;
+    public String scoreNegative;
     @SerializedName("ScoreTotal")
-    public Integer scoreTotal;
+    public String scoreTotal;
     @SerializedName("PeerAvgScore")
     public String peerAvgScore;
     @SerializedName("Percentile")
@@ -39,5 +41,5 @@ public class ExamResultSummarySubject extends BaseModel {
     @SerializedName("PeerAvgTimeTaken")
     public String peerAvgTimeTaken;
     @SerializedName("sectionData")
-    public ExamResultSubjectSection sections;
+    public List<ExamResultSubjectSection> sections;
 }
