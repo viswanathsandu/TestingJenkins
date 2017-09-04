@@ -155,7 +155,6 @@
                     android:text="Curriculum" />
             </LinearLayout>
 
-
             <LinearLayout
                 android:id="@+id/navigation_scheduled_tests"
                 style="@style/navigation_drawer_element"
@@ -269,7 +268,5 @@
 
 
         </LinearLayout>
-
-
     </ScrollView>
 </LinearLayout>
