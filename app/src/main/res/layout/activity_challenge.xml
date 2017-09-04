@@ -3,9 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/challenge_test_bg"
+    android:background="#0c1029"
     android:fitsSystemWindows="true"
     tools:context="com.education.corsalite.activities.ChallengeActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/field" />
 
     <LinearLayout
         android:layout_width="match_parent"

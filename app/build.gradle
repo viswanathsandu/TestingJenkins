@@ -3,11 +3,11 @@ apply plugin: 'io.fabric'
 apply plugin: 'com.google.gms.google-services'
 
 // Version naming specification xx xx x xx
-def versionCodeCorsalite = 104000
-def versionNameCorsalite = "1.4.0"
+def versionCodeCorsalite = 104101
+def versionNameCorsalite = "1.4.1.1"
 
-def versionCodeFGA = 4000
-def versionNameFGA = "0.4"
+def versionCodeFGA =4101
+def versionNameFGA = "0.4.1.1"
 
 android {
     compileSdkVersion 25
@@ -137,7 +137,7 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
         transitive = true;
     }
-    compile files('libs/mpandroidchartlibrary-2-1-6.jar')
+    compile 'com.github.PhilJay:MPAndroidChart:v2.1.6'
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'
     compile 'com.android.support:recyclerview-v7:25.3.1'

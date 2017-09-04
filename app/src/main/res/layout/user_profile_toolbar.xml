@@ -12,9 +12,8 @@
         style="@style/title_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:maxLines="1"
         android:ellipsize="end"
-        android:paddingLeft="16dp"
-        android:singleLine="true"
         android:text="@string/app_name" />
 
     <LinearLayout

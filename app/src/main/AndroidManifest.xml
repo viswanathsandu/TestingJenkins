@@ -91,6 +91,7 @@
         </activity>
         <activity
             android:name=".activities.LoginActivity"
+            android:screenOrientation="fullSensor"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:theme="@style/UserProfileTheme" />
         <activity
@@ -154,8 +155,7 @@
         <activity
             android:name=".activities.ExamHistoryActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
-            android:label="ExamHistory"
-            android:screenOrientation="sensorLandscape" />
+            android:label="ExamHistory" />
         <activity
             android:name=".activities.ExamEngineActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
@@ -214,7 +214,6 @@
             android:theme="@style/UserProfileTheme" />
         <activity
             android:name=".activities.WelcomeActivity"
-            android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
             android:theme="@style/UserProfileTheme" />
         <activity
             android:name=".activities.CrashHandlerActivity"
@@ -246,8 +245,8 @@
             android:name=".activities.DataSyncActivity"
             android:launchMode="singleTop"
             android:theme="@style/TransparentTheme" />
-        <activity
-            android:name=".activities.TestSeriesActivity" />
+        <activity android:name=".activities.TestSeriesActivity" />
+        <activity android:name=".activities.ExamResultSummaryActivity"></activity>
     </application>
 
 </manifest>

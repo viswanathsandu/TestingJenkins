@@ -24,6 +24,7 @@ import com.education.corsalite.models.responsemodels.EditProfileModel;
 import com.education.corsalite.models.responsemodels.Exam;
 import com.education.corsalite.models.responsemodels.ExamHistory;
 import com.education.corsalite.models.responsemodels.ExamModel;
+import com.education.corsalite.models.responsemodels.ExamResultSummaryResponse;
 import com.education.corsalite.models.responsemodels.ForumPost;
 import com.education.corsalite.models.responsemodels.FourmCommentPostModel;
 import com.education.corsalite.models.responsemodels.FriendsData;
@@ -338,5 +339,8 @@ public interface ICorsaliteApi {
     @Headers("Content-Type:application/x-www-form-urlencoded")
     @POST("/GetTestSeries")
     void getTestSeries(@Body TypedString Update, ApiCallback<TestSeriesResponse> callback);
+
+    @GET("/getStudentExamResultsSummary")
+    void getExamResultSummary(@Query("TestAnswerPaperIDs") String testAnswerPaperIds, @Query("StudentID") String studentId, ApiCallback<ExamResultSummaryResponse> callback);
 
 }

@@ -1,172 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_user_details"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#f3f3f3"
     android:orientation="horizontal"
-    tools:ignore="MissingPrefix"
-    android:id="@+id/ll_user_details"
-    android:visibility="visible">
+    android:visibility="visible"
+    tools:ignore="MissingPrefix">
 
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-        <ImageView
-            android:id="@+id/iv_userProfilePic"
-            android:layout_width="180dp"
-            android:layout_height="180dp"
-            android:layout_gravity="left"
-            android:scaleType="centerCrop"
-            android:src="@drawable/user"
-            android:layout_marginTop="10dp"/>
-            <ImageView
-                android:id="@+id/btn_edit_pic"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ico_edit_pic"
-                android:layout_gravity="right|bottom"/>
-        </FrameLayout>
-
-        <RelativeLayout
-
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp">
-
-            <RelativeLayout
-                android:id="@+id/ll_user_name"
-                android:layout_width="wrap_content"
-                android:layout_margin="5dp"
-                android:layout_height="wrap_content">
-
-                <Spinner
-                    android:id="@+id/sp_default_course"
-                    android:layout_width="140dp"
-                    android:layout_height="35dp"
-                    android:background="@drawable/shape_rounded_corners_black"
-                    android:textColor="@color/white"
-                    android:spinnerMode="dropdown"
-                    android:layout_alignParentRight="true"/>
-
-                <TextView
-                    android:id="@+id/btn_default_course"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:background="@drawable/shape_rounded_corners_black"
-                    android:text="Default Course"
-                    android:textColor="@color/white"
-                    android:padding="3dp"
-                    android:drawablePadding="5dp"
-                    android:layout_alignLeft="@+id/sp_default_course"
-                    android:layout_alignTop="@+id/sp_default_course"
-                    android:layout_alignRight="@+id/sp_default_course"
-                    android:layout_alignBottom="@+id/sp_default_course"
-                    android:drawableRight="@drawable/ico_dropdown_white"
-                    fontPath="@string/roboto_medium"/>
-
-                <TextView
-                    android:id="@+id/tv_userName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingRight="8dp"
-                    android:layout_alignParentLeft="true"
-                    android:layout_toLeftOf="@id/sp_default_course"
-                    android:layout_alignTop="@id/sp_default_course"
-                    android:layout_alignBottom="@id/sp_default_course"
-                    android:drawableRight="@drawable/ico_edit"
-                    style="@style/user_profile_heading_caps"/>
-
-            </RelativeLayout>
-
-            <TextView
-                android:id="@+id/tv_userFullName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/ll_user_name"
-                style="@style/user_profile_heading_bold" />
-
-            <TextView
-                android:id="@+id/tv_emailId"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tv_userFullName"
-                android:paddingBottom="10dp"
-                style="@style/user_profile_text_gray"/>
-
-            <TextView
-                android:id="@+id/tv_instituteHeader"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tv_emailId"
-                android:text="Institute: "
-                style="@style/user_profile_subheading"
-                android:visibility="gone"/>
-
-            <TextView
-                android:id="@+id/tv_institute"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tv_emailId"
-                android:layout_toRightOf="@id/tv_instituteHeader"
-                style="@style/user_profile_text"
-                android:visibility="gone"/>
-
-            <TextView
-                android:id="@+id/tv_enrolled_course"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tv_emailId"
-                android:ellipsize="end"
-                android:maxLines="2"
-                android:lineSpacingMultiplier="1.5"
-                style="@style/user_profile_text"
-                android:paddingTop="5dp"/>
-
-        </RelativeLayout>
-    </LinearLayout>
-
-    <View
-        android:layout_width="1dp"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
-        android:background="#d3d3d3" />
-
-    <LinearLayout
+        android:id="@+id/vc_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="12dp"
+        android:layout_margin="8dp"
         android:gravity="center"
+        android:layout_alignParentRight="true"
         android:orientation="vertical">
 
         <ImageView
-            android:onClick="onClickIntent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="onClickIntent"
             android:src="@drawable/ico_currency_profile" />
 
         <TextView
+            style="@style/user_profile_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="Virtual Currency"
-            style="@style/user_profile_text" />
+            android:text="Virtual Currency" />
 
         <TextView
             android:id="@+id/tv_virtual_currency_balance"
+            style="@style/user_profile_heading_bold"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/user_profile_heading_bold" />
+            android:layout_height="wrap_content" />
 
         <com.education.corsalite.views.CustomButton
             android:id="@+id/redeem_btn"
@@ -174,9 +43,157 @@
             android:layout_height="35dp"
             android:layout_marginTop="5dp"
             android:background="@drawable/redeem_btn_selector"
-            android:textStyle="bold"
             android:text="REDEEM"
-            android:visibility="invisible"/>
+            android:textStyle="bold"
+            android:visibility="invisible" />
     </LinearLayout>
 
-</LinearLayout>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="1dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"
+        android:background="#d3d3d3"
+        android:layout_toLeftOf="@+id/vc_layout"
+        android:layout_alignTop="@+id/vc_layout"
+        android:layout_alignBottom="@+id/vc_layout" />
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@+id/divider">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/iv_userProfilePic"
+                        android:layout_width="@dimen/profile_pic_size"
+                        android:layout_height="@dimen/profile_pic_size"
+                        android:layout_gravity="left"
+                        android:layout_marginTop="10dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/user" />
+
+                    <ImageView
+                        android:id="@+id/btn_edit_pic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right|bottom"
+                        android:src="@drawable/ico_edit_pic" />
+                </FrameLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp">
+
+                    <Spinner
+                        android:id="@+id/sp_default_course"
+                        android:layout_width="@dimen/profile_pic_size"
+                        android:layout_height="25dp"
+                        android:background="@drawable/shape_rounded_corners_black"
+                        android:spinnerMode="dropdown"
+                        android:textColor="@color/white" />
+
+                    <TextView
+                        android:id="@+id/btn_default_course"
+                        fontPath="@string/roboto_medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/sp_default_course"
+                        android:layout_alignLeft="@+id/sp_default_course"
+                        android:layout_alignRight="@+id/sp_default_course"
+                        android:layout_alignTop="@+id/sp_default_course"
+                        android:background="@drawable/shape_rounded_corners_black"
+                        android:drawablePadding="5dp"
+                        android:drawableRight="@drawable/ico_dropdown_white"
+                        android:gravity="center"
+                        android:padding="3dp"
+                        android:text="Default Course"
+                        android:textColor="@color/white"
+                        android:textSize="10sp" />
+
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp">
+
+                <TextView
+                    android:id="@+id/tv_userName"
+                    style="@style/user_profile_heading_caps"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:drawableRight="@drawable/ico_edit" />
+
+                <TextView
+                    android:id="@+id/tv_userFullName"
+                    style="@style/user_profile_heading_bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_userName" />
+
+                <TextView
+                    android:id="@+id/tv_emailId"
+                    style="@style/user_profile_text_gray"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_userFullName" />
+
+                <TextView
+                    android:id="@+id/tv_instituteHeader"
+                    style="@style/user_profile_subheading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_emailId"
+                    android:text="Institute: "
+                    android:paddingTop="10dp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tv_institute"
+                    style="@style/user_profile_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_emailId"
+                    android:layout_toRightOf="@id/tv_instituteHeader"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_enrolled_course"
+            style="@style/user_profile_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_emailId"
+            android:ellipsize="end"
+            android:lineSpacingMultiplier="1.5"
+            android:maxLines="2"
+            android:layout_margin="5dp" />
+    </LinearLayout>
+
+</RelativeLayout>

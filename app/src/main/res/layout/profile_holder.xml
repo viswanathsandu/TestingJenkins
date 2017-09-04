@@ -4,9 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?android:attr/selectableItemBackground"
-    android:minHeight="48dp"
+    android:minHeight="32dp"
     android:id="@+id/node_selectorLayout"
-    android:paddingLeft="10dp">
+    android:paddingLeft="5dp">
 
     <CheckBox
         android:id="@+id/node_selector"
@@ -27,23 +27,14 @@
         android:layout_toRightOf="@id/node_selector"
         android:src="@drawable/ico_offline_exercise" />
 
-    <!--<View-->
-        <!--android:id="@+id/node_selectors"-->
-        <!--android:layout_width="20dp"-->
-        <!--android:background="@drawable/chapter_root_node"-->
-        <!--android:layout_height="20dp"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:layout_centerVertical="true"-->
-        <!--android:layout_toRightOf="@id/node_selector"/>-->
-
     <LinearLayout
         android:id="@+id/buttonsContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp">
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp">
 
         <com.github.johnkil.print.PrintView
             android:id="@+id/arrow_icon"
@@ -68,8 +59,8 @@
         android:layout_alignWithParentIfMissing="true"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="28dp"
-        android:layout_toRightOf="@id/node_selector"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/node_selectors"
         android:orientation="vertical">
 
         <View
@@ -104,7 +95,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="5dp"
         android:layout_toRightOf="@+id/picture_wrapper"
-        android:textSize="16sp" />
+        android:layout_toLeftOf="@+id/buttonsContainer"
+        android:textSize="12sp" />
 </RelativeLayout>

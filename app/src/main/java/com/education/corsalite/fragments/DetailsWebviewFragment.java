@@ -74,7 +74,7 @@ public class DetailsWebviewFragment extends BaseFragment {
     }
 
     private String getLoginUrl() {
-        String loginUrl = String.format("%AuthToken?LoginID=%s&PasswordHash=%s",
+        String loginUrl = String.format("%sAuthToken?LoginID=%s&PasswordHash=%s",
                 BuildConfig.BASE_API_URL,
                 appPref.getValue("loginId"),
                 appPref.getValue("passwordHash"));
