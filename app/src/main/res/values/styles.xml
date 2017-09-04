@@ -286,6 +286,7 @@
         <item name="android:paddingBottom">@dimen/text_padding_min</item>
         <item name="android:paddingRight">@dimen/text_padding_max</item>
         <item name="android:paddingLeft">@dimen/text_padding_max</item>
+        <item name="android:visibility">gone</item>
     </style>
 
     <style name="navigation_image_size">
