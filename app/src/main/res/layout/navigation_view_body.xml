@@ -16,113 +16,256 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
+
+            <LinearLayout
                 android:id="@+id/navigation_welcome"
-                android:drawableLeft="@drawable/ico_sidemenu_dashboard"
-                android:text="Home"
-                style="@style/navigation_drawer_element"/>
+                style="@style/navigation_drawer_element"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <ImageView
+                    style="@style/navigation_image_size"
+                    android:src="@drawable/ico_sidemenu_dashboard" />
+                <TextView
+                    style="@style/navigation_text_size"
+                    android:text="Home" />
+            </LinearLayout>
 
-            <TextView
+
+            <LinearLayout
                 android:id="@+id/navigation_profile"
-                android:drawableLeft="@drawable/ico_sidemenu_myprofile"
-                android:text="@string/title_activity_user_profile"
-                style="@style/navigation_drawer_element"/>
+                style="@style/navigation_drawer_element"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <ImageView
+                    style="@style/navigation_image_size"
+                    android:src="@drawable/ico_sidemenu_myprofile" />
+                <TextView
+                    style="@style/navigation_text_size"
+                    android:text="@string/title_activity_user_profile" />
+            </LinearLayout>
 
-            <TextView
+
+            <LinearLayout
                 android:id="@+id/navigation_study_center"
-                android:drawableLeft="@drawable/ico_sidemenu_studycenter"
-                android:text="Study Center"
-                style="@style/navigation_drawer_element" />
+                style="@style/navigation_drawer_element"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <ImageView
+                    style="@style/navigation_image_size"
+                    android:src="@drawable/ico_sidemenu_studycenter" />
+                <TextView
+                    style="@style/navigation_text_size"
+                    android:text="Study Center" />
+            </LinearLayout>
 
-            <TextView
+
+            <LinearLayout
                 android:id="@+id/navigation_test_series"
-                android:drawableLeft="@drawable/ico_scheduled_tests"
-                android:text="Test Series"
-                style="@style/navigation_drawer_element" />
+                style="@style/navigation_drawer_element"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <ImageView
+                    style="@style/navigation_image_size"
+                    android:src="@drawable/ico_scheduled_tests" />
+                <TextView
+                    style="@style/navigation_text_size"
+                    android:text="Test Series" />
+            </LinearLayout>
 
-            <TextView
+
+            <LinearLayout
                 android:id="@+id/navigation_analytics"
-                android:drawableLeft="@drawable/ico_sidemenu_analytics"
-                android:text="Analytics"
-                style="@style/navigation_drawer_element" />
+                style="@style/navigation_drawer_element"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <ImageView
+                    style="@style/navigation_image_size"
+                    android:src="@drawable/ico_sidemenu_analytics" />
+                <TextView
+                    style="@style/navigation_text_size"
+                    android:text="Analytics" />
+            </LinearLayout>
 
-            <TextView
+
+            <LinearLayout
                 android:id="@+id/navigation_offline"
-                android:drawableLeft="@drawable/ico_sidemenu_offline"
-                android:text="Offline"
-                style="@style/navigation_drawer_element" />
+                style="@style/navigation_drawer_element"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <ImageView
+                    style="@style/navigation_image_size"
+                    android:src="@drawable/ico_sidemenu_offline" />
+                <TextView
+                    style="@style/navigation_text_size"
+                    android:text="Offline" />
+            </LinearLayout>
 
-            <TextView
+
+            <LinearLayout
                 android:id="@+id/navigation_recommended_reading"
-                android:drawableLeft="@drawable/ico_sidemenu_studycenter"
-                android:text="Recommended Reading"
-                style="@style/navigation_drawer_element" />
+                style="@style/navigation_drawer_element"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <ImageView
+                    style="@style/navigation_image_size"
+                    android:src="@drawable/ico_sidemenu_studycenter" />
+                <TextView
+                    style="@style/navigation_text_size"
+                    android:text="Recommended Reading" />
+            </LinearLayout>
 
-            <TextView
+
+            <LinearLayout
                 android:id="@+id/navigation_progress_report"
-                android:drawableLeft="@drawable/ico_sidemenu_analytics"
-                android:text="Progress Report"
-                style="@style/navigation_drawer_element" />
+                style="@style/navigation_drawer_element"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <ImageView
+                    style="@style/navigation_image_size"
+                    android:src="@drawable/ico_sidemenu_analytics" />
+                <TextView
+                    style="@style/navigation_text_size"
+                    android:text="Progress Report" />
+            </LinearLayout>
 
-            <TextView
+
+            <LinearLayout
                 android:id="@+id/navigation_time_management"
-                android:drawableLeft="@drawable/ico_sidemenu_calendar"
-                android:text="Time Management"
-                style="@style/navigation_drawer_element" />
+                style="@style/navigation_drawer_element"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <ImageView
+                    style="@style/navigation_image_size"
+                    android:src="@drawable/ico_sidemenu_calendar" />
+                <TextView
+                    style="@style/navigation_text_size"
+                    android:text="Time Management" />
+            </LinearLayout>
 
-            <TextView
+            <LinearLayout
                 android:id="@+id/navigation_curriculum"
-                android:drawableLeft="@drawable/ico_sidemenu_analytics"
-                android:text="Curriculum"
-                style="@style/navigation_drawer_element" />
+                style="@style/navigation_drawer_element"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <ImageView
+                    style="@style/navigation_image_size"
+                    android:src="@drawable/ico_sidemenu_analytics" />
+                <TextView
+                    style="@style/navigation_text_size"
+                    android:text="Curriculum" />
+            </LinearLayout>
 
-            <TextView
+            <LinearLayout
                 android:id="@+id/navigation_scheduled_tests"
-                android:text="@string/menu_scheduled_test"
-                android:drawableLeft="@drawable/ico_scheduled_tests"
-                style="@style/navigation_drawer_element" />
+                style="@style/navigation_drawer_element"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <ImageView
+                    style="@style/navigation_image_size"
+                    android:src="@drawable/ico_scheduled_tests" />
+                <TextView
+                    style="@style/navigation_text_size"
+                    android:text="@string/menu_scheduled_test" />
+            </LinearLayout>
 
-            <TextView
+
+            <LinearLayout
                 android:id="@+id/navigation_mock_tests"
-                android:text="@string/menu_mock_test"
-                android:drawableLeft="@drawable/ico_mock_tests"
-                style="@style/navigation_drawer_element" />
+                style="@style/navigation_drawer_element"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <ImageView
+                    style="@style/navigation_image_size"
+                    android:src="@drawable/ico_mock_tests" />
+                <TextView
+                    style="@style/navigation_text_size"
+                    android:text="@string/menu_mock_test" />
+            </LinearLayout>
 
-            <TextView
+
+            <LinearLayout
                 android:id="@+id/navigation_challenge_your_friends"
-                android:text="@string/challenge_your_friends"
-                android:drawableLeft="@drawable/ico_challenge"
-                style="@style/navigation_drawer_element" />
+                style="@style/navigation_drawer_element"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <ImageView
+                    style="@style/navigation_image_size"
+                    android:src="@drawable/ico_challenge" />
+                <TextView
+                    style="@style/navigation_text_size"
+                    android:text="@string/challenge_your_friends" />
+            </LinearLayout>
 
-            <TextView
+
+            <LinearLayout
                 android:id="@+id/navigation_exam_history"
-                android:text="@string/menu_exam_history"
-                android:drawableLeft="@drawable/ico_exam_history"
-                style="@style/navigation_drawer_element" />
+                style="@style/navigation_drawer_element"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <ImageView
+                    style="@style/navigation_image_size"
+                    android:src="@drawable/ico_exam_history" />
+                <TextView
+                    style="@style/navigation_text_size"
+                    android:text="@string/menu_exam_history" />
+            </LinearLayout>
 
-            <TextView
+
+            <LinearLayout
                 android:id="@+id/navigation_forum"
-                android:text="@string/forum"
-                android:drawableLeft="@drawable/ico_forum"
-                style="@style/navigation_drawer_element" />
+                style="@style/navigation_drawer_element"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <ImageView
+                    style="@style/navigation_image_size"
+                    android:src="@drawable/ico_forum" />
+                <TextView
+                    style="@style/navigation_text_size"
+                    android:text="@string/forum" />
+            </LinearLayout>
 
-            <TextView
+
+            <LinearLayout
                 android:id="@+id/navigation_smart_class"
-                android:drawableLeft="@drawable/ico_sidemenu_smartclass"
-                android:text="Smart Class"
-                style="@style/navigation_drawer_element" />
+                style="@style/navigation_drawer_element"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <ImageView
+                    style="@style/navigation_image_size"
+                    android:src="@drawable/ico_sidemenu_smartclass" />
+                <TextView
+                    style="@style/navigation_text_size"
+                    android:text="Smart Class" />
+            </LinearLayout>
 
-            <TextView
+
+            <LinearLayout
                 android:id="@+id/navigation_settings"
-                android:text="@string/action_settings"
-                android:drawableLeft="@drawable/ico_sidemenu_settings"
-                style="@style/navigation_drawer_element" />
+                style="@style/navigation_drawer_element"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <ImageView
+                    style="@style/navigation_image_size"
+                    android:src="@drawable/ico_sidemenu_settings" />
+                <TextView
+                    style="@style/navigation_text_size"
+                    android:text="@string/action_settings" />
+            </LinearLayout>
 
-            <TextView
+
+            <LinearLayout
                 android:id="@+id/navigation_logout"
-                android:text="@string/log_out"
-                android:drawableLeft="@drawable/ico_sidemenu_logout"
-                style="@style/navigation_drawer_element" />
+                style="@style/navigation_drawer_element"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <ImageView
+                    style="@style/navigation_image_size"
+                    android:src="@drawable/ico_sidemenu_logout" />
+                <TextView
+                    style="@style/navigation_text_size"
+                    android:text="@string/log_out" />
+            </LinearLayout>
+
 
         </LinearLayout>
     </ScrollView>
