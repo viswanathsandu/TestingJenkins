@@ -282,27 +282,23 @@
         <item name="android:background">?android:attr/selectableItemBackground</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingTop">7dp</item>
-        <item name="android:paddingBottom">7dp</item>
-        <item name="android:paddingRight">15dp</item>
-        <item name="android:paddingLeft">15dp</item>
-
-
-
+        <item name="android:paddingTop">@dimen/text_padding_min</item>
+        <item name="android:paddingBottom">@dimen/text_padding_min</item>
+        <item name="android:paddingRight">@dimen/text_padding_max</item>
+        <item name="android:paddingLeft">@dimen/text_padding_max</item>
     </style>
 
     <style name="navigation_image_size">
-        <item name="android:layout_width">30dp</item>
-        <item name="android:layout_height">30dp</item>
+        <item name="android:layout_width">@dimen/navigation_icon_size</item>
+        <item name="android:layout_height">@dimen/navigation_icon_size</item>
     </style>
 
     <style name="navigation_text_size">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:drawablePadding">20dp</item>
         <item name="android:gravity">center_vertical</item>
-        <item name="android:textSize">14sp</item>
-        <item name="android:paddingLeft">16dp</item>
+        <item name="android:textSize">@dimen/title_text_small_size</item>
+        <item name="android:paddingLeft">@dimen/navigation_icon_padding</item>
         <item name="android:textColor">@color/text_white</item>
         <item name="fontPath">@string/roboto_regular</item>
     </style>
