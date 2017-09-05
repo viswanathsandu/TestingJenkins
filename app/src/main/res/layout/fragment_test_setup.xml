@@ -31,7 +31,7 @@
 
             <Spinner
                 android:id="@+id/selectSubjectSpinner"
-                style="@android:style/Widget.Holo.Light.Spinner"
+                style="@style/spinner_style_dark"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="16sp" />
@@ -48,7 +48,7 @@
 
             <Spinner
                 android:id="@+id/selectChapterSpinner"
-                style="@android:style/Widget.Holo.Light.Spinner"
+                style="@style/spinner_style_dark"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="16sp" />
@@ -107,7 +107,7 @@
 
             <Spinner
                 android:id="@+id/examsSpinner"
-                style="@android:style/Widget.Holo.Light.Spinner"
+                style="@style/spinner_style_dark"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="16sp" />

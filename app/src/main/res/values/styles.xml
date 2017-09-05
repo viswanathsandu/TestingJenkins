@@ -452,7 +452,13 @@
     </style>
 
     <style name="spinner_style" >
-        <item name="android:background">@drawable/spi_style</item>
+        <item name="android:background">@drawable/spinner_style</item>
+        <item name="android:paddingRight">15dp</item>
+        <item name="android:paddingTop">5dp</item>
+    </style>
+
+    <style name="spinner_style_dark" >
+        <item name="android:background">@drawable/spinner_style_dark</item>
         <item name="android:paddingRight">15dp</item>
         <item name="android:paddingTop">5dp</item>
     </style>
