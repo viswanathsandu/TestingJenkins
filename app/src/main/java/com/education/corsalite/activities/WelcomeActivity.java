@@ -162,7 +162,8 @@ public class WelcomeActivity extends AbstractBaseActivity implements View.OnClic
             showToast("Please select a different course");
             return;
         }
-        switch (v.getId()) {
+        switch (v.getId())
+        {
             case R.id.redeem_welcome_btn:
                 redeem();
                 break;

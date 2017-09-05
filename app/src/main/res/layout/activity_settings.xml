@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
+    android:background="@drawable/welcome_bg"
     tools:context="com.education.corsalite.activities.SettingsActivity">
 
     <LinearLayout
@@ -18,7 +19,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Corsalite Application Version : "
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:textColor="@color/text_white"/>
 
         <TextView
             android:id="@+id/app_current_version_txt"
@@ -26,7 +28,8 @@
             android:layout_height="wrap_content"
             android:text=""
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="@color/text_white"/>
     </LinearLayout>
 
     <LinearLayout
@@ -41,7 +44,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Latest Version Available : "
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:textColor="@color/text_white"/>
 
         <TextView
             android:id="@+id/app_latest_version_txt"
@@ -49,7 +53,8 @@
             android:layout_height="wrap_content"
             android:text=""
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="@color/text_white"/>
     </LinearLayout>
 
     <TextView
@@ -58,6 +63,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:visibility="gone"
+        android:textColor="@color/text_white"
         android:text="You are up to date with the upgrades"/>
 
     <Button

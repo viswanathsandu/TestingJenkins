@@ -6,16 +6,17 @@
     android:visibility="gone"
     android:id="@+id/layout_empty"
     android:orientation="horizontal"
-    android:background="@color/white">
+    android:background="@drawable/welcome_bg">
 
     <ImageView
+        android:id="@+id/icon_nodata"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ico_info"/>
+        android:src="@drawable/ico_nodata"/>
 
     <TextView
         android:paddingLeft="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tv_no_data"/>
+        android:id="@+id/tv_no_data" />
 </LinearLayout>
