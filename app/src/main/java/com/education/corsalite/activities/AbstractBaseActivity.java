@@ -498,7 +498,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     }
                 }
             }, !SystemUtils.isNetworkConnected(this));
-
         }
     }
 
@@ -1231,6 +1230,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 getEventbus().post(position);
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
