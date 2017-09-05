@@ -10,11 +10,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/light_40"
-        android:padding="10dp">
+        android:padding="10dp"
+        android:visibility="gone">
 
         <Spinner
             android:id="@+id/spinner"
-            style="@style/spinner_style"
+            style="@style/spinner_style_dark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawSelectorOnTop="true"

@@ -2,6 +2,7 @@
     encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
-            <bitmap android:gravity="bottom|right" android:src="@drawable/dots" />
+            <bitmap android:gravity="bottom|right"
+                android:src="@drawable/dotbk" />
     </item>
 </selector>
