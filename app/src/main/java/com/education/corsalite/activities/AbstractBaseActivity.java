@@ -154,13 +154,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         return "";
     }
 
-    public static String getSelectedCourseInstanceId() {
-        if (selectedCourse != null && selectedCourse.courseInstanceId != null) {
-            return selectedCourse.courseInstanceId;
-        }
-        return "";
-    }
-
     public static String getSelectedCourseName() {
         if (selectedCourse != null && selectedCourse.name != null) {
             return selectedCourse.name;
@@ -513,38 +506,38 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         } catch (Exception e) {
             L.error(e.getMessage(), e);
         }
-        setToolbarTitle(getResources().getString(R.string.virtual_currency));
+        setToolbarTitle("");
     }
 
     protected void setToolbarForProfile() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
-        setToolbarTitle(getResources().getString(R.string.title_activity_user_profile));
+        setToolbarTitle("");
         loadCoursesList();
     }
 
     protected void setToolbarForStudyCenter() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
-        setToolbarTitle(getResources().getString(R.string.study_centre));
+        setToolbarTitle("");
         showVirtualCurrency();
         loadCoursesList();
     }
 
     protected void setToolbarForTestSeries() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
-        setToolbarTitle(getResources().getString(R.string.test_series));
+        setToolbarTitle("");
         loadCoursesList();
     }
 
     protected void setToolbarForAnalytics() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
-        setToolbarTitle(getResources().getString(R.string.analytics));
+        setToolbarTitle("");
         showVirtualCurrency();
         loadCoursesList();
     }
 
     protected void setToolbarForMessages() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
-        setToolbarTitle("Messages");
+        setToolbarTitle("");
         showVirtualCurrency();
         loadCoursesList();
     }
@@ -556,74 +549,70 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         }
         showVirtualCurrency();
         toolbar.setBackgroundColor(getResources().getColor(R.color.red));
-        setToolbarTitle(getResources().getString(R.string.challenge_your_friends));
+        setToolbarTitle("");
     }
 
     protected void setToolbarForPostcomments() {
         toolbar.findViewById(R.id.new_comment).setVisibility(View.VISIBLE);
-        setToolbarTitle("Comments");
+       // setToolbarTitle("Comments");
+        setToolbarTitle("");
     }
 
     protected void setToolbarForTestStartScreen() {
         toolbar.findViewById(R.id.start_layout).setVisibility(View.VISIBLE);
-        setToolbarTitle("Chapter Test");
+        setToolbarTitle("");
         showVirtualCurrency();
         loadCoursesList();
     }
 
     protected void setToolbarForWelcomeScreen() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
-        setToolbarTitle(getString(R.string.app_name));
+        setToolbarTitle("");
         loadCoursesList();
     }
 
     protected void setToolbarForCurriculumScreen() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
-        setToolbarTitle("Curriculum");
+        setToolbarTitle("");
         loadCoursesList();
     }
 
 
     protected void setToolbarForTestIndexScreen() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.GONE);
-        setToolbarTitle("Test Instructions");
+        setToolbarTitle("");
     }
 
     protected void setToolbarForContentReading() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
-        setToolbarTitle(getResources().getString(R.string.content));
+        setToolbarTitle("");
         showVirtualCurrency();
         loadCoursesList();
     }
 
     protected void setToolbarForExamHistory() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
-        setToolbarTitle(getResources().getString(R.string.exam_history));
+        setToolbarTitle("");
         loadCoursesList();
     }
 
     protected void setToolbarForNotes() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
-        setToolbarTitle(getString(R.string.notes));
+        setToolbarTitle("");
         showVirtualCurrency();
         loadCoursesList();
     }
 
     protected void setToolbarForOfflineContent() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
-        setToolbarTitle(getResources().getString(R.string.offline_content));
+        setToolbarTitle("");
         showVirtualCurrency();
         loadCoursesList();
     }
 
-    @Override
-    public void setEnterSharedElementCallback(SharedElementCallback callback) {
-        super.setEnterSharedElementCallback(callback);
-    }
-
     protected void setToolbarForUsageAnalysis() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
-        setToolbarTitle(getResources().getString(R.string.usage_analysis));
+        setToolbarTitle("");
     }
 
     protected void setToolbarForVideo(List<ContentModel> videos, int position) {
@@ -634,18 +623,18 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     protected void setToolbarForOfflineContentReading() {
         toolbar.findViewById(R.id.download).setVisibility(View.VISIBLE);
-        setToolbarTitle(getResources().getString(R.string.download_content));
+        setToolbarTitle("");
     }
 
     protected void setToolbarForForum() {
         toolbar.findViewById(R.id.new_post).setVisibility(View.VISIBLE);
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
-        setToolbarTitle(getResources().getString(R.string.forum));
+        setToolbarTitle("");
         loadCoursesList();
     }
 
     protected void setToolbarForExercise(String title, boolean showDrawer) {
-        setToolbarTitle(title);
+        setToolbarTitle("");
         showVirtualCurrency();
         if (!showDrawer) {
             hideDrawerIcon();
@@ -656,13 +645,13 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     protected void setToolbarForFlaggedQuestions(String title) {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
         toolbar.findViewById(R.id.spinner_courses).setVisibility(View.GONE);
-        setToolbarTitle(title);
+        setToolbarTitle("");
         showVirtualCurrency();
         showDrawerIcon();
     }
 
     protected void setToolbarForWebActivity(String title) {
-        setToolbarTitle(title);
+        setToolbarTitle("");
     }
 
     protected void hideDrawerIcon() {
@@ -1152,7 +1141,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             logout.AuthToken = LoginUserCache.getInstance().getLoginResponse().authtoken;
             appPref.remove("loginId");
             appPref.remove("passwordHash");
-            appPref.remove("last_time_scheduled_tests_loaded");
             appPref.clearUserId();
             ApiManager.getInstance(this).logout(Gson.get().toJson(logout), new ApiCallback<LogoutResponse>(this) {
                 @Override
@@ -1430,7 +1418,10 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             navigationView.findViewById(R.id.navigation_mock_tests).setVisibility(isTrue(course.isMockTest) ? View.VISIBLE : View.GONE);
             navigationView.findViewById(R.id.navigation_smart_class).setVisibility(isTrue(course.isSmartClass) ? View.VISIBLE : View.GONE);
             navigationView.findViewById(R.id.navigation_scheduled_tests).setVisibility(isTrue(course.isScheduledTests) ? View.VISIBLE : View.GONE);
-            navigationView.findViewById(R.id.navigation_analytics).setVisibility(isTrue(course.isAnalytics) ? View.VISIBLE : View.GONE);
+
+            // TODO : uncomment it
+            navigationView.findViewById(R.id.navigation_analytics).setVisibility(View.VISIBLE);//isTrue(course.isAnalytics) ? View.VISIBLE : View.GONE);
+
             navigationView.findViewById(R.id.navigation_challenge_your_friends).setVisibility(isTrue(course.isChallengeTest) ? View.VISIBLE : View.GONE);
             navigationView.findViewById(R.id.navigation_curriculum).setVisibility(isTrue(course.isCurriculum) ? View.VISIBLE : View.GONE);
             navigationView.findViewById(R.id.navigation_offline).setVisibility(isTrue(course.isOffline) ? View.VISIBLE : View.GONE);
@@ -1554,11 +1545,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     protected void loadScheduledTests() {
-        String timeString = appPref.getValue("last_time_scheduled_tests_loaded");
-        if(!TextUtils.isEmpty(timeString)
-                && Long.parseLong(timeString) > (new Date().getTime() - 30 * 60 * 60 * 1000)) {
-            return;
-        }
         ApiManager.getInstance(this).getScheduledTestsList(
                 LoginUserCache.getInstance().getStudentId(),
                 new ApiCallback<ScheduledTestList>(this) {
@@ -1566,7 +1552,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     @Override
                     public void success(ScheduledTestList scheduledTests, Response response) {
                         super.success(scheduledTests, response);
-                        appPref.save("last_time_scheduled_tests_loaded", new Date().getTime() + "");
                         if (scheduledTests != null && scheduledTests.MockTest != null) {
                             ApiCacheHolder.getInstance().setScheduleTestsResponse(scheduledTests);
                             dbManager.saveReqRes(ApiCacheHolder.getInstance().scheduleTests);
