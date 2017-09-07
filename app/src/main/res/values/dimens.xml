@@ -31,4 +31,17 @@
     <dimen name="layout_button_margin">2dp</dimen>
     <dimen name="vc_data_padding">3dp</dimen>
     <dimen name="vc_data_padding_vertical">5dp</dimen>
+
+    <dimen name="text_sub_name">12dp</dimen>
+    <dimen name="prize_drawable_padding">0.5dp</dimen>
+    <dimen name="level_drawable_padding">8dp</dimen>
+    <dimen name="progress_size_in_tile">48dp</dimen>
+    <dimen name="progress_size_in_tile_grey">48dp</dimen>
+    <dimen name="progresstext_size">2dp</dimen>
+
+    <dimen name="text_padding_around_item">8dp</dimen>
+
+
+
+
 </resources>
