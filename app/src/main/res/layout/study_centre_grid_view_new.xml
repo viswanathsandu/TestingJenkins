@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="16dp"
+    android:layout_marginBottom="@dimen/text_padding_around_item"
     android:layout_marginRight="16dp"
     android:background="?android:attr/selectableItemBackground"
     android:orientation="vertical">
@@ -33,7 +33,7 @@
             android:paddingRight="16dp"
             android:text="Subject name"
             android:textColor="@color/white"
-            android:textSize="16sp"/>
+            android:textSize="@dimen/text_sub_name"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:drawablePadding="16dp"
+                android:drawablePadding="@dimen/prize_drawable_padding"
                 android:drawableTop="@drawable/cup"
                 android:gravity="center_vertical|center_horizontal"
                 android:paddingLeft="4dp"
@@ -82,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:drawablePadding="16dp"
+                android:drawablePadding="@dimen/level_drawable_padding"
                 android:drawableTop="@drawable/level_three"
                 android:gravity="center_vertical|center"
                 android:paddingLeft="4dp"
@@ -99,8 +99,8 @@
 
                 <com.github.lzyzsd.circleprogress.DonutProgress
                     android:id="@+id/progress_id"
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
+                    android:layout_width="@dimen/progress_size_in_tile"
+                    android:layout_height="@dimen/progress_size_in_tile"
                     android:gravity="center_vertical|center"
                     custom:donut_finished_color="#FFFFFF"
                     custom:donut_unfinished_color="#23232300"
@@ -117,8 +117,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="@dimen/progresstext_size"
+                    android:layout_marginTop="@dimen/progresstext_size"
                     android:ellipsize="end"
                     android:gravity="center|center_vertical"
                     android:maxLines="2"
@@ -156,7 +156,7 @@
             android:paddingRight="16dp"
             android:text="Subject name"
             android:textColor="@color/dark_gray"
-            android:textSize="16sp"/>
+            android:textSize="@dimen/text_sub_name"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -190,7 +190,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:drawablePadding="16dp"
+                android:drawablePadding="@dimen/prize_drawable_padding"
                 android:drawableTop="@drawable/cup"
                 android:gravity="center_vertical|center"
                 android:paddingLeft="4dp"
@@ -206,7 +206,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:drawablePadding="16dp"
+                android:drawablePadding="@dimen/level_drawable_padding"
                 android:drawableTop="@drawable/level_three"
                 android:gravity="center_vertical|center"
                 android:paddingLeft="4dp"
@@ -224,8 +224,8 @@
 
                 <com.github.lzyzsd.circleprogress.DonutProgress
                     android:id="@+id/progress_id_gray"
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
+                    android:layout_width="@dimen/progress_size_in_tile_grey"
+                    android:layout_height="@dimen/progress_size_in_tile_grey"
                     android:gravity="center_vertical|center"
                     custom:donut_finished_stroke_width="6dp"
                     custom:donut_unfinished_stroke_width="6dp"
@@ -241,8 +241,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="@dimen/progresstext_size"
+                    android:layout_marginTop="@dimen/progresstext_size"
                     android:ellipsize="end"
                     android:gravity="center|center_vertical"
                     android:maxLines="2"
