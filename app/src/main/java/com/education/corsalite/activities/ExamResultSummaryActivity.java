@@ -1,5 +1,6 @@
 package com.education.corsalite.activities;
 
+import android.app.FragmentManager;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
@@ -15,6 +16,7 @@ import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.fragments.ExamResultSummaryGraphFragment;
 import com.education.corsalite.gson.Gson;
 import com.education.corsalite.models.db.ExamResultDetails;
 import com.education.corsalite.models.db.ExamResultSummarySubject;
@@ -50,6 +52,9 @@ public class ExamResultSummaryActivity extends AbstractBaseActivity {
         super.onResume();
         String testAnswerPaperIds = getIntent().getExtras().getString("test_answer_papaer_ids");
         fetchExamSummaryData(testAnswerPaperIds);
+
+        // TODO : loading dummy fragment
+        getSupportFragmentManager().beginTransaction().add(R.id.graph_container, new ExamResultSummaryGraphFragment(), "Summary").commit();
     }
 
     private void fetchExamSummaryData(String testAnswerPaperIds) {

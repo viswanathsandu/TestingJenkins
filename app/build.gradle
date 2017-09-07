@@ -6,7 +6,7 @@ apply plugin: 'com.google.gms.google-services'
 def versionCodeCorsalite = 104101
 def versionNameCorsalite = "1.4.1.1"
 
-def versionCodeFGA =4101
+def versionCodeFGA = 4101
 def versionNameFGA = "0.4.1.1"
 
 android {
@@ -137,7 +137,7 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
         transitive = true;
     }
-    compile 'com.github.PhilJay:MPAndroidChart:v2.1.6'
+    compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'
     compile 'com.android.support:recyclerview-v7:25.3.1'

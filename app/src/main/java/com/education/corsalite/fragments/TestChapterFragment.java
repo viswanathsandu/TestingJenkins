@@ -171,16 +171,16 @@ public class TestChapterFragment extends BaseFragment {
 
             mChapterLevels.add(testCoverage.level);
 
-            BarEntry barEntry = new BarEntry(new float[]{answersCorrect, answersRemaining, answersWrong}, index++);
+            BarEntry barEntry = new BarEntry((float)(index++), new float[]{answersCorrect, answersRemaining, answersWrong});
             entries.add(barEntry);
         }
 
         BarDataSet barDataSet = new BarDataSet(entries, "");
         barDataSet.setColors(new int[]{getResources().getColor(R.color.green), getResources().getColor(R.color.skyblue), getResources().getColor(R.color.red)});
         barDataSet.setDrawValues(false);
-        barDataSet.setBarSpacePercent(20f);
+//        barDataSet.setBarSpacePercent(20f);
 
-        BarData barData = new BarData(mChapterLevels);
+        BarData barData = new BarData(barDataSet);
         barData.addDataSet(barDataSet);
         barDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
 
@@ -189,7 +189,7 @@ public class TestChapterFragment extends BaseFragment {
 
     private void initializeGraph() {
         mTestBarChart.setBackgroundColor(Color.WHITE);
-        mTestBarChart.setDescription("");
+        mTestBarChart.getDescription().setEnabled(false);
         mTestBarChart.setDrawBarShadow(false);
         mTestBarChart.setDrawGridBackground(false);
 
@@ -203,7 +203,7 @@ public class TestChapterFragment extends BaseFragment {
 
         XAxis xAxis = mTestBarChart.getXAxis();
         xAxis.setDrawGridLines(false);
-        xAxis.setTextSize(15f);
+        xAxis.setTextSize(12f);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
 
         mTestBarChart.getLegend().setTextSize(15f);
