@@ -64,7 +64,7 @@ public class InviteFriendsFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_invite_friends, container, false);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_friends_list);
         mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new GridLayoutManager(getActivity(), 4);
+        mLayoutManager = new GridLayoutManager(getActivity(), 5);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new FriendsAdapter(getActivity(), friendsData, mFriendsListCallback);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), R.drawable.horizontal_line, true, true));
