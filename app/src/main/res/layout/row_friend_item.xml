@@ -1,3 +1,4 @@
+
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -49,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_friend_name"
                 android:ellipsize="end"
-                android:maxLines="1"
+                android:maxLines="@dimen/text_line_num"
                 android:paddingLeft="7dp"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/text_mail_max" />
