@@ -42,19 +42,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:visibility="gone">
+            >
 
-            <ImageView
+            <TextView
                 android:id="@+id/add_friends_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/add_friend"
+                style="@style/title_style"
                 android:src="@drawable/ico_actionbar_add"/>
 
-            <ImageView
+            <TextView
                 android:id="@+id/next_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/next_in_challenge"
+                style="@style/title_style"
                 android:src="@drawable/ico_tick_selected"/>
+
 
         </LinearLayout>
 
