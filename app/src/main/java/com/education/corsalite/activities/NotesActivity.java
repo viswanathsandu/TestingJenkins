@@ -37,7 +37,7 @@ import retrofit.client.Response;
  */
 public class NotesActivity extends AbstractBaseActivity {
 
-    private LinearLayout spinnerLayout;
+    //private LinearLayout spinnerLayout;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private LayoutInflater inflater;
@@ -48,7 +48,7 @@ public class NotesActivity extends AbstractBaseActivity {
     private CourseData mCourseData;
     private ArrayList<String> subjects;
     private RelativeLayout relativeLayout;
-    private Spinner courseSpinner;
+    //private Spinner courseSpinner;
     private TextView selectedSubjectTxt;
     private String key;
     private LinearLayout notesLayout;
@@ -60,9 +60,9 @@ public class NotesActivity extends AbstractBaseActivity {
         inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         RelativeLayout myView = (RelativeLayout) inflater.inflate(R.layout.activity_notes, null);
         relativeLayout = (RelativeLayout) myView.findViewById(R.id.notes_layout);
-        courseSpinner = (Spinner) myView.findViewById(R.id.spinner);
+      //  courseSpinner = (Spinner) myView.findViewById(R.id.spinner);
         notesLayout = (LinearLayout) myView.findViewById(R.id.no_notes);
-        spinnerLayout = (LinearLayout) myView.findViewById(R.id.spinner_layout);
+       // spinnerLayout = (LinearLayout) myView.findViewById(R.id.spinner_layout);
         progressBar = (LinearLayout) myView.findViewById(R.id.headerProgress);
         frameLayout.addView(myView);
         setToolbarForNotes();
@@ -159,11 +159,11 @@ public class NotesActivity extends AbstractBaseActivity {
             }
             courses.add(studyCenter.SubjectName.toString());
         }
-        spinnerLayout.setVisibility(View.VISIBLE);
-        addSubjectsAndCreateViews(courses, selectedIndex);
+       // spinnerLayout.setVisibility(View.VISIBLE);
+     //   addSubjectsAndCreateViews(courses, selectedIndex);
     }
 
-    private void addSubjectsAndCreateViews(List<String> courses, int selectedIndex) {
+    /*private void addSubjectsAndCreateViews(List<String> courses, int selectedIndex) {
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, R.layout.spinner_title_textview, courses);
         dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         courseSpinner.setAdapter(dataAdapter);
@@ -191,8 +191,8 @@ public class NotesActivity extends AbstractBaseActivity {
         if(selectedIndex != -1) {
             courseSpinner.setSelection(selectedIndex);
         }
-    }
-
+    }*/
+/*
     private void callNotesData(String idCourseSubject) {
         hideList();
         if(!TextUtils.isEmpty(mSubjectId)) {
@@ -204,7 +204,7 @@ public class NotesActivity extends AbstractBaseActivity {
             getNotesData();
         }
         mAdapter.notifyDataSetChanged();
-    }
+    }*/
 
     private void getNotesData() {
         ApiManager.getInstance(this).getNotes(LoginUserCache.getInstance().getStudentId(), mSubjectId, mChapterId, mTopicId, new ApiCallback<List<Note>>(this) {
