@@ -53,16 +53,14 @@ public class VideoActivity extends AbstractBaseActivity {
         }
         if(getIntent().hasExtra("videoList")) {
             mContentModels = (List<ContentModel>)getIntent().getExtras().getSerializable("videoList");
+            setToolbarForVideo(mContentModels, (int) selectedPosition);
         }
 
         if(getIntent().hasExtra("videopath")){
             videoPath = getIntent().getStringExtra("videopath");
             loadLocalVideo();
-        }
-
-        if(selectedPosition >= 0 && mContentModels != null) {
+        } else if (selectedPosition >= 0 && mContentModels != null) {
             getContent();
-            setToolbarForVideo(mContentModels, (int)selectedPosition);
         }
     }
 
@@ -154,6 +152,6 @@ public class VideoActivity extends AbstractBaseActivity {
     private void loadLocalVideo(){
         videoViewRelative.requestFocus();
         videoViewRelative.setVideoPath(videoPath);
-        videoViewRelative.start();
+//        videoViewRelative.start();
     }
 }

@@ -74,7 +74,6 @@ public class VideoListDialog extends DialogFragment implements VideoListAdapter.
     @Override
     public void onVideoSelected(int position) {
         try {
-            dismiss();
             OfflineContent offlineContent = SugarDbManager.get(getActivity()).getOfflineContentWithContent(mVideoList.get(position).idContent);
             if (offlineContent != null && offlineContent.progress == 100) {
                 Intent intent = new Intent(getActivity(), VideoActivity.class);
@@ -90,6 +89,7 @@ public class VideoListDialog extends DialogFragment implements VideoListAdapter.
             } else {
                 Toast.makeText(getActivity(), "Video is not available for offline", Toast.LENGTH_SHORT).show();
             }
+            dismiss();
         } catch (Exception e) {
             L.error(e.getMessage(), e);
         }
