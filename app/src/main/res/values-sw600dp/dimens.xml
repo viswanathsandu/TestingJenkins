@@ -16,7 +16,6 @@
 
     <dimen name="text_padding_max">18dp</dimen>
     <dimen name="text_mail_max">16dp</dimen>
-    <dimen name="text_line_num">1dp</dimen>
     <dimen name="img_line_top">0dp</dimen>
     <dimen name="callenge_list_image_size">48dp</dimen>
     <dimen name="challenge_list_layout_width">320dp</dimen>
