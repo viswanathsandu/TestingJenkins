@@ -23,6 +23,9 @@
     <dimen name="text_padding_min">8dp</dimen>
     <dimen name="text_padding_avg">10dp</dimen>
     <dimen name="text_padding_max">14dp</dimen>
+    <dimen name="btn_height">35dp</dimen>
+    <dimen name="max_lines">2dp</dimen>
+
     <dimen name="text_mail_max">14dp</dimen>
     <dimen name="img_line_top">5dp</dimen>
     <dimen name="challenge_list_image_size">36dp</dimen>

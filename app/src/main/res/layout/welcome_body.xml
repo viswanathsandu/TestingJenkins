@@ -89,7 +89,7 @@
                     android:id="@+id/redeem_welcome_btn"
                     style="@style/welcome_button"
                     android:layout_width="150dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/btn_height"
                     android:background="@drawable/voilet_button_selector"
                     android:text="Redeem"
                     android:textColor="@color/text_white"/>
@@ -98,7 +98,7 @@
                     android:id="@+id/studycenter_btn"
                     style="@style/welcome_button"
                     android:layout_width="150dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/btn_height"
                     android:background="@drawable/green_button_selector"
                     android:text="Study Center"
                     android:textColor="@color/text_white"/>
@@ -107,7 +107,7 @@
                     android:id="@+id/recommended_reading_btn"
                     style="@style/welcome_button"
                     android:layout_width="150dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/btn_height"
                     android:background="#FFBA4D"
                     android:text="Recommended Reading"
                     android:textColor="@color/text_white"
@@ -126,7 +126,7 @@
                     android:id="@+id/scheduled_tests_btn"
                     style="@style/welcome_button"
                     android:layout_width="150dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/btn_height"
                     android:background="@drawable/schedule_test_selector"
                     android:text="Scheduled Tests"
                     android:textColor="@color/text_white"/>
@@ -135,7 +135,7 @@
                     android:id="@+id/messages_btn"
                     style="@style/welcome_button"
                     android:layout_width="150dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/btn_height"
                     android:background="#7195BF"
                     android:text="Messages"
                     android:textColor="@color/text_white"/>
