@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -52,7 +53,7 @@ import retrofit.client.Response;
  * Created by ayush on 25/09/15.
  */
 public class StudyCenterActivity extends AbstractBaseActivity {
-
+    private AppCompatSpinner spinner_subjects_list;
     private GridRecyclerAdapter mAdapter;
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
@@ -79,6 +80,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         RelativeLayout myView = (RelativeLayout) inflater.inflate(R.layout.activity_study_center, null);
         linearLayout = (LinearLayout) myView.findViewById(R.id.subjects_name_id);
+        spinner_subjects_list=(AppCompatSpinner)myView.findViewById(R.id.spinner_subjects_list);
         frameLayout.addView(myView);
         setUpViews(myView);
         setToolbarForStudyCenter();
@@ -90,7 +92,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
         super.onResume();
         // fetch schedule tests and configure the notifications
         loadScheduledTests();
-        if(getSelectedCourse() != null) {
+        if (getSelectedCourse() != null) {
             getStudyCentreData(getSelectedCourse().courseId.toString());
         }
         if (mAdapter != null) {
@@ -101,7 +103,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
     @Override
     protected void onCourseChanged(Course course) {
         super.onCourseChanged(course);
-        if(course.isTestSeries()) {
+        if (course.isTestSeries()) {
             startActivity(new Intent(this, TestSeriesActivity.class));
             finish();
         } else {
@@ -308,7 +310,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
                         } else {
                             getOfflineStudyCenterData(studyCenters, false);
                         }
-                        if(subjectViews != null && !subjectViews.isEmpty()) {
+                        if (subjectViews != null && !subjectViews.isEmpty()) {
                             subjectViews.get(0).performClick();
                         }
                     }
@@ -478,7 +480,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
             selectedSubjectTxt = tv;
         }
         setListener(tv, studyCenter.SubjectName);
-        if(subjectViews != null) {
+        if (subjectViews != null) {
             subjectViews.add(tv);
         }
         return v;
@@ -579,7 +581,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
     }
 
     private void startFlaggedQuestionView(StudyCenter studyCenter) {
-        if(!SystemUtils.isNetworkConnected(this)) {
+        if (!SystemUtils.isNetworkConnected(this)) {
             showToast("This feature is not available for offline. Please come online.");
             return;
         }
