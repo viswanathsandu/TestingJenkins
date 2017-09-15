@@ -19,22 +19,28 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.GridRecyclerAdapter;
+import com.education.corsalite.adapters.SubjectAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.fragments.PartTestDialog;
+import com.education.corsalite.models.SubjectModel;
 import com.education.corsalite.models.db.OfflineContent;
 import com.education.corsalite.models.responsemodels.Chapter;
+import com.education.corsalite.models.responsemodels.ContentIndex;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Course;
 import com.education.corsalite.models.responsemodels.CourseData;
@@ -53,7 +59,7 @@ import retrofit.client.Response;
  * Created by ayush on 25/09/15.
  */
 public class StudyCenterActivity extends AbstractBaseActivity {
-    private AppCompatSpinner spinner_subjects_list;
+
     private GridRecyclerAdapter mAdapter;
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
@@ -73,6 +79,10 @@ public class StudyCenterActivity extends AbstractBaseActivity {
     private View selectedColorFilter;
     private ArrayList<Object> offlineContentList;
     private AlertDialog alertDialog;
+    private List<ContentIndex> contentIndexList;
+    private List<SubjectModel> subjectModelList;
+    private Spinner spinner_subjects_list;
+    private String mSubjectId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,11 +90,63 @@ public class StudyCenterActivity extends AbstractBaseActivity {
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         RelativeLayout myView = (RelativeLayout) inflater.inflate(R.layout.activity_study_center, null);
         linearLayout = (LinearLayout) myView.findViewById(R.id.subjects_name_id);
-        spinner_subjects_list=(AppCompatSpinner)myView.findViewById(R.id.spinner_subjects_list);
         frameLayout.addView(myView);
+        spinner_subjects_list = (Spinner) myView.findViewById(R.id.spinner_subjects_list);
+        subjects = new ArrayList<String>();
+        subjectViews = new ArrayList<>();
+
+        ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter<String>(
+                this, R.layout.support_simple_spinner_dropdown_item, subjects);
+        spinner_subjects_list.setAdapter(stringArrayAdapter);
+
+        System.out.println( spinner_subjects_list.getSelectedItemPosition());
+        spinner_subjects_list.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedItem = parent.getItemAtPosition(position).toString();
+
+                Toast.makeText(getApplicationContext(), parent.getItemAtPosition(position).toString(), Toast.LENGTH_LONG).show();
+                System.out.println(selectedItem);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         setUpViews(myView);
         setToolbarForStudyCenter();
         initUI();
+        //  ShowSubjectsSpinner();
+    }
+
+    private void ShowSubjectsSpinner() {
+        //  ContentIndex mContentIndex = contentIndexList.get(0);
+        //   subjectModelList = new ArrayList<>(subjectModelList);
+        // final SubjectAdapter subjectAdapter = new SubjectAdapter(subjectModelList, this);
+        //  spinner_subjects_list.setAdapter(subjectAdapter);
+        /* int listSize = subjectModelList.size();
+        if (!mSubjectId.isEmpty()) {
+            for (int i = 0; i < listSize; i++) {
+                if (subjectModelList.get(i).idSubject.equalsIgnoreCase(mSubjectId)) {
+                    spinner_subjects_list.setSelection(i);
+                    mSubjectId = "";
+                    break;
+                }
+            }
+        }  */
+       /* spinner_subjects_list.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //  showChapter(position);
+                subjectAdapter.setSelectedPosition(position);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+   */
     }
 
     @Override
@@ -111,7 +173,9 @@ public class StudyCenterActivity extends AbstractBaseActivity {
         }
     }
 
+
     private void setUpViews(RelativeLayout myView) {
+
         redView = myView.findViewById(R.id.redView);
         blueView = myView.findViewById(R.id.blueView);
         yellowView = myView.findViewById(R.id.yellowView);
@@ -372,8 +436,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
 
     private void setupSubjects(CourseData courseData) {
         linearLayout.removeAllViews();
-        subjects = new ArrayList<String>();
-        subjectViews = new ArrayList<>();
+
         for (StudyCenter studyCenter : courseData.StudyCenter) {
             addSubjectsAndCreateViews(studyCenter);
         }
