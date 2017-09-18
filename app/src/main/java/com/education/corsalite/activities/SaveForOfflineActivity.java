@@ -362,7 +362,8 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
     private void setChapterNameAndChildren(ChapterModel chapters, int pos) {
         dialog = getDisplayDialog();
         headerProgress.setVisibility(View.GONE);
-        TreeNode subjectName = new TreeNode(chapters.chapterName).setViewHolder(new CheckedItemViewHolder(this, false));
+        TreeNode subjectName = new TreeNode(chapters.chapterName+" "+"("+chapters.topicMap.size()+")").setViewHolder(new CheckedItemViewHolder(this, false));
+    //   <chapter name> + " ("+chapter.topics.size()+")"
         topicModelList = (ArrayList<TopicModel>) chapters.topicMap;
         Collections.sort(topicModelList);
 
@@ -373,7 +374,7 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
     }
 
     private void addTopic(TopicModel topicModel, TreeNode subjectName, Dialog d) {
-        TreeNode topicName = new TreeNode(topicModel.topicName).setViewHolder(new CheckedItemViewHolder(this, false));
+        TreeNode topicName = new TreeNode(topicModel.topicName+" "+"("+topicModel.contentMap.size()+")").setViewHolder(new CheckedItemViewHolder(this, false));
         TreeNode file1 = null;
 
         List<ContentModel> contentModelArrayList = getSortedList(topicModel.contentMap);
