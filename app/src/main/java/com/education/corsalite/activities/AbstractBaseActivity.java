@@ -1146,6 +1146,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             logout.AuthToken = LoginUserCache.getInstance().getLoginResponse().authtoken;
             appPref.remove("loginId");
             appPref.remove("passwordHash");
+            appPref.remove("last_time_scheduled_tests_loaded");
             appPref.clearUserId();
             ApiManager.getInstance(this).logout(Gson.get().toJson(logout), new ApiCallback<LogoutResponse>(this) {
                 @Override
@@ -1547,7 +1548,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     protected void loadScheduledTests() {
-        String timeString = AppPref.get(this).getValue("last_time_scheduled_tests_loaded");
+        String timeString = appPref.getValue("last_time_scheduled_tests_loaded");
         if(!TextUtils.isEmpty(timeString)
                 && Long.parseLong(timeString) > (new Date().getTime() - 30 * 60 * 60 * 1000)) {
             return;
@@ -1559,7 +1560,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     @Override
                     public void success(ScheduledTestList scheduledTests, Response response) {
                         super.success(scheduledTests, response);
-                        AppPref.get(AbstractBaseActivity.this).save("last_time_scheduled_tests_loaded", new Date().getTime() + "");
+                        appPref.save("last_time_scheduled_tests_loaded", new Date().getTime() + "");
                         if (scheduledTests != null && scheduledTests.MockTest != null) {
                             ApiCacheHolder.getInstance().setScheduleTestsResponse(scheduledTests);
                             dbManager.saveReqRes(ApiCacheHolder.getInstance().scheduleTests);
