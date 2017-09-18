@@ -1417,10 +1417,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             navigationView.findViewById(R.id.navigation_mock_tests).setVisibility(isTrue(course.isMockTest) ? View.VISIBLE : View.GONE);
             navigationView.findViewById(R.id.navigation_smart_class).setVisibility(isTrue(course.isSmartClass) ? View.VISIBLE : View.GONE);
             navigationView.findViewById(R.id.navigation_scheduled_tests).setVisibility(isTrue(course.isScheduledTests) ? View.VISIBLE : View.GONE);
-
-            // TODO : uncomment it
-            navigationView.findViewById(R.id.navigation_analytics).setVisibility(View.VISIBLE);//isTrue(course.isAnalytics) ? View.VISIBLE : View.GONE);
-
+            navigationView.findViewById(R.id.navigation_analytics).setVisibility(isTrue(course.isAnalytics) ? View.VISIBLE : View.GONE);
             navigationView.findViewById(R.id.navigation_challenge_your_friends).setVisibility(isTrue(course.isChallengeTest) ? View.VISIBLE : View.GONE);
             navigationView.findViewById(R.id.navigation_curriculum).setVisibility(isTrue(course.isCurriculum) ? View.VISIBLE : View.GONE);
             navigationView.findViewById(R.id.navigation_offline).setVisibility(isTrue(course.isOffline) ? View.VISIBLE : View.GONE);

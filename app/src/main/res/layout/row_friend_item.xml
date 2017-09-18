@@ -2,12 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
+    android:layout_margin="@dimen/small_margin"
     android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/tile_view"
-        android:layout_width="@dimen/challenge_list_layout_width"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/light_gray"
         android:gravity="center_vertical"
@@ -18,8 +18,8 @@
             android:layout_width="@dimen/challenge_list_image_size"
             android:layout_height="@dimen/challenge_list_image_size"
             android:layout_alignParentLeft="true"
-            android:layout_marginTop="@dimen/img_line_top"
             android:scaleType="centerCrop"
+            android:layout_centerVertical="true"
             android:src="@drawable/profile_pic" />
 
         <LinearLayout
@@ -28,7 +28,8 @@
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/iv_friend_btn"
             android:layout_toRightOf="@+id/iv_friend_pic"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingRight="5dp">
 
             <TextView
                 android:id="@+id/tv_friend_name"
@@ -39,7 +40,7 @@
                 android:maxLines="1"
                 android:paddingLeft="7dp"
                 android:textColor="@android:color/black"
-                android:textSize="@dimen/text_padding_max"
+                android:textSize="@dimen/small_text_size"
                 android:textStyle="bold" />
 
             <TextView
@@ -52,7 +53,7 @@
                 android:maxLines="1"
                 android:paddingLeft="7dp"
                 android:textColor="@android:color/black"
-                android:textSize="@dimen/text_mail_max" />
+                android:textSize="@dimen/small_text_size" />
 
         </LinearLayout>
 
@@ -68,7 +69,7 @@
 
     <View
         android:id="@+id/status_view"
-        android:layout_width="@dimen/challenge_list_layout_width"
+        android:layout_width="match_parent"
         android:layout_height="5dp"
         android:background="@color/gray" />
 

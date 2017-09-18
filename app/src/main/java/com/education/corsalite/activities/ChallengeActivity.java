@@ -186,10 +186,6 @@ public class ChallengeActivity extends AbstractBaseActivity {
 
     private void loadCharecters() {
         loadGif(leftPlayerImg, R.raw.character_anim_left);
-        loadGif(rightPlayer1Img, R.raw.character_anim_right);
-        loadGif(rightPlayer2Img, R.raw.character_anim_right);
-        loadGif(rightPlayer3Img, R.raw.character_anim_right);
-        loadGif(rightPlayer4Img, R.raw.character_anim_right);
     }
 
     private void loadPlayers() {
@@ -201,15 +197,23 @@ public class ChallengeActivity extends AbstractBaseActivity {
             if(i == 0) {
                 player1Layout.setVisibility(View.VISIBLE);
                 player1_txt.setText(selectedFriends.get(i).displayName);
+                loadGif(rightPlayer1Img, selectedFriends.get(i).isRobot()
+                        ? R.raw.robot1 : R.raw.character_anim_right);
             } else if(i == 1) {
                 player2Layout.setVisibility(View.VISIBLE);
                 player2_txt.setText(selectedFriends.get(i).displayName);
+                loadGif(rightPlayer2Img, selectedFriends.get(i).isRobot()
+                        ? R.raw.robot1 : R.raw.character_anim_right);
             } else if(i == 2) {
                 player3Layout.setVisibility(View.VISIBLE);
                 player3_txt.setText(selectedFriends.get(i).displayName);
+                loadGif(rightPlayer3Img, selectedFriends.get(i).isRobot()
+                        ? R.raw.robot1 : R.raw.character_anim_right);
             } else if(i == 3) {
                 player4Layout.setVisibility(View.VISIBLE);
                 player4_txt.setText(selectedFriends.get(i).displayName);
+                loadGif(rightPlayer4Img, selectedFriends.get(i).isRobot()
+                        ? R.raw.robot1 : R.raw.character_anim_right);
             }
         }
     }

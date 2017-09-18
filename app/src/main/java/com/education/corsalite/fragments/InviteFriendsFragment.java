@@ -1,6 +1,7 @@
 package com.education.corsalite.fragments;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -64,7 +65,11 @@ public class InviteFriendsFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_invite_friends, container, false);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_friends_list);
         mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new GridLayoutManager(getActivity(), 5);
+        if (getResources().getBoolean(R.bool.isTablet)) {
+            mLayoutManager = new GridLayoutManager(getActivity(), 5);
+        } else {
+            mLayoutManager = new GridLayoutManager(getActivity(), 4);
+        }
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new FriendsAdapter(getActivity(), friendsData, mFriendsListCallback);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), R.drawable.horizontal_line, true, true));
