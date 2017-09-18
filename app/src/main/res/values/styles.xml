@@ -255,9 +255,13 @@
 
     <style name="parttestgrid_header_text">
         <item name="fontPath">@string/roboto_regular</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">@dimen/sub_title_text_size</item>
         <item name="android:textColor">@color/text_black</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:paddingLeft">2dp</item>
+        <item name="android:paddingRight">2dp</item>
     </style>
 
     <style name="virtual_currency_data_text">

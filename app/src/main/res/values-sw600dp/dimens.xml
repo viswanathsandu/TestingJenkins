@@ -20,4 +20,5 @@
     <dimen name="callenge_list_image_size">48dp</dimen>
     <dimen name="challenge_list_layout_width">320dp</dimen>
     <dimen name="small_margin">4dp</dimen>
+    <dimen name="layout_button_margin">8dp</dimen>
 </resources>
