@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/white_shape"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
+
+        <ImageView
+            android:id="@+id/iv_post_user_pic"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:padding="10dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/profile_pic" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/tv_post_question"
+                fontPath="@string/roboto_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="middle"
+                android:maxLines="1"
+                android:text="how to solve the given problem. and also can I get a clear explanations for these sums?"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/ll_post_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_post_date"
+                    fontPath="@string/roboto_regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:text="07/09/2015 06:49:18 by"
+                    android:textColor="@color/text_gray"
+                    android:textSize="12sp"
+                    android:textStyle="italic" />
+
+                <TextView
+                    android:id="@+id/tv_post_user_name"
+                    fontPath="@string/roboto_regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:maxLines="1"
+                    android:text="Shivkeshav"
+                    android:textColor="@android:color/holo_blue_light"
+                    android:textSize="12sp"
+                    android:textStyle="italic" />
+            </LinearLayout>
+
+            <WebView
+                android:id="@+id/post_desc_webview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible"/>
+
+            <LinearLayout
+                android:id="@+id/ll_post_tags"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginRight="5dp"
+                    android:gravity="center_vertical"
+                    android:src="@drawable/ic_tags" />
+
+                <TextView
+                    android:id="@+id/tv_course_name"
+                    fontPath="@string/roboto_regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:background="@android:color/darker_gray"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="2dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingTop="2dp"
+                    android:text="Course"
+                    android:textColor="@android:color/white"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/tv_subject_name"
+                    fontPath="@string/roboto_regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:background="@android:color/darker_gray"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="2dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingTop="2dp"
+                    android:text="Subject"
+                    android:textColor="@android:color/white"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/tv_chapter_name"
+                    fontPath="@string/roboto_regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:background="@android:color/darker_gray"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="2dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingTop="2dp"
+                    android:text="Chapter"
+                    android:textColor="@android:color/white"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/tv_topic_name"
+                    fontPath="@string/roboto_regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:background="@android:color/darker_gray"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="2dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingTop="2dp"
+                    android:text="Topic"
+                    android:textColor="@android:color/white"
+                    android:textSize="10sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_post_views"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal|left"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_post_response_likes"
+                    fontPath="@string/roboto_regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:drawableLeft="@drawable/like_white"
+                    android:drawablePadding="5dp"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="5dp"
+                    android:text="Like"
+                    android:textColor="@android:color/black"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_post_response_comments"
+                    fontPath="@string/roboto_regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:drawablePadding="5dp"
+                    android:drawableLeft="@drawable/comment"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="7dp"
+                    android:paddingRight="10dp"
+                    android:paddingLeft="0dp"
+                    android:paddingTop="7dp"
+                    android:textColor="@android:color/black"
+                    tools:text="4 Comments" />
+
+                <TextView
+                    android:id="@+id/tv_post_action_bookmark"
+                    fontPath="@string/roboto_regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:drawablePadding="5dp"
+                    android:drawableLeft="@drawable/bookmark"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="7dp"
+                    android:paddingRight="10dp"
+                    android:paddingLeft="0dp"
+                    android:paddingTop="7dp"
+                    android:textColor="@color/text_black"
+                    android:text="Bookmark" />
+
+                <TextView
+                    android:id="@+id/tv_post_response_views"
+                    fontPath="@string/roboto_regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:drawablePadding="5dp"
+                    android:drawableLeft="@drawable/view"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="7dp"
+                    android:paddingRight="10dp"
+                    android:paddingLeft="0dp"
+                    android:paddingTop="7dp"
+                    android:textColor="@android:color/black"
+                    tools:text="127 Views" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_post_actions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_post_action_lock"
+                    fontPath="@string/roboto_regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:background="@android:color/holo_red_light"
+                    android:drawablePadding="5dp"
+                    android:drawableLeft="@drawable/lock"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="5dp"
+                    android:text="Lock"
+                    android:textColor="@android:color/white"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tv_post_action_delete"
+                    fontPath="@string/roboto_regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:background="@android:color/holo_red_light"
+                    android:drawablePadding="5dp"
+                    android:drawableLeft="@drawable/delete"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="5dp"
+                    android:text="Delete"
+                    android:visibility="gone"
+                    android:textColor="@android:color/white" />
+
+                <TextView
+                    android:id="@+id/tv_post_action_edit"
+                    fontPath="@string/roboto_regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:background="@android:color/holo_blue_dark"
+                    android:drawableLeft="@drawable/comment_white"
+                    android:drawablePadding="5dp"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="5dp"
+                    android:text="Edit"
+                    android:visibility="gone"
+                    android:textColor="@android:color/white" />
+
+                <TextView
+                    android:id="@+id/tv_post_action_Comment"
+                    fontPath="@string/roboto_regular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:background="@android:color/holo_blue_dark"
+                    android:drawableLeft="@drawable/comment_white"
+                    android:drawablePadding="5dp"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="5dp"
+                    android:text="Comment"
+                    android:visibility="gone"
+                    android:textColor="@android:color/white" />
+
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
