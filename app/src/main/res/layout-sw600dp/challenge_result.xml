@@ -8,62 +8,15 @@
 
 
     <LinearLayout
-        android:id="@+id/Challenge_result_but_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal"
-        android:weightSum="3">
-
-        <com.education.corsalite.views.CustomButton
-            android:id="@+id/challenge_history_btn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/button_selector"
-            android:backgroundTint="@color/skyblue"
-            android:text="Challenge history"
-            android:textAlignment="center"
-            android:textAllCaps="false" />
-
-        <com.education.corsalite.views.CustomButton
-            android:id="@+id/exam_summary_btn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/button_selector"
-            android:backgroundTint="@color/skyblue"
-            android:text="Exam Summary"
-            android:textAlignment="center"
-            android:textAllCaps="false" />
-
-        <com.education.corsalite.views.CustomButton
-            android:id="@+id/challenge_again_btn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/button_selector"
-            android:backgroundTint="@color/green"
-            android:text="Challenge Again"
-            android:textAlignment="center"
-            android:textAllCaps="false" />
-    </LinearLayout>
-
-    <LinearLayout
         android:id="@+id/challenge_result_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/Challenge_result_but_layout"
-        android:layout_alignParentTop="true"
         android:orientation="vertical">
 
         <ImageView
             android:id="@+id/status_image"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:src="@drawable/ico_challenge_cup" />
 
@@ -74,45 +27,45 @@
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
             android:layout_marginTop="30dp"
-            android:background="@color/text_red"
             android:orientation="horizontal"
-            android:weightSum="4">
+            android:weightSum="4"
+            android:background="@color/text_red">
 
             <TextView
-                fontPath="@string/roboto_medium"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center_horizontal"
                 android:text="Participant"
-                android:textColor="@color/text_white" />
+                android:textColor="@color/text_white"
+                android:gravity="center_horizontal"
+                fontPath="@string/roboto_medium"/>
 
             <TextView
-                fontPath="@string/roboto_medium"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center_horizontal"
                 android:text="Score"
-                android:textColor="@color/text_white" />
+                android:textColor="@color/text_white"
+                android:gravity="center_horizontal"
+                fontPath="@string/roboto_medium"/>
 
             <TextView
-                fontPath="@string/roboto_medium"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center_horizontal"
                 android:text="Currency"
-                android:textColor="@color/text_white" />
+                android:textColor="@color/text_white"
+                android:gravity="center_horizontal"
+                fontPath="@string/roboto_medium"/>
 
             <TextView
-                fontPath="@string/roboto_medium"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center_horizontal"
                 android:text="Result"
-                android:textColor="@color/text_white" />
+                android:textColor="@color/text_white"
+                android:gravity="center_horizontal"
+                fontPath="@string/roboto_medium"/>
         </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
@@ -120,9 +73,58 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp" />
+            android:layout_marginRight="30dp"/>
 
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/Challenge_result_but_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <com.education.corsalite.views.CustomButton
+            android:id="@+id/challenge_history_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/button_selector"
+            android:backgroundTint="@color/skyblue"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:text="Challenge history"
+            android:textAlignment="center"
+            android:textAllCaps="false" />
+
+        <com.education.corsalite.views.CustomButton
+            android:id="@+id/exam_summary_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/button_selector"
+            android:backgroundTint="@color/skyblue"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:text="Exam Summary"
+            android:textAlignment="center"
+            android:textAllCaps="false" />
+
+        <com.education.corsalite.views.CustomButton
+            android:id="@+id/challenge_again_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/button_selector"
+            android:backgroundTint="@color/green"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:text="Challenge Again"
+            android:textAlignment="center"
+            android:textAllCaps="false" />
+    </LinearLayout>
+
 
     <LinearLayout
         android:id="@+id/challengepart_refresh_layout"
