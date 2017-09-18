@@ -23,7 +23,8 @@
     <item
         android:id="@+id/action_view_notes"
         app:showAsAction="never"
-        android:title="@string/menu_view_notes" />
+        android:title="@string/menu_view_notes"
+        android:visible="false"/>
 
     <item
         android:id="@+id/action_rate_it"

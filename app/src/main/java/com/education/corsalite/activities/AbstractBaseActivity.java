@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Notification;
 import android.app.PendingIntent;
+import android.app.SharedElementCallback;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -132,7 +133,6 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         return isShown;
     }
 
-    public List<FriendsData.Friend> selectedFriends = new ArrayList<>();
     public List<FriendsData.Friend> selectedFriends = new ArrayList<>();
 
     public static void setSharedExamModels(List<ExamModel> examModels) {
@@ -608,6 +608,11 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         setToolbarTitle(getResources().getString(R.string.offline_content));
         showVirtualCurrency();
         loadCoursesList();
+    }
+
+    @Override
+    public void setEnterSharedElementCallback(SharedElementCallback callback) {
+        super.setEnterSharedElementCallback(callback);
     }
 
     protected void setToolbarForUsageAnalysis() {
