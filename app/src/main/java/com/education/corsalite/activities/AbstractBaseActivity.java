@@ -133,6 +133,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     public List<FriendsData.Friend> selectedFriends = new ArrayList<>();
+    public List<FriendsData.Friend> selectedFriends = new ArrayList<>();
 
     public static void setSharedExamModels(List<ExamModel> examModels) {
         sharedExamModels = examModels;
@@ -622,7 +623,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     protected void setToolbarForOfflineContentReading() {
         toolbar.findViewById(R.id.download).setVisibility(View.VISIBLE);
-        setToolbarTitle(getResources().getString(R.string.offline_content));
+        setToolbarTitle(getResources().getString(R.string.download_content));
     }
 
     protected void setToolbarForForum() {
