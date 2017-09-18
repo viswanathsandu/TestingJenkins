@@ -622,7 +622,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     protected void setToolbarForOfflineContentReading() {
         toolbar.findViewById(R.id.download).setVisibility(View.VISIBLE);
-        setToolbarTitle(getResources().getString(R.string.offline_content));
+        setToolbarTitle("Download Content");
     }
 
     protected void setToolbarForForum() {
