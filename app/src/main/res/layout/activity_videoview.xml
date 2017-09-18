@@ -3,12 +3,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:gravity="center_vertical">
 
-        <com.devbrackets.android.exomedia.ui.widget.VideoView
-            android:id="@+id/videoViewRelative"
+    <com.devbrackets.android.exomedia.ui.widget.VideoView
+        android:id="@+id/videoViewRelative"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:useDefaultControls="true" />
+
+    <LinearLayout
+        android:id="@+id/youtube_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:visibility="gone">
+
+        <fragment
+            android:id="@+id/youtube_fragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:useDefaultControls="true" />
-
+            android:name="com.google.android.youtube.player.YouTubePlayerSupportFragment">
+        </fragment>
+    </LinearLayout>
 </LinearLayout>
