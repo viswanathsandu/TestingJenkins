@@ -1547,6 +1547,11 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     protected void loadScheduledTests() {
+        String timeString = AppPref.get(this).getValue("last_time_scheduled_tests_loaded");
+        if(!TextUtils.isEmpty(timeString)
+                && Long.parseLong(timeString) > (new Date().getTime() - 30 * 60 * 60 * 1000)) {
+            return;
+        }
         ApiManager.getInstance(this).getScheduledTestsList(
                 LoginUserCache.getInstance().getStudentId(),
                 new ApiCallback<ScheduledTestList>(this) {
@@ -1554,6 +1559,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     @Override
                     public void success(ScheduledTestList scheduledTests, Response response) {
                         super.success(scheduledTests, response);
+                        AppPref.get(AbstractBaseActivity.this).save("last_time_scheduled_tests_loaded", new Date().getTime() + "");
                         if (scheduledTests != null && scheduledTests.MockTest != null) {
                             ApiCacheHolder.getInstance().setScheduleTestsResponse(scheduledTests);
                             dbManager.saveReqRes(ApiCacheHolder.getInstance().scheduleTests);
