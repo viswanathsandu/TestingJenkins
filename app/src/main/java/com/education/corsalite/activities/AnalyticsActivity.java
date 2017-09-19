@@ -6,13 +6,9 @@ import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 
 import com.education.corsalite.R;
-import com.education.corsalite.fragments.AccuracySpeedTabFragment;
 import com.education.corsalite.fragments.AnalyticsTitleFragment;
-import com.education.corsalite.fragments.ProgressReportTabFragment;
 import com.education.corsalite.fragments.RecommendedTabFragment;
 import com.education.corsalite.fragments.TestCoverageTabFragment;
-import com.education.corsalite.fragments.TimeManagementTabFragment;
-import com.education.corsalite.fragments.UsageAnalysisFragment;
 
 /**
  * Created by Aastha on 27/09/15.
@@ -46,13 +42,9 @@ public class AnalyticsActivity extends AbstractBaseActivity implements Analytics
     @Override
     public void onAnalyticsTitleSelected(String title) {
         switch (title){
-            case K_TITLE_ACCURACY:
-                AccuracySpeedTabFragment accuracySpeedTabFragment = new AccuracySpeedTabFragment();
-                getFragmentManager().beginTransaction().replace(R.id.fl_analytics_detail,accuracySpeedTabFragment).commit();
-                break;
             case K_TITLE_PROGRESS_REPORT:
-                ProgressReportTabFragment reportTabFragment = new ProgressReportTabFragment();
-                getFragmentManager().beginTransaction().replace(R.id.fl_analytics_detail,reportTabFragment).commit();
+//                ProgressReportTabFragment reportTabFragment = new ProgressReportTabFragment();
+//                getFragmentManager().beginTransaction().replace(R.id.fl_analytics_detail,reportTabFragment).commit();
                 break;
             case K_TITLE_RECOMMENDED_READING:
                 RecommendedTabFragment recommendedTabFragment = new RecommendedTabFragment();
@@ -63,16 +55,17 @@ public class AnalyticsActivity extends AbstractBaseActivity implements Analytics
                 getFragmentManager().beginTransaction().replace(R.id.fl_analytics_detail,testCoverageTabFragment).commit();
                 break;
             case K_TITLE_TIME_MANAGEMENT:
-                TimeManagementTabFragment timeManagementTabFragment = new TimeManagementTabFragment();
-                getFragmentManager().beginTransaction().replace(R.id.fl_analytics_detail,timeManagementTabFragment).commit();
+//                TimeManagementTabFragment timeManagementTabFragment = new TimeManagementTabFragment();
+//                getFragmentManager().beginTransaction().replace(R.id.fl_analytics_detail,timeManagementTabFragment).commit();
                 break;
             case K_TITLE_USAGE_ANALYSIS:
-                UsageAnalysisFragment usageAnalysisFragment = new UsageAnalysisFragment();
-                getSupportFragmentManager().beginTransaction().replace(R.id.fl_analytics_detail,usageAnalysisFragment).commit();
+//                UsageAnalysisFragment usageAnalysisFragment = new UsageAnalysisFragment();
+//                getSupportFragmentManager().beginTransaction().replace(R.id.fl_analytics_detail,usageAnalysisFragment).commit();
                 break;
+            case K_TITLE_ACCURACY:
             default:
-                AccuracySpeedTabFragment accuracySpeedTabFragment1 = new AccuracySpeedTabFragment();
-                getFragmentManager().beginTransaction().replace(R.id.fl_analytics_detail,accuracySpeedTabFragment1).commit();
+//                AccuracySpeedTabFragment accuracySpeedTabFragment1 = new AccuracySpeedTabFragment();
+//                getFragmentManager().beginTransaction().replace(R.id.fl_analytics_detail,accuracySpeedTabFragment1).commit();
                 break;
 
         }

@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Notification;
 import android.app.PendingIntent;
+import android.app.SharedElementCallback;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -609,6 +610,11 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         loadCoursesList();
     }
 
+    @Override
+    public void setEnterSharedElementCallback(SharedElementCallback callback) {
+        super.setEnterSharedElementCallback(callback);
+    }
+
     protected void setToolbarForUsageAnalysis() {
         toolbar.findViewById(R.id.spinner_layout).setVisibility(View.VISIBLE);
         setToolbarTitle(getResources().getString(R.string.usage_analysis));
@@ -622,7 +628,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     protected void setToolbarForOfflineContentReading() {
         toolbar.findViewById(R.id.download).setVisibility(View.VISIBLE);
-        setToolbarTitle(getResources().getString(R.string.offline_content));
+        setToolbarTitle(getResources().getString(R.string.download_content));
     }
 
     protected void setToolbarForForum() {
@@ -1140,6 +1146,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             logout.AuthToken = LoginUserCache.getInstance().getLoginResponse().authtoken;
             appPref.remove("loginId");
             appPref.remove("passwordHash");
+            appPref.remove("last_time_scheduled_tests_loaded");
             appPref.clearUserId();
             ApiManager.getInstance(this).logout(Gson.get().toJson(logout), new ApiCallback<LogoutResponse>(this) {
                 @Override
@@ -1417,10 +1424,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             navigationView.findViewById(R.id.navigation_mock_tests).setVisibility(isTrue(course.isMockTest) ? View.VISIBLE : View.GONE);
             navigationView.findViewById(R.id.navigation_smart_class).setVisibility(isTrue(course.isSmartClass) ? View.VISIBLE : View.GONE);
             navigationView.findViewById(R.id.navigation_scheduled_tests).setVisibility(isTrue(course.isScheduledTests) ? View.VISIBLE : View.GONE);
-
-            // TODO : uncomment it
-            navigationView.findViewById(R.id.navigation_analytics).setVisibility(View.VISIBLE);//isTrue(course.isAnalytics) ? View.VISIBLE : View.GONE);
-
+            navigationView.findViewById(R.id.navigation_analytics).setVisibility(isTrue(course.isAnalytics) ? View.VISIBLE : View.GONE);
             navigationView.findViewById(R.id.navigation_challenge_your_friends).setVisibility(isTrue(course.isChallengeTest) ? View.VISIBLE : View.GONE);
             navigationView.findViewById(R.id.navigation_curriculum).setVisibility(isTrue(course.isCurriculum) ? View.VISIBLE : View.GONE);
             navigationView.findViewById(R.id.navigation_offline).setVisibility(isTrue(course.isOffline) ? View.VISIBLE : View.GONE);
@@ -1544,6 +1548,11 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
     }
 
     protected void loadScheduledTests() {
+        String timeString = appPref.getValue("last_time_scheduled_tests_loaded");
+        if(!TextUtils.isEmpty(timeString)
+                && Long.parseLong(timeString) > (new Date().getTime() - 30 * 60 * 60 * 1000)) {
+            return;
+        }
         ApiManager.getInstance(this).getScheduledTestsList(
                 LoginUserCache.getInstance().getStudentId(),
                 new ApiCallback<ScheduledTestList>(this) {
@@ -1551,6 +1560,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     @Override
                     public void success(ScheduledTestList scheduledTests, Response response) {
                         super.success(scheduledTests, response);
+                        appPref.save("last_time_scheduled_tests_loaded", new Date().getTime() + "");
                         if (scheduledTests != null && scheduledTests.MockTest != null) {
                             ApiCacheHolder.getInstance().setScheduleTestsResponse(scheduledTests);
                             dbManager.saveReqRes(ApiCacheHolder.getInstance().scheduleTests);
