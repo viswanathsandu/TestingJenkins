@@ -193,6 +193,7 @@
         <activity
             android:name=".activities.ExamResultActivity"
             android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
+            android:screenOrientation="sensorLandscape"
             android:theme="@style/UserProfileTheme" />
         <activity
             android:name=".activities.TestStartActivity"
