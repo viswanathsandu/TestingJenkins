@@ -6,8 +6,8 @@ apply plugin: 'com.google.gms.google-services'
 def versionCodeCorsalite = 104104
 def versionNameCorsalite = "1.4.1.4"
 
-def versionCodeFGA = 4103
-def versionNameFGA = "0.4.1.3"
+def versionCodeFGA = 4104
+def versionNameFGA = "0.4.1.4"
 
 android {
     compileSdkVersion 25
