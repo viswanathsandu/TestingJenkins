@@ -87,6 +87,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         RelativeLayout myView = (RelativeLayout) inflater.inflate(R.layout.activity_study_center, null);
         linearLayout = (LinearLayout) myView.findViewById(R.id.subjects_name_id);
@@ -121,33 +122,6 @@ public class StudyCenterActivity extends AbstractBaseActivity {
         //  ShowSubjectsSpinner();
     }
 
-    private void ShowSubjectsSpinner() {
-        //  ContentIndex mContentIndex = contentIndexList.get(0);
-        //   subjectModelList = new ArrayList<>(subjectModelList);
-        // final SubjectAdapter subjectAdapter = new SubjectAdapter(subjectModelList, this);
-        //  spinner_subjects_list.setAdapter(subjectAdapter);
-        /* int listSize = subjectModelList.size();
-        if (!mSubjectId.isEmpty()) {
-            for (int i = 0; i < listSize; i++) {
-                if (subjectModelList.get(i).idSubject.equalsIgnoreCase(mSubjectId)) {
-                    spinner_subjects_list.setSelection(i);
-                    mSubjectId = "";
-                    break;
-                }
-            }
-        }  */
-       /* spinner_subjects_list.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                //  showChapter(position);
-                subjectAdapter.setSelectedPosition(position);
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-   */
-    }
 
     @Override
     protected void onResume() {
@@ -436,7 +410,6 @@ public class StudyCenterActivity extends AbstractBaseActivity {
 
     private void setupSubjects(CourseData courseData) {
         linearLayout.removeAllViews();
-
         for (StudyCenter studyCenter : courseData.StudyCenter) {
             addSubjectsAndCreateViews(studyCenter);
         }
@@ -535,6 +508,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
         tv.setTypeface(Typeface.createFromAsset(getAssets(), getString(R.string.roboto_regular)));
         tv.setText(studyCenter.SubjectName);
         tv.setTag(subjectId);
+
 
         ImageView iv = (ImageView) v.findViewById(R.id.arrow_img);
         setListener(v, iv, studyCenter);
@@ -740,10 +714,13 @@ public class StudyCenterActivity extends AbstractBaseActivity {
         });
     }
 
+
+
     private View getView() {
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         return inflater.inflate(R.layout.study_center_text_view, null);
     }
+
 
     @Override
     public void onBackPressed() {
@@ -753,4 +730,38 @@ public class StudyCenterActivity extends AbstractBaseActivity {
             super.onBackPressed();
         }
     }
+
+
+
+
 }
+
+
+
+   /* private void ShowSubjectsSpinner() {
+        //  ContentIndex mContentIndex = contentIndexList.get(0);
+        //   subjectModelList = new ArrayList<>(subjectModelList);
+        // final SubjectAdapter subjectAdapter = new SubjectAdapter(subjectModelList, this);
+        //  spinner_subjects_list.setAdapter(subjectAdapter);
+        *//* int listSize = subjectModelList.size();
+        if (!mSubjectId.isEmpty()) {
+            for (int i = 0; i < listSize; i++) {
+                if (subjectModelList.get(i).idSubject.equalsIgnoreCase(mSubjectId)) {
+                    spinner_subjects_list.setSelection(i);
+                    mSubjectId = "";
+                    break;
+                }
+            }
+        }  *//*
+       *//* spinner_subjects_list.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //  showChapter(position);
+                subjectAdapter.setSelectedPosition(position);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+   *//*
+    }*/

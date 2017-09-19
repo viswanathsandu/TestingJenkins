@@ -44,7 +44,8 @@ import butterknife.OnClick;
  *
  * @author Meeth D Jain
  */
-public class TestChapterSetupFragment extends DialogFragment implements AdapterView.OnItemSelectedListener {
+public class TestChapterSetupFragment extends DialogFragment
+        implements AdapterView.OnItemSelectedListener {
 
     public static final String EXTRAS_CHAPTER_LEVELS = "key_chapter_levels";
 
