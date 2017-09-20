@@ -75,14 +75,15 @@ public class StudyCenterActivity extends AbstractBaseActivity {
     private View greenView;
     private LinearLayout allColorLayout;
     private String mSubjectName;
-    private TextView selectedSubjectTxt;
+
     private View selectedColorFilter;
     private ArrayList<Object> offlineContentList;
     private AlertDialog alertDialog;
     private List<ContentIndex> contentIndexList;
     private List<SubjectModel> subjectModelList;
-    private Spinner spinner_subjects_list;
+    private AppCompatSpinner spinner_subjects_list;
     private String mSubjectId = "";
+    ArrayAdapter<String> subject_spinner_adpater;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,16 +93,11 @@ public class StudyCenterActivity extends AbstractBaseActivity {
         RelativeLayout myView = (RelativeLayout) inflater.inflate(R.layout.activity_study_center, null);
         linearLayout = (LinearLayout) myView.findViewById(R.id.subjects_name_id);
         frameLayout.addView(myView);
-        spinner_subjects_list = (Spinner) myView.findViewById(R.id.spinner_subjects_list);
+        spinner_subjects_list = (AppCompatSpinner) myView.findViewById(R.id.spinner_subjects_list);
         subjects = new ArrayList<String>();
         subjectViews = new ArrayList<>();
 
-        ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter<String>(
-                this, R.layout.support_simple_spinner_dropdown_item, subjects);
-        spinner_subjects_list.setAdapter(stringArrayAdapter);
-
-        System.out.println( spinner_subjects_list.getSelectedItemPosition());
-        spinner_subjects_list.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+     /*   spinner_subjects_list.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedItem = parent.getItemAtPosition(position).toString();
@@ -114,7 +110,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
-        });
+        });*/
 
         setUpViews(myView);
         setToolbarForStudyCenter();
@@ -409,10 +405,13 @@ public class StudyCenterActivity extends AbstractBaseActivity {
     }
 
     private void setupSubjects(CourseData courseData) {
-        linearLayout.removeAllViews();
+
+
+      //  linearLayout.removeAllViews();
         for (StudyCenter studyCenter : courseData.StudyCenter) {
             addSubjectsAndCreateViews(studyCenter);
         }
+
     }
 
     private void resetColorsVisibility() {
@@ -491,24 +490,96 @@ public class StudyCenterActivity extends AbstractBaseActivity {
     private void addSubjectsAndCreateViews(StudyCenter studyCenter) {
         String subject = studyCenter.SubjectName;
         subjects.add(subject);
-        linearLayout.addView(getSubjectView(studyCenter, studyCenter.idCourseSubject + "", subjects.size() == 1));
+
+        subject_spinner_adpater = new ArrayAdapter<String>(
+                this, R.layout.support_simple_spinner_dropdown_item, subjects);
+
+        spinner_subjects_list.setAdapter(subject_spinner_adpater);
+        Spinner_event(studyCenter.SubjectName);
+        // linearLayout.addView(getSubjectView(studyCenter, studyCenter.idCourseSubject + "", subjects.size() == 1));
+    }
+
+    private void Spinner_event(final String text) {
+        spinner_subjects_list.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                showList();
+                if (SystemUtils.isNetworkConnected(StudyCenterActivity.this)) {
+                    if (spinner_subjects_list != null) {
+                        spinner_subjects_list.setSelected(false);
+                    }
+                    spinner_subjects_list.setSelected(true);
+                    mSubjectName = text;
+                    String onechange = subject_spinner_adpater.getItem(position).toString();
+
+                    if (mCourseData != null && mCourseData.StudyCenter != null) {
+                        mSubjectName = onechange;
+                        for (StudyCenter studyCenter : mCourseData.StudyCenter) {
+                            if (mSubjectName.equalsIgnoreCase(studyCenter.SubjectName)) {
+                                StudyCenterActivity.this.studyCenter = studyCenter;
+                                setUpStudyCentreData(studyCenter);
+                                mAdapter.updateData(getChaptersForSubject(), text);
+                                mAdapter.notifyDataSetChanged();
+                                break;
+                            }
+                        }
+                    }
+                } else {
+                    if (spinner_subjects_list != null) {
+                        spinner_subjects_list.setSelected(false);
+                    }
+                    spinner_subjects_list.setSelected(true);
+                    mSubjectName = text;
+                    if (mCourseData != null && mCourseData.StudyCenter != null) {
+                        mSubjectName = text;
+                        List<OfflineContent> offlineContents = dbManager.getOfflineContents(AbstractBaseActivity.getSelectedCourseId());
+                        for (StudyCenter studyCenter : mCourseData.StudyCenter) {
+                            if (mSubjectName.equalsIgnoreCase(studyCenter.SubjectName)) {
+                                StudyCenterActivity.this.studyCenter = studyCenter;
+                                setUpStudyCentreData(studyCenter);
+                                for (Chapter chapter : getChaptersForSubject()) {
+                                    boolean idMatchFound = false;
+                                    for (OfflineContent offlineContent : offlineContents) {
+                                        if (chapter.idCourseSubjectChapter.equals(offlineContent.chapterId)) {
+                                            idMatchFound = true;
+                                        }
+                                    }
+                                    if (idMatchFound) {
+                                        chapter.isChapterOffline = true;
+                                    } else {
+                                        chapter.isChapterOffline = false;
+                                    }
+                                }
+                                mAdapter.updateData(getChaptersForSubject(), text);
+                                mAdapter.notifyDataSetChanged();
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
     }
 
     public String getSelectedSubjectId() {
-        if (selectedSubjectTxt != null) {
-            return selectedSubjectTxt.getTag().toString();
+        if (spinner_subjects_list != null) {
+            return subject_spinner_adpater.getItem(0).toString();
         }
         return null;
     }
 
-    private View getSubjectView(StudyCenter studyCenter, String subjectId, boolean isSelected) {
+    /*private View getSubjectView(StudyCenter studyCenter, String subjectId, boolean isSelected) {
         View v = getView();
         v.findViewById(R.id.subjectLayout).setBackgroundDrawable(getSubjectColor(studyCenter));
         TextView tv = (TextView) v.findViewById(R.id.subject);
         tv.setTypeface(Typeface.createFromAsset(getAssets(), getString(R.string.roboto_regular)));
         tv.setText(studyCenter.SubjectName);
         tv.setTag(subjectId);
-
 
         ImageView iv = (ImageView) v.findViewById(R.id.arrow_img);
         setListener(v, iv, studyCenter);
@@ -522,7 +593,8 @@ public class StudyCenterActivity extends AbstractBaseActivity {
         }
         return v;
     }
-
+*/
+    //to do add to image onclick
     private void setListener(final View v, ImageView imageView, final StudyCenter studyCenter) {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -652,17 +724,16 @@ public class StudyCenterActivity extends AbstractBaseActivity {
         }
     }
 
-    private void setListener(final TextView textView, final String text) {
+  /*  private void setListener(final TextView textView, final String text) {
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showList();
                 if (SystemUtils.isNetworkConnected(StudyCenterActivity.this)) {
-                    if (selectedSubjectTxt != null) {
-                        selectedSubjectTxt.setSelected(false);
+                    if (spinner_subjects_list != null) {
+                        spinner_subjects_list.setSelected(false);
                     }
-                    selectedSubjectTxt = textView;
-                    selectedSubjectTxt.setSelected(true);
+                    spinner_subjects_list.setSelected(true);
                     mSubjectName = text;
                     if (mCourseData != null && mCourseData.StudyCenter != null) {
                         mSubjectName = text;
@@ -677,11 +748,10 @@ public class StudyCenterActivity extends AbstractBaseActivity {
                         }
                     }
                 } else {
-                    if (selectedSubjectTxt != null) {
-                        selectedSubjectTxt.setSelected(false);
+                    if (spinner_subjects_list != null) {
+                        spinner_subjects_list.setSelected(false);
                     }
-                    selectedSubjectTxt = textView;
-                    selectedSubjectTxt.setSelected(true);
+                    spinner_subjects_list.setSelected(true);
                     mSubjectName = text;
                     if (mCourseData != null && mCourseData.StudyCenter != null) {
                         mSubjectName = text;
@@ -713,13 +783,12 @@ public class StudyCenterActivity extends AbstractBaseActivity {
             }
         });
     }
-
-
-
+*/
+/*
     private View getView() {
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         return inflater.inflate(R.layout.study_center_text_view, null);
-    }
+    }*/
 
 
     @Override
@@ -730,8 +799,6 @@ public class StudyCenterActivity extends AbstractBaseActivity {
             super.onBackPressed();
         }
     }
-
-
 
 
 }
