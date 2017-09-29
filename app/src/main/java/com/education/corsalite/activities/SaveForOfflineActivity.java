@@ -135,28 +135,30 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
                         int contentCount = 0;
                         for (TreeNode innerMostNode : innerNode.getChildren()) {
                             ContentModel contentModel = topicModel.contentMap.get(contentCount);
-                            if (innerMostNode.isSelected()) {
-                                contentText += "\t\t" + innerMostNode.getValue().toString() + "\n";
-                                contentName = contentModel.contentName;
-                                if (contentModel.type.equals(Constants.VIDEO_FILE)) {
-                                    videoContentId += contentModel.idContent + ",";
-                                } else if (contentModel.type.equals(Constants.HTML_FILE)) {
-                                    htmlContentId += contentModel.idContent + ",";
-                                } else {
-                                    ExerciseOfflineModel model = new ExerciseOfflineModel(
-                                            AbstractBaseActivity.getSelectedCourseId(), topicModel.idTopic, topicModel.topicName);
-                                    offlineExerciseModels.add(model);
+                            if(contentModel.isDownloadable()) {
+                                if (innerMostNode.isSelected()) {
+                                    contentText += "\t\t" + innerMostNode.getValue().toString() + "\n";
+                                    contentName = contentModel.contentName;
+                                    if (contentModel.type.equals(Constants.VIDEO_FILE)) {
+                                        videoContentId += contentModel.idContent + ",";
+                                    } else if (contentModel.type.equals(Constants.HTML_FILE)) {
+                                        htmlContentId += contentModel.idContent + ",";
+                                    } else {
+                                        ExerciseOfflineModel model = new ExerciseOfflineModel(
+                                                AbstractBaseActivity.getSelectedCourseId(), topicModel.idTopic, topicModel.topicName);
+                                        offlineExerciseModels.add(model);
+                                    }
+                                    OfflineContent offlineContent = new OfflineContent(mCourseId, mCourseName,
+                                            mSubjectId, mSubjectName,
+                                            mChapterId, mChapterName,
+                                            topicModel.idTopic, topicModel.topicName,
+                                            contentModel.idContent, contentModel.contentName,
+                                            contentModel.contentName
+                                                    + (contentModel.type.isEmpty() ? "" : ".")
+                                                    + contentModel.type);
+                                    offlineContent.status = OfflineContentStatus.WAITING;
+                                    offlineContents.add(offlineContent);
                                 }
-                                OfflineContent offlineContent = new OfflineContent(mCourseId, mCourseName,
-                                        mSubjectId, mSubjectName,
-                                        mChapterId, mChapterName,
-                                        topicModel.idTopic, topicModel.topicName,
-                                        contentModel.idContent, contentModel.contentName,
-                                        contentModel.contentName
-                                                + (contentModel.type.isEmpty() ? "" : ".")
-                                                + contentModel.type);
-                                offlineContent.status = OfflineContentStatus.WAITING;
-                                offlineContents.add(offlineContent);
                             }
                             contentCount++;
                         }
@@ -362,7 +364,7 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
     private void setChapterNameAndChildren(ChapterModel chapters, int pos) {
         dialog = getDisplayDialog();
         headerProgress.setVisibility(View.GONE);
-        TreeNode subjectName = new TreeNode(chapters.chapterName+" "+"("+chapters.topicMap.size()+")").setViewHolder(new CheckedItemViewHolder(this, false));
+        TreeNode subjectName = new TreeNode(chapters.chapterName+" "+"("+chapters.topicMap.size()+")").setViewHolder(new CheckedItemViewHolder(this, null, false));
     //   <chapter name> + " ("+chapter.topics.size()+")"
         topicModelList = (ArrayList<TopicModel>) chapters.topicMap;
         Collections.sort(topicModelList);
@@ -374,14 +376,17 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
     }
 
     private void addTopic(TopicModel topicModel, TreeNode subjectName, Dialog d) {
-        TreeNode topicName = new TreeNode(topicModel.topicName+" "+"("+topicModel.contentMap.size()+")").setViewHolder(new CheckedItemViewHolder(this, false));
+        TreeNode topicName = new TreeNode(topicModel.topicName+" "+"("+topicModel.contentMap.size()+")").setViewHolder(new CheckedItemViewHolder(this, null, false));
         TreeNode file1 = null;
 
         List<ContentModel> contentModelArrayList = getSortedList(topicModel.contentMap);
         for (ContentModel contentModel : contentModelArrayList) {
             contentList.add(getTextView(contentModel.contentName + (contentModel.type.isEmpty() ? "" : ".") + contentModel.type));
             topicModelHashMap.put(contentModel.idContent, topicModel);
-            file1 = new TreeNode(contentModel.contentName + (contentModel.type.isEmpty() ? "" : ".") + contentModel.type).setViewHolder(new CheckedItemViewHolder(this, true));
+            file1 = new TreeNode(contentModel.contentName
+                    + (contentModel.type.isEmpty() ? "" : ".")
+                    + contentModel.type)
+                    .setViewHolder(new CheckedItemViewHolder(this, contentModel, true));
             topicName.addChildren(file1);
         }
         topicList.add(getTextView(topicModel.topicName));

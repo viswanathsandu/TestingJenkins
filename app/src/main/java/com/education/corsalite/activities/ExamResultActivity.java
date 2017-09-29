@@ -59,7 +59,7 @@ public class ExamResultActivity extends AbstractBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        LinearLayout myView = (LinearLayout) inflater.inflate(R.layout.activity_exam_result, null);
+        View myView = inflater.inflate(R.layout.activity_exam_result, null);
         frameLayout.addView(myView);
         ButterKnife.bind(this);
         setToolbarTitle("Exam Results");
