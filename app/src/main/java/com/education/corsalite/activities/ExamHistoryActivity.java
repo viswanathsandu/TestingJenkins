@@ -118,11 +118,18 @@ public class ExamHistoryActivity extends AbstractBaseActivity implements ExamHis
                 startActivity(intent);
                return;
             } else {
+                // TODO : testing purpose
+                Intent intent = new Intent(this, ExamResultSummaryActivity.class);
+                L.info("URL : " + WebUrls.getExamResultsSummaryUrl() + examHistory.idTestAnswerPaper);
+                intent.putExtra("test_answer_papaer_ids", examHistory.idTestAnswerPaper);
+                startActivity(intent);
+/*
                 Intent intent = new Intent(this, WebviewActivity.class);
                 L.info("URL : " + WebUrls.getExamResultsSummaryUrl() + examHistory.idTestAnswerPaper);
                 intent.putExtra(LoginActivity.URL, WebUrls.getExamResultsSummaryUrl() + examHistory.idTestAnswerPaper);
                 intent.putExtra(LoginActivity.TITLE, getString(R.string.results));
                 startActivity(intent);
+                */
             }
         }
     }
