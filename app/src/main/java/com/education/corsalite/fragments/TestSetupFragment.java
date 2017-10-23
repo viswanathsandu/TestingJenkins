@@ -322,7 +322,7 @@ public class TestSetupFragment extends BaseFragment {
     private void showExams() {
         if(getActivity() != null) {
             examsSpinner.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.challenge_spinner_item, R.id.mock_test_txt, getExams(examsList)));
-            selectSubjSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            examsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                     try {
@@ -346,10 +346,11 @@ public class TestSetupFragment extends BaseFragment {
         for (int i = 0; i < contentIndexList.size(); i++) {
             if (contentIndexList.get(i).idCourse.equalsIgnoreCase(AbstractBaseActivity.getSelectedCourseId())) {
                 subjectList = contentIndexList.get(i).subjectModelList;
+                break;
             }
         }
-        selectSubjSpinner.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.challenge_spinner_item, R.id.mock_test_txt, getSubjects(subjectList)));
         final List<SubjectModel> finalSubjectsList = subjectList;
+        selectSubjSpinner.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.challenge_spinner_item, R.id.mock_test_txt, getSubjects(subjectList)));
         selectSubjSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
@@ -370,7 +371,6 @@ public class TestSetupFragment extends BaseFragment {
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {}
         });
-
         selectChapSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {

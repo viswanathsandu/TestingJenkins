@@ -10,7 +10,6 @@
         android:id="@+id/tv_date"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:padding="15dp"
         android:text="Effective Date"
         style="@style/virtual_currency_data_text"/>
 
@@ -20,10 +19,8 @@
         android:id="@+id/tv_time"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:padding="15dp"
         android:text="Time"
         style="@style/virtual_currency_data_text"/>
-
 
     <TextView
         android:gravity="center"
@@ -31,7 +28,6 @@
         android:id="@+id/tv_event"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:padding="15dp"
         android:text="Event"
         style="@style/virtual_currency_data_text"/>
 
@@ -41,7 +37,6 @@
         android:id="@+id/tv_earned"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:padding="15dp"
         android:text="Currency Earned"
         style="@style/virtual_currency_data_text" />
 
@@ -51,7 +46,6 @@
         android:id="@+id/tv_balance"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:padding="15dp"
         android:text="Balance"
         style="@style/virtual_currency_data_text"/>
 

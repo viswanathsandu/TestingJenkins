@@ -218,14 +218,14 @@
 
     <style name="user_profile_heading_bold">
         <item name="fontPath">@string/roboto_bold</item>
-        <item name="android:textSize">22sp</item>
+        <item name="android:textSize">@dimen/title_text_size</item>
         <item name="android:textColor">@color/text_black</item>
 
     </style>
 
     <style name="user_profile_heading_caps">
         <item name="fontPath">@string/roboto_medium</item>
-        <item name="android:textSize">22sp</item>
+        <item name="android:textSize">@dimen/title_text_size</item>
         <item name="android:textColor">@color/green</item>
         <item name="textAllCaps">true</item>
         <item name="android:singleLine">true</item>
@@ -234,15 +234,19 @@
 
     <style name="user_profile_text">
         <item name="fontPath">@string/roboto_regular</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">@dimen/sub_title_text_size</item>
         <item name="android:textColor">@color/text_gray</item>
     </style>
 
     <style name="virtual_currency_header_text">
         <item name="fontPath">@string/roboto_regular</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">@dimen/sub_title1_text_size</item>
         <item name="android:textColor">@color/text_white</item>
         <item name="android:textAllCaps">true</item>
+        <item name="android:padding">@dimen/vc_data_padding</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:gravity">center</item>
     </style>
 
     <style name="exam_history_label_text">
@@ -255,20 +259,30 @@
 
     <style name="parttestgrid_header_text">
         <item name="fontPath">@string/roboto_regular</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">@dimen/sub_title_text_size</item>
         <item name="android:textColor">@color/text_black</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:paddingLeft">2dp</item>
+        <item name="android:paddingRight">2dp</item>
     </style>
 
     <style name="virtual_currency_data_text">
         <item name="fontPath">@string/roboto_regular</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">@dimen/sub_title1_text_size</item>
         <item name="android:textColor">@color/text_gray</item>
+        <item name="android:paddingLeft">@dimen/vc_data_padding</item>
+        <item name="android:paddingRight">@dimen/vc_data_padding</item>
+        <item name="android:paddingTop">@dimen/vc_data_padding_vertical</item>
+        <item name="android:paddingBottom">@dimen/vc_data_padding_vertical</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
     </style>
 
     <style name="user_profile_text_gray">
         <item name="fontPath">@string/roboto_regular</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">@dimen/sub_title_text_size</item>
         <item name="android:textColor">@color/text_gray</item>
     </style>
 

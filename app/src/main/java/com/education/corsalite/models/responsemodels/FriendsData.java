@@ -1,6 +1,9 @@
 package com.education.corsalite.models.responsemodels;
 
+import android.text.TextUtils;
+
 import com.google.gson.annotations.SerializedName;
+import com.orm.dsl.Ignore;
 
 import java.util.ArrayList;
 
@@ -19,6 +22,9 @@ public class FriendsData extends BaseModel {
         public String studentVC;
         @SerializedName("idUser")
         public String idUser;
+        @Ignore
+        @SerializedName("UserType")
+        public String userType;
         @SerializedName("idStudent")
         public String idStudent;
         @SerializedName("PhotoUrl")
@@ -40,6 +46,10 @@ public class FriendsData extends BaseModel {
 
         public boolean isOnline() {
             return isOnline || emailID.equalsIgnoreCase("corbot@corsalite.com");
+        }
+
+        public boolean isRobot() {
+            return !TextUtils.isEmpty(userType) && userType.equalsIgnoreCase("Robot");
         }
     }
 }

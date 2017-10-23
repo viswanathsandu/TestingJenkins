@@ -7,11 +7,9 @@ import android.widget.LinearLayout;
 
 import com.education.corsalite.BuildConfig;
 import com.education.corsalite.R;
-import com.education.corsalite.fragments.AccuracySpeedTabFragment;
 import com.education.corsalite.fragments.AnalyticsTitleFragment;
 import com.education.corsalite.fragments.DetailsWebviewFragment;
 import com.education.corsalite.fragments.RecommendedTabFragment;
-import com.education.corsalite.fragments.UsageAnalysisFragment;
 
 /**
  * Created by madhuri on 4/23/16.
@@ -78,12 +76,12 @@ public class NewAnalyticsActivity extends AbstractBaseActivity implements Analyt
                 getSupportFragmentManager().beginTransaction().replace(R.id.fl_analytics_detail,timeManagementTabFragment).commit();
                 break;
             case K_TITLE_USAGE_ANALYSIS:
-                UsageAnalysisFragment usageAnalysisFragment = new UsageAnalysisFragment();
-                getSupportFragmentManager().beginTransaction().replace(R.id.fl_analytics_detail,usageAnalysisFragment).commit();
+//                UsageAnalysisFragment usageAnalysisFragment = new UsageAnalysisFragment();
+//                getSupportFragmentManager().beginTransaction().replace(R.id.fl_analytics_detail,usageAnalysisFragment).commit();
                 break;
             default:
-                AccuracySpeedTabFragment accuracySpeedTabFragment1 = new AccuracySpeedTabFragment();
-                getFragmentManager().beginTransaction().replace(R.id.fl_analytics_detail,accuracySpeedTabFragment1).commit();
+//                AccuracySpeedTabFragment accuracySpeedTabFragment1 = new AccuracySpeedTabFragment();
+//                getFragmentManager().beginTransaction().replace(R.id.fl_analytics_detail,accuracySpeedTabFragment1).commit();
                 break;
 
         }

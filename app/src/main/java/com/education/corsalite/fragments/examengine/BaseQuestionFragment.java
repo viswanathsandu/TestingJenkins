@@ -145,7 +145,7 @@ public abstract class BaseQuestionFragment extends BaseFragment {
     private void controlViewAnswers(ViewGroup viewGroup) {
         for (int i=0; i<viewGroup.getChildCount(); i++) {
             View view = viewGroup.getChildAt(i);
-            view.setEnabled(false);
+            view.setClickable(false);
             if(view instanceof ViewGroup) {
                 controlViewAnswers((ViewGroup) view);
             }

@@ -2,6 +2,7 @@ package com.education.corsalite.models;
 
 import com.education.corsalite.models.responsemodels.BaseModel;
 import com.google.gson.annotations.SerializedName;
+import com.orm.dsl.Ignore;
 
 import java.io.Serializable;
 
@@ -29,9 +30,14 @@ public class ContentModel extends BaseModel implements Comparable<ContentModel>,
     public String surName;
     @SerializedName("Rating")
     public String rating;
-
     public String topicId;
     public String topicName;
+    @Ignore
+    private Integer downloadable;
+
+    public boolean isDownloadable() {
+        return downloadable == null || downloadable == 1;
+    }
 
 
     @Override

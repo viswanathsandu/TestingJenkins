@@ -129,6 +129,13 @@ public class ContentDownloadService extends IntentService {
         try {
             Uri downloadUri = Uri.parse(videoUrl);
             Uri destinationUri = Uri.parse(downloadLocation);
+            if(videoUrl.contains("youtube.com")) {
+                updateOfflineContent(offlineContent, OfflineContentStatus.FAILED, content, 0);
+                L.info("Downloader : failed");
+                NotificationsUtils.showFailureNotification(getApplicationContext(), Integer.valueOf(content.idContent), content.name);
+                downloandInProgress--;
+                return;
+            }
             if(TextUtils.isEmpty(videoUrl) || TextUtils.isEmpty(downloadLocation)
                     || downloadUri == null || destinationUri == null
                     || TextUtils.isEmpty(downloadUri.getPath())

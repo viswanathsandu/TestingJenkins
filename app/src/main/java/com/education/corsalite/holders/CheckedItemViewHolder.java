@@ -10,6 +10,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
+import com.education.corsalite.models.ContentModel;
+import com.education.corsalite.models.responsemodels.Content;
 import com.unnamed.b.atv.model.TreeNode;
 
 /**
@@ -19,12 +21,14 @@ public class CheckedItemViewHolder extends TreeNode.BaseNodeViewHolder<String> {
     private TextView tvValue;
     private ImageView checkboxImage;
     private CheckBox nodeSelector;
+    private ContentModel content;
     private boolean isFile;
     private RelativeLayout nodeLayout;
 
-    public CheckedItemViewHolder(Context context, boolean isFile) {
+    public CheckedItemViewHolder(Context context, ContentModel content, boolean isFile) {
         super(context);
         this.isFile = isFile;
+        this.content = content;
     }
 
     @Override
@@ -44,6 +48,11 @@ public class CheckedItemViewHolder extends TreeNode.BaseNodeViewHolder<String> {
                 refreshNodes(node, isChecked);
             }
         });
+        if(content != null && !content.isDownloadable()) {
+            nodeSelector.setEnabled(content.isDownloadable());
+            nodeLayout.setEnabled(content.isDownloadable());
+            tvValue.setEnabled(content.isDownloadable());
+        }
         nodeSelector.setChecked(node.isSelected());
         if(!isFile){
             checkboxImage.setImageDrawable(view.getResources().getDrawable(R.drawable.ico_offline_chapter));
@@ -83,5 +92,8 @@ public class CheckedItemViewHolder extends TreeNode.BaseNodeViewHolder<String> {
     public void toggleSelectionMode(boolean editModeEnabled) {
         nodeSelector.setVisibility(editModeEnabled ? View.VISIBLE : View.GONE);
         nodeSelector.setChecked(mNode.isSelected());
+        if(!nodeSelector.isEnabled()) {
+            nodeSelector.setChecked(false);
+        }
     }
 }

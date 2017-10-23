@@ -10,7 +10,6 @@
         android:id="@+id/tv_exam"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:padding="15dp"
         android:text="Exam"
         style="@style/virtual_currency_header_text"/>
 
@@ -20,7 +19,6 @@
         android:id="@+id/tv_days_remaining"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:padding="15dp"
         style="@style/virtual_currency_header_text"
         android:text="Days Remaining"
      />
@@ -31,7 +29,6 @@
         android:id="@+id/tv_exam_date"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:padding="15dp"
         style="@style/virtual_currency_header_text"
         android:text="Exam Date"
     />
@@ -42,7 +39,6 @@
         android:id="@+id/tv_hall_ticket_number"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:padding="15dp"
         style="@style/virtual_currency_header_text"
         android:text="Hall Ticket Number" />
 
