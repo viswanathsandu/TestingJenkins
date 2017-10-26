@@ -154,6 +154,13 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         return "";
     }
 
+    public static String getSelectedCourseInstanceId() {
+        if (selectedCourse != null && selectedCourse.courseInstanceId != null) {
+            return selectedCourse.courseInstanceId;
+        }
+        return "";
+    }
+
     public static String getSelectedCourseName() {
         if (selectedCourse != null && selectedCourse.name != null) {
             return selectedCourse.name;
