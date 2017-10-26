@@ -10,13 +10,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.education.corsalite.R;
 import com.education.corsalite.activities.ChallengeActivity;
 import com.education.corsalite.gson.Gson;
 import com.education.corsalite.models.responsemodels.FriendsData;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.L;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -88,7 +88,11 @@ public class FriendsAdapter extends AbstractRecycleViewAdapter {
             tvEmail.setText(clickedFriend.emailID);
             statusView.setBackgroundColor(mActivity.getResources().getColor(clickedFriend.isOnline() ? R.color.green : R.color.gray));
             if (!TextUtils.isEmpty(clickedFriend.photoUrl)) {
-                Glide.with(mActivity).load(ApiClientService.getBaseUrl() + clickedFriend.photoUrl.replaceFirst("./", "")).into(ivProfilePic);
+                Picasso.with(mActivity)
+                        .load(ApiClientService.getBaseUrl() + clickedFriend.photoUrl.replaceFirst("./", ""))
+                        .placeholder(R.drawable.profile_pic)
+                        .error(R.drawable.profile_pic).fit()
+                        .into(ivProfilePic);
             }
             if(clickedFriend.isOnline()) {
                 if (selectedFriends.contains(clickedFriend)) {

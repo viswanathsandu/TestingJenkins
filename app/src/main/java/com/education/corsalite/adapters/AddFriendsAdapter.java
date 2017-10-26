@@ -9,10 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.education.corsalite.R;
 import com.education.corsalite.models.responsemodels.FriendsData;
 import com.education.corsalite.services.ApiClientService;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -108,7 +108,11 @@ public class AddFriendsAdapter extends AbstractRecycleViewAdapter {
                 }
             }
             if (!TextUtils.isEmpty(clickedFriend.photoUrl)) {
-                Glide.with(mActivity).load(ApiClientService.getBaseUrl() + clickedFriend.photoUrl.replaceFirst("./", "")).into(ivProfilePic);
+                Picasso.with(mActivity)
+                        .load(ApiClientService.getBaseUrl() + clickedFriend.photoUrl.replaceFirst("./", ""))
+                        .placeholder(R.drawable.profile_pic)
+                        .error(R.drawable.profile_pic).fit()
+                        .into(ivProfilePic);
             }
         }
 

@@ -182,7 +182,7 @@ public class EditProfilePicDialogFragment extends DialogFragment {
                 if (editProfileResponse.isSuccessful() && getActivity() != null) {
                     ((AbstractBaseActivity)getActivity()).showToast("Updated User Profile Pic Successfully");
                     getDialog().cancel();
-                    updateProfilePicListener.onUpdateProfilePic(image);
+                    updateProfilePicListener.onUpdateProfilePic();
                     deleteTempFile();
                 }
             }
@@ -208,6 +208,6 @@ public class EditProfilePicDialogFragment extends DialogFragment {
         return model;
     }
     public interface IUpdateProfilePicListener {
-        void onUpdateProfilePic(Bitmap image);
+        void onUpdateProfilePic();
     }
 }
