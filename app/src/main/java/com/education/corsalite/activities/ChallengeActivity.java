@@ -11,8 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
@@ -33,11 +31,14 @@ import com.education.corsalite.models.socket.response.ChallengeTestUpdateEvent;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.L;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
+import pl.droidsonroids.gif.GifDrawable;
+import pl.droidsonroids.gif.GifImageView;
 import retrofit.client.Response;
 
 public class ChallengeActivity extends AbstractBaseActivity {
@@ -46,11 +47,11 @@ public class ChallengeActivity extends AbstractBaseActivity {
     @Bind(R.id.player2_layout) LinearLayout player2Layout;
     @Bind(R.id.player3_layout) LinearLayout player3Layout;
     @Bind(R.id.player4_layout) LinearLayout player4Layout;
-    @Bind(R.id.left_player) ImageView leftPlayerImg;
-    @Bind(R.id.right_player1) ImageView rightPlayer1Img;
-    @Bind(R.id.right_player2) ImageView rightPlayer2Img;
-    @Bind(R.id.right_player3) ImageView rightPlayer3Img;
-    @Bind(R.id.right_player4) ImageView rightPlayer4Img;
+    @Bind(R.id.left_player) GifImageView leftPlayerImg;
+    @Bind(R.id.right_player1) GifImageView rightPlayer1Img;
+    @Bind(R.id.right_player2) GifImageView rightPlayer2Img;
+    @Bind(R.id.right_player3) GifImageView rightPlayer3Img;
+    @Bind(R.id.right_player4) GifImageView rightPlayer4Img;
     @Bind(R.id.player1_txt) TextView player1_txt;
     @Bind(R.id.player2_txt) TextView player2_txt;
     @Bind(R.id.player3_txt) TextView player3_txt;
@@ -73,7 +74,6 @@ public class ChallengeActivity extends AbstractBaseActivity {
         ButterKnife.bind(this);
         initListeners();
         fetchDisplayName();
-        loadCharecters();
         loadPlayers();
         Bundle bundle = getIntent().getExtras();
         if(bundle != null) {
@@ -184,43 +184,35 @@ public class ChallengeActivity extends AbstractBaseActivity {
         void popUpFriendsListFragment();
     }
 
-    private void loadCharecters() {
-        loadGif(leftPlayerImg, R.raw.character_anim_left);
-    }
-
     private void loadPlayers() {
         player1Layout.setVisibility(View.GONE);
         player2Layout.setVisibility(View.GONE);
         player3Layout.setVisibility(View.GONE);
         player4Layout.setVisibility(View.GONE);
         for(int i=0; i<selectedFriends.size(); i++) {
+            int animResId = selectedFriends.get(i).isRobot() ? R.drawable.robot1 : R.drawable.character_anim_right;
             if(i == 0) {
                 player1Layout.setVisibility(View.VISIBLE);
                 player1_txt.setText(selectedFriends.get(i).displayName);
-                loadGif(rightPlayer1Img, selectedFriends.get(i).isRobot()
-                        ? R.raw.robot1 : R.raw.character_anim_right);
+                loadGif(rightPlayer1Img, animResId);
             } else if(i == 1) {
                 player2Layout.setVisibility(View.VISIBLE);
                 player2_txt.setText(selectedFriends.get(i).displayName);
-                loadGif(rightPlayer2Img, selectedFriends.get(i).isRobot()
-                        ? R.raw.robot1 : R.raw.character_anim_right);
+                loadGif(rightPlayer2Img, animResId);
             } else if(i == 2) {
                 player3Layout.setVisibility(View.VISIBLE);
                 player3_txt.setText(selectedFriends.get(i).displayName);
-                loadGif(rightPlayer3Img, selectedFriends.get(i).isRobot()
-                        ? R.raw.robot1 : R.raw.character_anim_right);
+                loadGif(rightPlayer3Img, animResId);
             } else if(i == 3) {
                 player4Layout.setVisibility(View.VISIBLE);
                 player4_txt.setText(selectedFriends.get(i).displayName);
-                loadGif(rightPlayer4Img, selectedFriends.get(i).isRobot()
-                        ? R.raw.robot1 : R.raw.character_anim_right);
+                loadGif(rightPlayer4Img, animResId);
             }
         }
     }
 
-    private void loadGif(ImageView imageView, int rawGifId) {
-        GlideDrawableImageViewTarget imageViewTarget = new GlideDrawableImageViewTarget(imageView);
-        Glide.with(this).load(rawGifId).into(imageViewTarget);
+    private void loadGif(GifImageView imageview, int animResId) {
+        imageview.setImageResource(animResId);
     }
 
     public void onEventMainThread(CreateChallengeResponseModel model) {

@@ -17,12 +17,13 @@
             android:layout_height="wrap_content"
             tools:context="com.education.corsalite.activities.CrashHandlerActivity">
 
-            <ImageView
+            <pl.droidsonroids.gif.GifImageView
                 android:id="@+id/sync_anim_img"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/data_sync_anim"
                 android:layout_centerInParent="true"
-                android:adjustViewBounds="true" />
+                android:adjustViewBounds="true"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"

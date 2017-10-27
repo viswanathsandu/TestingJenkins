@@ -31,10 +31,11 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <ImageView
+                <pl.droidsonroids.gif.GifImageView
                     android:id="@+id/left_player"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/character_anim_left" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -49,6 +50,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:weightSum="4"
             android:orientation="horizontal"
             android:gravity="bottom">
 
@@ -58,12 +60,14 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:gravity="center_horizontal"
+                android:layout_weight="1"
                 android:visibility="gone">
 
-                <ImageView
+                <pl.droidsonroids.gif.GifImageView
                     android:id="@+id/right_player1"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/character_anim_right" />
 
                 <TextView
                     android:id="@+id/player1_txt"
@@ -79,12 +83,14 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
                 android:visibility="gone">
 
-                <ImageView
+                <pl.droidsonroids.gif.GifImageView
                     android:id="@+id/right_player2"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/character_anim_right" />
 
                 <TextView
                     android:id="@+id/player2_txt"
@@ -99,12 +105,14 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:orientation="vertical"
+                android:layout_weight="1"
                 android:visibility="gone">
 
-                <ImageView
+                <pl.droidsonroids.gif.GifImageView
                     android:id="@+id/right_player3"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/character_anim_right" />
 
                 <TextView
                     android:id="@+id/player3_txt"
@@ -119,12 +127,14 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
                 android:visibility="gone">
 
-                <ImageView
+                <pl.droidsonroids.gif.GifImageView
                     android:id="@+id/right_player4"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/character_anim_right" />
 
                 <TextView
                     android:id="@+id/player4_txt"
