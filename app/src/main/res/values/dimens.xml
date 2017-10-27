@@ -31,4 +31,7 @@
     <dimen name="layout_button_margin">2dp</dimen>
     <dimen name="vc_data_padding">3dp</dimen>
     <dimen name="vc_data_padding_vertical">5dp</dimen>
+    <dimen name="sp20">20sp</dimen>
+    <dimen name="sp10">10sp</dimen>
+    <dimen name="dp300">300dp</dimen>
 </resources>
