@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
+    android:layout_height="@dimen/dp50"
     android:background="@color/gray"
     android:orientation="horizontal">
 
@@ -13,7 +13,7 @@
         android:layout_alignParentTop="true"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="10dp"
+        android:padding="@dimen/dp10"
         android:weightSum="1">
 
         <LinearLayout
@@ -26,56 +26,56 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="1dp"
+                android:layout_marginBottom="@dimen/dp1"
                 android:orientation="horizontal">
 
                 <View
                     android:id="@+id/view1"
-                    android:layout_width="11dp"
-                    android:layout_height="11dp"
+                    android:layout_width="@dimen/dp11"
+                    android:layout_height="@dimen/dp11"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="1dp"
+                    android:layout_marginRight="@dimen/dp1"
                     android:background="@color/red" />
 
                 <View
                     android:id="@+id/view2"
-                    android:layout_width="11dp"
-                    android:layout_height="11dp"
+                    android:layout_width="@dimen/dp11"
+                    android:layout_height="@dimen/dp11"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="1dp"
+                    android:layout_marginLeft="@dimen/dp1"
                     android:background="@color/blue" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="1dp"
+                android:layout_marginTop="@dimen/dp1"
                 android:orientation="horizontal">
 
                 <View
                     android:id="@+id/view3"
-                    android:layout_width="11dp"
-                    android:layout_height="11dp"
+                    android:layout_width="@dimen/dp11"
+                    android:layout_height="@dimen/dp11"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="1dp"
+                    android:layout_marginRight="@dimen/dp1"
                     android:background="@color/green" />
 
                 <View
                     android:id="@+id/view4"
-                    android:layout_width="11dp"
-                    android:layout_height="11dp"
+                    android:layout_width="@dimen/dp11"
+                    android:layout_height="@dimen/dp11"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="1dp"
+                    android:layout_marginLeft="@dimen/dp1"
                     android:background="@color/amber" />
             </LinearLayout>
         </LinearLayout>
 
         <ImageView
             android:id="@+id/redView"
-            android:layout_width="23dp"
-            android:layout_height="23dp"
+            android:layout_width="@dimen/dp23"
+            android:layout_height="@dimen/dp23"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="@dimen/dp15"
             android:layout_weight="0.25"
             android:background="@color/red"
             android:src="@drawable/tile_filter_color_selector"
@@ -83,10 +83,10 @@
 
         <ImageView
             android:id="@+id/blueView"
-            android:layout_width="23dp"
-            android:layout_height="23dp"
+            android:layout_width="@dimen/dp23"
+            android:layout_height="@dimen/dp23"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="@dimen/dp15"
             android:layout_weight="0.25"
             android:background="@color/blue"
             android:src="@drawable/tile_filter_color_selector"
@@ -94,10 +94,10 @@
 
         <ImageView
             android:id="@+id/yellowView"
-            android:layout_width="23dp"
-            android:layout_height="23dp"
+            android:layout_width="@dimen/dp23"
+            android:layout_height="@dimen/dp23"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="@dimen/dp15"
             android:layout_weight="0.25"
             android:background="@color/amber"
             android:src="@drawable/tile_filter_color_selector"
@@ -105,10 +105,10 @@
 
         <ImageView
             android:id="@+id/greenView"
-            android:layout_width="23dp"
-            android:layout_height="23dp"
+            android:layout_width="@dimen/dp23"
+            android:layout_height="@dimen/dp23"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="@dimen/dp15"
             android:layout_weight="0.25"
             android:background="@color/green"
             android:src="@drawable/tile_filter_color_selector"
@@ -129,7 +129,7 @@
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:paddingLeft="15dp" />
+            android:paddingLeft="@dimen/dp15" />
     </HorizontalScrollView>
 
 </RelativeLayout>
