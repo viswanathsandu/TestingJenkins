@@ -343,8 +343,6 @@
                     android:text="@string/commennt"
                     android:textColor="@android:color/white"
                     android:visibility="gone" />
-
-
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
