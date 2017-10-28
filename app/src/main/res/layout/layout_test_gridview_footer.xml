@@ -9,22 +9,22 @@
     <com.education.corsalite.views.CustomButton
         android:id="@+id/btn_view_full_question"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="15dp"
+        android:layout_height="@dimen/dp40"
+        android:layout_marginBottom="@dimen/dp10"
+        android:layout_marginLeft="@dimen/dp15"
+        android:layout_marginRight="@dimen/dp15"
+        android:layout_marginTop="@dimen/dp15"
         android:background="@drawable/rounded_corners_blue"
-        android:text="View Full Question Paper"
+        android:text="@string/view_full_question_paper"
         android:textAllCaps="true"
         android:textColor="@color/white" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="@dimen/dp0"
         android:layout_marginBottom="10dp"
         android:layout_weight="3"
-        android:paddingLeft="80dp">
+        android:paddingLeft="@dimen/dp80">
 
 
         <LinearLayout
@@ -35,17 +35,17 @@
             android:padding="5dp">
 
             <ImageView
-                android:layout_width="8dp"
-                android:layout_height="8dp"
+                android:layout_width="@dimen/dp8"
+                android:layout_height="@dimen/dp8"
                 android:layout_gravity="center"
-                android:layout_marginRight="15dp"
+                android:layout_marginRight="@dimen/dp15"
                 android:background="@color/green" />
 
             <TextView
                 style="@style/tests_text_style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Answered" />
+                android:text="@string/answered" />
         </LinearLayout>
 
         <LinearLayout
@@ -54,13 +54,13 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/ll_answered"
             android:orientation="horizontal"
-            android:padding="5dp">
+            android:padding="@dimen/dp5">
 
             <ImageView
-                android:layout_width="8dp"
-                android:layout_height="8dp"
+                android:layout_width="@dimen/dp8"
+                android:layout_height="@dimen/dp8"
                 android:layout_gravity="center"
-                android:layout_marginRight="15dp"
+                android:layout_marginRight="@dimen/dp15"
                 android:background="@color/red" />
 
             <TextView
@@ -68,7 +68,7 @@
                 style="@style/tests_text_style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Skipped" />
+                android:text="@string/skipped" />
 
         </LinearLayout>
 
@@ -78,13 +78,13 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/ll_skipped"
             android:orientation="horizontal"
-            android:padding="5dp">
+            android:padding="@dimen/dp5">
 
             <ImageView
-                android:layout_width="8dp"
-                android:layout_height="8dp"
+                android:layout_width="@dimen/dp8"
+                android:layout_height="@dimen/dp8"
                 android:layout_gravity="center"
-                android:layout_marginRight="15dp"
+                android:layout_marginRight="@dimen/dp15"
                 android:background="@color/flagged_yellow" />
 
             <TextView
@@ -92,7 +92,7 @@
                 style="@style/tests_text_style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Flagged for review" />
+                android:text="@string/flagged_for_review" />
 
         </LinearLayout>
 
@@ -102,13 +102,13 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/ll_review"
             android:orientation="horizontal"
-            android:padding="5dp">
+            android:padding="@dimen/dp5">
 
             <ImageView
-                android:layout_width="8dp"
-                android:layout_height="8dp"
+                android:layout_width="@dimen/dp8"
+                android:layout_height="@dimen/dp8"
                 android:layout_gravity="center"
-                android:layout_marginRight="15dp"
+                android:layout_marginRight="@dimen/dp15"
                 android:background="@color/gray" />
 
             <TextView
@@ -117,7 +117,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_review"
-                android:text="Unattempted" />
+                android:text="@string/unattempted" />
 
         </LinearLayout>
     </RelativeLayout>
@@ -135,30 +135,30 @@
 
         <com.education.corsalite.views.CustomButton
             android:id="@+id/btn_suspend"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:layout_margin="10dp"
+            android:layout_width="@dimen/dp80"
+            android:layout_height="@dimen/dp40"
+            android:layout_margin="@dimen/dp10"
             android:background="@drawable/rounded_corners_gray"
-            android:padding="5dp"
-            android:text="Suspend" />
+            android:padding="@dimen/dp5"
+            android:text="@string/suspend" />
 
         <com.education.corsalite.views.CustomButton
             android:id="@+id/btn_save"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:layout_margin="10dp"
+            android:layout_width="@dimen/dp80"
+            android:layout_height="@dimen/dp40"
+            android:layout_margin="@dimen/dp10"
             android:background="@drawable/rounded_corners_gray"
-            android:padding="5dp"
-            android:text="Save" />
+            android:padding="@dimen/dp5"
+            android:text="@string/save" />
 
         <com.education.corsalite.views.CustomButton
             android:id="@+id/btn_submit"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:layout_margin="10dp"
+            android:layout_width="@dimen/dp80"
+            android:layout_height="@dimen/dp40"
+            android:layout_margin="@dimen/dp10"
             android:background="@drawable/rounded_corners_green"
-            android:padding="5dp"
-            android:text="Submit"
+            android:padding="@dimen/dp5"
+            android:text="@string/submit"
             android:textAllCaps="true"
             android:textColor="@color/white" />
 
