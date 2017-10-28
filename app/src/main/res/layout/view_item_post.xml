@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="5dp"
-    android:layout_marginLeft="5dp"
-    android:layout_marginRight="5dp"
+    android:layout_marginTop="@dimen/dp5"
+    android:layout_marginLeft="@dimen/dp5"
+    android:layout_marginRight="@dimen/dp5"
     android:orientation="vertical">
 
     <LinearLayout
@@ -23,9 +23,9 @@
 
             <ImageView
                 android:id="@+id/iv_post_user_pic"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:padding="10dp"
+                android:layout_width="@dimen/dp50"
+                android:layout_height="@dimen/dp50"
+                android:padding="@dimen/dp10"
                 android:scaleType="centerCrop"
                 android:src="@drawable/profile_pic" />
 
@@ -33,7 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="10dp">
+                android:padding="@dimen/dp10">
 
                 <TextView
                     android:id="@+id/tv_post_question"
@@ -51,7 +51,7 @@
                     android:id="@+id/ll_post_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginTop="@dimen/dp3"
                     android:orientation="horizontal">
 
                     <TextView
@@ -60,9 +60,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:maxLines="1"
-                        android:text="07/09/2015 06:49:18 by"
+                        android:text="@string/date_time_07_09_2015_06_49_18_by"
                         android:textColor="@color/text_gray"
-                        android:textSize="12sp"
+                        android:textSize="@dimen/sp12"
                         android:textStyle="italic" />
 
                     <TextView
@@ -70,11 +70,11 @@
                         fontPath="@string/roboto_regular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
+                        android:layout_marginLeft="@dimen/dp5"
                         android:maxLines="1"
-                        android:text="Shivkeshav"
+                        android:text="@string/shivkeshav"
                         android:textColor="@android:color/holo_blue_light"
-                        android:textSize="12sp"
+                        android:textSize="@dimen/sp12"
                         android:textStyle="italic" />
                 </LinearLayout>
             </LinearLayout>
@@ -99,13 +99,13 @@
                     android:id="@+id/ll_post_tags"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="@dimen/dp5"
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:layout_marginRight="5dp"
+                        android:layout_width="@dimen/dp18"
+                        android:layout_height="@dimen/dp18"
+                        android:layout_marginRight="@dimen/dp5"
                         android:gravity="center_vertical"
                         android:src="@drawable/ic_tags" />
 
@@ -114,72 +114,76 @@
                         fontPath="@string/roboto_regular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="5dp"
+                        android:layout_marginRight="@dimen/dp5"
                         android:background="@android:color/darker_gray"
                         android:ellipsize="end"
                         android:gravity="center_vertical"
                         android:maxLines="1"
-                        android:paddingBottom="2dp"
-                        android:paddingLeft="5dp"
-                        android:paddingRight="5dp"
-                        android:paddingTop="2dp"
-                        android:text="Course"
+                        android:paddingBottom="@dimen/dp2"
+                        android:paddingLeft="@dimen/dp5"
+                        android:paddingRight="@dimen/dp5"
+                        android:paddingTop="@dimen/dp2"
+                        android:text="@string/course"
                         android:textColor="@android:color/white"
-                        android:textSize="10sp" />
+                        android:textSize="@dimen/sp10"
+                        tools:ignore="SmallSp" />
 
                     <TextView
                         android:id="@+id/tv_subject_name"
                         fontPath="@string/roboto_regular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="5dp"
+                        android:layout_marginRight="@dimen/dp5"
                         android:background="@android:color/darker_gray"
                         android:ellipsize="end"
                         android:gravity="center_vertical"
                         android:maxLines="1"
-                        android:paddingBottom="2dp"
-                        android:paddingLeft="5dp"
-                        android:paddingRight="5dp"
-                        android:paddingTop="2dp"
-                        android:text="Subject"
+                        android:paddingBottom="@dimen/dp2"
+                        android:paddingLeft="@dimen/dp5"
+                        android:paddingRight="@dimen/dp5"
+                        android:paddingTop="@dimen/dp2"
+                        android:text="@string/subject"
                         android:textColor="@android:color/white"
-                        android:textSize="10sp" />
+                        android:textSize="@dimen/sp10"
+                        tools:ignore="SmallSp" />
 
                     <TextView
                         android:id="@+id/tv_chapter_name"
                         fontPath="@string/roboto_regular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="5dp"
+                        android:layout_marginRight="@dimen/dp5"
                         android:background="@android:color/darker_gray"
                         android:ellipsize="end"
                         android:gravity="center_vertical"
                         android:maxLines="1"
-                        android:paddingBottom="2dp"
-                        android:paddingLeft="5dp"
-                        android:paddingRight="5dp"
-                        android:paddingTop="2dp"
-                        android:text="Chapter"
+                        android:paddingBottom="@dimen/dp2"
+                        android:paddingLeft="@dimen/dp5"
+                        android:paddingRight="@dimen/dp5"
+                        android:paddingTop="@dimen/dp2"
+                        android:text="@string/chapter"
                         android:textColor="@android:color/white"
-                        android:textSize="10sp" />
+                        android:textSize="@dimen/sp10"
+                        tools:ignore="SmallSp" />
 
                     <TextView
                         android:id="@+id/tv_topic_name"
                         fontPath="@string/roboto_regular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="5dp"
+                        android:layout_marginRight="@dimen/dp5"
                         android:background="@android:color/darker_gray"
                         android:ellipsize="end"
                         android:gravity="center_vertical"
                         android:maxLines="1"
-                        android:paddingBottom="2dp"
-                        android:paddingLeft="5dp"
-                        android:paddingRight="5dp"
-                        android:paddingTop="2dp"
-                        android:text="Topic"
+                        android:paddingBottom="@dimen/dp2"
+                        android:paddingLeft="@dimen/dp5"
+                        android:paddingRight="@dimen/dp5"
+                        android:paddingTop="@dimen/dp2"
+                        android:text="@string/topic"
                         android:textColor="@android:color/white"
-                        android:textSize="10sp" />
+                        android:textSize="@dimen/sp10"
+                        tools:ignore="SmallSp" />
 
                 </LinearLayout>
             </HorizontalScrollView>
@@ -200,15 +204,15 @@
                         fontPath="@string/roboto_regular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginRight="@dimen/dp10"
                         android:drawableLeft="@drawable/like_white"
-                        android:drawablePadding="5dp"
+                        android:drawablePadding="@dimen/dp5"
                         android:gravity="center_vertical"
-                        android:paddingBottom="5dp"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        android:paddingTop="5dp"
-                        android:text="Like"
+                        android:paddingBottom="@dimen/dp5"
+                        android:paddingLeft="@dimen/dp10"
+                        android:paddingRight="@dimen/dp10"
+                        android:paddingTop="@dimen/dp5"
+                        android:text="@string/likes"
                         android:textColor="@android:color/black" />
 
                     <TextView
@@ -216,31 +220,31 @@
                         fontPath="@string/roboto_regular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginRight="@dimen/dp10"
                         android:drawableLeft="@drawable/comment"
-                        android:drawablePadding="5dp"
+                        android:drawablePadding="@dimen/dp5"
                         android:gravity="center_vertical"
-                        android:paddingBottom="7dp"
-                        android:paddingLeft="0dp"
-                        android:paddingRight="10dp"
-                        android:paddingTop="7dp"
+                        android:paddingBottom="@dimen/dp7"
+                        android:paddingLeft="@dimen/dp0"
+                        android:paddingRight="@dimen/dp10"
+                        android:paddingTop="@dimen/dp7"
                         android:textColor="@android:color/black"
-                        tools:text="4 Comments" />
+                        tools:text="@string/comments" />
 
                     <TextView
                         android:id="@+id/tv_post_action_bookmark"
                         fontPath="@string/roboto_regular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginRight="@dimen/dp10"
                         android:drawableLeft="@drawable/bookmark"
-                        android:drawablePadding="5dp"
+                        android:drawablePadding="@dimen/dp5"
                         android:gravity="center_vertical"
-                        android:paddingBottom="7dp"
-                        android:paddingLeft="0dp"
-                        android:paddingRight="10dp"
-                        android:paddingTop="7dp"
-                        android:text="Bookmark"
+                        android:paddingBottom="@dimen/dp7"
+                        android:paddingLeft="@dimen/dp0"
+                        android:paddingRight="@dimen/dp10"
+                        android:paddingTop="@dimen/dp7"
+                        android:text="@string/bookmarks"
                         android:textColor="@color/text_black" />
 
                     <TextView
@@ -248,16 +252,16 @@
                         fontPath="@string/roboto_regular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginRight="@dimen/dp10"
                         android:drawableLeft="@drawable/view"
-                        android:drawablePadding="5dp"
+                        android:drawablePadding="@dimen/dp5"
                         android:gravity="center_vertical"
-                        android:paddingBottom="7dp"
-                        android:paddingLeft="0dp"
-                        android:paddingRight="10dp"
-                        android:paddingTop="7dp"
+                        android:paddingBottom="@dimen/dp7"
+                        android:paddingLeft="@dimen/dp0"
+                        android:paddingRight="@dimen/dp10"
+                        android:paddingTop="@dimen/dp7"
                         android:textColor="@android:color/black"
-                        tools:text="127 Views" />
+                        tools:text="@string/views" />
 
                 </LinearLayout>
             </HorizontalScrollView>
@@ -273,16 +277,16 @@
                     fontPath="@string/roboto_regular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginRight="@dimen/dp10"
                     android:background="@android:color/holo_red_light"
                     android:drawableLeft="@drawable/lock"
-                    android:drawablePadding="5dp"
+                    android:drawablePadding="@dimen/dp5"
                     android:gravity="center_vertical"
-                    android:paddingBottom="5dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:paddingTop="5dp"
-                    android:text="Lock"
+                    android:paddingBottom="@dimen/dp5"
+                    android:paddingLeft="@dimen/dp10"
+                    android:paddingRight="@dimen/dp10"
+                    android:paddingTop="@dimen/dp5"
+                    android:text="@string/lock"
                     android:textColor="@android:color/white"
                     android:visibility="gone" />
 
@@ -291,16 +295,16 @@
                     fontPath="@string/roboto_regular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginRight="@dimen/dp10"
                     android:background="@android:color/holo_red_light"
                     android:drawableLeft="@drawable/delete"
-                    android:drawablePadding="5dp"
+                    android:drawablePadding="@dimen/dp5"
                     android:gravity="center_vertical"
-                    android:paddingBottom="5dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:paddingTop="5dp"
-                    android:text="Delete"
+                    android:paddingBottom="@dimen/dp5"
+                    android:paddingLeft="@dimen/dp10"
+                    android:paddingRight="@dimen/dp10"
+                    android:paddingTop="@dimen/dp5"
+                    android:text="@string/delete"
                     android:textColor="@android:color/white"
                     android:visibility="gone" />
 
@@ -309,16 +313,16 @@
                     fontPath="@string/roboto_regular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginRight="@dimen/dp10"
                     android:background="@android:color/holo_blue_dark"
                     android:drawableLeft="@drawable/comment_white"
-                    android:drawablePadding="5dp"
+                    android:drawablePadding="@dimen/dp5"
                     android:gravity="center_vertical"
-                    android:paddingBottom="5dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:paddingTop="5dp"
-                    android:text="Edit"
+                    android:paddingBottom="@dimen/dp5"
+                    android:paddingLeft="@dimen/dp10"
+                    android:paddingRight="@dimen/dp10"
+                    android:paddingTop="@dimen/dp5"
+                    android:text="@string/edit"
                     android:textColor="@android:color/white"
                     android:visibility="gone" />
 
@@ -327,16 +331,16 @@
                     fontPath="@string/roboto_regular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginRight="@dimen/dp10"
                     android:background="@android:color/holo_blue_dark"
                     android:drawableLeft="@drawable/comment_white"
-                    android:drawablePadding="5dp"
+                    android:drawablePadding="@dimen/dp5"
                     android:gravity="center_vertical"
-                    android:paddingBottom="5dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:paddingTop="5dp"
-                    android:text="Comment"
+                    android:paddingBottom="@dimen/dp5"
+                    android:paddingLeft="@dimen/dp10"
+                    android:paddingRight="@dimen/dp10"
+                    android:paddingTop="@dimen/dp5"
+                    android:text="@string/commennt"
                     android:textColor="@android:color/white"
                     android:visibility="gone" />
 
