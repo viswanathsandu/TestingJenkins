@@ -10,15 +10,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="10dp"
+        android:layout_margin="@dimen/dp10"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginLeft="@dimen/dp10"
+            android:layout_marginRight="@dimen/dp10"
             android:gravity="center_vertical"
             android:orientation="vertical">
 
@@ -35,22 +35,22 @@
 
                     <TextView
                         style="@style/exam_history_label_text"
-                        fontPath="@string/roboto_regular"
+                       fontPath="@string/roboto_regular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="15dp"
-                        android:text="Exam"
-                        android:textSize="16sp" />
+                        android:padding="@dimen/dp15"
+                        android:text="@string/exam"
+                        android:textSize="@dimen/sp16" />
 
                     <TextView
                         android:id="@+id/tv_examname"
-                        fontPath="@string/roboto_regular"
+                       fontPath="@string/roboto_regular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="15dp"
+                        android:padding="@dimen/dp15"
                         android:text="-"
                         android:textColor="@color/gray_dark_border"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/sp16" />
 
                 </LinearLayout>
 
@@ -61,22 +61,22 @@
 
                     <TextView
                         style="@style/exam_history_label_text"
-                        fontPath="@string/roboto_regular"
+                       fontPath="@string/roboto_regular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="15dp"
-                        android:text="Type"
-                        android:textSize="16sp" />
+                        android:padding="@dimen/dp15"
+                        android:text="@string/type"
+                        android:textSize="@dimen/sp16" />
 
                     <TextView
                         android:id="@+id/tv_type"
-                        fontPath="@string/roboto_regular"
+                       fontPath="@string/roboto_regular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="15dp"
+                        android:padding="@dimen/dp15"
                         android:text="-"
                         android:textColor="@color/gray_dark_border"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/sp16" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -94,22 +94,22 @@
 
                     <TextView
                         style="@style/exam_history_label_text"
-                        fontPath="@string/roboto_regular"
+                       fontPath="@string/roboto_regular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="15dp"
-                        android:text="Time Taken"
-                        android:textSize="16sp" />
+                        android:padding="@dimen/dp15"
+                        android:text="@string/time_taken"
+                        android:textSize="@dimen/sp16" />
 
                     <TextView
                         android:id="@+id/tv_time_taken"
-                        fontPath="@string/roboto_regular"
+                       fontPath="@string/roboto_regular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="15dp"
+                        android:padding="@dimen/dp15"
                         android:text="-"
                         android:textColor="@color/gray_dark_border"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/sp16" />
 
                 </LinearLayout>
 
@@ -120,22 +120,22 @@
 
                     <TextView
                         style="@style/exam_history_label_text"
-                        fontPath="@string/roboto_regular"
+                       fontPath="@string/roboto_regular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="15dp"
-                        android:text="Date"
-                        android:textSize="16sp" />
+                        android:padding="@dimen/dp15"
+                        android:text="@string/date"
+                        android:textSize="@dimen/sp16" />
 
                     <TextView
                         android:id="@+id/tv_date"
-                        fontPath="@string/roboto_regular"
+                       fontPath="@string/roboto_regular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="15dp"
+                        android:padding="@dimen/dp15"
                         android:text="-"
                         android:textColor="@color/gray_dark_border"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/sp16" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -160,7 +160,7 @@
                         style="@style/exam_result_table_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="1dp"
+                        android:layout_marginLeft="@dimen/dp1"
                         android:layout_span="1" />
 
 
@@ -169,21 +169,21 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_span="3"
-                        android:text="Questions" />
+                        android:text="@string/questions" />
 
                     <TextView
                         style="@style/exam_result_table_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_span="4"
-                        android:text="Marks" />
+                        android:text="@string/marks" />
 
                     <TextView
                         style="@style/exam_result_table_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_span="2"
-                        android:text="Time" />
+                        android:text="@string/time" />
                 </TableRow>
 
                 <TableRow
@@ -195,63 +195,63 @@
                         style="@style/exam_result_table_header"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="1dp"
+                        android:layout_marginLeft="@dimen/dp1"
                         android:text="Subject" />
 
                     <TextView
                         style="@style/exam_result_table_header"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Total" />
+                        android:text="@string/total" />
 
                     <TextView
                         style="@style/exam_result_table_header"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Correct" />
+                        android:text="@string/correct" />
 
                     <TextView
                         style="@style/exam_result_table_header"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Wrong" />
+                        android:text="@string/wrong" />
 
                     <TextView
                         style="@style/exam_result_table_header"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Max Marks" />
+                        android:text="@string/max_marks" />
 
                     <TextView
                         style="@style/exam_result_table_header"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="+ve" />
+                        android:text="@string/ve" />
 
                     <TextView
                         style="@style/exam_result_table_header"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="-ve" />
+                        android:text="@string/ve_negative" />
 
 
                     <TextView
                         style="@style/exam_result_table_header"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Total" />
+                        android:text="@string/total" />
 
                     <TextView
                         style="@style/exam_result_table_header"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Recommended Reading" />
+                        android:text="@string/recommended_reading" />
 
                     <TextView
                         style="@style/exam_result_table_header"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Actual" />
+                        android:text="@string/actual" />
                 </TableRow>
 
             </TableLayout>

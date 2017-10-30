@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
+    android:layout_margin="@dimen/dp5"
     android:background="@drawable/rounded_corners_gray"
     android:orientation="horizontal"
-    android:padding="20dp">
-
+    android:padding="@dimen/dp20">
 
     <ImageView
         android:id="@+id/type_img"
-        android:layout_width="75dp"
+        android:layout_width="@dimen/dp75"
         android:layout_height="75dp"
         android:layout_marginLeft="20dp"
         android:scaleType="centerInside"
@@ -20,7 +18,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="@dimen/dp20"
         android:orientation="vertical"
         android:gravity="center_vertical">
 
@@ -32,7 +30,7 @@
                 fontPath="@string/roboto_regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Type : "
+                android:text="@string/type_colon"
                 android:textColor="@color/text_gray" />
 
             <TextView
@@ -40,7 +38,7 @@
                 fontPath="@string/roboto_medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Reading"
+                android:text="@string/reading"
                 android:textColor="@color/text_black" />
 
         </LinearLayout>
@@ -48,13 +46,13 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="@dimen/dp10">
 
             <TextView
                 fontPath="@string/roboto_regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Description : "
+                android:text="@string/description"
                 android:textColor="@color/text_gray" />
 
             <TextView
@@ -62,20 +60,20 @@
                 fontPath="@string/roboto_regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Description"
+                android:text="@string/descriptions"
                 android:textColor="@color/text_black" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="@dimen/dp10">
 
             <TextView
                 fontPath="@string/roboto_regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Due Date : "
+                android:text="@string/due_dates"
                 android:textColor="@color/text_gray"
                 />
 
@@ -84,30 +82,30 @@
                 fontPath="@string/roboto_regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="--/--/----"
+                android:text="@string/dashe"
                 android:textColor="@color/text_black" />
 
             <TextView
                 fontPath="@string/roboto_regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Over due : "
+                android:text="@string/over_due"
                 android:textColor="@color/text_gray"
-                android:layout_marginLeft="30dp"/>
+                android:layout_marginLeft="@dimen/dp30"/>
 
             <TextView
                 android:id="@+id/overdue_txt"
                 fontPath="@string/roboto_regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="65"
+                android:text="@string/sixty_five_65"
                 android:textColor="@color/text_black" />
 
             <TextView
                 fontPath="@string/roboto_regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Total Points : "
+                android:text="@string/total_points"
                 android:textColor="@color/text_gray"
                 android:layout_marginLeft="30dp"/>
 
@@ -116,7 +114,7 @@
                 fontPath="@string/roboto_medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="6.000"
+                android:text="@string/six_6_000"
                 android:textColor="@color/text_black" />
 
         </LinearLayout>

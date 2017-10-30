@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
-    android:orientation="vertical">
+    android:layout_margin="@dimen/dp5"
+    android:orientation="vertical"
+    tools:ignore="WebViewLayout">
 
     <TextView
         android:id="@+id/comment_txt"
@@ -11,10 +13,10 @@
         android:layout_height="wrap_content"
         android:background="@color/golden_yellow"
         android:gravity="center_vertical"
-        android:paddingLeft="10dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:text="comment"/>
+        android:paddingLeft="@dimen/dp10"
+        android:paddingTop="@dimen/dp5"
+        android:paddingBottom="@dimen/dp5"
+        android:text="@string/comment"/>
 
     <WebView
         android:id="@+id/paragraph_webview"
@@ -29,8 +31,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/paragraph_webview"
         android:layout_gravity="center_vertical"
-        android:padding="10dp"
-        android:text="1) "
+        android:padding="@dimen/dp10"
+        android:text="@string/one_bracket_1"
         android:textColor="@color/black" />
 
     <WebView
@@ -45,14 +47,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/question_webview"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="@dimen/dp10">
 
         <LinearLayout
             android:id="@+id/answer_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
-            android:minWidth="700dp"
+            android:layout_marginLeft="@dimen/dp40"
+            android:minWidth="@dimen/dp700"
             android:orientation="vertical">
 
         </LinearLayout>

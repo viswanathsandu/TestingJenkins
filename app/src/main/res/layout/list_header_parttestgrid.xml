@@ -7,20 +7,20 @@
         android:gravity="left|center_vertical"
         android:layout_weight="3"
         android:id="@+id/tv_chapters"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/dp0"
         android:layout_height="wrap_content"
-        android:text="Chapters"
+        android:text="@string/chapters"
         android:maxLines="1"
         android:ellipsize="end"
-        android:layout_marginLeft="8dp"
+        android:layout_marginLeft="@dimen/dp8"
         style="@style/parttestgrid_header_text"/>
     <TextView
         android:gravity="center"
         android:layout_weight="1"
         android:id="@+id/tv_questions"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/dp0"
         android:layout_height="wrap_content"
-        android:text="Questions"
+        android:text="@string/questions"
         android:maxLines="1"
         android:ellipsize="end"
         style="@style/parttestgrid_header_text"/>
@@ -28,10 +28,10 @@
         android:gravity="center"
         android:layout_weight="1"
         android:id="@+id/tv_questios_exist"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/dp0"
         android:layout_height="wrap_content"
         android:maxLines="2"
         android:ellipsize="end"
-        android:text="Questions\nExist"
+        android:text="@string/questions_nexist"
         style="@style/parttestgrid_header_text"/>
 </LinearLayout>

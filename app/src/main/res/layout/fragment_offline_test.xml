@@ -7,15 +7,14 @@
       android:id="@+id/expandableList"
       android:layout_width="match_parent"
       android:layout_height="match_parent" />
-
   <TextView
       android:id="@+id/no_test_txt"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:gravity="center"
       android:visibility="gone"
-      android:textSize="18sp"
+      android:textSize="@dimen/sp18"
       fontPath="@string/roboto_regular"
       android:background="@color/white"
-      android:text="No tests available for Offline"/>
+      android:text="@string/no_tests_available_for_offline"/>
 </RelativeLayout>

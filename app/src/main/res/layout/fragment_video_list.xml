@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="300dp"
+    android:layout_height="@dimen/dp300"
     android:orientation="vertical"
-    android:padding="15dp">
+    android:padding="@dimen/dp15">
 
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:paddingLeft="15dp"
+        android:textSize="@dimen/sp18"
+        android:paddingLeft="@dimen/dp15"
         android:textColor="@color/green"
-        android:text="Videos for "/>
+        android:text="@string/videos_for"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_videolist"

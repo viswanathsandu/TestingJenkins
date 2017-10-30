@@ -7,4 +7,4 @@
     android:ellipsize="end"
     android:textAlignment="inherit"
     android:textColor="@color/white"
-    android:maxWidth="250dp"/>
+    android:maxWidth="@dimen/dp250"/>

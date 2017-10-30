@@ -4,14 +4,12 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
-
     <TextView
         android:layout_weight="1"
         android:id="@+id/tv_message"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/dp0"
         android:layout_height="wrap_content"
-        android:padding="15dp"
-        android:text="Message"
+        android:padding="@dimen/dp15"
+        android:text="@string/message"
         style="@style/user_profile_text"/>
-
 </LinearLayout>

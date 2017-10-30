@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:paddingBottom="5dp">
+    android:paddingBottom="@dimen/dp5">
 
     <RelativeLayout
         android:id="@+id/leader_list_layout"
@@ -13,9 +13,9 @@
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/leader_board_recyclerview"
-            android:layout_width="220dp"
+            android:layout_width="@dimen/dp220"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"/>
+            android:layout_margin="@dimen/dp10"/>
 
         <com.education.corsalite.views.CustomImageButton
             android:id="@+id/close_btn"
@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ico_close"
             android:background="@color/transparent"
-            android:padding="5dp"/>
+            android:padding="@dimen/dp5"/>
     </RelativeLayout>
 
     <com.education.corsalite.views.CustomImageButton
@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:background="@color/transparent"
         android:src="@drawable/ico_leader_board"
-        android:layout_margin="15dp"
+        android:layout_margin="@dimen/dp15"
         android:visibility="visible"/>
 
 </RelativeLayout>

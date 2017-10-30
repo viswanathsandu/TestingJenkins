@@ -6,8 +6,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="16dp"
-    android:layout_marginRight="16dp"
+    android:layout_marginBottom="@dimen/dp16"
+    android:layout_marginRight="@dimen/dp16"
     android:background="?android:attr/selectableItemBackground"
     android:orientation="vertical">
 
@@ -29,35 +29,35 @@
             android:lineSpacingMultiplier="1.2"
             android:maxLines="2"
             android:lines="2"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:text="Subject name"
+            android:paddingLeft="@dimen/dp16"
+            android:paddingRight="@dimen/dp16"
+            android:text="@string/subject_name"
             android:textColor="@color/white"
-            android:textSize="16sp"/>
+            android:textSize="@dimen/sp16"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="@dimen/dp5"
             android:orientation="horizontal"
-            android:paddingLeft="12dp"
+            android:paddingLeft="@dimen/dp12"
             android:weightSum="3">
 
             <TextView
                 android:id="@+id/clock"
                 style="@style/grid_child_text_style"
                 fontPath="@string/roboto_regular"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/dp0"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:drawableLeft="@drawable/ico_tile_time"
-                android:drawablePadding="4dp"
+                android:drawablePadding="@dimen/dp4"
                 android:gravity="center_vertical|left"
-                android:paddingLeft="4dp"
+                android:paddingLeft="@dimen/dp4"
                 android:textColor="@color/white"
-                android:textSize="12sp"
+                android:textSize="@dimen/sp12"
                 android:visibility="gone"
-                tools:text="00:00:00"/>
+                tools:text="@string/timing"/>
 
             <TextView
                 android:id="@+id/star"
@@ -70,8 +70,8 @@
                 android:drawablePadding="16dp"
                 android:drawableTop="@drawable/cup"
                 android:gravity="center_vertical|center_horizontal"
-                android:paddingLeft="4dp"
-                android:text="28/347"
+                android:paddingLeft="@dimen/dp4"
+                android:text="@string/division_28_347"
                 android:textColor="@color/white"/>
 
             <TextView
@@ -82,32 +82,32 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:drawablePadding="16dp"
+                android:drawablePadding="@dimen/dp16"
                 android:drawableTop="@drawable/level_three"
                 android:gravity="center_vertical|center"
-                android:paddingLeft="4dp"
+                android:paddingLeft="@dimen/dp4"
                 android:textColor="@color/white"
                 tools:text="level 2"/>
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="@dimen/dp0"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:paddingLeft="4dp">
+                android:paddingLeft="@dimen/dp4">
 
                 <com.github.lzyzsd.circleprogress.DonutProgress
                     android:id="@+id/progress_id"
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
+                    android:layout_width="@dimen/dp56"
+                    android:layout_height="@dimen/dp56"
                     android:gravity="center_vertical|center"
                     custom:donut_finished_color="#FFFFFF"
                     custom:donut_unfinished_color="#23232300"
-                    custom:donut_finished_stroke_width="6dp"
-                    custom:donut_unfinished_stroke_width="6dp"
+                    custom:donut_finished_stroke_width="@dimen/dp6"
+                    custom:donut_unfinished_stroke_width="@dimen/dp6"
                     custom:donut_progress="30"
-                    custom:donut_text_size="12sp"
+                    custom:donut_text_size="@dimen/sp12"
                     custom:donut_text_color="#FFFFFF"/>
 
                 <TextView
@@ -117,13 +117,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="@dimen/dp8"
+                    android:layout_marginTop="@dimen/dp8"
                     android:ellipsize="end"
                     android:gravity="center|center_vertical"
                     android:maxLines="2"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
+                    android:paddingLeft="@dimen/dp16"
+                    android:paddingRight="@dimen/dp16"
                     android:text="@string/topics"
                     android:textColor="@color/white"
                     android:visibility="visible"/>

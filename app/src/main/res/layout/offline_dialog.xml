@@ -6,7 +6,6 @@
     android:fillViewport="true"
     android:orientation="vertical">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,21 +16,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingLeft="16dp" />
+            android:paddingLeft="@dimen/dp16" />
 
         <LinearLayout
             android:id="@+id/topic_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingLeft="16dp" />
+            android:paddingLeft="@dimen/dp16" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:padding="24dp">
+            android:padding="@dimen/dp24">
 
             <CheckBox
                 android:id="@+id/exercises_ckb"
@@ -40,19 +39,19 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                android:text="Exercises"
+                android:text="@string/exercises"
                 android:textColor="@color/text_black"
-                android:textSize="18sp"
+                android:textSize="@dimen/sp18"
                 android:visibility="gone" />
 
             <com.education.corsalite.views.CustomButton
                 android:id="@+id/ok"
                 fontPath="@string/roboto_regular"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="@dimen/dp40"
                 android:layout_alignParentRight="true"
                 android:background="@color/transparent"
-                android:text="Download"
+                android:text="@string/download"
                 android:textAllCaps="false"
                 android:textColor="@color/green" />
 
@@ -60,10 +59,10 @@
                 android:id="@+id/cancel"
                 fontPath="@string/roboto_regular"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="@dimen/dp40"
                 android:layout_toLeftOf="@+id/ok"
                 android:background="@color/transparent"
-                android:text="Cancel"
+                android:text="@string/cancel"
                 android:textAllCaps="false"
                 android:textColor="@color/text_black" />
         </RelativeLayout>

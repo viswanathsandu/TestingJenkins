@@ -18,10 +18,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
-            android:padding="10dp"
-            android:text="Virtual currency earned in last session"
+            android:padding="@dimen/dp10"
+            android:text="@string/virtual_currency_earned_in_last_session"
             android:textColor="@color/text_white"
-            android:textSize="16sp" />
+            android:textSize="@dimen/sp16" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -30,18 +30,18 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_margin="10dp"
+                android:layout_width="@dimen/dp30"
+                android:layout_height="@dimen/dp30"
+                android:layout_margin="@dimen/dp10"
                 android:src="@drawable/ico_currency_profile" />
 
             <TextView
                 android:id="@+id/vc_lastsessioncount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="----"
+                android:text="@string/dashes"
                 android:textColor="@color/text_white"
-                android:textSize="20sp" />
+                android:textSize="@dimen/sp20" />
 
         </LinearLayout>
 

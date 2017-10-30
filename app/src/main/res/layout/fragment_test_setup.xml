@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:background="@android:color/white"
             android:orientation="vertical"
-            android:padding="8dp">
+            android:padding="@dimen/dp8">
 
             <TextView
                 android:id="@+id/tv_title"
@@ -24,17 +24,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:padding="16dp"
-                android:text="Course Name"
+                android:padding="@dimen/dp16"
+                android:text="@string/course_name"
                 android:textColor="@color/text_gray"
-                android:textSize="22sp" />
+                android:textSize="@dimen/sp22" />
 
             <Spinner
                 android:id="@+id/selectSubjectSpinner"
                 style="@android:style/Widget.Holo.Light.Spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp" />
+                android:textSize="@dimen/sp16" />
 
             <TextView
                 android:id="@+id/tv_selectSubjError"
@@ -42,7 +42,7 @@
                 fontPath="@string/roboto_light"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Virtual Currency"
+                android:text="@string/virtual_currency"
                 android:textColor="@color/red"
                 android:visibility="gone" />
 
@@ -51,7 +51,7 @@
                 style="@android:style/Widget.Holo.Light.Spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp" />
+                android:textSize="@dimen/sp16" />
 
             <TextView
                 android:id="@+id/tv_selectChapError"
@@ -59,15 +59,15 @@
                 fontPath="@string/roboto_light"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Virtual Currency"
+                android:text="@string/virtual_currency"
                 android:textColor="@color/red"
                 android:visibility="gone" />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingBottom="5dp"
+                android:paddingLeft="@dimen/dp10"
+                android:paddingBottom="@dimen/dp5"
                 android:visibility="visible"
                 android:textColorHint="@color/text_gray">
 
@@ -85,7 +85,7 @@
                     android:singleLine="true"
                     android:textColor="@color/text_black"
                     android:textColorHint="#46000000"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/sp16"
                     android:text="10"/>
             </android.support.design.widget.TextInputLayout>
 
@@ -95,14 +95,14 @@
                 fontPath="@string/roboto_light"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:text="Virtual Currency"
+                android:paddingLeft="@dimen/dp10"
+                android:text="@string/virtual_currency"
                 android:textColor="@color/red"
                 android:visibility="gone" />
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="@dimen/dp1"
                 android:background="#E1E1E1" />
 
             <Spinner
@@ -110,13 +110,13 @@
                 style="@android:style/Widget.Holo.Light.Spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp" />
+                android:textSize="@dimen/sp16" />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingBottom="5dp"
+                android:paddingLeft="@dimen/dp10"
+                android:paddingBottom="@dimen/dp5"
                 android:visibility="visible"
                 android:textColorHint="@color/text_gray">
 
@@ -134,8 +134,8 @@
                     android:singleLine="true"
                     android:textColor="@color/text_black"
                     android:textColorHint="#46000000"
-                    android:textSize="16sp"
-                    android:text="10"/>
+                    android:textSize="@dimen/sp16"
+                    android:text="@string/ten_10"/>
             </android.support.design.widget.TextInputLayout>
 
             <TextView
@@ -144,20 +144,20 @@
                 fontPath="@string/roboto_light"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Virtual Currency"
+                android:text="@string/virtual_currency"
                 android:textColor="@color/red"
                 android:visibility="gone" />
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="@dimen/dp1"
                 android:background="#E1E1E1" />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingBottom="5dp"
+                android:paddingLeft="@dimen/dp10"
+                android:paddingBottom="@dimen/dp5"
                 android:visibility="visible"
                 android:textColorHint="@color/text_gray">
 
@@ -175,7 +175,7 @@
                     android:singleLine="true"
                     android:textColor="@color/text_black"
                     android:textColorHint="#46000000"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/sp16"
                     android:text="10"/>
             </android.support.design.widget.TextInputLayout>
 
@@ -185,13 +185,13 @@
                 fontPath="@string/roboto_light"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Virtual Currency"
+                android:text="@string/virtual_currency"
                 android:textColor="@color/red"
                 android:visibility="gone" />
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="@dimen/dp1"
                 android:background="#E1E1E1" />
         </LinearLayout>
     </ScrollView>
@@ -202,15 +202,15 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:gravity="center_vertical|right"
-        android:paddingRight="10dp">
+        android:paddingRight="@dimen/dp10">
 
         <TextView
             android:id="@+id/tv_testsetup_cancel"
             fontPath="@string/roboto_regular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="15dp"
-            android:text="Cancel"
+            android:padding="@dimen/dp15"
+            android:text="@string/cancel"
             android:textColor="@android:color/black" />
 
         <TextView
@@ -218,8 +218,8 @@
             fontPath="@string/roboto_regular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="15dp"
-            android:text="Challenge"
+            android:padding="@dimen/dp15"
+            android:text="@string/challenge"
             android:textColor="@android:color/holo_green_dark" />
 
     </LinearLayout>

@@ -3,8 +3,8 @@
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:weightSum="4"
-    android:paddingTop="10dp"
-    android:paddingBottom="10dp"
+    android:paddingTop="@dimen/dp10"
+    android:paddingBottom="@dimen/dp10"
     android:gravity="center">
 
     <TextView
@@ -12,17 +12,17 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Demo01"
+        android:text="@string/demo01"
         android:textColor="@color/text_white"
         android:gravity="center_horizontal"
         fontPath="@string/roboto_regular"/>
 
     <TextView
         android:id="@+id/score_txt"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/dp0"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="0.00"
+        android:text="@string/zero_0_00"
         android:textColor="@color/text_white"
         android:gravity="center_horizontal"
         fontPath="@string/roboto_regular"/>
@@ -32,17 +32,17 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="00"
+        android:text="@string/zero_00"
         android:textColor="@color/text_white"
         android:gravity="center_horizontal"
         fontPath="@string/roboto_regular"/>
 
     <TextView
         android:id="@+id/status_txt"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/dp0"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="WON"
+        android:text="@string/won"
         android:textColor="@color/text_white"
         android:gravity="center_horizontal"
         fontPath="@string/roboto_regular"/>

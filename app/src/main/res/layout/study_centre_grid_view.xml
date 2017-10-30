@@ -6,8 +6,8 @@
     android:orientation="vertical"
     android:id="@+id/grid_layout"
     android:background="@drawable/redshape"
-    android:layout_marginBottom="16dp"
-    android:layout_marginRight="16dp">
+    android:layout_marginBottom="@dimen/dp16"
+    android:layout_marginRight="@dimen/dp16">
 
     <LinearLayout
         android:id="@+id/grid_layout_color"
@@ -20,23 +20,23 @@
             style="@style/grid_text_style"
             fontPath="@string/roboto_bold"
             android:layout_width="wrap_content"
-            android:layout_height="45dp"
+            android:layout_height="@dimen/dp45"
             android:ellipsize="end"
             android:gravity="left|center_vertical"
             android:lineSpacingMultiplier="1.2"
             android:maxLines="2"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:text="Subject name"
+            android:paddingLeft="@dimen/dp16"
+            android:paddingRight="@dimen/dp16"
+            android:text="@string/subject_name"
             android:textColor="@color/white"
-            android:textSize="14sp" />
+            android:textSize="@dimen/sp14" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="@dimen/dp5"
             android:orientation="horizontal"
-            android:paddingLeft="12dp"
+            android:paddingLeft="@dimen/dp12"
             android:weightSum="3">
 
             <TextView
@@ -47,42 +47,42 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:drawableLeft="@drawable/ico_tile_time"
-                android:drawablePadding="4dp"
+                android:drawablePadding="@dimen/dp4"
                 android:gravity="center_vertical|left"
-                android:paddingLeft="4dp"
+                android:paddingLeft="@dimen/dp4"
                 android:textColor="@color/white"
-                android:textSize="12sp"
-                tools:text="00:00:00" />
+                android:textSize="@dimen/sp12"
+                tools:text="@string/timing" />
 
             <TextView
                 android:id="@+id/star"
                 style="@style/grid_child_text_style"
                 fontPath="@string/roboto_regular"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/dp0"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:drawableLeft="@drawable/ico_tile_score"
-                android:drawablePadding="4dp"
+                android:drawablePadding="@dimen/dp4"
                 android:gravity="center_vertical|left"
-                android:paddingLeft="4dp"
-                android:text="28/347"
+                android:paddingLeft="@dimen/dp4"
+                android:text="@string/number_28_347"
                 android:textColor="@color/white"
-                android:textSize="12sp" />
+                android:textSize="@dimen/sp12" />
 
             <TextView
                 android:id="@+id/level"
                 style="@style/grid_child_text_style"
                 fontPath="@string/roboto_regular"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/dp0"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:drawableLeft="@drawable/ico_tile_level_two"
-                android:drawablePadding="4dp"
+                android:drawablePadding="@dimen/dp4"
                 android:gravity="center_vertical|left"
-                android:paddingLeft="4dp"
+                android:paddingLeft="@dimen/dp4"
                 android:textColor="@color/white"
-                android:textSize="12sp"
-                tools:text="level 2" />
+                android:textSize="@dimen/sp12"
+                tools:text="@string/level" />
         </LinearLayout>
 
         <TextView
@@ -92,26 +92,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginBottom="@dimen/dp8"
+            android:layout_marginTop="@dimen/dp8"
             android:ellipsize="end"
             android:gravity="left|center_vertical"
             android:maxLines="2"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
+            android:paddingLeft="@dimen/dp16"
+            android:paddingRight="@dimen/dp16"
             android:text="@string/completed_topics"
             android:textColor="@color/white"
-            android:textSize="12sp" />
+            android:textSize="@dimen/sp12" />
 
         <ProgressBar
             android:id="@+id/progress_id"
             style="@android:style/Widget.ProgressBar.Horizontal"
             android:layout_width="match_parent"
-            android:layout_height="10dp"
+            android:layout_height="@dimen/dp10"
             android:layout_gravity="center_vertical"
-            android:layout_marginBottom="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginBottom="@dimen/dp16"
+            android:layout_marginLeft="@dimen/dp16"
+            android:layout_marginRight="@dimen/dp16"
             android:progressDrawable="@drawable/progressdrawable" />
 
     </LinearLayout>
@@ -129,54 +129,54 @@
             style="@style/grid_text_style"
             fontPath="@string/roboto_bold"
             android:layout_width="wrap_content"
-            android:layout_height="45dp"
+            android:layout_height="@dimen/dp45"
             android:ellipsize="end"
             android:gravity="left|center_vertical"
             android:lineSpacingMultiplier="1.2"
             android:maxLines="2"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:text="Subject name"
+            android:paddingLeft="@dimen/dp16"
+            android:paddingRight="@dimen/dp16"
+            android:text="@string/subject_name"
             android:textColor="@color/dark_gray"
-            android:textSize="14sp" />
+            android:textSize="@dimen/sp14" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:orientation="horizontal"
-            android:paddingLeft="12dp"
+            android:paddingLeft="@dimen/dp12"
             android:weightSum="3">
 
             <TextView
                 android:id="@+id/clock_gray"
                 style="@style/grid_child_text_style"
                 fontPath="@string/roboto_regular"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/dp0"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:drawableLeft="@drawable/ico_tile_time"
-                android:drawablePadding="4dp"
+                android:drawablePadding="@dimen/dp4"
                 android:gravity="center_vertical|left"
-                android:paddingLeft="4dp"
+                android:paddingLeft="@dimen/dp4"
                 android:textColor="@color/dark_gray"
-                android:textSize="12sp"
-                tools:text="00:00:00" />
+                android:textSize="@dimen/sp12"
+                tools:text="@string/timings" />
 
             <TextView
                 android:id="@+id/star_gray"
                 style="@style/grid_child_text_style"
                 fontPath="@string/roboto_regular"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/dp0"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:drawableLeft="@drawable/ico_tile_score"
-                android:drawablePadding="4dp"
+                android:drawablePadding="@dimen/dp4"
                 android:gravity="center_vertical|left"
-                android:paddingLeft="4dp"
-                android:text="28/347"
+                android:paddingLeft="@dimen/dp4"
+                android:text="@string/number_28_347"
                 android:textColor="@color/dark_gray"
-                android:textSize="12sp" />
+                android:textSize="@dimen/sp12" />
 
             <TextView
                 android:id="@+id/level_gray"
@@ -186,11 +186,11 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:drawableLeft="@drawable/ico_tile_level_two"
-                android:drawablePadding="4dp"
+                android:drawablePadding="@dimen/dp4"
                 android:gravity="center_vertical|left"
-                android:paddingLeft="4dp"
+                android:paddingLeft="@dimen/dp4"
                 android:textColor="@color/dark_gray"
-                android:textSize="12sp"
+                android:textSize="@dimen/sp12"
                 tools:text="level 2" />
         </LinearLayout>
 
@@ -201,26 +201,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginBottom="@dimen/dp8"
+            android:layout_marginTop="@dimen/dp8"
             android:ellipsize="end"
             android:gravity="left|center_vertical"
             android:maxLines="2"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
+            android:paddingLeft="@dimen/dp16"
+            android:paddingRight="@dimen/dp16"
             android:text="@string/completed_topics"
             android:textColor="@color/dark_gray"
-            android:textSize="12sp" />
+            android:textSize="@dimen/sp12" />
 
         <ProgressBar
             android:id="@+id/progress_id_gray"
             style="@android:style/Widget.ProgressBar.Horizontal"
             android:layout_width="match_parent"
-            android:layout_height="10dp"
+            android:layout_height="@dimen/dp10"
             android:layout_gravity="center_vertical"
-            android:layout_marginBottom="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginBottom="@dimen/dp16"
+            android:layout_marginLeft="@dimen/dp16"
+            android:layout_marginRight="@dimen/dp16"
             android:progressDrawable="@drawable/progressdrawablegray" />
 
     </LinearLayout>

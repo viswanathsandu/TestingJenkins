@@ -20,9 +20,9 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_gravity="center_horizontal"
-        android:layout_margin="10dp"
+        android:layout_margin="@dimen/dp10"
         android:drawableTop="@drawable/ico_info"
-        android:text="No Analytics available for Progress Report"
+        android:text="@string/no_analytics_available_for_progress_report"
         android:visibility="gone" />
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -37,8 +37,8 @@
             <RelativeLayout
                 android:id="@+id/rl_progress_report"
                 android:layout_width="match_parent"
-                android:layout_height="400dp"
-                android:layout_margin="15dp"
+                android:layout_height="@dimen/dp400dp"
+                android:layout_margin="@dimen/dp15"
                 android:orientation="vertical"
                 android:visibility="gone">
 
@@ -47,7 +47,7 @@
                     style="@style/analytics_title_style"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Progress Report based on 365 days of Performance" />
+                    android:text="@string/progress_report_based_on_365_days_of_performance" />
 
                 <TextView
                     android:id="@+id/tv_accuracy"
@@ -58,7 +58,7 @@
                     android:layout_below="@id/tv_title"
                     android:layout_centerVertical="true"
                     android:rotation="-90"
-                    android:text="Accuracy (%)" />
+                    android:text="Accuracy" />
 
                 <LinearLayout
                     android:id="@+id/ll_graph"
@@ -70,13 +70,13 @@
 
                     <com.github.mikephil.charting.charts.LineChart
                         android:id="@+id/lc_progress_report"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/dp0"
                         android:layout_height="match_parent"
                         android:layout_weight="4" />
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/rv_legend"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/dp0"
                         android:layout_height="match_parent"
                         android:layout_weight="2"
                         android:scrollbars="vertical" />
@@ -85,7 +85,7 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="2dp"
+                    android:layout_height="@dimen/dp2"
                     android:layout_below="@id/ll_graph"
                     android:background="@color/dark_gray" />
 
@@ -95,8 +95,8 @@
             <RelativeLayout
                 android:id="@+id/rl_progress_report_percentile"
                 android:layout_width="match_parent"
-                android:layout_height="400dp"
-                android:layout_margin="15dp"
+                android:layout_height="@dimen/dp400"
+                android:layout_margin="@dimen/dp15"
                 android:visibility="gone">
 
                 <TextView
@@ -104,7 +104,7 @@
                     style="@style/analytics_title_style"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Progress Report in Percentile based on Performance in Standard Tests" />
+                    android:text="@string/progress_report_in_percentile_based_on_performance_in_standard_tests" />
 
                 <TextView
                     android:id="@+id/tv_accuracy_2"
@@ -115,7 +115,7 @@
                     android:layout_below="@id/tv_title1"
                     android:layout_centerVertical="true"
                     android:rotation="-90"
-                    android:text="Accuracy (%)" />
+                    android:text="Accuracy" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -125,13 +125,13 @@
 
                     <com.github.mikephil.charting.charts.LineChart
                         android:id="@+id/lc_progress_report_percentile"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/dp0"
                         android:layout_height="match_parent"
                         android:layout_weight="4"/>
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/rv_legend_percentile"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/dp0"
                         android:layout_height="match_parent"
                         android:layout_weight="2"
                         android:scrollbars="vertical" />

@@ -17,7 +17,6 @@
         android:text="@string/chapter_label"
         style="@style/analytics_recommended_reading_heading_text_style" />
 
-
     <TextView
         android:layout_weight="2"
         android:id="@+id/tv_topic"
@@ -29,7 +28,6 @@
         android:id="@+id/tv_date"
         android:text="@string/date_label"
         style="@style/analytics_recommended_reading_heading_text_style" />
-
 
     <TextView
         android:id="@+id/tv_marks"

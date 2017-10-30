@@ -7,34 +7,34 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="10dp">
+        android:layout_margin="@dimen/dp10">
 
         <RelativeLayout
             android:id="@+id/rlSearchBar"
             android:layout_width="match_parent"
-            android:layout_height="130dp"
+            android:layout_height="@dimen/dp130"
             android:layout_alignParentTop="true"
             android:background="#CE2E26">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text="Select frends to challange"
+                android:padding="@dimen/dp10"
+                android:text="@string/select_frends_to_challange"
                 android:textColor="@android:color/white"
-                android:textSize="12sp" />
+                android:textSize="@dimen/sp12" />
 
             <EditText
                 android:id="@+id/etSearchBar"
-                android:layout_width="170dp"
+                android:layout_width="@dimen/dp170"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
-                android:layout_margin="10dp"
+                android:layout_margin="@dimen/dp10"
                 android:drawableRight="@android:drawable/ic_search_category_default"
-                android:hint="Search Users.."
+                android:hint="@string/search_users"
                 android:maxLines="1"
-                android:textSize="14sp" />
+                android:textSize="@dimen/sp14" />
         </RelativeLayout>
 
 
@@ -48,11 +48,11 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:layout_margin="10dp"
+            android:layout_margin="@dimen/dp10"
             android:background="#E6001C"
-            android:padding="10dp"
-            android:text="SET RULES ->"
+            android:padding="@dimen/dp10"
+            android:text="@string/set_rules"
             android:textColor="#FFF409"
-            android:textSize="22sp" />
+            android:textSize="@dimen/sp22" />
     </RelativeLayout>
 </RelativeLayout>

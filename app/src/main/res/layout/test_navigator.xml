@@ -18,8 +18,8 @@
 
         <com.education.corsalite.views.CustomButton
             android:id="@+id/btn_slider_test"
-            android:layout_width="30dp"
-            android:layout_height="50dp"
+            android:layout_width="@dimen/dp30"
+            android:layout_height="@dimen/dp50"
             android:layout_gravity="center_vertical"
             android:background="@drawable/btn_right_slider"
             android:elevation="2dp"/>

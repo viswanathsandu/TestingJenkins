@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ellipsize="end"
-        android:paddingLeft="16dp"
+        android:paddingLeft="@dimen/dp16"
         style="@style/title_style"
         android:text="@string/title_activity_currency"
         android:singleLine="true" />
@@ -25,7 +25,7 @@
             android:id="@+id/redeem_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="REDEEM"
+            android:text="@string/redeem"
             android:background="@drawable/ambershape"/>
     </LinearLayout>
 

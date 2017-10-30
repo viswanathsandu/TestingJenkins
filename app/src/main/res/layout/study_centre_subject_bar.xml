@@ -114,7 +114,6 @@
             android:src="@drawable/tile_filter_color_selector"
             android:visibility="gone" />
     </LinearLayout>
-
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

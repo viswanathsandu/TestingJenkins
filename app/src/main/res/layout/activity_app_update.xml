@@ -13,18 +13,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/sp20"
-        android:text="Downloading Latest Version"/>
+        android:text="@string/downloading_latest_version"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/sp10"
-        android:text="(Please do not close the app until the latest version is downloaded)"/>
+        android:text="@string/please_do_not_close_the_app_until_the_latest_version_is_downloaded"/>
 
     <ProgressBar
         android:id="@+id/download_progress"
         android:layout_width="@dimen/dp300"
-        android:layout_height="40dp"
+        android:layout_height="@dimen/dp40"
         android:max="100"
         android:progress="0"
         style="@android:style/Widget.Holo.ProgressBar.Horizontal"/>
@@ -33,16 +33,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/instructions"
-        android:textSize="20sp"
-        android:layout_marginTop="50dp"/>
+        android:textSize="@dimen/sp20"
+        android:layout_marginTop="@dimen/dp50"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/app_update_instructions"
-        android:textSize="12sp"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"/>
+        android:textSize="@dimen/sp12"
+        android:layout_marginTop="@dimen/dp20"
+        android:layout_marginLeft="@dimen/dp50"
+        android:layout_marginRight="@dimen/dp50"/>
 
 </LinearLayout>

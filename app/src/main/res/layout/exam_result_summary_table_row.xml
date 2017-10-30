@@ -6,7 +6,7 @@
     android:background="@color/black">
 
     <TextView
-        android:layout_marginLeft="1dp"
+        android:layout_marginLeft="@dimen/dp1"
         android:id="@+id/subject_name_txt"
         style="@style/exam_result_table_data"
         android:layout_width="wrap_content"

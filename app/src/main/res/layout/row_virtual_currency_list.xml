@@ -8,45 +8,45 @@
         android:gravity="center"
         android:layout_weight="1"
         android:id="@+id/tv_date"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/dp0"
         android:layout_height="wrap_content"
-        android:text="Effective Date"
+        android:text="@string/effective_date"
         style="@style/virtual_currency_data_text"/>
 
     <TextView
         android:gravity="center"
         android:layout_weight="1"
         android:id="@+id/tv_time"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/dp0"
         android:layout_height="wrap_content"
-        android:text="Time"
+        android:text="@string/time"
         style="@style/virtual_currency_data_text"/>
 
     <TextView
         android:gravity="center"
         android:layout_weight="1"
         android:id="@+id/tv_event"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/dp0"
         android:layout_height="wrap_content"
-        android:text="Event"
+        android:text="@string/event"
         style="@style/virtual_currency_data_text"/>
 
     <TextView
         android:gravity="center"
         android:layout_weight="1"
         android:id="@+id/tv_earned"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/dp0"
         android:layout_height="wrap_content"
-        android:text="Currency Earned"
+        android:text="@string/currency_earned"
         style="@style/virtual_currency_data_text" />
 
     <TextView
         android:gravity="center"
         android:layout_weight="1"
         android:id="@+id/tv_balance"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/dp0"
         android:layout_height="wrap_content"
-        android:text="Balance"
+        android:text="@string/balance"
         style="@style/virtual_currency_data_text"/>
 
 </LinearLayout>

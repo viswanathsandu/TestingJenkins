@@ -14,27 +14,27 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:paddingBottom="10dp"
-            android:paddingLeft="40dp"
-            android:paddingRight="40dp"
-            android:paddingTop="10dp">
+            android:paddingBottom="@dimen/dp10"
+            android:paddingLeft="@dimen/dp40"
+            android:paddingRight="@dimen/dp40"
+            android:paddingTop="@dimen/dp10">
 
             <WebView
                 android:id="@+id/webview_paragraph"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:minHeight="20dp"
+                android:minHeight="@dimen/dp20"
                 android:layout_weight="1" />
 
             <ImageView
                 android:id="@+id/imv_flag"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="@dimen/dp30"
+                android:layout_height="@dimen/dp30"
                 android:layout_alignParentLeft="true"
                 android:layout_below="@id/webview_paragraph"
                 android:layout_gravity="center_vertical"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="@dimen/dp10"
                 android:src="@drawable/btn_flag_unselect" />
 
             <TextView
@@ -44,7 +44,7 @@
                 android:layout_below="@id/webview_paragraph"
                 android:layout_gravity="center_vertical"
                 android:layout_toRightOf="@id/imv_flag"
-                android:padding="10dp"
+                android:padding="@dimen/dp10"
                 android:textColor="@color/black" />
 
             <WebView
@@ -52,7 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/webview_paragraph"
-                android:minHeight="40dp"
+                android:minHeight="@dimen/dp40"
                 android:layout_toRightOf="@+id/tv_serial_no" />
 
             <HorizontalScrollView
@@ -60,14 +60,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/webview_question"
-                android:layout_marginLeft="40dp"
-                android:layout_marginTop="10dp">
+                android:layout_marginLeft="@dimen/dp40"
+                android:layout_marginTop="@dimen/dp10">
 
                 <LinearLayout
                     android:id="@+id/answer_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:minWidth="700dp"
+                    android:minWidth="@dimen/dp700"
                     android:orientation="vertical">
 
                 </LinearLayout>
@@ -79,7 +79,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginLeft="40dp"
+                android:layout_marginLeft="@dimen/dp40"
                 android:layout_below="@+id/answer_scroll_layout">
 
                 <TextView
@@ -88,16 +88,16 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_below="@id/layout_header"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="@dimen/dp5"
+                    android:layout_marginTop="@dimen/dp10"
+                    android:layout_marginRight="@dimen/dp20"
                     android:background="@drawable/login_button_bg"
-                    android:drawablePadding="5dp"
-                    android:paddingBottom="5dp"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:paddingTop="5dp"
-                    android:text="Verify Answer"
+                    android:drawablePadding="@dimen/dp5"
+                    android:paddingBottom="@dimen/dp5"
+                    android:paddingLeft="@dimen/dp20"
+                    android:paddingRight="@dimen/dp20"
+                    android:paddingTop="@dimen/dp5"
+                    android:text="@string/verify_answer"
                     android:textColor="@color/white"
                     android:visibility="gone" />
 
@@ -107,15 +107,15 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_below="@id/layout_header"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="@dimen/dp5"
+                    android:layout_marginTop="@dimen/dp10"
                     android:background="@drawable/login_button_bg"
-                    android:drawablePadding="5dp"
-                    android:paddingBottom="5dp"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:paddingTop="5dp"
-                    android:text="Clear Answer"
+                    android:drawablePadding="@dimen/dp5"
+                    android:paddingBottom="@dimen/dp5"
+                    android:paddingLeft="@dimen/dp20"
+                    android:paddingRight="@dimen/dp20"
+                    android:paddingTop="@dimen/dp5"
+                    android:text="@string/clear_answer"
                     android:textColor="@color/white" />
 
             </LinearLayout>
@@ -127,24 +127,24 @@
                 android:layout_below="@+id/action_buttons_layout"
                 android:background="@drawable/table_row"
                 android:orientation="horizontal"
-                android:padding="5dp"
+                android:padding="@dimen/dp5"
                 android:visibility="gone"
                 android:weightSum="4">
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/dp0"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:drawableRight="@color/black"
-                    android:text="Correct Answers"
+                    android:text="@string/correct_answers"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textSize="14sp"
+                    android:textSize="@dimen/sp14"
                     android:textStyle="bold" />
 
 
                 <TextView
                     android:id="@+id/txtAnswerCount"
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/dp0"
                     android:layout_height="wrap_content"
                     android:layout_weight="3" />
             </LinearLayout>
@@ -156,23 +156,23 @@
                 android:layout_below="@+id/layout_choice"
                 android:background="@drawable/table_row"
                 android:orientation="horizontal"
-                android:padding="5dp"
+                android:padding="@dimen/dp5"
                 android:visibility="gone"
                 android:weightSum="4">
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/dp0"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:drawableRight="@color/black"
-                    android:text="Explanation"
+                    android:text="@string/explanation"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textSize="14sp"
+                    android:textSize="@dimen/sp14"
                     android:textStyle="bold" />
 
                 <WebView
                     android:id="@+id/txtAnswerExp"
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/dp0"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
                     tools:ignore="WebViewLayout" />

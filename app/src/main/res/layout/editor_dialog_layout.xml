@@ -18,11 +18,11 @@
         <com.education.corsalite.views.CustomButton
             android:id="@+id/edit_btn"
             android:layout_width="wrap_content"
-            android:layout_height="38dp"
+            android:layout_height="@dimen/dp38"
             android:layout_gravity="right"
-            android:layout_marginRight="16dp"
+            android:layout_marginRight="@dimen/dp16"
             android:background="@drawable/white_shape"
-            android:text="Done"
+            android:text="@string/done"
             android:textColor="@color/text_black"
             android:visibility="visible" />
 
@@ -52,32 +52,32 @@
 
                     <Spinner
                         android:id="@+id/subject_spinner"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/dp0"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
                         android:layout_weight="1"
                         android:background="@drawable/spinner_bg"
                         android:drawSelectorOnTop="true"
-                        android:paddingRight="20dp" />
+                        android:paddingRight="@dimen/dp20" />
 
                     <Spinner
                         android:id="@+id/chapter_spinner"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/dp0"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginRight="@dimen/dp10"
                         android:layout_weight="1"
                         android:background="@drawable/spinner_bg"
                         android:drawSelectorOnTop="true"
-                        android:paddingRight="20dp" />
+                        android:paddingRight="@dimen/dp20" />
 
                     <Spinner
                         android:id="@+id/topic_spinner"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/dp0"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@drawable/spinner_bg"
                         android:drawSelectorOnTop="true"
-                        android:paddingRight="10dp" />
+                        android:paddingRight="@dimen/dp10" />
                 </LinearLayout>
 
                 <CheckBox
@@ -86,7 +86,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_below="@+id/spinners_layout"
-                    android:text="is Author Only" />
+                    android:text="@string/is_author_only" />
 
                 <EditText
                     android:id="@+id/title_txt"
@@ -94,7 +94,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/spinners_layout"
                     android:layout_toLeftOf="@+id/is_author_only_ckb"
-                    android:hint="Title" />
+                    android:hint="@string/title" />
             </RelativeLayout>
 
             <LinearLayout

@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="5dp"
+    android:padding="@dimen/dp5"
     tools:context=".fragments.InviteFriendsFragment">
 
     <android.support.v7.widget.SearchView
@@ -20,5 +20,4 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/sv_friend_search" />
-
 </RelativeLayout>

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="40dp"
-    android:layout_height="40dp"
+    android:layout_width="@dimen/dp40"
+    android:layout_height="@dimen/dp40"
     android:orientation="vertical"
-    android:padding="5dp">
+    android:padding="@dimen/dp5">
 
     <TextView
         android:gravity="center"
         android:id="@+id/btnNumber"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="@dimen/dp30"
+        android:layout_height="@dimen/dp30"
         fontPath="@string/roboto_regular"
         android:background="@drawable/rounded_corners_gray" />
 

@@ -11,44 +11,44 @@
         android:layout_height="wrap_content"
         android:gravity="right"
         android:orientation="vertical"
-        android:paddingBottom="10dp"
-        android:paddingLeft="10dp"
-        android:paddingTop="10dp">
+        android:paddingBottom="@dimen/dp10"
+        android:paddingLeft="@dimen/dp10"
+        android:paddingTop="@dimen/dp10">
 
         <TextView
             android:id="@+id/tv_accuracy"
             style="@style/analytics_title"
             android:drawableTop="@drawable/ico_accuracy_unselected"
-            android:text="Accuracy Vs Speed" />
+            android:text="@string/accuracy_vs_speed" />
 
         <TextView
             android:id="@+id/tv_progress_report"
             style="@style/analytics_title"
             android:drawableTop="@drawable/ico_report_unselected"
-            android:text="Accuracy Trend" />
+            android:text="@string/accuracy_trend" />
 
         <TextView
             android:id="@+id/tv_test_coverage"
             style="@style/analytics_title"
             android:drawableTop="@drawable/ico_test_unselected"
-            android:text="Test Coverage" />
+            android:text="@string/test_coverage" />
 
         <TextView
             android:id="@+id/tv_time_management"
             style="@style/analytics_title"
             android:drawableTop="@drawable/ico_time_unselected"
-            android:text="Time Management" />
+            android:text="@string/time_management" />
 
         <TextView
             android:id="@+id/tv_recommended_reading"
             style="@style/analytics_title"
             android:drawableTop="@drawable/ico_recommend_unselected"
-            android:text="Recommended Reading" />
+            android:text="@string/recommended_reading" />
 
         <TextView
             android:id="@+id/tv_usage_analysis"
             style="@style/analytics_title"
             android:drawableTop="@drawable/ico_sidemenu_groups"
-            android:text="Usage Analysis" />
+            android:text="@string/usage_analysis" />
     </LinearLayout>
 </ScrollView>

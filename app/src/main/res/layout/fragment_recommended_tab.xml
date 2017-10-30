@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:drawableTop="@drawable/ico_info"
-            android:text="No data found"
+            android:text="@string/no_datafound"
             android:visibility="visible" />
     </LinearLayout>
 </RelativeLayout>

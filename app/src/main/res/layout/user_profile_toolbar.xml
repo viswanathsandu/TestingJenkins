@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="@dimen/abc_action_bar_default_height_material"
@@ -21,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="left|center_vertical"
-        android:padding="10dp"
+        android:padding="@dimen/dp10"
         android:visibility="gone"
         android:background="@color/black">
 
@@ -71,7 +72,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right|center_vertical"
-                android:padding="10dp"
+                android:padding="@dimen/dp10"
                 android:visibility="gone">
 
                 <com.education.corsalite.views.CustomButton
@@ -80,7 +81,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
                     android:background="@drawable/yellowshape_selector"
-                    android:text="REDEEM"
+                    android:text="@string/redeem"
                     android:textColor="@color/black" />
             </LinearLayout>
 
@@ -89,7 +90,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right|center_vertical"
-                android:padding="10dp"
+                android:padding="@dimen/dp10"
                 android:visibility="gone">
 
                 <ImageView
@@ -104,7 +105,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right|center_vertical"
-                android:padding="10dp"
+                android:padding="@dimen/dp10"
                 android:background="@color/black"
                 android:visibility="gone">
 
@@ -114,8 +115,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="35dp"
                         android:background="@drawable/greenshape_selector"
-                        android:text="Add Comment"
-                        android:paddingLeft="20dp"
+                        android:text="@string/add_comment"
+                        android:paddingLeft="@dimen/dp20"
                         android:paddingRight="20dp"
                         android:textColor="@color/white" />
             </LinearLayout>
@@ -124,7 +125,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right|center_vertical"
-                android:padding="10dp"
+                android:padding="@dimen/dp10"
                 android:background="@color/black"
                 android:visibility="gone">
 
@@ -141,7 +142,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right|center_vertical"
-                android:padding="10dp"
+                android:padding="@dimen/dp10"
                 android:background="@color/black"
                 android:visibility="gone">
 
@@ -151,7 +152,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="20dp"
                     android:background="@drawable/white_shape"
-                    android:text="Cancel"
+                    android:text="@string/cancel"
                     android:textColor="@color/text_black" />
 
                 <com.education.corsalite.views.CustomButton
@@ -159,7 +160,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/white_shape"
-                    android:text="Done"
+                    android:text="@string/done"
                     android:textColor="@color/text_black"
                     android:visibility="visible" />
 
@@ -168,7 +169,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/white_shape"
-                    android:text="Done"
+                    android:text="@string/done"
                     android:textColor="@color/text_black"
                     android:visibility="visible" />
 
@@ -179,7 +180,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right|center_vertical"
-                android:padding="10dp"
+                android:padding="@dimen/dp10"
                 android:background="@color/black"
                 android:visibility="gone">
 
@@ -189,7 +190,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
                     android:background="@drawable/login_button_bg"
-                    android:text="Start"
+                    android:text="@string/start"
                     android:textColor="@color/black" />
             </LinearLayout>
 
@@ -215,8 +216,8 @@
                 android:visibility="gone">
 
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="@dimen/dp30"
+                    android:layout_height="@dimen/dp30"
                     android:adjustViewBounds="true"
                     android:scaleType="fitCenter"
                     android:src="@drawable/ico_currency_profile" />
@@ -227,9 +228,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:paddingBottom="5dp"
-                    android:paddingLeft="5dp"
-                    android:paddingTop="5dp"
+                    android:paddingBottom="@dimen/dp5"
+                    android:paddingLeft="@dimen/dp5"
+                    android:paddingTop="@dimen/dp5"
                     android:singleLine="true"
                     android:text=""
                     android:textColor="@color/text_white"
@@ -237,8 +238,8 @@
 
                 <ProgressBar
                     android:id="@+id/ProgressBar"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="@dimen/dp30"
+                    android:layout_height="@dimen/dp30"
                     android:layout_gravity="center" />
             </LinearLayout>
 
@@ -247,7 +248,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="right"
-                android:paddingLeft="16dp" />
+                android:paddingLeft="@dimen/dp16"
+                tools:ignore="RtlHardcoded" />
         </LinearLayout>
 
     </RelativeLayout>
