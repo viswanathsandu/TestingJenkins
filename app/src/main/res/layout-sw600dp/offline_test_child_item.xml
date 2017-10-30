@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="64dp"
+    android:layout_height="@dimen/dp64"
     android:background="@color/white"
     android:gravity="center_vertical"
     android:orientation="horizontal"
@@ -11,11 +11,11 @@
         android:id="@+id/mock_test_txt"
         style="?android:attr/spinnerDropDownItemStyle"
         fontPath="@string/roboto_light"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/dp0"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginBottom="@dimen/dp5"
+        android:layout_marginLeft="@dimen/dp40"
+        android:layout_marginTop="@dimen/dp5"
         android:layout_weight="0.6"
         android:maxLines="1"
         android:padding="5dp"
@@ -26,13 +26,13 @@
         android:id="@+id/mock_test_time_txt"
         style="?android:attr/spinnerDropDownItemStyle"
         fontPath="@string/roboto_light"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/dp0"
         android:layout_height="wrap_content"
         android:layout_weight="0.3"
         android:maxLines="1"
         android:padding="5dp"
         android:textColor="@color/text_black"
-        android:textSize="12sp" />
+        android:textSize="@dimen/sp12" />
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -41,11 +41,11 @@
 
         <ImageView
             android:id="@+id/iv_status"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="@dimen/dp30"
+            android:layout_height="@dimen/dp30"
             android:layout_centerVertical="true"
             android:layout_gravity="center"
-            android:layout_marginRight="5dp"
+            android:layout_marginRight="@dimen/dp5"
             android:scaleType="centerInside"
             android:src="@drawable/ico_correct" />
 
@@ -53,14 +53,14 @@
             android:id="@+id/test_status"
             fontPath="@string/roboto_regular"
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="@dimen/dp30"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/iv_status"
             android:background="@drawable/button_selector_gray"
             android:maxLength="1"
             android:textAllCaps="false"
             android:textColor="@color/text_black"
-            android:textSize="12sp" />
+            android:textSize="@dimen/sp12" />
     </RelativeLayout>
 
 </LinearLayout>

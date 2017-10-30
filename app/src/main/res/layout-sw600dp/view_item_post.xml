@@ -11,15 +11,15 @@
         android:layout_height="match_parent"
         android:background="@drawable/white_shape"
         android:orientation="horizontal"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp">
+        android:layout_marginTop="@dimen/dp10"
+        android:layout_marginLeft="@dimen/dp10"
+        android:layout_marginRight="@dimen/dp10">
 
         <ImageView
             android:id="@+id/iv_post_user_pic"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:padding="10dp"
+            android:layout_width="@dimen/dp100"
+            android:layout_height="@dimen/dp100"
+            android:padding="@dimen/dp10"
             android:scaleType="centerCrop"
             android:src="@drawable/profile_pic" />
 
@@ -38,14 +38,14 @@
                 android:maxLines="1"
                 android:text="how to solve the given problem. and also can I get a clear explanations for these sums?"
                 android:textColor="@android:color/black"
-                android:textSize="16sp"
+                android:textSize="@dimen/sp16"
                 android:textStyle="bold" />
 
             <LinearLayout
                 android:id="@+id/ll_post_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
+                android:layout_marginTop="@dimen/dp3"
                 android:orientation="horizontal">
 
                 <TextView
@@ -56,7 +56,7 @@
                     android:maxLines="1"
                     android:text="07/09/2015 06:49:18 by"
                     android:textColor="@color/text_gray"
-                    android:textSize="12sp"
+                    android:textSize="@dimen/sp12"
                     android:textStyle="italic" />
 
                 <TextView
@@ -64,11 +64,11 @@
                     fontPath="@string/roboto_regular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginLeft="@dimen/dp5"
                     android:maxLines="1"
                     android:text="Shivkeshav"
                     android:textColor="@android:color/holo_blue_light"
-                    android:textSize="12sp"
+                    android:textSize="@dimen/sp12"
                     android:textStyle="italic" />
             </LinearLayout>
 
@@ -82,13 +82,13 @@
                 android:id="@+id/ll_post_tags"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="@dimen/dp5"
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:layout_marginRight="5dp"
+                    android:layout_width="@dimen/dp18"
+                    android:layout_height="@dimen/dp18"
+                    android:layout_marginRight="@dimen/dp5"
                     android:gravity="center_vertical"
                     android:src="@drawable/ic_tags" />
 
@@ -97,64 +97,64 @@
                     fontPath="@string/roboto_regular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="5dp"
+                    android:layout_marginRight="@dimen/dp5"
                     android:background="@android:color/darker_gray"
                     android:gravity="center_vertical"
-                    android:paddingBottom="2dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:paddingTop="2dp"
+                    android:paddingBottom="@dimen/dp2"
+                    android:paddingLeft="@dimen/dp5"
+                    android:paddingRight="@dimen/dp5"
+                    android:paddingTop="@dimen/dp2"
                     android:text="Course"
                     android:textColor="@android:color/white"
-                    android:textSize="10sp" />
+                    android:textSize="@dimen/sp10" />
 
                 <TextView
                     android:id="@+id/tv_subject_name"
                     fontPath="@string/roboto_regular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="5dp"
+                    android:layout_marginRight="@dimen/dp5"
                     android:background="@android:color/darker_gray"
                     android:gravity="center_vertical"
-                    android:paddingBottom="2dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:paddingTop="2dp"
+                    android:paddingBottom="@dimen/dp2"
+                    android:paddingLeft="@dimen/dp5"
+                    android:paddingRight="@dimen/dp5"
+                    android:paddingTop="@dimen/dp2"
                     android:text="Subject"
                     android:textColor="@android:color/white"
-                    android:textSize="10sp" />
+                    android:textSize="@dimen/sp10" />
 
                 <TextView
                     android:id="@+id/tv_chapter_name"
                     fontPath="@string/roboto_regular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="5dp"
+                    android:layout_marginRight="@dimen/dp5"
                     android:background="@android:color/darker_gray"
                     android:gravity="center_vertical"
-                    android:paddingBottom="2dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:paddingTop="2dp"
+                    android:paddingBottom="@dimen/dp2"
+                    android:paddingLeft="@dimen/dp5"
+                    android:paddingRight="@dimen/dp5"
+                    android:paddingTop="@dimen/dp2"
                     android:text="Chapter"
                     android:textColor="@android:color/white"
-                    android:textSize="10sp" />
+                    android:textSize="@dimen/sp10" />
 
                 <TextView
                     android:id="@+id/tv_topic_name"
                     fontPath="@string/roboto_regular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="5dp"
+                    android:layout_marginRight="@dimen/dp5"
                     android:background="@android:color/darker_gray"
                     android:gravity="center_vertical"
-                    android:paddingBottom="2dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:paddingTop="2dp"
+                    android:paddingBottom="@dimen/dp2"
+                    android:paddingLeft="@dimen/dp5"
+                    android:paddingRight="@dimen/dp5"
+                    android:paddingTop="@dimen/dp2"
                     android:text="Topic"
                     android:textColor="@android:color/white"
-                    android:textSize="10sp" />
+                    android:textSize="@dimen/sp10" />
 
             </LinearLayout>
 
@@ -170,14 +170,14 @@
                     fontPath="@string/roboto_regular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginRight="@dimen/dp10"
                     android:drawableLeft="@drawable/like_white"
-                    android:drawablePadding="5dp"
+                    android:drawablePadding="@dimen/dp5"
                     android:gravity="center_vertical"
-                    android:paddingBottom="5dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:paddingTop="5dp"
+                    android:paddingBottom="@dimen/dp5"
+                    android:paddingLeft="@dimen/dp10"
+                    android:paddingRight="@dimen/dp10"
+                    android:paddingTop="@dimen/dp5"
                     android:text="Like"
                     android:textColor="@android:color/black"
                     />
@@ -187,14 +187,14 @@
                     fontPath="@string/roboto_regular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:drawablePadding="5dp"
+                    android:layout_marginRight="@dimen/dp10"
+                    android:drawablePadding="@dimen/dp5"
                     android:drawableLeft="@drawable/comment"
                     android:gravity="center_vertical"
-                    android:paddingBottom="7dp"
-                    android:paddingRight="10dp"
-                    android:paddingLeft="0dp"
-                    android:paddingTop="7dp"
+                    android:paddingBottom="@dimen/dp7"
+                    android:paddingRight="@dimen/dp10"
+                    android:paddingLeft="@dimen/dp0"
+                    android:paddingTop="@dimen/dp7"
                     android:textColor="@android:color/black"
                     tools:text="4 Comments" />
 
@@ -203,14 +203,14 @@
                     fontPath="@string/roboto_regular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:drawablePadding="5dp"
+                    android:layout_marginRight="@dimen/dp10"
+                    android:drawablePadding="@dimen/dp5"
                     android:drawableLeft="@drawable/bookmark"
                     android:gravity="center_vertical"
-                    android:paddingBottom="7dp"
-                    android:paddingRight="10dp"
-                    android:paddingLeft="0dp"
-                    android:paddingTop="7dp"
+                    android:paddingBottom="@dimen/dp7"
+                    android:paddingRight="@dimen/dp10"
+                    android:paddingLeft="@dimen/dp0"
+                    android:paddingTop="@dimen/dp7"
                     android:textColor="@color/text_black"
                     android:text="Bookmark" />
 
@@ -219,14 +219,14 @@
                     fontPath="@string/roboto_regular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginRight="@dimen/dp10"
                     android:drawablePadding="5dp"
                     android:drawableLeft="@drawable/view"
                     android:gravity="center_vertical"
-                    android:paddingBottom="7dp"
-                    android:paddingRight="10dp"
-                    android:paddingLeft="0dp"
-                    android:paddingTop="7dp"
+                    android:paddingBottom="@dimen/dp7"
+                    android:paddingRight="@dimen/dp10"
+                    android:paddingLeft="@dimen/dp0"
+                    android:paddingTop="@dimen/dp7"
                     android:textColor="@android:color/black"
                     tools:text="127 Views" />
 
@@ -243,15 +243,15 @@
                     fontPath="@string/roboto_regular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginRight="@dimen/dp10"
                     android:background="@android:color/holo_red_light"
-                    android:drawablePadding="5dp"
+                    android:drawablePadding="@dimen/dp5"
                     android:drawableLeft="@drawable/lock"
                     android:gravity="center_vertical"
-                    android:paddingBottom="5dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:paddingTop="5dp"
+                    android:paddingBottom="@dimen/dp5"
+                    android:paddingLeft="@dimen/dp10"
+                    android:paddingRight="@dimen/dp10"
+                    android:paddingTop="@dimen/dp5"
                     android:text="Lock"
                     android:textColor="@android:color/white"
                     android:visibility="gone" />
@@ -261,15 +261,15 @@
                     fontPath="@string/roboto_regular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginRight="@dimen/dp10"
                     android:background="@android:color/holo_red_light"
-                    android:drawablePadding="5dp"
+                    android:drawablePadding="@dimen/dp5"
                     android:drawableLeft="@drawable/delete"
                     android:gravity="center_vertical"
-                    android:paddingBottom="5dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:paddingTop="5dp"
+                    android:paddingBottom="@dimen/dp5"
+                    android:paddingLeft="@dimen/dp10"
+                    android:paddingRight="@dimen/dp10"
+                    android:paddingTop="@dimen/dp5"
                     android:text="Delete"
                     android:visibility="gone"
                     android:textColor="@android:color/white" />
@@ -279,15 +279,15 @@
                     fontPath="@string/roboto_regular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginRight="@dimen/dp10"
                     android:background="@android:color/holo_blue_dark"
                     android:drawableLeft="@drawable/comment_white"
-                    android:drawablePadding="5dp"
+                    android:drawablePadding="@dimen/dp5"
                     android:gravity="center_vertical"
-                    android:paddingBottom="5dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:paddingTop="5dp"
+                    android:paddingBottom="@dimen/dp5"
+                    android:paddingLeft="@dimen/dp10"
+                    android:paddingRight="@dimen/dp10"
+                    android:paddingTop="@dimen/dp5"
                     android:text="Edit"
                     android:visibility="gone"
                     android:textColor="@android:color/white" />
@@ -297,19 +297,18 @@
                     fontPath="@string/roboto_regular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginRight="@dimen/dp10"
                     android:background="@android:color/holo_blue_dark"
                     android:drawableLeft="@drawable/comment_white"
-                    android:drawablePadding="5dp"
+                    android:drawablePadding="@dimen/dp5"
                     android:gravity="center_vertical"
-                    android:paddingBottom="5dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:paddingTop="5dp"
+                    android:paddingBottom="@dimen/dp5"
+                    android:paddingLeft="@dimen/dp10"
+                    android:paddingRight="@dimen/dp10"
+                    android:paddingTop="@dimen/dp5"
                     android:text="Comment"
                     android:visibility="gone"
                     android:textColor="@android:color/white" />
-
 
             </LinearLayout>
         </LinearLayout>

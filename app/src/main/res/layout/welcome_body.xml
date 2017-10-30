@@ -108,7 +108,7 @@
                     style="@style/welcome_button"
                     android:layout_width="@dimen/dp150"
                     android:layout_height="wrap_content"
-                    android:background="#FFBA4D"
+                    android:background="@color/FFBA4D"
                     android:text="@string/recommended_reading"
                     android:textColor="@color/text_white"
                     android:visibility="gone" />
@@ -136,7 +136,7 @@
                     style="@style/welcome_button"
                     android:layout_width="@dimen/dp150"
                     android:layout_height="wrap_content"
-                    android:background="#7195BF"
+                    android:background="@color/color_7195BF"
                     android:text="@string/messages"
                     android:textColor="@color/text_white"/>
 
