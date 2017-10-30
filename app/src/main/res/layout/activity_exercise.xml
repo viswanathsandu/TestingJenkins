@@ -91,7 +91,7 @@
                         android:layout_alignParentRight="true"
                         android:enabled="false"
                         android:text="@string/time_left"
-                        android:textColor="@color/color"
+                        android:textColor="@color/ffffff80"
                         android:textSize="@dimen/sp16" />
 
                     <TextView
