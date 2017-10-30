@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
+    android:layout_margin="@dimen/dp5"
     android:background="@color/beige"
     android:foreground="?android:attr/selectableItemBackground"
     android:orientation="horizontal"
     app:cardBackgroundColor="#E6E6E6"
-    app:cardCornerRadius="18dp"
-    app:cardElevation="8dp">
+    app:cardCornerRadius="@dimen/dp18"
+    app:cardElevation="@dimen/dp8">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,17 +26,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/text_green"
-                android:minWidth="40dp"
+                android:minWidth="@dimen/dp40"
                 android:orientation="vertical"
-                android:padding="1dp">
+                android:padding="@dimen/dp1">
 
                 <TextView
                     android:id="@+id/month_year_txt"
                     style="@style/exam_history_label_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:text="Jan 2017"
+                    android:padding="@dimen/dp10"
+                    android:text="@string/jan_2017"
                     android:textColor="@color/text_white" />
 
                 <TextView
@@ -45,7 +45,7 @@
                     android:layout_height="wrap_content"
                     android:background="@color/white"
                     android:gravity="center"
-                    android:text="20"
+                    android:text="@string/zero_20"
                     android:textColor="@color/black"
                     android:textSize="@dimen/sub_title_text_size" />
 
@@ -54,8 +54,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
-                    android:padding="10dp"
-                    android:text="12:30 PM"
+                    android:padding="@dimen/dp10"
+                    android:text="@string/time_12_30_pm"
                     android:textSize="@dimen/normal_text_size"
                     android:textColor="@color/text_white" />
             </LinearLayout>
@@ -63,8 +63,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginLeft="@dimen/dp10"
+                android:layout_marginRight="@dimen/dp10"
                 android:gravity="center_vertical"
                 android:orientation="vertical">
 
@@ -75,10 +75,10 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:gravity="left"
-                    android:paddingLeft="5dp"
-                    android:text="Exam"
+                    android:paddingLeft="@dimen/dp5"
+                    android:text="@string/exam"
                     android:maxLines="2"
-                    android:paddingTop="5dp"
+                    android:paddingTop="@dimen/dp5"
                     android:textColor="@color/gray_dark_border"
                     android:textSize="@dimen/title_text_size" />
 
@@ -98,8 +98,8 @@
                             fontPath="@string/roboto_regular"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:padding="5dp"
-                            android:text="Type"
+                            android:padding="@dimen/dp5"
+                            android:text="@string/type"
                             android:textSize="@dimen/sub_title_text_size" />
 
                         <TextView
@@ -107,8 +107,8 @@
                             fontPath="@string/roboto_regular"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:padding="5dp"
-                            android:text="-"
+                            android:padding="@dimen/dp5"
+                            android:text="--/--/----"
                             android:textColor="@color/gray_dark_border"
                             android:textSize="@dimen/sub_title_text_size" />
 
@@ -124,8 +124,8 @@
                             fontPath="@string/roboto_regular"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:padding="5dp"
-                            android:text="Score"
+                            android:padding="@dimen/dp5"
+                            android:text="@string/score"
                             android:textSize="@dimen/sub_title_text_size" />
 
                         <TextView
@@ -133,8 +133,8 @@
                             fontPath="@string/roboto_regular"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:padding="5dp"
-                            android:text="-"
+                            android:padding="@dimen/dp5"
+                            android:text="@string/_dash"
                             android:textColor="@color/gray_dark_border"
                             android:textSize="@dimen/sub_title_text_size" />
                     </LinearLayout>
@@ -148,7 +148,7 @@
                     android:weightSum="2">
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/dp0"
                         android:layout_height="wrap_content"
                         android:layout_weight="1">
 
@@ -157,8 +157,8 @@
                             fontPath="@string/roboto_regular"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:padding="5dp"
-                            android:text="Rank"
+                            android:padding="@dimen/dp5"
+                            android:text="@string/rank"
                             android:textSize="@dimen/sub_title_text_size" />
 
                         <TextView
@@ -166,8 +166,8 @@
                             fontPath="@string/roboto_regular"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:padding="5dp"
-                            android:text="-"
+                            android:padding="@dimen/dp5"
+                            android:text="@string/_dash"
                             android:textColor="@color/gray_dark_border"
                             android:textSize="@dimen/sub_title_text_size" />
 
@@ -183,8 +183,8 @@
                             fontPath="@string/roboto_regular"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:padding="5dp"
-                            android:text="Status"
+                            android:padding="@dimen/dp5"
+                            android:text="@string/status"
                             android:textSize="@dimen/sub_title_text_size" />
 
                         <TextView
@@ -192,16 +192,13 @@
                             fontPath="@string/roboto_regular"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:padding="5dp"
-                            android:text="-"
+                            android:padding="@dimen/dp5"
+                            android:text="@string/_dash"
                             android:textColor="@color/gray_dark_border"
                             android:textSize="@dimen/sub_title_text_size" />
                     </LinearLayout>
-
                 </LinearLayout>
-
             </LinearLayout>
-
         </LinearLayout>
     </LinearLayout>
 </android.support.v7.widget.CardView>

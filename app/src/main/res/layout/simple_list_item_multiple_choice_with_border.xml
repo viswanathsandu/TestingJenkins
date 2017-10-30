@@ -17,8 +17,8 @@
     android:layout_width="match_parent"
     android:layout_height="?android:attr/listPreferredItemHeightSmall"
     android:background="@color/dark_gray"
-    android:paddingRight="1dp"
-    android:paddingLeft="1dp">
+    android:paddingRight="@dimen/dp1"
+    android:paddingLeft="@dimen/dp1">
 
     <CheckedTextView
         android:id="@android:id/text1"

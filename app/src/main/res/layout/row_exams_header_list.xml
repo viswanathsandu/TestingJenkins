@@ -8,38 +8,36 @@
         android:gravity="center"
         android:layout_weight="1"
         android:id="@+id/tv_exam"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/dp0"
         android:layout_height="wrap_content"
-        android:text="Exam"
+        android:text="@string/exam"
         style="@style/virtual_currency_header_text"/>
 
     <TextView
         android:gravity="center"
         android:layout_weight="1"
         android:id="@+id/tv_days_remaining"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/dp0"
         android:layout_height="wrap_content"
         style="@style/virtual_currency_header_text"
-        android:text="Days Remaining"
-     />
+        android:text="@string/days_remaining" />
 
     <TextView
         android:gravity="center"
         android:layout_weight="1"
         android:id="@+id/tv_exam_date"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/dp0"
         android:layout_height="wrap_content"
         style="@style/virtual_currency_header_text"
-        android:text="Exam Date"
-    />
+        android:text="@string/exam_date" />
 
     <TextView
         android:gravity="center"
         android:layout_weight="1"
         android:id="@+id/tv_hall_ticket_number"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/dp0"
         android:layout_height="wrap_content"
         style="@style/virtual_currency_header_text"
-        android:text="Hall Ticket Number" />
+        android:text="@string/hall_ticket_number" />
 
 </LinearLayout>

@@ -8,15 +8,15 @@
     <!--Button should be used such that multi click on the button is enabled-->
     <Button
         android:layout_alignParentLeft="true"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="@dimen/dp48"
+        android:layout_height="@dimen/dp48"
         android:background="@drawable/btn_previous"
         android:id="@+id/btn_previous"/>
 
     <Button
         android:background="@drawable/btn_next"
         android:layout_alignParentRight="true"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="@dimen/dp48"
+        android:layout_height="@dimen/dp48"
         android:id="@+id/btn_next"/>
 </RelativeLayout>

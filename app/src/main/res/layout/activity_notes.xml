@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/light_40"
-        android:padding="10dp"
+        android:padding="@dimen/dp10"
         android:visibility="gone">
 
         <Spinner
@@ -19,8 +19,8 @@
             android:layout_height="wrap_content"
             android:background="@drawable/spinner_bg"
             android:drawSelectorOnTop="true"
-            android:paddingLeft="10dp"
-            android:paddingRight="20dp" />
+            android:paddingLeft="@dimen/dp10"
+            android:paddingRight="@dimen/dp20" />
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -29,8 +29,8 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/spinner_layout"
         android:clipToPadding="false"
-        android:paddingLeft="16dp"
-        android:paddingTop="16dp" />
+        android:paddingLeft="@dimen/dp16"
+        android:paddingTop="@dimen/dp16" />
 
     <LinearLayout
         android:id="@+id/no_notes"
@@ -43,9 +43,9 @@
             fontPath="@string/roboto_regular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="No Notes Available"
+            android:text="@string/no_notes_available"
             android:textColor="@color/text_black"
-            android:textSize="14sp" />
+            android:textSize="@dimen/sp14" />
     </LinearLayout>
 
     <LinearLayout

@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="32dp">
+    android:layout_height="@dimen/dp32">
     <ImageView
         android:id="@+id/selected_item"
         android:layout_width="wrap_content"
-        android:layout_height="28dp"
+        android:layout_height="@dimen/dp28"
         android:src="@drawable/ico_tick_selected"
-        android:layout_marginLeft="8dp"/>
+        android:layout_marginLeft="@dimen/dp8"/>
     <CheckedTextView
         android:id="@+id/text"
         style="?android:attr/spinnerDropDownItemStyle"
         android:layout_width="wrap_content"
-        android:layout_height="32dp"
+        android:layout_height="@dimen/dp32"
         android:ellipsize="marquee"
         android:maxLines="1"
-        android:textSize="14sp"
+        android:textSize="@dimen/sp14"
         android:gravity="center_vertical"
         fontPath="@string/roboto_regular"
         android:layout_toRightOf="@+id/selected_item"/>

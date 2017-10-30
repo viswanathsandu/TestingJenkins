@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp"
+    android:padding="@dimen/dp16"
     android:orientation="vertical"
     android:background="@color/webview_background_grey"
-    android:layout_marginLeft="20dp"
-    android:layout_marginBottom="10dp"
-    android:layout_marginRight="10dp">
+    android:layout_marginLeft="@dimen/dp20"
+    android:layout_marginBottom="@dimen/dp10"
+    android:layout_marginRight="@dimen/dp10"
+    tools:ignore="WebViewLayout">
 
     <WebView
         android:id="@+id/notes_content_webview"
@@ -20,12 +22,12 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="right"
-        android:paddingTop="10dp">
+        android:paddingTop="@dimen/dp10">
         <com.education.corsalite.views.CustomButton
             android:id="@+id/delete_btn"
             android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:text="Delete"
+            android:layout_height="@dimen/dp35"
+            android:text="@string/delete"
             android:background="@drawable/delete_button_selector"
             android:textColor="@color/text_white" />
 
@@ -33,8 +35,8 @@
             android:id="@+id/edit_btn"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
-            android:text="Edit"
-            android:layout_marginLeft="10dp"
+            android:text="@string/edit"
+            android:layout_marginLeft="@dimen/dp10"
             android:background="@drawable/edit_btn_selector"
             android:textColor="@color/text_white" />
     </LinearLayout>

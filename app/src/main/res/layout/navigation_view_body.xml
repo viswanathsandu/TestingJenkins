@@ -16,7 +16,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-
             <LinearLayout
                 android:id="@+id/navigation_welcome"
                 style="@style/navigation_drawer_element"
@@ -55,7 +54,7 @@
                     android:src="@drawable/ico_sidemenu_studycenter" />
                 <TextView
                     style="@style/navigation_text_size"
-                    android:text="Study Center" />
+                    android:text="@string/study_center" />
             </LinearLayout>
 
 
@@ -69,7 +68,7 @@
                     android:src="@drawable/ico_scheduled_tests" />
                 <TextView
                     style="@style/navigation_text_size"
-                    android:text="Test Series" />
+                    android:text="@string/test_series" />
             </LinearLayout>
 
 
@@ -83,7 +82,7 @@
                     android:src="@drawable/ico_sidemenu_analytics" />
                 <TextView
                     style="@style/navigation_text_size"
-                    android:text="Analytics" />
+                    android:text="@string/analytics" />
             </LinearLayout>
 
 
@@ -97,7 +96,7 @@
                     android:src="@drawable/ico_sidemenu_offline" />
                 <TextView
                     style="@style/navigation_text_size"
-                    android:text="Offline" />
+                    android:text="@string/offline" />
             </LinearLayout>
 
 
@@ -111,7 +110,7 @@
                     android:src="@drawable/ico_sidemenu_studycenter" />
                 <TextView
                     style="@style/navigation_text_size"
-                    android:text="Recommended Reading" />
+                    android:text="@string/recommended_reading" />
             </LinearLayout>
 
 
@@ -125,7 +124,7 @@
                     android:src="@drawable/ico_sidemenu_analytics" />
                 <TextView
                     style="@style/navigation_text_size"
-                    android:text="Progress Report" />
+                    android:text="@string/progress_report" />
             </LinearLayout>
 
 
@@ -139,7 +138,7 @@
                     android:src="@drawable/ico_sidemenu_calendar" />
                 <TextView
                     style="@style/navigation_text_size"
-                    android:text="Time Management" />
+                    android:text="@string/time_management" />
             </LinearLayout>
 
             <LinearLayout
@@ -152,7 +151,7 @@
                     android:src="@drawable/ico_sidemenu_analytics" />
                 <TextView
                     style="@style/navigation_text_size"
-                    android:text="Curriculum" />
+                    android:text="@string/curriculum" />
             </LinearLayout>
 
             <LinearLayout
@@ -235,7 +234,7 @@
                     android:src="@drawable/ico_sidemenu_smartclass" />
                 <TextView
                     style="@style/navigation_text_size"
-                    android:text="Smart Class" />
+                    android:text="@string/smart_class" />
             </LinearLayout>
 
 

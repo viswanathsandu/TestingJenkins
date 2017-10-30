@@ -17,15 +17,15 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Corsalite Application Version : "
-            android:textSize="16sp" />
+            android:text="@string/corsalite_application_version"
+            android:textSize="@dimen/sp16" />
 
         <TextView
             android:id="@+id/app_current_version_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=""
-            android:textSize="16sp"
+            android:textSize="@dimen/sp16"
             android:textStyle="bold" />
     </LinearLayout>
 
@@ -34,21 +34,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/dp10"
         android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Latest Version Available : "
-            android:textSize="16sp" />
+            android:text="@string/latest_version_available"
+            android:textSize="@dimen/sp16" />
 
         <TextView
             android:id="@+id/app_latest_version_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=""
-            android:textSize="16sp"
+            android:textSize="@dimen/sp16"
             android:textStyle="bold" />
     </LinearLayout>
 
@@ -56,17 +56,17 @@
         android:id="@+id/app_up_to_date_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="@dimen/dp10"
         android:visibility="gone"
-        android:text="You are up to date with the upgrades"/>
+        android:text="@string/you_are_up_to_date_with_the_upgrades"/>
 
     <Button
         android:id="@+id/app_upgrade_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:paddingLeft="40dp"
-        android:paddingRight="40dp"
-        android:text="Upgrade" />
+        android:layout_margin="@dimen/dp10"
+        android:paddingLeft="@dimen/dp40"
+        android:paddingRight="@dimen/dp40"
+        android:text="@string/upgrade" />
 
 </LinearLayout>

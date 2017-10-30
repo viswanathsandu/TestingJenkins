@@ -4,8 +4,8 @@
     android:layout_height="wrap_content"
     android:background="@color/white"
     android:orientation="vertical"
-    android:paddingEnd="16dp"
-    android:paddingStart="16dp">
+    android:paddingEnd="@dimen/dp16"
+    android:paddingStart="@dimen/dp16">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,8 +17,8 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:minHeight="?android:attr/listPreferredItemHeight"
-            android:paddingEnd="8dp"
-            android:paddingStart="8dp"
+            android:paddingEnd="@dimen/dp8"
+            android:paddingStart="@dimen/dp8"
             android:focusableInTouchMode="true">
 
             <TextView
@@ -26,13 +26,13 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.8"
-                android:text="No. of Questions"
+                android:text="@string/no_of_questions"
                 android:textColor="@color/black" />
 
             <EditText
                 android:id="@+id/edit_txt_chapter_test_setup_questions"
                 style="?android:attr/spinnerItemStyle"
-                android:layout_width="50dp"
+                android:layout_width="@dimen/dp50"
                 android:layout_height="wrap_content"
                 android:hint="00"
                 android:inputType="numberDecimal"
@@ -44,7 +44,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="@dimen/dp1"
             android:background="@color/gray" />
 
         <LinearLayout
@@ -52,15 +52,15 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:minHeight="?android:attr/listPreferredItemHeight"
-            android:paddingEnd="8dp"
-            android:paddingStart="8dp">
+            android:paddingEnd="@dimen/dp8"
+            android:paddingStart="@dimen/dp8">
 
             <TextView
                 style="?android:attr/spinnerItemStyle"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/dp0"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Use Adaptive Learning"
+                android:text="@string/use_adaptive_learning"
                 android:textColor="@color/black" />
 
             <CheckBox
@@ -73,7 +73,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="@dimen/dp1"
             android:background="@color/gray" />
 
         <HorizontalScrollView
@@ -95,7 +95,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="10dp"
-        android:layout_marginRight="10dp" />
+        android:layout_marginBottom="@dimen/dp10"
+        android:layout_marginRight="@dimen/dp10" />
 
 </LinearLayout>

@@ -3,7 +3,7 @@
     android:id="@android:id/text1"
     style="?android:attr/spinnerDropDownItemStyle"
     android:layout_width="match_parent"
-    android:layout_height="48dp"
+    android:layout_height="@dimen/dp48"
     android:ellipsize="marquee"
     fontPath="@string/roboto_medium"
     android:singleLine="true">

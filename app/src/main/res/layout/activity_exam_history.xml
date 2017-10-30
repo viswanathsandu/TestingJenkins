@@ -20,7 +20,7 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:drawableTop="@drawable/ico_info"
-        android:text="Exam History Not Available"
+        android:text="@string/exam_history_not_available"
         android:textColor="@color/text_black"
         android:visibility="gone" />
 

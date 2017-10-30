@@ -55,5 +55,4 @@
         style="@style/analytics_recommended_reading_text_style"
         android:singleLine="true"
         android:ellipsize="end"/>
-
 </LinearLayout>

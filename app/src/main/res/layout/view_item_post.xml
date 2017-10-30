@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -44,7 +43,7 @@
                     android:maxLines="1"
                     android:text="how to solve the given problem. and also can I get a clear explanations for these sums?"
                     android:textColor="@android:color/black"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/sp16"
                     android:textStyle="bold" />
 
                 <LinearLayout

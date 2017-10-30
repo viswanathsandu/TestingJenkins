@@ -161,6 +161,5 @@
             android:text="@string/submit"
             android:textAllCaps="true"
             android:textColor="@color/white" />
-
     </LinearLayout>
 </LinearLayout>

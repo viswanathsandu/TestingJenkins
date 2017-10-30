@@ -8,11 +8,11 @@
     android:scrollbars="vertical">
 
     <ImageView
-        android:layout_width="5dp"
-        android:layout_height="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginLeft="5dp"
-        android:paddingTop="2dp"
+        android:layout_width="@dimen/dp5"
+        android:layout_height="@dimen/dp5"
+        android:layout_marginRight="@dimen/dp5"
+        android:layout_marginLeft="@dimen/dp5"
+        android:paddingTop="@dimen/dp2"
         android:layout_gravity="center"
         android:id="@+id/iv_color"/>
 

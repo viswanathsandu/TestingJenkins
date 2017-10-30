@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="18dp">
+        android:padding="@dimen/dp18">
 
         <EditText
             android:id="@+id/username_txt"
@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical|left"
-            android:hint="Username"
+            android:hint="@string/username"
             android:inputType="textCapCharacters" />
 
         <EditText
@@ -23,9 +23,9 @@
             fontPath="@string/roboto_light"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="@dimen/dp20"
             android:gravity="center_vertical|left"
-            android:hint="First Name"
+            android:hint="@string/first_name"
             android:inputType="text" />
 
 
@@ -34,9 +34,9 @@
             fontPath="@string/roboto_light"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="@dimen/dp20"
             android:gravity="center_vertical|left"
-            android:hint="Last Name"
+            android:hint="@string/last_name"
             android:inputType="text" />
 
 
@@ -45,15 +45,15 @@
             fontPath="@string/roboto_light"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="@dimen/dp20"
             android:gravity="center_vertical|left"
-            android:hint="Email Id"
+            android:hint="@string/email_id"
             android:inputType="text" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="@dimen/dp20"
             android:weightSum="2">
 
             <EditText
@@ -63,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center_vertical|left"
-                android:hint="Password"
+                android:hint="@string/password"
                 android:inputType="textPassword" />
 
             <EditText
@@ -73,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center_vertical|left"
-                android:hint="Confirm Password"
+                android:hint="@string/confirm_password"
                 android:inputType="textPassword" />
 
         </LinearLayout>
@@ -89,10 +89,10 @@
                 fontPath="@string/roboto_regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_margin="@dimen/dp8"
                 android:background="@color/transparent"
-                android:padding="5dp"
-                android:text="CANCEL"
+                android:padding="@dimen/dp5"
+                android:text="@string/cancel_btn"
                 android:textColor="@color/black" />
 
             <com.education.corsalite.views.CustomButton
@@ -100,10 +100,10 @@
                 fontPath="@string/roboto_regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_margin="@dimen/dp8"
                 android:background="@color/transparent"
-                android:padding="5dp"
-                android:text="UPDATE"
+                android:padding="@dimen/dp5"
+                android:text="@string/update"
                 android:textColor="@color/blue" />
 
         </LinearLayout>

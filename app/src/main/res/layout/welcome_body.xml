@@ -14,58 +14,58 @@
             android:background="@drawable/welcome_bg"
             android:gravity="center_horizontal|bottom"
             android:orientation="vertical"
-            android:paddingBottom="30dp">
+            android:paddingBottom="@dimen/dp30">
 
 
             <ImageView
                 android:id="@+id/profile_pic"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginBottom="30dp"
+                android:layout_width="@dimen/dp100"
+                android:layout_height="@dimen/dp100"
+                android:layout_marginBottom="@dimen/dp30"
                 android:src="@drawable/profile_pic" />
 
             <TextView
                 fontPath="@string/roboto_regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Welcome"
+                android:text="@string/welcome"
                 android:textColor="@color/text_white"
-                android:textSize="22sp" />
+                android:textSize="@dimen/sp22" />
 
             <TextView
                 android:id="@+id/name_txt"
                 fontPath="@string/roboto_medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="----- ----- ----- -----"
+                android:text="@string/dashess"
                 android:textAllCaps="true"
                 android:textColor="@color/text_white"
-                android:textSize="26sp" />
+                android:textSize="@dimen/sp26" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="40dp"
+                android:layout_marginBottom="@dimen/dp40"
                 android:gravity="center_horizontal">
 
                 <TextView
                     fontPath="@string/roboto_regular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Last Visit : "
+                    android:text="@string/last_visit"
                     android:textColor="@color/text_white"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/sp18" />
 
                 <TextView
                     android:id="@+id/lastvisit_date"
                     fontPath="@string/roboto_regular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:text="--/--/----"
+                    android:layout_marginLeft="@dimen/dp20"
+                    android:layout_marginRight="@dimen/dp20"
+                    android:text="@string/dashes_slashes"
                     android:textColor="@color/text_white"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/sp18" />
 
 
                 <TextView
@@ -73,9 +73,9 @@
                     fontPath="@string/roboto_regular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="--:-- --"
+                    android:text="@string/dashes_colon"
                     android:textColor="@color/text_white"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/sp18" />
 
             </LinearLayout>
 
@@ -88,28 +88,28 @@
                 <com.education.corsalite.views.CustomButton
                     android:id="@+id/redeem_welcome_btn"
                     style="@style/welcome_button"
-                    android:layout_width="150dp"
+                    android:layout_width="@dimen/dp150"
                     android:layout_height="wrap_content"
                     android:background="@drawable/voilet_button_selector"
-                    android:text="Redeem"
+                    android:text="@string/redeem"
                     android:textColor="@color/text_white" />
 
                 <com.education.corsalite.views.CustomButton
                     android:id="@+id/studycenter_btn"
                     style="@style/welcome_button"
-                    android:layout_width="150dp"
+                    android:layout_width="@dimen/dp150"
                     android:layout_height="wrap_content"
                     android:background="@drawable/green_button_selector"
-                    android:text="Study Center"
+                    android:text="@string/study_center"
                     android:textColor="@color/text_white" />
 
                 <com.education.corsalite.views.CustomButton
                     android:id="@+id/recommended_reading_btn"
                     style="@style/welcome_button"
-                    android:layout_width="150dp"
+                    android:layout_width="@dimen/dp150"
                     android:layout_height="wrap_content"
                     android:background="#FFBA4D"
-                    android:text="Recommended Reading"
+                    android:text="@string/recommended_reading"
                     android:textColor="@color/text_white"
                     android:visibility="gone" />
 
@@ -120,24 +120,24 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:orientation="horizontal"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="@dimen/dp10">
 
                 <com.education.corsalite.views.CustomButton
                     android:id="@+id/scheduled_tests_btn"
                     style="@style/welcome_button"
-                    android:layout_width="150dp"
+                    android:layout_width="@dimen/dp150"
                     android:layout_height="wrap_content"
                     android:background="@drawable/schedule_test_selector"
-                    android:text="Scheduled Tests"
+                    android:text="@string/scheduled_tests"
                     android:textColor="@color/text_white" />
 
                 <com.education.corsalite.views.CustomButton
                     android:id="@+id/messages_btn"
                     style="@style/welcome_button"
-                    android:layout_width="150dp"
+                    android:layout_width="@dimen/dp150"
                     android:layout_height="wrap_content"
                     android:background="#7195BF"
-                    android:text="Messages"
+                    android:text="@string/messages"
                     android:textColor="@color/text_white"/>
 
             </LinearLayout>
@@ -150,10 +150,10 @@
         android:layout_height="wrap_content"
         android:background="@color/yellow"
         android:gravity="center_horizontal"
-        android:text="This course is ended on 20/1/2016"
+        android:text="@string/this_course_is_ended_on_20_1_2016"
         android:textColor="@color/red"
         fontPath="@string/roboto_regular"
-        android:textSize="30sp"
+        android:textSize="@dimen/sp30"
         android:visibility="gone"/>
 
 </RelativeLayout>

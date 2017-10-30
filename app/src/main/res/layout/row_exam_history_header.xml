@@ -4,15 +4,14 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
-
     <TextView
         style="@style/virtual_currency_header_text"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/dp0"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
-        android:padding="15dp"
-        android:text="Date" />
+        android:padding="@dimen/dp15"
+        android:text="@string/date" />
 
     <TextView
         style="@style/virtual_currency_header_text"
@@ -20,37 +19,37 @@
         android:layout_height="wrap_content"
         android:layout_weight="3"
         android:gravity="center"
-        android:padding="15dp"
-        android:text="Exam" />
+        android:padding="@dimen/dp15"
+        android:text="@string/exam" />
 
 
     <TextView
         style="@style/virtual_currency_header_text"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/dp0"
         android:layout_height="wrap_content"
         android:layout_weight="1.3"
         android:gravity="center"
-        android:padding="15dp"
-        android:text="Type" />
+        android:padding="@dimen/dp15"
+        android:text="@string/type" />
 
     <TextView
         style="@style/virtual_currency_header_text"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/dp0"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
-        android:padding="15dp"
-        android:text="Score" />
+        android:padding="@dimen/dp15"
+        android:text="@string/score" />
 
 
     <TextView
         style="@style/virtual_currency_header_text"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/dp0"
         android:layout_height="wrap_content"
         android:layout_weight="0.7"
         android:gravity="center"
-        android:padding="15dp"
-        android:text="Rank" />
+        android:padding="@dimen/dp15"
+        android:text="@string/rank" />
 
     <TextView
         style="@style/virtual_currency_header_text"
@@ -58,7 +57,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
-        android:padding="15dp"
-        android:text="Status" />
+        android:padding="@dimen/dp15"
+        android:text="@string/status" />
 
 </LinearLayout>

@@ -38,9 +38,9 @@
                     android:background="#FFFFFF"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:padding="50dp"
-                    android:text="Not available for Offline"
-                    android:textSize="25sp"
+                    android:padding="@dimen/dp50"
+                    android:text="@string/not_available_for_offline"
+                    android:textSize="@dimen/sp25"
                     android:visibility="gone" />
 
             </FrameLayout>
@@ -54,24 +54,24 @@
                     android:id="@+id/webview_content_reading"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="2dp" />
+                    android:layout_marginLeft="@dimen/dp10"
+                    android:layout_marginTop="@dimen/dp2" />
 
                 <TextView
                     android:id="@+id/tv_video"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="@dimen/dp20"
+                    android:layout_marginTop="@dimen/dp20"
                     android:background="@drawable/selector_btn_dark_gray"
                     android:drawableLeft="@drawable/ico_video"
-                    android:drawablePadding="5dp"
-                    android:paddingBottom="5dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:paddingTop="5dp"
-                    android:text="Watch Videos"
+                    android:drawablePadding="@dimen/dp5"
+                    android:paddingBottom="@dimen/dp5"
+                    android:paddingLeft="@dimen/dp10"
+                    android:paddingRight="@dimen/dp10"
+                    android:paddingTop="@dimen/dp5"
+                    android:text="@string/watch_videos"
                     android:textColor="@color/white"
                     android:gravity="center_vertical"
                     android:visibility="gone" />

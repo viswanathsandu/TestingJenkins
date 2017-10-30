@@ -25,7 +25,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="@dimen/dp1"
                 android:background="@color/dark_gray" />
 
             <android.support.design.widget.TabLayout
@@ -41,7 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:minHeight="300dp" />
+                android:minHeight="@dimen/dp300" />
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </LinearLayout>

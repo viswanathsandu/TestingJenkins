@@ -19,11 +19,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="No data available"
+            android:text="@string/no_data_available"
             android:textColor="@color/text_black"
-            android:textSize="18sp"
+            android:textSize="@dimen/sp18"
             fontPath="@string/roboto_regular"
-            android:padding="15dp"/>
+            android:padding="@dimen/dp15"/>
 
     </LinearLayout>
 

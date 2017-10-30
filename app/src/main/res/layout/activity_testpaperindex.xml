@@ -14,20 +14,20 @@
             android:id="@+id/instructions_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="20dp"
-            android:paddingTop="15dp"
-            android:paddingBottom="15dp"
+            android:paddingLeft="@dimen/dp20"
+            android:paddingTop="@dimen/dp15"
+            android:paddingBottom="@dimen/dp15"
             android:gravity="center_vertical"
-            android:text="Instructions"
+            android:text="@string/instructions"
             android:textColor="@color/white"
             fontPath="@string/roboto_regular"
-            android:textSize="16sp"/>
+            android:textSize="@dimen/sp16"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="@dimen/dp20"
             android:layout_alignTop="@+id/instructions_txt"
             android:layout_alignBottom="@+id/instructions_txt"
             android:gravity="center_vertical">
@@ -35,24 +35,24 @@
             <com.education.corsalite.views.CustomButton
                 android:id="@+id/bCancel"
                 android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_marginStart="8dp"
+                android:layout_height="@dimen/dp30"
+                android:layout_marginStart="@dimen/dp8"
                 android:background="@drawable/selector_btn_dark_gray"
-                android:text="Cancel"
+                android:text="@string/cancel"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="16sp" />
+                android:textSize="@dimen/sp16" />
 
             <com.education.corsalite.views.CustomButton
                 android:id="@+id/bStart"
                 android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_marginStart="8dp"
+                android:layout_height="@dimen/dp30"
+                android:layout_marginStart="@dimen/dp8"
                 android:background="@drawable/selector_btn_green"
-                android:text="Start"
+                android:text="@string/start"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="16sp" />
+                android:textSize="@dimen/sp16" />
         </LinearLayout>
     </RelativeLayout>
 
@@ -65,7 +65,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="10dp">
+            android:padding="@dimen/dp10">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -79,7 +79,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
                     android:orientation="horizontal"
-                    android:padding="30dp"
+                    android:padding="@dimen/dp30"
                     android:visibility="gone">
 
                     <RelativeLayout
@@ -96,7 +96,7 @@
                             android:layout_height="wrap_content"
                             android:text="00"
                             android:textColor="@color/text_black"
-                            android:textSize="40dp" />
+                            android:textSize="@dimen/sp40" />
 
                         <TextView
                             android:id="@+id/days_lbl"
@@ -107,7 +107,7 @@
                             android:layout_alignRight="@id/days_txt"
                             android:layout_below="@id/days_txt"
                             android:gravity="center_horizontal"
-                            android:text="Days"
+                            android:text="@string/days"
                             android:textColor="@color/text_black" />
 
                         <TextView
@@ -120,7 +120,7 @@
                             android:gravity="center_vertical"
                             android:text=":"
                             android:textColor="@color/text_black"
-                            android:textSize="30dp" />
+                            android:textSize="@dimen/sp30" />
 
                     </RelativeLayout>
 
@@ -139,7 +139,7 @@
                             android:layout_height="wrap_content"
                             android:text="00"
                             android:textColor="@color/text_black"
-                            android:textSize="40dp" />
+                            android:textSize="@dimen/sp40" />
 
                         <TextView
                             android:id="@+id/hours_lbl"
@@ -150,7 +150,7 @@
                             android:layout_alignRight="@id/hours_txt"
                             android:layout_below="@id/hours_txt"
                             android:gravity="center_horizontal"
-                            android:text="Hours"
+                            android:text="@string/hours"
                             android:textColor="@color/text_black" />
 
                         <TextView
@@ -163,7 +163,7 @@
                             android:gravity="center_vertical"
                             android:text=":"
                             android:textColor="@color/text_black"
-                            android:textSize="30dp" />
+                            android:textSize="@dimen/sp30" />
 
                     </RelativeLayout>
 
@@ -181,7 +181,7 @@
                             android:layout_height="wrap_content"
                             android:text="00"
                             android:textColor="@color/text_black"
-                            android:textSize="40dp" />
+                            android:textSize="@dimen/sp40" />
 
                         <TextView
                             android:id="@+id/minutes_lbl"
@@ -192,7 +192,7 @@
                             android:layout_alignRight="@id/minutes_txt"
                             android:layout_below="@id/minutes_txt"
                             android:gravity="center_horizontal"
-                            android:text="Minutes"
+                            android:text="@string/minutes"
                             android:textColor="@color/text_black" />
 
                         <TextView
@@ -205,7 +205,7 @@
                             android:gravity="center_vertical"
                             android:text=":"
                             android:textColor="@color/text_black"
-                            android:textSize="30dp" />
+                            android:textSize="@dimen/sp30" />
 
                     </RelativeLayout>
 
@@ -224,7 +224,7 @@
                             android:layout_height="wrap_content"
                             android:text="00"
                             android:textColor="@color/text_black"
-                            android:textSize="40dp" />
+                            android:textSize="@dimen/sp40" />
 
                         <TextView
                             android:id="@+id/secs_lbl"
@@ -235,20 +235,17 @@
                             android:layout_alignRight="@id/secs_txt"
                             android:layout_below="@id/secs_txt"
                             android:gravity="center_horizontal"
-                            android:text="Seconds"
+                            android:text="@string/seconds"
                             android:textColor="@color/text_black" />
-
-
                     </RelativeLayout>
-
                 </LinearLayout>
 
                 <WebView
                     android:id="@+id/webview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp" />
+                    android:layout_marginLeft="@dimen/dp5"
+                    android:layout_marginRight="@dimen/dp5" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

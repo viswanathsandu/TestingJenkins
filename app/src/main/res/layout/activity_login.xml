@@ -19,14 +19,14 @@
         android:elevation="10dp"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:paddingLeft="40dp"
-        android:paddingRight="40dp"
-        android:paddingTop="20dp">
+        android:paddingLeft="@dimen/dp40"
+        android:paddingRight="@dimen/dp40"
+        android:paddingTop="@dimen/dp20">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="@dimen/dp20"
             android:contentDescription="logo"
             android:src="@drawable/logo_signin" />
 
@@ -40,7 +40,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@._-"
-                android:hint="Email"
+                android:hint="@string/email"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
                 android:textColor="@color/black" />
@@ -51,7 +51,7 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="@dimen/dp20">
 
             <EditText
                 android:id="@+id/password_txt"
@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:drawablePadding="6dp"
                 android:drawableRight="@drawable/view"
-                android:hint="Password"
+                android:hint="@string/password"
                 android:inputType="textPassword"
                 android:maxLines="1"
                 android:textColor="@color/black" />
@@ -70,12 +70,12 @@
         <com.education.corsalite.views.CustomButton
             android:id="@+id/login_btn"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginTop="30dp"
+            android:layout_height="@dimen/dp40"
+            android:layout_marginTop="@dimen/dp30"
             android:background="@drawable/login_button_bg"
-            android:paddingLeft="45dp"
-            android:paddingRight="45dp"
-            android:text="LOGIN"
+            android:paddingLeft="@dimen/dp45"
+            android:paddingRight="@dimen/dp45"
+            android:text="@string/login"
             android:textColor="@android:color/white" />
 
         <TextView
@@ -83,9 +83,9 @@
             fontPath="@string/roboto_regular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="27dp"
-            android:text="Forgot Password?"
+            android:layout_marginBottom="@dimen/dp10"
+            android:layout_marginTop="@dimen/dp27"
+            android:text="@string/forgot_pass_word"
             android:textColor="@color/red" />
 
         <TextView
@@ -95,7 +95,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:paddingTop="20dp"
+            android:paddingTop="@dimen/dp20"
             android:text="@string/powered_by" />
 
     </LinearLayout>

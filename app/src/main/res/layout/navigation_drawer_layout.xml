@@ -32,10 +32,9 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:itemTextColor="@color/white"
-        android:paddingTop="15dp">
+        android:paddingTop="@dimen/dp15">
 
         <include layout="@layout/navigation_view_body" />
 
     </android.support.design.widget.NavigationView>
-
 </android.support.v4.widget.DrawerLayout>

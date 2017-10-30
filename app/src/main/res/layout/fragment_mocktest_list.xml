@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="300dp"
+    android:layout_height="@dimen/dp300"
     android:background="@color/white"
     android:orientation="vertical"
-    android:padding="15dp">
+    android:padding="@dimen/dp15">
 
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="15dp"
-        android:text="Mock Tests"
+        android:paddingLeft="@dimen/dp15"
+        android:text="@string/mock_tests"
         android:textColor="@color/green"
-        android:textSize="18sp" />
+        android:textSize="@dimen/sp18" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/mocktests_recyclerview"

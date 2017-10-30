@@ -21,24 +21,24 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_horizontal"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp">
+        android:layout_marginLeft="@dimen/dp4"
+        android:layout_marginRight="@dimen/dp4">
 
         <com.education.corsalite.views.CustomButton
             android:id="@+id/btn_date_picker_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="@dimen/dp5"
             android:layout_gravity="center"
-            android:text="Cancel"/>
+            android:text="@string/cancel"/>
 
         <com.education.corsalite.views.CustomButton
             android:id="@+id/btn_date_picker_save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="5dp"
-            android:text="Save"/>
+            android:layout_margin="@dimen/dp5"
+            android:text="@string/save"/>
 
     </LinearLayout>
 

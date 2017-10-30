@@ -21,9 +21,9 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_gravity="center_horizontal"
-        android:layout_margin="10dp"
+        android:layout_margin="@dimen/dp10"
         android:drawableTop="@drawable/ico_info"
-        android:text="Usage Analysis Data not available "
+        android:text="@string/usage_analysis_data_not_available"
         android:visibility="gone" />
 
     <ScrollView
@@ -41,16 +41,16 @@
             <com.github.mikephil.charting.charts.CombinedChart
                 android:id="@+id/usage_analysis_chart1"
                 android:layout_width="match_parent"
-                android:layout_height="450dp"
-                android:layout_margin="20dp">
+                android:layout_height="@dimen/dp450"
+                android:layout_margin="@dimen/dp20">
 
             </com.github.mikephil.charting.charts.CombinedChart>
 
             <com.github.mikephil.charting.charts.CombinedChart
                 android:id="@+id/usage_analysis_chart2"
                 android:layout_width="match_parent"
-                android:layout_height="450dp"
-                android:layout_margin="20dp">
+                android:layout_height="@dimen/dp450"
+                android:layout_margin="@dimen/dp20">
 
             </com.github.mikephil.charting.charts.CombinedChart>
         </LinearLayout>

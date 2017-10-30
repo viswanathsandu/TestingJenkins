@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="72dp"
+    android:layout_height="@dimen/dp72"
     android:background="@color/white"
     android:gravity="center_vertical"
     android:orientation="horizontal"
@@ -14,10 +14,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="0.6"
-        android:padding="5dp"
+        android:padding="@dimen/dp5"
         android:singleLine="true"
         android:textColor="@color/text_black"
-        android:textSize="16sp" />
+        android:textSize="@dimen/sp16" />
 
     <TextView
         android:id="@+id/mock_test_time_txt"
@@ -26,22 +26,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="0.3"
-        android:padding="5dp"
+        android:padding="@dimen/dp5"
         android:singleLine="true"
         android:textColor="@color/text_black"
-        android:textSize="12sp" />
+        android:textSize="@dimen/sp12" />
 
     <LinearLayout
         android:id="@+id/bgImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_vertical|right"
-        android:paddingRight="10dp"
+        android:paddingRight="@dimen/dp10"
         android:layout_weight="0.1">
 
         <ImageView
             android:id="@+id/download_test"
-            android:layout_width="30dp"
+            android:layout_width="@dimen/dp30"
             android:layout_height="30dp"
             android:scaleType="centerInside"
             android:src="@drawable/download_icon" />

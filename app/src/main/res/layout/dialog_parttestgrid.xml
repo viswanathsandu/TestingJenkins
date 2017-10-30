@@ -12,8 +12,8 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginLeft="@dimen/dp10"
+            android:layout_marginTop="@dimen/dp15"
             android:orientation="horizontal">
 
             <TextView
@@ -21,8 +21,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="@drawable/part_test_selector"
-                android:padding="10dp"
-                android:text="Recommended"
+                android:padding="@dimen/dp10"
+                android:text="@string/recommended"
                 android:textColor="@color/black" />
 
             <TextView
@@ -30,8 +30,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="@drawable/part_test_selector"
-                android:padding="10dp"
-                android:text="All"
+                android:padding="@dimen/dp10"
+                android:text="@string/all"
                 android:textColor="@color/black" />
 
             <LinearLayout
@@ -59,9 +59,9 @@
                         android:layout_alignLeft="@+id/exam_spinner"
                         android:layout_alignRight="@+id/exam_spinner"
                         android:layout_gravity="center_vertical|right"
-                        android:layout_marginRight="20dp"
+                        android:layout_marginRight="@dimen/dp20"
                         android:gravity="right"
-                        android:text="Select Exam" />
+                        android:text="@string/select_exam" />
 
                 </RelativeLayout>
             </LinearLayout>
@@ -79,13 +79,13 @@
                 android:layout_height="match_parent"
                 android:layout_above="@+id/view"
                 android:clipToPadding="false"
-                android:padding="5dp"
+                android:padding="@dimen/dp5"
                 android:scrollbars="vertical" />
 
             <View
                 android:id="@+id/view"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="@dimen/dp1"
                 android:layout_above="@+id/ll_cat"
                 android:layout_marginBottom="10dp"
                 android:background="@color/dark_gray" />
@@ -96,8 +96,8 @@
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/include"
                 android:gravity="center_vertical"
-                android:paddingEnd="8dp"
-                android:paddingStart="8dp">
+                android:paddingEnd="@dimen/dp8"
+                android:paddingStart="@dimen/dp8">
 
                 <CheckBox
                     android:id="@+id/checkbox_adaptive_learning"
@@ -109,7 +109,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Computer Adaptive Test"
+                    android:text="@string/computer_adaptive_test"
                     android:textColor="@color/black" />
 
             </LinearLayout>
@@ -120,7 +120,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_marginRight="10dp" />
+                android:layout_marginRight="@dimen/dp10" />
         </RelativeLayout>
 
     </LinearLayout>

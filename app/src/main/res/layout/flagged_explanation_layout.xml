@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:background="@color/gray"
     android:orientation="vertical"
-    android:padding="20dp"
+    android:padding="@dimen/dp20"
     android:paddingBottom="30dp"
     android:visibility="gone">
 
@@ -14,23 +14,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawableRight="@color/black"
-        android:text="ANSWER ANALYSIS"
+        android:text="@string/answer_analysis"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/black"
-        android:textSize="14sp"
+        android:textSize="@dimen/sp14"
         android:textStyle="bold" />
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_height="@dimen/dp1"
+        android:layout_marginBottom="@dimen/dp10"
+        android:layout_marginTop="@dimen/dp10"
         android:background="@color/black" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/dp10"
         android:orientation="horizontal">
 
         <TextView
@@ -38,15 +38,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableRight="@color/green"
-            android:text="Correct Answer: "
+            android:text="@string/correct_answer"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textSize="@dimen/sp16"
             android:textStyle="bold" />
 
         <WebView
             android:id="@+id/flagged_answer"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/dp0"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             tools:ignore="WebViewLayout" />
@@ -55,116 +55,116 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/dp10"
         android:orientation="horizontal">
 
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="@dimen/dp0"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:text="Question Status:"
+            android:paddingLeft="@dimen/dp5"
+            android:paddingRight="@dimen/dp5"
+            android:text="@string/question_status"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/black"
-            android:textSize="12sp" />
+            android:textSize="@dimen/sp12" />
 
         <TextView
             android:id="@+id/tv_question_status"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/dp0"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:text="Unanswered"
+            android:paddingLeft="@dimen/dp5"
+            android:paddingRight="@dimen/dp5"
+            android:text="@string/unanswered"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/black"
-            android:textSize="12sp" />
+            android:textSize="@dimen/sp12" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:text="Recommended Time:"
+            android:paddingLeft="@dimen/dp5"
+            android:paddingRight="@dimen/dp5"
+            android:text="@string/recommended_times"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/black"
-            android:textSize="12sp" />
+            android:textSize="@dimen/sp12" />
 
         <TextView
             android:id="@+id/tv_recommended_time"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/dp0"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:text="30 sec"
+            android:paddingLeft="@dimen/dp5"
+            android:paddingRight="@dimen/dp5"
+            android:text="@string/_30_sec"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/black"
-            android:textSize="12sp" />
+            android:textSize="@dimen/sp12" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="@dimen/dp5"
         android:orientation="horizontal">
 
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="@dimen/dp0"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:drawableRight="@color/black"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:text="Max Marks:"
+            android:paddingLeft="@dimen/dp5"
+            android:paddingRight="@dimen/dp5"
+            android:text="@string/max_mark"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/black"
-            android:textSize="12sp" />
+            android:textSize="@dimen/sp12" />
 
         <TextView
             android:id="@+id/tv_max_marks"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/dp0"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
+            android:paddingLeft="@dimen/dp5"
+            android:paddingRight="@dimen/dp5"
             android:text="1.00"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/black"
-            android:textSize="12sp" />
+            android:textSize="@dimen/sp12" />
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="@dimen/dp0"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:text="Time Taken:"
+            android:paddingLeft="@dimen/dp5"
+            android:paddingRight="@dimen/dp5"
+            android:text="@string/time_takens"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/black"
-            android:textSize="12sp" />
+            android:textSize="@dimen/sp12" />
 
         <TextView
             android:id="@+id/tv_time_taken"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/dp0"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
+            android:paddingLeft="@dimen/dp5"
+            android:paddingRight="@dimen/dp5"
             android:text="14 sec"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/black"
-            android:textSize="12sp" />
+            android:textSize="@dimen/sp12" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="@dimen/dp5"
         android:orientation="horizontal">
 
 
@@ -173,146 +173,146 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:drawableRight="@color/black"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:text="+ve Marks:"
+            android:paddingLeft="@dimen/dp5"
+            android:paddingRight="@dimen/dp5"
+            android:text="@string/ve_marks"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/black"
-            android:textSize="12sp" />
+            android:textSize="@dimen/sp12" />
 
         <TextView
             android:id="@+id/tv_positive_max_marks"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/dp0"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
+            android:paddingLeft="@dimen/dp5"
+            android:paddingRight="@dimen/dp5"
             android:text="0"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/black"
-            android:textSize="12sp" />
+            android:textSize="@dimen/sp12" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:text="Average Time:"
+            android:paddingLeft="@dimen/dp5"
+            android:paddingRight="@dimen/dp5"
+            android:text="@string/average_time"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/black"
-            android:textSize="12sp" />
+            android:textSize="@dimen/sp12" />
 
         <TextView
             android:id="@+id/tv_average_time"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/dp0"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
+            android:paddingLeft="@dimen/dp5"
+            android:paddingRight="@dimen/dp5"
             android:text="7 sec"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/black"
-            android:textSize="12sp" />
+            android:textSize="@dimen/sp12" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="@dimen/dp5"
         android:orientation="horizontal"
         android:weightSum="4">
 
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="@dimen/dp0"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:text="-ve Marks:"
+            android:paddingLeft="@dimen/dp5"
+            android:paddingRight="@dimen/dp5"
+            android:text="@string/ve_mark"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/black"
-            android:textSize="12sp" />
+            android:textSize="@dimen/sp12" />
 
         <TextView
             android:id="@+id/tv_negative_max_marks"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/dp0"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
+            android:paddingLeft="@dimen/dp5"
+            android:paddingRight="@dimen/dp5"
             android:text="0"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/black"
-            android:textSize="12sp" />
+            android:textSize="@dimen/sp12" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="@dimen/dp5"
         android:orientation="horizontal"
         android:weightSum="4">
 
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="@dimen/dp0"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:drawableRight="@color/black"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:text="Peer Average:"
+            android:paddingLeft="@dimen/dp5"
+            android:paddingRight="@dimen/dp5"
+            android:text="@string/peer_average"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/black"
-            android:textSize="12sp"
+            android:textSize="@dimen/sp12"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tv_peer_average"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/dp0"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
+            android:paddingLeft="@dimen/dp5"
+            android:paddingRight="@dimen/dp5"
             android:text="0.00"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/black"
-            android:textSize="12sp" />
+            android:textSize="@dimen/sp12" />
     </LinearLayout>
 
     <LinearLayout
         android:weightSum="4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/dp10"
         android:orientation="horizontal">
 
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="@dimen/dp0"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:text="Percentile:"
+            android:paddingLeft="@dimen/dp5"
+            android:paddingRight="@dimen/dp5"
+            android:text="@string/percentile"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/black"
-            android:textSize="12sp" />
+            android:textSize="@dimen/sp12" />
 
         <TextView
             android:id="@+id/tv_percentile"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/dp0"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
+            android:paddingLeft="@dimen/dp5"
+            android:paddingRight="@dimen/dp5"
             android:text="50"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/black"
-            android:textSize="12sp" />
+            android:textSize="@dimen/sp12" />
     </LinearLayout>
 
 </LinearLayout>

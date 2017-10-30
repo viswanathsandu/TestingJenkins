@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:background="@drawable/ico_close"
-        android:padding="10dp"
+        android:padding="@dimen/dp10"
         android:textColor="@color/black"
         android:textStyle="bold" />
 
@@ -22,15 +22,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@id/tv_close"
-        android:padding="10dp"
-        android:text="Full Question Paper"
+        android:padding="@dimen/dp10"
+        android:text="@string/full_question_paper"
         android:textColor="@color/black"
-        android:textSize="15sp" />
+        android:textSize="@dimen/sp15" />
 
     <View
         android:id="@+id/separator"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="@dimen/dp1"
         android:layout_below="@id/tv_title"
         android:background="@color/gray" />
 

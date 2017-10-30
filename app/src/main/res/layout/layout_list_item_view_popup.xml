@@ -51,7 +51,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxLength="16"
-                    android:text="Notes                     " />
+                    android:text="@string/notes" />
 
                 <TextView
                     android:id="@+id/notes"

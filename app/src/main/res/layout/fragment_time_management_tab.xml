@@ -20,9 +20,9 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_gravity="center_horizontal"
-        android:layout_margin="10dp"
+        android:layout_margin="@dimen/dp10"
         android:drawableTop="@drawable/ico_info"
-        android:text="No Analytics available for Time Mangement"
+        android:text="@string/no_analytics_available_for_time_mangement"
         android:visibility="gone" />
 
 
@@ -38,7 +38,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_margin="15dp"
+                android:layout_margin="@dimen/dp15"
                 android:id="@+id/ll_subject"
                 android:visibility="gone">
 
@@ -46,35 +46,34 @@
                     style="@style/analytics_title_style"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Time Management By Subject - based on recent 365 days performance" />
+                    android:text="@string/time_management_by_subject_based_on_recent_365_days_performance" />
 
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="360dp"
+                    android:layout_height="@dimen/dp360"
                     android:layout_gravity="center"
-                    android:layout_margin="15dp"
+                    android:layout_margin="@dimen/dp15"
                     android:orientation="horizontal">
 
                     <com.github.mikephil.charting.charts.PieChart
                         android:id="@+id/pc_subject"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/dp0"
                         android:layout_weight="4"
                         android:layout_height="match_parent" />
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/rv_legend"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/dp0"
                         android:layout_weight="2"
                         android:layout_height="match_parent"
                         android:scrollbars="vertical" />
-
 
                 </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="2dp"
+                    android:layout_height="@dimen/dp2"
                     android:background="@color/dark_gray" />
             </LinearLayout>
 
@@ -83,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:id="@+id/ll_chapter"
-                android:layout_margin="15dp"
+                android:layout_margin="@dimen/dp15"
                 android:visibility="gone">
             </LinearLayout>
 

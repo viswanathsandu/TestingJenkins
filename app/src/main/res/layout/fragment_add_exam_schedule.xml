@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
+    android:layout_margin="@dimen/dp5"
     android:background="@color/white"
     android:orientation="vertical"
     android:gravity="center_horizontal">
@@ -18,7 +18,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Exam Date:"
+            android:text="@string/exam_dates"
             android:textColor="@color/black" />
 
         <DatePicker
@@ -36,7 +36,7 @@
         android:id="@+id/ll_add_hall_tckt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_margin="@dimen/dp16"
         android:orientation="vertical"
         android:visibility="gone">
 
@@ -45,7 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:hint="Hall Ticket Number"
+            android:hint="@string/hall_ticket_number"
             android:singleLine="true"
             android:textColor="@color/black" />
     </android.support.design.widget.TextInputLayout>
@@ -60,20 +60,20 @@
             android:id="@+id/btn_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_margin="@dimen/dp8"
             android:background="@color/white"
-            android:padding="5dp"
-            android:text="Cancel"
+            android:padding="@dimen/dp5"
+            android:text="@string/cancel"
             android:textColor="@color/black" />
 
         <com.education.corsalite.views.CustomButton
             android:id="@+id/btn_submit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_margin="@dimen/dp8"
             android:background="@color/white"
-            android:padding="5dp"
-            android:text="Submit"
+            android:padding="@dimen/dp5"
+            android:text="@string/submit"
             android:textColor="@color/black" />
 
     </LinearLayout>

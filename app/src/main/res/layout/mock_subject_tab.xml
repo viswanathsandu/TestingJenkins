@@ -2,14 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:paddingRight="10dp">
+    android:paddingRight="@dimen/dp10">
 
     <TextView
         android:id="@+id/subject_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Subject"
-        android:padding="10dp"
+        android:text="@string/subject"
+        android:padding="@dimen/dp10"
         android:gravity="center"
         android:background="@drawable/selector_bt_gray"/>
 
