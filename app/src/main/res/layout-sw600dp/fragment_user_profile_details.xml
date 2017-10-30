@@ -3,14 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#f3f3f3"
+    android:background="@color/f3f3f3"
     android:orientation="horizontal"
     tools:ignore="MissingPrefix"
     android:id="@+id/ll_user_details"
     android:visibility="visible">
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="@dimen/dp0"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="horizontal">
@@ -38,18 +38,18 @@
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp">
+            android:layout_margin="@dimen/dp8">
 
             <RelativeLayout
                 android:id="@+id/ll_user_name"
                 android:layout_width="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_margin="@dimen/dp5"
                 android:layout_height="wrap_content">
 
                 <Spinner
                     android:id="@+id/sp_default_course"
-                    android:layout_width="140dp"
-                    android:layout_height="35dp"
+                    android:layout_width="@dimen/dp140"
+                    android:layout_height="@dimen/dp35"
                     android:background="@drawable/shape_rounded_corners_black"
                     android:textColor="@color/white"
                     android:spinnerMode="dropdown"
@@ -63,8 +63,8 @@
                     android:background="@drawable/shape_rounded_corners_black"
                     android:text="Default Course"
                     android:textColor="@color/white"
-                    android:padding="3dp"
-                    android:drawablePadding="5dp"
+                    android:padding="@dimen/dp3"
+                    android:drawablePadding="@dimen/dp5"
                     android:layout_alignLeft="@+id/sp_default_course"
                     android:layout_alignTop="@+id/sp_default_course"
                     android:layout_alignRight="@+id/sp_default_course"
@@ -76,7 +76,7 @@
                     android:id="@+id/tv_userName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingRight="8dp"
+                    android:paddingRight="@dimen/dp8"
                     android:layout_alignParentLeft="true"
                     android:layout_toLeftOf="@id/sp_default_course"
                     android:layout_alignTop="@id/sp_default_course"
@@ -98,7 +98,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_userFullName"
-                android:paddingBottom="10dp"
+                android:paddingBottom="@dimen/dp10"
                 style="@style/user_profile_text_gray"/>
 
             <TextView
@@ -134,18 +134,18 @@
     </LinearLayout>
 
     <View
-        android:layout_width="1dp"
+        android:layout_width="@dimen/dp1"
         android:layout_height="match_parent"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
-        android:background="#d3d3d3" />
+        android:layout_marginLeft="@dimen/dp10"
+        android:layout_marginRight="@dimen/dp10"
+        android:layout_marginTop="@dimen/dp20"
+        android:layout_marginBottom="@dimen/dp20"
+        android:background="@color/d3d3d3" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="12dp"
+        android:layout_margin="@dimen/dp12"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -158,7 +158,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="@dimen/dp5"
             android:text="Virtual Currency"
             style="@style/user_profile_text" />
 
@@ -171,8 +171,8 @@
         <com.education.corsalite.views.CustomButton
             android:id="@+id/redeem_btn"
             android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:layout_marginTop="5dp"
+            android:layout_height="@dimen/dp35"
+            android:layout_marginTop="@dimen/dp5"
             android:background="@drawable/redeem_btn_selector"
             android:textStyle="bold"
             android:text="REDEEM"

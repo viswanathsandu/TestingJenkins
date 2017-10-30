@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/black_bg"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:padding="@dimen/dp10">
 
 
     <LinearLayout
@@ -24,15 +24,15 @@
             android:id="@+id/results_header_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginLeft="@dimen/dp30"
+            android:layout_marginRight="@dimen/dp30"
+            android:layout_marginTop="@dimen/dp30"
             android:orientation="horizontal"
             android:weightSum="4"
             android:background="@color/text_red">
 
             <TextView
-                android:layout_width="0dp"
+                android:layout_width="@dimen/dp0"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Participant"
@@ -41,7 +41,7 @@
                 fontPath="@string/roboto_medium"/>
 
             <TextView
-                android:layout_width="0dp"
+                android:layout_width="@dimen/dp0"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Score"
@@ -50,7 +50,7 @@
                 fontPath="@string/roboto_medium"/>
 
             <TextView
-                android:layout_width="0dp"
+                android:layout_width="@dimen/dp0"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Currency"
@@ -59,7 +59,7 @@
                 fontPath="@string/roboto_medium"/>
 
             <TextView
-                android:layout_width="0dp"
+                android:layout_width="@dimen/dp0"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Result"
@@ -72,8 +72,8 @@
             android:id="@+id/results_recycelr_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"/>
+            android:layout_marginLeft="@dimen/dp30"
+            android:layout_marginRight="@dimen/dp30"/>
 
     </LinearLayout>
 
@@ -89,11 +89,11 @@
             android:id="@+id/challenge_history_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
+            android:layout_marginBottom="@dimen/dp30"
             android:background="@drawable/button_selector"
             android:backgroundTint="@color/skyblue"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
+            android:paddingLeft="@dimen/dp20"
+            android:paddingRight="@dimen/dp20"
             android:text="Challenge history"
             android:textAlignment="center"
             android:textAllCaps="false" />
@@ -105,8 +105,8 @@
             android:layout_marginLeft="10dp"
             android:background="@drawable/button_selector"
             android:backgroundTint="@color/skyblue"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
+            android:paddingLeft="@dimen/dp20"
+            android:paddingRight="@dimen/dp20"
             android:text="Exam Summary"
             android:textAlignment="center"
             android:textAllCaps="false" />
@@ -118,8 +118,8 @@
             android:layout_marginLeft="10dp"
             android:background="@drawable/button_selector"
             android:backgroundTint="@color/green"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
+            android:paddingLeft="@dimen/dp20"
+            android:paddingRight="@dimen/dp20"
             android:text="Challenge Again"
             android:textAlignment="center"
             android:textAllCaps="false" />
@@ -138,7 +138,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="@dimen/dp50"
             android:text="HURRAY!"
             android:textAllCaps="true"
             android:textColor="@color/text_white"
@@ -151,7 +151,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="@dimen/dp40"
             android:text="@string/participant"
             android:textAllCaps="false"
             android:textColor="@color/text_white" />
@@ -160,7 +160,7 @@
             android:id="@+id/refresh_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="@dimen/dp25"
             android:background="@drawable/but_refresh" />
 
         <TextView
@@ -168,7 +168,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="@dimen/dp25"
             android:text="@string/check_result"
             android:textAllCaps="false"
             android:textColor="@color/text_white" />

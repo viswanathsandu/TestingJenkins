@@ -21,7 +21,7 @@
             android:padding="5dp"
             android:text="Virtual currency earned in last session"
             android:textColor="@color/text_white"
-            android:textSize="16sp" />
+            android:textSize="@dimen/sp16" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -30,9 +30,9 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_margin="5dp"
+                android:layout_width="@dimen/dp20"
+                android:layout_height="@dimen/dp20"
+                android:layout_margin="@dimen/dp5"
                 android:src="@drawable/ico_currency_profile" />
 
             <TextView
@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:text="----"
                 android:textColor="@color/text_white"
-                android:textSize="20sp" />
+                android:textSize="@dimen/sp20" />
 
         </LinearLayout>
 
@@ -60,7 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
-            android:padding="5dp"
+            android:padding="@dimen/dp5"
             android:text="Total Virtual currency is"
             android:textColor="@color/text_white"
             android:textSize="16sp" />
@@ -72,9 +72,9 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_margin="5dp"
+                android:layout_width="@dimen/dp20"
+                android:layout_height="@dimen/dp20"
+                android:layout_margin="@dimen/dp5"
                 android:src="@drawable/ico_currency_profile" />
 
             <TextView
@@ -83,7 +83,7 @@
                 android:layout_height="wrap_content"
                 android:text="----"
                 android:textColor="@color/text_white"
-                android:textSize="20sp" />
+                android:textSize="@dimen/sp20" />
 
         </LinearLayout>
 

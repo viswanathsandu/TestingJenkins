@@ -7,7 +7,7 @@
     android:background="@color/beige"
     android:foreground="?android:attr/selectableItemBackground"
     android:orientation="horizontal"
-    app:cardBackgroundColor="#E6E6E6"
+    app:cardBackgroundColor="@color/E6E6E6"
     app:cardCornerRadius="@dimen/dp18"
     app:cardElevation="@dimen/dp8">
 

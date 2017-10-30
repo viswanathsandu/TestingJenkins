@@ -18,10 +18,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
-            android:padding="10dp"
+            android:padding="@dimen/dp10"
             android:text="Virtual currency earned in last session"
             android:textColor="@color/text_white"
-            android:textSize="22sp" />
+            android:textSize="@dimen/sp22" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -30,9 +30,9 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_margin="10dp"
+                android:layout_width="@dimen/dp40"
+                android:layout_height="@dimen/dp40"
+                android:layout_margin="@dimen/dp10"
                 android:src="@drawable/ico_currency_profile" />
 
             <TextView
@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:text="----"
                 android:textColor="@color/text_white"
-                android:textSize="40sp" />
+                android:textSize="@dimen/sp40" />
 
         </LinearLayout>
 
@@ -60,7 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
-            android:padding="10dp"
+            android:padding="@dimen/dp10"
             android:text="Total Virtual currency is"
             android:textColor="@color/text_white"
             android:textSize="22sp" />
@@ -72,9 +72,9 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_margin="10dp"
+                android:layout_width="@dimen/dp40"
+                android:layout_height="@dimen/dp40"
+                android:layout_margin="@dimen/dp10"
                 android:src="@drawable/ico_currency_profile" />
 
             <TextView
@@ -83,7 +83,7 @@
                 android:layout_height="wrap_content"
                 android:text="----"
                 android:textColor="@color/text_white"
-                android:textSize="40sp" />
+                android:textSize="@dimen/sp40" />
 
         </LinearLayout>
 

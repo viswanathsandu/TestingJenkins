@@ -4,7 +4,7 @@
     android:id="@+id/ll_user_details"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#f3f3f3"
+    android:background="@color/f3f3f3"
     android:orientation="horizontal"
     android:visibility="visible"
     tools:ignore="MissingPrefix">
@@ -55,7 +55,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/dp20"
         android:layout_marginTop="@dimen/dp20"
-        android:background="#d3d3d3"
+        android:background="@color/d3d3d3"
         android:layout_toLeftOf="@+id/vc_layout"
         android:layout_alignTop="@+id/vc_layout"
         android:layout_alignBottom="@+id/vc_layout" />

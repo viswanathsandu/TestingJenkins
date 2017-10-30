@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="@color/FFFFFF"
     tools:context=".activities.ExamEngineActivity">
 
     <ViewSwitcher
@@ -91,7 +91,7 @@
                         android:layout_alignParentRight="true"
                         android:enabled="false"
                         android:text="@string/time_left"
-                        android:textColor="@color/ffffff80"
+                        android:textColor="@color/FFFFFF80"
                         android:textSize="@dimen/sp16" />
 
                     <TextView
@@ -103,7 +103,7 @@
                         android:paddingLeft="@dimen/dp10"
                         android:paddingRight="@dimen/dp10"
                         android:text="@string/or"
-                        android:textColor="#40FFFFFF"
+                        android:textColor="@color/FFFFFF40"
                         android:textSize="@dimen/sp18" />
 
                     <TextView
@@ -114,7 +114,7 @@
                         android:layout_alignParentRight="true"
                         android:enabled="false"
                         android:text="@string/or"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/FFFFFF"
                         android:textSize="@dimen/sp18" />
 
                 </LinearLayout>

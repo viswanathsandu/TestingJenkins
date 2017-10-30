@@ -4,17 +4,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
-    app:cardBackgroundColor="#E6E6E6"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="8dp">
+    android:layout_margin="@dimen/dp10"
+    app:cardBackgroundColor="@color/E6E6E6"
+    app:cardCornerRadius="@dimen/dp8"
+    app:cardElevation="@dimen/dp8">
 
     <RelativeLayout
         android:id="@+id/container_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:padding="10dp">
+        android:padding="@dimen/dp10">
 
         <Button
             android:id="@+id/take_test_btn"
@@ -22,8 +22,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_margin="5dp"
-            android:text="Take Test"/>
+            android:layout_margin="@dimen/dp5"
+            android:text="@string/take_test"/>
 
         <LinearLayout
             android:id="@+id/title_container"
@@ -31,31 +31,31 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_toLeftOf="@+id/take_test_btn"
-            android:paddingBottom="20dp"
-            android:paddingTop="10dp"
+            android:paddingBottom="@dimen/dp20"
+            android:paddingTop="@dimen/dp10"
             android:weightSum="5">
 
             <TextView
                 android:id="@+id/title_txt"
                 fontPath="@string/roboto_regular"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/dp0"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
-                android:text="Title"
+                android:text="@string/title"
                 android:textColor="@color/text_black"
-                android:textSize="24sp"
+                android:textSize="@dimen/sp24"
                 android:maxLines="1"
                 android:ellipsize="end"/>
 
             <TextView
                 android:id="@+id/remaining_txt"
                 fontPath="@string/roboto_regular"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/dp0"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:text="Remaining tests"
                 android:textColor="@color/text_gray"
-                android:textSize="20sp" />
+                android:textSize="@dimen/sp20" />
         </LinearLayout>
 
         <LinearLayout
@@ -77,7 +77,7 @@
                     android:layout_height="wrap_content"
                     android:text="Max Questions : "
                     android:textColor="@color/text_gray"
-                    android:textSize="20sp" />
+                    android:textSize="@dimen/sp20" />
 
                 <TextView
                     android:id="@+id/max_questions_txt"
@@ -86,7 +86,7 @@
                     android:layout_height="wrap_content"
                     android:text="-"
                     android:textColor="@color/text_gray"
-                    android:textSize="20sp" />
+                    android:textSize="@dimen/sp20" />
 
             </LinearLayout>
 
@@ -101,7 +101,7 @@
                     android:layout_height="wrap_content"
                     android:text="Marks/Total : "
                     android:textColor="@color/text_gray"
-                    android:textSize="20sp" />
+                    android:textSize="@dimen/sp20" />
 
                 <TextView
                     android:id="@+id/marks_txt"
@@ -110,7 +110,7 @@
                     android:layout_height="wrap_content"
                     android:text="-"
                     android:textColor="@color/text_gray"
-                    android:textSize="20sp" />
+                    android:textSize="@dimen/sp20" />
 
             </LinearLayout>
 
@@ -125,7 +125,7 @@
                     android:layout_height="wrap_content"
                     android:text="Accuracy : "
                     android:textColor="@color/text_gray"
-                    android:textSize="20sp" />
+                    android:textSize="@dimen/sp20" />
 
                 <TextView
                     android:id="@+id/accuracy_txt"
@@ -134,7 +134,7 @@
                     android:layout_height="wrap_content"
                     android:text="-"
                     android:textColor="@color/text_gray"
-                    android:textSize="20sp" />
+                    android:textSize="@dimen/sp20" />
 
             </LinearLayout>
 
@@ -149,7 +149,7 @@
                     android:layout_height="wrap_content"
                     android:text="Speed : "
                     android:textColor="@color/text_gray"
-                    android:textSize="20sp" />
+                    android:textSize="@dimen/sp20" />
 
                 <TextView
                     android:id="@+id/speed_txt"
@@ -158,7 +158,7 @@
                     android:layout_height="wrap_content"
                     android:text="-"
                     android:textColor="@color/text_gray"
-                    android:textSize="20sp" />
+                    android:textSize="@dimen/sp20" />
 
             </LinearLayout>
 

@@ -17,14 +17,14 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:orientation="vertical"
-                android:paddingTop="20dp"
-                android:paddingBottom="20dp">
+                android:paddingTop="@dimen/dp20"
+                android:paddingBottom="@dimen/dp20">
 
 
                 <ImageView
                     android:id="@+id/profile_pic"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="@dimen/dp60"
+                    android:layout_height="@dimen/dp60"
                     android:layout_marginBottom="20dp"
                     android:src="@drawable/profile_pic" />
 
@@ -34,7 +34,7 @@
                     android:layout_height="wrap_content"
                     android:text="Welcome"
                     android:textColor="@color/text_white"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/sp16" />
 
                 <TextView
                     android:id="@+id/name_txt"
@@ -44,7 +44,7 @@
                     android:text="----- ----- ----- -----"
                     android:textAllCaps="true"
                     android:textColor="@color/text_white"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/sp18" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -58,7 +58,7 @@
                         android:layout_height="wrap_content"
                         android:text="Last Visit : "
                         android:textColor="@color/text_white"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/sp14" />
 
                     <TextView
                         android:id="@+id/lastvisit_date"
@@ -69,7 +69,7 @@
                         android:layout_marginRight="20dp"
                         android:text="--/--/----"
                         android:textColor="@color/text_white"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/sp14" />
 
 
                     <TextView
@@ -79,7 +79,7 @@
                         android:layout_height="wrap_content"
                         android:text="--:-- --"
                         android:textColor="@color/text_white"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/sp14" />
 
                 </LinearLayout>
 
@@ -95,7 +95,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/voilet_button_selector"
-                        android:text="Redeem"
+                        android:text="@string/redeem"
                         android:textColor="@color/text_white" />
 
                     <com.education.corsalite.views.CustomButton
@@ -104,7 +104,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/green_button_selector"
-                        android:text="Study Center"
+                        android:text="@string/study_center"
                         android:textColor="@color/text_white" />
 
                     <com.education.corsalite.views.CustomButton
@@ -112,7 +112,7 @@
                         style="@style/welcome_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="#FFBA4D"
+                        android:background="@color/FFBA4D"
                         android:text="Recommended Reading"
                         android:textColor="@color/text_white"
                         android:visibility="gone" />
@@ -131,7 +131,7 @@
                         style="@style/welcome_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="#7195BF"
+                        android:background="@color/color_7195BF"
                         android:text="Messages"
                         android:textColor="@color/text_white"/>
 
@@ -148,7 +148,7 @@
         android:text="This course is ended on 20/1/2016"
         android:textColor="@color/red"
         fontPath="@string/roboto_regular"
-        android:textSize="30sp"
+        android:textSize="@dimen/sp30"
         android:visibility="gone"/>
 
 </RelativeLayout>

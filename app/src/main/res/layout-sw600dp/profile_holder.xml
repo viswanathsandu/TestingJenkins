@@ -4,9 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?android:attr/selectableItemBackground"
-    android:minHeight="48dp"
+    android:minHeight="@dimen/dp48"
     android:id="@+id/node_selectorLayout"
-    android:paddingLeft="10dp">
+    android:paddingLeft="@dimen/dp10">
 
     <CheckBox
         android:id="@+id/node_selector"
@@ -42,8 +42,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp">
+        android:layout_marginLeft="@dimen/dp10"
+        android:layout_marginRight="@dimen/dp10">
 
         <com.github.johnkil.print.PrintView
             android:id="@+id/arrow_icon"
@@ -57,7 +57,7 @@
             android:layout_toRightOf="@+id/node_selectors"
             app:iconColor="@color/black"
             app:iconFont="fonts/material-icon-font.ttf"
-            app:iconSize="20dp"
+            app:iconSize="@dimen/dp20"
             app:iconText="@string/ic_keyboard_arrow_right" />
     </LinearLayout>
 
@@ -68,33 +68,33 @@
         android:layout_alignWithParentIfMissing="true"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="28dp"
+        android:layout_marginLeft="@dimen/dp28"
         android:layout_toRightOf="@id/node_selector"
         android:orientation="vertical">
 
         <View
             android:id="@+id/top_line"
-            android:layout_width="1dp"
-            android:layout_height="16dp"
+            android:layout_width="@dimen/dp1"
+            android:layout_height="@dimen/dp16"
             android:layout_gravity="center_horizontal"
-            android:background="#12558C"
+            android:background="@color/color_12558C"
             android:visibility="gone" />
 
         <com.github.johnkil.print.PrintView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            app:iconColor="#12558C"
+            app:iconColor="@color/color_12558C"
             app:iconFont="fonts/material-icon-font.ttf"
-            app:iconSize="16dp"
+            app:iconSize="@dimen/dp16"
             app:iconText="@string/app_name" />
 
         <View
             android:id="@+id/bot_line"
-            android:layout_width="1dp"
-            android:layout_height="16dp"
+            android:layout_width="@dimen/dp1"
+            android:layout_height="@dimen/dp16"
             android:layout_gravity="center_horizontal"
-            android:background="#12558C"
+            android:background="@color/color_12558C"
             android:visibility="gone" />
     </LinearLayout>
 
@@ -104,8 +104,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="@dimen/dp10"
         android:layout_toRightOf="@+id/picture_wrapper"
         android:layout_toLeftOf="@+id/buttonsContainer"
-        android:textSize="16sp" />
+        android:textSize="@dimen/sp16" />
 </RelativeLayout>

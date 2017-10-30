@@ -102,13 +102,13 @@
                     android:layout_width="@dimen/dp56"
                     android:layout_height="@dimen/dp56"
                     android:gravity="center_vertical|center"
-                    custom:donut_finished_color="#FFFFFF"
-                    custom:donut_unfinished_color="#23232300"
+                    custom:donut_finished_color="@color/FFFFFF"
+                    custom:donut_unfinished_color="@color/color_23232300"
                     custom:donut_finished_stroke_width="@dimen/dp6"
                     custom:donut_unfinished_stroke_width="@dimen/dp6"
                     custom:donut_progress="30"
                     custom:donut_text_size="@dimen/sp12"
-                    custom:donut_text_color="#FFFFFF"/>
+                    custom:donut_text_color="@color/FFFFFF"/>
 
                 <TextView
                     android:id="@+id/grid_child_text_view"
@@ -229,7 +229,7 @@
                     android:gravity="center_vertical|center"
                     custom:donut_finished_stroke_width="6dp"
                     custom:donut_unfinished_stroke_width="6dp"
-                    custom:donut_finished_color="#FFFFFF"
+                    custom:donut_finished_color="@color/FFFFFF"
                     custom:donut_unfinished_color="@color/dark_gray"
                     custom:donut_progress="30"
                     custom:donut_text_color="@color/dark_gray"/>
