@@ -71,7 +71,6 @@
                         android:textColor="@color/text_white"
                         android:textSize="@dimen/sp14" />
 
-
                     <TextView
                         android:id="@+id/lastvisit_time"
                         fontPath="@string/roboto_regular"

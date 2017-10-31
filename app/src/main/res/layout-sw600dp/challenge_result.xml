@@ -35,7 +35,7 @@
                 android:layout_width="@dimen/dp0"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Participant"
+                android:text="@string/partici_pant"
                 android:textColor="@color/text_white"
                 android:gravity="center_horizontal"
                 fontPath="@string/roboto_medium"/>
@@ -44,7 +44,7 @@
                 android:layout_width="@dimen/dp0"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Score"
+                android:text="@string/score"
                 android:textColor="@color/text_white"
                 android:gravity="center_horizontal"
                 fontPath="@string/roboto_medium"/>
@@ -53,7 +53,7 @@
                 android:layout_width="@dimen/dp0"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Currency"
+                android:text="@string/currency"
                 android:textColor="@color/text_white"
                 android:gravity="center_horizontal"
                 fontPath="@string/roboto_medium"/>
@@ -62,7 +62,7 @@
                 android:layout_width="@dimen/dp0"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Result"
+                android:text="@string/result"
                 android:textColor="@color/text_white"
                 android:gravity="center_horizontal"
                 fontPath="@string/roboto_medium"/>
@@ -94,7 +94,7 @@
             android:backgroundTint="@color/skyblue"
             android:paddingLeft="@dimen/dp20"
             android:paddingRight="@dimen/dp20"
-            android:text="Challenge history"
+            android:text="@string/challenge_history"
             android:textAlignment="center"
             android:textAllCaps="false" />
 
@@ -107,7 +107,7 @@
             android:backgroundTint="@color/skyblue"
             android:paddingLeft="@dimen/dp20"
             android:paddingRight="@dimen/dp20"
-            android:text="Exam Summary"
+            android:text="@string/exam_summary"
             android:textAlignment="center"
             android:textAllCaps="false" />
 
@@ -115,12 +115,12 @@
             android:id="@+id/challenge_again_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="@dimen/dp10"
             android:background="@drawable/button_selector"
             android:backgroundTint="@color/green"
             android:paddingLeft="@dimen/dp20"
             android:paddingRight="@dimen/dp20"
-            android:text="Challenge Again"
+            android:text="@string/challenge_again"
             android:textAlignment="center"
             android:textAllCaps="false" />
     </LinearLayout>
@@ -139,7 +139,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/dp50"
-            android:text="HURRAY!"
+            android:text="@string/hurray"
             android:textAllCaps="true"
             android:textColor="@color/text_white"
             android:textStyle="bold" />

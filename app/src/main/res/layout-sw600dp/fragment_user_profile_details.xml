@@ -25,7 +25,7 @@
                 android:layout_gravity="left"
                 android:scaleType="fitCenter"
                 android:src="@drawable/user"
-                android:layout_marginTop="10dp"/>
+                android:layout_marginTop="@dimen/dp10"/>
             <ImageView
                 android:id="@+id/btn_edit_pic"
                 android:layout_width="wrap_content"
@@ -61,7 +61,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:background="@drawable/shape_rounded_corners_black"
-                    android:text="Default Course"
+                    android:text="@string/default_course"
                     android:textColor="@color/white"
                     android:padding="@dimen/dp3"
                     android:drawablePadding="@dimen/dp5"
@@ -159,7 +159,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp5"
-            android:text="Virtual Currency"
+            android:text="@string/virtual_currency"
             style="@style/user_profile_text" />
 
         <TextView
@@ -175,8 +175,7 @@
             android:layout_marginTop="@dimen/dp5"
             android:background="@drawable/redeem_btn_selector"
             android:textStyle="bold"
-            android:text="REDEEM"
+            android:text="@string/redeem"
             android:visibility="invisible"/>
     </LinearLayout>
-
 </LinearLayout>

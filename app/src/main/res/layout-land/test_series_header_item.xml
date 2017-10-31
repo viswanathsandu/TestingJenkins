@@ -62,7 +62,5 @@
             android:text="- marks/min"
             android:textColor="@color/text_black"
             android:textSize="@dimen/sp20" />
-
-
     </LinearLayout>
 </android.support.v7.widget.CardView>

@@ -15,7 +15,7 @@
         android:ellipsize="end"
         android:gravity="center_horizontal"
         android:maxLines="2"
-        android:text="Exam Name"
+        android:text="@string/exam_name"
         android:textColor="@color/text_black"
         android:textSize="@dimen/big_text_size" />
 
@@ -71,7 +71,7 @@
                 android:layout_marginBottom="10dp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="Recommended Time"
+                android:text="@string/recommended_time"
                 android:textColor="@color/text_gray" />
 
             <TextView
@@ -99,7 +99,7 @@
                 android:layout_marginBottom="@dimen/dp10"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="Time Taken"
+                android:text="@string/time_taken"
                 android:textColor="@color/text_gray" />
 
             <TextView
@@ -134,7 +134,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/dp10"
-                android:text="Total Questions"
+                android:text="@string/total_questions"
                 android:textColor="@color/light_40" />
 
             <TextView
@@ -151,14 +151,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingRight="30dp">
+            android:paddingRight="@dimen/dp30">
 
             <TextView
                 fontPath="@string/roboto_light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/dp10"
-                android:text="Answered"
+                android:text="@string/answered"
                 android:textColor="@color/light_40" />
 
             <TextView
@@ -181,8 +181,8 @@
                 fontPath="@string/roboto_light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:text="Skipped"
+                android:layout_marginBottom="@dimen/dp10"
+                android:text="@string/skipped"
                 android:textColor="@color/light_40" />
 
             <TextView
@@ -199,14 +199,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingRight="30dp">
+            android:paddingRight="@dimen/dp30">
 
             <TextView
                 fontPath="@string/roboto_light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/dp10"
-                android:text="Correct"
+                android:text="@string/correct"
                 android:textColor="@color/light_40" />
 
             <TextView
@@ -228,8 +228,8 @@
                 fontPath="@string/roboto_light"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:text="Wrong"
+                android:layout_marginBottom="@dimen/dp10"
+                android:text="@string/wrong"
                 android:textColor="@color/light_40" />
 
             <TextView
@@ -257,18 +257,18 @@
             android:background="@drawable/login_button_bg"
             android:paddingLeft="@dimen/dp20"
             android:paddingRight="@dimen/dp20"
-            android:text="View Answers"
+            android:text="@string/view_answers"
             android:textColor="@color/white" />
 
         <com.education.corsalite.views.CustomButton
             android:id="@+id/exam_history_btn"
             android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:layout_marginLeft="10dp"
+            android:layout_height="@dimen/dp35"
+            android:layout_marginLeft="@dimen/dp10"
             android:background="@drawable/login_button_bg"
             android:paddingLeft="@dimen/dp20"
             android:paddingRight="@dimen/dp20"
-            android:text="Exam History"
+            android:text="@string/exam_history"
             android:textColor="@color/white"
             android:visibility="gone" />
 
@@ -280,10 +280,9 @@
             android:background="@drawable/login_button_bg"
             android:paddingLeft="@dimen/dp20"
             android:paddingRight="@dimen/dp20"
-            android:text="Course analysis"
+            android:text="@string/course_analysis"
             android:textColor="@color/white"
             android:visibility="gone" />
 
     </LinearLayout>
-
 </LinearLayout>

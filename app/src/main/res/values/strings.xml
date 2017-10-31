@@ -309,7 +309,6 @@
     <string name="time_left">TIME LEFT</string>
     <string name="time_management_by_subject_based_on_recent_365_days_performance">Time Management By Subject - based on recent 365 days performance</string>
     <string name="time_management">Time Management</string>
-    <string name="time_taken">Time Taken</string>
     <string name="time_takens">Time Taken:</string>
     <string name="time">Time</string>
     <string name="timing">00:00:00</string>
@@ -326,7 +325,6 @@
     <string name="topic">Topic</string>
     <string name="topics">Topics</string>
     <string name="total_points">Total Points :</string>
-    <string name="total_questions">Total Questions</string>
     <string name="total">Total</string>
     <string name="type_colon">Type :</string>
     <string name="type">Type</string>
@@ -369,5 +367,9 @@
     <string name="done">Done</string>
     <string name="_dash">-</string>
     <string name="subject_name">Subject name</string>
+    <string name="time_taken">Time Taken</string>
+    <string name="total_questions">Total Questions</string>
+    <string name="default_course">Default Course</string>
+    <string name="total_virtual_currency_is">Total Virtual currency is</string>
     <string-array name="tab_names" />
 </resources>

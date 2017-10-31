@@ -16,7 +16,6 @@
             android:orientation="vertical"
             android:paddingBottom="@dimen/dp30">
 
-
             <ImageView
                 android:id="@+id/profile_pic"
                 android:layout_width="@dimen/dp100"
@@ -28,7 +27,7 @@
                 fontPath="@string/roboto_regular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Welcome"
+                android:text="@string/welcome"
                 android:textColor="@color/text_white"
                 android:textSize="@dimen/sp22" />
 
@@ -52,7 +51,7 @@
                     fontPath="@string/roboto_regular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Last Visit : "
+                    android:text="@string/last_visit"
                     android:textColor="@color/text_white"
                     android:textSize="@dimen/sp18" />
 
@@ -109,7 +108,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/schedule_test_selector"
-                    android:text="Scheduled Tests"
+                    android:text="@string/scheduled_tests"
                     android:textColor="@color/text_white" />
 
                 <com.education.corsalite.views.CustomButton
@@ -118,7 +117,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@color/color_7195BF"
-                    android:text="Messages"
+                    android:text="@string/messages"
                     android:textColor="@color/text_white"/>
 
                 <com.education.corsalite.views.CustomButton
@@ -127,13 +126,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@color/FFBA4D"
-                    android:text="Recommended Reading"
+                    android:text="@string/recommended_reading"
                     android:textColor="@color/text_white"
                     android:visibility="gone" />
 
             </LinearLayout>
         </LinearLayout>
-
     </LinearLayout>
 
     <TextView
@@ -142,7 +140,7 @@
         android:layout_height="wrap_content"
         android:background="@color/yellow"
         android:gravity="center_horizontal"
-        android:text="This course is ended on 20/1/2016"
+        android:text="@string/this_course_is_ended_on_20_1_2016"
         android:textColor="@color/red"
         fontPath="@string/roboto_regular"
         android:textSize="@dimen/sp30"

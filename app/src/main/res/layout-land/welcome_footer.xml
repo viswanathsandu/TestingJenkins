@@ -44,7 +44,6 @@
                 android:textSize="@dimen/sp20" />
 
         </LinearLayout>
-
     </LinearLayout>
 
     <LinearLayout
@@ -86,7 +85,5 @@
                 android:textSize="@dimen/sp20" />
 
         </LinearLayout>
-
     </LinearLayout>
-
 </LinearLayout>

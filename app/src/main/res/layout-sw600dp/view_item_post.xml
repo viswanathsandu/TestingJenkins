@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="middle"
                 android:maxLines="1"
-                android:text="how to solve the given problem. and also can I get a clear explanations for these sums?"
+                android:text="@string/how_to_solve_the_given_problem_and_also_can_i_get_a_clear_explanations_for_these_sums"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/sp16"
                 android:textStyle="bold" />
@@ -66,7 +66,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp5"
                     android:maxLines="1"
-                    android:text="Shivkeshav"
+                    android:text="@string/shivkeshav"
                     android:textColor="@android:color/holo_blue_light"
                     android:textSize="@dimen/sp12"
                     android:textStyle="italic" />
@@ -104,7 +104,7 @@
                     android:paddingLeft="@dimen/dp5"
                     android:paddingRight="@dimen/dp5"
                     android:paddingTop="@dimen/dp2"
-                    android:text="Course"
+                    android:text="@string/course"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/sp10" />
 
@@ -120,7 +120,7 @@
                     android:paddingLeft="@dimen/dp5"
                     android:paddingRight="@dimen/dp5"
                     android:paddingTop="@dimen/dp2"
-                    android:text="Subject"
+                    android:text="@string/subject"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/sp10" />
 
@@ -136,7 +136,7 @@
                     android:paddingLeft="@dimen/dp5"
                     android:paddingRight="@dimen/dp5"
                     android:paddingTop="@dimen/dp2"
-                    android:text="Chapter"
+                    android:text="@string/chapter"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/sp10" />
 
@@ -152,7 +152,7 @@
                     android:paddingLeft="@dimen/dp5"
                     android:paddingRight="@dimen/dp5"
                     android:paddingTop="@dimen/dp2"
-                    android:text="Topic"
+                    android:text="@string/topic"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/sp10" />
 
@@ -178,7 +178,7 @@
                     android:paddingLeft="@dimen/dp10"
                     android:paddingRight="@dimen/dp10"
                     android:paddingTop="@dimen/dp5"
-                    android:text="Like"
+                    android:text="@string/like"
                     android:textColor="@android:color/black"
                     />
 
@@ -196,7 +196,7 @@
                     android:paddingLeft="@dimen/dp0"
                     android:paddingTop="@dimen/dp7"
                     android:textColor="@android:color/black"
-                    tools:text="4 Comments" />
+                    tools:text="@string/comments" />
 
                 <TextView
                     android:id="@+id/tv_post_action_bookmark"
@@ -212,7 +212,7 @@
                     android:paddingLeft="@dimen/dp0"
                     android:paddingTop="@dimen/dp7"
                     android:textColor="@color/text_black"
-                    android:text="Bookmark" />
+                    android:text="@string/bookmark" />
 
                 <TextView
                     android:id="@+id/tv_post_response_views"
@@ -228,7 +228,7 @@
                     android:paddingLeft="@dimen/dp0"
                     android:paddingTop="@dimen/dp7"
                     android:textColor="@android:color/black"
-                    tools:text="127 Views" />
+                    tools:text="@string/views" />
 
             </LinearLayout>
 
@@ -252,7 +252,7 @@
                     android:paddingLeft="@dimen/dp10"
                     android:paddingRight="@dimen/dp10"
                     android:paddingTop="@dimen/dp5"
-                    android:text="Lock"
+                    android:text="@string/lock"
                     android:textColor="@android:color/white"
                     android:visibility="gone" />
 
@@ -270,7 +270,7 @@
                     android:paddingLeft="@dimen/dp10"
                     android:paddingRight="@dimen/dp10"
                     android:paddingTop="@dimen/dp5"
-                    android:text="Delete"
+                    android:text="@string/delete"
                     android:visibility="gone"
                     android:textColor="@android:color/white" />
 
@@ -288,7 +288,7 @@
                     android:paddingLeft="@dimen/dp10"
                     android:paddingRight="@dimen/dp10"
                     android:paddingTop="@dimen/dp5"
-                    android:text="Edit"
+                    android:text="@string/edit"
                     android:visibility="gone"
                     android:textColor="@android:color/white" />
 
@@ -306,12 +306,11 @@
                     android:paddingLeft="@dimen/dp10"
                     android:paddingRight="@dimen/dp10"
                     android:paddingTop="@dimen/dp5"
-                    android:text="Comment"
+                    android:text="@string/commennt"
                     android:visibility="gone"
                     android:textColor="@android:color/white" />
 
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-
 </LinearLayout>
