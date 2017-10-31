@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:padding="@dimen/dp10"
-            android:text="Virtual currency earned in last session"
+            android:text="@string/virtual_currency_earned_in_last_session"
             android:textColor="@color/text_white"
             android:textSize="@dimen/sp22" />
 
@@ -44,7 +44,6 @@
                 android:textSize="@dimen/sp40" />
 
         </LinearLayout>
-
     </LinearLayout>
 
     <LinearLayout
@@ -61,7 +60,7 @@
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:padding="@dimen/dp10"
-            android:text="Total Virtual currency is"
+            android:text="@string/total_virtual_currency_is"
             android:textColor="@color/text_white"
             android:textSize="@dimen/sp22" />
 
@@ -86,7 +85,5 @@
                 android:textSize="@dimen/sp40" />
 
         </LinearLayout>
-
     </LinearLayout>
-
 </LinearLayout>
