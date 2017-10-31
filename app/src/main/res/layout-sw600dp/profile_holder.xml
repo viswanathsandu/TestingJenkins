@@ -26,7 +26,6 @@
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/node_selector"
         android:src="@drawable/ico_offline_exercise" />
-
     <!--<View-->
         <!--android:id="@+id/node_selectors"-->
         <!--android:layout_width="20dp"-->

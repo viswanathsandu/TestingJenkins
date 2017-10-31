@@ -62,5 +62,4 @@
             android:textColor="@color/text_black"
             android:textSize="@dimen/sp12" />
     </RelativeLayout>
-
 </LinearLayout>

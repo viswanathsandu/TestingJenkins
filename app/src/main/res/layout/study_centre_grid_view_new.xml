@@ -63,11 +63,11 @@
                 android:id="@+id/star"
                 style="@style/grid_child_text_style"
                 fontPath="@string/roboto_regular"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/dp0"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:drawablePadding="16dp"
+                android:drawablePadding="@dimen/dp16"
                 android:drawableTop="@drawable/cup"
                 android:gravity="center_vertical|center_horizontal"
                 android:paddingLeft="@dimen/dp4"
@@ -78,7 +78,7 @@
                 android:id="@+id/level"
                 style="@style/grid_child_text_style"
                 fontPath="@string/roboto_regular"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/dp0"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
@@ -102,13 +102,13 @@
                     android:layout_width="@dimen/dp56"
                     android:layout_height="@dimen/dp56"
                     android:gravity="center_vertical|center"
-                    custom:donut_finished_color="@color/FFFFFF"
+                    custom:donut_finished_color="@color/white"
                     custom:donut_unfinished_color="@color/color_23232300"
                     custom:donut_finished_stroke_width="@dimen/dp6"
                     custom:donut_unfinished_stroke_width="@dimen/dp6"
                     custom:donut_progress="30"
                     custom:donut_text_size="@dimen/sp12"
-                    custom:donut_text_color="@color/FFFFFF"/>
+                    custom:donut_text_color="@color/white"/>
 
                 <TextView
                     android:id="@+id/grid_child_text_view"
@@ -152,18 +152,18 @@
             android:lineSpacingMultiplier="1.2"
             android:maxLines="2"
             android:lines="2"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
+            android:paddingLeft="@dimen/dp16"
+            android:paddingRight="@dimen/dp16"
             android:text="Subject name"
             android:textColor="@color/dark_gray"
-            android:textSize="16sp"/>
+            android:textSize="@dimen/sp16"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="@dimen/dp5"
             android:orientation="horizontal"
-            android:paddingLeft="12dp"
+            android:paddingLeft="@dimen/dp12"
             android:weightSum="3">
 
             <TextView
@@ -193,43 +193,43 @@
                 android:drawablePadding="16dp"
                 android:drawableTop="@drawable/cup"
                 android:gravity="center_vertical|center"
-                android:paddingLeft="4dp"
+                android:paddingLeft="@dimen/dp4"
                 android:text="28/347"
                 android:textColor="@color/dark_gray"
-                android:textSize="12sp"/>
+                android:textSize="@dimen/sp12"/>
 
             <TextView
                 android:id="@+id/level_gray"
                 style="@style/grid_child_text_style"
                 fontPath="@string/roboto_regular"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/dp0"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:drawablePadding="16dp"
+                android:drawablePadding="@dimen/dp16"
                 android:drawableTop="@drawable/level_three"
                 android:gravity="center_vertical|center"
-                android:paddingLeft="4dp"
+                android:paddingLeft="@dimen/dp4"
                 android:textColor="@color/dark_gray"
-                android:textSize="12sp"
+                android:textSize="@dimen/sp12"
                 tools:text="level 2"/>
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="@dimen/dp0"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:paddingLeft="4dp">
+                android:paddingLeft="@dimen/dp4">
 
                 <com.github.lzyzsd.circleprogress.DonutProgress
                     android:id="@+id/progress_id_gray"
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
+                    android:layout_width="@dimen/dp64"
+                    android:layout_height="@dimen/dp64"
                     android:gravity="center_vertical|center"
-                    custom:donut_finished_stroke_width="6dp"
-                    custom:donut_unfinished_stroke_width="6dp"
-                    custom:donut_finished_color="@color/FFFFFF"
+                    custom:donut_finished_stroke_width="@dimen/dp6"
+                    custom:donut_unfinished_stroke_width="@dimen/dp6"
+                    custom:donut_finished_color="@color/white"
                     custom:donut_unfinished_color="@color/dark_gray"
                     custom:donut_progress="30"
                     custom:donut_text_color="@color/dark_gray"/>
@@ -241,16 +241,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="@dimen/dp8"
+                    android:layout_marginTop="@dimen/dp8"
                     android:ellipsize="end"
                     android:gravity="center|center_vertical"
                     android:maxLines="2"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
+                    android:paddingLeft="@dimen/dp16"
+                    android:paddingRight="@dimen/dp16"
                     android:text="@string/topics"
                     android:textColor="@color/dark_gray"
-                    android:textSize="12sp"
+                    android:textSize="@dimen/sp12"
                     android:visibility="visible"/>
             </LinearLayout>
         </LinearLayout>

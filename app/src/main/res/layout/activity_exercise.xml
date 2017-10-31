@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/FFFFFF"
+    android:background="@color/white"
     tools:context=".activities.ExamEngineActivity">
 
     <ViewSwitcher
@@ -114,7 +114,7 @@
                         android:layout_alignParentRight="true"
                         android:enabled="false"
                         android:text="@string/or"
-                        android:textColor="@color/FFFFFF"
+                        android:textColor="@color/white"
                         android:textSize="@dimen/sp18" />
 
                 </LinearLayout>
