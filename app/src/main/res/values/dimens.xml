@@ -97,7 +97,7 @@
     <dimen name="x_small_text_size">6sp</dimen>
     <dimen name="dp15">15dp</dimen>
     <dimen name="dp30">30dp</dimen>
-    <dimen name="dp55">550dp</dimen>
+    <dimen name="dp550">550dp</dimen>
     <dimen name="dp5">5dp</dimen>
     <dimen name="dp60">60dp</dimen>
 </resources>
