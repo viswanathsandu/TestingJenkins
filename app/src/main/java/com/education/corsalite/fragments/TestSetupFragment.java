@@ -148,8 +148,8 @@ public class TestSetupFragment extends BaseFragment {
 
     private void challengeTest() {
         CreateChallengeRequest request = new CreateChallengeRequest();
-        request.subjectId = subjectList.get(selectSubjSpinner.getSelectedItemPosition() - 1).idSubject;
-        request.chapterId = chapterList.get(selectChapSpinner.getSelectedItemPosition() - 1).idChapter;
+        request.subjectId = subjectList.get(selectSubjSpinner.getSelectedItemPosition()).idSubject;
+        request.chapterId = chapterList.get(selectChapSpinner.getSelectedItemPosition()).idChapter;
         request.courseId = AbstractBaseActivity.getSelectedCourseId();
         int durationInMins = 0;
         try {
@@ -160,11 +160,11 @@ public class TestSetupFragment extends BaseFragment {
         request.durationInSeconds = String.valueOf(durationInMins * 60);
         request.questionCount = noOfQuesEdit.getText().toString();
         request.virtualCurrencyChallenged = virtCurrencyEdit.getText().toString();
-        if (examsSpinner.getSelectedItemPosition() == 0 || examsList == null) {
+        if (examsSpinner.getSelectedItemPosition() < 0 || examsList == null) {
             showToast("Please select the exam");
             return;
         }
-        request.examId = examsList.get(examsSpinner.getSelectedItemPosition() - 1).examId;
+        request.examId = examsList.get(examsSpinner.getSelectedItemPosition()).examId;
         request.studentId = LoginUserCache.getInstance().getStudentId();
         ChallengeFriend friend = new ChallengeFriend();
         List<FriendsData.Friend> selectedFriends = ((ChallengeActivity) getActivity()).selectedFriends;
@@ -354,9 +354,6 @@ public class TestSetupFragment extends BaseFragment {
         selectSubjSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-             /*   if (adapterView.getItemAtPosition(position).toString().equalsIgnoreCase("Select Subject")) {
-                    selectChapSpinner.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.challenge_spinner_item, R.id.mock_test_txt, getChapters(null)));
-                } else{*/
                 selectSubjError.setVisibility(View.GONE);
                 for (int i = 0; i < finalSubjectsList.size(); i++) {
                     if (finalSubjectsList.get(i).subjectName.equalsIgnoreCase(adapterView.getItemAtPosition(position).toString())) {
@@ -365,21 +362,18 @@ public class TestSetupFragment extends BaseFragment {
                     }
                 }
             }
+
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
+            public void onNothingSelected(AdapterView<?> adapterView) {}
         });
         selectChapSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                if (!adapterView.getItemAtPosition(position).toString().equalsIgnoreCase("Chapter")) {
-                    selectChapError.setVisibility(View.GONE);
-                }
+                selectChapError.setVisibility(View.GONE);
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
+            public void onNothingSelected(AdapterView<?> adapterView) {}
         });
     }
 
