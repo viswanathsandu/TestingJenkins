@@ -17,6 +17,7 @@ import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.fragments.ExamResultSummaryGraphFragment;
+import com.education.corsalite.fragments.ExamResultSummaryMultiLineFragment;
 import com.education.corsalite.gson.Gson;
 import com.education.corsalite.models.db.ExamResultDetails;
 import com.education.corsalite.models.db.ExamResultSummarySubject;
@@ -54,7 +55,9 @@ public class ExamResultSummaryActivity extends AbstractBaseActivity {
         fetchExamSummaryData(testAnswerPaperIds);
 
         // TODO : loading dummy fragment
-        getSupportFragmentManager().beginTransaction().add(R.id.graph_container, new ExamResultSummaryGraphFragment(), "Summary").commit();
+      //  getSupportFragmentManager().beginTransaction().add(R.id.graph_container, new ExamResultSummaryGraphFragment(), "Summary").commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.graph_container, new ExamResultSummaryMultiLineFragment(), "Summary").commit();
+
     }
 
     private void fetchExamSummaryData(String testAnswerPaperIds) {

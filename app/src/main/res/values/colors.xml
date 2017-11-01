@@ -3,7 +3,6 @@
     <color name="dark_blue">#1E589A</color>
     <color name="primary_color">#125291</color>
     <color name="colorPrimaryDark">#1E589A</color>
-    <color name="dark_blue_selector">#0B4A8E</color>
     <color name="blue">#125291</color>
     <color name="bg_login">#125291</color>
     <color name="royalblue">#4169E1</color>
@@ -25,18 +24,15 @@
     <color name="black">#000000</color>
     <color name="dark_gray">#a9a9a9</color>
     <color name="light_gray">#d3d1d1</color>
-    <color name="cyan">#008B8B</color>
     <color name="light_40">#96F5F5F6</color>
     <color name="transparent">#00000000</color>
     <color name="gray_dark_border">#4D4E4F</color>
-    <color name="header_row_background">#a4aeb9</color>
     <color name="webview_background_grey">#F7F8F9</color>
     <!--Text colors-->
     <color name="text_gray">#666666</color>
     <color name="text_red">#c61515</color>
     <color name="text_white">#ffffff</color>
     <color name="text_green">#22b552</color>
-    <color name="text_blue">#0f4d92</color>
     <color name="text_black">#222222</color>
 
     <!--User Profile-->

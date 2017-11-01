@@ -67,7 +67,8 @@ public class ExamHistoryActivity extends AbstractBaseActivity implements ExamHis
     private void getExamHistory() {
         mProgressBar.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.GONE);
-        ApiManager.getInstance(this).getExamHistory(getSelectedCourseId(), LoginUserCache.getInstance().getStudentId(),
+        ApiManager.getInstance(this).getExamHistory(getSelectedCourseId(),
+                LoginUserCache.getInstance().getStudentId(),
                 null, null,
                 new ApiCallback<List<ExamHistory>>(this) {
             @Override
