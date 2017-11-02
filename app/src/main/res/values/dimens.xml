@@ -42,7 +42,7 @@
     <dimen name="text_padding_around_item">10dp</dimen>
     <dimen name="progress_stroke_width">4dp</dimen>
     <dimen name="progress_text_size">10sp</dimen>
-    <dimen name="tile_margin_right">10dp</dimen>
+    <dimen name="tile_margin">10dp</dimen>
 
 
 </resources>

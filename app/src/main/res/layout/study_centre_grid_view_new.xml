@@ -6,9 +6,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/text_padding_around_item"
-    android:layout_marginRight="@dimen/tile_margin_right"
-    android:layout_marginLeft="@dimen/tile_margin_right"
+    android:layout_marginBottom="@dimen/tile_margin"
+    android:layout_marginRight="@dimen/tile_margin"
     android:background="?android:attr/selectableItemBackground"
     android:orientation="vertical">
 
