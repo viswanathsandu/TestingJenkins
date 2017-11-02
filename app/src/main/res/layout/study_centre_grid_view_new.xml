@@ -104,10 +104,10 @@
                     android:gravity="center_vertical|center"
                     custom:donut_finished_color="#FFFFFF"
                     custom:donut_unfinished_color="#23232300"
-                    custom:donut_finished_stroke_width="6dp"
-                    custom:donut_unfinished_stroke_width="6dp"
+                    custom:donut_finished_stroke_width="@dimen/progress_stroke_width"
+                    custom:donut_unfinished_stroke_width="@dimen/progress_stroke_width"
                     custom:donut_progress="30"
-                    custom:donut_text_size="12sp"
+                    custom:donut_text_size="@dimen/progress_text_size"
                     custom:donut_text_color="#FFFFFF"/>
 
                 <TextView
@@ -227,8 +227,8 @@
                     android:layout_width="@dimen/progress_size_in_tile_grey"
                     android:layout_height="@dimen/progress_size_in_tile_grey"
                     android:gravity="center_vertical|center"
-                    custom:donut_finished_stroke_width="6dp"
-                    custom:donut_unfinished_stroke_width="6dp"
+                    custom:donut_finished_stroke_width="@dimen/progress_stroke_width"
+                    custom:donut_unfinished_stroke_width="@dimen/progress_stroke_width"
                     custom:donut_finished_color="#FFFFFF"
                     custom:donut_unfinished_color="@color/dark_gray"
                     custom:donut_progress="30"
