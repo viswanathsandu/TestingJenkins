@@ -232,6 +232,7 @@
                     custom:donut_finished_color="#FFFFFF"
                     custom:donut_unfinished_color="@color/dark_gray"
                     custom:donut_progress="30"
+                    custom:donut_text_size="@dimen/progress_text_size"
                     custom:donut_text_color="@color/dark_gray"/>
 
                 <TextView
