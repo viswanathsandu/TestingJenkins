@@ -32,4 +32,5 @@
     <dimen name="progresstext_size">8dp</dimen>
     <dimen name="prize_drawable_padding">16dp</dimen>
     <dimen name="text_padding_around_item">16dp</dimen>
+    <dimen name="progress_stroke_width">6dp</dimen>
 </resources>
