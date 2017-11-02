@@ -120,8 +120,13 @@ public class VideoActivity extends AbstractBaseActivity {
                 videoViewRelative.setVisibility(View.VISIBLE);
                 youtubeContainer.setVisibility(View.GONE);
                 videoViewRelative.seekTo(0);
-                //set the uri of the video to be played
-                videoViewRelative.setVideoURI(Uri.parse(ApiClientService.getBaseUrl() + contents.get(selectedPosition).url.replace("./", "")));
+                if(contents.get(selectedPosition).url.startsWith("http")) {
+                    //set the uri of the video to be played
+                    videoViewRelative.setVideoURI(Uri.parse(contents.get(selectedPosition).url));
+                } else {
+                    //set the uri of the video to be played
+                    videoViewRelative.setVideoURI(Uri.parse(ApiClientService.getBaseUrl() + contents.get(selectedPosition).url.replace("./", "")));
+                }
                 // videoViewRelative.setVideoURI(Uri.parse("http://staging.corsalite.com/stagenewchanges/files/topics/1315/sunil/output.mpd"));
                 videoViewRelative.setOnPreparedListener(new OnPreparedListener() {
 
