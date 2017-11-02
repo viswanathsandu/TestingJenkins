@@ -78,43 +78,42 @@ public class FileUtils {
     }
 
     public String getVideoDownloadPathForTsFile(String videoId, String url) {
-        try {
-            String fileName = new URL(url).getFile();
-            String folderPath = getParentFolder() + File.separator + Constants.VIDEO_FOLDER + File.separator + videoId;
-            File folder = new File(folderPath);
-            if (!folder.isDirectory() && !folder.exists()) {
-                folder.mkdirs();
-            }
-            File file = new File(folder, fileName);
-            if (!file.exists()) {
-                try {
-                    writer = new BufferedWriter(new FileWriter(file));
-                    writer.write("");
-                    writer.close();
-                } catch (Exception e) {
-                    L.error(e.getMessage(), e);
-                }
-            }
-            return file.getAbsolutePath();
-        } catch (MalformedURLException e) {
-            L.error(e.getMessage(), e);
-            return "";
-        }
-    }
-
-    public String getVideoDownloadFilePath(String videoId) {
-        return getVideoDownloadFilePath(videoId, Constants.VIDEO_FILE);
-    }
-
-    public String getVideoDownloadFilePath(String videoId, String fileType) {
-        String fileName = "v." + fileType;
+        String fileName = url.substring( url.lastIndexOf('/')+1, url.length() );
         String folderPath = getParentFolder() + File.separator + Constants.VIDEO_FOLDER + File.separator + videoId;
         File folder = new File(folderPath);
-        if(!folder.isDirectory() && !folder.exists()) {
+        if (!folder.isDirectory() && !folder.exists()) {
             folder.mkdirs();
         }
         File file = new File(folder, fileName);
-        if(!file.exists()) {
+        if (!file.exists()) {
+            try {
+                writer = new BufferedWriter(new FileWriter(file));
+                writer.write("");
+                writer.close();
+            } catch (Exception e) {
+                L.error(e.getMessage(), e);
+            }
+        }
+        return file.getAbsolutePath();
+    }
+
+    public String getVideoDownloadFilePath(String videoId, boolean createFileIfNeeded) {
+        return getVideoDownloadFilePath(videoId, Constants.VIDEO_FILE, createFileIfNeeded);
+    }
+
+    public String getVideoDownloadFilePath(String videoId) {
+        return getVideoDownloadFilePath(videoId, Constants.VIDEO_FILE, true);
+    }
+
+    public String getVideoDownloadFilePath(String videoId, String fileType, boolean createFileIfNeeded) {
+        String fileName = "v." + fileType;
+        String folderPath = getParentFolder() + File.separator + Constants.VIDEO_FOLDER + File.separator + videoId;
+        File folder = new File(folderPath);
+        if(!folder.isDirectory() && !folder.exists() && createFileIfNeeded) {
+            folder.mkdirs();
+        }
+        File file = new File(folder, fileName);
+        if(!file.exists() && createFileIfNeeded) {
             try {
                 writer = new BufferedWriter(new FileWriter(file));
                 writer.write("");

@@ -186,8 +186,7 @@ public class VideoActivity extends AbstractBaseActivity {
         videoViewRelative.setVisibility(View.VISIBLE);
         youtubeContainer.setVisibility(View.GONE);
         videoViewRelative.requestFocus();
-        //videoViewRelative.setVideoPath(videoPath);
-        videoViewRelative.setVideoPath("/storage/sdcard0/.Corsalite/43947/Videos/gov/2.m3u8");
+        videoViewRelative.setVideoPath(videoPath);
 //        videoViewRelative.start();
     }
 }
