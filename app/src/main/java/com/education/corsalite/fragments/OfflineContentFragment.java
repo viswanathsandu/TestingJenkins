@@ -356,15 +356,19 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
     }
 
     private void startVideoActivity(String contentId) {
-        String videoUrl = FileUtils.get(getActivity()).getVideoDownloadPath(contentId);
+        String videoUrl = FileUtils.get(getActivity()).getVideoDownloadFilePath(contentId);
+        File file = new File(videoUrl);
+        if(!file.exists()) {
+            videoUrl = FileUtils.get(getActivity()).getVideoDownloadFilePath(contentId, "m3u8");
+            if(!file.exists()) {
+                showToast("Unable to play video due to technical error \nPlease try after sometime");
+                return;
+            }
+        }
         Intent intent = new Intent(getActivity(), VideoActivity.class);
         intent.putExtra("videopath", videoUrl);
         L.debug("Loading file from : " + videoUrl);
-        File file = new File(videoUrl);
-        if (file.exists()) {
-            getActivity().startActivity(intent);
-        } else
-            showToast("File does not exist");
+        getActivity().startActivity(intent);
     }
 
 }

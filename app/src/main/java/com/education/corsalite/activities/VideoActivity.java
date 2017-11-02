@@ -7,11 +7,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.devbrackets.android.exomedia.listener.OnPreparedListener;
 import com.devbrackets.android.exomedia.ui.widget.VideoView;
-import com.education.corsalite.BuildConfig;
 import com.education.corsalite.R;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
@@ -27,9 +25,7 @@ import com.education.corsalite.utils.SystemUtils;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
-import com.google.android.youtube.player.YouTubePlayerView;
 
-import java.net.URI;
 import java.util.List;
 
 import butterknife.Bind;
@@ -88,7 +84,7 @@ public class VideoActivity extends AbstractBaseActivity {
         try {
             OfflineContent offlineContent = dbManager.getOfflineContentWithContent(contents.get(selectedPosition).idContent);
             if(offlineContent != null && offlineContent.progress == 100) {
-                videoPath = FileUtils.get(this).getVideoDownloadPath(offlineContent.contentId);
+                videoPath = FileUtils.get(this).getVideoDownloadFilePath(offlineContent.contentId);
                 loadLocalVideo();
                 return;
             } else if(!SystemUtils.isNetworkConnected(this)) {
@@ -190,7 +186,8 @@ public class VideoActivity extends AbstractBaseActivity {
         videoViewRelative.setVisibility(View.VISIBLE);
         youtubeContainer.setVisibility(View.GONE);
         videoViewRelative.requestFocus();
-        videoViewRelative.setVideoPath(videoPath);
+        //videoViewRelative.setVideoPath(videoPath);
+        videoViewRelative.setVideoPath("/storage/sdcard0/.Corsalite/43947/Videos/gov/2.m3u8");
 //        videoViewRelative.start();
     }
 }

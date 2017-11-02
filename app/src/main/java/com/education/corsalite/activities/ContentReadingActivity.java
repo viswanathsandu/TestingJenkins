@@ -770,7 +770,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
         FileUtils fileUtils = FileUtils.get(this);
         File file = null;
         if (type.endsWith(Constants.VIDEO_FILE)) {
-            file = new File(fileUtils.getVideoDownloadPath(contentId));
+            file = new File(fileUtils.getVideoDownloadFilePath(contentId));
         } else if (type.endsWith(Constants.HTML_FILE)) {
             file = new File(fileUtils.getParentFolder() + fileUtils.getContentFilePath()
                     + File.separator + fileUtils.getContentFileName(contentId));

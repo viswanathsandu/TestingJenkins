@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 import com.orm.dsl.Ignore;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by Girish on 30/09/15.
@@ -28,6 +29,14 @@ public class Content extends BaseModel implements Serializable {
     public String status;
     @SerializedName("UpdateTime")
     public String updateTime;
+    @Ignore
+    public List<String> videoSegments;
+    @Ignore
+    @SerializedName("VideoStartTime")
+    public String videoStartTime;
+    @Ignore
+    @SerializedName("VideoEndTime")
+    public String videoEndTime;
 
     @Override
     public boolean equals(Object o) {
