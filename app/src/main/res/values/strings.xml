@@ -183,4 +183,6 @@
 
     </string>
     <string name="powered_by"></string>
+    <string name="add_friend">Add</string>
+    <string name="next_in_challenge">Next</string>
 </resources>
