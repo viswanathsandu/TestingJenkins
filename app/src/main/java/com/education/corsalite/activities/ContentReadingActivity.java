@@ -540,7 +540,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
             for (int i = 0; i < listSize; i++) {
                 String contentId = mContentResponse.get(i).idContent;
                 String contentType = mContentResponse.get(i).type + "";
-                String text = contentType.equalsIgnoreCase(Constants.VIDEO_FILE) ?
+                String text = contentType.equalsIgnoreCase(Constants.VIDEO_FILE) || contentType.equalsIgnoreCase("m3u8")?
                         mContentResponse.get(i).url : getHtmlcontent(mContentResponse.get(i).contentHtml);
                 if (mContentId.isEmpty()) {
                     if (!TextUtils.isEmpty(text) && count == 0) {

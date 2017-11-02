@@ -278,7 +278,7 @@ public class ContentDownloadService extends IntentService {
             } else if (content.type.equalsIgnoreCase("mpg")) {
                 fileName = content.name.replace("./", ApiClientService.getBaseUrl()) + "." + content.type;
             } else if(content.type.equalsIgnoreCase("m3u8")) {
-                fileName = content.videoSegments.get(0);
+                fileName = content.name + "." + content.type;
             }
             if (content != null) {
                 offlineContent.fileName = fileName;
