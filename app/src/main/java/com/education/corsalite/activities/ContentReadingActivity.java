@@ -658,7 +658,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
         contentModelList = new ArrayList<>();
         videoModelList = new ArrayList<>();
         for (ContentModel contentModel : topicModelList.get(topicPosition).contentMap) {
-            if (contentModel.type.endsWith(Constants.VIDEO_FILE)) {
+            if (contentModel.type.endsWith(Constants.VIDEO_FILE) || contentModel.type.endsWith("m3u8")) {
                 videoModelList.add(contentModel);
             } else {
                 contentModelList.add(contentModel);

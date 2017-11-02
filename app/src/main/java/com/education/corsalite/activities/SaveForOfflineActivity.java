@@ -139,7 +139,7 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
                                 if (innerMostNode.isSelected()) {
                                     contentText += "\t\t" + innerMostNode.getValue().toString() + "\n";
                                     contentName = contentModel.contentName;
-                                    if (contentModel.type.equals(Constants.VIDEO_FILE)) {
+                                    if (contentModel.type.equals(Constants.VIDEO_FILE) || contentModel.type.equals("m3u8")) {
                                         videoContentId += contentModel.idContent + ",";
                                     } else if (contentModel.type.equals(Constants.HTML_FILE)) {
                                         htmlContentId += contentModel.idContent + ",";
@@ -400,7 +400,7 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
         List<ContentModel> htmlContents = new ArrayList<>();
         List<ContentModel> videoContents = new ArrayList<>();
         for (ContentModel content : contents) {
-            if (content.type.toLowerCase().endsWith("mpg")) {
+            if (content.type.toLowerCase().endsWith("mpg") || content.type.toLowerCase().endsWith("m3u4")) {
                 videoContents.add(content);
             } else if (content.type.toLowerCase().endsWith("html")) {
                 htmlContents.add(content);

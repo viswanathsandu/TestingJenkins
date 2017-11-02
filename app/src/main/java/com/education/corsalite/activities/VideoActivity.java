@@ -45,6 +45,7 @@ public class VideoActivity extends AbstractBaseActivity {
     long selectedPosition = 0;
     List<Content> contents;
     private String videoPath;
+    private String videoStartPosition = "0";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,7 +63,9 @@ public class VideoActivity extends AbstractBaseActivity {
             mContentModels = (List<ContentModel>)getIntent().getExtras().getSerializable("videoList");
             setToolbarForVideo(mContentModels, (int) selectedPosition);
         }
-
+        if(getIntent().hasExtra("videoStartTime")) {
+            videoStartPosition= getIntent().getStringExtra("videoStartTime");
+        }
         if(getIntent().hasExtra("videopath")){
             videoPath = getIntent().getStringExtra("videopath");
             loadLocalVideo();
@@ -187,6 +190,12 @@ public class VideoActivity extends AbstractBaseActivity {
         youtubeContainer.setVisibility(View.GONE);
         videoViewRelative.requestFocus();
         videoViewRelative.setVideoPath(videoPath);
-//        videoViewRelative.start();
+        if(videoPath.endsWith("m3u8")) {
+            videoViewRelative.start();
+        }
+        if(videoStartPosition != null) {
+            int secs = Integer.parseInt(videoStartPosition);
+            videoViewRelative.seekTo(secs * 1000);
+        }
     }
 }

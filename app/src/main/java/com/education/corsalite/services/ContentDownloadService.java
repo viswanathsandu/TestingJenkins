@@ -114,9 +114,6 @@ public class ContentDownloadService extends IntentService {
         FileUtils fileUtils = FileUtils.get(this);
         if(content.videoSegments != null && !content.videoSegments.isEmpty()) {
             String url = content.videoSegments.get(0);
-            if(url.contains("#")) {
-                url = url.substring(0, url.indexOf("#"));
-            }
             downloadVideo(offlineContent, content, url,
                     FileUtils.get(getApplicationContext()).getVideoDownloadFilePath(content.idContent, "m3u8", true));
         } else if (content.type.equalsIgnoreCase(Constants.VIDEO_FILE)) {
@@ -183,7 +180,7 @@ public class ContentDownloadService extends IntentService {
                 updateOfflineContent(offlineContent, OfflineContentStatus.IN_PROGRESS, content, progress);
                 L.info("Downloader : Downloaded metadata");
                 NotificationsUtils.showVideoDownloadNotification(getApplicationContext(), Integer.valueOf(content.idContent), progress, content.name);
-                downloadAllTsFiles(offlineContent, content);
+                downloadAllTsFiles(offlineContent, content, 1);
             }
 
             @Override
@@ -198,48 +195,46 @@ public class ContentDownloadService extends IntentService {
         };
     }
 
-    private void downloadAllTsFiles(final OfflineContent offlineContent, final Content content) {
-        for(int i=1; i<content.videoSegments.size(); i++) {
-            final String segment = content.videoSegments.get(i);
-            Uri tsUri = Uri.parse(segment);
-            Uri destinationUri = Uri.parse(FileUtils.get().getVideoDownloadPathForTsFile(offlineContent.contentId, segment));
-            DownloadRequest downloadRequest = new DownloadRequest(tsUri)
-                    .addCustomHeader("cookie", ApiClientService.getSetCookie())
-                    .setRetryPolicy(new DefaultRetryPolicy())
-                    .setDestinationURI(destinationUri).setPriority(DownloadRequest.Priority.HIGH)
-                    .setDownloadContext(getApplicationContext()) //Optional
-                    .setStatusListener(new DownloadStatusListenerV1() {
-                        @Override
-                        public void onDownloadComplete(DownloadRequest downloadRequest) {
-                            int index = content.videoSegments.indexOf(segment);
-                            if(index == content.videoSegments.size() - 1) {
-                                updateOfflineContent(offlineContent, OfflineContentStatus.COMPLETED, content, 100);
-                                L.info("Downloader : completed");
-                                NotificationsUtils.showSuccessNotification(getApplicationContext(), Integer.valueOf(content.idContent), content.name);
-                                downloandInProgress--;
-                            } else {
-                                int progress = index * 100 /content.videoSegments.size();
-                                updateOfflineContent(offlineContent, OfflineContentStatus.IN_PROGRESS, content, progress);
-                                L.info("Downloader : Downloaded metadata");
-                                NotificationsUtils.showVideoDownloadNotification(getApplicationContext(), Integer.valueOf(content.idContent), progress, content.name);
-                            }
-                        }
-
-                        @Override
-                        public void onDownloadFailed(DownloadRequest downloadRequest, int i, String s) {
-                            updateOfflineContent(offlineContent, OfflineContentStatus.FAILED, content, 0);
-                            L.info("Downloader : failed");
-                            NotificationsUtils.showFailureNotification(getApplicationContext(), Integer.valueOf(content.idContent), content.name);
+    private void downloadAllTsFiles(final OfflineContent offlineContent, final Content content, final int segmentPosition) {
+        final String segment = content.videoSegments.get(segmentPosition);
+        Uri tsUri = Uri.parse(segment);
+        Uri destinationUri = Uri.parse(FileUtils.get().getVideoDownloadPathForTsFile(offlineContent.contentId, segment));
+        DownloadRequest downloadRequest = new DownloadRequest(tsUri)
+                .addCustomHeader("cookie", ApiClientService.getSetCookie())
+                .setRetryPolicy(new DefaultRetryPolicy())
+                .setDestinationURI(destinationUri).setPriority(DownloadRequest.Priority.HIGH)
+                .setDownloadContext(getApplicationContext()) //Optional
+                .setStatusListener(new DownloadStatusListenerV1() {
+                    @Override
+                    public void onDownloadComplete(DownloadRequest downloadRequest) {
+                        if(segmentPosition >= content.videoSegments.size() - 1) {
+                            updateOfflineContent(offlineContent, OfflineContentStatus.COMPLETED, content, 100);
+                            L.info("Downloader : completed");
+                            NotificationsUtils.showSuccessNotification(getApplicationContext(), Integer.valueOf(content.idContent), content.name);
                             downloandInProgress--;
+                        } else {
+                            int progress = segmentPosition * 100 /content.videoSegments.size();
+                            updateOfflineContent(offlineContent, OfflineContentStatus.IN_PROGRESS, content, progress);
+                            L.info("Downloader : Downloaded metadata");
+                            NotificationsUtils.showVideoDownloadNotification(getApplicationContext(), Integer.valueOf(content.idContent), progress, content.name);
+                            downloadAllTsFiles(offlineContent, content, segmentPosition + 1);
                         }
+                    }
 
-                        @Override
-                        public void onProgress(DownloadRequest downloadRequest, long l, long l1, int i) {
-                            // Do nothing
-                        }
-                    });
-            downloadManager.add(downloadRequest);
-        }
+                    @Override
+                    public void onDownloadFailed(DownloadRequest downloadRequest, int i, String s) {
+                        updateOfflineContent(offlineContent, OfflineContentStatus.FAILED, content, 0);
+                        L.info("Downloader : failed");
+                        NotificationsUtils.showFailureNotification(getApplicationContext(), Integer.valueOf(content.idContent), content.name);
+                        downloandInProgress--;
+                    }
+
+                    @Override
+                    public void onProgress(DownloadRequest downloadRequest, long l, long l1, int i) {
+                        // Do nothing
+                    }
+                });
+        downloadManager.add(downloadRequest);
     }
 
     private DownloadStatusListenerV1 getVideoDownloadListener(final OfflineContent offlineContent, final Content content) {
@@ -280,14 +275,17 @@ public class ContentDownloadService extends IntentService {
                 fileName = content.name + ".html";
             } else if (content.type.equalsIgnoreCase("html")) {
                 fileName = content.name + "." + content.type;
-            } else if (content.type.equalsIgnoreCase("mpg") || content.type.equalsIgnoreCase("m3u8")) {
+            } else if (content.type.equalsIgnoreCase("mpg")) {
                 fileName = content.name.replace("./", ApiClientService.getBaseUrl()) + "." + content.type;
+            } else if(content.type.equalsIgnoreCase("m3u8")) {
+                fileName = content.videoSegments.get(0);
             }
             if (content != null) {
                 offlineContent.fileName = fileName;
                 offlineContent.contentName = content.name;
                 offlineContent.contentId = content.idContent;
                 offlineContent.progress = progress;
+                offlineContent.videoStartTime = content.videoStartTime;
             }
             offlineContent.status = status;
             dbManager.save(offlineContent);
@@ -299,7 +297,7 @@ public class ContentDownloadService extends IntentService {
     }
 
     private String getHtmlText(Content content) {
-        String text = content.type.equalsIgnoreCase(Constants.VIDEO_FILE)
+        String text = content.type.equalsIgnoreCase(Constants.VIDEO_FILE) || content.type.equalsIgnoreCase("m3u8")
                 ? content.originalUrl
                 : "<!DOCTYPE html>" +
                 "<html>" +

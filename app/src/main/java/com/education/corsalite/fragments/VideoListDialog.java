@@ -80,6 +80,7 @@ public class VideoListDialog extends DialogFragment implements VideoListAdapter.
                 intent.putExtra("selectedPosition", position);
                 intent.putExtra("videopath", FileUtils.get(getActivity()).getVideoDownloadFilePath(mVideoList.get(position).idContent));
                 intent.putExtra("videoList", (Serializable) mVideoList);
+                intent.putExtra("videoStartTime", offlineContent.videoStartTime);
                 startActivity(intent);
             } else if (SystemUtils.isNetworkConnected(getActivity())) {
                 Intent intent = new Intent(getActivity(), VideoActivity.class);
