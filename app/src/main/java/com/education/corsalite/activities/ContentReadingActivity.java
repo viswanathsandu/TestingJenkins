@@ -771,6 +771,8 @@ public class ContentReadingActivity extends AbstractBaseActivity {
         File file = null;
         if (type.endsWith(Constants.VIDEO_FILE)) {
             file = new File(fileUtils.getVideoDownloadFilePath(contentId));
+        } else if(type.endsWith("m3u8")) {
+            file = new File(fileUtils.getVideoDownloadFilePath(contentId, "m3u8", false));
         } else if (type.endsWith(Constants.HTML_FILE)) {
             file = new File(fileUtils.getParentFolder() + fileUtils.getContentFilePath()
                     + File.separator + fileUtils.getContentFileName(contentId));
@@ -793,7 +795,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
                     if (videoUrl.length() > 0) {
                         loadWeb(ApiClientService.getBaseUrl() + videoUrl.replace("./", ""));
                     }
-                } else {
+                }else {
                     loadWeb(Constants.HTML_PREFIX_URL + f.getAbsolutePath());
                 }
                 return true;

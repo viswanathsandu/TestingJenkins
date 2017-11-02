@@ -57,27 +57,27 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="2dp" />
 
-                <TextView
-                    android:id="@+id/tv_video"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/selector_btn_dark_gray"
-                    android:drawableLeft="@drawable/ico_video"
-                    android:drawablePadding="5dp"
-                    android:paddingBottom="5dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:paddingTop="5dp"
-                    android:text="Watch Videos"
-                    android:textColor="@color/white"
-                    android:gravity="center_vertical"
-                    android:visibility="gone" />
-
             </RelativeLayout>
         </ViewSwitcher>
+
+        <TextView
+            android:id="@+id/tv_video"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/selector_btn_dark_gray"
+            android:drawableLeft="@drawable/ico_video"
+            android:drawablePadding="5dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="5dp"
+            android:text="Watch Videos"
+            android:textColor="@color/white"
+            android:gravity="center_vertical"
+            android:visibility="gone" />
 
         <include
             android:id="@+id/footer_layout"
