@@ -156,7 +156,6 @@
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingLeft="15dp"/>
-
     </HorizontalScrollView>
 
 </RelativeLayout>
