@@ -68,10 +68,8 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
     private int levelCrossed;
     private int questionCount;
     private Integer maxQuestionLimit;
-    //praveen
     int min = 0;
     int maxCount;
-    List<Integer> queList;
     ArrayAdapter<Integer> queAdapter;
 
     public static TestChapterSetupFragment newInstance(Bundle bundle) {
@@ -112,7 +110,8 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
         final View rootView = inflater.inflate(R.layout.fragment_chapter_test_setup, container, false);
         ButterKnife.bind(this, rootView);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        queList = new ArrayList<Integer>();
+        queAdapter = new ArrayAdapter<Integer>(getActivity(), R.layout.number_dropdown_item, new ArrayList<Integer>());
+        que_selection_spinner.setAdapter(queAdapter);
         loadLevels();
         getDialog().setTitle("Test Option");
         getDialog().getWindow().setBackgroundDrawableResource(R.color.white);
@@ -148,18 +147,13 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
                         for (TestCoverage coverage : testCoverages) {
                             if (coverage.level.equalsIgnoreCase(level + "")) {
                                 questionCount += Integer.valueOf(coverage.questionCount);
-                                maxCount = (maxQuestionLimit > 0 && maxQuestionLimit < questionCount) ? maxQuestionLimit : questionCount;
+                                queAdapter.clear();
+                                queAdapter.addAll(getListTill(1, getMaxQuestionCount(questionCount)));
+                                queAdapter.notifyDataSetChanged();
+                                que_selection_spinner.setSelection(queAdapter.getCount() - 1);
                                 break;
                             }
                         }
-
-                        for (int i = min; i < maxCount + 1; i++) {
-                            queList.add(i);
-                        }
-                        queAdapter = new ArrayAdapter<Integer>
-                                (getActivity(), android.R.layout.simple_list_item_1, queList);
-                        que_selection_spinner.setAdapter(queAdapter);
-                        que_selection_spinner.setSelection(queAdapter.getPosition(maxCount));
                     }
                 } else if (Integer.valueOf(level) > levelCrossed) {
                     checkBox.setEnabled(false);
@@ -181,17 +175,12 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
                             if (isChecked) {
                                 queAdapter.clear();
                                 questionCount += Integer.valueOf(testCoverage.questionCount);
-                                for (int i = min; i < maxCount + 1; i++) {
-                                    queList.add(i);
-                                }
-                                queAdapter = new ArrayAdapter<Integer>
-                                        (getActivity(), android.R.layout.simple_list_item_1, queList);
-
-                                que_selection_spinner.setAdapter(queAdapter);
-                                que_selection_spinner.setSelection(queAdapter.getPosition(maxCount));
                             } else {
                                 que_selection_spinner.setSelection(queAdapter.getPosition(min));
                             }
+                            queAdapter.clear();
+                            queAdapter.addAll(getListTill(1, getMaxQuestionCount(questionCount)));
+                            queAdapter.notifyDataSetChanged();
                         }
                     }
                 });
@@ -228,16 +217,9 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
                 if (coverage.level.equalsIgnoreCase(chapterLevel + "")) {
                     Integer count = Integer.parseInt(coverage.questionCount);
                     int maxCount = maxQuestionLimit < count ? maxQuestionLimit : count;
-                    // mNoOfQuestionsEditTxt.setText(maxCount + "");
-
-                    /*queAdapter.clear();
-                    for (int i = min; i < maxCount + 1; i++) {
-                        queList.add(i);
-                    }
-                    queAdapter = new ArrayAdapter<Integer>
-                            (getActivity(), android.R.layout.simple_list_item_1, queList);
-                    que_selection_spinner.setAdapter(queAdapter);
-                    que_selection_spinner.setSelection(queAdapter.getPosition(maxCount));*/
+                    queAdapter.clear();
+                    queAdapter.addAll(getListTill(1, maxCount));
+                    que_selection_spinner.setSelection(queAdapter.getPosition(maxCount));
                     break;
                 }
             }
@@ -279,6 +261,18 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
         getActivity().startService(exerciseIntent);
         Toast.makeText(getActivity(), "Downloading test paper in background", Toast.LENGTH_SHORT).show();
         getActivity().finish();
+    }
+
+    private int getMaxQuestionCount(int questionCount) {
+        return (maxQuestionLimit > 0 && maxQuestionLimit < questionCount) ? maxQuestionLimit : questionCount;
+    }
+
+    private List<Integer> getListTill(int min, int max) {
+        List<Integer> items = new ArrayList<>();
+        for(int i = min; i <= max; i++) {
+            items.add(i);
+        }
+        return items;
     }
 }
 
