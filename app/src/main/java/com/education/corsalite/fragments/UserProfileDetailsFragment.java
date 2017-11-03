@@ -3,21 +3,16 @@ package com.education.corsalite.fragments;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.Html;
 import android.text.TextUtils;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -31,6 +26,7 @@ import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.models.requestmodels.Defaultcourserequest;
 import com.education.corsalite.models.requestmodels.UserProfileModel;
 import com.education.corsalite.models.responsemodels.BasicProfile;
@@ -40,11 +36,11 @@ import com.education.corsalite.models.responsemodels.DefaultCourseResponse;
 import com.education.corsalite.models.responsemodels.ExamDetail;
 import com.education.corsalite.models.responsemodels.UserProfileResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencyBalanceResponse;
-import com.education.corsalite.gson.Gson;
+import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.SystemUtils;
 import com.education.corsalite.utils.WebUrls;
-
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -276,18 +272,11 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
     private void showProfileData(BasicProfile profile) {
         if (profile.photoUrl != null && !profile.photoUrl.isEmpty()) {
             try {
-
-                byte[] decodedString = Base64.decode(profile.photoBase64EncodedString, Base64.DEFAULT);
-                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                profilePicImg.setImageBitmap(decodedByte);
-
-//                URL url = new URL(new URL(ApiClientService.getBaseUrl()), profile.photoUrl);
-//                Glide.with(getActivity())
-//                        .load(url)
-//                        .signature(new StringSignature(TimeUtils.currentTimeInMillis()+""))
-//                        .placeholder(getResources().getDrawable(R.drawable.user))
-//                        .error(getResources().getDrawable(R.drawable.user))
-//                        .into(profilePicImg);
+                Picasso.with(getActivity())
+                        .load(ApiClientService.getBaseUrl() + profile.photoUrl.replaceFirst("./", ""))
+                        .placeholder(getResources().getDrawable(R.drawable.profile_pic))
+                        .error(getResources().getDrawable(R.drawable.profile_pic)).fit()
+                        .into(profilePicImg);
             } catch (Exception e) {
                 L.error(e.getMessage(), e);
             }
@@ -344,7 +333,7 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
     }
 
     @Override
-    public void onUpdateProfilePic(Bitmap image) {
+    public void onUpdateProfilePic() {
         fetchUserProfileData();
     }
 

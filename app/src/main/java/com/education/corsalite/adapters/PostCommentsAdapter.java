@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.education.corsalite.R;
 import com.education.corsalite.listener.CommentEventsListener;
 import com.education.corsalite.listener.SocialEventsListener;
@@ -20,6 +19,7 @@ import com.education.corsalite.models.responsemodels.ForumPost;
 import com.education.corsalite.models.responsemodels.FourmCommentPostModel;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.AppPref;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -129,11 +129,10 @@ public class PostCommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             Drawable img = mActivity.getResources().getDrawable(!TextUtils.isEmpty(forumPost.bookmark) ? R.drawable.bookmark_green : R.drawable.bookmark);
             holder.tvActionBookmark.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
 
-            Glide.with(holder.ivUserPic.getContext())
+            Picasso.with(mActivity)
                     .load(ApiClientService.getBaseUrl() + forumPost.PhotoUrl)
-                    .centerCrop()
                     .placeholder(R.drawable.profile_pic)
-                    .crossFade()
+                    .error(R.drawable.profile_pic).fit()
                     .into(holder.ivUserPic);
         } else {
             final ForumPost forumPost = mForumPostList.get(position-1);
@@ -148,12 +147,10 @@ public class PostCommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             holder.tvUserName.setText(forumPost.DisplayName);
             holder.postDescriptionWebview.getSettings().setJavaScriptEnabled(true);
             holder.postDescriptionWebview.loadDataWithBaseURL("", forumPost.htmlText, "text/html", "UTF-8", "");
-
-            Glide.with(holder.ivUserPic.getContext())
+            Picasso.with(mActivity)
                     .load(ApiClientService.getBaseUrl() + forumPost.PhotoUrl)
-                    .centerCrop()
                     .placeholder(R.drawable.profile_pic)
-                    .crossFade()
+                    .error(R.drawable.profile_pic).fit()
                     .into(holder.ivUserPic);
         }
     }

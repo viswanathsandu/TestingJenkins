@@ -110,7 +110,7 @@ public class TestSetupFragment extends BaseFragment {
             String timeInMins = timeInMinsEdit.getText().toString();
             String virCurrency = virtCurrencyEdit.getText().toString();
 
-            if (selectedSubject != null && !selectedSubject.isEmpty() && !selectedSubject.equalsIgnoreCase("Select Subject")) {
+            if (selectedSubject != null && !selectedSubject.isEmpty() /*&& !selectedSubject.equalsIgnoreCase("Select Subject")*/) {
                 selectSubjError.setVisibility(View.GONE);
                 if (selectedChapter != null && !selectedChapter.isEmpty() && !selectedChapter.equalsIgnoreCase("Chapter")) {
                     selectChapError.setVisibility(View.GONE);
@@ -148,8 +148,8 @@ public class TestSetupFragment extends BaseFragment {
 
     private void challengeTest() {
         CreateChallengeRequest request = new CreateChallengeRequest();
-        request.subjectId = subjectList.get(selectSubjSpinner.getSelectedItemPosition() - 1).idSubject;
-        request.chapterId = chapterList.get(selectChapSpinner.getSelectedItemPosition() - 1).idChapter;
+        request.subjectId = subjectList.get(selectSubjSpinner.getSelectedItemPosition()).idSubject;
+        request.chapterId = chapterList.get(selectChapSpinner.getSelectedItemPosition()).idChapter;
         request.courseId = AbstractBaseActivity.getSelectedCourseId();
         int durationInMins = 0;
         try {
@@ -160,25 +160,25 @@ public class TestSetupFragment extends BaseFragment {
         request.durationInSeconds = String.valueOf(durationInMins * 60);
         request.questionCount = noOfQuesEdit.getText().toString();
         request.virtualCurrencyChallenged = virtCurrencyEdit.getText().toString();
-        if(examsSpinner.getSelectedItemPosition() == 0 || examsList == null) {
+        if (examsSpinner.getSelectedItemPosition() < 0 || examsList == null) {
             showToast("Please select the exam");
             return;
         }
-        request.examId = examsList.get(examsSpinner.getSelectedItemPosition() - 1).examId;
+        request.examId = examsList.get(examsSpinner.getSelectedItemPosition()).examId;
         request.studentId = LoginUserCache.getInstance().getStudentId();
         ChallengeFriend friend = new ChallengeFriend();
-        List<FriendsData.Friend> selectedFriends = ((ChallengeActivity)getActivity()).selectedFriends;
-        if(selectedFriends != null) {
-            if(selectedFriends.size() > 0) {
+        List<FriendsData.Friend> selectedFriends = ((ChallengeActivity) getActivity()).selectedFriends;
+        if (selectedFriends != null) {
+            if (selectedFriends.size() > 0) {
                 friend.friend1 = selectedFriends.get(0).idStudent;
             }
-            if(selectedFriends.size() > 1) {
+            if (selectedFriends.size() > 1) {
                 friend.friend2 = selectedFriends.get(1).idStudent;
             }
-            if(selectedFriends.size() > 2) {
+            if (selectedFriends.size() > 2) {
                 friend.friend3 = selectedFriends.get(2).idStudent;
             }
-            if(selectedFriends.size() > 3) {
+            if (selectedFriends.size() > 3) {
                 friend.friend4 = selectedFriends.get(3).idStudent;
             }
         }
@@ -188,7 +188,7 @@ public class TestSetupFragment extends BaseFragment {
             @Override
             public void failure(CorsaliteError error) {
                 super.failure(error);
-                if(getActivity() != null) {
+                if (getActivity() != null) {
                     closeProgress();
                     Toast.makeText(getActivity(), "Failed to create test", Toast.LENGTH_SHORT).show();
                 }
@@ -197,7 +197,7 @@ public class TestSetupFragment extends BaseFragment {
             @Override
             public void success(CreateChallengeResponseModel createChallengeResponseModel, Response response) {
                 super.success(createChallengeResponseModel, response);
-                if(getActivity() != null) {
+                if (getActivity() != null) {
                     closeProgress();
                     if (createChallengeResponseModel != null && createChallengeResponseModel.testQuestionPaperId != null) {
                         EventBus.getDefault().post(createChallengeResponseModel);
@@ -209,7 +209,7 @@ public class TestSetupFragment extends BaseFragment {
 
     private boolean isValidNoQues(String noOfQuestions) {
         try {
-            int quesCount =  Integer.parseInt(noOfQuestions);
+            int quesCount = Integer.parseInt(noOfQuestions);
             if (quesCount >= 10) {
                 return true;
             }
@@ -221,7 +221,7 @@ public class TestSetupFragment extends BaseFragment {
 
     private boolean isValidTime(String timeInMins) {
         try {
-            int timeCount =  Integer.parseInt(timeInMins);
+            int timeCount = Integer.parseInt(timeInMins);
             if (timeCount > 0 && timeCount <= 60) {
                 return true;
             }
@@ -233,21 +233,21 @@ public class TestSetupFragment extends BaseFragment {
 
     private boolean isValidCurrency(String virCurrency) {
         try {
-            int currencyCount =  Integer.parseInt(virCurrency);
+            int currencyCount = Integer.parseInt(virCurrency);
             if (currencyCount > 0) {
                 String userCurrency = appPref.getVirtualCurrency();
-                if(!TextUtils.isEmpty(userCurrency)) {
+                if (!TextUtils.isEmpty(userCurrency)) {
                     int userVc = Integer.valueOf(userCurrency);
-                    if(currencyCount > userVc) {
+                    if (currencyCount > userVc) {
                         showToast("Please enter lower value for virtual currency");
                         return false;
                     }
                 }
                 // check for vc of all participants
-                List<FriendsData.Friend> selectedFriends = ((ChallengeActivity)getActivity()).selectedFriends;
+                List<FriendsData.Friend> selectedFriends = ((ChallengeActivity) getActivity()).selectedFriends;
                 for (FriendsData.Friend friend : selectedFriends) {
                     int friendVc = Integer.valueOf(friend.studentVC);
-                    if(currencyCount > friendVc) {
+                    if (currencyCount > friendVc) {
                         showToast("Please enter lower value for virtual currency");
                         return false;
                     }
@@ -262,7 +262,7 @@ public class TestSetupFragment extends BaseFragment {
 
     @OnClick(R.id.tv_testsetup_cancel)
     public void onCancelClick() {
-        if(mTestSetupCallback != null) {
+        if (mTestSetupCallback != null) {
             mTestSetupCallback.popUpFriendsListFragment();
         }
     }
@@ -276,7 +276,7 @@ public class TestSetupFragment extends BaseFragment {
                     @Override
                     public void success(List<ContentIndex> contentIndexList, Response response) {
                         super.success(contentIndexList, response);
-                        if(getActivity() != null) {
+                        if (getActivity() != null) {
                             closeProgress();
                             if (contentIndexList != null) {
                                 showSubjects(contentIndexList);
@@ -287,7 +287,7 @@ public class TestSetupFragment extends BaseFragment {
                     @Override
                     public void failure(CorsaliteError error) {
                         super.failure(error);
-                        if(getActivity() != null) {
+                        if (getActivity() != null) {
                             closeProgress();
                             ((AbstractBaseActivity) getActivity()).showToast("No data available");
                         }
@@ -301,7 +301,7 @@ public class TestSetupFragment extends BaseFragment {
                     @Override
                     public void success(List<Exam> exams, Response response) {
                         super.success(exams, response);
-                        if(getActivity() != null) {
+                        if (getActivity() != null) {
                             if (exams != null) {
                                 examsList = exams;
                                 showExams();
@@ -312,7 +312,7 @@ public class TestSetupFragment extends BaseFragment {
                     @Override
                     public void failure(CorsaliteError error) {
                         super.failure(error);
-                        if(getActivity() != null) {
+                        if (getActivity() != null) {
                             closeProgress();
                         }
                     }
@@ -320,7 +320,7 @@ public class TestSetupFragment extends BaseFragment {
     }
 
     private void showExams() {
-        if(getActivity() != null) {
+        if (getActivity() != null) {
             examsSpinner.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.challenge_spinner_item, R.id.mock_test_txt, getExams(examsList)));
             examsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
@@ -354,16 +354,11 @@ public class TestSetupFragment extends BaseFragment {
         selectSubjSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                if (adapterView.getItemAtPosition(position).toString().equalsIgnoreCase("Select Subject")) {
-                    selectChapSpinner.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.challenge_spinner_item, R.id.mock_test_txt, getChapters(null)));
-                } else {
-                    selectSubjError.setVisibility(View.GONE);
-                    for (int i = 0; i < finalSubjectsList.size(); i++) {
-                        if (finalSubjectsList.get(i).subjectName.equalsIgnoreCase(adapterView.getItemAtPosition(position).toString())) {
-                            chapterList = finalSubjectsList.get(i).chapters;
-                            selectChapSpinner.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.challenge_spinner_item, R.id.mock_test_txt, getChapters(chapterList)));
-                        }
-
+                selectSubjError.setVisibility(View.GONE);
+                for (int i = 0; i < finalSubjectsList.size(); i++) {
+                    if (finalSubjectsList.get(i).subjectName.equalsIgnoreCase(adapterView.getItemAtPosition(position).toString())) {
+                        chapterList = finalSubjectsList.get(i).chapters;
+                        selectChapSpinner.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.challenge_spinner_item, R.id.mock_test_txt, getChapters(chapterList)));
                     }
                 }
             }
@@ -374,9 +369,7 @@ public class TestSetupFragment extends BaseFragment {
         selectChapSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                if (!adapterView.getItemAtPosition(position).toString().equalsIgnoreCase("Chapter")) {
-                    selectChapError.setVisibility(View.GONE);
-                }
+                selectChapError.setVisibility(View.GONE);
             }
 
             @Override
@@ -386,7 +379,6 @@ public class TestSetupFragment extends BaseFragment {
 
     private List<String> getExams(List<Exam> exams) {
         List<String> strings = new ArrayList<>();
-        strings.add("Select Exam");
         if (exams != null && !exams.isEmpty()) {
             for (int i = 0; i < exams.size(); i++) {
                 strings.add(exams.get(i).examName);
@@ -397,7 +389,6 @@ public class TestSetupFragment extends BaseFragment {
 
     private List<String> getSubjects(List<SubjectModel> subjectModelList) {
         List<String> strings = new ArrayList<>();
-        strings.add("Select Subject");
         if (subjectModelList != null && subjectModelList.size() > 0) {
             for (int i = 0; i < subjectModelList.size(); i++) {
                 strings.add(subjectModelList.get(i).subjectName);
@@ -408,7 +399,6 @@ public class TestSetupFragment extends BaseFragment {
 
     private List<String> getChapters(List<ChapterModel> chapterModelList) {
         List<String> strings = new ArrayList<>();
-        strings.add("Chapter");
         if (chapterModelList != null && chapterModelList.size() > 0) {
             for (int i = 0; i < chapterModelList.size(); i++) {
                 strings.add(chapterModelList.get(i).chapterName);

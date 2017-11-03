@@ -148,10 +148,10 @@ public class WebviewActivity extends AbstractBaseActivity {
     private String getUrlWithNoHeadersAndFooters(String url) {
         if (!url.contains("?")) {
             url += "?Header=0&Footer=0&tabCourseId="+AbstractBaseActivity.getSelectedCourseId()
-                                        +"&tabCourseInstanceId="+AbstractBaseActivity.getSelectedCourse().courseInstanceId;
+                                        +"&tabCourseInstanceId="+AbstractBaseActivity.getSelectedCourseInstanceId();
         } else if (!url.contains("Header=0&Footer=0")) {
             url += "Header=0&Footer=0&tabCourseId="+AbstractBaseActivity.getSelectedCourseId()
-                    +"&tabCourseInstanceId="+AbstractBaseActivity.getSelectedCourse().courseInstanceId;
+                    +"&tabCourseInstanceId="+AbstractBaseActivity.getSelectedCourseInstanceId();
         }
         return url;
     }

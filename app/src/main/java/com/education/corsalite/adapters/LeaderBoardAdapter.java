@@ -8,11 +8,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.education.corsalite.R;
 import com.education.corsalite.models.socket.response.LeaderBoardStudent;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.L;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -73,8 +73,12 @@ public class LeaderBoardAdapter extends AbstractRecycleViewAdapter {
                 } else {
                     url = ApiClientService.getBaseUrl() + user.imageUrl;
                 }
-                    L.info("ImageURL : "+url);
-                Glide.with(parent.getContext()).load(url).into(playerImg);
+                L.info("ImageURL : "+url);
+                Picasso.with(parent.getContext())
+                        .load(url)
+                        .placeholder(R.drawable.profile_pic)
+                        .error(R.drawable.profile_pic).fit()
+                        .into(playerImg);
             }
         }
     }

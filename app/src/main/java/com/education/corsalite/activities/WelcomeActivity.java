@@ -122,7 +122,7 @@ public class WelcomeActivity extends AbstractBaseActivity implements View.OnClic
                             Picasso.with(WelcomeActivity.this)
                                     .load(ApiClientService.getBaseUrl() + welcomeDetails.photoUrl.replaceFirst("./", ""))
                                     .placeholder(getResources().getDrawable(R.drawable.profile_pic))
-                                    .error(getResources().getDrawable(R.drawable.profile_pic))
+                                    .error(getResources().getDrawable(R.drawable.profile_pic)).fit()
                                     .into(profilePic);
                         }
                         if (!TextUtils.isEmpty(welcomeDetails.firstName) && !TextUtils.isEmpty(welcomeDetails.lastName)) {
