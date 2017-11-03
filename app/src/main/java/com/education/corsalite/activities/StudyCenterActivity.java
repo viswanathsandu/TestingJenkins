@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -82,6 +83,9 @@ public class StudyCenterActivity extends AbstractBaseActivity {
     private List<ContentIndex> contentIndexList;
     private List<SubjectModel> subjectModelList;
     private AppCompatSpinner spinner_subjects_list;
+    private ImageButton subject_icon;
+
+
     private String mSubjectId = "";
     ArrayAdapter<String> subject_spinner_adpater;
 
@@ -94,6 +98,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
         linearLayout = (LinearLayout) myView.findViewById(R.id.subjects_name_id);
         frameLayout.addView(myView);
         spinner_subjects_list = (AppCompatSpinner) myView.findViewById(R.id.spinner_subjects_list);
+        subject_icon=(ImageButton)myView.findViewById(R.id.subject_icon);
         subjects = new ArrayList<String>();
         subjectViews = new ArrayList<>();
 
@@ -407,7 +412,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
     private void setupSubjects(CourseData courseData) {
 
 
-      //  linearLayout.removeAllViews();
+        //  linearLayout.removeAllViews();
         for (StudyCenter studyCenter : courseData.StudyCenter) {
             addSubjectsAndCreateViews(studyCenter);
         }
