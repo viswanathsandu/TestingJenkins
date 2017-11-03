@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.AppCompatSpinner;
-import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +15,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,7 +29,6 @@ import com.education.corsalite.models.responsemodels.TestCoverage;
 import com.education.corsalite.services.TestDownloadService;
 import com.education.corsalite.utils.Constants;
 import com.education.corsalite.utils.L;
-import com.education.corsalite.views.InputFilterMinMax;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
@@ -56,8 +53,8 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
     LinearLayout levelsLayout;
     @Bind(R.id.btn_download)
     Button downloadButton;
-    @Bind(R.id.que_selection_spinner)
-    AppCompatSpinner que_selection_spinner;
+    @Bind(R.id.question_selection_spinner)
+    AppCompatSpinner questionSelectionSpinner;
 
     private Bundle mExtras;
     private boolean mIsAdaptiveLearningEnabled;
@@ -70,7 +67,8 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
     private Integer maxQuestionLimit;
     int min = 0;
     int maxCount;
-    ArrayAdapter<Integer> queAdapter;
+    ArrayAdapter<Integer> questionAdapter;
+
 
     public static TestChapterSetupFragment newInstance(Bundle bundle) {
         TestChapterSetupFragment fragment = new TestChapterSetupFragment();
@@ -110,8 +108,8 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
         final View rootView = inflater.inflate(R.layout.fragment_chapter_test_setup, container, false);
         ButterKnife.bind(this, rootView);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        queAdapter = new ArrayAdapter<Integer>(getActivity(), R.layout.number_dropdown_item, new ArrayList<Integer>());
-        que_selection_spinner.setAdapter(queAdapter);
+        questionAdapter = new ArrayAdapter<Integer>(getActivity(), R.layout.number_dropdown_item, new ArrayList<Integer>());
+        questionSelectionSpinner.setAdapter(questionAdapter);
         loadLevels();
         getDialog().setTitle("Test Option");
         getDialog().getWindow().setBackgroundDrawableResource(R.color.white);
@@ -147,10 +145,10 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
                         for (TestCoverage coverage : testCoverages) {
                             if (coverage.level.equalsIgnoreCase(level + "")) {
                                 questionCount += Integer.valueOf(coverage.questionCount);
-                                queAdapter.clear();
-                                queAdapter.addAll(getListTill(1, getMaxQuestionCount(questionCount)));
-                                queAdapter.notifyDataSetChanged();
-                                que_selection_spinner.setSelection(queAdapter.getCount() - 1);
+                                questionAdapter.clear();
+                                questionAdapter.addAll(getListTill(1, getMaxQuestionCount(questionCount)));
+                                questionAdapter.notifyDataSetChanged();
+                                questionSelectionSpinner.setSelection(questionAdapter.getCount() - 1);
                                 break;
                             }
                         }
@@ -173,14 +171,15 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
                         }
                         if (testCoverage != null && checkBox.isEnabled()) {
                             if (isChecked) {
-                                queAdapter.clear();
+                                questionAdapter.clear();
                                 questionCount += Integer.valueOf(testCoverage.questionCount);
                             } else {
-                                que_selection_spinner.setSelection(queAdapter.getPosition(min));
+                                questionCount -= Integer.valueOf(testCoverage.questionCount);
                             }
-                            queAdapter.clear();
-                            queAdapter.addAll(getListTill(1, getMaxQuestionCount(questionCount)));
-                            queAdapter.notifyDataSetChanged();
+                            questionAdapter.clear();
+                            questionAdapter.addAll(getListTill(1, getMaxQuestionCount(questionCount)));
+                            questionAdapter.notifyDataSetChanged();
+                            questionSelectionSpinner.setSelection(questionAdapter.getCount()-1);
                         }
                     }
                 });
@@ -217,9 +216,10 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
                 if (coverage.level.equalsIgnoreCase(chapterLevel + "")) {
                     Integer count = Integer.parseInt(coverage.questionCount);
                     int maxCount = maxQuestionLimit < count ? maxQuestionLimit : count;
-                    queAdapter.clear();
-                    queAdapter.addAll(getListTill(1, maxCount));
-                    que_selection_spinner.setSelection(queAdapter.getPosition(maxCount));
+                    questionAdapter.clear();
+                    questionAdapter.addAll(getListTill(1, maxCount));
+                    questionAdapter.notifyDataSetChanged();
+                    questionSelectionSpinner.setSelection(questionAdapter.getPosition(maxCount));
                     break;
                 }
             }
@@ -231,21 +231,18 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
     }
 
     private void requestQuestionPaperDetails() {
-        String noOfQuestions = que_selection_spinner.getSelectedItem().toString();
-        if (TextUtils.isEmpty(noOfQuestions) || noOfQuestions.equals("0") || !TextUtils.isDigitsOnly(noOfQuestions)) {
+        if (questionAdapter.isEmpty()) {
             Toast.makeText(getActivity(), "Please select the number of questions or the level", Toast.LENGTH_SHORT).show();
             return;
         }
         mExtras.putBoolean(Constants.ADAPIVE_LEAERNING, mIsAdaptiveLearningEnabled);
-        mExtras.putString(Constants.QUESTIONS_COUNT, noOfQuestions);
+        mExtras.putString(Constants.QUESTIONS_COUNT, questionSelectionSpinner.getSelectedItem().toString());
         startActivity(ExamEngineActivity.getMyIntent(getActivity(), mExtras));
         getActivity().finish();
     }
 
     private void downloadTakeTest(Chapter chapter) {
-        String noOfQuestions = que_selection_spinner.getSelectedItem().toString();
-
-        if (TextUtils.isEmpty(noOfQuestions) || noOfQuestions.equals("0") || !TextUtils.isDigitsOnly(noOfQuestions)) {
+        if (questionAdapter.isEmpty()) {
             Toast.makeText(getActivity(), "Please select the number of questions or the level", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -254,9 +251,7 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
         exerciseIntent.putExtra("chapterId", chapter.idCourseSubjectChapter);
         exerciseIntent.putExtra("selectedTakeTest", Gson.get().toJson(chapter));
         exerciseIntent.putExtra("courseId", AbstractBaseActivity.getSelectedCourseId());
-        if (!TextUtils.isEmpty(noOfQuestions) && TextUtils.isDigitsOnly(noOfQuestions)) {
-            exerciseIntent.putExtra("questions_count", noOfQuestions);
-        }
+        exerciseIntent.putExtra("questions_count", questionSelectionSpinner.getSelectedItem().toString());
         exerciseIntent.putExtra("entityId", LoginUserCache.getInstance().getEntityId());
         getActivity().startService(exerciseIntent);
         Toast.makeText(getActivity(), "Downloading test paper in background", Toast.LENGTH_SHORT).show();
