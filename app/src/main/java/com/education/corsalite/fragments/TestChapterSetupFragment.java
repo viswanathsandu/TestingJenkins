@@ -65,8 +65,6 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
     private int levelCrossed;
     private int questionCount;
     private Integer maxQuestionLimit;
-    int min = 0;
-    int maxCount;
     ArrayAdapter<Integer> questionAdapter;
 
 
