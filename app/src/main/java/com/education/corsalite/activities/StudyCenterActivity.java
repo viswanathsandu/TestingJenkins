@@ -96,22 +96,6 @@ public class StudyCenterActivity extends AbstractBaseActivity {
         subject_icon = (ImageButton) myView.findViewById(R.id.subject_icon);
         subjects = new ArrayList<String>();
         subjectViews = new ArrayList<>();
-
-     /*   spinner_subjects_list.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedItem = parent.getItemAtPosition(position).toString();
-
-                Toast.makeText(getApplicationContext(), parent.getItemAtPosition(position).toString(), Toast.LENGTH_LONG).show();
-                System.out.println(selectedItem);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });*/
-
         setUpViews(myView);
         setToolbarForStudyCenter();
         initUI();
@@ -724,73 +708,6 @@ public class StudyCenterActivity extends AbstractBaseActivity {
         }
     }
 
-  /*  private void setListener(final TextView textView, final String text) {
-        textView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showList();
-                if (SystemUtils.isNetworkConnected(StudyCenterActivity.this)) {
-                    if (spinner_subjects_list != null) {
-                        spinner_subjects_list.setSelected(false);
-                    }
-                    spinner_subjects_list.setSelected(true);
-                    mSubjectName = text;
-                    if (mCourseData != null && mCourseData.StudyCenter != null) {
-                        mSubjectName = text;
-                        for (StudyCenter studyCenter : mCourseData.StudyCenter) {
-                            if (mSubjectName.equalsIgnoreCase(studyCenter.SubjectName)) {
-                                StudyCenterActivity.this.studyCenter = studyCenter;
-                                setUpStudyCentreData(studyCenter);
-                                mAdapter.updateData(getChaptersForSubject(), text);
-                                mAdapter.notifyDataSetChanged();
-                                break;
-                            }
-                        }
-                    }
-                } else {
-                    if (spinner_subjects_list != null) {
-                        spinner_subjects_list.setSelected(false);
-                    }
-                    spinner_subjects_list.setSelected(true);
-                    mSubjectName = text;
-                    if (mCourseData != null && mCourseData.StudyCenter != null) {
-                        mSubjectName = text;
-                        List<OfflineContent> offlineContents = dbManager.getOfflineContents(AbstractBaseActivity.getSelectedCourseId());
-                        for (StudyCenter studyCenter : mCourseData.StudyCenter) {
-                            if (mSubjectName.equalsIgnoreCase(studyCenter.SubjectName)) {
-                                StudyCenterActivity.this.studyCenter = studyCenter;
-                                setUpStudyCentreData(studyCenter);
-                                for (Chapter chapter : getChaptersForSubject()) {
-                                    boolean idMatchFound = false;
-                                    for (OfflineContent offlineContent : offlineContents) {
-                                        if (chapter.idCourseSubjectChapter.equals(offlineContent.chapterId)) {
-                                            idMatchFound = true;
-                                        }
-                                    }
-                                    if (idMatchFound) {
-                                        chapter.isChapterOffline = true;
-                                    } else {
-                                        chapter.isChapterOffline = false;
-                                    }
-                                }
-                                mAdapter.updateData(getChaptersForSubject(), text);
-                                mAdapter.notifyDataSetChanged();
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-        });
-    }
-*/
-/*
-    private View getView() {
-        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        return inflater.inflate(R.layout.study_center_text_view, null);
-    }*/
-
-
     @Override
     public void onBackPressed() {
         if (isTaskRoot()) {
@@ -802,33 +719,3 @@ public class StudyCenterActivity extends AbstractBaseActivity {
 
 
 }
-
-
-
-   /* private void ShowSubjectsSpinner() {
-        //  ContentIndex mContentIndex = contentIndexList.get(0);
-        //   subjectModelList = new ArrayList<>(subjectModelList);
-        // final SubjectAdapter subjectAdapter = new SubjectAdapter(subjectModelList, this);
-        //  spinner_subjects_list.setAdapter(subjectAdapter);
-        *//* int listSize = subjectModelList.size();
-        if (!mSubjectId.isEmpty()) {
-            for (int i = 0; i < listSize; i++) {
-                if (subjectModelList.get(i).idSubject.equalsIgnoreCase(mSubjectId)) {
-                    spinner_subjects_list.setSelection(i);
-                    mSubjectId = "";
-                    break;
-                }
-            }
-        }  *//*
-       *//* spinner_subjects_list.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                //  showChapter(position);
-                subjectAdapter.setSelectedPosition(position);
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-   *//*
-    }*/
