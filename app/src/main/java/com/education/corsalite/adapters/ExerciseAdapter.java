@@ -24,12 +24,12 @@ public class ExerciseAdapter extends BaseAdapter {
     public ExerciseAdapter(List<ExamModel> examModelList, Context mContext) {
         this.examModelList = examModelList;
         this.mContext = mContext;
-        inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public int getCount() {
-        if(examModelList != null) {
+        if (examModelList != null) {
             return examModelList.size() + 1;
         }
         return 0;
@@ -48,7 +48,7 @@ public class ExerciseAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = inflater.inflate(R.layout.row_spinner_text, parent, false);
-        TextView tv = (TextView)convertView.findViewById(R.id.tv_spn);
+        TextView tv = (TextView) convertView.findViewById(R.id.tv_spn);
         tv.setText(position == 0 ? "Exercise" : examModelList.get(position - 1).displayName);
         return convertView;
     }

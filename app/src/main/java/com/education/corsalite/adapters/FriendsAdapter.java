@@ -35,7 +35,7 @@ public class FriendsAdapter extends AbstractRecycleViewAdapter {
 
     public FriendsAdapter(Activity activity, FriendsData friendsData, ChallengeActivity.FriendsListCallback friendsListCallback) {
         this.mActivity = activity;
-        if(mActivity != null) {
+        if (mActivity != null) {
             this.inflater = activity.getLayoutInflater();
         }
         updateData(friendsData);
@@ -51,7 +51,7 @@ public class FriendsAdapter extends AbstractRecycleViewAdapter {
     }
 
     public void updateData(FriendsData friendsData) {
-        if(friendsData != null) {
+        if (friendsData != null) {
             removeAllData();
             addAll(friendsData.friendsList);
             notifyDataSetChanged();
@@ -73,8 +73,10 @@ public class FriendsAdapter extends AbstractRecycleViewAdapter {
         TextView tvName;
         @Bind(R.id.tv_friend_email)
         TextView tvEmail;
-        @Bind(R.id.status_view) View statusView;
-        @Bind(R.id.tile_view) View tileView;
+        @Bind(R.id.status_view)
+        View statusView;
+        @Bind(R.id.tile_view)
+        View tileView;
         View parent;
 
         public FriendViewHolder(View itemView) {
@@ -94,7 +96,7 @@ public class FriendsAdapter extends AbstractRecycleViewAdapter {
                         .error(R.drawable.profile_pic).fit()
                         .into(ivProfilePic);
             }
-            if(clickedFriend.isOnline()) {
+            if (clickedFriend.isOnline()) {
                 if (selectedFriends.contains(clickedFriend)) {
                     tileView.setBackgroundColor(mActivity.getResources().getColor(R.color.green));
                     ivActionBtn.setImageResource(android.R.drawable.ic_delete);

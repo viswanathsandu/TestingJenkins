@@ -19,19 +19,20 @@ import butterknife.ButterKnife;
 /**
  * Created by Aastha on 10/10/15.
  */
-public class CustomLegendAdapter extends  AbstractRecycleViewAdapter {
+public class CustomLegendAdapter extends AbstractRecycleViewAdapter {
 
     LayoutInflater inflater;
-    public CustomLegendAdapter(int[] colors,String[] labels,LayoutInflater inflater){
-        this(colors,labels);
+
+    public CustomLegendAdapter(int[] colors, String[] labels, LayoutInflater inflater) {
+        this(colors, labels);
         this.inflater = inflater;
 
     }
 
-    public CustomLegendAdapter(int[] colors,String[] labels) {
+    public CustomLegendAdapter(int[] colors, String[] labels) {
         List<CustomLegend> customLegendList = new ArrayList<>();
-        for(int i=0;i<colors.length;i++){
-            CustomLegend legend = new CustomLegend(colors[i],labels[i]);
+        for (int i = 0; i < colors.length; i++) {
+            CustomLegend legend = new CustomLegend(colors[i], labels[i]);
             customLegendList.add(legend);
         }
         addAll(customLegendList);
@@ -44,13 +45,15 @@ public class CustomLegendAdapter extends  AbstractRecycleViewAdapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((CustomLegendViewHolder) holder).bindData((CustomLegend)getItem(position));
+        ((CustomLegendViewHolder) holder).bindData((CustomLegend) getItem(position));
     }
 
     public class CustomLegendViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.iv_color)ImageView color;
-        @Bind(R.id.tv_label)TextView label;
+        @Bind(R.id.iv_color)
+        ImageView color;
+        @Bind(R.id.tv_label)
+        TextView label;
 
         View parent;
 

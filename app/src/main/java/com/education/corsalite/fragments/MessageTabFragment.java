@@ -44,14 +44,14 @@ public class MessageTabFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_message, container, false);
         mRecyclerView = (RecyclerView) v.findViewById(R.id.userdetail_recyclerView);
         layoutEmpty = (LinearLayout) v.findViewById(R.id.layout_empty);
-        tvNoData = (TextView)v.findViewById(R.id.tv_no_data);
+        tvNoData = (TextView) v.findViewById(R.id.tv_no_data);
         tvNoData.setText("No Message Found");
-        tvNoData.setTextAppearance(getActivity(),R.style.user_profile_text);
+        tvNoData.setTextAppearance(getActivity(), R.style.user_profile_text);
         //mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setVisibility(View.VISIBLE);
         layoutEmpty.setVisibility(View.GONE);
@@ -74,7 +74,7 @@ public class MessageTabFragment extends BaseFragment {
                     @Override
                     public void failure(CorsaliteError error) {
                         super.failure(error);
-                        if(error!= null && !TextUtils.isEmpty(error.message)) {
+                        if (error != null && !TextUtils.isEmpty(error.message)) {
                             showToast(error.message);
                         }
                         hideRecyclerView();

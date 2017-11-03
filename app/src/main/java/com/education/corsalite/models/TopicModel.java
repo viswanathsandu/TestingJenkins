@@ -11,8 +11,8 @@ import java.util.List;
  * Created by Girish on 02/10/15.
  */
 public class TopicModel extends BaseModel implements Comparable<TopicModel>, Serializable {
-    public boolean isAvailableForOffline=false;
-    public String idTopic ;
+    public boolean isAvailableForOffline = false;
+    public String idTopic;
     @SerializedName("TopicName")
     public String topicName;
     @SerializedName("TopicStatus")

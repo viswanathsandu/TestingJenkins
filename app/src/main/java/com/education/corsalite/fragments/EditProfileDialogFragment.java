@@ -38,14 +38,22 @@ public class EditProfileDialogFragment extends BaseDialogFragment {
     IUpdateProfileDetailsListener updateProfileDetailsListener;
     private boolean enableEditEmail;
     private UserProfileResponse user;
-    @Bind(R.id.password_txt) EditText passwordTxt;
-    @Bind(R.id.confirm_password_txt) EditText confirmPasswordTxt;
-    @Bind(R.id.username_txt) EditText usernameTxt;
-    @Bind(R.id.firstname_txt) EditText firstNameTxt;
-    @Bind(R.id.lastname_txt) EditText lastNameTxt;
-    @Bind(R.id.emailid_txt) EditText emailIdTxt;
-    @Bind(R.id.btn_submit) Button submitBtn;
-    @Bind(R.id.btn_cancel) Button cancelBtn;
+    @Bind(R.id.password_txt)
+    EditText passwordTxt;
+    @Bind(R.id.confirm_password_txt)
+    EditText confirmPasswordTxt;
+    @Bind(R.id.username_txt)
+    EditText usernameTxt;
+    @Bind(R.id.firstname_txt)
+    EditText firstNameTxt;
+    @Bind(R.id.lastname_txt)
+    EditText lastNameTxt;
+    @Bind(R.id.emailid_txt)
+    EditText emailIdTxt;
+    @Bind(R.id.btn_submit)
+    Button submitBtn;
+    @Bind(R.id.btn_cancel)
+    Button cancelBtn;
     private String password;
 
     @Nullable
@@ -61,10 +69,10 @@ public class EditProfileDialogFragment extends BaseDialogFragment {
             getDialog().setTitle("Edit Profile");
         } catch (Exception e) {
             L.error(e.getMessage(), e);
-        } catch(OutOfMemoryError e) {
+        } catch (OutOfMemoryError e) {
             L.error(e.getMessage(), e);
         }
-         return v;
+        return v;
     }
 
     @Override
@@ -77,9 +85,9 @@ public class EditProfileDialogFragment extends BaseDialogFragment {
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            if(isValidData()) {
-                updateUserProfile();
-            }
+                if (isValidData()) {
+                    updateUserProfile();
+                }
             }
         });
 
@@ -91,7 +99,7 @@ public class EditProfileDialogFragment extends BaseDialogFragment {
         });
     }
 
-    public void setUpdateProfileDetailsListener(IUpdateProfileDetailsListener listener){
+    public void setUpdateProfileDetailsListener(IUpdateProfileDetailsListener listener) {
         this.updateProfileDetailsListener = listener;
     }
 
@@ -102,12 +110,12 @@ public class EditProfileDialogFragment extends BaseDialogFragment {
             if (!android.util.Patterns.EMAIL_ADDRESS.matcher(emailIdTxt.getText().toString()).matches()) {
                 showToast("Please enter valid email id");
                 return false;
-            } else if((!passwordString.isEmpty() || !confirmPasswordString.isEmpty())) {
-                if(passwordString.length() < 8) {
+            } else if ((!passwordString.isEmpty() || !confirmPasswordString.isEmpty())) {
+                if (passwordString.length() < 8) {
                     showToast("Password should have at least 8 characters");
                     return false;
                 }
-                if((!passwordString.equalsIgnoreCase(confirmPasswordString))) {
+                if ((!passwordString.equalsIgnoreCase(confirmPasswordString))) {
                     showToast("Password and Confirm Password do not match. Try again.");
                     return false;
                 }
@@ -121,7 +129,7 @@ public class EditProfileDialogFragment extends BaseDialogFragment {
     private void updateUserProfile() {
         final UserProfileModel model = getUserData();
         String userProfileJson = Gson.get().toJson(model);
-        if(!TextUtils.isEmpty(model.password)) {
+        if (!TextUtils.isEmpty(model.password)) {
             password = model.password;
         }
         showProgress();
@@ -130,7 +138,7 @@ public class EditProfileDialogFragment extends BaseDialogFragment {
             public void failure(CorsaliteError error) {
                 super.failure(error);
                 L.error(error.message);
-                if(getActivity() != null) {
+                if (getActivity() != null) {
                     closeProgress();
                     showToast("Failed to Update User Profile");
                     getDialog().dismiss();
@@ -144,16 +152,17 @@ public class EditProfileDialogFragment extends BaseDialogFragment {
                     if (getActivity() != null && editProfileResponse.isSuccessful()) {
                         closeProgress();
                         showToast("Updated User Profile Successfully");
-                        if (updateProfileDetailsListener != null)
+                        if (updateProfileDetailsListener != null) {
                             updateProfileDetailsListener.onUpdateProfileDetails(model);
-                            if (!TextUtils.isEmpty(password)
-                                    && ApiCacheHolder.getInstance().login != null
-                                    && ApiCacheHolder.getInstance().login.request != null) {
-                                SugarDbManager.get(getActivity()).delete(ApiCacheHolder.getInstance().login);
-                                appPref.save("passwordHash", password);
-                                ApiCacheHolder.getInstance().login.request.passwordHash = password;
-                                SugarDbManager.get(getActivity()).saveReqRes(ApiCacheHolder.getInstance().login);
-                            }
+                        }
+                        if (!TextUtils.isEmpty(password)
+                                && ApiCacheHolder.getInstance().login != null
+                                && ApiCacheHolder.getInstance().login.request != null) {
+                            SugarDbManager.get(getActivity()).delete(ApiCacheHolder.getInstance().login);
+                            appPref.save("passwordHash", password);
+                            ApiCacheHolder.getInstance().login.request.passwordHash = password;
+                            SugarDbManager.get(getActivity()).saveReqRes(ApiCacheHolder.getInstance().login);
+                        }
                         getDialog().dismiss();
                     }
                 } catch (Exception e) {
@@ -165,25 +174,25 @@ public class EditProfileDialogFragment extends BaseDialogFragment {
 
     private UserProfileModel getUserData() {
         UserProfileModel model = new UserProfileModel();
-        model.updateTime =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(TimeUtils.getCurrentDate());
+        model.updateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(TimeUtils.getCurrentDate());
         model.userId = appPref.getUserId();
         model.studentId = LoginUserCache.getInstance().getStudentId();
-        if(!TextUtils.isEmpty(usernameTxt.getText().toString())) {
+        if (!TextUtils.isEmpty(usernameTxt.getText().toString())) {
             model.displayName = usernameTxt.getText().toString();
         }
-        if(!TextUtils.isEmpty(firstNameTxt.getText().toString())) {
+        if (!TextUtils.isEmpty(firstNameTxt.getText().toString())) {
             model.surName = firstNameTxt.getText().toString();
         }
-        if(!TextUtils.isEmpty(lastNameTxt.getText().toString())) {
+        if (!TextUtils.isEmpty(lastNameTxt.getText().toString())) {
             model.givenName = lastNameTxt.getText().toString();
         }
-        if(!TextUtils.isEmpty(emailIdTxt.getText().toString())) {
+        if (!TextUtils.isEmpty(emailIdTxt.getText().toString())) {
             model.emailId = emailIdTxt.getText().toString();
         }
-        if(!TextUtils.isEmpty(usernameTxt.getText().toString())) {
+        if (!TextUtils.isEmpty(usernameTxt.getText().toString())) {
             model.displayName = usernameTxt.getText().toString();
         }
-        if(!passwordTxt.getText().toString().isEmpty()) {
+        if (!passwordTxt.getText().toString().isEmpty()) {
             model.password = Encrypter.md5(passwordTxt.getText().toString());
         }
         // TODO : critical. Need to remvoe this after having discusison with sunil
@@ -192,11 +201,11 @@ public class EditProfileDialogFragment extends BaseDialogFragment {
     }
 
     private void loadData() {
-        if(user != null && user.basicProfile != null) {
-            usernameTxt.setText(user.basicProfile.displayName+"");
-            firstNameTxt.setText(user.basicProfile.surName+"");
-            lastNameTxt.setText(user.basicProfile.givenName+"");
-            emailIdTxt.setText(user.basicProfile.emailId+"");
+        if (user != null && user.basicProfile != null) {
+            usernameTxt.setText(user.basicProfile.displayName + "");
+            firstNameTxt.setText(user.basicProfile.surName + "");
+            lastNameTxt.setText(user.basicProfile.givenName + "");
+            emailIdTxt.setText(user.basicProfile.emailId + "");
         }
     }
 

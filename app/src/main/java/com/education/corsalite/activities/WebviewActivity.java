@@ -74,8 +74,7 @@ public class WebviewActivity extends AbstractBaseActivity {
 //            webview.setWebChromeClient(new WebChromeClient());
             webview.setWebChromeClient(new WebChromeClient() {
                 @Override
-                public boolean onJsAlert(WebView view, String url, String message, final android.webkit.JsResult result)
-                {
+                public boolean onJsAlert(WebView view, String url, String message, final android.webkit.JsResult result) {
                     new AlertDialog.Builder(WebviewActivity.this)
                             .setTitle(view.getTitle())
                             .setMessage(message)
@@ -90,7 +89,9 @@ public class WebviewActivity extends AbstractBaseActivity {
                             .show();
 
                     return true;
-                };
+                }
+
+                ;
 
                 @Override
                 public boolean onJsConfirm(WebView view, String url, String message, final JsResult result) {
@@ -147,11 +148,11 @@ public class WebviewActivity extends AbstractBaseActivity {
 
     private String getUrlWithNoHeadersAndFooters(String url) {
         if (!url.contains("?")) {
-            url += "?Header=0&Footer=0&tabCourseId="+AbstractBaseActivity.getSelectedCourseId()
-                                        +"&tabCourseInstanceId="+AbstractBaseActivity.getSelectedCourseInstanceId();
+            url += "?Header=0&Footer=0&tabCourseId=" + AbstractBaseActivity.getSelectedCourseId()
+                    + "&tabCourseInstanceId=" + AbstractBaseActivity.getSelectedCourseInstanceId();
         } else if (!url.contains("Header=0&Footer=0")) {
-            url += "Header=0&Footer=0&tabCourseId="+AbstractBaseActivity.getSelectedCourseId()
-                    +"&tabCourseInstanceId="+AbstractBaseActivity.getSelectedCourseInstanceId();
+            url += "Header=0&Footer=0&tabCourseId=" + AbstractBaseActivity.getSelectedCourseId()
+                    + "&tabCourseInstanceId=" + AbstractBaseActivity.getSelectedCourseInstanceId();
         }
         return url;
     }
@@ -183,7 +184,7 @@ public class WebviewActivity extends AbstractBaseActivity {
                 if (intent != null) {
                     startActivity(intent);
                 }
-            } catch ( Exception e) {
+            } catch (Exception e) {
                 L.error(e.getMessage(), e);
             }
             return true;
@@ -193,7 +194,7 @@ public class WebviewActivity extends AbstractBaseActivity {
         public void onPageFinished(WebView view, String url) {
             if (!checkNetconnection(view, url)) {
                 handleBackClick = url.contains("examination/examSubmit");
-                if(handleBackClick) {
+                if (handleBackClick) {
                     showDrawerIcon();
                     view.clearHistory();
                 }

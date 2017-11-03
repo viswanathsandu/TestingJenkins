@@ -22,16 +22,19 @@ import butterknife.ButterKnife;
 public class DatePickerDialogFragment extends DialogFragment {
 
     private IDateSelectionListener dateSelectionListener;
-    @Bind(R.id.datePicker) DatePicker mDatePicker;
-    @Bind(R.id.btn_date_picker_cancel) Button mButtonCancel;
-    @Bind(R.id.btn_date_picker_save) Button mButtonSave;
+    @Bind(R.id.datePicker)
+    DatePicker mDatePicker;
+    @Bind(R.id.btn_date_picker_cancel)
+    Button mButtonCancel;
+    @Bind(R.id.btn_date_picker_save)
+    Button mButtonSave;
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        if(activity instanceof IDateSelectionListener){
+        if (activity instanceof IDateSelectionListener) {
             dateSelectionListener = (IDateSelectionListener) activity;
-        }else{
+        } else {
             throw new RuntimeException("activity must implement " + IDateSelectionListener.class.getCanonicalName());
         }
     }
@@ -56,14 +59,14 @@ public class DatePickerDialogFragment extends DialogFragment {
     View.OnClickListener saveClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            dateSelectionListener.onDateSelect(mDatePicker.getDayOfMonth(),mDatePicker.getMonth()+1,mDatePicker.getYear());
+            dateSelectionListener.onDateSelect(mDatePicker.getDayOfMonth(), mDatePicker.getMonth() + 1, mDatePicker.getYear());
             getDialog().dismiss();
         }
     };
 
 
-    public interface IDateSelectionListener{
-        void onDateSelect(int day,int month, int year);
+    public interface IDateSelectionListener {
+        void onDateSelect(int day, int month, int year);
     }
 
 }

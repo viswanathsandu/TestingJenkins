@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -83,10 +82,10 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
             holder.rootGridLayout.setBackgroundDrawable(getColorDrawable(holder, chapter));
             int totalTopics = Data.getInt(chapter.totalTopics);
             int completedTopics = Data.getInt(chapter.completedTopics);
-            int percentage = (completedTopics != 0) ? completedTopics * 100 /totalTopics : 0;
+            int percentage = (completedTopics != 0) ? completedTopics * 100 / totalTopics : 0;
             holder.progressBar.setMax(100);
             holder.progressBar.setProgress(percentage);
-            getLevelDrawable(holder, chapter.passedComplexity+1, holder.level);
+            getLevelDrawable(holder, chapter.passedComplexity + 1, holder.level);
             holder.star.setText((int) Data.getDoubleInInt(chapter.earnedMarks) + "/" + (int) Data.getDoubleInInt(chapter.totalTestedMarks));
             holder.timeSpent.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ico_tile_time, 0, 0, 0);
             holder.timeSpent.getCompoundDrawables()[0] = holder.timeSpent.getCompoundDrawables()[0].mutate();
@@ -106,16 +105,17 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
             int totalTopics = Data.getInt(chapter.totalTopics);
             int completedTopics = Data.getInt(chapter.completedTopics);
             int percentage = (completedTopics != 0)
-                    ? completedTopics * 100 /totalTopics
+                    ? completedTopics * 100 / totalTopics
                     : 0;
             holder.progressBarGray.setMax(100);
             holder.progressBarGray.setProgress(percentage);
-            getLevelDrawable(holder, chapter.passedComplexity+1, holder.levelGray);
+            getLevelDrawable(holder, chapter.passedComplexity + 1, holder.levelGray);
             holder.starGray.setText((int) Data.getDoubleInInt(chapter.earnedMarks) + "/" + (int) Data.getDoubleInInt(chapter.totalTestedMarks));
             holder.gridLayoutGray.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(studyCenterActivity, studyCenterActivity.getResources().getString(R.string.study_center_offline_click_text), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(studyCenterActivity, studyCenterActivity.getResources().getString(R.string.study_center_offline_click_text),
+                            Toast.LENGTH_SHORT).show();
                 }
             });
             holder.timeSpentGray.getCompoundDrawables()[0] = holder.timeSpentGray.getCompoundDrawables()[0].mutate();
@@ -144,8 +144,8 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
         // position the dialog
         wmlp.x = (int) v.getX() + 15;
         wmlp.y = (int) (v.getY() + +15
-                 + v.getContext().getResources().getDimension(R.dimen.abc_action_bar_default_height_material)
-                 + v.getContext().getResources().getDimension(R.dimen.topbar_height));
+                + v.getContext().getResources().getDimension(R.dimen.abc_action_bar_default_height_material)
+                + v.getContext().getResources().getDimension(R.dimen.topbar_height));
         wmlp.width = ViewGroup.LayoutParams.WRAP_CONTENT;
         wmlp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
         dialog.show();
@@ -188,7 +188,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                if(!ContentDownloadService.isDownloadInProgress()) {
+                if (!ContentDownloadService.isDownloadInProgress()) {
                     startOfflineActivity(chapter);
                 } else {
                     studyCenterActivity.showToast("Currently downloads are in progress. Try again.");
@@ -206,7 +206,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
 
     private void startFlaggedQuestionView(Chapter chapter) {
         Intent exerciseIntent = new Intent(studyCenterActivity, ExamEngineActivity.class);
-        exerciseIntent.putExtra(Constants.SELECTED_CHAPTER_NAME,chapter.chapterName);
+        exerciseIntent.putExtra(Constants.SELECTED_CHAPTER_NAME, chapter.chapterName);
         exerciseIntent.putExtra(Constants.TEST_TITLE, "Flagged Questions");
         exerciseIntent.putExtra(Constants.SELECTED_COURSE, AbstractBaseActivity.getSelectedCourseId());
         exerciseIntent.putExtra(Constants.SELECTED_SUBJECTID, studyCenterActivity.getSelectedSubjectId());
@@ -216,7 +216,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
     }
 
     private void startTakeTest(Chapter chapter) {
-        if(SystemUtils.isNetworkConnected(studyCenterActivity)) {
+        if (SystemUtils.isNetworkConnected(studyCenterActivity)) {
             Intent exerciseIntent = new Intent(studyCenterActivity, TestStartActivity.class);
             exerciseIntent.putExtra(TestStartActivity.KEY_TEST_TYPE, Tests.CHAPTER.getType());
             exerciseIntent.putExtra(Constants.TEST_TITLE, "Take Test");
@@ -228,7 +228,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
             exerciseIntent.putExtra(Constants.LEVEL_CROSSED, chapter.passedComplexity);
             exerciseIntent.putExtra("chapter", Gson.get().toJson(chapter));
             studyCenterActivity.startActivity(exerciseIntent);
-        }else {
+        } else {
             Intent exerciseIntent = new Intent(studyCenterActivity, OfflineActivity.class);
             exerciseIntent.putExtra("selection", 1);
             studyCenterActivity.startActivity(exerciseIntent);
@@ -315,7 +315,7 @@ public class GridRecyclerAdapter extends RecyclerView.Adapter<GridRecyclerAdapte
     public String getDateFromMillis(String secondsStr) {
         if (!TextUtils.isEmpty(secondsStr)) {
             long seconds = Data.getLong(secondsStr);
-            return String.format("%d:%02d:%02d", seconds/3600, (seconds%3600)/60, (seconds%60));
+            return String.format("%d:%02d:%02d", seconds / 3600, (seconds % 3600) / 60, (seconds % 60));
         } else {
             return "00:00:00";
         }

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
@@ -34,15 +33,24 @@ public class ExamResultActivity extends AbstractBaseActivity {
     private String examDate = "";
     private long dueDateInMillis;
 
-    @Bind(R.id.exam_name_txt) TextView examNameTxt;
-    @Bind(R.id.date_txt) TextView examDateTxt;
-    @Bind(R.id.recommended_time_txt) TextView recommendedTimeTxt;
-    @Bind(R.id.time_taken_txt) TextView timeTakenTxt;
-    @Bind(R.id.total_questions_txt) TextView totalQuestionTxt;
-    @Bind(R.id.answered_txt) TextView answeredTxt;
-    @Bind(R.id.skipped_txt) TextView skippedTxt;
-    @Bind(R.id.correct_txt) TextView correctTxt;
-    @Bind(R.id.wrong_txt) TextView wrongTxt;
+    @Bind(R.id.exam_name_txt)
+    TextView examNameTxt;
+    @Bind(R.id.date_txt)
+    TextView examDateTxt;
+    @Bind(R.id.recommended_time_txt)
+    TextView recommendedTimeTxt;
+    @Bind(R.id.time_taken_txt)
+    TextView timeTakenTxt;
+    @Bind(R.id.total_questions_txt)
+    TextView totalQuestionTxt;
+    @Bind(R.id.answered_txt)
+    TextView answeredTxt;
+    @Bind(R.id.skipped_txt)
+    TextView skippedTxt;
+    @Bind(R.id.correct_txt)
+    TextView correctTxt;
+    @Bind(R.id.wrong_txt)
+    TextView wrongTxt;
 
     private static List<ExamModel> examModels;
 
@@ -69,7 +77,7 @@ public class ExamResultActivity extends AbstractBaseActivity {
     }
 
     private void showViewAnswersButton() {
-        if(dueDateInMillis == 0 || dueDateInMillis < TimeUtils.currentTimeInMillis()) {
+        if (dueDateInMillis == 0 || dueDateInMillis < TimeUtils.currentTimeInMillis()) {
             findViewById(R.id.view_answers_btn).setVisibility(View.VISIBLE);
         } else {
             findViewById(R.id.view_answers_btn).setVisibility(View.GONE);
@@ -83,12 +91,12 @@ public class ExamResultActivity extends AbstractBaseActivity {
         examType = bundle.getString("type", "Custom");
         examRecommendedTime = bundle.getString("recommended_time", "--:--:--");
         examTimeTaken = bundle.getString("time_taken", "--:--:--");
-        examDate  = bundle.getString("exam_date", "--/--/----");
+        examDate = bundle.getString("exam_date", "--/--/----");
         totalQuestions = bundle.getInt("total_questions", 0);
         answered = bundle.getInt("answered_questions", 0);
         skipped = bundle.getInt("skipped_questions", 0);
         // TODO : Hack to for skipped fix
-        if((skipped + answered) != totalQuestions) {
+        if ((skipped + answered) != totalQuestions) {
             skipped = totalQuestions - answered;
         }
         correct = bundle.getInt("correct", 0);
@@ -101,28 +109,28 @@ public class ExamResultActivity extends AbstractBaseActivity {
         examDateTxt.setText(examDate);
         recommendedTimeTxt.setText(examRecommendedTime);
         timeTakenTxt.setText(examTimeTaken);
-        totalQuestionTxt.setText(totalQuestions+"");
-        answeredTxt.setText(answered+"");
-        skippedTxt.setText(skipped+"");
-        correctTxt.setText(correct+"");
-        wrongTxt.setText(wrong+"");
+        totalQuestionTxt.setText(totalQuestions + "");
+        answeredTxt.setText(answered + "");
+        skippedTxt.setText(skipped + "");
+        correctTxt.setText(correct + "");
+        wrongTxt.setText(wrong + "");
     }
 
     @OnClick({R.id.view_answers_btn, R.id.exam_history_btn, R.id.course_analysis_btn})
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.view_answers_btn :
-                if(examModels != null) {
+            case R.id.view_answers_btn:
+                if (examModels != null) {
                     AbstractBaseActivity.setSharedExamModels(examModels);
                 }
                 Bundle bundle = new Bundle();
                 bundle.putString(Constants.TEST_TITLE, "View Answers");
                 startActivity(ExamEngineActivity.getMyIntent(this, bundle));
                 break;
-            case R.id.exam_history_btn :
+            case R.id.exam_history_btn:
                 startActivity(new Intent(this, ExamHistoryActivity.class));
                 break;
-            case R.id.course_analysis_btn :
+            case R.id.course_analysis_btn:
                 startActivity(new Intent(this, AnalyticsActivity.class));
                 break;
         }

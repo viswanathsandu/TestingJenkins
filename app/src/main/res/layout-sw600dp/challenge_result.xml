@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/black_bg"
-    android:orientation="vertical"
-    android:padding="10dp">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/black_bg"
+                android:orientation="vertical"
+                android:padding="10dp">
 
 
     <LinearLayout
@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/ico_challenge_cup" />
+            android:src="@drawable/ico_challenge_cup"/>
 
         <LinearLayout
             android:id="@+id/results_header_layout"
@@ -96,7 +96,7 @@
             android:paddingRight="20dp"
             android:text="Challenge history"
             android:textAlignment="center"
-            android:textAllCaps="false" />
+            android:textAllCaps="false"/>
 
         <com.education.corsalite.views.CustomButton
             android:id="@+id/exam_summary_btn"
@@ -109,7 +109,7 @@
             android:paddingRight="20dp"
             android:text="Exam Summary"
             android:textAlignment="center"
-            android:textAllCaps="false" />
+            android:textAllCaps="false"/>
 
         <com.education.corsalite.views.CustomButton
             android:id="@+id/challenge_again_btn"
@@ -122,7 +122,7 @@
             android:paddingRight="20dp"
             android:text="Challenge Again"
             android:textAlignment="center"
-            android:textAllCaps="false" />
+            android:textAllCaps="false"/>
     </LinearLayout>
 
 
@@ -142,7 +142,7 @@
             android:text="HURRAY!"
             android:textAllCaps="true"
             android:textColor="@color/text_white"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
 
         <TextView
@@ -154,14 +154,14 @@
             android:layout_marginTop="40dp"
             android:text="@string/participant"
             android:textAllCaps="false"
-            android:textColor="@color/text_white" />
+            android:textColor="@color/text_white"/>
 
         <com.education.corsalite.views.CustomImageButton
             android:id="@+id/refresh_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
-            android:background="@drawable/but_refresh" />
+            android:background="@drawable/but_refresh"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -171,7 +171,7 @@
             android:layout_marginTop="25dp"
             android:text="@string/check_result"
             android:textAllCaps="false"
-            android:textColor="@color/text_white" />
+            android:textColor="@color/text_white"/>
     </LinearLayout>
 
 

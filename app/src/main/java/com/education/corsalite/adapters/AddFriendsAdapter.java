@@ -90,8 +90,8 @@ public class AddFriendsAdapter extends AbstractRecycleViewAdapter {
                     ivActionBtn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            if(onFriendClickListener != null) {
-                                onFriendClickListener.addFriend((FriendsData.Friend)getItem(position));
+                            if (onFriendClickListener != null) {
+                                onFriendClickListener.addFriend((FriendsData.Friend) getItem(position));
                             }
                         }
                     });
@@ -100,8 +100,8 @@ public class AddFriendsAdapter extends AbstractRecycleViewAdapter {
                     ivActionBtn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            if(onFriendClickListener != null) {
-                                onFriendClickListener.removeFriend((FriendsData.Friend)getItem(position));
+                            if (onFriendClickListener != null) {
+                                onFriendClickListener.removeFriend((FriendsData.Friend) getItem(position));
                             }
                         }
                     });
@@ -120,6 +120,7 @@ public class AddFriendsAdapter extends AbstractRecycleViewAdapter {
 
     public interface OnFriendClickListener {
         void addFriend(FriendsData.Friend friend);
+
         void removeFriend(FriendsData.Friend friend);
     }
 }

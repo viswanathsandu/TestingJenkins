@@ -39,14 +39,15 @@ public class MessageAdapter extends AbstractRecycleViewAdapter {
 
     @Override
     public MessageDataHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view  =inflater.inflate(R.layout.row_messages_list, parent, false) ;
-        if((viewType+1)% 2 == 0) {
+        View view = inflater.inflate(R.layout.row_messages_list, parent, false);
+        if ((viewType + 1) % 2 == 0) {
             view.setBackgroundColor(inflater.getContext().getResources().getColor(R.color.tab_recycler_alternate_row));
-        }else {
+        } else {
             view.setBackgroundColor(inflater.getContext().getResources().getColor(R.color.white));
         }
         return new MessageDataHolder(view);
     }
+
     @Override
     public int getItemViewType(int position) {
         return position;
@@ -55,7 +56,7 @@ public class MessageAdapter extends AbstractRecycleViewAdapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         try {
-            ((MessageDataHolder) holder).bindData(position, (Message)getItem(position));
+            ((MessageDataHolder) holder).bindData(position, (Message) getItem(position));
         } catch (Exception e) {
             L.error("Handle it carefully", e);
         }
@@ -63,7 +64,8 @@ public class MessageAdapter extends AbstractRecycleViewAdapter {
 
     public class MessageDataHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.tv_message) TextView messageTxt;
+        @Bind(R.id.tv_message)
+        TextView messageTxt;
 
         View parent;
 
@@ -74,7 +76,7 @@ public class MessageAdapter extends AbstractRecycleViewAdapter {
         }
 
         public void bindData(final int position, final Message message) {
-            if((position+1)% 2 == 0) {
+            if ((position + 1) % 2 == 0) {
                 parent.setBackgroundColor(inflater.getContext().getResources().getColor(R.color.tab_recycler_alternate_row));
             }
             messageTxt.setText(Html.fromHtml(message.message));

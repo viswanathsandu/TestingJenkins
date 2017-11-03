@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * Created by vissu on 9/12/15.
  */
-public class BasicProfile  implements Serializable {
+public class BasicProfile implements Serializable {
     @SerializedName("idStudent")
     public String studentId;
     @SerializedName("PhotoUrl")

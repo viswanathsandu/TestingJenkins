@@ -35,11 +35,12 @@ public class OfflineContent extends BaseModel {
     public int downloadId;
     public OfflineContentStatus status;
 
-    public OfflineContent() {}
+    public OfflineContent() {
+    }
 
     public OfflineContent(String courseId, String courseName, String subjectId, String subjectName,
-                          String chapterId, String chapterName, String topicId, String topicName,
-                          String contentId, String contentName, String fileName) {
+            String chapterId, String chapterName, String topicId, String topicName,
+            String contentId, String contentName, String fileName) {
         this.courseId = courseId;
         this.courseName = courseName;
         this.subjectId = subjectId;
@@ -60,16 +61,21 @@ public class OfflineContent extends BaseModel {
 
         OfflineContent that = (OfflineContent) o;
 
-        if (courseId != null ? !courseId.equals(that.courseId) : that.courseId != null)
+        if (courseId != null ? !courseId.equals(that.courseId) : that.courseId != null) {
             return false;
-        if (subjectId != null ? !subjectId.equals(that.subjectId) : that.subjectId != null)
+        }
+        if (subjectId != null ? !subjectId.equals(that.subjectId) : that.subjectId != null) {
             return false;
-        if (chapterId != null ? !chapterId.equals(that.chapterId) : that.chapterId != null)
+        }
+        if (chapterId != null ? !chapterId.equals(that.chapterId) : that.chapterId != null) {
             return false;
-        if (topicId != null ? !topicId.equals(that.topicId) : that.topicId != null)
+        }
+        if (topicId != null ? !topicId.equals(that.topicId) : that.topicId != null) {
             return false;
-        if(contentId == null && that.contentId == null)
+        }
+        if (contentId == null && that.contentId == null) {
             return true;
+        }
         return !(contentId != null ? !contentId.equals(that.contentId) : that.contentId != null);
 
     }

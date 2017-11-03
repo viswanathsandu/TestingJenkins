@@ -4,7 +4,7 @@ package com.education.corsalite.enums;
  * Created by vissu on 9/17/15.
  */
 public enum OfflineContentStatus {
-    IN_PROGRESS ("In-Progress"),
+    IN_PROGRESS("In-Progress"),
     STARTED("Started"),
     WAITING("Waiting"),
     FAILED("Failed"),

@@ -17,5 +17,6 @@ public class ChallengeCompleteResponseModel extends BaseResponseModel {
     @SerializedName("challengeParentId")
     public String challengeTestId;
 
-    public ChallengeCompleteResponseModel() {}
+    public ChallengeCompleteResponseModel() {
+    }
 }

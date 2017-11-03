@@ -19,14 +19,14 @@ public class CorsaliteWebViewClient extends WebViewClient {
     }
 
     private String noNetConnectionHtml = "<h1 style=\"color: #5e9ca0; text-align: center;\">&nbsp;</h1>\n" +
-                                        "<h1 style=\"color: #5e9ca0; text-align: center;\">&nbsp;</h1>\n" +
-                                        "<h1 style=\"color: #5e9ca0; text-align: center;\">&nbsp;</h1>\n" +
-                                        "<h1 style=\"color: #5e9ca0; text-align: center;\">No Internet Connection</h1>\n" +
-                                        "<h3 style=\"text-align: center;\"><span style=\"color: #808080;\">Please Try again later</span></h3>";
+            "<h1 style=\"color: #5e9ca0; text-align: center;\">&nbsp;</h1>\n" +
+            "<h1 style=\"color: #5e9ca0; text-align: center;\">&nbsp;</h1>\n" +
+            "<h1 style=\"color: #5e9ca0; text-align: center;\">No Internet Connection</h1>\n" +
+            "<h3 style=\"text-align: center;\"><span style=\"color: #808080;\">Please Try again later</span></h3>";
 
 
     protected boolean checkNetconnection(WebView view, String url) {
-        if(url.startsWith("http") &&  mcontext != null && !SystemUtils.isNetworkConnected(mcontext)) {
+        if (url.startsWith("http") && mcontext != null && !SystemUtils.isNetworkConnected(mcontext)) {
             view.loadData(noNetConnectionHtml, "text/html", "UTF-8");
             return true;
         }

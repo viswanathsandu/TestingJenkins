@@ -23,5 +23,6 @@ public class QuestionPaperExamDetails extends BaseModel {
     @SerializedName("TotalTime")
     public String totalTime;
 
-    public QuestionPaperExamDetails() {}
+    public QuestionPaperExamDetails() {
+    }
 }

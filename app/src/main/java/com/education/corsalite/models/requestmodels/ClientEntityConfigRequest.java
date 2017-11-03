@@ -13,7 +13,8 @@ public class ClientEntityConfigRequest extends BaseModel {
     @SerializedName("DeviceID")
     public String deviceId;
 
-    public ClientEntityConfigRequest() {}
+    public ClientEntityConfigRequest() {
+    }
 
     public ClientEntityConfigRequest(String idUser, String deviceId) {
         this.idUser = idUser;

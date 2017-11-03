@@ -91,7 +91,7 @@ public class TestChapterFragment extends BaseFragment {
     @Override
     public void onPause() {
         super.onPause();
-        if(getActivity() != null && getActivity() instanceof AbstractBaseActivity) {
+        if (getActivity() != null && getActivity() instanceof AbstractBaseActivity) {
             ((AbstractBaseActivity) getActivity()).hideKeyboard();
         }
     }
@@ -99,11 +99,11 @@ public class TestChapterFragment extends BaseFragment {
     @OnClick({R.id.btn_header_test_cancel, R.id.btn_header_test_next})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.btn_header_test_cancel : {
+            case R.id.btn_header_test_cancel: {
                 getActivity().onBackPressed();
                 break;
             }
-            case R.id.btn_header_test_next : {
+            case R.id.btn_header_test_next: {
                 setupTest();
                 break;
             }
@@ -124,33 +124,34 @@ public class TestChapterFragment extends BaseFragment {
 
     private void fetchDataFromServer() {
         showProgress();
-        ApiManager.getInstance(getActivity()).getTestCoverage(LoginUserCache.getInstance().getStudentId(), AbstractBaseActivity.getSelectedCourseId(), subjectId, chapterID,
-            new ApiCallback<List<TestCoverage>>(getActivity()) {
-                @Override
-                public void failure(CorsaliteError error) {
-                    super.failure(error);
-                    closeProgress();
-                    L.error(error.message);
-                    mFailureTextView.setText("Sorry, couldn't fetch data");
-                }
-
-                @Override
-                public void success(List<TestCoverage> testCoverages, Response response) {
-                    super.success(testCoverages, response);
-                    if (getActivity() != null && getActivity().isFinishing() || getActivity().isDestroyed() || !isResumed()) {
-                        return;
+        ApiManager.getInstance(getActivity()).getTestCoverage(LoginUserCache.getInstance().getStudentId(), AbstractBaseActivity.getSelectedCourseId(),
+                subjectId, chapterID,
+                new ApiCallback<List<TestCoverage>>(getActivity()) {
+                    @Override
+                    public void failure(CorsaliteError error) {
+                        super.failure(error);
+                        closeProgress();
+                        L.error(error.message);
+                        mFailureTextView.setText("Sorry, couldn't fetch data");
                     }
-                    closeProgress();
-                    TestChapterFragment.this.testCoverages = testCoverages;
-                    setData(testCoverages);
-                    mContainerLayout.setVisibility(View.VISIBLE);
-                }
-            });
+
+                    @Override
+                    public void success(List<TestCoverage> testCoverages, Response response) {
+                        super.success(testCoverages, response);
+                        if (getActivity() != null && getActivity().isFinishing() || getActivity().isDestroyed() || !isResumed()) {
+                            return;
+                        }
+                        closeProgress();
+                        TestChapterFragment.this.testCoverages = testCoverages;
+                        setData(testCoverages);
+                        mContainerLayout.setVisibility(View.VISIBLE);
+                    }
+                });
     }
 
     private void setData(List<TestCoverage> testCoverages) {
         for (TestCoverage coverage : testCoverages) {
-            if(coverage.idCourseSubjectChapter.equalsIgnoreCase(chapterID)) {
+            if (coverage.idCourseSubjectChapter.equalsIgnoreCase(chapterID)) {
                 mChapterNameTxtView.setText(chapterName);
                 mNoteTxtView.setText(getNote(levelCrossed, coverage.attendedQCount, coverage.attendedCorrectQCount));
                 mTestBarChart.setData(generateBarData(testCoverages));
@@ -171,7 +172,7 @@ public class TestChapterFragment extends BaseFragment {
 
             mChapterLevels.add(testCoverage.level);
 
-            BarEntry barEntry = new BarEntry((float)(index++), new float[]{answersCorrect, answersRemaining, answersWrong});
+            BarEntry barEntry = new BarEntry((float) (index++), new float[]{answersCorrect, answersRemaining, answersWrong});
             entries.add(barEntry);
         }
 
@@ -213,14 +214,15 @@ public class TestChapterFragment extends BaseFragment {
 
     private CharSequence getNote(int levelCrossed, String questionsAttempted, String questionCorrect) {
         double accuracyPercentage = Double.valueOf(questionCorrect) / Double.valueOf(questionsAttempted) * 100;
-        String noteValue = getActivity().getResources().getString(R.string.value_test_note, levelCrossed+"", ((int)accuracyPercentage)+"", questionCorrect, questionsAttempted);
+        String noteValue = getActivity().getResources().getString(R.string.value_test_note, levelCrossed + "", ((int) accuracyPercentage) + "", questionCorrect,
+                questionsAttempted);
         return TextUtils.concat(Data.getBoldString(getActivity().getResources().getString(R.string.label_note)), noteValue);
     }
 
     private void setupTest() {
         mExtras.putStringArrayList(TestChapterSetupFragment.EXTRAS_CHAPTER_LEVELS, mChapterLevels);
         mExtras.putInt(Constants.LEVEL_CROSSED, levelCrossed);
-        if(testCoverages != null) {
+        if (testCoverages != null) {
             mExtras.putString(Constants.TEST_COVERAGE_LIST_GSON, Gson.get().toJson(testCoverages));
         }
 

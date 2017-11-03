@@ -51,9 +51,9 @@ public class ChallengeUser extends BaseModel {
     public String virtualCurrencyChallenged;
 
     public String getChallengeStatus() {
-        if(TextUtils.isEmpty(virtualCurrencyWon) || virtualCurrencyWon.equals("0")) {
+        if (TextUtils.isEmpty(virtualCurrencyWon) || virtualCurrencyWon.equals("0")) {
             return "TIE";
-        } else if(virtualCurrencyWon.contains("-")) {
+        } else if (virtualCurrencyWon.contains("-")) {
             return "LOST";
         } else {
             return "WON";

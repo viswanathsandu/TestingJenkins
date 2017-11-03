@@ -28,7 +28,7 @@ public class UpdateLeaderBoardEvent {
 
     public List<LeaderBoardStudent> getStudents() {
         List<LeaderBoardStudent> students = new ArrayList<>();
-        if(!TextUtils.isEmpty(leaderBoardTxt)) {
+        if (!TextUtils.isEmpty(leaderBoardTxt)) {
             String[] studentsArray = leaderBoardTxt.split(",");
             for (int i = 0; i < studentsArray.length; i++) {
                 if (!TextUtils.isEmpty(studentsArray[i].trim())) {

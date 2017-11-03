@@ -9,7 +9,7 @@ import com.education.corsalite.models.responsemodels.TestAnswerPaper;
  * Created by vissu on 7/3/16.
  */
 
-public class SyncModel extends BaseModel{
+public class SyncModel extends BaseModel {
 
     private ContentReadingEvent contentReadingEvent;
     private UserEventsModel userEventsModel;

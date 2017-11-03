@@ -52,18 +52,30 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
         EditProfileDialogFragment.IUpdateProfileDetailsListener {
 
     private final String COURSES_ENROLLED_HTML = "<b><font color=#000000>Enrolled Courses:</font></b>&nbsp;";
-    @Bind(R.id.iv_userProfilePic) ImageView profilePicImg;
-    @Bind(R.id.tv_userName) TextView usernameTxt;
-    @Bind(R.id.tv_userFullName) TextView userFullNameTxt;
-    @Bind(R.id.tv_emailId) TextView emailTxt;
-    @Bind(R.id.tv_institute) TextView instituteTxt;
-    @Bind(R.id.tv_enrolled_course) TextView enrolledCoursesTxt;
-    @Bind(R.id.tv_virtual_currency_balance) TextView virtualCurrencyBalanceTxt;
-    @Bind(R.id.sp_default_course) Spinner coursesSpinner;
-    @Bind(R.id.btn_default_course) TextView coursesBtn;
-    @Bind(R.id.redeem_btn)Button redeemBtn;
-    @Bind(R.id.btn_edit_pic)ImageView editProfilePic;
-    @Bind(R.id.ll_user_details)View mainLayout;
+    @Bind(R.id.iv_userProfilePic)
+    ImageView profilePicImg;
+    @Bind(R.id.tv_userName)
+    TextView usernameTxt;
+    @Bind(R.id.tv_userFullName)
+    TextView userFullNameTxt;
+    @Bind(R.id.tv_emailId)
+    TextView emailTxt;
+    @Bind(R.id.tv_institute)
+    TextView instituteTxt;
+    @Bind(R.id.tv_enrolled_course)
+    TextView enrolledCoursesTxt;
+    @Bind(R.id.tv_virtual_currency_balance)
+    TextView virtualCurrencyBalanceTxt;
+    @Bind(R.id.sp_default_course)
+    Spinner coursesSpinner;
+    @Bind(R.id.btn_default_course)
+    TextView coursesBtn;
+    @Bind(R.id.redeem_btn)
+    Button redeemBtn;
+    @Bind(R.id.btn_edit_pic)
+    ImageView editProfilePic;
+    @Bind(R.id.ll_user_details)
+    View mainLayout;
 
     private UserProfileResponse user;
     private UpdateExamData updateExamData;
@@ -83,7 +95,7 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user_profile_details, container, false);
         ButterKnife.bind(this, view);
         setListeners();
@@ -123,7 +135,7 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
         coursesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(SystemUtils.isNetworkConnected(getActivity())) {
+                if (SystemUtils.isNetworkConnected(getActivity())) {
                     coursesSpinner.performClick();
                     coursesSpinnerCLicked = true;
                 } else {
@@ -176,7 +188,7 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
     }
 
     private void showEditProfileFragment() {
-        if(!SystemUtils.isNetworkConnected(getActivity())) {
+        if (!SystemUtils.isNetworkConnected(getActivity())) {
             showToast("This feature is not available for offline. Please come online.");
             return;
         }

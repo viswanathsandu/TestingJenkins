@@ -34,7 +34,7 @@ public class CustomButton extends Button implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        if(!isClicked) {
+        if (!isClicked) {
             if (onClickListener != null) {
                 onClickListener.onClick(v);
                 isClicked = true;
@@ -50,7 +50,7 @@ public class CustomButton extends Button implements View.OnClickListener {
 
     @Override
     public boolean callOnClick() {
-        if(onClickListener != null) {
+        if (onClickListener != null) {
             onClick(this);
             return true;
         }

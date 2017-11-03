@@ -20,9 +20,10 @@ public class ExerciseOfflineModel extends BaseModel {
     @Ignore
     public List<ExamModel> questions;
 
-    public ExerciseOfflineModel(){}
+    public ExerciseOfflineModel() {
+    }
 
-    public ExerciseOfflineModel(String courseId, String topicId, String topicName){
+    public ExerciseOfflineModel(String courseId, String topicId, String topicName) {
         this.courseId = courseId;
         this.topicId = topicId;
         this.topicName = topicName;

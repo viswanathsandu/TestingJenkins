@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_margin="5dp"
-    android:background="@color/white"
-    android:orientation="vertical"
-    android:gravity="center_horizontal">
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_margin="5dp"
+              android:background="@color/white"
+              android:orientation="vertical"
+              android:gravity="center_horizontal">
 
 
     <LinearLayout
@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Exam Date:"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"/>
 
         <DatePicker
             android:id="@+id/datePicker"
@@ -28,7 +28,7 @@
             android:layout_gravity="center_horizontal"
             android:calendarViewShown="false"
             android:datePickerMode="spinner"
-            android:spinnersShown="true" />
+            android:spinnersShown="true"/>
 
     </LinearLayout>
 
@@ -47,7 +47,7 @@
             android:layout_marginTop="10dp"
             android:hint="Hall Ticket Number"
             android:singleLine="true"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"/>
     </android.support.design.widget.TextInputLayout>
 
     <LinearLayout
@@ -64,7 +64,7 @@
             android:background="@color/white"
             android:padding="5dp"
             android:text="Cancel"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"/>
 
         <com.education.corsalite.views.CustomButton
             android:id="@+id/btn_submit"
@@ -74,7 +74,7 @@
             android:background="@color/white"
             android:padding="5dp"
             android:text="Submit"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"/>
 
     </LinearLayout>
 </LinearLayout>

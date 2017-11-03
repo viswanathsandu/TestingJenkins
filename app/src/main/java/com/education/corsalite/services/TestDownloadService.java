@@ -66,14 +66,16 @@ public class TestDownloadService extends IntentService {
         String questionsCount = intent.getStringExtra("questions_count");
         String exerciseQuestionsListJson = intent.getStringExtra("exercise_data");
         List<ExerciseOfflineModel> exerciseModelsList = null;
-        if(!TextUtils.isEmpty(exerciseQuestionsListJson)) {
-            Type listType = new TypeToken<ArrayList<ExerciseOfflineModel>>() {}.getType();
+        if (!TextUtils.isEmpty(exerciseQuestionsListJson)) {
+            Type listType = new TypeToken<ArrayList<ExerciseOfflineModel>>() {
+            }.getType();
             exerciseModelsList = Gson.get().fromJson(exerciseQuestionsListJson, listType);
         }
         String partTestGridElimentsJson = intent.getStringExtra(Constants.PARTTEST_GRIDMODELS);
         List<PartTestGridElement> partTestGridElements = null;
-        if(!TextUtils.isEmpty(partTestGridElimentsJson)) {
-            Type listType = new TypeToken<ArrayList<PartTestGridElement>>() {}.getType();
+        if (!TextUtils.isEmpty(partTestGridElimentsJson)) {
+            Type listType = new TypeToken<ArrayList<PartTestGridElement>>() {
+            }.getType();
             partTestGridElements = Gson.get().fromJson(partTestGridElimentsJson, listType);
         }
         if (mockTestStr != null) {
@@ -82,44 +84,44 @@ public class TestDownloadService extends IntentService {
         } else if (scheduledTestStr != null) {
             ScheduledTestsArray scheduledTest = Gson.get().fromJson(scheduledTestStr, ScheduledTestsArray.class);
             getTestQuestionPaper(testQuestionPaperId, testAnswerPaperId, null, scheduledTest, studentId);
-        } else if(takeTestStr != null){
-            Chapter chapter = Gson.get().fromJson(takeTestStr,Chapter.class);
-            loadTakeTest(chapter,null, questionsCount, subjectId);
-        } else if(partTestStr != null){
+        } else if (takeTestStr != null) {
+            Chapter chapter = Gson.get().fromJson(takeTestStr, Chapter.class);
+            loadTakeTest(chapter, null, questionsCount, subjectId);
+        } else if (partTestStr != null) {
             subjectName = partTestStr;
             loadPartTest(subjectName, subjectId, partTestGridElements);
-        } else if(exerciseModelsList != null) {
+        } else if (exerciseModelsList != null) {
             downloadExercises(exerciseModelsList);
         }
     }
 
     private void downloadExercises(List<ExerciseOfflineModel> models) {
-        for(final ExerciseOfflineModel model : models) {
+        for (final ExerciseOfflineModel model : models) {
             ApiManager.getInstance(this).getExercise(model.topicId, model.courseId, null, null,
-                new ApiCallback<List<ExamModel>>(this) {
-                    @Override
-                    public void failure(CorsaliteError error) {
-                        super.failure(error);
-                        L.error("Failed to save exercise for topic model" + model.topicId);
-                    }
-
-                    @Override
-                    public void success(List<ExamModel> examModels, Response response) {
-                        super.success(examModels, response);
-                        if(examModels != null && !examModels.isEmpty()) {
-                            model.questions = examModels;
-                            new ExamUtils(mContext).saveExerciseQuestionPaper(model.topicId, model);
-                            model.questions = null;
-                            dbManager.saveOfflineExerciseTest(model);
+                    new ApiCallback<List<ExamModel>>(this) {
+                        @Override
+                        public void failure(CorsaliteError error) {
+                            super.failure(error);
+                            L.error("Failed to save exercise for topic model" + model.topicId);
                         }
-                    }
-                });
+
+                        @Override
+                        public void success(List<ExamModel> examModels, Response response) {
+                            super.success(examModels, response);
+                            if (examModels != null && !examModels.isEmpty()) {
+                                model.questions = examModels;
+                                new ExamUtils(mContext).saveExerciseQuestionPaper(model.topicId, model);
+                                model.questions = null;
+                                dbManager.saveOfflineExerciseTest(model);
+                            }
+                        }
+                    });
         }
     }
 
 
     private void getTestQuestionPaper(final String testQuestionPaperId, final String testAnswerPaperId, final MockTest mockTest,
-                                      final ScheduledTestsArray scheduledTestsArray, String studentId) {
+            final ScheduledTestsArray scheduledTestsArray, String studentId) {
         try {
             TestPaperIndex testPaperIndexResponse = ApiManager.getInstance(this).getTestPaperIndex(testQuestionPaperId, testAnswerPaperId, "N");
             TestQuestionPaperResponse questionPaperResponse = ApiManager.getInstance(this)
@@ -160,7 +162,7 @@ public class TestDownloadService extends IntentService {
         }
     }
 
-    private void loadTakeTest(final Chapter chapter, final String subjectName, String questionsCount, String subjectId){
+    private void loadTakeTest(final Chapter chapter, final String subjectName, String questionsCount, String subjectId) {
         ExamEngineHelper helper = new ExamEngineHelper(this);
         helper.loadTakeTest(chapter, subjectName, subjectId, questionsCount, new OnExamLoadCallback() {
             @Override
@@ -172,7 +174,7 @@ public class TestDownloadService extends IntentService {
                 model.testQuestionPaperId = test.testQuestionPaperId;
                 dbManager.saveOfflineTest(model);
                 new ExamUtils(getApplicationContext()).saveTestQuestionPaper(model.testQuestionPaperId, test.testQuestionPaperResponse);
-                EventBus.getDefault().post(new Toast("\""+chapter.chapterName + "\" test is downloaded successfully"));
+                EventBus.getDefault().post(new Toast("\"" + chapter.chapterName + "\" test is downloaded successfully"));
                 EventBus.getDefault().post(new TestDownloadCompletedEvent());
             }
 
@@ -182,7 +184,7 @@ public class TestDownloadService extends IntentService {
         });
     }
 
-    private void loadPartTest(final String subjectName, final String subjectId, List<PartTestGridElement> elements){
+    private void loadPartTest(final String subjectName, final String subjectId, List<PartTestGridElement> elements) {
         ExamEngineHelper helper = new ExamEngineHelper(this);
         helper.loadPartTest(subjectName, subjectId, elements, new OnExamLoadCallback() {
             @Override
@@ -190,7 +192,7 @@ public class TestDownloadService extends IntentService {
                 OfflineTestObjectModel model = new OfflineTestObjectModel();
                 model.testType = Tests.PART;
                 model.baseTest = test;
-                if(test!= null) {
+                if (test != null) {
                     model.baseTest.subjectId = subjectId;
                     model.baseTest.subjectName = subjectName;
                 }
@@ -198,8 +200,8 @@ public class TestDownloadService extends IntentService {
                 model.testQuestionPaperId = test.testQuestionPaperId;
                 dbManager.saveOfflineTest(model);
                 new ExamUtils(getApplicationContext()).saveTestQuestionPaper(model.testQuestionPaperId, test.testQuestionPaperResponse);
-                L.info("Test Saved : "+model.getClass());
-                EventBus.getDefault().post(new Toast("\""+subjectName + "\" test is downloaded successfully"));
+                L.info("Test Saved : " + model.getClass());
+                EventBus.getDefault().post(new Toast("\"" + subjectName + "\" test is downloaded successfully"));
                 EventBus.getDefault().post(new TestDownloadCompletedEvent());
             }
 

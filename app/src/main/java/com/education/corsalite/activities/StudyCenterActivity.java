@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -23,7 +22,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.GridRecyclerAdapter;
@@ -90,7 +88,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
         super.onResume();
         // fetch schedule tests and configure the notifications
         loadScheduledTests();
-        if(getSelectedCourse() != null) {
+        if (getSelectedCourse() != null) {
             getStudyCentreData(getSelectedCourse().courseId.toString());
         }
         if (mAdapter != null) {
@@ -101,7 +99,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
     @Override
     protected void onCourseChanged(Course course) {
         super.onCourseChanged(course);
-        if(course.isTestSeries()) {
+        if (course.isTestSeries()) {
             startActivity(new Intent(this, TestSeriesActivity.class));
             finish();
         } else {
@@ -308,7 +306,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
                         } else {
                             getOfflineStudyCenterData(studyCenters, false);
                         }
-                        if(subjectViews != null && !subjectViews.isEmpty()) {
+                        if (subjectViews != null && !subjectViews.isEmpty()) {
                             subjectViews.get(0).performClick();
                         }
                     }
@@ -478,7 +476,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
             selectedSubjectTxt = tv;
         }
         setListener(tv, studyCenter.SubjectName);
-        if(subjectViews != null) {
+        if (subjectViews != null) {
             subjectViews.add(tv);
         }
         return v;
@@ -579,7 +577,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
     }
 
     private void startFlaggedQuestionView(StudyCenter studyCenter) {
-        if(!SystemUtils.isNetworkConnected(this)) {
+        if (!SystemUtils.isNetworkConnected(this)) {
             showToast("This feature is not available for offline. Please come online.");
             return;
         }

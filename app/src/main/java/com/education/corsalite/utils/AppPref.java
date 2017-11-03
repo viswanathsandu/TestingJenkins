@@ -22,7 +22,7 @@ public class AppPref {
     private final String KEY_VIRTUAL_CURRENCY_ID = "virtual_currency";
 
     public static AppPref get(Context context) {
-        if(instance == null) {
+        if (instance == null) {
             instance = new AppPref();
         }
         instance.context = context;

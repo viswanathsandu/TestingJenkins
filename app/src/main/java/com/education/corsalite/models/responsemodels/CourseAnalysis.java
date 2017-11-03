@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by Aastha on 30/09/15.
  */
-public class CourseAnalysis extends BaseModel implements Comparable<CourseAnalysis>{
+public class CourseAnalysis extends BaseModel implements Comparable<CourseAnalysis> {
 
     @SerializedName("ScoreRed")
     public String scoreRed;

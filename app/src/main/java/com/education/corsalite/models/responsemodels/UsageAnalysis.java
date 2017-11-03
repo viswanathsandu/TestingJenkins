@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by Aastha on 19/11/15.
  */
-public class UsageAnalysis extends BaseResponseModel{
+public class UsageAnalysis extends BaseResponseModel {
     @Ignore
     @SerializedName("userAuditArr")
     public List<Float> userAuditList;

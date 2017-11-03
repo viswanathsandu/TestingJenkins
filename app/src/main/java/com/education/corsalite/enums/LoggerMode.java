@@ -5,7 +5,7 @@ package com.education.corsalite.enums;
  */
 public enum LoggerMode {
     SILENT("silent"),
-    DEVELOPMENT ("development"),
+    DEVELOPMENT("development"),
     QA("qa"),
     RELEASE("release");
 

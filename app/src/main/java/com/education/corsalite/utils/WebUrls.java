@@ -22,35 +22,35 @@ public class WebUrls {
     private final static String HANDLER_URL_PATTERN = "handler";
     private final static String STUDY_CENTER_URL_PATTERN = "student";
     private final static String RECOMMENDED_READING_URL_PATTERN = "dashboard/courseAnalysis/%s/recommendedreading";
-    private final static String  PROGRESS_REPORT_URL_PATTERN = "dashboard/courseAnalysis/%s/progressreport";
-    private final static String  TIME_MANAGEMENT_URL_PATTERN = "dashboard/courseAnalysis/13/timemanagementbysubject";
+    private final static String PROGRESS_REPORT_URL_PATTERN = "dashboard/courseAnalysis/%s/progressreport";
+    private final static String TIME_MANAGEMENT_URL_PATTERN = "dashboard/courseAnalysis/13/timemanagementbysubject";
 
     public static String getForgotPasswordUrl() {
-        return ApiClientService.getBaseUrl()+FORGOT_PASSWORD_URL;
+        return ApiClientService.getBaseUrl() + FORGOT_PASSWORD_URL;
     }
 
     public static String getAddGuardianUrl() {
-        return ApiClientService.getBaseUrl()+ADD_GUARDIAN_URL;
+        return ApiClientService.getBaseUrl() + ADD_GUARDIAN_URL;
     }
 
     public static String getAddCoursesUrl() {
-        return ApiClientService.getBaseUrl()+ADD_COURSES_URL;
+        return ApiClientService.getBaseUrl() + ADD_COURSES_URL;
     }
 
     public static String getRedeemUrl() {
-        return ApiClientService.getBaseUrl()+REDEEM_URL;
+        return ApiClientService.getBaseUrl() + REDEEM_URL;
     }
 
     public static String getSmartClassUrl() {
-        return ApiClientService.getBaseUrl()+SMART_CLASS_URL;
+        return ApiClientService.getBaseUrl() + SMART_CLASS_URL;
     }
 
     public static String getExamResultsSummaryUrl() {
-        return ApiClientService.getBaseUrl()+EXAM_RESULTS_SUMMARY_URL;
+        return ApiClientService.getBaseUrl() + EXAM_RESULTS_SUMMARY_URL;
     }
 
     public static String getComputerAdaptiveTestUrl(String examTemplateId) {
-        return ApiClientService.getBaseUrl()+String.format(COMPUTER_ADAPTIVE_TEST_URL, examTemplateId);
+        return ApiClientService.getBaseUrl() + String.format(COMPUTER_ADAPTIVE_TEST_URL, examTemplateId);
     }
 
     public static boolean isHandler(String url) {
@@ -85,7 +85,7 @@ public class WebUrls {
         try {
             if (isHandler(url)) {
                 return new Intent(activity, CrashHandlerActivity.class);
-            } else if(isStudyCenter(url)) {
+            } else if (isStudyCenter(url)) {
                 return new Intent(activity, StudyCenterActivity.class);
             }
             return null;

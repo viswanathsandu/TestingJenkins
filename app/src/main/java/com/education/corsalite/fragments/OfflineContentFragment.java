@@ -110,7 +110,7 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
         Collections.sort(videoContents,
                 new Comparator<OfflineContent>() {                                                                 //Class AnalyticsModel
                     public int compare(OfflineContent content1,
-                                       OfflineContent content2) {
+                            OfflineContent content2) {
                         return content1.fileName.compareToIgnoreCase(content2.fileName);
 
                     }
@@ -152,7 +152,9 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
 
             }
             if (subjectRoot == null) {
-                subjectRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_subject_white, offlineContent.subjectName, offlineContent.subjectId, "subject", false, 0));
+                subjectRoot = new TreeNode(
+                        new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_subject_white, offlineContent.subjectName, offlineContent.subjectId,
+                                "subject", false, 0));
                 root.addChild(subjectRoot);
             }
 
@@ -173,7 +175,8 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
             }
             if (chapterRoot == null) {
                 int icon = getCorrespondingBGColor(offlineContent);
-                chapterRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(icon, offlineContent.chapterName, offlineContent.chapterId, "chapter", showProgress, 0));
+                chapterRoot = new TreeNode(
+                        new IconTreeItemHolder.IconTreeItem(icon, offlineContent.chapterName, offlineContent.chapterId, "chapter", showProgress, 0));
                 subjectRoot.addChild(chapterRoot);
             }
 
@@ -194,7 +197,8 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
                     List<ExerciseOfflineModel> addedList = new ArrayList<>();
                     for (ExerciseOfflineModel exercise : offlineExercises) {
                         if (exercise.topicId.equals(offlineContent.topicId)) {
-                            IconTreeItemHolder.IconTreeItem item = new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_exercise, "Exercise", exercise.topicId + "-" + exercise.courseId, "Exercise", false, 0);
+                            IconTreeItemHolder.IconTreeItem item = new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_exercise, "Exercise",
+                                    exercise.topicId + "-" + exercise.courseId, "Exercise", false, 0);
                             item.setData(exercise);
                             addedList.add(exercise);
                             topicRoot.addChild(new TreeNode(item));
@@ -213,9 +217,13 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
             }
             if (contentRoot == null) {
                 if (offlineContent.fileName.endsWith(".mpg")) {
-                    contentRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_video, offlineContent.fileName, offlineContent.contentId, "content", showProgress, offlineContent.progress));
+                    contentRoot = new TreeNode(
+                            new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_video, offlineContent.fileName, offlineContent.contentId, "content",
+                                    showProgress, offlineContent.progress));
                 } else if (offlineContent.fileName.endsWith(".html")) {
-                    contentRoot = new TreeNode(new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_topic, offlineContent.fileName, offlineContent.contentId, "content", showProgress, 0));
+                    contentRoot = new TreeNode(
+                            new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_topic, offlineContent.fileName, offlineContent.contentId, "content",
+                                    showProgress, 0));
                 }
                 topicRoot.addChild(contentRoot);
             }
@@ -292,7 +300,8 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
             OfflineContent offlineContent = dbManager.getOfflineContentWithContent(id);
             if (offlineContent != null) {
                 removeList.add(offlineContent);
-                String pathPrefix = offlineContent.courseName + "/" + offlineContent.subjectName + "/" + offlineContent.chapterName + "/" + offlineContent.topicName;
+                String pathPrefix =
+                        offlineContent.courseName + "/" + offlineContent.subjectName + "/" + offlineContent.chapterName + "/" + offlineContent.topicName;
                 if (offlineContent.fileName.split(Pattern.quote("."))[1].equalsIgnoreCase("video")) {
                     path = pathPrefix + "/" + "Video" + "/" + offlineContent.fileName;
                 } else {
@@ -363,8 +372,9 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
         File file = new File(videoUrl);
         if (file.exists()) {
             getActivity().startActivity(intent);
-        } else
+        } else {
             showToast("File does not exist");
+        }
     }
 
 }

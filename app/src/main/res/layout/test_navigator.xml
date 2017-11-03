@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/navigator_layout"
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent">
+                android:id="@+id/navigator_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
 
     <View
         android:id="@+id/shadow_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/shape_rounded_corners_black_80" />
+        android:background="@drawable/shape_rounded_corners_black_80"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -46,14 +46,14 @@
                     android:textSize="18sp"
                     android:textColor="@color/text_black"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"/>
 
                 <com.education.corsalite.views.CustomImageButton
                     android:id="@+id/info_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:background="@drawable/ico_offline_info" />
+                    android:background="@drawable/ico_offline_info"/>
             </RelativeLayout>
 
             <View
@@ -77,13 +77,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:columnWidth="40dp"
-                        android:numColumns="auto_fit" />
+                        android:numColumns="auto_fit"/>
 
                     <include
                         layout="@layout/layout_test_gridview_footer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/gv_test" />
+                        android:layout_below="@id/gv_test"/>
 
                 </RelativeLayout>
 

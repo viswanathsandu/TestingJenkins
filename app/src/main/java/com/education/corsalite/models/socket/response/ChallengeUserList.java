@@ -14,10 +14,10 @@ public class ChallengeUserList {
 
     public void setUsers(String usersTxt) {
         users = new HashSet<>();
-        if(!TextUtils.isEmpty(usersTxt)) {
-            String [] usersArray = usersTxt.split(",");
-            for(int i=0; i<usersArray.length; i++) {
-                if(!usersArray[i].trim().isEmpty()) {
+        if (!TextUtils.isEmpty(usersTxt)) {
+            String[] usersArray = usersTxt.split(",");
+            for (int i = 0; i < usersArray.length; i++) {
+                if (!usersArray[i].trim().isEmpty()) {
                     users.add(usersArray[i]);
                 }
             }

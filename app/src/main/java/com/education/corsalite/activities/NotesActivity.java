@@ -74,13 +74,13 @@ public class NotesActivity extends AbstractBaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(mCourseData != null && mCourseData.StudyCenter != null) {
+        if (mCourseData != null && mCourseData.StudyCenter != null) {
             getNotesData();
         }
     }
 
     public void refreshNotes() {
-        if(mCourseData != null && mCourseData.StudyCenter != null) {
+        if (mCourseData != null && mCourseData.StudyCenter != null) {
             getNotesData();
         }
     }
@@ -154,7 +154,7 @@ public class NotesActivity extends AbstractBaseActivity {
         List<String> courses = new ArrayList<>();
         int selectedIndex = -1;
         for (StudyCenter studyCenter : courseData.StudyCenter) {
-            if(mSubjectId != null && studyCenter.idCourseSubject.toString().equals(mSubjectId)) {
+            if (mSubjectId != null && studyCenter.idCourseSubject.toString().equals(mSubjectId)) {
                 selectedIndex = courseData.StudyCenter.indexOf(studyCenter);
             }
             courses.add(studyCenter.SubjectName.toString());
@@ -188,14 +188,14 @@ public class NotesActivity extends AbstractBaseActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-        if(selectedIndex != -1) {
+        if (selectedIndex != -1) {
             courseSpinner.setSelection(selectedIndex);
         }
     }
 
     private void callNotesData(String idCourseSubject) {
         hideList();
-        if(!TextUtils.isEmpty(mSubjectId)) {
+        if (!TextUtils.isEmpty(mSubjectId)) {
             getNotesData();
         } else {
             mSubjectId = idCourseSubject.toString();

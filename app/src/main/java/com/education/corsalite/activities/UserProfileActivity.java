@@ -20,9 +20,9 @@ import com.education.corsalite.utils.WebUrls;
 
 import java.util.List;
 
-public class UserProfileActivity extends AbstractBaseActivity implements UserProfileDetailsFragment.UpdateExamData{
+public class UserProfileActivity extends AbstractBaseActivity implements UserProfileDetailsFragment.UpdateExamData {
 
-    private TabLayout userProfileLayout ;
+    private TabLayout userProfileLayout;
     private ViewPager viewPager;
     private List<VirtualCurrencyTransaction> virtualCurrencyTransactions;
     private UserTabBaseAdapter userTabAdapter;
@@ -39,13 +39,13 @@ public class UserProfileActivity extends AbstractBaseActivity implements UserPro
     }
 
     private void initUI() {
-        userProfileLayout = (TabLayout)findViewById(R.id.tl_userprofile);
-        viewPager = (ViewPager)findViewById(R.id.pager);
+        userProfileLayout = (TabLayout) findViewById(R.id.tl_userprofile);
+        viewPager = (ViewPager) findViewById(R.id.pager);
     }
 
     private void setTabView(List<ExamDetail> examDetailList) {
         viewPager.setOffscreenPageLimit(2);
-        if(userTabAdapter == null) {
+        if (userTabAdapter == null) {
             userTabAdapter = new UserTabBaseAdapter(getSupportFragmentManager(), examDetailList);
             viewPager.setAdapter(userTabAdapter);
         } else {
@@ -64,10 +64,10 @@ public class UserProfileActivity extends AbstractBaseActivity implements UserPro
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_add_guardian :
+            case R.id.action_add_guardian:
                 addGuardian();
                 return true;
-            case R.id.action_add_courses :
+            case R.id.action_add_courses:
                 addCourses();
                 return true;
         }

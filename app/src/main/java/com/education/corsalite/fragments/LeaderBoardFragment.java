@@ -23,9 +23,12 @@ import butterknife.OnClick;
  */
 public class LeaderBoardFragment extends BaseFragment {
 
-    @Bind(R.id.leader_board_recyclerview) RecyclerView mRecyclerView;
-    @Bind(R.id.leader_list_layout) View leaderBoardLayout;
-    @Bind(R.id.leader_board_btn) View leaderBoardBtn;
+    @Bind(R.id.leader_board_recyclerview)
+    RecyclerView mRecyclerView;
+    @Bind(R.id.leader_list_layout)
+    View leaderBoardLayout;
+    @Bind(R.id.leader_board_btn)
+    View leaderBoardBtn;
 
     private RecyclerView.Adapter mAdapter;
 
@@ -50,7 +53,7 @@ public class LeaderBoardFragment extends BaseFragment {
 
     @OnClick(R.id.leader_board_btn)
     public void onLeaderBoardButtonClicked() {
-        if(mAdapter != null && mAdapter.getItemCount() > 0) {
+        if (mAdapter != null && mAdapter.getItemCount() > 0) {
             leaderBoardLayout.setVisibility(View.VISIBLE);
             leaderBoardBtn.setVisibility(View.GONE);
         }

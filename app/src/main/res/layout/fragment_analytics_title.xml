@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    android:background="@color/green"
-    android:scrollbars="none">
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@color/green"
+            android:scrollbars="none">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -19,36 +19,36 @@
             android:id="@+id/tv_accuracy"
             style="@style/analytics_title"
             android:drawableTop="@drawable/ico_accuracy_unselected"
-            android:text="Accuracy Vs Speed" />
+            android:text="Accuracy Vs Speed"/>
 
         <TextView
             android:id="@+id/tv_progress_report"
             style="@style/analytics_title"
             android:drawableTop="@drawable/ico_report_unselected"
-            android:text="Accuracy Trend" />
+            android:text="Accuracy Trend"/>
 
         <TextView
             android:id="@+id/tv_test_coverage"
             style="@style/analytics_title"
             android:drawableTop="@drawable/ico_test_unselected"
-            android:text="Test Coverage" />
+            android:text="Test Coverage"/>
 
         <TextView
             android:id="@+id/tv_time_management"
             style="@style/analytics_title"
             android:drawableTop="@drawable/ico_time_unselected"
-            android:text="Time Management" />
+            android:text="Time Management"/>
 
         <TextView
             android:id="@+id/tv_recommended_reading"
             style="@style/analytics_title"
             android:drawableTop="@drawable/ico_recommend_unselected"
-            android:text="Recommended Reading" />
+            android:text="Recommended Reading"/>
 
         <TextView
             android:id="@+id/tv_usage_analysis"
             style="@style/analytics_title"
             android:drawableTop="@drawable/ico_sidemenu_groups"
-            android:text="Usage Analysis" />
+            android:text="Usage Analysis"/>
     </LinearLayout>
 </ScrollView>
