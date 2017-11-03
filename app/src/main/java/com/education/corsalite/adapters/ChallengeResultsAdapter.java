@@ -34,10 +34,12 @@ public class ChallengeResultsAdapter extends AbstractRecycleViewAdapter {
     public ChallengeResultDataHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new ChallengeResultDataHolder(inflater.inflate(R.layout.row_challenge_results_list, parent, false));
     }
+
     @Override
     public int getItemViewType(int position) {
         return position;
     }
+
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ((ChallengeResultDataHolder) holder).bindData((ChallengeUser) getItem(position));
@@ -45,10 +47,14 @@ public class ChallengeResultsAdapter extends AbstractRecycleViewAdapter {
 
     public class ChallengeResultDataHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.display_name_txt) TextView displayNameTxt;
-        @Bind(R.id.score_txt) TextView scoreTxt;
-        @Bind(R.id.points_earned_txt) TextView pointsEarnedTxt;
-        @Bind(R.id.status_txt) TextView statusTxt;
+        @Bind(R.id.display_name_txt)
+        TextView displayNameTxt;
+        @Bind(R.id.score_txt)
+        TextView scoreTxt;
+        @Bind(R.id.points_earned_txt)
+        TextView pointsEarnedTxt;
+        @Bind(R.id.status_txt)
+        TextView statusTxt;
 
         View parent;
 

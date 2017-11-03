@@ -1,11 +1,9 @@
 package com.education.corsalite.fragments;
 
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,13 +18,12 @@ import com.education.corsalite.adapters.FriendsAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.helpers.WebSocketHelper;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.FriendsData;
 import com.education.corsalite.models.socket.response.ChallengeUserList;
-import com.education.corsalite.gson.Gson;
 import com.education.corsalite.utils.L;
-
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -49,7 +46,8 @@ public class InviteFriendsFragment extends BaseFragment {
     private Set<String> challengeFriendsId = new HashSet<>();
     private FriendsData friendsData;
 
-    public InviteFriendsFragment(){}
+    public InviteFriendsFragment() {
+    }
 
     public static InviteFriendsFragment newInstance(ChallengeActivity.FriendsListCallback mFriendsListCallback) {
         InviteFriendsFragment fragment = new InviteFriendsFragment();
@@ -61,7 +59,7 @@ public class InviteFriendsFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_invite_friends, container, false);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_friends_list);
         mRecyclerView.setHasFixedSize(true);
@@ -86,12 +84,12 @@ public class InviteFriendsFragment extends BaseFragment {
     }
 
     private void setListeners() {
-        if(getActivity() instanceof AbstractBaseActivity) {
+        if (getActivity() instanceof AbstractBaseActivity) {
             Toolbar toolbar = ((AbstractBaseActivity) getActivity()).toolbar;
             toolbar.findViewById(R.id.add_friends_btn).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(getActivity() != null) {
+                    if (getActivity() != null) {
                         startActivity(new Intent(getActivity(), AddFriendsActivity.class));
                     }
                 }
@@ -129,7 +127,7 @@ public class InviteFriendsFragment extends BaseFragment {
                     @Override
                     public void failure(CorsaliteError error) {
                         super.failure(error);
-                        if(getActivity() != null) {
+                        if (getActivity() != null) {
                             closeProgress();
                             ((AbstractBaseActivity) getActivity()).showToast("No friends available");
                         }
@@ -139,7 +137,7 @@ public class InviteFriendsFragment extends BaseFragment {
 
     private void showFriendsList() {
         updateFriendsListStatus();
-        if(friendsData != null && friendsData.friendsList != null) {
+        if (friendsData != null && friendsData.friendsList != null) {
 //            mAdapter = new FriendsAdapter(getActivity(), friendsData, mFriendsListCallback);
             mAdapter.updateData(friendsData);
 //            mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), R.drawable.horizontal_line, true, true));
@@ -172,7 +170,7 @@ public class InviteFriendsFragment extends BaseFragment {
     }
 
     public void onEventMainThread(ChallengeUserList event) {
-        if(getActivity() != null) {
+        if (getActivity() != null) {
             challengeFriendsId = event.users;
             showFriendsList();
             L.info("Websocket : " + Gson.get().toJson(event.users));

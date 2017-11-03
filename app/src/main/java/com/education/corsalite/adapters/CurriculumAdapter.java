@@ -10,8 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
-import com.education.corsalite.enums.CurriculumTypeEntity;
 import com.education.corsalite.enums.CurriculumTabType;
+import com.education.corsalite.enums.CurriculumTypeEntity;
 import com.education.corsalite.models.responsemodels.CurriculumEntity;
 
 import java.util.ArrayList;
@@ -49,7 +49,7 @@ public class CurriculumAdapter extends RecyclerView.Adapter<CurriculumAdapter.Cu
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(itemClickListener != null) {
+                if (itemClickListener != null) {
                     itemClickListener.onItemClick(entity);
                 }
             }

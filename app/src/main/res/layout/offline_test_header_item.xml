@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="64dp"
-    android:background="@color/white"
-    android:gravity="center_vertical"
-    android:orientation="horizontal"
-    android:weightSum="1">
+              android:layout_width="match_parent"
+              android:layout_height="64dp"
+              android:background="@color/white"
+              android:gravity="center_vertical"
+              android:orientation="horizontal"
+              android:weightSum="1">
 
     <TextView
         android:id="@+id/title_txt"
@@ -22,17 +22,17 @@
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"/>
 
-   <!-- <TextView
-        android:id="@+id/test_time_txt"
-        style="?android:attr/spinnerDropDownItemStyle"
-        fontPath="@string/roboto_light"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.3"
-        android:padding="5dp"
-        android:singleLine="true"
-        android:textColor="@color/text_black"
-        android:textSize="12sp" />-->
+    <!-- <TextView
+         android:id="@+id/test_time_txt"
+         style="?android:attr/spinnerDropDownItemStyle"
+         fontPath="@string/roboto_light"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_weight="0.3"
+         android:padding="5dp"
+         android:singleLine="true"
+         android:textColor="@color/text_black"
+         android:textSize="12sp" />-->
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
             android:layout_height="30dp"
             android:layout_gravity="center"
             android:scaleType="centerInside"
-            android:src="@drawable/ico_yettoattempt" />
+            android:src="@drawable/ico_yettoattempt"/>
         <TextView
             android:id="@+id/count_yettoattempt"
             android:layout_width="wrap_content"
@@ -61,7 +61,7 @@
             android:layout_height="30dp"
             android:layout_gravity="center"
             android:scaleType="centerInside"
-            android:src="@drawable/ico_notattended" />
+            android:src="@drawable/ico_notattended"/>
         <TextView
             android:id="@+id/count_notattended"
             android:layout_width="wrap_content"
@@ -77,7 +77,7 @@
             android:layout_height="30dp"
             android:layout_gravity="center"
             android:scaleType="centerInside"
-            android:src="@drawable/ico_correct" />
+            android:src="@drawable/ico_correct"/>
         <TextView
             android:id="@+id/count_correct"
             android:layout_width="wrap_content"
@@ -101,6 +101,6 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:scaleType="centerInside"
-            android:src="@drawable/download_icon" />
+            android:src="@drawable/download_icon"/>
     </LinearLayout>
 </LinearLayout>

@@ -16,5 +16,6 @@ public class TestPaperIndex extends BaseModel {
     @SerializedName("QuestionPaperIndex")
     public List<QuestionPaperIndex> questionPaperIndecies;
 
-    public TestPaperIndex() {}
+    public TestPaperIndex() {
+    }
 }

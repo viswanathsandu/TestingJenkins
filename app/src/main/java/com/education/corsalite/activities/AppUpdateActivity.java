@@ -25,8 +25,10 @@ import butterknife.ButterKnife;
 
 public class AppUpdateActivity extends AbstractBaseActivity {
 
-    @Bind(R.id.download_status_txt) TextView downloadStatusTxt;
-    @Bind(R.id.download_progress) ProgressBar downloadProgress;
+    @Bind(R.id.download_status_txt)
+    TextView downloadStatusTxt;
+    @Bind(R.id.download_progress)
+    ProgressBar downloadProgress;
 
     private com.thin.downloadmanager.DownloadManager downloadManager = new ThinDownloadManager();
     private int downloadId = 0;
@@ -40,7 +42,7 @@ public class AppUpdateActivity extends AbstractBaseActivity {
         frameLayout.addView(myView);
         ButterKnife.bind(this, myView);
         apkUrl = getIntent().getExtras().getString("apk_url");
-        if(!TextUtils.isEmpty(apkUrl)) {
+        if (!TextUtils.isEmpty(apkUrl)) {
             downloadApk();
         } else {
             showToast("Something went wrong. Please launch the app again");
@@ -53,7 +55,7 @@ public class AppUpdateActivity extends AbstractBaseActivity {
         // do nothing
     }
 
-    private void downloadApk(){
+    private void downloadApk() {
         Uri downloadUri = Uri.parse(apkUrl);
         Uri destinationUri = Uri.parse(FileUtils.get(this).getApkFolderPath());
         DownloadRequest downloadRequest = new DownloadRequest(downloadUri)
@@ -91,7 +93,7 @@ public class AppUpdateActivity extends AbstractBaseActivity {
         downloadStatusTxt.setText(message);
     }
 
-    private void installApk(String filePath){
+    private void installApk(String filePath) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         Uri uri = Uri.fromFile(new File(filePath));
         intent.setDataAndType(uri, "application/vnd.android.package-archive");

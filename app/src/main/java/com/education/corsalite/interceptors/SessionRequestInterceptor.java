@@ -13,7 +13,7 @@ public class SessionRequestInterceptor implements RequestInterceptor {
     @Override
     public void intercept(RequestFacade request) {
         String setcookie = ApiClientService.getSetCookie();
-        if(setcookie != null && !setcookie.isEmpty()) {
+        if (setcookie != null && !setcookie.isEmpty()) {
             request.addHeader("cookie", setcookie);
         }
     }

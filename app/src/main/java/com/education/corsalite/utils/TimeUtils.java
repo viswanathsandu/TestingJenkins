@@ -16,7 +16,7 @@ public class TimeUtils {
     }
 
     public static long getMinInMillis(int minutes) {
-        return minutes*60*1000;
+        return minutes * 60 * 1000;
     }
 
     public static Date getCurrentDate() {
@@ -33,9 +33,9 @@ public class TimeUtils {
                 seconds);
     }
 
-    public static String getDateTime(long millis){
-       String dateTime = "";
-        if(millis != 0) {
+    public static String getDateTime(long millis) {
+        String dateTime = "";
+        if (millis != 0) {
             SimpleDateFormat sdfmt2 = new SimpleDateFormat("MMM dd, yyyy HH:mm");
             dateTime = sdfmt2.format(getDate(millis));
         }
@@ -67,7 +67,7 @@ public class TimeUtils {
     }
 
     public static Date getDate(long millis) {
-        if(millis > 0) {
+        if (millis > 0) {
             Calendar cal = Calendar.getInstance();
             cal.setTimeInMillis(millis);
             return cal.getTime();

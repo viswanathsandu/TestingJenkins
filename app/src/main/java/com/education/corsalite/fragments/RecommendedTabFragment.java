@@ -43,13 +43,20 @@ import retrofit.client.Response;
  */
 public class RecommendedTabFragment extends Fragment implements RecommendationsAdapter.SetOnRecommendationClickListener {
 
-    @Bind(R.id.rv_analytics_recommended) RecyclerView mRecyclerView;
-    @Bind(R.id.progress_bar_tab) ProgressBar mProgressBar;
-    @Bind(R.id.headerLayout) LinearLayout linearLayout;
-    @Bind(R.id.tv_failure_text) TextView mFailureText;
-    @Bind(R.id.failure_container) View failureContainer;
-    @Bind(R.id.color_bar) public LinearLayout colorBar;
-    @Bind(R.id.subjects_name_id) LinearLayout topbarLayout;
+    @Bind(R.id.rv_analytics_recommended)
+    RecyclerView mRecyclerView;
+    @Bind(R.id.progress_bar_tab)
+    ProgressBar mProgressBar;
+    @Bind(R.id.headerLayout)
+    LinearLayout linearLayout;
+    @Bind(R.id.tv_failure_text)
+    TextView mFailureText;
+    @Bind(R.id.failure_container)
+    View failureContainer;
+    @Bind(R.id.color_bar)
+    public LinearLayout colorBar;
+    @Bind(R.id.subjects_name_id)
+    LinearLayout topbarLayout;
     private LinearLayoutManager mLayoutManager;
     private RecommendationsAdapter mAdapter;
     private LayoutInflater mInflater;
@@ -121,14 +128,14 @@ public class RecommendedTabFragment extends Fragment implements RecommendationsA
     }
 
     private void getRecommendedReading(int startIndex, int noOfRows) {
-        if(isCompleted) {
+        if (isCompleted) {
             return;
         }
-        if(startIndex == 0) {
+        if (startIndex == 0) {
             topbarLayout.removeAllViews();
         }
         ApiManager.getInstance(getActivity()).getRecommendedReading(LoginUserCache.getInstance().getStudentId(),
-                AbstractBaseActivity.getSelectedCourseId(), startIndex+"", noOfRows+"",
+                AbstractBaseActivity.getSelectedCourseId(), startIndex + "", noOfRows + "",
                 new ApiCallback<List<RecommendedModel>>(getActivity()) {
                     @Override
                     public void failure(CorsaliteError error) {
@@ -154,7 +161,7 @@ public class RecommendedTabFragment extends Fragment implements RecommendationsA
                             setupSubjects(completeRecommendedModels);
                         } else {
                             isCompleted = true;
-                            if(completeRecommendedModels.isEmpty()) {
+                            if (completeRecommendedModels.isEmpty()) {
                                 mProgressBar.setVisibility(View.GONE);
                                 failureContainer.setVisibility(View.VISIBLE);
                             }
@@ -174,7 +181,7 @@ public class RecommendedTabFragment extends Fragment implements RecommendationsA
         String subject = model.subjectName;
         if (!subjects.contains(subject)) {
             subjects.add(subject);
-            if(topbarLayout.findViewWithTag(model.subjectId+"") == null) {
+            if (topbarLayout.findViewWithTag(model.subjectId + "") == null) {
                 topbarLayout.addView(getSubjectView(subject, model.subjectId + "", subjects.size() == 1));
             } else {
                 loadRecommendedReading(selectedSubjectTxt.getText().toString());
@@ -239,6 +246,7 @@ public class RecommendedTabFragment extends Fragment implements RecommendationsA
             mFailureText.setText("No Data available for " + subjectName);
         }
     }
+
     @Override
     public void onItemClick(int position) {
         RecommendedModel model = (RecommendedModel) mAdapter.getItem(position);

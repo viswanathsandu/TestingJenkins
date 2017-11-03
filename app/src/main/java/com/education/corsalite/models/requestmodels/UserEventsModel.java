@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by Madhuri on 24-01-2016.
  */
-public class UserEventsModel extends BaseModel{
+public class UserEventsModel extends BaseModel {
     @SerializedName("UserID")
     public String idUser;
     @SerializedName("EventStartTime")

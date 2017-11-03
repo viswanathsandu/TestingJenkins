@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:id="@+id/test_nav_footer"
-    android:visibility="gone"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+              android:layout_width="wrap_content"
+              android:id="@+id/test_nav_footer"
+              android:visibility="gone"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
 
     <com.education.corsalite.views.CustomButton
         android:id="@+id/btn_view_full_question"
@@ -17,7 +17,7 @@
         android:background="@drawable/rounded_corners_blue"
         android:text="View Full Question Paper"
         android:textAllCaps="true"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -39,13 +39,13 @@
                 android:layout_height="8dp"
                 android:layout_gravity="center"
                 android:layout_marginRight="15dp"
-                android:background="@color/green" />
+                android:background="@color/green"/>
 
             <TextView
                 style="@style/tests_text_style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Answered" />
+                android:text="Answered"/>
         </LinearLayout>
 
         <LinearLayout
@@ -61,14 +61,14 @@
                 android:layout_height="8dp"
                 android:layout_gravity="center"
                 android:layout_marginRight="15dp"
-                android:background="@color/red" />
+                android:background="@color/red"/>
 
             <TextView
                 android:id="@+id/tv_skipped"
                 style="@style/tests_text_style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Skipped" />
+                android:text="Skipped"/>
 
         </LinearLayout>
 
@@ -85,14 +85,14 @@
                 android:layout_height="8dp"
                 android:layout_gravity="center"
                 android:layout_marginRight="15dp"
-                android:background="@color/flagged_yellow" />
+                android:background="@color/flagged_yellow"/>
 
             <TextView
                 android:id="@+id/tv_review"
                 style="@style/tests_text_style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Flagged for review" />
+                android:text="Flagged for review"/>
 
         </LinearLayout>
 
@@ -109,7 +109,7 @@
                 android:layout_height="8dp"
                 android:layout_gravity="center"
                 android:layout_marginRight="15dp"
-                android:background="@color/gray" />
+                android:background="@color/gray"/>
 
             <TextView
                 android:id="@+id/tv_unattempted"
@@ -117,7 +117,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_review"
-                android:text="Unattempted" />
+                android:text="Unattempted"/>
 
         </LinearLayout>
     </RelativeLayout>
@@ -125,7 +125,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/dark_gray" />
+        android:background="@color/dark_gray"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -140,7 +140,7 @@
             android:layout_margin="10dp"
             android:background="@drawable/rounded_corners_gray"
             android:padding="5dp"
-            android:text="Suspend" />
+            android:text="Suspend"/>
 
         <com.education.corsalite.views.CustomButton
             android:id="@+id/btn_save"
@@ -149,7 +149,7 @@
             android:layout_margin="10dp"
             android:background="@drawable/rounded_corners_gray"
             android:padding="5dp"
-            android:text="Save" />
+            android:text="Save"/>
 
         <com.education.corsalite.views.CustomButton
             android:id="@+id/btn_submit"
@@ -160,7 +160,7 @@
             android:padding="5dp"
             android:text="Submit"
             android:textAllCaps="true"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"/>
 
     </LinearLayout>
 </LinearLayout>

@@ -1,10 +1,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="550dp"
-    android:layout_height="match_parent"
-    android:background="@android:color/white"
-    android:padding="5dp"
-    tools:context="com.education.corsalite.fragments.TestSetupFragment">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="550dp"
+                android:layout_height="match_parent"
+                android:background="@android:color/white"
+                android:padding="5dp"
+                tools:context="com.education.corsalite.fragments.TestSetupFragment">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -27,14 +27,14 @@
                 android:padding="16dp"
                 android:text="Course Name"
                 android:textColor="@color/text_gray"
-                android:textSize="22sp" />
+                android:textSize="22sp"/>
 
             <Spinner
                 android:id="@+id/selectSubjectSpinner"
                 style="@android:style/Widget.Holo.Light.Spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp" />
+                android:textSize="16sp"/>
 
             <TextView
                 android:id="@+id/tv_selectSubjError"
@@ -44,14 +44,14 @@
                 android:layout_height="wrap_content"
                 android:text="Virtual Currency"
                 android:textColor="@color/red"
-                android:visibility="gone" />
+                android:visibility="gone"/>
 
             <Spinner
                 android:id="@+id/selectChapterSpinner"
                 style="@android:style/Widget.Holo.Light.Spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp" />
+                android:textSize="16sp"/>
 
             <TextView
                 android:id="@+id/tv_selectChapError"
@@ -61,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:text="Virtual Currency"
                 android:textColor="@color/red"
-                android:visibility="gone" />
+                android:visibility="gone"/>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -98,19 +98,19 @@
                 android:paddingLeft="10dp"
                 android:text="Virtual Currency"
                 android:textColor="@color/red"
-                android:visibility="gone" />
+                android:visibility="gone"/>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#E1E1E1" />
+                android:background="#E1E1E1"/>
 
             <Spinner
                 android:id="@+id/examsSpinner"
                 style="@android:style/Widget.Holo.Light.Spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp" />
+                android:textSize="16sp"/>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -146,12 +146,12 @@
                 android:layout_height="wrap_content"
                 android:text="Virtual Currency"
                 android:textColor="@color/red"
-                android:visibility="gone" />
+                android:visibility="gone"/>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#E1E1E1" />
+                android:background="#E1E1E1"/>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -187,12 +187,12 @@
                 android:layout_height="wrap_content"
                 android:text="Virtual Currency"
                 android:textColor="@color/red"
-                android:visibility="gone" />
+                android:visibility="gone"/>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#E1E1E1" />
+                android:background="#E1E1E1"/>
         </LinearLayout>
     </ScrollView>
 
@@ -211,7 +211,7 @@
             android:layout_height="wrap_content"
             android:padding="15dp"
             android:text="Cancel"
-            android:textColor="@android:color/black" />
+            android:textColor="@android:color/black"/>
 
         <TextView
             android:id="@+id/tv_testsetup_next"
@@ -220,7 +220,7 @@
             android:layout_height="wrap_content"
             android:padding="15dp"
             android:text="Challenge"
-            android:textColor="@android:color/holo_green_dark" />
+            android:textColor="@android:color/holo_green_dark"/>
 
     </LinearLayout>
 

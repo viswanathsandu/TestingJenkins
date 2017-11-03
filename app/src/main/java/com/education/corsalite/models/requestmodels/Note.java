@@ -1,12 +1,6 @@
 package com.education.corsalite.models.requestmodels;
 
-import com.education.corsalite.models.responsemodels.ExamDetail;
 import com.google.gson.annotations.SerializedName;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 /**
  * Created by vissu on 10/15/15.

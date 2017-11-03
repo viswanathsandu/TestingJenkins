@@ -8,7 +8,8 @@ public class AppEntityConfigRequest extends AbstractBaseRequest {
     public String userId;
     public String entityId;
 
-    public AppEntityConfigRequest() {}
+    public AppEntityConfigRequest() {
+    }
 
     public AppEntityConfigRequest(String userId, String entityId) {
         this.userId = userId;

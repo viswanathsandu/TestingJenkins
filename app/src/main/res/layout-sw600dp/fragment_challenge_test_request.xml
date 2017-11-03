@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/curve_shape"
-    android:orientation="vertical"
-    android:padding="10dp">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@drawable/curve_shape"
+              android:orientation="vertical"
+              android:padding="10dp">
 
     <TextView
         android:id="@+id/title_txt"
@@ -16,7 +16,7 @@
         android:layout_marginBottom="30dp"
         android:text="Challenge"
         android:textColor="@color/text_white"
-        android:textSize="30sp" />
+        android:textSize="30sp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -45,7 +45,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Course"
-                    android:textColor="@color/text_white" />
+                    android:textColor="@color/text_white"/>
 
                 <TextView
                     android:id="@+id/course_txt"
@@ -54,7 +54,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:text="-"
-                    android:textColor="@color/text_white" />
+                    android:textColor="@color/text_white"/>
             </LinearLayout>
 
 
@@ -70,7 +70,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Subject"
-                    android:textColor="@color/text_white" />
+                    android:textColor="@color/text_white"/>
 
                 <TextView
                     android:id="@+id/subject_txt"
@@ -79,7 +79,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:text="-"
-                    android:textColor="@color/text_white" />
+                    android:textColor="@color/text_white"/>
             </LinearLayout>
 
             <LinearLayout
@@ -94,7 +94,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Chapter"
-                    android:textColor="@color/text_white" />
+                    android:textColor="@color/text_white"/>
 
                 <TextView
                     android:id="@+id/chapter_txt"
@@ -103,7 +103,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:text="-"
-                    android:textColor="@color/text_white" />
+                    android:textColor="@color/text_white"/>
             </LinearLayout>
 
             <LinearLayout
@@ -118,7 +118,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Questions"
-                    android:textColor="@color/text_white" />
+                    android:textColor="@color/text_white"/>
 
                 <TextView
                     android:id="@+id/questions_txt"
@@ -127,7 +127,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:text="-"
-                    android:textColor="@color/text_white" />
+                    android:textColor="@color/text_white"/>
             </LinearLayout>
 
             <LinearLayout
@@ -142,7 +142,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Time in Mins"
-                    android:textColor="@color/text_white" />
+                    android:textColor="@color/text_white"/>
 
                 <TextView
                     android:id="@+id/time_txt"
@@ -151,7 +151,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:text="-"
-                    android:textColor="@color/text_white" />
+                    android:textColor="@color/text_white"/>
             </LinearLayout>
 
             <LinearLayout
@@ -166,7 +166,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Virtual Currency"
-                    android:textColor="@color/text_white" />
+                    android:textColor="@color/text_white"/>
 
                 <TextView
                     android:id="@+id/virtual_currency_txt"
@@ -175,7 +175,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:text="-"
-                    android:textColor="@color/text_white" />
+                    android:textColor="@color/text_white"/>
             </LinearLayout>
 
 
@@ -192,7 +192,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Status"
-                    android:textColor="@color/text_white" />
+                    android:textColor="@color/text_white"/>
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -210,7 +210,7 @@
                         android:paddingLeft="15dp"
                         android:paddingRight="15dp"
                         android:text="Initiated"
-                        android:textColor="@color/text_white" />
+                        android:textColor="@color/text_white"/>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
@@ -242,13 +242,13 @@
                     android:paddingRight="10dp"
                     android:paddingTop="3dp"
                     android:text="0"
-                    android:textColor="@color/text_white" />
+                    android:textColor="@color/text_white"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Accepted"
-                    android:textColor="@color/text_white" />
+                    android:textColor="@color/text_white"/>
             </LinearLayout>
 
             <LinearLayout
@@ -269,13 +269,13 @@
                     android:paddingRight="10dp"
                     android:paddingTop="3dp"
                     android:text="0"
-                    android:textColor="@color/text_white" />
+                    android:textColor="@color/text_white"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Declined"
-                    android:textColor="@color/text_white" />
+                    android:textColor="@color/text_white"/>
             </LinearLayout>
 
             <LinearLayout
@@ -295,13 +295,13 @@
                     android:paddingRight="10dp"
                     android:paddingTop="3dp"
                     android:text="0"
-                    android:textColor="@color/text_white" />
+                    android:textColor="@color/text_white"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Initiated"
-                    android:textColor="@color/text_white" />
+                    android:textColor="@color/text_white"/>
             </LinearLayout>
 
         </LinearLayout>
@@ -321,21 +321,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/image_button_selector"
-            android:src="@drawable/ico_refresh" />
+            android:src="@drawable/ico_refresh"/>
 
         <com.education.corsalite.views.CustomImageButton
             android:id="@+id/reject_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/image_button_selector"
-            android:src="@drawable/ico_reject" />
+            android:src="@drawable/ico_reject"/>
 
         <com.education.corsalite.views.CustomImageButton
             android:id="@+id/accept_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/image_button_selector"
-            android:src="@drawable/ico_accept" />
+            android:src="@drawable/ico_accept"/>
 
         <com.education.corsalite.views.CustomImageButton
             android:id="@+id/start_btn"
@@ -344,7 +344,7 @@
             android:layout_marginBottom="50dp"
             android:background="@drawable/image_button_selector"
             android:src="@drawable/ico_flag_start"
-            android:visibility="gone" />
+            android:visibility="gone"/>
 
     </LinearLayout>
 

@@ -14,11 +14,11 @@
     -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="?android:attr/listPreferredItemHeightSmall"
-    android:background="@color/dark_gray"
-    android:paddingRight="1dp"
-    android:paddingLeft="1dp">
+              android:layout_width="match_parent"
+              android:layout_height="?android:attr/listPreferredItemHeightSmall"
+              android:background="@color/dark_gray"
+              android:paddingRight="1dp"
+              android:paddingLeft="1dp">
 
     <CheckedTextView
         android:id="@android:id/text1"
@@ -27,5 +27,5 @@
         android:checkMark="?android:attr/listChoiceIndicatorMultiple"
         android:gravity="center_vertical"
         android:textAppearance="?android:attr/textAppearanceListItemSmall"
-        android:background="@drawable/n_blank_list_item_selector" />
+        android:background="@drawable/n_blank_list_item_selector"/>
 </LinearLayout>

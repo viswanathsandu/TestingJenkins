@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/toolbar"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/abc_action_bar_default_height_material"
-    android:background="@color/black"
-    app:showAsAction="ifRoom">
+                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                   android:id="@+id/toolbar"
+                                   android:layout_width="match_parent"
+                                   android:layout_height="@dimen/abc_action_bar_default_height_material"
+                                   android:background="@color/black"
+                                   app:showAsAction="ifRoom">
 
     <TextView
         android:id="@+id/toolbar_title"
@@ -15,7 +15,7 @@
         android:paddingLeft="16dp"
         style="@style/title_style"
         android:text="@string/title_activity_currency"
-        android:singleLine="true" />
+        android:singleLine="true"/>
 
     <LinearLayout
         android:layout_width="match_parent"

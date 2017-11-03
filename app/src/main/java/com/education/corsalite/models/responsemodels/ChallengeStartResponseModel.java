@@ -9,5 +9,6 @@ public class ChallengeStartResponseModel extends BaseResponseModel {
     @SerializedName("idTestQuestionPaper")
     public String testQuestionPaperId;
 
-    public ChallengeStartResponseModel() {}
+    public ChallengeStartResponseModel() {
+    }
 }

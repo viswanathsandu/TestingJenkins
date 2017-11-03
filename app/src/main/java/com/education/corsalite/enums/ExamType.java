@@ -4,7 +4,7 @@ package com.education.corsalite.enums;
  * Created by vissu on 9/17/15.
  */
 public enum ExamType {
-    PRACTICE_TEST ("Exercise Test"),
+    PRACTICE_TEST("Exercise Test"),
     TAKE_TEST("Take Test"),
     PART_TEST("Part Test"),
     MOCK_TEST("Mock Test"),

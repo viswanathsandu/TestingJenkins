@@ -1,15 +1,11 @@
 package com.education.corsalite.activities;
 
-import android.app.FragmentManager;
 import android.content.Context;
-import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
@@ -32,11 +28,16 @@ import retrofit.client.Response;
 
 public class ExamResultSummaryActivity extends AbstractBaseActivity {
 
-    @Bind(R.id.tv_examname) TextView examNameTxt;
-    @Bind(R.id.tv_type) TextView typeTxt;
-    @Bind(R.id.tv_time_taken) TextView timeTakenTxt;
-    @Bind(R.id.tv_date) TextView dateTxt;
-    @Bind(R.id.result_table_layout) TableLayout resultTable;
+    @Bind(R.id.tv_examname)
+    TextView examNameTxt;
+    @Bind(R.id.tv_type)
+    TextView typeTxt;
+    @Bind(R.id.tv_time_taken)
+    TextView timeTakenTxt;
+    @Bind(R.id.tv_date)
+    TextView dateTxt;
+    @Bind(R.id.result_table_layout)
+    TableLayout resultTable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +59,7 @@ public class ExamResultSummaryActivity extends AbstractBaseActivity {
     }
 
     private void fetchExamSummaryData(String testAnswerPaperIds) {
-        if(SystemUtils.isNetworkConnected(this)) {
+        if (SystemUtils.isNetworkConnected(this)) {
             ApiManager.getInstance(this).getExamResultSummaryData(testAnswerPaperIds, LoginUserCache.getInstance().getStudentId(),
                     new ApiCallback<ExamResultSummaryResponse>(ExamResultSummaryActivity.this) {
                         @Override
@@ -93,23 +94,23 @@ public class ExamResultSummaryActivity extends AbstractBaseActivity {
     }
 
     private void updateResultTable(List<ExamResultSummarySubject> subjects) {
-        for(ExamResultSummarySubject subject : subjects) {
+        for (ExamResultSummarySubject subject : subjects) {
             resultTable.addView(getTableRow(subject));
         }
     }
 
     private View getTableRow(ExamResultSummarySubject subject) {
         View tableRow = getLayoutInflater().inflate(R.layout.exam_result_summary_table_row, null, false);
-        ((TextView)tableRow.findViewById(R.id.subject_name_txt)).setText(subject.subjectName);
-        ((TextView)tableRow.findViewById(R.id.total_questions_txt)).setText(subject.questionTotal);
-        ((TextView)tableRow.findViewById(R.id.correct_questions_txt)).setText(subject.questionCorrect);
-        ((TextView)tableRow.findViewById(R.id.wrong_questions_txt)).setText(subject.questionWrong);
-        ((TextView)tableRow.findViewById(R.id.max_marks_txt)).setText(subject.markMax);
-        ((TextView)tableRow.findViewById(R.id.positive_marks_txt)).setText(subject.scorePositive);
-        ((TextView)tableRow.findViewById(R.id.negative_marks_txt)).setText(subject.scoreNegative);
-        ((TextView)tableRow.findViewById(R.id.total_marks_txt)).setText(subject.scoreTotal);
-        ((TextView)tableRow.findViewById(R.id.recommended_time_txt)).setText(subject.timeRecommended);
-        ((TextView)tableRow.findViewById(R.id.actual_time_txt)).setText(subject.timeTaken);
+        ((TextView) tableRow.findViewById(R.id.subject_name_txt)).setText(subject.subjectName);
+        ((TextView) tableRow.findViewById(R.id.total_questions_txt)).setText(subject.questionTotal);
+        ((TextView) tableRow.findViewById(R.id.correct_questions_txt)).setText(subject.questionCorrect);
+        ((TextView) tableRow.findViewById(R.id.wrong_questions_txt)).setText(subject.questionWrong);
+        ((TextView) tableRow.findViewById(R.id.max_marks_txt)).setText(subject.markMax);
+        ((TextView) tableRow.findViewById(R.id.positive_marks_txt)).setText(subject.scorePositive);
+        ((TextView) tableRow.findViewById(R.id.negative_marks_txt)).setText(subject.scoreNegative);
+        ((TextView) tableRow.findViewById(R.id.total_marks_txt)).setText(subject.scoreTotal);
+        ((TextView) tableRow.findViewById(R.id.recommended_time_txt)).setText(subject.timeRecommended);
+        ((TextView) tableRow.findViewById(R.id.actual_time_txt)).setText(subject.timeTaken);
         return tableRow;
     }
 

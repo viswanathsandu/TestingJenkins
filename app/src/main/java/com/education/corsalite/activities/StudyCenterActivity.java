@@ -3,8 +3,6 @@ package com.education.corsalite.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -26,13 +24,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.education.corsalite.R;
 import com.education.corsalite.adapters.GridRecyclerAdapter;
-import com.education.corsalite.adapters.SubjectAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.ApiCacheHolder;
@@ -98,7 +93,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
         linearLayout = (LinearLayout) myView.findViewById(R.id.subjects_name_id);
         frameLayout.addView(myView);
         spinner_subjects_list = (AppCompatSpinner) myView.findViewById(R.id.spinner_subjects_list);
-        subject_icon=(ImageButton)myView.findViewById(R.id.subject_icon);
+        subject_icon = (ImageButton) myView.findViewById(R.id.subject_icon);
         subjects = new ArrayList<String>();
         subjectViews = new ArrayList<>();
 

@@ -68,7 +68,7 @@ public class TestSeriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 ((TestHeaderViewHolder) holder).bindData(mListener, mSubject);
                 break;
             case ITEM_TYPE:
-                if(position < (getHeaderCount() + getChapterCount())) {
+                if (position < (getHeaderCount() + getChapterCount())) {
                     ((TestViewHolder) holder).bindData(mListener, mSubject.SubjectChapters.get(position - getHeaderCount()));
                 } else {
                     ((TestViewHolder) holder).bindData(mListener, mMockTexts.get(position - getChapterCount() - getHeaderCount()));
@@ -116,15 +116,15 @@ public class TestSeriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         public void bindData(final iTestSeriesClickListener listener, final TestSubject subject) {
             if (subject != null) {
-                percentageTxt.setText(subject.TestCountTaken+"");
+                percentageTxt.setText(subject.TestCountTaken + "");
                 marksTxt.setText(subject.EarnedMarks + "/" + subject.TotalTestedMarks);
                 double timeTakenInSecs = subject.TimeTaken;
-                if(timeTakenInSecs > 0) {
+                if (timeTakenInSecs > 0) {
                     double speed = subject.EarnedMarks / (timeTakenInSecs / 60);
                     DecimalFormat df = new DecimalFormat("####0.00");
                     speedTxt.setText(df.format(speed) + " marks/min");
                 }
-                if(subject.TotalTestedMarks > 0) {
+                if (subject.TotalTestedMarks > 0) {
                     double accuracy = subject.EarnedMarks / subject.TotalTestedMarks;
                     double accuracyPercentage = accuracy * 100;
                     DecimalFormat df = new DecimalFormat("####0.00");
@@ -174,7 +174,7 @@ public class TestSeriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     }
                 }
                 try {
-                    if(!SystemUtils.isNetworkConnected(mContext)) {
+                    if (!SystemUtils.isNetworkConnected(mContext)) {
                         takeTestBTn.setEnabled(false);
                         containerLayout.setBackgroundResource(R.color.gray);
                     } else {
@@ -201,8 +201,8 @@ public class TestSeriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     marksTxt.setText(intFormat.format(Double.parseDouble(mockTest.earnedScore)) + "/"
                             + intFormat.format(Double.parseDouble(mockTest.totalTestedMarks)));
                     double timeTakenInSecs = Double.parseDouble(mockTest.timeTaken);
-                    if(timeTakenInSecs > 0) {
-                        double speed = Double.parseDouble(mockTest.earnedScore) / (timeTakenInSecs/60);
+                    if (timeTakenInSecs > 0) {
+                        double speed = Double.parseDouble(mockTest.earnedScore) / (timeTakenInSecs / 60);
                         speedTxt.setText(df.format(speed));
                     }
                     double accuracy = 0;
@@ -236,7 +236,7 @@ public class TestSeriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         }
                     }
                 }
-                if(!SystemUtils.isNetworkConnected(mContext)) {
+                if (!SystemUtils.isNetworkConnected(mContext)) {
                     takeTestBTn.setEnabled(false);
                     containerLayout.setBackgroundResource(R.color.gray);
                 } else {
@@ -251,7 +251,7 @@ public class TestSeriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                                     listener.onTakeTest(chapter);
                                 } else if (takeTestBTn.getText().toString().equalsIgnoreCase("Mock Test")) {
                                     listener.onMockTest(chapter);
-                                } else if(takeTestBTn.getText().toString().equalsIgnoreCase("Recommended Reading")) {
+                                } else if (takeTestBTn.getText().toString().equalsIgnoreCase("Recommended Reading")) {
                                     listener.onRecommendedReading(chapter);
                                 }
                             }
@@ -265,11 +265,11 @@ public class TestSeriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     maxQuestionsTxt.setText(chapter.NumberOfQuestions);
                     DecimalFormat intFormat = new DecimalFormat("####0");
                     DecimalFormat df = new DecimalFormat("####0.00");
-                    if(chapter.EarnedMarks != null) {
+                    if (chapter.EarnedMarks != null) {
                         marksTxt.setText(intFormat.format(chapter.EarnedMarks) + "/" + intFormat.format(chapter.TotalTestedMarks));
                         double timeTakenInSecs = chapter.TimeTaken;
-                        if(timeTakenInSecs > 0) {
-                            double speed = chapter.EarnedMarks / (timeTakenInSecs/60);
+                        if (timeTakenInSecs > 0) {
+                            double speed = chapter.EarnedMarks / (timeTakenInSecs / 60);
                             speedTxt.setText(df.format(speed));
                         }
                     }

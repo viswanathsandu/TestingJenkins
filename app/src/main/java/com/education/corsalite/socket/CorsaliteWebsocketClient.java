@@ -13,7 +13,7 @@ import java.net.URI;
 
 public abstract class CorsaliteWebsocketClient extends WebSocketClient {
 
-    public CorsaliteWebsocketClient( URI serverURI ) {
+    public CorsaliteWebsocketClient(URI serverURI) {
         super(serverURI, new Draft_10());
     }
 

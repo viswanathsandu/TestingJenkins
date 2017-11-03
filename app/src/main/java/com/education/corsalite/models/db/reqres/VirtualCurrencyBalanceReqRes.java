@@ -6,5 +6,5 @@ import com.education.corsalite.models.responsemodels.VirtualCurrencyBalanceRespo
 /**
  * Created by vissu on 11/27/15.
  */
-public class VirtualCurrencyBalanceReqRes extends ReqRes<VirtualCurrencyBalanceRequest, VirtualCurrencyBalanceResponse>{
+public class VirtualCurrencyBalanceReqRes extends ReqRes<VirtualCurrencyBalanceRequest, VirtualCurrencyBalanceResponse> {
 }

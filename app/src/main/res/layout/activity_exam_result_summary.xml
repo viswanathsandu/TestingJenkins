@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical"
-    tools:context="com.education.corsalite.activities.ExamResultSummaryActivity">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/white"
+              android:orientation="vertical"
+              tools:context="com.education.corsalite.activities.ExamResultSummaryActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -40,7 +40,7 @@
                         android:layout_height="wrap_content"
                         android:padding="15dp"
                         android:text="Exam"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"/>
 
                     <TextView
                         android:id="@+id/tv_examname"
@@ -50,7 +50,7 @@
                         android:padding="15dp"
                         android:text="-"
                         android:textColor="@color/gray_dark_border"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"/>
 
                 </LinearLayout>
 
@@ -66,7 +66,7 @@
                         android:layout_height="wrap_content"
                         android:padding="15dp"
                         android:text="Type"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"/>
 
                     <TextView
                         android:id="@+id/tv_type"
@@ -76,7 +76,7 @@
                         android:padding="15dp"
                         android:text="-"
                         android:textColor="@color/gray_dark_border"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"/>
                 </LinearLayout>
 
             </LinearLayout>
@@ -99,7 +99,7 @@
                         android:layout_height="wrap_content"
                         android:padding="15dp"
                         android:text="Time Taken"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"/>
 
                     <TextView
                         android:id="@+id/tv_time_taken"
@@ -109,7 +109,7 @@
                         android:padding="15dp"
                         android:text="-"
                         android:textColor="@color/gray_dark_border"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"/>
 
                 </LinearLayout>
 
@@ -125,7 +125,7 @@
                         android:layout_height="wrap_content"
                         android:padding="15dp"
                         android:text="Date"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"/>
 
                     <TextView
                         android:id="@+id/tv_date"
@@ -135,7 +135,7 @@
                         android:padding="15dp"
                         android:text="-"
                         android:textColor="@color/gray_dark_border"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"/>
                 </LinearLayout>
 
             </LinearLayout>
@@ -161,7 +161,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="1dp"
-                        android:layout_span="1" />
+                        android:layout_span="1"/>
 
 
                     <TextView
@@ -169,21 +169,21 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_span="3"
-                        android:text="Questions" />
+                        android:text="Questions"/>
 
                     <TextView
                         style="@style/exam_result_table_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_span="4"
-                        android:text="Marks" />
+                        android:text="Marks"/>
 
                     <TextView
                         style="@style/exam_result_table_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_span="2"
-                        android:text="Time" />
+                        android:text="Time"/>
                 </TableRow>
 
                 <TableRow
@@ -196,62 +196,62 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="1dp"
-                        android:text="Subject" />
+                        android:text="Subject"/>
 
                     <TextView
                         style="@style/exam_result_table_header"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Total" />
+                        android:text="Total"/>
 
                     <TextView
                         style="@style/exam_result_table_header"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Correct" />
+                        android:text="Correct"/>
 
                     <TextView
                         style="@style/exam_result_table_header"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Wrong" />
+                        android:text="Wrong"/>
 
                     <TextView
                         style="@style/exam_result_table_header"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Max Marks" />
+                        android:text="Max Marks"/>
 
                     <TextView
                         style="@style/exam_result_table_header"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="+ve" />
+                        android:text="+ve"/>
 
                     <TextView
                         style="@style/exam_result_table_header"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="-ve" />
+                        android:text="-ve"/>
 
 
                     <TextView
                         style="@style/exam_result_table_header"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Total" />
+                        android:text="Total"/>
 
                     <TextView
                         style="@style/exam_result_table_header"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Recommended Reading" />
+                        android:text="Recommended Reading"/>
 
                     <TextView
                         style="@style/exam_result_table_header"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Actual" />
+                        android:text="Actual"/>
                 </TableRow>
 
             </TableLayout>
@@ -260,7 +260,7 @@
         <FrameLayout
             android:id="@+id/graph_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"/>
 
     </LinearLayout>
 </LinearLayout>

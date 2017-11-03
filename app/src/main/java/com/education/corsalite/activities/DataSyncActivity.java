@@ -30,7 +30,8 @@ import retrofit.client.Response;
  */
 public class DataSyncActivity extends AbstractBaseActivity {
 
-    @Bind(R.id.progress_count_txt) TextView progressTxt;
+    @Bind(R.id.progress_count_txt)
+    TextView progressTxt;
     private SyncModel currentEvent;
     private long totalEvents = 0;
     private long completedEvents = 0;
@@ -45,13 +46,13 @@ public class DataSyncActivity extends AbstractBaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(!SystemUtils.isNetworkConnected(this)) {
+        if (!SystemUtils.isNetworkConnected(this)) {
             showToast("Network disconnected. Switching to offline mode.");
             finish();
         } else {
             dbManager = SugarDbManager.get(getApplicationContext());
             totalEvents = dbManager.getcount(SyncModel.class);
-            if(totalEvents > 0) {
+            if (totalEvents > 0) {
                 syncEvents();
             } else {
                 finish();
@@ -69,7 +70,7 @@ public class DataSyncActivity extends AbstractBaseActivity {
     private void updateProgress(long total, long completed) {
         long percentage = completed * 100 / total;
         progressTxt.setText(percentage + "%");
-        if(total == completed) {
+        if (total == completed) {
             showToast("All offline events have been synced successfully");
             finish();
         }
@@ -91,14 +92,14 @@ public class DataSyncActivity extends AbstractBaseActivity {
     }
 
     private void success() {
-        if(currentEvent != null) {
+        if (currentEvent != null) {
             dbManager.delete(currentEvent);
             syncEvents();
         }
     }
 
     private void failure() {
-        if(currentEvent != null) {
+        if (currentEvent != null) {
             dbManager.delete(currentEvent);
             currentEvent.setId(null);
             dbManager.addSyncModel(currentEvent);
@@ -109,7 +110,7 @@ public class DataSyncActivity extends AbstractBaseActivity {
 
     private void executeApi(SyncModel model) {
         try {
-            if(model == null) {
+            if (model == null) {
                 return;
             }
             if (model.getTestAnswerPaper() != null) {
@@ -129,7 +130,7 @@ public class DataSyncActivity extends AbstractBaseActivity {
                             }
                         }
                 );
-            } else if(model.getUserEventsModel() != null) {
+            } else if (model.getUserEventsModel() != null) {
                 L.info("DataSyncService : Executing UserEvents");
                 ApiManager.getInstance(getApplicationContext()).postUserEvents(Gson.get().toJson(model.getUserEventsModel()),
                         new ApiCallback<UserEventsResponse>(this) {
@@ -145,7 +146,7 @@ public class DataSyncActivity extends AbstractBaseActivity {
                                 DataSyncActivity.this.success();
                             }
                         });
-            } else if(model.getContentReadingEvent() != null) {
+            } else if (model.getContentReadingEvent() != null) {
                 L.info("DataSyncService : Executing ContentUsage");
                 ApiManager.getInstance(getApplicationContext()).postContentUsage(Gson.get().toJson(model.getContentReadingEvent()),
                         new ApiCallback<BaseResponseModel>(this) {

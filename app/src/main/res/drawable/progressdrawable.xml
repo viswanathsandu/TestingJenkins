@@ -4,19 +4,19 @@
         <shape>
             <stroke
                 android:width="2dp"
-                android:color="@color/white" />
+                android:color="@color/white"/>
             <padding
                 android:bottom="2dp"
                 android:left="2dp"
                 android:right="2dp"
-                android:top="2dp" />
-            <corners android:radius="2dp" />
+                android:top="2dp"/>
+            <corners android:radius="2dp"/>
             <gradient
                 android:startColor="@color/transparent"
                 android:centerColor="@color/transparent"
                 android:centerY="0.75"
                 android:endColor="@color/transparent"
-                android:angle="0" />
+                android:angle="0"/>
         </shape>
     </item>
     <item android:id="@android:id/progress">
@@ -26,11 +26,11 @@
                     android:bottom="2dp"
                     android:left="2dp"
                     android:right="2dp"
-                    android:top="2dp" />
-                <corners android:radius="4dp" />
+                    android:top="2dp"/>
+                <corners android:radius="4dp"/>
                 <solid
                     android:shape="oval"
-                    android:color="@color/white" />
+                    android:color="@color/white"/>
             </shape>
         </clip>
     </item>

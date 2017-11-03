@@ -34,13 +34,12 @@ public class FileUtils {
     }
 
     public static FileUtils get(Context context) {
-        if(instance == null) {
+        if (instance == null) {
             instance = new FileUtils();
         }
         instance.context = context;
         return instance;
     }
-
 
 
     private FileUtils() {
@@ -78,11 +77,11 @@ public class FileUtils {
         String fileName = "v." + Constants.VIDEO_FILE;
         String folderPath = getParentFolder() + File.separator + Constants.VIDEO_FOLDER + File.separator + videoId;
         File folder = new File(folderPath);
-        if(!folder.isDirectory() && !folder.exists()) {
+        if (!folder.isDirectory() && !folder.exists()) {
             folder.mkdirs();
         }
         File file = new File(folder, fileName);
-        if(!file.exists()) {
+        if (!file.exists()) {
             try {
                 writer = new BufferedWriter(new FileWriter(file));
                 writer.write("");
@@ -94,11 +93,11 @@ public class FileUtils {
         return file.getAbsolutePath();
     }
 
-    public String  getContentFileName(String contentId) {
+    public String getContentFileName(String contentId) {
         return contentId + "." + Constants.HTML_FILE;
     }
 
-    public String  getContentFilePath() {
+    public String getContentFilePath() {
         String filePath = File.separator + Constants.CONTENT_FOLDER;
         return filePath;
     }
@@ -116,7 +115,7 @@ public class FileUtils {
     public File getLogFilePath(String fileName) {
         String filePath = getAppRootFolder() + File.separator + Constants.LOGS_FOLDER;
         File file = new File(filePath);
-        if(!file.exists()) {
+        if (!file.exists()) {
             file.mkdirs();
         }
         file = new File(filePath, fileName);
@@ -127,25 +126,25 @@ public class FileUtils {
         String filePath = getAppRootFolder() + File.separator + Constants.APK_FOLDER;
         String fileName = Constants.APK_FILE;
         File file = new File(filePath, fileName);
-        if(!file.exists()) {
+        if (!file.exists()) {
             file.mkdirs();
         }
         return file.getAbsolutePath();
     }
 
-    public String  getExerciseFileName() {
+    public String getExerciseFileName() {
         return "e." + Constants.TEST_FILE;
     }
 
-    public String  getTestQuestionPaperFileName() {
+    public String getTestQuestionPaperFileName() {
         return "q." + Constants.TEST_FILE;
     }
 
-    public String  getTestPaperIndexFileName() {
+    public String getTestPaperIndexFileName() {
         return "i." + Constants.TEST_FILE;
     }
 
-    public String  getTestAnswerPaperFileName() {
+    public String getTestAnswerPaperFileName() {
         return "a." + Constants.TEST_FILE;
     }
 
@@ -153,7 +152,7 @@ public class FileUtils {
         File dir = null;
         if (TextUtils.isEmpty(folderStructure)) {
             dir = new File(getParentFolder());
-        } else if(folderStructure.startsWith("/")){
+        } else if (folderStructure.startsWith("/")) {
             dir = new File(getParentFolder() + folderStructure);
         } else {
             dir = new File(getParentFolder() + File.separator + folderStructure);
@@ -232,7 +231,7 @@ public class FileUtils {
     public void deleteFile(String fileName) {
         File root = Environment.getExternalStorageDirectory();
         File fileorDir;
-        if(fileName.endsWith("." + Constants.TEST_FILE)) {
+        if (fileName.endsWith("." + Constants.TEST_FILE)) {
             fileorDir = new File(getParentFolder() + File.separator + Constants.TESTS_FOLDER + File.separator + fileName);
         } else {
             fileorDir = new File(getParentFolder() + File.separator + fileName);
@@ -251,33 +250,33 @@ public class FileUtils {
         File fileorDir = new File(selectedPath);
         if (fileorDir.isDirectory()) {
             deleteChildren(fileorDir);
-            L.info("Deleted path "+fileorDir);
+            L.info("Deleted path " + fileorDir);
         } else if (fileorDir.isFile()) {
             File parentFile = fileorDir.getParentFile();
             fileorDir.delete();
             deleteParent(parentFile);
-            L.info("Deleted path "+fileorDir);
+            L.info("Deleted path " + fileorDir);
         }
     }
 
     public void delete(String selectedPath) {
         File fileorDir;
-        if(TextUtils.isEmpty(selectedPath)) {
+        if (TextUtils.isEmpty(selectedPath)) {
             return;
         }
-        if(selectedPath.startsWith("/")) {
+        if (selectedPath.startsWith("/")) {
             fileorDir = new File(getParentFolder() + selectedPath);
         } else {
             fileorDir = new File(getParentFolder() + File.separator + selectedPath);
         }
         if (fileorDir.isDirectory()) {
             deleteChildren(fileorDir);
-            L.info("Deleted path "+fileorDir);
+            L.info("Deleted path " + fileorDir);
         } else if (fileorDir.isFile()) {
             File parentFile = fileorDir.getParentFile();
             fileorDir.delete();
             deleteParent(parentFile);
-            L.info("Deleted path "+fileorDir);
+            L.info("Deleted path " + fileorDir);
         }
     }
 
@@ -339,7 +338,7 @@ public class FileUtils {
                 os.write(buffer, 0, length);
             }
         } catch (Exception e) {
-          L.error(e.getMessage(), e);
+            L.error(e.getMessage(), e);
         } finally {
             try {
                 is.close();

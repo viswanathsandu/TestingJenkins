@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:id="@+id/grid_layout"
-    android:background="@drawable/redshape"
-    android:layout_marginBottom="16dp"
-    android:layout_marginRight="16dp">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:id="@+id/grid_layout"
+              android:background="@drawable/redshape"
+              android:layout_marginBottom="16dp"
+              android:layout_marginRight="16dp">
 
     <LinearLayout
         android:id="@+id/grid_layout_color"
@@ -29,7 +29,7 @@
             android:paddingRight="16dp"
             android:text="Subject name"
             android:textColor="@color/white"
-            android:textSize="14sp" />
+            android:textSize="14sp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -52,7 +52,7 @@
                 android:paddingLeft="4dp"
                 android:textColor="@color/white"
                 android:textSize="12sp"
-                tools:text="00:00:00" />
+                tools:text="00:00:00"/>
 
             <TextView
                 android:id="@+id/star"
@@ -67,7 +67,7 @@
                 android:paddingLeft="4dp"
                 android:text="28/347"
                 android:textColor="@color/white"
-                android:textSize="12sp" />
+                android:textSize="12sp"/>
 
             <TextView
                 android:id="@+id/level"
@@ -82,7 +82,7 @@
                 android:paddingLeft="4dp"
                 android:textColor="@color/white"
                 android:textSize="12sp"
-                tools:text="level 2" />
+                tools:text="level 2"/>
         </LinearLayout>
 
         <TextView
@@ -101,7 +101,7 @@
             android:paddingRight="16dp"
             android:text="@string/completed_topics"
             android:textColor="@color/white"
-            android:textSize="12sp" />
+            android:textSize="12sp"/>
 
         <ProgressBar
             android:id="@+id/progress_id"
@@ -112,7 +112,7 @@
             android:layout_marginBottom="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:progressDrawable="@drawable/progressdrawable" />
+            android:progressDrawable="@drawable/progressdrawable"/>
 
     </LinearLayout>
 
@@ -138,7 +138,7 @@
             android:paddingRight="16dp"
             android:text="Subject name"
             android:textColor="@color/dark_gray"
-            android:textSize="14sp" />
+            android:textSize="14sp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -161,7 +161,7 @@
                 android:paddingLeft="4dp"
                 android:textColor="@color/dark_gray"
                 android:textSize="12sp"
-                tools:text="00:00:00" />
+                tools:text="00:00:00"/>
 
             <TextView
                 android:id="@+id/star_gray"
@@ -176,7 +176,7 @@
                 android:paddingLeft="4dp"
                 android:text="28/347"
                 android:textColor="@color/dark_gray"
-                android:textSize="12sp" />
+                android:textSize="12sp"/>
 
             <TextView
                 android:id="@+id/level_gray"
@@ -191,7 +191,7 @@
                 android:paddingLeft="4dp"
                 android:textColor="@color/dark_gray"
                 android:textSize="12sp"
-                tools:text="level 2" />
+                tools:text="level 2"/>
         </LinearLayout>
 
         <TextView
@@ -210,7 +210,7 @@
             android:paddingRight="16dp"
             android:text="@string/completed_topics"
             android:textColor="@color/dark_gray"
-            android:textSize="12sp" />
+            android:textSize="12sp"/>
 
         <ProgressBar
             android:id="@+id/progress_id_gray"
@@ -221,7 +221,7 @@
             android:layout_marginBottom="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:progressDrawable="@drawable/progressdrawablegray" />
+            android:progressDrawable="@drawable/progressdrawablegray"/>
 
     </LinearLayout>
 </LinearLayout>

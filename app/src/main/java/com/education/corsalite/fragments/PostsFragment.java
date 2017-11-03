@@ -43,10 +43,14 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
     public static final String MEAL_TYPE_ARG = "MEAL_TYPE_ARG";
 
     private int mPage;
-    @Bind(R.id.rcv_posts) RecyclerView mRecyclerView;
-    @Bind(R.id.empty_layout) View emptyLayout;
-    @Bind(R.id.new_post_btn) Button newPostBtn;
-    @Bind(R.id.progress_layout) View progress;
+    @Bind(R.id.rcv_posts)
+    RecyclerView mRecyclerView;
+    @Bind(R.id.empty_layout)
+    View emptyLayout;
+    @Bind(R.id.new_post_btn)
+    Button newPostBtn;
+    @Bind(R.id.progress_layout)
+    View progress;
 
     private LinearLayoutManager mLayoutManager;
     private PostAdapter mPostAdapter;
@@ -107,7 +111,7 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
         @Override
         public void success(ArrayList<ForumPost> forumPosts, Response response) {
             super.success(forumPosts, response);
-            if(getActivity() != null) {
+            if (getActivity() != null) {
                 closeProgress();
                 if (forumPosts != null && !forumPosts.isEmpty()) {
                     setForumPosts(forumPosts);
@@ -121,7 +125,7 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
         @Override
         public void failure(CorsaliteError error) {
             super.failure(error);
-            if(getActivity() != null) {
+            if (getActivity() != null) {
                 closeProgress();
                 emptyLayout.setVisibility(View.VISIBLE);
             }
@@ -129,7 +133,7 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
     };
 
     private void loadForumLibrary() {
-        if(getActivity() != null) {
+        if (getActivity() != null) {
             showProgress();
             ApiManager.getInstance(getActivity()).getMyComments(AbstractBaseActivity.getSelectedCourseId(),
                     appPref.getUserId(), "forumLibrary",
@@ -138,7 +142,7 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
     }
 
     private void loadForumPosts() {
-        if(getActivity() != null) {
+        if (getActivity() != null) {
             showProgress();
             ApiManager.getInstance(getActivity()).getAllPosts(AbstractBaseActivity.getSelectedCourseId(),
                     appPref.getUserId(), "AllPosts", "", "",
@@ -147,7 +151,7 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
     }
 
     private void loadForumMyPosts() {
-        if(getActivity() != null) {
+        if (getActivity() != null) {
             showProgress();
             ApiManager.getInstance(getActivity()).getMyPosts(AbstractBaseActivity.getSelectedCourseId(),
                     appPref.getUserId(),
@@ -161,7 +165,7 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
 
     @Override
     public void onTitleClicked(int position) {
-        if(getActivity() != null) {
+        if (getActivity() != null) {
             ForumPost item = mPostAdapter.getItem(position);
             Bundle bundle = new Bundle();
             bundle.putString("user_id", appPref.getUserId());
@@ -174,7 +178,7 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
 
     @Override
     public void onLikeClicked(final int position) {
-        if(getActivity() != null) {
+        if (getActivity() != null) {
             final ForumPost forumPost = mPostAdapter.getItem(position);
             ApiManager.getInstance(getActivity()).addForumLike(new ForumLikeRequest(appPref.getUserId(), forumPost.idUserPost),
                     new ApiCallback<CommonResponseModel>(getActivity()) {
@@ -191,7 +195,7 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
 
     @Override
     public void onCommentClicked(int position) {
-        if(getActivity() != null) {
+        if (getActivity() != null) {
             ForumPost item = mPostAdapter.getItem(position);
             if (TextUtils.isEmpty(item.postReplies) || item.postReplies.equals("0")) {
                 Bundle bundle = new Bundle();
@@ -220,7 +224,7 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
 
     @Override
     public void onBookmarkClicked(final int position) {
-        if(getActivity() != null) {
+        if (getActivity() != null) {
             final ForumPost forumPost = mPostAdapter.getItem(position);
             final Bookmark bookmark = new Bookmark();
             if (forumPost.bookmark == null || (forumPost.bookmark != null && forumPost.bookmark.equalsIgnoreCase("N"))) {
@@ -262,7 +266,7 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
 
     @Override
     public void onEditClicked(int position) {
-        if(getActivity() != null) {
+        if (getActivity() != null) {
             ForumPost forumPost = mPostAdapter.getItem(position);
             Bundle bundle = new Bundle();
             bundle.putString("type", "Forum");
@@ -287,7 +291,7 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
 
     @Override
     public void onDeleteClicked(final int position) {
-        if(getActivity() != null) {
+        if (getActivity() != null) {
             final ForumPost forumPost = mPostAdapter.getItem(position);
             AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
             alert.setTitle("Confirm");
@@ -309,7 +313,7 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
     }
 
     private void deletePost(ForumPost forumPost, final int position) {
-        if(getActivity() != null) {
+        if (getActivity() != null) {
             showProgress();
             ApiManager.getInstance(getActivity()).deleteForum(new ForumLikeRequest(forumPost.idUser, forumPost.idUserPost),
                     new ApiCallback<CommonResponseModel>(getActivity()) {
@@ -349,14 +353,14 @@ public class PostsFragment extends BaseFragment implements SocialEventsListener,
 
     @Override
     public void showProgress() {
-        if(getActivity() != null) {
+        if (getActivity() != null) {
             progress.setVisibility(View.VISIBLE);
         }
     }
 
     @Override
     public void closeProgress() {
-        if(getActivity() != null) {
+        if (getActivity() != null) {
             progress.setVisibility(View.GONE);
         }
     }

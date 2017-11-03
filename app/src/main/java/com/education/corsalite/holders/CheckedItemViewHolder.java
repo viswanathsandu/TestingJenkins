@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.education.corsalite.R;
 import com.education.corsalite.models.ContentModel;
-import com.education.corsalite.models.responsemodels.Content;
 import com.unnamed.b.atv.model.TreeNode;
 
 /**
@@ -48,18 +47,18 @@ public class CheckedItemViewHolder extends TreeNode.BaseNodeViewHolder<String> {
                 refreshNodes(node, isChecked);
             }
         });
-        if(content != null && !content.isDownloadable()) {
+        if (content != null && !content.isDownloadable()) {
             nodeSelector.setEnabled(content.isDownloadable());
             nodeLayout.setEnabled(content.isDownloadable());
             tvValue.setEnabled(content.isDownloadable());
         }
         nodeSelector.setChecked(node.isSelected());
-        if(!isFile){
+        if (!isFile) {
             checkboxImage.setImageDrawable(view.getResources().getDrawable(R.drawable.ico_offline_chapter));
-        }else{
-            if(value.endsWith(".mpg")){
+        } else {
+            if (value.endsWith(".mpg")) {
                 checkboxImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ico_offline_video));
-            }else if (value.endsWith(".html")){
+            } else if (value.endsWith(".html")) {
                 checkboxImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ico_offline_topic));
             }
         }
@@ -77,9 +76,9 @@ public class CheckedItemViewHolder extends TreeNode.BaseNodeViewHolder<String> {
             getTreeView().selectNode(n, isChecked);
         }
         // parent level
-        if(node.getParent() != null) {
+        if (node.getParent() != null) {
             for (TreeNode n : node.getParent().getChildren()) {
-                if(n.isSelected()) {
+                if (n.isSelected()) {
                     node.getParent().setSelected(true);
                     return;
                 }
@@ -92,7 +91,7 @@ public class CheckedItemViewHolder extends TreeNode.BaseNodeViewHolder<String> {
     public void toggleSelectionMode(boolean editModeEnabled) {
         nodeSelector.setVisibility(editModeEnabled ? View.VISIBLE : View.GONE);
         nodeSelector.setChecked(mNode.isSelected());
-        if(!nodeSelector.isEnabled()) {
+        if (!nodeSelector.isEnabled()) {
             nodeSelector.setChecked(false);
         }
     }

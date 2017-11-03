@@ -20,14 +20,13 @@ import com.education.corsalite.activities.NotesActivity;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.models.requestmodels.UpdateNoteRequest;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.DefaultNoteResponse;
 import com.education.corsalite.models.responsemodels.Note;
 import com.education.corsalite.services.ApiClientService;
-import com.education.corsalite.gson.Gson;
 import com.education.corsalite.utils.L;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -195,7 +194,7 @@ public class NotesAdapter extends AbstractRecycleViewAdapter {
             public void success(DefaultNoteResponse defaultNoteResponse, Response response) {
                 super.success(defaultNoteResponse, response);
                 Toast.makeText(context, "Deleted Note successfully", Toast.LENGTH_SHORT).show();
-                if(context instanceof NotesActivity) {
+                if (context instanceof NotesActivity) {
                     ((NotesActivity) context).refreshNotes();
                 }
             }

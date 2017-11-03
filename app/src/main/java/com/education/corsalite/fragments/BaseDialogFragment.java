@@ -21,6 +21,7 @@ public class BaseDialogFragment extends DialogFragment {
 
     protected Dialog dialog;
     protected AppPref appPref;
+
     @Override
     public void onStart() {
         super.onStart();
@@ -39,18 +40,18 @@ public class BaseDialogFragment extends DialogFragment {
     }
 
     public void showToast(String message) {
-        if(getActivity() != null && !TextUtils.isEmpty(message)) {
+        if (getActivity() != null && !TextUtils.isEmpty(message)) {
             Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
         }
     }
 
     public void showLongToast(String message) {
-        if(getActivity() != null && !TextUtils.isEmpty(message)) {
+        if (getActivity() != null && !TextUtils.isEmpty(message)) {
             Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
         }
     }
 
-    public void showProgress(){
+    public void showProgress() {
         ProgressBar pbar = new ProgressBar(getActivity());
         pbar.setBackgroundColor(getResources().getColor(android.R.color.transparent));
         dialog = new Dialog(getActivity());
@@ -61,8 +62,8 @@ public class BaseDialogFragment extends DialogFragment {
         dialog.show();
     }
 
-    public void closeProgress(){
-        if(dialog != null && dialog.isShowing()){
+    public void closeProgress() {
+        if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
         }
     }

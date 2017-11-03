@@ -17,7 +17,7 @@ public class TimeChangedReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
-        if(action.equalsIgnoreCase(Intent.ACTION_TIME_CHANGED)
+        if (action.equalsIgnoreCase(Intent.ACTION_TIME_CHANGED)
                 || action.equalsIgnoreCase(Intent.ACTION_TIMEZONE_CHANGED)) {
             EventBus.getDefault().post(new TimeChangedEvent());
         }

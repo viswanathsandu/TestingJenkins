@@ -33,13 +33,13 @@ public class L {
     }
 
     public static void info(String tag, String message) {
-        if(isInfoEnabled()) {
+        if (isInfoEnabled()) {
             Log.i(tag, message);
         }
     }
 
     public static void info(String tag, String message, Throwable throwable) {
-        if(isInfoEnabled()) {
+        if (isInfoEnabled()) {
             Log.i(tag, message, throwable);
         }
     }
@@ -53,7 +53,7 @@ public class L {
     }
 
     public static void debug(String tag, String message) {
-        if(isDebugEnabled()) {
+        if (isDebugEnabled()) {
             Log.d(tag, message);
         }
     }
@@ -65,25 +65,25 @@ public class L {
     }
 
     public static void error(String message) {
-        if(message != null) {
+        if (message != null) {
             error(TAG, message);
         }
     }
 
     public static void error(String message, Throwable throwable) {
-        if(message != null) {
+        if (message != null) {
             error(TAG, message, throwable);
         }
     }
 
     public static void error(String tag, String message) {
-        if(isErrorEnabled()) {
+        if (isErrorEnabled()) {
             Log.e(tag, message);
         }
     }
 
     public static void error(String tag, String message, Throwable throwable) {
-        if(isErrorEnabled()) {
+        if (isErrorEnabled()) {
             Log.e(tag, message, throwable);
         }
     }

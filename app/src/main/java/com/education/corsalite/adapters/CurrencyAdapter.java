@@ -32,32 +32,38 @@ public class CurrencyAdapter extends AbstractRecycleViewAdapter {
 
     @Override
     public CurrencyDataHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view  =inflater.inflate(R.layout.row_virtual_currency_list, parent, false) ;
-        if((viewType+1)% 2 == 0)
-        {
+        View view = inflater.inflate(R.layout.row_virtual_currency_list, parent, false);
+        if ((viewType + 1) % 2 == 0) {
             view.setBackgroundColor(inflater.getContext().getResources().getColor(R.color.tab_recycler_alternate_row));
 
-        }else {
+        } else {
             view.setBackgroundColor(inflater.getContext().getResources().getColor(R.color.white));
         }
         return new CurrencyDataHolder(view);
     }
+
     @Override
     public int getItemViewType(int position) {
         return position;
     }
+
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((CurrencyDataHolder) holder).bindData(position, (VirtualCurrencyTransaction)getItem(position));
+        ((CurrencyDataHolder) holder).bindData(position, (VirtualCurrencyTransaction) getItem(position));
     }
 
     public class CurrencyDataHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.tv_date) TextView dateTxt;
-        @Bind(R.id.tv_event) TextView eventTxt;
-        @Bind(R.id.tv_earned) TextView earnedTxt;
-        @Bind(R.id.tv_balance) TextView balanceTxt;
-        @Bind(R.id.tv_time) TextView timeText;
+        @Bind(R.id.tv_date)
+        TextView dateTxt;
+        @Bind(R.id.tv_event)
+        TextView eventTxt;
+        @Bind(R.id.tv_earned)
+        TextView earnedTxt;
+        @Bind(R.id.tv_balance)
+        TextView balanceTxt;
+        @Bind(R.id.tv_time)
+        TextView timeText;
 
         View parent;
 
@@ -69,18 +75,21 @@ public class CurrencyAdapter extends AbstractRecycleViewAdapter {
 
         public void bindData(final int position, final VirtualCurrencyTransaction virtualCurrencyTransaction) {
             // different color for alternate rows
-            if((position+1)% 2 == 0) {
+            if ((position + 1) % 2 == 0) {
                 parent.setBackgroundColor(inflater.getContext().getResources().getColor(R.color.tab_recycler_alternate_row));
             }
-            if(virtualCurrencyTransaction.eventDate != null ) {
+            if (virtualCurrencyTransaction.eventDate != null) {
                 String[] data = virtualCurrencyTransaction.eventDate.split(" ");
-                if(data != null){
-                    if(data[0] != null && data.length > 1)
+                if (data != null) {
+                    if (data[0] != null && data.length > 1) {
                         dateTxt.setText(data[0]);
-                    if(data[1] != null)
+                    }
+                    if (data[1] != null) {
                         timeText.setText(data[1]);
-                }else
+                    }
+                } else {
                     dateTxt.setText(virtualCurrencyTransaction.eventDate);
+                }
             }
             eventTxt.setText(virtualCurrencyTransaction.eventName);
             earnedTxt.setText(virtualCurrencyTransaction.earnedVirtualCurrency);

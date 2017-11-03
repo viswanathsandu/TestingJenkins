@@ -83,6 +83,7 @@ public class ApiClientService {
         client.setWriteTimeout(1, TimeUnit.MINUTES);
         client.interceptors().add(new Interceptor() {
             int tryCount = 0;
+
             @Override
             public Response intercept(Chain chain) throws IOException {
                 Request request = chain.request()
@@ -92,17 +93,17 @@ public class ApiClientService {
 
                 // try the request
                 Response response = chain.proceed(request);
-                if(response != null ) {
+                if (response != null) {
                     if (response.isSuccessful()) {
                         String url = request.httpUrl().toString();
                         /****************************************************************************/
                         // Remove this after fixing exam result summary issue on server
                         String length = response.header("Transfer-Encoding");
-                        if(length == null) {
+                        if (length == null) {
                             response = response.newBuilder().addHeader("Transfer-Encoding", "chunked").build();
                         }
                         /****************************************************************************/
-                        L.info("Intercept : URL - "+url);
+                        L.info("Intercept : URL - " + url);
                         if (url.contains("webservices/AuthToken")
                                 && url.contains("LoginID") && url.contains("PasswordHash")) {
                             // save login request
@@ -110,19 +111,19 @@ public class ApiClientService {
                             LoginUserCache.getInstance().loginRequest = request;
                         }
                     } else if (!response.isSuccessful()) {
-                        L.info("Intercept : try again - "+tryCount);
+                        L.info("Intercept : try again - " + tryCount);
                         while (!response.isSuccessful() && tryCount < 3) {
                             L.info("Intercept : Request is not successful - " + tryCount);
                             tryCount++;
                             // retry the request with latest cookie
                             String setcookie = makeAuthCallAndGetcookie(chain);
-                            if(setcookie != null && !setcookie.isEmpty()) {
+                            if (setcookie != null && !setcookie.isEmpty()) {
                                 request = request.newBuilder().removeHeader("cookie").build();
                                 request = request.newBuilder().addHeader("cookie", setcookie).build();
                                 L.info("Intercept : Retrying api call");
                                 L.info("Intercept : Request : " + Gson.get().toJson(request));
                                 response = chain.proceed(request);
-                                L.info("Intercept : Response : " + response.code()+ " -- " + Gson.get().toJson(response));
+                                L.info("Intercept : Response : " + response.code() + " -- " + Gson.get().toJson(response));
                             } else {
                                 break;
                             }
@@ -137,7 +138,7 @@ public class ApiClientService {
             public String getSessionCookie(com.squareup.okhttp.Response response) {
                 String cookie = CookieUtils.getCookieString(response);
                 if (response.code() != 401 && cookie != null) {
-                    L.info("Intercept : save session cookie : "+cookie);
+                    L.info("Intercept : save session cookie : " + cookie);
                     ApiClientService.setSetCookie(cookie);
                     return cookie;
                 }
@@ -146,11 +147,11 @@ public class ApiClientService {
 
             private String makeAuthCallAndGetcookie(Chain chain) throws IOException {
                 Request loginRequest = LoginUserCache.getInstance().loginRequest;
-                if(loginRequest != null) {
+                if (loginRequest != null) {
                     L.info("Intercept : Making auth call");
                     Response loginResponse = chain.proceed(loginRequest);
-                    L.info("Intercept : Auth call response : " + loginResponse.code()+ " -- " +Gson.get().toJson(loginResponse));
-                    if(loginResponse != null && loginResponse.isSuccessful()) {
+                    L.info("Intercept : Auth call response : " + loginResponse.code() + " -- " + Gson.get().toJson(loginResponse));
+                    if (loginResponse != null && loginResponse.isSuccessful()) {
                         L.info("Intercept : Auth call saving session cookie");
                         AbstractBaseActivity.saveSessionCookie(loginResponse);
                         return getSessionCookie(loginResponse);

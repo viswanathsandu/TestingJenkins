@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
 
-    <include layout="@layout/header" />
+    <include layout="@layout/header"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -24,10 +24,10 @@
                 android:orientation="horizontal">
                 <ImageView
                     style="@style/navigation_image_size"
-                    android:src="@drawable/ico_sidemenu_dashboard" />
+                    android:src="@drawable/ico_sidemenu_dashboard"/>
                 <TextView
                     style="@style/navigation_text_size"
-                    android:text="Home" />
+                    android:text="Home"/>
             </LinearLayout>
 
 
@@ -38,10 +38,10 @@
                 android:orientation="horizontal">
                 <ImageView
                     style="@style/navigation_image_size"
-                    android:src="@drawable/ico_sidemenu_myprofile" />
+                    android:src="@drawable/ico_sidemenu_myprofile"/>
                 <TextView
                     style="@style/navigation_text_size"
-                    android:text="@string/title_activity_user_profile" />
+                    android:text="@string/title_activity_user_profile"/>
             </LinearLayout>
 
 
@@ -52,10 +52,10 @@
                 android:orientation="horizontal">
                 <ImageView
                     style="@style/navigation_image_size"
-                    android:src="@drawable/ico_sidemenu_studycenter" />
+                    android:src="@drawable/ico_sidemenu_studycenter"/>
                 <TextView
                     style="@style/navigation_text_size"
-                    android:text="Study Center" />
+                    android:text="Study Center"/>
             </LinearLayout>
 
 
@@ -66,10 +66,10 @@
                 android:orientation="horizontal">
                 <ImageView
                     style="@style/navigation_image_size"
-                    android:src="@drawable/ico_scheduled_tests" />
+                    android:src="@drawable/ico_scheduled_tests"/>
                 <TextView
                     style="@style/navigation_text_size"
-                    android:text="Test Series" />
+                    android:text="Test Series"/>
             </LinearLayout>
 
 
@@ -80,10 +80,10 @@
                 android:orientation="horizontal">
                 <ImageView
                     style="@style/navigation_image_size"
-                    android:src="@drawable/ico_sidemenu_analytics" />
+                    android:src="@drawable/ico_sidemenu_analytics"/>
                 <TextView
                     style="@style/navigation_text_size"
-                    android:text="Analytics" />
+                    android:text="Analytics"/>
             </LinearLayout>
 
 
@@ -94,10 +94,10 @@
                 android:orientation="horizontal">
                 <ImageView
                     style="@style/navigation_image_size"
-                    android:src="@drawable/ico_sidemenu_offline" />
+                    android:src="@drawable/ico_sidemenu_offline"/>
                 <TextView
                     style="@style/navigation_text_size"
-                    android:text="Offline" />
+                    android:text="Offline"/>
             </LinearLayout>
 
 
@@ -108,10 +108,10 @@
                 android:orientation="horizontal">
                 <ImageView
                     style="@style/navigation_image_size"
-                    android:src="@drawable/ico_sidemenu_studycenter" />
+                    android:src="@drawable/ico_sidemenu_studycenter"/>
                 <TextView
                     style="@style/navigation_text_size"
-                    android:text="Recommended Reading" />
+                    android:text="Recommended Reading"/>
             </LinearLayout>
 
 
@@ -122,10 +122,10 @@
                 android:orientation="horizontal">
                 <ImageView
                     style="@style/navigation_image_size"
-                    android:src="@drawable/ico_sidemenu_analytics" />
+                    android:src="@drawable/ico_sidemenu_analytics"/>
                 <TextView
                     style="@style/navigation_text_size"
-                    android:text="Progress Report" />
+                    android:text="Progress Report"/>
             </LinearLayout>
 
 
@@ -136,10 +136,10 @@
                 android:orientation="horizontal">
                 <ImageView
                     style="@style/navigation_image_size"
-                    android:src="@drawable/ico_sidemenu_calendar" />
+                    android:src="@drawable/ico_sidemenu_calendar"/>
                 <TextView
                     style="@style/navigation_text_size"
-                    android:text="Time Management" />
+                    android:text="Time Management"/>
             </LinearLayout>
 
             <LinearLayout
@@ -149,10 +149,10 @@
                 android:orientation="horizontal">
                 <ImageView
                     style="@style/navigation_image_size"
-                    android:src="@drawable/ico_sidemenu_analytics" />
+                    android:src="@drawable/ico_sidemenu_analytics"/>
                 <TextView
                     style="@style/navigation_text_size"
-                    android:text="Curriculum" />
+                    android:text="Curriculum"/>
             </LinearLayout>
 
             <LinearLayout
@@ -162,10 +162,10 @@
                 android:orientation="horizontal">
                 <ImageView
                     style="@style/navigation_image_size"
-                    android:src="@drawable/ico_scheduled_tests" />
+                    android:src="@drawable/ico_scheduled_tests"/>
                 <TextView
                     style="@style/navigation_text_size"
-                    android:text="@string/menu_scheduled_test" />
+                    android:text="@string/menu_scheduled_test"/>
             </LinearLayout>
 
 
@@ -176,10 +176,10 @@
                 android:orientation="horizontal">
                 <ImageView
                     style="@style/navigation_image_size"
-                    android:src="@drawable/ico_mock_tests" />
+                    android:src="@drawable/ico_mock_tests"/>
                 <TextView
                     style="@style/navigation_text_size"
-                    android:text="@string/menu_mock_test" />
+                    android:text="@string/menu_mock_test"/>
             </LinearLayout>
 
 
@@ -190,10 +190,10 @@
                 android:orientation="horizontal">
                 <ImageView
                     style="@style/navigation_image_size"
-                    android:src="@drawable/ico_challenge" />
+                    android:src="@drawable/ico_challenge"/>
                 <TextView
                     style="@style/navigation_text_size"
-                    android:text="@string/challenge_your_friends" />
+                    android:text="@string/challenge_your_friends"/>
             </LinearLayout>
 
 
@@ -204,10 +204,10 @@
                 android:orientation="horizontal">
                 <ImageView
                     style="@style/navigation_image_size"
-                    android:src="@drawable/ico_exam_history" />
+                    android:src="@drawable/ico_exam_history"/>
                 <TextView
                     style="@style/navigation_text_size"
-                    android:text="@string/menu_exam_history" />
+                    android:text="@string/menu_exam_history"/>
             </LinearLayout>
 
 
@@ -218,10 +218,10 @@
                 android:orientation="horizontal">
                 <ImageView
                     style="@style/navigation_image_size"
-                    android:src="@drawable/ico_forum" />
+                    android:src="@drawable/ico_forum"/>
                 <TextView
                     style="@style/navigation_text_size"
-                    android:text="@string/forum" />
+                    android:text="@string/forum"/>
             </LinearLayout>
 
 
@@ -232,10 +232,10 @@
                 android:orientation="horizontal">
                 <ImageView
                     style="@style/navigation_image_size"
-                    android:src="@drawable/ico_sidemenu_smartclass" />
+                    android:src="@drawable/ico_sidemenu_smartclass"/>
                 <TextView
                     style="@style/navigation_text_size"
-                    android:text="Smart Class" />
+                    android:text="Smart Class"/>
             </LinearLayout>
 
 
@@ -246,10 +246,10 @@
                 android:orientation="horizontal">
                 <ImageView
                     style="@style/navigation_image_size"
-                    android:src="@drawable/ico_sidemenu_settings" />
+                    android:src="@drawable/ico_sidemenu_settings"/>
                 <TextView
                     style="@style/navigation_text_size"
-                    android:text="@string/action_settings" />
+                    android:text="@string/action_settings"/>
             </LinearLayout>
 
 
@@ -260,10 +260,10 @@
                 android:orientation="horizontal">
                 <ImageView
                     style="@style/navigation_image_size"
-                    android:src="@drawable/ico_sidemenu_logout" />
+                    android:src="@drawable/ico_sidemenu_logout"/>
                 <TextView
                     style="@style/navigation_text_size"
-                    android:text="@string/log_out" />
+                    android:text="@string/log_out"/>
             </LinearLayout>
 
 

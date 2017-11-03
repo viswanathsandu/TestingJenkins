@@ -7,7 +7,8 @@ public class SocketConnectionStatusEvent {
 
     public boolean isConnected = true;
 
-    public SocketConnectionStatusEvent() {}
+    public SocketConnectionStatusEvent() {
+    }
 
     public SocketConnectionStatusEvent(boolean isConnected) {
         this.isConnected = isConnected;

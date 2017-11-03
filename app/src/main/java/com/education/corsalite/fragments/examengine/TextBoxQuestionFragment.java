@@ -30,7 +30,7 @@ public abstract class TextBoxQuestionFragment extends BaseQuestionFragment {
     public void loadAnswerLayout() {
         answerLayout.setOrientation(LinearLayout.VERTICAL);
         List<AnswerChoiceModel> answerChoiceModels = question.answerChoice;
-        if(question.answerChoice != null && !question.answerChoice.isEmpty()) {
+        if (question.answerChoice != null && !question.answerChoice.isEmpty()) {
             LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             LinearLayout container = (LinearLayout) inflater.inflate(R.layout.exam_engine_alphanumeric, null);
             answerTxt = (EditText) container.findViewById(R.id.answer_txt);
@@ -44,10 +44,12 @@ public abstract class TextBoxQuestionFragment extends BaseQuestionFragment {
     private TextWatcher getTextWatcher() {
         return new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable s) {

@@ -178,7 +178,7 @@ public class TestChapterSetupFragment extends DialogFragment
                             questionAdapter.clear();
                             questionAdapter.addAll(getListTill(1, getMaxQuestionCount(questionCount)));
                             questionAdapter.notifyDataSetChanged();
-                            questionSelectionSpinner.setSelection(questionAdapter.getCount()-1);
+                            questionSelectionSpinner.setSelection(questionAdapter.getCount() - 1);
                         }
                     }
                 });
@@ -263,7 +263,7 @@ public class TestChapterSetupFragment extends DialogFragment
 
     private List<Integer> getListTill(int min, int max) {
         List<Integer> items = new ArrayList<>();
-        for(int i = min; i <= max; i++) {
+        for (int i = min; i <= max; i++) {
             items.add(i);
         }
         return items;

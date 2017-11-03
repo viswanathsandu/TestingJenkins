@@ -16,7 +16,8 @@ public class CurriculumResponseModel extends BaseResponseModel {
     @SerializedName("learningGapData")
     public List<LearningGapEntity> learningGapData; */
 
-    public CurriculumResponseModel() {}
+    public CurriculumResponseModel() {
+    }
 
 
 }

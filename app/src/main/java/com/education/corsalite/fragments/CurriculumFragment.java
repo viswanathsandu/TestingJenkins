@@ -16,8 +16,8 @@ import com.education.corsalite.adapters.CurriculumAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
-import com.education.corsalite.enums.CurriculumTypeEntity;
 import com.education.corsalite.enums.CurriculumTabType;
+import com.education.corsalite.enums.CurriculumTypeEntity;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.CurriculumEntity;
 import com.education.corsalite.models.responsemodels.CurriculumResponseModel;
@@ -34,9 +34,12 @@ import retrofit.client.Response;
 public class CurriculumFragment extends BaseFragment implements CurriculumAdapter.OnItemClickListener {
     private static final String tabTypeExta = "TAB_TYPE";
 
-    @Bind(R.id.rcv_curriculum) RecyclerView mRecyclerView;
-    @Bind(R.id.empty_layout) View emptyLayout;
-    @Bind(R.id.progress_layout) View progress;
+    @Bind(R.id.rcv_curriculum)
+    RecyclerView mRecyclerView;
+    @Bind(R.id.empty_layout)
+    View emptyLayout;
+    @Bind(R.id.progress_layout)
+    View progress;
 
     private LinearLayoutManager mLayoutManager;
     private CurriculumAdapter mCurriculumAdapter;
@@ -75,7 +78,7 @@ public class CurriculumFragment extends BaseFragment implements CurriculumAdapte
     }
 
     public void refreshData() {
-        if(selectedTab != null) {
+        if (selectedTab != null) {
             loadCurriculumData();
         }
     }
@@ -85,7 +88,8 @@ public class CurriculumFragment extends BaseFragment implements CurriculumAdapte
         public void success(CurriculumResponseModel curriculumResponseModel, Response response) {
             super.success(curriculumResponseModel, response);
             closeProgress();
-            if (curriculumResponseModel!= null && curriculumResponseModel.curriculumEntities != null && !curriculumResponseModel.curriculumEntities.isEmpty()) {
+            if (curriculumResponseModel != null && curriculumResponseModel.curriculumEntities != null
+                    && !curriculumResponseModel.curriculumEntities.isEmpty()) {
                 setCurriculumData(curriculumResponseModel.curriculumEntities);
                 emptyLayout.setVisibility(View.GONE);
             } else {

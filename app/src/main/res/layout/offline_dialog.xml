@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    android:fillViewport="true"
-    android:orientation="vertical">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:fillViewport="true"
+            android:orientation="vertical">
 
 
     <LinearLayout
@@ -17,14 +17,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingLeft="16dp" />
+            android:paddingLeft="16dp"/>
 
         <LinearLayout
             android:id="@+id/topic_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingLeft="16dp" />
+            android:paddingLeft="16dp"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -43,7 +43,7 @@
                 android:text="Exercises"
                 android:textColor="@color/text_black"
                 android:textSize="18sp"
-                android:visibility="gone" />
+                android:visibility="gone"/>
 
             <com.education.corsalite.views.CustomButton
                 android:id="@+id/ok"
@@ -54,7 +54,7 @@
                 android:background="@color/transparent"
                 android:text="Download"
                 android:textAllCaps="false"
-                android:textColor="@color/green" />
+                android:textColor="@color/green"/>
 
             <com.education.corsalite.views.CustomButton
                 android:id="@+id/cancel"
@@ -65,7 +65,7 @@
                 android:background="@color/transparent"
                 android:text="Cancel"
                 android:textAllCaps="false"
-                android:textColor="@color/text_black" />
+                android:textColor="@color/text_black"/>
         </RelativeLayout>
 
     </LinearLayout>

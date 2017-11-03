@@ -19,8 +19,8 @@ public class AnalyticsActivity extends AbstractBaseActivity implements Analytics
     public static final String K_TITLE_RECOMMENDED_READING = "recommendedReading";
     public static final String K_TITLE_TEST_COVERAGE = "testCoverage";
     public static final String K_TITLE_TIME_MANAGEMENT = "timeManagement";
-    public static final String K_TITLE_PROGRESS_REPORT= "progressReport";
-    public static final String K_TITLE_USAGE_ANALYSIS= "usageAnalysis";
+    public static final String K_TITLE_PROGRESS_REPORT = "progressReport";
+    public static final String K_TITLE_USAGE_ANALYSIS = "usageAnalysis";
 
 
     @Override
@@ -34,25 +34,25 @@ public class AnalyticsActivity extends AbstractBaseActivity implements Analytics
         setUpTitleLayout();
     }
 
-    private void setUpTitleLayout(){
+    private void setUpTitleLayout() {
         AnalyticsTitleFragment details = new AnalyticsTitleFragment();
         getFragmentManager().beginTransaction().replace(R.id.fl_analytics_title, details).commit();
     }
 
     @Override
     public void onAnalyticsTitleSelected(String title) {
-        switch (title){
+        switch (title) {
             case K_TITLE_PROGRESS_REPORT:
 //                ProgressReportTabFragment reportTabFragment = new ProgressReportTabFragment();
 //                getFragmentManager().beginTransaction().replace(R.id.fl_analytics_detail,reportTabFragment).commit();
                 break;
             case K_TITLE_RECOMMENDED_READING:
                 RecommendedTabFragment recommendedTabFragment = new RecommendedTabFragment();
-                getFragmentManager().beginTransaction().replace(R.id.fl_analytics_detail,recommendedTabFragment).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fl_analytics_detail, recommendedTabFragment).commit();
                 break;
             case K_TITLE_TEST_COVERAGE:
                 TestCoverageTabFragment testCoverageTabFragment = new TestCoverageTabFragment();
-                getFragmentManager().beginTransaction().replace(R.id.fl_analytics_detail,testCoverageTabFragment).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fl_analytics_detail, testCoverageTabFragment).commit();
                 break;
             case K_TITLE_TIME_MANAGEMENT:
 //                TimeManagementTabFragment timeManagementTabFragment = new TimeManagementTabFragment();

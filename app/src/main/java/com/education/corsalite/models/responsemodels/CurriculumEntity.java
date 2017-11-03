@@ -46,5 +46,6 @@ public class CurriculumEntity extends BaseModel {
     @SerializedName("idTopic")
     public String idTopic;
 
-    public CurriculumEntity() {}
+    public CurriculumEntity() {
+    }
 }

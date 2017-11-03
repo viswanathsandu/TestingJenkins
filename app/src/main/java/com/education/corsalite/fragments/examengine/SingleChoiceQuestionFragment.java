@@ -19,8 +19,8 @@ public class SingleChoiceQuestionFragment extends ChoiceQuestionFragment {
 
     @Override
     public String getCorrectAnswer() {
-        for (int i=0; i<question.answerChoice.size(); i++) {
-            if(question.answerChoice.get(i).isCorrectAnswer.equalsIgnoreCase("Y")) {
+        for (int i = 0; i < question.answerChoice.size(); i++) {
+            if (question.answerChoice.get(i).isCorrectAnswer.equalsIgnoreCase("Y")) {
                 return String.valueOf(i);
             }
         }
@@ -29,9 +29,9 @@ public class SingleChoiceQuestionFragment extends ChoiceQuestionFragment {
 
     @Override
     public String getDisplayedCorrectAnswer() {
-        for (int i=0; i<question.answerChoice.size(); i++) {
-            if(question.answerChoice.get(i).isCorrectAnswer.equalsIgnoreCase("Y")) {
-                return String.valueOf(i+1);
+        for (int i = 0; i < question.answerChoice.size(); i++) {
+            if (question.answerChoice.get(i).isCorrectAnswer.equalsIgnoreCase("Y")) {
+                return String.valueOf(i + 1);
             }
         }
         return null;
@@ -57,7 +57,7 @@ public class SingleChoiceQuestionFragment extends ChoiceQuestionFragment {
 
     @Override
     protected void loadSelectedAnswers() {
-        if(!TextUtils.isEmpty(question.selectedAnswers)) {
+        if (!TextUtils.isEmpty(question.selectedAnswers)) {
             int index = Integer.parseInt(question.selectedAnswers);
             options[index].setChecked(true);
         }
