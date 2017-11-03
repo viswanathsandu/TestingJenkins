@@ -83,8 +83,8 @@ public class StudyCenterActivity extends AbstractBaseActivity {
         subjectSpinnerAdpater = new ArrayAdapter<>(
                 this, R.layout.support_simple_spinner_dropdown_item, new ArrayList<StudyCenter>());
         subjectsSpinner.setAdapter(subjectSpinnerAdpater);
-        setSubjectOptionsClickListener();
         subjectIconImg = (ImageButton) myView.findViewById(R.id.subject_icon);
+        setSubjectOptionsClickListener();
         subjects = new ArrayList<String>();
         subjectViews = new ArrayList<>();
         setUpViews(myView);
@@ -289,6 +289,9 @@ public class StudyCenterActivity extends AbstractBaseActivity {
                                 dbManager.saveReqRes(ApiCacheHolder.getInstance().studyCenter);
                                 mCourseData = new CourseData();
                                 mCourseData.StudyCenter = studyCenters;
+                                if(!studyCenters.isEmpty()) {
+                                    mStudyCenter = studyCenters.get(0);
+                                }
                             }
                             if (mCourseData != null && mCourseData.StudyCenter != null && !mCourseData.StudyCenter.isEmpty()) {
                                 setupSubjects(mCourseData);
