@@ -62,4 +62,9 @@ public class StudyCenter {
         }
         return notesCount + "";
     }
+
+    @Override
+    public String toString() {
+        return SubjectName;
+    }
 }

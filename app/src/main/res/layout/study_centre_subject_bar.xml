@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@color/gray"
-                android:orientation="horizontal">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:background="@color/gray"
+    android:orientation="horizontal">
 
     <LinearLayout
         android:id="@+id/color_bar"
@@ -115,20 +116,49 @@
             android:visibility="gone"/>
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/subject_spinner_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:gravity="center_vertical"
+        android:layout_centerVertical="true"
+        android:orientation="horizontal"
+        android:layout_marginLeft="@dimen/tile_margin"
+        android:paddingLeft="15dp"
+        android:background="@drawable/blueshape">
+
+        <android.support.v7.widget.AppCompatSpinner
+            android:id="@+id/spinner_subjects_list"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="left"
+            android:padding="10dp"/>
+
+        <ImageButton
+            android:id="@+id/subject_icon"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ico_three_dots"
+            android:background="@drawable/white_shape"
+            android:layout_toRightOf="@+id/subject_spinner_layout"/>
+
+    </LinearLayout>
+
     <HorizontalScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/color_bar"
-        android:scrollbars="none">
+        android:scrollbars="none"
+        android:visibility="gone">
 
         <LinearLayout
             android:id="@+id/subjects_name_id"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
             android:gravity="center_vertical"
+            android:orientation="horizontal"
             android:paddingLeft="15dp"/>
     </HorizontalScrollView>
 

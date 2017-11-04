@@ -6,9 +6,14 @@
                 android:splitMotionEvents="false"
                 android:windowEnableSplitTouch="false">
 
-    <include
+    <LinearLayout
         android:id="@+id/top_layout"
-        layout="@layout/study_centre_subject_bar"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include
+            layout="@layout/study_centre_subject_bar"/>
+    </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         xmlns:android="http://schemas.android.com/apk/res/android"
