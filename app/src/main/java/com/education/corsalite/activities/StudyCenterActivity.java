@@ -65,6 +65,8 @@ public class StudyCenterActivity extends AbstractBaseActivity {
     private View yellowView;
     private View greenView;
     private LinearLayout allColorLayout;
+    private LinearLayout subjectBarLayout;
+    private LinearLayout subjectSpinnerLayout;
     private StudyCenter mStudyCenter;
     private View selectedColorFilter;
     private AlertDialog alertDialog;
@@ -79,6 +81,8 @@ public class StudyCenterActivity extends AbstractBaseActivity {
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         RelativeLayout myView = (RelativeLayout) inflater.inflate(R.layout.activity_study_center, null);
         frameLayout.addView(myView);
+        subjectSpinnerLayout = (LinearLayout) findViewById(R.id.subject_spinner_layout);
+        subjectBarLayout = (LinearLayout) findViewById(R.id.top_layout);
         subjectsSpinner = (AppCompatSpinner) myView.findViewById(R.id.spinner_subjects_list);
         subjectSpinnerAdpater = new ArrayAdapter<>(
                 this, R.layout.support_simple_spinner_dropdown_item, new ArrayList<StudyCenter>());
@@ -266,11 +270,13 @@ public class StudyCenterActivity extends AbstractBaseActivity {
 
     private void getStudyCentreData(String courseId) {
         hideRecyclerView();
+        subjectBarLayout.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.VISIBLE);
         ApiManager.getInstance(this).getStudyCentreData(LoginUserCache.getInstance().getStudentId(),
                 courseId, new ApiCallback<List<StudyCenter>>(this) {
                     @Override
                     public void failure(CorsaliteError error) {
+                        subjectBarLayout.setVisibility(View.VISIBLE);
                         progressBar.setVisibility(View.GONE);
                         super.failure(error);
                         if (error != null && !TextUtils.isEmpty(error.message)) {
@@ -283,6 +289,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
                     public void success(List<StudyCenter> studyCenters, Response response) {
                         super.success(studyCenters, response);
                         progressBar.setVisibility(View.GONE);
+                        subjectBarLayout.setVisibility(View.VISIBLE);
                         if (SystemUtils.isNetworkConnected(StudyCenterActivity.this)) {
                             if (studyCenters != null) {
                                 ApiCacheHolder.getInstance().setStudyCenterResponse(studyCenters);
@@ -444,6 +451,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
                     }
                 }
                 setUpStudyCentreData(mStudyCenter);
+                subjectSpinnerLayout.setBackground(getSubjectColor(mStudyCenter));
                 mAdapter.updateData(mStudyCenter.chapters, mStudyCenter.SubjectName);
                 mAdapter.notifyDataSetChanged();
             }
