@@ -7,7 +7,8 @@ public class ScheduleTestsRequest extends AbstractBaseRequest {
 
     public String studentId;
 
-    public ScheduleTestsRequest() {}
+    public ScheduleTestsRequest() {
+    }
 
     public ScheduleTestsRequest(String studentId) {
         this.studentId = studentId;

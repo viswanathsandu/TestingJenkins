@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/notes_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white">
+                android:id="@+id/notes_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white">
 
     <LinearLayout
         android:id="@+id/spinner_layout"
@@ -20,17 +20,17 @@
             android:background="@drawable/spinner_bg"
             android:drawSelectorOnTop="true"
             android:paddingLeft="10dp"
-            android:paddingRight="20dp" />
+            android:paddingRight="20dp"/>
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/notes_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/spinner_layout"
-        android:clipToPadding="false"
-        android:paddingLeft="16dp"
-        android:paddingTop="16dp" />
+                                            android:id="@+id/notes_list"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:layout_below="@+id/spinner_layout"
+                                            android:clipToPadding="false"
+                                            android:paddingLeft="16dp"
+                                            android:paddingTop="16dp"/>
 
     <LinearLayout
         android:id="@+id/no_notes"
@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:text="No Notes Available"
             android:textColor="@color/text_black"
-            android:textSize="14sp" />
+            android:textSize="14sp"/>
     </LinearLayout>
 
     <LinearLayout

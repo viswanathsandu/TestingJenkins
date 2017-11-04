@@ -14,7 +14,7 @@
         android:orientation="vertical">
         <include
             android:id="@+id/toolbar"
-            layout="@layout/user_profile_toolbar" />
+            layout="@layout/user_profile_toolbar"/>
 
         <FrameLayout
             android:id="@+id/activity_layout_container"
@@ -34,7 +34,7 @@
         app:itemTextColor="@color/white"
         android:paddingTop="15dp">
 
-        <include layout="@layout/navigation_view_body" />
+        <include layout="@layout/navigation_view_body"/>
 
     </android.support.design.widget.NavigationView>
 

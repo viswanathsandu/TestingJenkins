@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
     <ProgressBar
         android:id="@+id/progress_bar_tab"
@@ -10,7 +10,7 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_gravity="center"
-        android:visibility="visible" />
+        android:visibility="visible"/>
 
     <TextView
         android:id="@+id/tv_failure_text"
@@ -23,7 +23,7 @@
         android:layout_margin="10dp"
         android:drawableTop="@drawable/ico_info"
         android:text="No Analytics available for Accuracy vs Speed"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -42,163 +42,163 @@
                 android:visibility="gone"
                 android:orientation="vertical">
                 <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/analytics_title_style"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Chapters" />
-
-                <TextView
-                    style="@style/analytics_text_style"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="  -  Accuracy Vs Speed based on recent 365 days performance" />
-            </LinearLayout>
-
-            <RelativeLayout
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="15dp">
-
-                <TextView
-                    android:id="@+id/tv_accuracy_1"
-                    style="@style/analytics_axis_style"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:rotation="-90"
-                    android:text="Accuracy (%)" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="360dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginBottom="30dp"
-                    android:layout_toRightOf="@id/tv_accuracy_1"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <com.github.mikephil.charting.charts.ScatterChart
-                        android:id="@+id/sch_accuray_chapter"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginBottom="15dp"
-                        android:layout_marginRight="15dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_weight="4" />
+                    <TextView
+                        style="@style/analytics_title_style"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Chapters"/>
 
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/rv_chapter_legend"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="2"
-                        android:scrollbars="vertical" />
+                    <TextView
+                        style="@style/analytics_text_style"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="  -  Accuracy Vs Speed based on recent 365 days performance"/>
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/tv_speed_1"
-                    style="@style/analytics_axis_style"
-                    android:layout_width="match_parent"
+                <RelativeLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginTop="5dp"
-                    android:paddingLeft="250dp"
-                    android:text="Speed (Seconds)" />
+                    android:layout_margin="15dp">
 
-            </RelativeLayout>
+                    <TextView
+                        android:id="@+id/tv_accuracy_1"
+                        style="@style/analytics_axis_style"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:rotation="-90"
+                        android:text="Accuracy (%)"/>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@color/dark_gray" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="360dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginBottom="30dp"
+                        android:layout_toRightOf="@id/tv_accuracy_1"
+                        android:orientation="horizontal">
+
+                        <com.github.mikephil.charting.charts.ScatterChart
+                            android:id="@+id/sch_accuray_chapter"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="15dp"
+                            android:layout_marginRight="15dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_weight="4"/>
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/rv_chapter_legend"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="2"
+                            android:scrollbars="vertical"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_speed_1"
+                        style="@style/analytics_axis_style"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginTop="5dp"
+                        android:paddingLeft="250dp"
+                        android:text="Speed (Seconds)"/>
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/dark_gray"/>
 
             </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/ll_dates"
-            android:visibility="gone"
-            android:orientation="vertical">
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/analytics_title_style"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Dates" />
-
-                <TextView
-                    style="@style/analytics_text_style"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="  -  Accuracy Vs Speed based on recent 365 days performance" />
-            </LinearLayout>
-
-            <RelativeLayout
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="15dp">
-
-                <TextView
-                    android:id="@+id/tv_accuracy_2"
-                    style="@style/analytics_axis_style"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:rotation="-90"
-                    android:text="Accuracy (%)" />
-
+                android:id="@+id/ll_dates"
+                android:visibility="gone"
+                android:orientation="vertical">
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="360dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginBottom="30dp"
-                    android:layout_toRightOf="@id/tv_accuracy_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <com.github.mikephil.charting.charts.ScatterChart
-                        android:id="@+id/sch_accuray_date"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginBottom="15dp"
-                        android:layout_marginRight="15dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_weight="4" />
+                    <TextView
+                        style="@style/analytics_title_style"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Dates"/>
 
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/rv_dates_legend"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="2"
-                        android:scrollbars="vertical" />
+                    <TextView
+                        style="@style/analytics_text_style"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="  -  Accuracy Vs Speed based on recent 365 days performance"/>
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/tv_speed_2"
-                    style="@style/analytics_axis_style"
-                    android:layout_width="match_parent"
+                <RelativeLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginTop="5dp"
-                    android:paddingLeft="250dp"
-                    android:text="Speed (Seconds)" />
+                    android:layout_margin="15dp">
 
-            </RelativeLayout>
+                    <TextView
+                        android:id="@+id/tv_accuracy_2"
+                        style="@style/analytics_axis_style"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:rotation="-90"
+                        android:text="Accuracy (%)"/>
 
-        </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="360dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginBottom="30dp"
+                        android:layout_toRightOf="@id/tv_accuracy_2"
+                        android:orientation="horizontal">
+
+                        <com.github.mikephil.charting.charts.ScatterChart
+                            android:id="@+id/sch_accuray_date"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="15dp"
+                            android:layout_marginRight="15dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_weight="4"/>
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/rv_dates_legend"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="2"
+                            android:scrollbars="vertical"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_speed_2"
+                        style="@style/analytics_axis_style"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginTop="5dp"
+                        android:paddingLeft="250dp"
+                        android:text="Speed (Seconds)"/>
+
+                </RelativeLayout>
+
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

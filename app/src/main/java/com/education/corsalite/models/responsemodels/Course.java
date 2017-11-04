@@ -10,7 +10,7 @@ import java.io.Serializable;
 /**
  * Created by vissu on 9/12/15.
  */
-public class Course extends BaseModel  implements Serializable {
+public class Course extends BaseModel implements Serializable {
 
     @SerializedName("idCourse")
     public Integer courseId;
@@ -65,7 +65,7 @@ public class Course extends BaseModel  implements Serializable {
     public Integer isProgressReport;
     @Ignore
     public Integer isTimeManagement;
-    
+
     public boolean isDefault() {
         return (!TextUtils.isEmpty(isDefault) && isDefault.equals("Y"));
     }

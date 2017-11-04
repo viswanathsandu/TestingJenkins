@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="?android:attr/selectableItemBackground"
-    android:minHeight="32dp"
-    android:id="@+id/node_selectorLayout"
-    android:paddingLeft="5dp">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?android:attr/selectableItemBackground"
+                android:minHeight="32dp"
+                android:id="@+id/node_selectorLayout"
+                android:paddingLeft="5dp">
 
     <CheckBox
         android:id="@+id/node_selector"
@@ -16,16 +16,16 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:buttonTint="@color/black"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
-   <ImageView
+    <ImageView
         android:id="@+id/node_selectors"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/node_selector"
-        android:src="@drawable/ico_offline_exercise" />
+        android:src="@drawable/ico_offline_exercise"/>
 
     <LinearLayout
         android:id="@+id/buttonsContainer"
@@ -49,7 +49,7 @@
             app:iconColor="@color/black"
             app:iconFont="fonts/material-icon-font.ttf"
             app:iconSize="20dp"
-            app:iconText="@string/ic_keyboard_arrow_right" />
+            app:iconText="@string/ic_keyboard_arrow_right"/>
     </LinearLayout>
 
     <LinearLayout
@@ -69,7 +69,7 @@
             android:layout_height="16dp"
             android:layout_gravity="center_horizontal"
             android:background="#12558C"
-            android:visibility="gone" />
+            android:visibility="gone"/>
 
         <com.github.johnkil.print.PrintView
             android:layout_width="wrap_content"
@@ -78,7 +78,7 @@
             app:iconColor="#12558C"
             app:iconFont="fonts/material-icon-font.ttf"
             app:iconSize="16dp"
-            app:iconText="@string/app_name" />
+            app:iconText="@string/app_name"/>
 
         <View
             android:id="@+id/bot_line"
@@ -86,7 +86,7 @@
             android:layout_height="16dp"
             android:layout_gravity="center_horizontal"
             android:background="#12558C"
-            android:visibility="gone" />
+            android:visibility="gone"/>
     </LinearLayout>
 
 
@@ -98,5 +98,5 @@
         android:layout_marginLeft="5dp"
         android:layout_toRightOf="@+id/picture_wrapper"
         android:layout_toLeftOf="@+id/buttonsContainer"
-        android:textSize="12sp" />
+        android:textSize="12sp"/>
 </RelativeLayout>

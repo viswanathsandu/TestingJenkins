@@ -32,6 +32,7 @@ public class Chapter extends BaseModel {
 
     public boolean isChapterOffline = true;
 
-    public Chapter() {}
+    public Chapter() {
+    }
 
 }

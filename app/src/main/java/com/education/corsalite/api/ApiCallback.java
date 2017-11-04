@@ -27,7 +27,7 @@ public abstract class ApiCallback<T> implements Callback<T> {
     }
 
     public void failure(CorsaliteError error) {
-        if(error != null && error.message != null && error.message.equalsIgnoreCase("Unathorized session.")) {
+        if (error != null && error.message != null && error.message.equalsIgnoreCase("Unathorized session.")) {
 //            Toast.makeText(mContext, "Session expired. Please login to continue", Toast.LENGTH_SHORT).show();
             error.message = "";
             L.error(error.message);
@@ -36,7 +36,7 @@ public abstract class ApiCallback<T> implements Callback<T> {
 
     @Override
     public void success(T t, Response response) {
-        if(response != null && response.getStatus() == 200) {
+        if (response != null && response.getStatus() == 200) {
             AbstractBaseActivity.saveSessionCookie(response);
         }
     }
@@ -53,7 +53,7 @@ public abstract class ApiCallback<T> implements Callback<T> {
                 failure(corsaliteError);
                 EventBus.getDefault().post(new InvalidAuthenticationEvent());
             } else {
-                if(error.getCause() instanceof ConnectException || error.getCause() instanceof UnknownHostException) {
+                if (error.getCause() instanceof ConnectException || error.getCause() instanceof UnknownHostException) {
                     EventBus.getDefault().post(new ConnectExceptionEvent());
                 }
                 CorsaliteError corsaliteError = new CorsaliteError();

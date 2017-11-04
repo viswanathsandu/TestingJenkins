@@ -52,7 +52,7 @@ public class PostCommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if(viewType == 0) {
+        if (viewType == 0) {
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.view_item_post, parent, false);
             return new HeaderHolder(view);
@@ -65,8 +65,8 @@ public class PostCommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
-        if(position == 0) {
-            if(post == null) {
+        if (position == 0) {
+            if (post == null) {
                 return;
             }
             ForumPost forumPost = post;
@@ -135,8 +135,8 @@ public class PostCommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     .error(R.drawable.profile_pic).fit()
                     .into(holder.ivUserPic);
         } else {
-            final ForumPost forumPost = mForumPostList.get(position-1);
-            CommentHolder holder = (CommentHolder)viewHolder;
+            final ForumPost forumPost = mForumPostList.get(position - 1);
+            CommentHolder holder = (CommentHolder) viewHolder;
             setupCommentsActionListener(holder, position);
             // TODO : uncomment it after implementing the edit/delete functionality
             //    if (forumPost.idUser.equals(LoginUserCache.get().getLoginResponse().idUser)) {
@@ -218,7 +218,7 @@ public class PostCommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public int getItemCount() {
-        return mForumPostList.size()+1;
+        return mForumPostList.size() + 1;
     }
 
     public void setForumPostList(FourmCommentPostModel model) {

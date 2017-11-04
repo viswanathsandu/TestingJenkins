@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/white"
+              android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -41,7 +41,7 @@
                 android:text="Cancel"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="16sp" />
+                android:textSize="16sp"/>
 
             <com.education.corsalite.views.CustomButton
                 android:id="@+id/bStart"
@@ -52,7 +52,7 @@
                 android:text="Start"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="16sp" />
+                android:textSize="16sp"/>
         </LinearLayout>
     </RelativeLayout>
 
@@ -96,7 +96,7 @@
                             android:layout_height="wrap_content"
                             android:text="00"
                             android:textColor="@color/text_black"
-                            android:textSize="40dp" />
+                            android:textSize="40dp"/>
 
                         <TextView
                             android:id="@+id/days_lbl"
@@ -108,7 +108,7 @@
                             android:layout_below="@id/days_txt"
                             android:gravity="center_horizontal"
                             android:text="Days"
-                            android:textColor="@color/text_black" />
+                            android:textColor="@color/text_black"/>
 
                         <TextView
                             fontPath="@string/roboto_light"
@@ -120,7 +120,7 @@
                             android:gravity="center_vertical"
                             android:text=":"
                             android:textColor="@color/text_black"
-                            android:textSize="30dp" />
+                            android:textSize="30dp"/>
 
                     </RelativeLayout>
 
@@ -139,7 +139,7 @@
                             android:layout_height="wrap_content"
                             android:text="00"
                             android:textColor="@color/text_black"
-                            android:textSize="40dp" />
+                            android:textSize="40dp"/>
 
                         <TextView
                             android:id="@+id/hours_lbl"
@@ -151,7 +151,7 @@
                             android:layout_below="@id/hours_txt"
                             android:gravity="center_horizontal"
                             android:text="Hours"
-                            android:textColor="@color/text_black" />
+                            android:textColor="@color/text_black"/>
 
                         <TextView
                             fontPath="@string/roboto_light"
@@ -163,7 +163,7 @@
                             android:gravity="center_vertical"
                             android:text=":"
                             android:textColor="@color/text_black"
-                            android:textSize="30dp" />
+                            android:textSize="30dp"/>
 
                     </RelativeLayout>
 
@@ -181,7 +181,7 @@
                             android:layout_height="wrap_content"
                             android:text="00"
                             android:textColor="@color/text_black"
-                            android:textSize="40dp" />
+                            android:textSize="40dp"/>
 
                         <TextView
                             android:id="@+id/minutes_lbl"
@@ -193,7 +193,7 @@
                             android:layout_below="@id/minutes_txt"
                             android:gravity="center_horizontal"
                             android:text="Minutes"
-                            android:textColor="@color/text_black" />
+                            android:textColor="@color/text_black"/>
 
                         <TextView
                             fontPath="@string/roboto_light"
@@ -205,7 +205,7 @@
                             android:gravity="center_vertical"
                             android:text=":"
                             android:textColor="@color/text_black"
-                            android:textSize="30dp" />
+                            android:textSize="30dp"/>
 
                     </RelativeLayout>
 
@@ -224,7 +224,7 @@
                             android:layout_height="wrap_content"
                             android:text="00"
                             android:textColor="@color/text_black"
-                            android:textSize="40dp" />
+                            android:textSize="40dp"/>
 
                         <TextView
                             android:id="@+id/secs_lbl"
@@ -236,7 +236,7 @@
                             android:layout_below="@id/secs_txt"
                             android:gravity="center_horizontal"
                             android:text="Seconds"
-                            android:textColor="@color/text_black" />
+                            android:textColor="@color/text_black"/>
 
 
                     </RelativeLayout>
@@ -248,7 +248,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp" />
+                    android:layout_marginRight="5dp"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

@@ -2,6 +2,7 @@ package com.education.corsalite.models.db;
 
 import com.education.corsalite.models.responsemodels.BaseModel;
 import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -18,7 +19,8 @@ public class ScheduledTestList extends BaseModel implements Serializable {
     @SerializedName("Message")
     public String Message;
 
-    public ScheduledTestList() {}
+    public ScheduledTestList() {
+    }
 
 }
 

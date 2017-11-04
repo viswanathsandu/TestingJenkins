@@ -5,5 +5,6 @@ package com.education.corsalite.models.responsemodels;
  */
 public class CommonResponseModel extends BaseResponseModel {
 
-    public CommonResponseModel() {}
+    public CommonResponseModel() {
+    }
 }

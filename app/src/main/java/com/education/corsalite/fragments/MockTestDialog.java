@@ -44,8 +44,10 @@ import retrofit.client.Response;
  */
 public class MockTestDialog extends DialogFragment implements MockTestsListAdapter.IMockTestSelectedListener {
 
-    @Bind(R.id.tv_title)TextView tvTitle;
-    @Bind(R.id.mocktests_recyclerview)RecyclerView rvMockTestList;
+    @Bind(R.id.tv_title)
+    TextView tvTitle;
+    @Bind(R.id.mocktests_recyclerview)
+    RecyclerView rvMockTestList;
     private Dialog dialog;
     private List<MockTest> mMockTestList;
     private String testQuestionPaperId;
@@ -69,7 +71,8 @@ public class MockTestDialog extends DialogFragment implements MockTestsListAdapt
 
     private void showMockTests() {
         if (getActivity() != null) {
-            final LinearLayoutManager layoutManager = new org.solovyev.android.views.llm.LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+            final LinearLayoutManager layoutManager = new org.solovyev.android.views.llm.LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL,
+                    false);
             rvMockTestList.setLayoutManager(layoutManager);
             MockTestsListAdapter mockTestsListAdapter = new MockTestsListAdapter(mMockTestList, getActivity().getLayoutInflater());
             mockTestsListAdapter.setMockTestSelectedListener(this);
@@ -93,10 +96,10 @@ public class MockTestDialog extends DialogFragment implements MockTestsListAdapt
 
     private void loadMockTests() {
         String mockTestsGson = null;
-        if(getArguments() != null) {
-             mockTestsGson = getArguments().getString("mock_tests", null);
+        if (getArguments() != null) {
+            mockTestsGson = getArguments().getString("mock_tests", null);
         }
-        if(!TextUtils.isEmpty(mockTestsGson)) {
+        if (!TextUtils.isEmpty(mockTestsGson)) {
             try {
                 Type listType = new TypeToken<List<MockTest>>() {
                 }.getType();
@@ -143,23 +146,23 @@ public class MockTestDialog extends DialogFragment implements MockTestsListAdapt
         postQuestionPaper.idExamTemplate = examTemplateId;
         postQuestionPaper.idSubject = subjectId;
         postQuestionPaper.idStudent = studentId;
-        ((AbstractBaseActivity)getActivity()).showProgress();
+        ((AbstractBaseActivity) getActivity()).showProgress();
         ApiManager.getInstance(getActivity()).postQuestionPaper(Gson.get().toJson(postQuestionPaper),
-            new ApiCallback<PostQuestionPaper>(getActivity()) {
-                @Override
-                public void success(PostQuestionPaper postQuestionPaper, Response response) {
-                    super.success(postQuestionPaper, response);
-                    if (getActivity() != null) {
-                        ((AbstractBaseActivity)getActivity()).closeProgress();
-                        if (postQuestionPaper != null && !TextUtils.isEmpty(postQuestionPaper.idTestQuestionPaper)) {
-                            testQuestionPaperId = postQuestionPaper.idTestQuestionPaper;
-                            goForward(download);
-                        } else {
-                            dismiss();
+                new ApiCallback<PostQuestionPaper>(getActivity()) {
+                    @Override
+                    public void success(PostQuestionPaper postQuestionPaper, Response response) {
+                        super.success(postQuestionPaper, response);
+                        if (getActivity() != null) {
+                            ((AbstractBaseActivity) getActivity()).closeProgress();
+                            if (postQuestionPaper != null && !TextUtils.isEmpty(postQuestionPaper.idTestQuestionPaper)) {
+                                testQuestionPaperId = postQuestionPaper.idTestQuestionPaper;
+                                goForward(download);
+                            } else {
+                                dismiss();
+                            }
                         }
                     }
-                }
-            });
+                });
     }
 
     private void goForward(boolean download) {

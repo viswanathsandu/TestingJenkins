@@ -28,10 +28,10 @@ public class DataSyncService extends IntentService {
         L.info("DataSyncService : Starting");
         dbManager = SugarDbManager.get(getApplicationContext());
         SyncModel object = null;
-        while((object = dbManager.getFirstSyncModel()) != null) {
+        while ((object = dbManager.getFirstSyncModel()) != null) {
             if (object != null) {
                 dbManager.delete(object);
-                if(!executeApi(object)) {
+                if (!executeApi(object)) {
                     object.setId(null);
                     dbManager.addSyncModel(object);
                 }
@@ -41,7 +41,7 @@ public class DataSyncService extends IntentService {
 
     private boolean executeApi(SyncModel model) {
         try {
-            if(model == null) {
+            if (model == null) {
                 return false;
             }
             if (model.getTestAnswerPaper() != null) {
@@ -49,13 +49,14 @@ public class DataSyncService extends IntentService {
                 TestAnswerPaperResponse response = null;
                 response = ApiManager.getInstance(getApplicationContext()).submitTestAnswerPaper(model.getTestAnswerPaper());
                 return response != null;
-            } else if(model.getUserEventsModel() != null) {
+            } else if (model.getUserEventsModel() != null) {
                 L.info("DataSyncService : Executing UserEvents");
                 UserEventsResponse response = ApiManager.getInstance(getApplicationContext()).postUserEvents(Gson.get().toJson(model.getUserEventsModel()));
                 return response != null;
-            } else if(model.getContentReadingEvent() != null) {
+            } else if (model.getContentReadingEvent() != null) {
                 L.info("DataSyncService : Executing ContentUsage");
-                BaseResponseModel response = ApiManager.getInstance(getApplicationContext()).postContentUsage(Gson.get().toJson(model.getContentReadingEvent()));
+                BaseResponseModel response = ApiManager.getInstance(getApplicationContext()).postContentUsage(
+                        Gson.get().toJson(model.getContentReadingEvent()));
                 return response != null;
             }
         } catch (Exception e) {

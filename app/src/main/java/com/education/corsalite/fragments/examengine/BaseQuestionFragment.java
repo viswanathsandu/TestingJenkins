@@ -46,17 +46,28 @@ public abstract class BaseQuestionFragment extends BaseFragment {
     private static final String KEY_ENABLE_VERIFY = "ENABLE_VERIFY";
     private static final String KEY_IS_FLAGGED = "IS_FLAGGED";
 
-    @Bind(R.id.webview_question) protected WebView webviewQuestion;
-    @Bind(R.id.webview_paragraph) protected WebView webviewParagraph;
-    @Bind(R.id.tv_verify) protected TextView btnVerify;
-    @Bind(R.id.tv_clearanswer) protected TextView tvClearAnswer;
-    @Bind(R.id.txtAnswerCount) protected TextView txtAnswerCount;
-    @Bind(R.id.txtAnswerExp) protected WebView txtAnswerExp;
-    @Bind(R.id.explanation_layout) protected LinearLayout explanationLayout;
-    @Bind(R.id.layout_choice) protected LinearLayout layoutChoice;
-    @Bind(R.id.tv_serial_no) protected TextView tvSerialNo;
-    @Bind(R.id.answer_layout) protected LinearLayout answerLayout;
-    @Bind(R.id.imv_flag) protected ImageView flaggedImg;
+    @Bind(R.id.webview_question)
+    protected WebView webviewQuestion;
+    @Bind(R.id.webview_paragraph)
+    protected WebView webviewParagraph;
+    @Bind(R.id.tv_verify)
+    protected TextView btnVerify;
+    @Bind(R.id.tv_clearanswer)
+    protected TextView tvClearAnswer;
+    @Bind(R.id.txtAnswerCount)
+    protected TextView txtAnswerCount;
+    @Bind(R.id.txtAnswerExp)
+    protected WebView txtAnswerExp;
+    @Bind(R.id.explanation_layout)
+    protected LinearLayout explanationLayout;
+    @Bind(R.id.layout_choice)
+    protected LinearLayout layoutChoice;
+    @Bind(R.id.tv_serial_no)
+    protected TextView tvSerialNo;
+    @Bind(R.id.answer_layout)
+    protected LinearLayout answerLayout;
+    @Bind(R.id.imv_flag)
+    protected ImageView flaggedImg;
 
     protected long mStartedTime;
     protected boolean isFlagged;
@@ -118,7 +129,7 @@ public abstract class BaseQuestionFragment extends BaseFragment {
             default:
                 break;
         }
-        if(fragment != null) {
+        if (fragment != null) {
             fragment.setArguments(args);
         }
         return fragment;
@@ -143,17 +154,17 @@ public abstract class BaseQuestionFragment extends BaseFragment {
     }
 
     private void controlViewAnswers(ViewGroup viewGroup) {
-        for (int i=0; i<viewGroup.getChildCount(); i++) {
+        for (int i = 0; i < viewGroup.getChildCount(); i++) {
             View view = viewGroup.getChildAt(i);
             view.setClickable(false);
-            if(view instanceof ViewGroup) {
+            if (view instanceof ViewGroup) {
                 controlViewAnswers((ViewGroup) view);
             }
         }
     }
 
     private void updateFlagStatus() {
-        if(isExerciseTest) {
+        if (isExerciseTest) {
             flaggedImg.setVisibility(View.INVISIBLE);
         } else {
             flaggedImg.setImageResource(isFlagged ? R.drawable.btn_flag_select : R.drawable.btn_flag_unselect);
@@ -171,7 +182,7 @@ public abstract class BaseQuestionFragment extends BaseFragment {
     public void loadQuestion() {
         try {
             mStartedTime = TimeUtils.currentTimeInMillis();
-            tvSerialNo.setText( String.format("Q%s)", questionNumber));
+            tvSerialNo.setText(String.format("Q%s)", questionNumber));
             if (TextUtils.isEmpty(question.paragraphHtml)) {
                 webviewParagraph.setVisibility(View.GONE);
             } else {
@@ -183,10 +194,10 @@ public abstract class BaseQuestionFragment extends BaseFragment {
                 webviewQuestion.loadDataWithBaseURL(null, question.questionHtml, "text/html", "UTF-8", null);
             }
             loadAnswerLayout();
-            if(isExplanationShown) {
+            if (isExplanationShown) {
                 onViewAnswer();
             }
-            if(isExplanationShown || isFlaggedQuestionShown) {
+            if (isExplanationShown || isFlaggedQuestionShown) {
                 controlViewAnswers(answerLayout);
                 tvClearAnswer.setVisibility(View.INVISIBLE);
             }
@@ -244,7 +255,7 @@ public abstract class BaseQuestionFragment extends BaseFragment {
     }
 
     public String getQuestionState() {
-        if(question != null && question.isFlagged) {
+        if (question != null && question.isFlagged) {
             return Constants.AnswerState.FLAGGED.getValue();
         } else {
             return getAnswerState();
@@ -273,7 +284,7 @@ public abstract class BaseQuestionFragment extends BaseFragment {
 
     @OnClick(R.id.tv_clearanswer)
     public void onClearAnswer(View view) {
-        if(isAnswered()) {
+        if (isAnswered()) {
             clearAnswer();
         } else {
             showToast("Please select an option");
@@ -287,7 +298,7 @@ public abstract class BaseQuestionFragment extends BaseFragment {
 
     @OnClick(R.id.tv_verify)
     public void onVerifyClicked(View view) {
-        if(isAnswered()) {
+        if (isAnswered()) {
             btnVerify.setEnabled(false);
             explanationLayout.setVisibility(View.VISIBLE);
             layoutChoice.setVisibility(View.VISIBLE);
@@ -299,7 +310,7 @@ public abstract class BaseQuestionFragment extends BaseFragment {
 
     @OnClick(R.id.imv_flag)
     public void onFlagClicked(View view) {
-        if(SystemUtils.isNetworkConnected(getActivity())) {
+        if (SystemUtils.isNetworkConnected(getActivity())) {
             EventBus.getDefault().post(new FlagEvent(!isFlagged));
         } else {
             showToast("Flagging is available not available in offline");
@@ -332,7 +343,7 @@ public abstract class BaseQuestionFragment extends BaseFragment {
     }
 
     public void onEventMainThread(FlagUpdatedEvent event) {
-        if(isAdded()) {
+        if (isAdded()) {
             isFlagged = !isFlagged;
             question.isFlagged = isFlagged;
             updateFlagStatus();

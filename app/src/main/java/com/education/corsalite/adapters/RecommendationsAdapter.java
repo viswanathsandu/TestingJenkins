@@ -26,7 +26,8 @@ public class RecommendationsAdapter extends AbstractRecycleViewAdapter {
         void onItemClick(int position);
     }
 
-    public RecommendationsAdapter(List<RecommendedModel> recommendedModels, LayoutInflater inflater, SetOnRecommendationClickListener setOnRecommendationClickListener) {
+    public RecommendationsAdapter(List<RecommendedModel> recommendedModels, LayoutInflater inflater,
+            SetOnRecommendationClickListener setOnRecommendationClickListener) {
         this(recommendedModels);
         this.inflater = inflater;
         this.setOnRecommendationClickListener = setOnRecommendationClickListener;

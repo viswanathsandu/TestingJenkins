@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by vissu on 3/18/16.
  */
-public class TakeTest extends BaseTest{
+public class TakeTest extends BaseTest {
 
     public String examTemplateId;
     public String chapterId;

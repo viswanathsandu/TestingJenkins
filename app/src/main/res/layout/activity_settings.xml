@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_settings"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical"
-    tools:context="com.education.corsalite.activities.SettingsActivity">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/activity_settings"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:gravity="center"
+              android:orientation="vertical"
+              tools:context="com.education.corsalite.activities.SettingsActivity">
 
     <LinearLayout
         android:id="@+id/app_current_version_layout"
@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Corsalite Application Version : "
-            android:textSize="16sp" />
+            android:textSize="16sp"/>
 
         <TextView
             android:id="@+id/app_current_version_txt"
@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:text=""
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
     </LinearLayout>
 
     <LinearLayout
@@ -41,7 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Latest Version Available : "
-            android:textSize="16sp" />
+            android:textSize="16sp"/>
 
         <TextView
             android:id="@+id/app_latest_version_txt"
@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:text=""
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
     </LinearLayout>
 
     <TextView
@@ -67,6 +67,6 @@
         android:layout_margin="10dp"
         android:paddingLeft="40dp"
         android:paddingRight="40dp"
-        android:text="Upgrade" />
+        android:text="Upgrade"/>
 
 </LinearLayout>

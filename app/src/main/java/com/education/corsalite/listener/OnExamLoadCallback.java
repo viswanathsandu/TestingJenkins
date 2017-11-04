@@ -8,5 +8,6 @@ import com.education.corsalite.models.examengine.BaseTest;
 
 public interface OnExamLoadCallback {
     void onSuccess(BaseTest test);
+
     void OnFailure(String message);
 }

@@ -89,7 +89,7 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
         if (chapterStr != null) {
             chapter = Gson.get().fromJson(chapterStr, Chapter.class);
         }
-        if(chapter != null && TextUtils.isEmpty(chapter.idCourseSubjectChapter)) {
+        if (chapter != null && TextUtils.isEmpty(chapter.idCourseSubjectChapter)) {
             chapter.idCourseSubjectChapter = mExtras.getString(Constants.SELECTED_CHAPTERID);
         }
         String testCoveragesGson = mExtras.getString(Constants.TEST_COVERAGE_LIST_GSON);
@@ -120,7 +120,7 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
 
     @Override
     public void onPause() {
-        if(getActivity() != null && getActivity() instanceof AbstractBaseActivity) {
+        if (getActivity() != null && getActivity() instanceof AbstractBaseActivity) {
             ((AbstractBaseActivity) getActivity()).hideKeyboard();
         }
         super.onPause();
@@ -141,15 +141,16 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
                             if (coverage.level.equalsIgnoreCase(level + "")) {
                                 questionCount += Integer.valueOf(coverage.questionCount);
                                 int maxCount = (maxQuestionLimit > 0 && maxQuestionLimit < questionCount) ? maxQuestionLimit : questionCount;
-                                mNoOfQuestionsEditTxt.setFilters(new InputFilter[]{new InputFilterMinMax(maxCount > 0 ? "1" : "0", maxCount+"")});
-                                mNoOfQuestionsEditTxt.setText(maxCount+"");
+                                mNoOfQuestionsEditTxt.setFilters(new InputFilter[]{new InputFilterMinMax(maxCount > 0 ? "1" : "0", maxCount + "")});
+                                mNoOfQuestionsEditTxt.setText(maxCount + "");
                                 break;
                             }
                         }
                     }
                 } else if (Integer.valueOf(level) > levelCrossed) {
                     checkBox.setEnabled(false);
-                }        getDialog().setTitle("Test Option");
+                }
+                getDialog().setTitle("Test Option");
 
                 checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
@@ -162,15 +163,15 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
                                 }
                             }
                         }
-                        if(testCoverage != null && checkBox.isEnabled()) {
+                        if (testCoverage != null && checkBox.isEnabled()) {
                             if (isChecked) {
                                 questionCount += Integer.valueOf(testCoverage.questionCount);
                             } else {
                                 questionCount -= Integer.valueOf(testCoverage.questionCount);
                             }
                             int maxCount = (maxQuestionLimit > 0 && maxQuestionLimit < questionCount) ? maxQuestionLimit : questionCount;
-                            mNoOfQuestionsEditTxt.setFilters(new InputFilter[]{new InputFilterMinMax(maxCount > 0 ? "1" : "0", maxCount+"")});
-                            mNoOfQuestionsEditTxt.setText(maxCount+ "");
+                            mNoOfQuestionsEditTxt.setFilters(new InputFilter[]{new InputFilterMinMax(maxCount > 0 ? "1" : "0", maxCount + "")});
+                            mNoOfQuestionsEditTxt.setText(maxCount + "");
                         }
                     }
                 });
@@ -183,7 +184,7 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
 
     @OnClick({R.id.btn_cancel, R.id.btn_download, R.id.btn_next})
     public void onClick(View view) {
-        if(getActivity() != null && getActivity() instanceof AbstractBaseActivity) {
+        if (getActivity() != null && getActivity() instanceof AbstractBaseActivity) {
             ((AbstractBaseActivity) getActivity()).hideKeyboard();
         }
         switch (view.getId()) {
@@ -223,7 +224,7 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
         if (TextUtils.isEmpty(noOfQuestions) || !TextUtils.isDigitsOnly(noOfQuestions)) {
             Toast.makeText(getActivity(), "Please select the number of questions", Toast.LENGTH_SHORT).show();
             return;
-        } else if(questionCount == 0) {
+        } else if (questionCount == 0) {
             Toast.makeText(getActivity(), "Please select the level", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -238,7 +239,7 @@ public class TestChapterSetupFragment extends DialogFragment implements AdapterV
         if (TextUtils.isEmpty(noOfQuestions) || !TextUtils.isDigitsOnly(noOfQuestions)) {
             Toast.makeText(getActivity(), "Please select the number of questions", Toast.LENGTH_SHORT).show();
             return;
-        } else if(questionCount == 0) {
+        } else if (questionCount == 0) {
             Toast.makeText(getActivity(), "Please select the level", Toast.LENGTH_SHORT).show();
             return;
         }

@@ -26,12 +26,13 @@ public class LoginResponse extends BaseResponseModel {
     // Is used for challenge test
     public String displayName = "";
 
-    public LoginResponse() {}
+    public LoginResponse() {
+    }
 
     public boolean isSuccessful(Context context) {
         String fgaEntityId = context.getString(R.string.entityId);
         return super.isSuccessful() && (TextUtils.isEmpty(fgaEntityId)
-                    || fgaEntityId.equalsIgnoreCase(entitiyId));
+                || fgaEntityId.equalsIgnoreCase(entitiyId));
     }
 
     public boolean isRewardRedeemEnabled() {

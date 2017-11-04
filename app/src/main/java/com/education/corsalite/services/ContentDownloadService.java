@@ -57,7 +57,7 @@ public class ContentDownloadService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         L.info("onHandleIntent called");
         isIntentServiceRunning = true;
-        if(dbManager == null) {
+        if (dbManager == null) {
             dbManager = SugarDbManager.get(getApplicationContext());
         }
         fetchOfflineContents();
@@ -75,7 +75,7 @@ public class ContentDownloadService extends IntentService {
                 case STARTED:
                 case IN_PROGRESS:
                     int status = downloadManager.query(content.downloadId);
-                    if(status != DownloadManager.STATUS_SUCCESSFUL && status != DownloadManager.STATUS_RUNNING) {
+                    if (status != DownloadManager.STATUS_SUCCESSFUL && status != DownloadManager.STATUS_RUNNING) {
                         downloadSync(content);
                     }
                     break;
@@ -92,8 +92,8 @@ public class ContentDownloadService extends IntentService {
             downloandInProgress++;
             NotificationsUtils.showContentDownloadNotification(getApplicationContext(), Integer.valueOf(content.contentId), content.contentName);
             List<Content> contents = ApiManager.getInstance(this).getContent(LoginUserCache.getInstance().getStudentId(), content.contentId, "");
-            if(contents != null && !contents.isEmpty()) {
-                if(content.fileName.endsWith("html")) {
+            if (contents != null && !contents.isEmpty()) {
+                if (content.fileName.endsWith("html")) {
                     NotificationsUtils.showSuccessNotification(getApplicationContext(), Integer.valueOf(content.contentId), content.contentName);
                     updateOfflineContent(content, OfflineContentStatus.COMPLETED, contents.get(0), 100);
                 } else {
@@ -129,14 +129,14 @@ public class ContentDownloadService extends IntentService {
         try {
             Uri downloadUri = Uri.parse(videoUrl);
             Uri destinationUri = Uri.parse(downloadLocation);
-            if(videoUrl.contains("youtube.com")) {
+            if (videoUrl.contains("youtube.com")) {
                 updateOfflineContent(offlineContent, OfflineContentStatus.FAILED, content, 0);
                 L.info("Downloader : failed");
                 NotificationsUtils.showFailureNotification(getApplicationContext(), Integer.valueOf(content.idContent), content.name);
                 downloandInProgress--;
                 return;
             }
-            if(TextUtils.isEmpty(videoUrl) || TextUtils.isEmpty(downloadLocation)
+            if (TextUtils.isEmpty(videoUrl) || TextUtils.isEmpty(downloadLocation)
                     || downloadUri == null || destinationUri == null
                     || TextUtils.isEmpty(downloadUri.getPath())
                     || TextUtils.isEmpty(destinationUri.getPath())) {
@@ -150,6 +150,7 @@ public class ContentDownloadService extends IntentService {
                     .setDownloadContext(getApplicationContext()) //Optional
                     .setStatusListener(new DownloadStatusListenerV1() {
                         int preProgress = 0;
+
                         @Override
                         public void onDownloadComplete(DownloadRequest downloadRequest) {
                             updateOfflineContent(offlineContent, OfflineContentStatus.COMPLETED, content, 100);
@@ -167,9 +168,10 @@ public class ContentDownloadService extends IntentService {
                         }
 
                         public void onProgress(DownloadRequest downloadRequest, long totalBytes, long downloadedBytes, int progress) {
-                            if (progress != 0 && progress % 10 == 0  && preProgress != progress) {
+                            if (progress != 0 && progress % 10 == 0 && preProgress != progress) {
                                 preProgress = progress;
-                                NotificationsUtils.showVideoDownloadNotification(getApplicationContext(), Integer.valueOf(content.idContent), progress, content.name);
+                                NotificationsUtils.showVideoDownloadNotification(getApplicationContext(), Integer.valueOf(content.idContent), progress,
+                                        content.name);
                                 updateOfflineContent(offlineContent, OfflineContentStatus.IN_PROGRESS, content, progress);
                                 L.info("Downloader : In progress - " + progress + "Update DB");
                             }
@@ -184,8 +186,9 @@ public class ContentDownloadService extends IntentService {
     }
 
     private void updateOfflineContent(OfflineContent offlineContent, OfflineContentStatus status, Content content, int progress) {
-        if(content == null) return;
-        if (!TextUtils.isEmpty(content.idContent) && !TextUtils.isEmpty(offlineContent.contentId) && offlineContent.contentId.equalsIgnoreCase(content.idContent)) {
+        if (content == null) return;
+        if (!TextUtils.isEmpty(content.idContent) && !TextUtils.isEmpty(offlineContent.contentId) && offlineContent.contentId.equalsIgnoreCase(
+                content.idContent)) {
             String fileName = "";
             if (TextUtils.isEmpty(content.type)) {
                 fileName = content.name + ".html";
@@ -202,7 +205,7 @@ public class ContentDownloadService extends IntentService {
             }
             offlineContent.status = status;
             dbManager.save(offlineContent);
-            if(offlineContent.progress == 100) {
+            if (offlineContent.progress == 100) {
                 DbUtils.get(getApplicationContext()).backupDatabase();
             }
             EventBus.getDefault().post(new RefreshOfflineUiEvent());
@@ -213,31 +216,31 @@ public class ContentDownloadService extends IntentService {
         String text = content.type.equalsIgnoreCase(Constants.VIDEO_FILE)
                 ? content.originalUrl
                 : "<!DOCTYPE html>" +
-                "<html>" +
-                "<head>" +
-                "<script type='text/javascript' src='file:///android_asset/jquery/jquery-latest.js'></script>" +
-                "<script type='text/javascript' src='file:///android_asset/jquery/jquery.selection.js'></script>" +
-                "<script type='text/javascript' src='file:///android_asset/MathJax/MathJax.js?config=default'></script>" +
-                "" +
-                "<script type='text/x-mathjax-config'>"
-                +"MathJax.Hub.Config({ "
-                +"showMathMenu: false, "
-                +"jax: ['input/TeX','output/HTML-CSS'], "
-                +"extensions: ['tex2jax.js'], "
-                +"TeX: { extensions: ['AMSmath.js','AMSsymbols.js',"
-                +"'noErrors.js','noUndefined.js'] } "
-                +"});</script>" +
-                "" +
-                "<script>" +
-                "   function copy() {" +
-                "       return $.selection('html');" +
-                "   }" +
-                "</script>" +
-                "</head>" +
-                "<body>" +
-                    content.contentHtml +
-                "</body>" +
-                "</html>";
+                        "<html>" +
+                        "<head>" +
+                        "<script type='text/javascript' src='file:///android_asset/jquery/jquery-latest.js'></script>" +
+                        "<script type='text/javascript' src='file:///android_asset/jquery/jquery.selection.js'></script>" +
+                        "<script type='text/javascript' src='file:///android_asset/MathJax/MathJax.js?config=default'></script>" +
+                        "" +
+                        "<script type='text/x-mathjax-config'>"
+                        + "MathJax.Hub.Config({ "
+                        + "showMathMenu: false, "
+                        + "jax: ['input/TeX','output/HTML-CSS'], "
+                        + "extensions: ['tex2jax.js'], "
+                        + "TeX: { extensions: ['AMSmath.js','AMSsymbols.js',"
+                        + "'noErrors.js','noUndefined.js'] } "
+                        + "});</script>" +
+                        "" +
+                        "<script>" +
+                        "   function copy() {" +
+                        "       return $.selection('html');" +
+                        "   }" +
+                        "</script>" +
+                        "</head>" +
+                        "<body>" +
+                        content.contentHtml +
+                        "</body>" +
+                        "</html>";
         return text;
     }
 
@@ -245,9 +248,10 @@ public class ContentDownloadService extends IntentService {
         try {
             List<ExerciseOfflineModel> offlineExerciseList = dbManager.getOfflineExerciseModels(null);
             for (ExerciseOfflineModel model : offlineExerciseList) {
-                if(model.progress != 100) {
+                if (model.progress != 100) {
                     downloandInProgress++;
-                    List<ExamModel> examModels = ApiManager.getInstance(this).getExercise(model.topicId, model.courseId, LoginUserCache.getInstance().getStudentId(), null);
+                    List<ExamModel> examModels = ApiManager.getInstance(this).getExercise(model.topicId, model.courseId,
+                            LoginUserCache.getInstance().getStudentId(), null);
                     if (examModels != null && !examModels.isEmpty()) {
                         model.progress = 100;
                         model.questions = examModels;

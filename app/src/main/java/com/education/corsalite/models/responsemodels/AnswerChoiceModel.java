@@ -20,5 +20,6 @@ public class AnswerChoiceModel extends BaseModel implements Serializable {
     @SerializedName("AnswerKeyText")
     public String answerKeyText;
 
-    public AnswerChoiceModel() {}
+    public AnswerChoiceModel() {
+    }
 }

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="64dp"
-    android:background="@color/white"
-    android:gravity="center_vertical"
-    android:orientation="horizontal"
-    android:weightSum="1">
+              android:layout_width="match_parent"
+              android:layout_height="64dp"
+              android:background="@color/white"
+              android:gravity="center_vertical"
+              android:orientation="horizontal"
+              android:weightSum="1">
 
     <TextView
         android:id="@+id/mock_test_txt"
@@ -20,7 +20,7 @@
         android:maxLines="1"
         android:padding="5dp"
         android:textColor="@color/text_black"
-        android:textSize="16sp" />
+        android:textSize="16sp"/>
 
     <TextView
         android:id="@+id/mock_test_time_txt"
@@ -32,7 +32,7 @@
         android:maxLines="1"
         android:padding="5dp"
         android:textColor="@color/text_black"
-        android:textSize="12sp" />
+        android:textSize="12sp"/>
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -47,7 +47,7 @@
             android:layout_gravity="center"
             android:layout_marginRight="5dp"
             android:scaleType="centerInside"
-            android:src="@drawable/ico_correct" />
+            android:src="@drawable/ico_correct"/>
 
         <Button
             android:id="@+id/test_status"
@@ -60,7 +60,7 @@
             android:maxLength="1"
             android:textAllCaps="false"
             android:textColor="@color/text_black"
-            android:textSize="12sp" />
+            android:textSize="12sp"/>
     </RelativeLayout>
 
 </LinearLayout>

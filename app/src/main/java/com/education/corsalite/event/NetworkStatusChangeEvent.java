@@ -7,7 +7,8 @@ public class NetworkStatusChangeEvent {
 
     public boolean isconnected = true;
 
-    public NetworkStatusChangeEvent() {}
+    public NetworkStatusChangeEvent() {
+    }
 
     public NetworkStatusChangeEvent(boolean isconnected) {
         this.isconnected = isconnected;

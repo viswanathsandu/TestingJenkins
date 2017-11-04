@@ -18,5 +18,6 @@ public class ScheduledTestsArray extends BaseModel implements Serializable {
     @SerializedName("idTestQuestionPaper")
     public String testQuestionPaperId;
 
-    public ScheduledTestsArray() {}
+    public ScheduledTestsArray() {
+    }
 }

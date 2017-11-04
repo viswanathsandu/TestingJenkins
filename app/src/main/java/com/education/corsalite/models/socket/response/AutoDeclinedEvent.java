@@ -12,7 +12,7 @@ public class AutoDeclinedEvent {
     @SerializedName("isOtherChallengers")
     public String isOtherChallengers;
 
-    public AutoDeclinedEvent(String event, String challengeTestParentId,String isOtherChallengers) {
+    public AutoDeclinedEvent(String event, String challengeTestParentId, String isOtherChallengers) {
         this.event = event;
         this.challengeTestParentId = challengeTestParentId;
         this.isOtherChallengers = isOtherChallengers;

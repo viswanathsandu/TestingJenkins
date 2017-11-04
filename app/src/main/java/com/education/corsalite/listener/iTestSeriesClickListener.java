@@ -10,7 +10,10 @@ import com.education.corsalite.models.responsemodels.TestSeriesMockData;
 public interface iTestSeriesClickListener {
 
     void onTakeTest(TestChapter chapter);
+
     void onMockTest(TestChapter chapter);
+
     void onMockTest(TestSeriesMockData mockTest);
+
     void onRecommendedReading(TestChapter chapter);
 }

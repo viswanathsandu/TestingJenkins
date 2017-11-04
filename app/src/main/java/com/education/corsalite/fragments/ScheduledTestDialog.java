@@ -46,8 +46,10 @@ import retrofit.client.Response;
  */
 public class ScheduledTestDialog extends DialogFragment implements ScheduledTestsListAdapter.IScheduledTestSelectedListener {
 
-    @Bind(R.id.tv_title)TextView tvTitle;
-    @Bind(R.id.mocktests_recyclerview)RecyclerView rvMockTestList;
+    @Bind(R.id.tv_title)
+    TextView tvTitle;
+    @Bind(R.id.mocktests_recyclerview)
+    RecyclerView rvMockTestList;
 
     private ScheduledTestList mScheduledTestList;
     private Dialog dialog;
@@ -73,7 +75,8 @@ public class ScheduledTestDialog extends DialogFragment implements ScheduledTest
     private void showScheduledTests() {
         try {
             if (mScheduledTestList != null) {
-                final LinearLayoutManager layoutManager = new org.solovyev.android.views.llm.LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+                final LinearLayoutManager layoutManager = new org.solovyev.android.views.llm.LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL,
+                        false);
                 rvMockTestList.setLayoutManager(layoutManager);
                 ScheduledTestsListAdapter scheduledTestsListAdapter = new ScheduledTestsListAdapter(mScheduledTestList, getActivity().getLayoutInflater());
                 scheduledTestsListAdapter.setScheduledTestSelectedListener(this);
@@ -110,7 +113,7 @@ public class ScheduledTestDialog extends DialogFragment implements ScheduledTest
     @Override
     public void onSchedledDownload(int position) {
         try {
-            if(SystemUtils.isServiceRunning(getActivity(), TestDownloadService.class)) {
+            if (SystemUtils.isServiceRunning(getActivity(), TestDownloadService.class)) {
                 EventBus.getDefault().post(new com.education.corsalite.event.Toast("Currently downloads are in progress. Please try again"));
                 return;
             }
@@ -130,38 +133,38 @@ public class ScheduledTestDialog extends DialogFragment implements ScheduledTest
     private void loadScheduledTests() {
         showProgress();
         ApiManager.getInstance(getActivity()).getScheduledTestsList(
-            LoginUserCache.getInstance().getStudentId(),
-            new ApiCallback<ScheduledTestList>(getActivity()) {
+                LoginUserCache.getInstance().getStudentId(),
+                new ApiCallback<ScheduledTestList>(getActivity()) {
 
-                @Override
-                public void success(ScheduledTestList scheduledTests, Response response) {
-                    super.success(scheduledTests, response);
-                    if(getActivity() != null) {
-                        dialog.dismiss();
-                        if (scheduledTests != null && scheduledTests.MockTest != null && !scheduledTests.MockTest.isEmpty()) {
-                            ApiCacheHolder.getInstance().setScheduleTestsResponse(scheduledTests);
-                            SugarDbManager.get(getActivity()).saveReqRes(ApiCacheHolder.getInstance().scheduleTests);
-                            mScheduledTestList = scheduledTests;
-                            showScheduledTests();
+                    @Override
+                    public void success(ScheduledTestList scheduledTests, Response response) {
+                        super.success(scheduledTests, response);
+                        if (getActivity() != null) {
+                            dialog.dismiss();
+                            if (scheduledTests != null && scheduledTests.MockTest != null && !scheduledTests.MockTest.isEmpty()) {
+                                ApiCacheHolder.getInstance().setScheduleTestsResponse(scheduledTests);
+                                SugarDbManager.get(getActivity()).saveReqRes(ApiCacheHolder.getInstance().scheduleTests);
+                                mScheduledTestList = scheduledTests;
+                                showScheduledTests();
+                            }
                         }
                     }
-                }
 
-                @Override
-                public void failure(CorsaliteError error) {
-                    super.failure(error);
-                    try {
-                        dialog.dismiss();
-                        dismiss();
-                        ((AbstractBaseActivity) getActivity()).showToast("No scheduled tests available");
-                    } catch (Exception e) {
-                        L.error(e.getMessage(), e);
+                    @Override
+                    public void failure(CorsaliteError error) {
+                        super.failure(error);
+                        try {
+                            dialog.dismiss();
+                            dismiss();
+                            ((AbstractBaseActivity) getActivity()).showToast("No scheduled tests available");
+                        } catch (Exception e) {
+                            L.error(e.getMessage(), e);
+                        }
                     }
-                }
-            });
+                });
     }
 
-    public void showProgress(){
+    public void showProgress() {
         ProgressBar pbar = new ProgressBar(getActivity());
         pbar.setBackgroundColor(getResources().getColor(android.R.color.transparent));
         dialog = new Dialog(getActivity());

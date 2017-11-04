@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="16dp"
-    android:orientation="vertical"
-    android:background="@color/webview_background_grey"
-    android:layout_marginLeft="20dp"
-    android:layout_marginBottom="10dp"
-    android:layout_marginRight="10dp">
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:padding="16dp"
+              android:orientation="vertical"
+              android:background="@color/webview_background_grey"
+              android:layout_marginLeft="20dp"
+              android:layout_marginBottom="10dp"
+              android:layout_marginRight="10dp">
 
     <WebView
         android:id="@+id/notes_content_webview"
@@ -27,7 +27,7 @@
             android:layout_height="35dp"
             android:text="Delete"
             android:background="@drawable/delete_button_selector"
-            android:textColor="@color/text_white" />
+            android:textColor="@color/text_white"/>
 
         <com.education.corsalite.views.CustomButton
             android:id="@+id/edit_btn"
@@ -36,6 +36,6 @@
             android:text="Edit"
             android:layout_marginLeft="10dp"
             android:background="@drawable/edit_btn_selector"
-            android:textColor="@color/text_white" />
+            android:textColor="@color/text_white"/>
     </LinearLayout>
 </LinearLayout>

@@ -30,9 +30,9 @@ public class ExamSpinnerAdapter extends ArrayAdapter<Exam> {
 
     @Override
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
-        View itemView =  ((Activity)context).getLayoutInflater().inflate(R.layout.spinner_drop_down,null);
-        TextView textView = (TextView)itemView.findViewById(R.id.text);
-        ImageView imageView = (ImageView)itemView.findViewById(R.id.selected_item);
+        View itemView = ((Activity) context).getLayoutInflater().inflate(R.layout.spinner_drop_down, null);
+        TextView textView = (TextView) itemView.findViewById(R.id.text);
+        ImageView imageView = (ImageView) itemView.findViewById(R.id.selected_item);
         Exam exam = data.get(position);
         textView.setText(exam.examName);
         imageView.setVisibility(position == selectedPosition ? View.VISIBLE : View.INVISIBLE);
@@ -44,7 +44,7 @@ public class ExamSpinnerAdapter extends ArrayAdapter<Exam> {
         return super.getItem(position);
     }
 
-    public void setSelectedPosition(int position){
-       selectedPosition = position;
-   }
+    public void setSelectedPosition(int position) {
+        selectedPosition = position;
+    }
 }

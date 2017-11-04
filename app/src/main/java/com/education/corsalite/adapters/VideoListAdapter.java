@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.education.corsalite.R;
-import com.education.corsalite.fragments.VideoListDialog;
 import com.education.corsalite.models.ContentModel;
 
 import java.util.List;
@@ -32,7 +31,7 @@ public class VideoListAdapter extends AbstractRecycleViewAdapter {
         addAll(videoList);
     }
 
-    public void setVideoSelectedListener(IVideoSelectedListener mListener){
+    public void setVideoSelectedListener(IVideoSelectedListener mListener) {
         this.mListener = mListener;
     }
 
@@ -43,7 +42,7 @@ public class VideoListAdapter extends AbstractRecycleViewAdapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((VideoDataHolder) holder).bindData(position, (ContentModel)getItem(position));
+        ((VideoDataHolder) holder).bindData(position, (ContentModel) getItem(position));
     }
 
     public class VideoDataHolder extends RecyclerView.ViewHolder {
@@ -64,7 +63,7 @@ public class VideoListAdapter extends AbstractRecycleViewAdapter {
             tvName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(mListener != null) {
+                    if (mListener != null) {
                         mListener.onVideoSelected(position);
                     }
                 }
@@ -72,7 +71,7 @@ public class VideoListAdapter extends AbstractRecycleViewAdapter {
         }
     }
 
-    public interface IVideoSelectedListener{
+    public interface IVideoSelectedListener {
         void onVideoSelected(int position);
     }
 }

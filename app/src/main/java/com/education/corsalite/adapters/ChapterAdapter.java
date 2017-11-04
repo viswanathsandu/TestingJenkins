@@ -26,13 +26,13 @@ public class ChapterAdapter extends BaseAdapter {
     public ChapterAdapter(List<ChapterModel> chapterModelList, Context mContext) {
         this.chapterModelList = chapterModelList;
         this.mContext = mContext;
-        inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
     }
 
     @Override
     public int getCount() {
-        if(chapterModelList != null) {
+        if (chapterModelList != null) {
             return chapterModelList.size();
         }
         return 0;
@@ -51,22 +51,22 @@ public class ChapterAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = inflater.inflate(R.layout.row_spinner_text, parent, false);
-        TextView tv = (TextView)convertView.findViewById(R.id.tv_spn);
+        TextView tv = (TextView) convertView.findViewById(R.id.tv_spn);
         tv.setText(chapterModelList.get(position).chapterName);
         return convertView;
     }
 
     @Override
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
-        View itemView =  inflater.inflate(R.layout.spinner_drop_down, null);
-        TextView textView = (TextView)itemView.findViewById(R.id.text);
-        ImageView imageView = (ImageView)itemView.findViewById(R.id.selected_item);
+        View itemView = inflater.inflate(R.layout.spinner_drop_down, null);
+        TextView textView = (TextView) itemView.findViewById(R.id.text);
+        ImageView imageView = (ImageView) itemView.findViewById(R.id.selected_item);
         textView.setText(chapterModelList.get(position).chapterName);
         imageView.setVisibility(position == selectedPosition ? View.VISIBLE : View.INVISIBLE);
         return itemView;
     }
 
-    public void setSelectedPosition(int position){
+    public void setSelectedPosition(int position) {
         selectedPosition = position;
         notifyDataSetChanged();
     }

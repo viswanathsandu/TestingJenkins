@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/ll_user_details"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="#f3f3f3"
-    android:orientation="horizontal"
-    android:visibility="visible"
-    tools:ignore="MissingPrefix">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/ll_user_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#f3f3f3"
+                android:orientation="horizontal"
+                android:visibility="visible"
+                tools:ignore="MissingPrefix">
 
     <LinearLayout
         android:id="@+id/vc_layout"
@@ -22,20 +22,20 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:onClick="onClickIntent"
-            android:src="@drawable/ico_currency_profile" />
+            android:src="@drawable/ico_currency_profile"/>
 
         <TextView
             style="@style/user_profile_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="Virtual Currency" />
+            android:text="Virtual Currency"/>
 
         <TextView
             android:id="@+id/tv_virtual_currency_balance"
             style="@style/user_profile_heading_bold"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"/>
 
         <com.education.corsalite.views.CustomButton
             android:id="@+id/redeem_btn"
@@ -45,7 +45,7 @@
             android:background="@drawable/redeem_btn_selector"
             android:text="REDEEM"
             android:textStyle="bold"
-            android:visibility="invisible" />
+            android:visibility="invisible"/>
     </LinearLayout>
 
 
@@ -58,7 +58,7 @@
         android:background="#d3d3d3"
         android:layout_toLeftOf="@+id/vc_layout"
         android:layout_alignTop="@+id/vc_layout"
-        android:layout_alignBottom="@+id/vc_layout" />
+        android:layout_alignBottom="@+id/vc_layout"/>
 
 
     <LinearLayout
@@ -88,14 +88,14 @@
                         android:layout_height="70dp"
                         android:layout_gravity="left"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/user" />
+                        android:src="@drawable/user"/>
 
                     <ImageView
                         android:id="@+id/btn_edit_pic"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="right|bottom"
-                        android:src="@drawable/ico_edit_pic" />
+                        android:src="@drawable/ico_edit_pic"/>
                 </FrameLayout>
 
                 <RelativeLayout
@@ -105,11 +105,11 @@
 
                     <Spinner
                         android:id="@+id/sp_default_course"
-                        android:layout_width= "90dp"
+                        android:layout_width="90dp"
                         android:layout_height="25dp"
                         android:background="@drawable/shape_rounded_corners_black"
                         android:spinnerMode="dropdown"
-                        android:textColor="@color/white" />
+                        android:textColor="@color/white"/>
 
                     <TextView
                         android:id="@+id/btn_default_course"
@@ -127,7 +127,7 @@
                         android:padding="3dp"
                         android:text="Default Course"
                         android:textColor="@color/white"
-                        android:textSize="10sp" />
+                        android:textSize="10sp"/>
 
                 </RelativeLayout>
 
@@ -145,7 +145,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:drawableRight="@drawable/ico_edit" />
+                    android:drawableRight="@drawable/ico_edit"/>
 
                 <TextView
                     android:id="@+id/tv_userFullName"
@@ -173,7 +173,7 @@
                     android:layout_below="@id/tv_emailId"
                     android:text="Institute: "
                     android:paddingTop="10dp"
-                    android:visibility="gone" />
+                    android:visibility="gone"/>
 
                 <TextView
                     android:id="@+id/tv_institute"
@@ -182,7 +182,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tv_emailId"
                     android:layout_toRightOf="@id/tv_instituteHeader"
-                    android:visibility="gone" />
+                    android:visibility="gone"/>
 
             </RelativeLayout>
         </LinearLayout>
@@ -196,7 +196,7 @@
             android:ellipsize="end"
             android:lineSpacingMultiplier="1.2"
             android:maxLines="2"
-            android:layout_margin="5dp" />
+            android:layout_margin="5dp"/>
     </LinearLayout>
 
 </RelativeLayout>

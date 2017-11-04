@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical"
-    android:padding="15dp">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:padding="15dp">
 
     <TextView
         android:id="@+id/tv_close"
@@ -15,7 +15,7 @@
         android:background="@drawable/ico_close"
         android:padding="10dp"
         android:textColor="@color/black"
-        android:textStyle="bold" />
+        android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/tv_title"
@@ -25,14 +25,14 @@
         android:padding="10dp"
         android:text="Full Question Paper"
         android:textColor="@color/black"
-        android:textSize="15sp" />
+        android:textSize="15sp"/>
 
     <View
         android:id="@+id/separator"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/tv_title"
-        android:background="@color/gray" />
+        android:background="@color/gray"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/questions_recyclerview"

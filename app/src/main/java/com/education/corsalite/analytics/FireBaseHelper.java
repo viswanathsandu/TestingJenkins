@@ -18,30 +18,30 @@ public class FireBaseHelper {
     }
 
     public static void setUsername(String username) {
-        if(firebase == null) return;
+        if (firebase == null) return;
         firebase.setUserId(username);
     }
 
     public static void logEvent(String tag) {
-        if(firebase == null) return;
+        if (firebase == null) return;
         Bundle bundle = new Bundle();
         firebase.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
     }
 
     public static void logScreen(String screenName) {
-        if(firebase == null) return;
+        if (firebase == null) return;
         Bundle bundle = new Bundle();
         bundle.putString(Param.SCREEN_NAME, screenName);
         firebase.logEvent(Event.SCREEN, bundle);
     }
 
     public static void log(String logType, String tag, String message) {
-        if(firebase == null) return;
+        if (firebase == null) return;
         log(logType, tag, message, null);
     }
 
     public static void log(String logType, String tag, String message, Throwable throwable) {
-        if(firebase == null) return;
+        if (firebase == null) return;
         Bundle bundle = new Bundle();
         bundle.putString(Param.LOG_TYPE, logType);
         bundle.putString(Param.LOG_NAME, tag);
@@ -58,12 +58,16 @@ public class FireBaseHelper {
         public static final String LOG_TYPE = "log_type";
         public static final String LOG_MESSAGE = "log_message";
         public static final String LOG_STACK_TRACE = "log_stack_trace";
-        protected Param() {}
+
+        protected Param() {
+        }
     }
 
     public static class Event {
         public static final String SCREEN = "screen";
         public static final String LOGGER = "logger";
-        protected Event() {}
+
+        protected Event() {
+        }
     }
 }

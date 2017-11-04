@@ -6,6 +6,7 @@ package com.education.corsalite.event;
 
 public class Toast {
     public String message;
+
     public Toast(String message) {
         this.message = message;
     }

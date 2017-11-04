@@ -13,7 +13,8 @@ public class CourseList extends BaseModel {
     public List<String> courses;
     public Integer defaultCourseIndex;
 
-    public CourseList() {}
+    public CourseList() {
+    }
 
     public CourseList(List<String> courses) {
         this.courses = courses;

@@ -36,8 +36,10 @@ import butterknife.ButterKnife;
  */
 public class VideoListDialog extends DialogFragment implements VideoListAdapter.IVideoSelectedListener {
 
-    @Bind(R.id.tv_title)TextView tvTitle;
-    @Bind(R.id.rv_videolist)RecyclerView rvVideoList;
+    @Bind(R.id.tv_title)
+    TextView tvTitle;
+    @Bind(R.id.rv_videolist)
+    RecyclerView rvVideoList;
 
     List<ContentModel> mVideoList;
 
@@ -54,12 +56,12 @@ public class VideoListDialog extends DialogFragment implements VideoListAdapter.
         View v = inflater.inflate(R.layout.fragment_video_list, container, false);
         ButterKnife.bind(this, v);
 
-        if(getArguments().getString("title") != null && getArguments().getString("title").length() >0 ) {
+        if (getArguments().getString("title") != null && getArguments().getString("title").length() > 0) {
             String title = tvTitle.getText().toString() + "<b>" + getArguments().getString("title") + "</b>";
             tvTitle.setText(Html.fromHtml(title));
         }
 
-        if(getArguments().getSerializable("videolist") != null) {
+        if (getArguments().getSerializable("videolist") != null) {
             mVideoList = (List<ContentModel>) getArguments().getSerializable("videolist");
         }
 

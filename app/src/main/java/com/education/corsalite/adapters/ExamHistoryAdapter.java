@@ -53,14 +53,22 @@ public class ExamHistoryAdapter extends AbstractRecycleViewAdapter {
     public class ExamHistoryViewHolder extends RecyclerView.ViewHolder {
 
         View parent;
-        @Bind(R.id.date_txt) TextView date;
-        @Bind(R.id.month_year_txt) TextView monthYear;
-        @Bind(R.id.time_txt) TextView time;
-        @Bind(R.id.tv_score) TextView score;
-        @Bind(R.id.tv_exam) TextView exam;
-        @Bind(R.id.tv_type) TextView type;
-        @Bind(R.id.tv_rank) TextView rank;
-        @Bind(R.id.tv_status) TextView status;
+        @Bind(R.id.date_txt)
+        TextView date;
+        @Bind(R.id.month_year_txt)
+        TextView monthYear;
+        @Bind(R.id.time_txt)
+        TextView time;
+        @Bind(R.id.tv_score)
+        TextView score;
+        @Bind(R.id.tv_exam)
+        TextView exam;
+        @Bind(R.id.tv_type)
+        TextView type;
+        @Bind(R.id.tv_rank)
+        TextView rank;
+        @Bind(R.id.tv_status)
+        TextView status;
 
         public ExamHistoryViewHolder(View view) {
             super(view);
@@ -77,16 +85,16 @@ public class ExamHistoryAdapter extends AbstractRecycleViewAdapter {
             this.rank.setText(examHistory.rank);
             this.status.setText("");
             this.score.setText("-");
-            if(!TextUtils.isEmpty(examHistory.totalScore) && examHistory.totalScore.contains(".")) {
+            if (!TextUtils.isEmpty(examHistory.totalScore) && examHistory.totalScore.contains(".")) {
                 int scoreInt = -1;
                 try {
                     scoreInt = (int) (Double.parseDouble(examHistory.totalScore));
                 } catch (Exception e) {
                     L.error(e.getMessage(), e);
                 }
-                this.score.setText(scoreInt == -1 ? "-" : scoreInt+"");
+                this.score.setText(scoreInt == -1 ? "-" : scoreInt + "");
             }
-            if(!TextUtils.isEmpty(examHistory.status)) {
+            if (!TextUtils.isEmpty(examHistory.status)) {
                 this.status.setText(examHistory.status);
             }
             parent.setOnClickListener(new View.OnClickListener() {

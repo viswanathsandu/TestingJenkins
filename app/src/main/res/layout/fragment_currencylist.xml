@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/headerLayout"
@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:background="@color/tab_recycler_header">
 
-        <include layout="@layout/row_virtual_currency_header_list" />
+        <include layout="@layout/row_virtual_currency_header_list"/>
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
@@ -18,10 +18,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/headerLayout"
-        android:scrollbars="vertical" />
+        android:scrollbars="vertical"/>
 
     <include layout="@layout/layout_nodata"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"/>
 
 </RelativeLayout>

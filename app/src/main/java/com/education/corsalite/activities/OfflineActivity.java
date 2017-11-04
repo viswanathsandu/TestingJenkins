@@ -34,12 +34,12 @@ public class OfflineActivity extends AbstractBaseActivity {
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         RelativeLayout myView = (RelativeLayout) inflater.inflate(R.layout.activity_offline_content, null);
         frameLayout.addView(myView);
-        tabLayout = (TabLayout)findViewById(R.id.tl_offline);
-        mViewPager = (ViewPager)findViewById(R.id.pager);
+        tabLayout = (TabLayout) findViewById(R.id.tl_offline);
+        mViewPager = (ViewPager) findViewById(R.id.pager);
         getIntentData();
         setToolbarForOfflineContent();
         setTabView();
-        if(getSelectedCourse() == null) {
+        if (getSelectedCourse() == null) {
             showProgress();
         }
     }
@@ -53,20 +53,20 @@ public class OfflineActivity extends AbstractBaseActivity {
 
     @SuppressWarnings("unused")
     public void onEvent(RefreshOfflineUiEvent event) {
-        if(mViewPager != null && mViewPager.getAdapter() != null) {
+        if (mViewPager != null && mViewPager.getAdapter() != null) {
             mViewPager.getAdapter().notifyDataSetChanged();
         }
     }
 
-    private void getIntentData(){
+    private void getIntentData() {
         selection = getIntent().getIntExtra("selection", 0);
     }
 
-    public void setOfflineListener(IOfflineEventListener offlineEventListener){
+    public void setOfflineListener(IOfflineEventListener offlineEventListener) {
         this.offlineEventListener = offlineEventListener;
     }
 
-    public void setOfflineTestListener(IOfflineTestEventListener offlineTestEventListener){
+    public void setOfflineTestListener(IOfflineTestEventListener offlineTestEventListener) {
         this.offlineTestEventListener = offlineTestEventListener;
     }
 
@@ -74,26 +74,27 @@ public class OfflineActivity extends AbstractBaseActivity {
     public void onEvent(Course course) {
         super.onEvent(course);
         closeProgress();
-        if(offlineEventListener!=null) {
+        if (offlineEventListener != null) {
             offlineEventListener.onCourseIdSelected(course);
         }
-        if(offlineTestEventListener != null) {
+        if (offlineTestEventListener != null) {
             offlineTestEventListener.onCourseIdSelected(course);
         }
     }
 
     public void onEventMainThread(OfflineActivityRefreshEvent offlineActivityRefreshEvent) {
-        L.info("Saved data with this id: "+ offlineActivityRefreshEvent.id);
-        if(offlineEventListener!=null) {
+        L.info("Saved data with this id: " + offlineActivityRefreshEvent.id);
+        if (offlineEventListener != null) {
             offlineEventListener.onUpdateOfflineData(offlineActivityRefreshEvent.id);
         }
     }
 
-    private class OfflineBaseTabAdapter extends FragmentPagerAdapter{
+    private class OfflineBaseTabAdapter extends FragmentPagerAdapter {
 
         public OfflineBaseTabAdapter(android.support.v4.app.FragmentManager fm) {
             super(fm);
         }
+
         @Override
         public Fragment getItem(int i) {
             Fragment fragment = null;
@@ -140,20 +141,23 @@ public class OfflineActivity extends AbstractBaseActivity {
         super.onBackPressed();
     }
 
-    public void onDelete(String selectedId, String tag){
-        if(offlineEventListener !=null){
-            offlineEventListener.onDeleteOfflineData(selectedId,tag);
+    public void onDelete(String selectedId, String tag) {
+        if (offlineEventListener != null) {
+            offlineEventListener.onDeleteOfflineData(selectedId, tag);
         }
     }
 
-    public interface IOfflineEventListener{
+    public interface IOfflineEventListener {
         void onUpdateOfflineData(String selectedCourse);
-        void onDeleteOfflineData(String selectedId,String tag);
+
+        void onDeleteOfflineData(String selectedId, String tag);
+
         void onCourseIdSelected(Course selectedCourse);
     }
 
-    public interface IOfflineTestEventListener{
+    public interface IOfflineTestEventListener {
         void onCourseIdSelected(Course selectedCourse);
-        void onDeleteOfflineTest(int position,String tag);
+
+        void onDeleteOfflineTest(int position, String tag);
     }
 }

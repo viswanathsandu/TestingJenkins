@@ -1062,24 +1062,25 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                 });
-                ApiManager.getInstance(this).getVirtualCurrencyBalance(LoginUserCache.getInstance().getStudentId(), new ApiCallback<VirtualCurrencyBalanceResponse>(this) {
-                    @Override
-                    public void success(VirtualCurrencyBalanceResponse virtualCurrencyBalanceResponse, Response response) {
-                        super.success(virtualCurrencyBalanceResponse, response);
-                        toolbar.findViewById(R.id.ProgressBar).setVisibility(View.GONE);
-                        if (virtualCurrencyBalanceResponse != null && virtualCurrencyBalanceResponse.balance != null) {
-                            appPref.setVirtualCurrency(virtualCurrencyBalanceResponse.balance.intValue() + "");
-                            TextView textView = (TextView) toolbar.findViewById(R.id.tv_virtual_currency);
-                            textView.setText(virtualCurrencyBalanceResponse.balance.intValue() + "");
-                        }
-                    }
+                ApiManager.getInstance(this).getVirtualCurrencyBalance(LoginUserCache.getInstance().getStudentId(),
+                        new ApiCallback<VirtualCurrencyBalanceResponse>(this) {
+                            @Override
+                            public void success(VirtualCurrencyBalanceResponse virtualCurrencyBalanceResponse, Response response) {
+                                super.success(virtualCurrencyBalanceResponse, response);
+                                toolbar.findViewById(R.id.ProgressBar).setVisibility(View.GONE);
+                                if (virtualCurrencyBalanceResponse != null && virtualCurrencyBalanceResponse.balance != null) {
+                                    appPref.setVirtualCurrency(virtualCurrencyBalanceResponse.balance.intValue() + "");
+                                    TextView textView = (TextView) toolbar.findViewById(R.id.tv_virtual_currency);
+                                    textView.setText(virtualCurrencyBalanceResponse.balance.intValue() + "");
+                                }
+                            }
 
-                    @Override
-                    public void failure(CorsaliteError error) {
-                        super.failure(error);
-                        toolbar.findViewById(R.id.ProgressBar).setVisibility(View.GONE);
-                    }
-                });
+                            @Override
+                            public void failure(CorsaliteError error) {
+                                super.failure(error);
+                                toolbar.findViewById(R.id.ProgressBar).setVisibility(View.GONE);
+                            }
+                        });
             }
         } catch (Exception e) {
             L.error(e.getMessage(), e);
@@ -1556,7 +1557,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     protected void loadScheduledTests() {
         String timeString = appPref.getValue("last_time_scheduled_tests_loaded");
-        if(!TextUtils.isEmpty(timeString)
+        if (!TextUtils.isEmpty(timeString)
                 && Long.parseLong(timeString) > (new Date().getTime() - 30 * 60 * 60 * 1000)) {
             return;
         }

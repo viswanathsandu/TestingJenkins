@@ -27,7 +27,7 @@ public class VirtualCurrencyActivity extends AbstractBaseActivity {
     }
 
     protected void initToolbar() {
-        redeemBtn = (Button)toolbar.findViewById(R.id.redeem_btn);
+        redeemBtn = (Button) toolbar.findViewById(R.id.redeem_btn);
         redeemBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

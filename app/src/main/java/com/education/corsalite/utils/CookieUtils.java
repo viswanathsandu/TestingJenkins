@@ -13,7 +13,7 @@ import retrofit.client.Response;
 public class CookieUtils {
 
     public static String getCookieString(Response response) {
-        if(response.getStatus() == 200) {
+        if (response.getStatus() == 200) {
             for (Header header : response.getHeaders()) {
                 if (!TextUtils.isEmpty(header.getName()) && header.getName().equals("Set-Cookie")) {
                     return header.getValue();
@@ -24,7 +24,7 @@ public class CookieUtils {
     }
 
     public static String getCookieString(com.squareup.okhttp.Response response) {
-        if(response.isSuccessful()) {
+        if (response.isSuccessful()) {
             List<String> headers = response.headers("Set-Cookie");
             if (headers != null && !headers.isEmpty()) {
                 return headers.get(0);

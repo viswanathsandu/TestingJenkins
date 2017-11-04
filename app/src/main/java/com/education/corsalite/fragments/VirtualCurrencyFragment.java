@@ -33,13 +33,13 @@ public class VirtualCurrencyFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_currencylist, container, false);
         mRecyclerView = (RecyclerView) v.findViewById(R.id.userdetail_recyclerView);
         layoutEmpty = (LinearLayout) v.findViewById(R.id.layout_empty);
-        tvNoData = (TextView)v.findViewById(R.id.tv_no_data);
+        tvNoData = (TextView) v.findViewById(R.id.tv_no_data);
         tvNoData.setText("No Currency Summary Found");
-        tvNoData.setTextAppearance(getActivity(),R.style.user_profile_text);
+        tvNoData.setTextAppearance(getActivity(), R.style.user_profile_text);
         mRecyclerView.setVisibility(View.VISIBLE);
         layoutEmpty.setVisibility(View.GONE);
         mLayoutManager = new LinearLayoutManager(getActivity());
@@ -54,7 +54,7 @@ public class VirtualCurrencyFragment extends BaseFragment {
                     @Override
                     public void failure(CorsaliteError error) {
                         super.failure(error);
-                        if(error!= null && !TextUtils.isEmpty(error.message)) {
+                        if (error != null && !TextUtils.isEmpty(error.message)) {
                             showToast(error.message);
                         }
                     }
@@ -62,7 +62,7 @@ public class VirtualCurrencyFragment extends BaseFragment {
                     @Override
                     public void success(VirtualCurrencySummaryResponse virtualCurrencySummaryResponse, Response response) {
                         super.success(virtualCurrencySummaryResponse, response);
-                        if(virtualCurrencySummaryResponse != null &&
+                        if (virtualCurrencySummaryResponse != null &&
                                 virtualCurrencySummaryResponse.virtualCurrencyTransaction != null &&
                                 virtualCurrencySummaryResponse.virtualCurrencyTransaction.size() > 0) {
                             mAdapter = new CurrencyAdapter(virtualCurrencySummaryResponse.virtualCurrencyTransaction, inflater);
