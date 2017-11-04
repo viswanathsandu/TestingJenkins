@@ -26,12 +26,18 @@ import retrofit.client.Response;
 
 public class SettingsActivity extends AbstractBaseActivity {
 
-    @Bind(R.id.app_up_to_date_txt) TextView upToDateTxt;
-    @Bind(R.id.app_current_version_txt) TextView currentVersionTxt;
-    @Bind(R.id.app_latest_version_txt) TextView latestVersionTxt;
-    @Bind(R.id.app_upgrade_btn) Button appUpgradeButton;
-    @Bind(R.id.app_current_version_layout) LinearLayout currentVersionLayout;
-    @Bind(R.id.app_latest_version_layout) LinearLayout latestVersionLayout;
+    @Bind(R.id.app_up_to_date_txt)
+    TextView upToDateTxt;
+    @Bind(R.id.app_current_version_txt)
+    TextView currentVersionTxt;
+    @Bind(R.id.app_latest_version_txt)
+    TextView latestVersionTxt;
+    @Bind(R.id.app_upgrade_btn)
+    Button appUpgradeButton;
+    @Bind(R.id.app_current_version_layout)
+    LinearLayout currentVersionLayout;
+    @Bind(R.id.app_latest_version_layout)
+    LinearLayout latestVersionLayout;
 
     private ClientEntityAppConfig cliententityconfig;
 
@@ -53,7 +59,7 @@ public class SettingsActivity extends AbstractBaseActivity {
     @Override
     protected void requestClientEntityConfig() {
         LoginResponse loginResponse = LoginUserCache.getInstance().getLoginResponse();
-        if(loginResponse != null && !TextUtils.isEmpty(loginResponse.idUser) && !TextUtils.isEmpty(loginResponse.entitiyId)) {
+        if (loginResponse != null && !TextUtils.isEmpty(loginResponse.idUser) && !TextUtils.isEmpty(loginResponse.entitiyId)) {
             showProgress();
             ApiManager.getInstance(this).getClientEntityAppConfig(loginResponse.idUser, loginResponse.entitiyId,
                     new ApiCallback<ClientEntityAppConfig>(this) {
@@ -81,7 +87,7 @@ public class SettingsActivity extends AbstractBaseActivity {
             if (clientEntityAppConfig != null) {
                 currentVersionTxt.setText(BuildConfig.VERSION_NAME);
                 int latestAppVersion;
-                if(TextUtils.isEmpty(clientEntityAppConfig.getAppVersionNumber())) {
+                if (TextUtils.isEmpty(clientEntityAppConfig.getAppVersionNumber())) {
                     latestAppVersion = Integer.parseInt(clientEntityAppConfig.getAppVersionNumber());
                 } else {
                     latestAppVersion = AbstractBaseActivity.appConfig.getLatestVersionCode();
@@ -104,8 +110,8 @@ public class SettingsActivity extends AbstractBaseActivity {
 
     @OnClick(R.id.app_upgrade_btn)
     public void onUpgradeClicked() {
-        if(cliententityconfig != null) {
-            if(cliententityconfig.isAppFromUnknownSources()) {
+        if (cliententityconfig != null) {
+            if (cliententityconfig.isAppFromUnknownSources()) {
                 updateAppFromThirdParty(cliententityconfig.getUpdateUrl());
             } else {
                 updateAppFromPlayStore();

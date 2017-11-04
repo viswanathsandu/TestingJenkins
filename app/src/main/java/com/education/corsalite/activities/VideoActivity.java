@@ -37,8 +37,10 @@ import retrofit.client.Response;
  */
 public class VideoActivity extends AbstractBaseActivity {
 
-    @Bind(R.id.videoViewRelative) VideoView videoViewRelative;
-    @Bind(R.id.youtube_container) View youtubeContainer;
+    @Bind(R.id.videoViewRelative)
+    VideoView videoViewRelative;
+    @Bind(R.id.youtube_container)
+    View youtubeContainer;
     private YouTubePlayerSupportFragment youtubeFragment;
 
     List<ContentModel> mContentModels;
@@ -56,17 +58,17 @@ public class VideoActivity extends AbstractBaseActivity {
         ButterKnife.bind(this);
         youtubeFragment = (YouTubePlayerSupportFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.youtube_fragment);
-        if(getIntent().hasExtra("selectedPosition")) {
+        if (getIntent().hasExtra("selectedPosition")) {
             selectedPosition = getIntent().getExtras().getInt("selectedPosition");
         }
-        if(getIntent().hasExtra("videoList")) {
-            mContentModels = (List<ContentModel>)getIntent().getExtras().getSerializable("videoList");
+        if (getIntent().hasExtra("videoList")) {
+            mContentModels = (List<ContentModel>) getIntent().getExtras().getSerializable("videoList");
             setToolbarForVideo(mContentModels, (int) selectedPosition);
         }
         if(getIntent().hasExtra("videoStartTime")) {
             videoStartPosition= getIntent().getStringExtra("videoStartTime");
         }
-        if(getIntent().hasExtra("videopath")){
+        if (getIntent().hasExtra("videopath")) {
             videoPath = getIntent().getStringExtra("videopath");
             loadLocalVideo();
         } else if (selectedPosition >= 0 && mContentModels != null) {
@@ -77,7 +79,7 @@ public class VideoActivity extends AbstractBaseActivity {
     @Override
     public void onEvent(Integer position) {
         super.onEvent(position);
-        if(contents != null) {
+        if (contents != null) {
             loadWeb(position);
         }
     }
@@ -86,30 +88,31 @@ public class VideoActivity extends AbstractBaseActivity {
         // Initialize the WebView
         try {
             OfflineContent offlineContent = dbManager.getOfflineContentWithContent(contents.get(selectedPosition).idContent);
-            if(offlineContent != null && offlineContent.progress == 100) {
+            if (offlineContent != null && offlineContent.progress == 100) {
                 videoPath = FileUtils.get(this).getVideoDownloadFilePath(offlineContent.contentId);
                 loadLocalVideo();
                 return;
-            } else if(!SystemUtils.isNetworkConnected(this)) {
+            } else if (!SystemUtils.isNetworkConnected(this)) {
                 showToast("Video is not available for offline");
                 return;
             }
-            if(contents.get(selectedPosition).url.contains("youtube.com")) {
+            if (contents.get(selectedPosition).url.contains("youtube.com")) {
                 videoViewRelative.setVisibility(View.GONE);
                 youtubeContainer.setVisibility(View.VISIBLE);
                 youtubeFragment.initialize(getString(R.string.google_api_key),
                         new YouTubePlayer.OnInitializedListener() {
                             @Override
                             public void onInitializationSuccess(YouTubePlayer.Provider provider,
-                                                                YouTubePlayer youTubePlayer, boolean b) {
+                                    YouTubePlayer youTubePlayer, boolean b) {
                                 // do any work here to cue video, play video, etc.
                                 String endPath = contents.get(selectedPosition).url.replaceFirst(".*/([^/?]+).*", "$1");
                                 youTubePlayer.cueVideo(endPath);
                             }
+
                             @Override
                             public void onInitializationFailure(YouTubePlayer.Provider provider,
-                                                                YouTubeInitializationResult youTubeInitializationResult) {
-                                if(youTubeInitializationResult.isUserRecoverableError()) {
+                                    YouTubeInitializationResult youTubeInitializationResult) {
+                                if (youTubeInitializationResult.isUserRecoverableError()) {
                                     youTubeInitializationResult.getErrorDialog(VideoActivity.this, 1).show();
                                 } else {
                                     showToast(String.format("Error initializing YouTube player: %s", youTubeInitializationResult.toString()));
@@ -146,7 +149,7 @@ public class VideoActivity extends AbstractBaseActivity {
     protected void onPause() {
         super.onPause();
         selectedPosition = videoViewRelative.getCurrentPosition();
-        if(videoViewRelative != null && videoViewRelative.isPlaying()) {
+        if (videoViewRelative != null && videoViewRelative.isPlaying()) {
             videoViewRelative.pause();
         }
     }
@@ -154,7 +157,7 @@ public class VideoActivity extends AbstractBaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(videoViewRelative != null && selectedPosition > 0) {
+        if (videoViewRelative != null && selectedPosition > 0) {
             videoViewRelative.seekTo(selectedPosition);
             videoViewRelative.pause();
         }
@@ -162,8 +165,8 @@ public class VideoActivity extends AbstractBaseActivity {
 
     private void getContent() {
         String contentId = "";
-        for(ContentModel contentModel : mContentModels) {
-            if(contentId.trim().length() > 0) {
+        for (ContentModel contentModel : mContentModels) {
+            if (contentId.trim().length() > 0) {
                 contentId = contentId + ",";
             }
             contentId = contentId + contentModel.idContent;
@@ -185,12 +188,12 @@ public class VideoActivity extends AbstractBaseActivity {
                 contents = contentList;
                 ApiCacheHolder.getInstance().setContentResponse(contentList);
                 dbManager.saveReqRes(ApiCacheHolder.getInstance().contentReqIndex);
-                onEvent((int)selectedPosition);
+                onEvent((int) selectedPosition);
             }
         });
     }
 
-    private void loadLocalVideo(){
+    private void loadLocalVideo() {
         videoViewRelative.setVisibility(View.VISIBLE);
         youtubeContainer.setVisibility(View.GONE);
         videoViewRelative.requestFocus();

@@ -9,7 +9,8 @@ public abstract class AbstractBaseRequest extends BaseModel {
 
     public abstract boolean equals(AbstractBaseRequest request);
 
-    public AbstractBaseRequest() {}
+    public AbstractBaseRequest() {
+    }
 
     public boolean isSame(Object obj1, Object obj2) {
         return obj1 != null && obj2 != null

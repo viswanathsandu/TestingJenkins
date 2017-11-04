@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    android:background="#111F25">
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="#111F25">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -22,7 +22,7 @@
                 android:padding="10dp"
                 android:text="Select frends to challange"
                 android:textColor="@android:color/white"
-                android:textSize="12sp" />
+                android:textSize="12sp"/>
 
             <EditText
                 android:id="@+id/etSearchBar"
@@ -34,14 +34,14 @@
                 android:drawableRight="@android:drawable/ic_search_category_default"
                 android:hint="Search Users.."
                 android:maxLines="1"
-                android:textSize="14sp" />
+                android:textSize="14sp"/>
         </RelativeLayout>
 
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_friends_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -53,6 +53,6 @@
             android:padding="10dp"
             android:text="SET RULES ->"
             android:textColor="#FFF409"
-            android:textSize="22sp" />
+            android:textSize="22sp"/>
     </RelativeLayout>
 </RelativeLayout>

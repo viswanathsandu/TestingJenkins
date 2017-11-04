@@ -51,7 +51,7 @@
     <string name="exam_history">Exam History</string>
     <string name="label_cancel">Cancel</string>
     <string name="label_next">Next</string>
-    <string name="label_note">Note : </string>
+    <string name="label_note">Note :</string>
     <string name="label_test_level">Level</string>
     <string name="label_test_coverage_chapter">Test Coverage by Chapter</string>
     <string name="label_test_question_count">Question Count</string>
@@ -59,7 +59,11 @@
     <string name="label_test_questions_remaining">Remaining Questions</string>
     <string name="label_test_questions_wrong">Answered Wrong Questions</string>
     <string name="value_test_chapter_name">Practice Test Coverage (%%) by Chapter - %1$s</string>
-    <string name="value_test_note"> &#032; Your current level in this chapter is %1$s. Your accuracy at this level so far is %2$s%%, with a score of %3$s out of %4$s. You need to earn an overall accuracy of 70%% and a minimum coverage of 10 Marks (number of questions could be different) to break this level. At this point, you have to take more tests and answer questions correctly to improve your overall accuracy to 70%% and break this level. Meanwhile, you can try adaptive test to attempt questions from increasingly higher levels based on your performance</string>
+    <string name="value_test_note">&#032; Your current level in this chapter is %1$s. Your accuracy at this level so far is %2$s%%, with a score of %3$s out of
+        %4$s. You need to earn an overall accuracy of 70%% and a minimum coverage of 10 Marks (number of questions could be different) to break this level. At
+        this point, you have to take more tests and answer questions correctly to improve your overall accuracy to 70%% and break this level. Meanwhile, you can
+        try adaptive test to attempt questions from increasingly higher levels based on your performance
+    </string>
 
     <!-- Labels for recommended reading screen headings -->
     <string name="subject_label">SUBJECT</string>
@@ -137,9 +141,15 @@
 
     <string name="participant">One more participants are still battling it out</string>
     <string name="check_result">Please wait to check result.</string>
-    <string name="vc_hint"><font size="15">Virtual Currency</font></string>
-    <string name="ques_hint"><font size="15">No of Questions</font></string>
-    <string name="time_hint"><font size="15">Time in Mins</font></string>
+    <string name="vc_hint">
+        <font size="15">Virtual Currency</font>
+    </string>
+    <string name="ques_hint">
+        <font size="15">No of Questions</font>
+    </string>
+    <string name="time_hint">
+        <font size="15">Time in Mins</font>
+    </string>
 
 
     <!-- Screen names-->
@@ -173,7 +183,9 @@
     <string name="app_update_instructions">
 
 
-        1. You may be warned that you can\'t install from unknown sources. If so, tap the Settings button in the pop-up, scroll down to the Device Administration subheading, tap Unknown Sources, and OK in the following warning pop-up. You may need to tap the back button at the bottom of the screen to return to the browser and tap the download button again \n\n
+        1. You may be warned that you can\'t install from unknown sources. If so, tap the Settings button in the pop-up, scroll down to the Device
+        Administration subheading, tap Unknown Sources, and OK in the following warning pop-up. You may need to tap the back button at the bottom of the screen
+        to return to the browser and tap the download button again \n\n
 
         2. Tap the Next button in the permissions pop-up that appears after completing download, then tap Install \n\n
 

@@ -20,5 +20,6 @@ public class BaseTest extends BaseModel {
     @Ignore
     public transient TestQuestionPaperResponse testQuestionPaperResponse;
 
-    public BaseTest() {}
+    public BaseTest() {
+    }
 }

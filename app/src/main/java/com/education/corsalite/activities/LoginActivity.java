@@ -34,17 +34,21 @@ public class LoginActivity extends AbstractBaseActivity {
 
     public static final String URL = "URL";
     public static final String TITLE = "title";
-    @Bind(R.id.login_btn) Button loginBtn;
-    @Bind(R.id.tv_forgot_password) TextView forgotPasswordTxt;
-    @Bind(R.id.username_txt) EditText usernameTxt;
-    @Bind(R.id.password_txt) EditText passwordTxt;
+    @Bind(R.id.login_btn)
+    Button loginBtn;
+    @Bind(R.id.tv_forgot_password)
+    TextView forgotPasswordTxt;
+    @Bind(R.id.username_txt)
+    EditText usernameTxt;
+    @Bind(R.id.password_txt)
+    EditText passwordTxt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-        if(!getResources().getBoolean(R.bool.isTablet)){
+        if (!getResources().getBoolean(R.bool.isTablet)) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
         }
         setListeners();
@@ -95,10 +99,10 @@ public class LoginActivity extends AbstractBaseActivity {
 
                         String showing = passwordTxt.getTag().toString();
 
-                        if(showing.equalsIgnoreCase("Y")){
+                        if (showing.equalsIgnoreCase("Y")) {
                             passwordTxt.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                             passwordTxt.setTag("N");
-                        }else{
+                        } else {
                             passwordTxt.setTransformationMethod(PasswordTransformationMethod.getInstance());
                             passwordTxt.setTag("Y");
                         }
@@ -144,11 +148,11 @@ public class LoginActivity extends AbstractBaseActivity {
     }
 
     private void onLoginsuccess(LoginResponse response, boolean fetchLocal) {
-        if(response != null) {
+        if (response != null) {
             LoginUserCache.getInstance().setLoginResponse(response);
             startWebSocket();
             loadAppConfig();
-            if(!fetchLocal) {
+            if (!fetchLocal) {
                 showToast(getResources().getString(R.string.login_successful));
             }
         } else {
@@ -159,7 +163,7 @@ public class LoginActivity extends AbstractBaseActivity {
     @Override
     protected void onLoginFlowCompleted() {
         super.onLoginFlowCompleted();
-        if(isShown() && isAppConfigApiFinished && isClientEntityConfigApiFinished) {
+        if (isShown() && isAppConfigApiFinished && isClientEntityConfigApiFinished) {
             navigateToWelcomeScreen();
         }
     }
@@ -169,28 +173,28 @@ public class LoginActivity extends AbstractBaseActivity {
         finish();
     }
 
-    private boolean checkForValidEmail(){
-        if(usernameTxt.getText() != null && !usernameTxt.getText().toString().isEmpty()){
+    private boolean checkForValidEmail() {
+        if (usernameTxt.getText() != null && !usernameTxt.getText().toString().isEmpty()) {
             return android.util.Patterns.EMAIL_ADDRESS.matcher(usernameTxt.getText().toString()).matches();
         }
         return false;
     }
 
-    private boolean checkPasswordField(){
-        if(passwordTxt.getText() != null && !passwordTxt.getText().toString().isEmpty()){
+    private boolean checkPasswordField() {
+        if (passwordTxt.getText() != null && !passwordTxt.getText().toString().isEmpty()) {
             return true;
         }
         return false;
     }
 
-    private void login(){
-        if(checkForValidEmail()) {
-            if(checkPasswordField()) {
+    private void login() {
+        if (checkForValidEmail()) {
+            if (checkPasswordField()) {
                 login(usernameTxt.getText().toString(), Encrypter.md5(passwordTxt.getText().toString()), false);
-            }else {
+            } else {
                 showToast("Please enter password");
             }
-        }else {
+        } else {
             showToast("Please enter a valid email id");
         }
     }

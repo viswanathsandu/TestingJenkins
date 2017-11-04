@@ -69,7 +69,8 @@ import retrofit.mime.TypedString;
 public interface ICorsaliteApi {
 
     @GET("/AuthToken")
-    void login(@Query("LoginID") String loginId, @Query("PasswordHash") String passwordHash, @Query("ClientAccesssKey") String clientAccessKey, ApiCallback<LoginResponse> callback);
+    void login(@Query("LoginID") String loginId, @Query("PasswordHash") String passwordHash, @Query("ClientAccesssKey") String clientAccessKey,
+            ApiCallback<LoginResponse> callback);
 
     @Headers("Content-Type:application/x-www-form-urlencoded")
     @POST("/AuthToken")
@@ -92,54 +93,55 @@ public interface ICorsaliteApi {
     void getVirtualCurrencyTransactions(@Query("idStudent") String studentId, ApiCallback<VirtualCurrencySummaryResponse> callback);
 
     @GET("/Message")
-    void getMessages(@Query("idStudent") String studentId, @Query("idCourse") String courseId, @Query("idEntity") String entityId, ApiCallback<MessageResponse> callback);
+    void getMessages(@Query("idStudent") String studentId, @Query("idCourse") String courseId, @Query("idEntity") String entityId,
+            ApiCallback<MessageResponse> callback);
 
     @GET("/CourseStudyCenterData")
     void getCourseStudyCenterData(@Query("idStudent") String studentId, @Query("idCourse") String courseId, ApiCallback<List<StudyCenter>> callback);
 
     @GET("/GetCourseAnalysis")
     void getCourseAnalysis(@Query("idStudent") String studentId,
-                           @Query("idCourse") String courseId,
-                           @Query("idSubject") String subjectID,
-                           @Query("GroupLevel") String groupLevel,
-                           @Query("BreakupByDate") String breakUpByDate,
-                           @Query("DurationInDays") String durationInDays,
-                           @Query("ReturnAllRowsWithoutPerfDataAlso") String returnAllRowsWithourPerfData,
-                           ApiCallback<List<CourseAnalysis>> callback);
+            @Query("idCourse") String courseId,
+            @Query("idSubject") String subjectID,
+            @Query("GroupLevel") String groupLevel,
+            @Query("BreakupByDate") String breakUpByDate,
+            @Query("DurationInDays") String durationInDays,
+            @Query("ReturnAllRowsWithoutPerfDataAlso") String returnAllRowsWithourPerfData,
+            ApiCallback<List<CourseAnalysis>> callback);
 
     @GET("/GetCourseAnalysisAsPercentile")
     void getCourseAnalysisPercentile(@Query("idStudent") String studentId,
-                                     @Query("idCourse") String courseId,
-                                     @Query("idSubject") String subjectID,
-                                     @Query("GroupLevel") String groupLevel,
-                                     @Query("BreakupByDate") String breakUpByDate,
-                                     @Query("DurationInDays") String durationInDays,
-                                     @Query("ReturnAllRowsWithoutPerfDataAlso") String returnAllRowsWithourPerfData,
-                                     ApiCallback<List<CourseAnalysisPercentile>> callback);
+            @Query("idCourse") String courseId,
+            @Query("idSubject") String subjectID,
+            @Query("GroupLevel") String groupLevel,
+            @Query("BreakupByDate") String breakUpByDate,
+            @Query("DurationInDays") String durationInDays,
+            @Query("ReturnAllRowsWithoutPerfDataAlso") String returnAllRowsWithourPerfData,
+            ApiCallback<List<CourseAnalysisPercentile>> callback);
 
     @GET("/GetTestCoverage")
     void getTestCoverage(@Query("idStudent") String studentId,
-                         @Query("idCourse") String courseId,
-                         ApiCallback<List<TestCoverage>> callback);
+            @Query("idCourse") String courseId,
+            ApiCallback<List<TestCoverage>> callback);
 
     @GET("/ViewPost")
     void getPostDetails(@Query("idUser") String userId,
-                        @Query("postId") String postId,
-                        ApiCallback<FourmCommentPostModel> callback);
+            @Query("postId") String postId,
+            ApiCallback<FourmCommentPostModel> callback);
 
 
     @GET("/FriendsList")
     void getFriendsList(@Query("idUser") String userId,
-                        @Query("idCourse") String courseId,
-                        @Query("idCourseInstance") String courseInstanceId,
-                        ApiCallback<FriendsData> callback);
+            @Query("idCourse") String courseId,
+            @Query("idCourseInstance") String courseInstanceId,
+            ApiCallback<FriendsData> callback);
 
     @GET("/SearchFriends")
     void searchFriends(@Query("idUser") String userId,
-                        @Query("idCourse") String courseId,
-                        @Query("idCourseInstance") String courseInstanceId,
-                        @Query("searchKey") String searchKey,
-                        ApiCallback<List<FriendsData.Friend>> callback);
+            @Query("idCourse") String courseId,
+            @Query("idCourseInstance") String courseInstanceId,
+            @Query("searchKey") String searchKey,
+            ApiCallback<List<FriendsData.Friend>> callback);
 
     @Headers("Content-Type:application/x-www-form-urlencoded")
     @POST("/FriendRequest")
@@ -147,28 +149,32 @@ public interface ICorsaliteApi {
 
     @GET("/GetTestCoverage")
     void getTestCoverage(@Query("idStudent") String studentId,
-                         @Query("idCourse") String courseId,
-                         @Query("idSubject") String subjectId,
-                         @Query("idChapter") String chapterId,
-                         ApiCallback<List<TestCoverage>> callback);
+            @Query("idCourse") String courseId,
+            @Query("idSubject") String subjectId,
+            @Query("idChapter") String chapterId,
+            ApiCallback<List<TestCoverage>> callback);
 
     @GET("/ContentIndex")
     void getContentIndexData(@Query("idCourse") String courseId, @Query("idStudent") String studentId, ApiCallback<List<ContentIndex>> callback);
 
     @GET("/Content")
-    void getContentData(@Query("idStudent") String idStudent, @Query("idContents") String idContents, @Query("UpdateTime") String UpdateTime, ApiCallback<List<Content>> callback);
+    void getContentData(@Query("idStudent") String idStudent, @Query("idContents") String idContents, @Query("UpdateTime") String UpdateTime,
+            ApiCallback<List<Content>> callback);
 
     @GET("/Content")
     List<Content> getContentData(@Query("idStudent") String idStudent, @Query("idContents") String idContents, @Query("UpdateTime") String UpdateTime);
 
     @GET("/Exercise")
-    void getExerciseData(@Query("idTopic") String idTopics, @Query("idCourse") String idCourse, @Query("idStudent") String idStudent, @Query("UpdateTime") String UpdateTime, ApiCallback<List<ExamModel>> callback);
+    void getExerciseData(@Query("idTopic") String idTopics, @Query("idCourse") String idCourse, @Query("idStudent") String idStudent,
+            @Query("UpdateTime") String UpdateTime, ApiCallback<List<ExamModel>> callback);
 
     @GET("/Exercise")
-    List<ExamModel> getExerciseData(@Query("idTopic") String idTopics, @Query("idCourse") String idCourse, @Query("idStudent") String idStudent, @Query("UpdateTime") String UpdateTime);
+    List<ExamModel> getExerciseData(@Query("idTopic") String idTopics, @Query("idCourse") String idCourse, @Query("idStudent") String idStudent,
+            @Query("UpdateTime") String UpdateTime);
 
     @GET("/FlaggedQuestions")
-    void getFlaggedQuestions(@Query("idStudent") String idStudent, @Query("idSubject") String idSubject, @Query("idChapter") String idChapter, @Query("UpdateTime") String UpdateTime, ApiCallback<List<ExamModel>> callback);
+    void getFlaggedQuestions(@Query("idStudent") String idStudent, @Query("idSubject") String idSubject, @Query("idChapter") String idChapter,
+            @Query("UpdateTime") String UpdateTime, ApiCallback<List<ExamModel>> callback);
 
     @GET("/ScheduledTest")
     void getScheduledTests(@Query("idStudent") String idStudent, ApiCallback<List<ScheduledTest>> callback);
@@ -177,10 +183,12 @@ public interface ICorsaliteApi {
     void getScheduledTestsList(@Query("idStudent") String idStudent, ApiCallback<ScheduledTestList> callback);
 
     @GET("/TestQuestionPaper")
-    TestQuestionPaperResponse getTestQuestionPaper(@Query("idTestQuestionPaper") String idTestQuestionPaper, @Query("idTestAnswerPaper") String idTestAnswerPaper, @Query("idStudent") String studentId);
+    TestQuestionPaperResponse getTestQuestionPaper(@Query("idTestQuestionPaper") String idTestQuestionPaper,
+            @Query("idTestAnswerPaper") String idTestAnswerPaper, @Query("idStudent") String studentId);
 
     @GET("/TestQuestionPaper")
-    void getTestQuestionPaper(@Query("idTestQuestionPaper") String idTestQuestionPaper, @Query("idTestAnswerPaper") String idTestAnswerPaper, @Query("idStudent") String studentId, ApiCallback<TestQuestionPaperResponse> callback);
+    void getTestQuestionPaper(@Query("idTestQuestionPaper") String idTestQuestionPaper, @Query("idTestAnswerPaper") String idTestAnswerPaper,
+            @Query("idStudent") String studentId, ApiCallback<TestQuestionPaperResponse> callback);
 
     @Headers("Content-Type:application/x-www-form-urlencoded")
     @POST("/TestAnswerPaper")
@@ -218,7 +226,8 @@ public interface ICorsaliteApi {
     void updateExamDetails(@Body TypedString update, ApiCallback<UpdateExamDetailsResponse> callback);
 
     @GET("/Note")
-    void getNotes(@Query("idStudent") String studentId, @Query("idSubject") String subjectId, @Query("idChapter") String chapterId, @Query("idTopic") String topicId, ApiCallback<List<Note>> callback);
+    void getNotes(@Query("idStudent") String studentId, @Query("idSubject") String subjectId, @Query("idChapter") String chapterId,
+            @Query("idTopic") String topicId, ApiCallback<List<Note>> callback);
 
     @Headers("Content-Type:application/x-www-form-urlencoded")
     @POST("/Note")
@@ -233,19 +242,22 @@ public interface ICorsaliteApi {
     void deleteNote(@Body TypedString delete, ApiCallback<DefaultNoteResponse> callback);
 
     @GET("/ExamHistory")
-    void getExamHistory(@Query("idCourse") String corseId, @Query("idStudent") String studentId, @Query("BeginRowNumber") String beginRowNum, @Query("RowCount") String rowCount, ApiCallback<List<ExamHistory>> callback);
+    void getExamHistory(@Query("idCourse") String corseId, @Query("idStudent") String studentId, @Query("BeginRowNumber") String beginRowNum,
+            @Query("RowCount") String rowCount, ApiCallback<List<ExamHistory>> callback);
 
     @GET("/UsageAnalysis")
     void getUsageAnalysis(@Query("idUser") String userId, ApiCallback<UsageAnalysis> callback);
 
     @GET("/Forums")
-    void getAllPosts(@Query("idCourse") String courseID, @Query("idUser") String userID, @Query("type") String type, @Query("BeginRowNumber") String beginTowNumber, @Query("RowCount") String rowCount, ApiCallback<ArrayList<ForumPost>> callback);
+    void getAllPosts(@Query("idCourse") String courseID, @Query("idUser") String userID, @Query("type") String type,
+            @Query("BeginRowNumber") String beginTowNumber, @Query("RowCount") String rowCount, ApiCallback<ArrayList<ForumPost>> callback);
 
     @GET("/Forums")
     void getMyPosts(@Query("idCourse") String courseID, @Query("idUser") String userID, ApiCallback<ArrayList<ForumPost>> callback);
 
     @GET("/Forums")
-    void getForumPosts(@Query("idCourse") String courseID, @Query("idUser") String userID, @Query("type") String type, ApiCallback<ArrayList<ForumPost>> callback);
+    void getForumPosts(@Query("idCourse") String courseID, @Query("idUser") String userID, @Query("type") String type,
+            ApiCallback<ArrayList<ForumPost>> callback);
 
     @Headers("Content-Type:application/x-www-form-urlencoded")
     @POST("/Forums")
@@ -287,11 +299,13 @@ public interface ICorsaliteApi {
     void getMockTests(@Query("idCourse") String courseID, @Query("idStudent") String studentId, ApiCallback<List<MockTest>> callback);
 
     @GET("/TestPaperIndex")
-    TestPaperIndex getTestPaperIndex(@Query("idTestQuestionPaper") String questionPaperId, @Query("idTestAnswerPaper") String answerPaperId, @Query("doGetAllStage") String allStage);
+    TestPaperIndex getTestPaperIndex(@Query("idTestQuestionPaper") String questionPaperId, @Query("idTestAnswerPaper") String answerPaperId,
+            @Query("doGetAllStage") String allStage);
 
 
     @GET("/TestPaperIndex")
-    void getTestPaperIndex(@Query("idTestQuestionPaper") String questionPaperId, @Query("idTestAnswerPaper") String answerPaperId, @Query("doGetAllStage") String allStage, ApiCallback<TestPaperIndex> callback);
+    void getTestPaperIndex(@Query("idTestQuestionPaper") String questionPaperId, @Query("idTestAnswerPaper") String answerPaperId,
+            @Query("doGetAllStage") String allStage, ApiCallback<TestPaperIndex> callback);
 
     @GET("/Welcome")
     void getWelcomeDetails(@Query("idStudent") String idStudent, ApiCallback<WelcomeDetails> callback);
@@ -301,7 +315,8 @@ public interface ICorsaliteApi {
     void createChallenge(@Body TypedString insert, ApiCallback<CreateChallengeResponseModel> callback);
 
     @GET("/challengeTestDetails")
-    void getchallengeTestDetails(@Query("idChallengeTest") String idChallengeTest, @Query("idCourse") String courseId, ApiCallback<ChallengeUserListResponse> callback);
+    void getchallengeTestDetails(@Query("idChallengeTest") String idChallengeTest, @Query("idCourse") String courseId,
+            ApiCallback<ChallengeUserListResponse> callback);
 
     @Headers("Content-Type:application/x-www-form-urlencoded")
     @POST("/ChallengeStatus")
@@ -312,22 +327,26 @@ public interface ICorsaliteApi {
     void startChallenge(@Body TypedString update, ApiCallback<ChallengeStartResponseModel> callback);
 
     @GET("/challengeComplete")
-    void completeChallenge(@Query("idChallengeTest") String idChallengeTest, @Query("idTestQuestionPaper") String testQuestionPaperId, @Query("idStudent") String studentId, ApiCallback<ChallengeCompleteResponseModel> callback);
+    void completeChallenge(@Query("idChallengeTest") String idChallengeTest, @Query("idTestQuestionPaper") String testQuestionPaperId,
+            @Query("idStudent") String studentId, ApiCallback<ChallengeCompleteResponseModel> callback);
 
     @GET("/challengeResults")
     void getChallengeResults(@Query("idChallengeTest") String idChallengeTest, ApiCallback<List<ChallengeUser>> callback);
 
     @GET("/PartTestGrid")
-    void getPartTestGrid(@Query("idStudent") String studentId, @Query("idCourse") String courseId, @Query("idSubject") String subjectId, @Query("idExam") String idExam, ApiCallback<PartTestModel> callback);
+    void getPartTestGrid(@Query("idStudent") String studentId, @Query("idCourse") String courseId, @Query("idSubject") String subjectId,
+            @Query("idExam") String idExam, ApiCallback<PartTestModel> callback);
 
     @GET("/ClientAppConfig")
     void getAppConfig(ApiCallback<AppConfig> callback);
 
     @GET("/recommendedreading")
-    void getRecommendedReading(@Query("idStudent") String studentId, @Query("idCourse") String courseId, @Query("BeginRowNumber") String beginRowNumber, @Query("RowCount") String rowCount, ApiCallback<List<RecommendedModel>> callback);
+    void getRecommendedReading(@Query("idStudent") String studentId, @Query("idCourse") String courseId, @Query("BeginRowNumber") String beginRowNumber,
+            @Query("RowCount") String rowCount, ApiCallback<List<RecommendedModel>> callback);
 
     @GET("/curriculum")
-    void getCurriculumData(@Query("idStudent") String studentId, @Query("idCourse") String courseId, @Query("idEntity") String entityId, @Query("pageType") String pageType, @Query("soryBy") String sortBy, ApiCallback<CurriculumResponseModel> callback);
+    void getCurriculumData(@Query("idStudent") String studentId, @Query("idCourse") String courseId, @Query("idEntity") String entityId,
+            @Query("pageType") String pageType, @Query("soryBy") String sortBy, ApiCallback<CurriculumResponseModel> callback);
 
     @GET("/clientEntityAppconfig")
     void getClientEntityAppConfig(@Query("idUser") String idUser, @Query("idEntity") String idEntity, ApiCallback<ClientEntityAppConfig> callback);
@@ -341,6 +360,7 @@ public interface ICorsaliteApi {
     void getTestSeries(@Body TypedString Update, ApiCallback<TestSeriesResponse> callback);
 
     @GET("/getStudentExamResultsSummary")
-    void getExamResultSummary(@Query("TestAnswerPaperIDs") String testAnswerPaperIds, @Query("StudentID") String studentId, ApiCallback<ExamResultSummaryResponse> callback);
+    void getExamResultSummary(@Query("TestAnswerPaperIDs") String testAnswerPaperIds, @Query("StudentID") String studentId,
+            ApiCallback<ExamResultSummaryResponse> callback);
 
 }

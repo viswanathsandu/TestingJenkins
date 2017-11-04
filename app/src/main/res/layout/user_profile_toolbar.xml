@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/toolbar"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/abc_action_bar_default_height_material"
-    android:background="@color/black"
-    app:showAsAction="ifRoom">
+                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                   android:id="@+id/toolbar"
+                                   android:layout_width="match_parent"
+                                   android:layout_height="@dimen/abc_action_bar_default_height_material"
+                                   android:background="@color/black"
+                                   app:showAsAction="ifRoom">
 
     <TextView
         android:id="@+id/toolbar_title"
@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:maxLines="1"
         android:ellipsize="end"
-        android:text="@string/app_name" />
+        android:text="@string/app_name"/>
 
     <LinearLayout
         android:id="@+id/video_layout"
@@ -81,7 +81,7 @@
                     android:layout_height="35dp"
                     android:background="@drawable/yellowshape_selector"
                     android:text="REDEEM"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"/>
             </LinearLayout>
 
             <LinearLayout
@@ -96,7 +96,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="right"
-                    android:src="@drawable/ico_actionbar_download" />
+                    android:src="@drawable/ico_actionbar_download"/>
             </LinearLayout>
 
             <LinearLayout
@@ -109,15 +109,15 @@
                 android:visibility="gone">
 
                 <com.education.corsalite.views.CustomButton
-                        android:id="@+id/comment_btn"
-                        fontPath="@string/roboto_medium"
-                        android:layout_width="wrap_content"
-                        android:layout_height="35dp"
-                        android:background="@drawable/greenshape_selector"
-                        android:text="Add Comment"
-                        android:paddingLeft="20dp"
-                        android:paddingRight="20dp"
-                        android:textColor="@color/white" />
+                    android:id="@+id/comment_btn"
+                    fontPath="@string/roboto_medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:background="@drawable/greenshape_selector"
+                    android:text="Add Comment"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:textColor="@color/white"/>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/new_post"
@@ -133,7 +133,7 @@
                     fontPath="@string/roboto_regular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/ico_actionbar_add" />
+                    android:background="@drawable/ico_actionbar_add"/>
             </LinearLayout>
 
             <LinearLayout
@@ -152,7 +152,7 @@
                     android:layout_marginRight="20dp"
                     android:background="@drawable/white_shape"
                     android:text="Cancel"
-                    android:textColor="@color/text_black" />
+                    android:textColor="@color/text_black"/>
 
                 <com.education.corsalite.views.CustomButton
                     android:id="@+id/add_btn"
@@ -161,7 +161,7 @@
                     android:background="@drawable/white_shape"
                     android:text="Done"
                     android:textColor="@color/text_black"
-                    android:visibility="visible" />
+                    android:visibility="visible"/>
 
                 <com.education.corsalite.views.CustomButton
                     android:id="@+id/edit_btn"
@@ -170,7 +170,7 @@
                     android:background="@drawable/white_shape"
                     android:text="Done"
                     android:textColor="@color/text_black"
-                    android:visibility="visible" />
+                    android:visibility="visible"/>
 
             </LinearLayout>
 
@@ -190,7 +190,7 @@
                     android:layout_height="35dp"
                     android:background="@drawable/login_button_bg"
                     android:text="Start"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"/>
             </LinearLayout>
 
         </LinearLayout>
@@ -219,7 +219,7 @@
                     android:layout_height="30dp"
                     android:adjustViewBounds="true"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/ico_currency_profile" />
+                    android:src="@drawable/ico_currency_profile"/>
 
                 <TextView
                     android:id="@+id/tv_virtual_currency"
@@ -233,13 +233,13 @@
                     android:singleLine="true"
                     android:text=""
                     android:textColor="@color/text_white"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"/>
 
                 <ProgressBar
                     android:id="@+id/ProgressBar"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:layout_gravity="center" />
+                    android:layout_gravity="center"/>
             </LinearLayout>
 
             <Spinner
@@ -247,7 +247,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="right"
-                android:paddingLeft="16dp" />
+                android:paddingLeft="16dp"/>
         </LinearLayout>
 
     </RelativeLayout>

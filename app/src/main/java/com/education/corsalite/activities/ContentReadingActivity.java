@@ -169,10 +169,12 @@ public class ContentReadingActivity extends AbstractBaseActivity {
 
         drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
-            public void onDrawerSlide(View drawerView, float slideOffset) {}
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+            }
 
             @Override
-            public void onDrawerOpened(View drawerView) {}
+            public void onDrawerOpened(View drawerView) {
+            }
 
             @Override
             public void onDrawerClosed(View drawerView) {
@@ -180,7 +182,8 @@ public class ContentReadingActivity extends AbstractBaseActivity {
             }
 
             @Override
-            public void onDrawerStateChanged(int newState) {}
+            public void onDrawerStateChanged(int newState) {
+            }
         });
 
     }
@@ -198,7 +201,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
             event.idContent = contentModelList.get(0).idContent;
             event.idStudent = LoginUserCache.getInstance().getStudentId();
             event.eventStartTime = TimeUtils.getDateTimeString(eventStartTime);
-            event.eventEndTime= TimeUtils.getDateTimeString(eventEndDate);
+            event.eventEndTime = TimeUtils.getDateTimeString(eventEndDate);
             event.updatetime = TimeUtils.getDateTimeString(TimeUtils.currentTimeInMillis());
             getEventbus().post(event);
         } catch (Exception e) {
@@ -381,7 +384,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.iv_forum:
-                    if(SystemUtils.isNetworkConnected(ContentReadingActivity.this)) {
+                    if (SystemUtils.isNetworkConnected(ContentReadingActivity.this)) {
                         operation = "Forum";
                         webviewContentReading.loadUrl("javascript:alert(copy())");
                     } else {
@@ -389,7 +392,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
                     }
                     break;
                 case R.id.iv_editnotes:
-                    if(SystemUtils.isNetworkConnected(ContentReadingActivity.this)) {
+                    if (SystemUtils.isNetworkConnected(ContentReadingActivity.this)) {
                         operation = "Note";
                         webviewContentReading.loadUrl("javascript:alert(copy())");
                     } else {
@@ -471,13 +474,13 @@ public class ContentReadingActivity extends AbstractBaseActivity {
                 "<script type='text/javascript' src='file:///android_asset/MathJax/MathJax.js?config=default'></script>" +
                 "" +
                 "<script type='text/x-mathjax-config'>"
-                    +"MathJax.Hub.Config({ "
-                    +"showMathMenu: false, "
-                    +"jax: ['input/TeX','output/HTML-CSS'], "
-                    +"extensions: ['tex2jax.js'], "
-                    +"TeX: { extensions: ['AMSmath.js','AMSsymbols.js',"
-                    +"'noErrors.js','noUndefined.js'] } "
-                +"});</script>" +
+                + "MathJax.Hub.Config({ "
+                + "showMathMenu: false, "
+                + "jax: ['input/TeX','output/HTML-CSS'], "
+                + "extensions: ['tex2jax.js'], "
+                + "TeX: { extensions: ['AMSmath.js','AMSsymbols.js',"
+                + "'noErrors.js','noUndefined.js'] } "
+                + "});</script>" +
                 "" +
                 "<script>" +
                 "   function copy() {" +
@@ -486,7 +489,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
                 "</script>" +
                 "</head>" +
                 "<body>" +
-                    content +
+                content +
                 "</body>" +
                 "</html>";
         return htmlContent;
@@ -606,14 +609,15 @@ public class ContentReadingActivity extends AbstractBaseActivity {
 
     private void getExercise(int topicPosition) {
         ExerciseOfflineModel exerciseModel = new ExamUtils(this).getExerciseModel(topicModelList.get(topicPosition).idTopic);
-        if(exerciseModel != null) {
-                AbstractBaseActivity.setSharedExamModels(exerciseModel.questions);
-                showExercise();
+        if (exerciseModel != null) {
+            AbstractBaseActivity.setSharedExamModels(exerciseModel.questions);
+            showExercise();
         } else if (SystemUtils.isNetworkConnected(this)) {
             ivExercise.setVisibility(View.GONE);
             String topicId = topicModelList.get(topicPosition).idTopic;
             String topicName = topicModelList.get(topicPosition).topicName;
-            if (offlineExercises != null && !offlineExercises.isEmpty() && offlineExercises.contains(new ExerciseOfflineModel(getSelectedCourseId(), topicId, topicName))) {
+            if (offlineExercises != null && !offlineExercises.isEmpty() && offlineExercises.contains(
+                    new ExerciseOfflineModel(getSelectedCourseId(), topicId, topicName))) {
                 for (ExerciseOfflineModel model : offlineExercises) {
                     if (model.topicId.equals(topicId) && model.courseId.equals(getSelectedCourseId())) {
                         AbstractBaseActivity.setSharedExamModels(model.questions);
@@ -758,9 +762,9 @@ public class ContentReadingActivity extends AbstractBaseActivity {
     }
 
     private File getFile(String fileName) {
-        if(!TextUtils.isEmpty(fileName) && fileName.contains(".")) {
-            L.info("FileName : "+fileName);
-            String [] data = fileName.split("\\.");
+        if (!TextUtils.isEmpty(fileName) && fileName.contains(".")) {
+            L.info("FileName : " + fileName);
+            String[] data = fileName.split("\\.");
             return getFile(data[0], data[1]);
         }
         return null;
@@ -810,7 +814,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
         for (int i = 0; i < htmlFiles.length; i++) {
             fileName = htmlFiles[i];
             String[] data = fileName.split(".");
-            if(data.length > 0) {
+            if (data.length > 0) {
                 f = getFile(data[0]);
                 if (f != null && f.exists() && !TextUtils.isEmpty(mContentId) && mContentId.equalsIgnoreCase(data[0])) {
                     if (htmlFiles.length == contentModelList.size()) {
@@ -911,11 +915,11 @@ public class ContentReadingActivity extends AbstractBaseActivity {
         Collections.sort(topicModelList);
         if (topicModelList != null) {
             List<OfflineContent> offlineCList = dbManager.getOfflineContents(AbstractBaseActivity.getSelectedCourseId());
-            if(offlineCList!=null){
-                for(TopicModel t: topicModelList){
-                    for(OfflineContent c: offlineCList){
-                        if(c.topicId.equalsIgnoreCase(t.idTopic)){
-                            t.isAvailableForOffline=true;
+            if (offlineCList != null) {
+                for (TopicModel t : topicModelList) {
+                    for (OfflineContent c : offlineCList) {
+                        if (c.topicId.equalsIgnoreCase(t.idTopic)) {
+                            t.isAvailableForOffline = true;
                         }
                     }
                 }

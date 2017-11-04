@@ -19,7 +19,7 @@ public class NotificationsUtils {
         Notification notifyUser = new NotificationCompat.Builder(context)
                 .setAutoCancel(true)
                 .setContentIntent(intent)
-                .setContentTitle(title )
+                .setContentTitle(title)
                 .setContentText(content)
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setSmallIcon(R.drawable.ic_launcher)
@@ -40,10 +40,10 @@ public class NotificationsUtils {
                 .load()
                 .identifier(id)
                 .title("Downloading video")
-                .message("Downloading video "+videoName)
+                .message("Downloading video " + videoName)
                 .smallIcon(R.drawable.ic_launcher)
                 .progress()
-                .value(progress,100, false)
+                .value(progress, 100, false)
                 .build();
     }
 
@@ -54,7 +54,7 @@ public class NotificationsUtils {
                 .title("Downloading Content")
                 .smallIcon(R.drawable.ic_launcher)
                 .progress()
-                .value(0,100, true)
+                .value(0, 100, true)
                 .build();
     }
 
@@ -65,7 +65,7 @@ public class NotificationsUtils {
                 .title("Downloading Exercises")
                 .smallIcon(R.drawable.ic_launcher)
                 .progress()
-                .value(0,100, true)
+                .value(0, 100, true)
                 .build();
     }
 
@@ -76,7 +76,7 @@ public class NotificationsUtils {
                 .title("Downloading Tests")
                 .smallIcon(R.drawable.ic_launcher)
                 .progress()
-                .value(0,100, true)
+                .value(0, 100, true)
                 .build();
     }
 
@@ -85,7 +85,7 @@ public class NotificationsUtils {
                 .load()
                 .identifier(id)
                 .title("Download failed")
-                .message("Failed to download "+name)
+                .message("Failed to download " + name)
                 .smallIcon(R.drawable.ic_launcher)
                 .simple()
                 .build();

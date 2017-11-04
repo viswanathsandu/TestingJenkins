@@ -46,19 +46,19 @@ public abstract class BaseFragment extends Fragment {
     }
 
     public void showToast(String message) {
-        if(getActivity() != null && getActivity() instanceof AbstractBaseActivity) {
+        if (getActivity() != null && getActivity() instanceof AbstractBaseActivity) {
             ((AbstractBaseActivity) getActivity()).showToast(message);
         }
     }
 
     public void showLongToast(String message) {
-        if(getActivity() != null && getActivity() instanceof AbstractBaseActivity) {
+        if (getActivity() != null && getActivity() instanceof AbstractBaseActivity) {
             ((AbstractBaseActivity) getActivity()).showLongToast(message);
         }
     }
 
-    public void showProgress(){
-        if(getActivity() != null) {
+    public void showProgress() {
+        if (getActivity() != null) {
             ProgressBar pbar = new ProgressBar(getActivity());
             pbar.setBackgroundColor(getResources().getColor(android.R.color.transparent));
             dialog = new Dialog(getActivity());
@@ -70,8 +70,8 @@ public abstract class BaseFragment extends Fragment {
         }
     }
 
-    public void closeProgress(){
-        if(getActivity() != null && dialog != null && dialog.isShowing()) {
+    public void closeProgress() {
+        if (getActivity() != null && dialog != null && dialog.isShowing()) {
             dialog.dismiss();
         }
     }

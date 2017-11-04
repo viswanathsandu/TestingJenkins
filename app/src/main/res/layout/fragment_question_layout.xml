@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:minHeight="20dp"
-                android:layout_weight="1" />
+                android:layout_weight="1"/>
 
             <ImageView
                 android:id="@+id/imv_flag"
@@ -35,7 +35,7 @@
                 android:layout_below="@id/webview_paragraph"
                 android:layout_gravity="center_vertical"
                 android:layout_marginTop="10dp"
-                android:src="@drawable/btn_flag_unselect" />
+                android:src="@drawable/btn_flag_unselect"/>
 
             <TextView
                 android:id="@+id/tv_serial_no"
@@ -45,7 +45,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_toRightOf="@id/imv_flag"
                 android:padding="10dp"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"/>
 
             <WebView
                 android:id="@+id/webview_question"
@@ -53,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/webview_paragraph"
                 android:minHeight="40dp"
-                android:layout_toRightOf="@+id/tv_serial_no" />
+                android:layout_toRightOf="@+id/tv_serial_no"/>
 
             <HorizontalScrollView
                 android:id="@+id/answer_scroll_layout"
@@ -99,7 +99,7 @@
                     android:paddingTop="5dp"
                     android:text="Verify Answer"
                     android:textColor="@color/white"
-                    android:visibility="gone" />
+                    android:visibility="gone"/>
 
                 <TextView
                     android:id="@+id/tv_clearanswer"
@@ -116,7 +116,7 @@
                     android:paddingRight="20dp"
                     android:paddingTop="5dp"
                     android:text="Clear Answer"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"/>
 
             </LinearLayout>
 
@@ -139,14 +139,14 @@
                     android:text="Correct Answers"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textSize="14sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"/>
 
 
                 <TextView
                     android:id="@+id/txtAnswerCount"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3" />
+                    android:layout_weight="3"/>
             </LinearLayout>
 
             <LinearLayout
@@ -168,14 +168,14 @@
                     android:text="Explanation"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textSize="14sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"/>
 
                 <WebView
                     android:id="@+id/txtAnswerExp"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
-                    tools:ignore="WebViewLayout" />
+                    tools:ignore="WebViewLayout"/>
 
             </LinearLayout>
 
@@ -184,7 +184,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_below="@id/layout_choice" />
+                android:layout_below="@id/layout_choice"/>
 
         </RelativeLayout>
 

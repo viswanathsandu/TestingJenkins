@@ -32,7 +32,7 @@ public class DetailsWebviewFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         RelativeLayout myView = (RelativeLayout) inflater.inflate(R.layout.activity_webview, null, false);
         mWebView = (WebView) myView.findViewById(R.id.webview);
         loginWebview = (WebView) myView.findViewById(R.id.login_webview);
@@ -96,7 +96,7 @@ public class DetailsWebviewFragment extends BaseFragment {
     }
 
     private void loadWebpage() {
-        if(isAdded()) {
+        if (isAdded()) {
             mWebView.getSettings().setJavaScriptEnabled(true);
             mWebView.setWebViewClient(new MyWebViewClient(getActivity()));
             if (!TextUtils.isEmpty(mUrl)) {
@@ -123,7 +123,7 @@ public class DetailsWebviewFragment extends BaseFragment {
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
             L.info("Finished Loading URL : " + url);
-            if(isAdded()) {
+            if (isAdded()) {
                 mWebView.setVisibility(View.VISIBLE);
             }
         }

@@ -27,12 +27,12 @@ public class TopicAdapter extends BaseAdapter {
     public TopicAdapter(List<TopicModel> topicModelList, Context mContext) {
         this.topicModelList = topicModelList;
         this.mContext = mContext;
-        inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public int getCount() {
-        if(topicModelList != null) {
+        if (topicModelList != null) {
             return topicModelList.size();
         }
         return 0;
@@ -51,24 +51,24 @@ public class TopicAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = inflater.inflate(R.layout.row_spinner_text, parent, false);
-        TextView tv = (TextView)convertView.findViewById(R.id.tv_spn);
+        TextView tv = (TextView) convertView.findViewById(R.id.tv_spn);
         tv.setText(topicModelList.get(position).topicName);
         return convertView;
     }
 
     @Override
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
-        View itemView =  inflater.inflate(R.layout.spinner_drop_down, null);
-        TextView textView = (TextView)itemView.findViewById(R.id.text);
-        ImageView imageView = (ImageView)itemView.findViewById(R.id.selected_item);
+        View itemView = inflater.inflate(R.layout.spinner_drop_down, null);
+        TextView textView = (TextView) itemView.findViewById(R.id.text);
+        ImageView imageView = (ImageView) itemView.findViewById(R.id.selected_item);
         textView.setText(topicModelList.get(position).topicName);
         imageView.setVisibility(position == selectedPosition ? View.VISIBLE : View.INVISIBLE);
 
-        if(!SystemUtils.isNetworkConnected(mContext)){
-            if(topicModelList.get(position)!=null){
-                if(topicModelList.get(position).isAvailableForOffline){
+        if (!SystemUtils.isNetworkConnected(mContext)) {
+            if (topicModelList.get(position) != null) {
+                if (topicModelList.get(position).isAvailableForOffline) {
                     textView.setTextColor(mContext.getResources().getColor(android.R.color.black));
-                }else{
+                } else {
                     textView.setTextColor(mContext.getResources().getColor(R.color.gray));
                 }
             }
@@ -78,7 +78,7 @@ public class TopicAdapter extends BaseAdapter {
         return itemView;
     }
 
-    public void setSelectedPosition(int position){
+    public void setSelectedPosition(int position) {
         selectedPosition = position;
         notifyDataSetChanged();
     }

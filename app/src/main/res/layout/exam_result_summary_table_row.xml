@@ -1,69 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="@color/black">
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:background="@color/black">
 
     <TextView
         android:layout_marginLeft="1dp"
         android:id="@+id/subject_name_txt"
         style="@style/exam_result_table_data"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"/>
 
     <TextView
         android:id="@+id/total_questions_txt"
         style="@style/exam_result_table_data"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"/>
 
     <TextView
         android:id="@+id/correct_questions_txt"
         style="@style/exam_result_table_data"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"/>
 
     <TextView
         android:id="@+id/wrong_questions_txt"
         style="@style/exam_result_table_data"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"/>
 
     <TextView
         android:id="@+id/max_marks_txt"
         style="@style/exam_result_table_data"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"/>
 
     <TextView
         android:id="@+id/positive_marks_txt"
         style="@style/exam_result_table_data"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"/>
 
     <TextView
         android:id="@+id/negative_marks_txt"
         style="@style/exam_result_table_data"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"/>
 
 
     <TextView
         android:id="@+id/total_marks_txt"
         style="@style/exam_result_table_data"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"/>
 
     <TextView
         android:id="@+id/recommended_time_txt"
         style="@style/exam_result_table_data"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"/>
 
     <TextView
         android:id="@+id/actual_time_txt"
         style="@style/exam_result_table_data"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"/>
 </TableRow>

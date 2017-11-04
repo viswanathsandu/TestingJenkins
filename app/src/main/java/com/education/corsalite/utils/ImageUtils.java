@@ -19,7 +19,7 @@ public class ImageUtils {
 
     private Context context;
 
-    public ImageUtils(Context context){
+    public ImageUtils(Context context) {
         this.context = context;
     }
 
@@ -43,12 +43,12 @@ public class ImageUtils {
         return inSampleSize;
     }
 
-    public Bitmap decodeBitmapFromPath(String filePath){
+    public Bitmap decodeBitmapFromPath(String filePath) {
         Bitmap scaledBitmap = null;
 
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
-        scaledBitmap = BitmapFactory.decodeFile(filePath,options);
+        scaledBitmap = BitmapFactory.decodeFile(filePath, options);
 
         options.inSampleSize = calculateInSampleSize(options, convertDipToPixels(150), convertDipToPixels(200));
         options.inDither = false;
@@ -60,47 +60,45 @@ public class ImageUtils {
         return scaledBitmap;
     }
 
-    public int convertDipToPixels(float dips){
+    public int convertDipToPixels(float dips) {
         Resources r = context.getResources();
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dips, r.getDisplayMetrics());
     }
 
 
-    public Bitmap getCompressedProfileImage(String filePath){
+    public Bitmap getCompressedProfileImage(String filePath) {
         //		String filePath = Environment.getExternalStorageDirectory()+"/DCIM/Camera/1394773554263.jpg";
         Bitmap scaledBitmap = null;
 
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         //		Bitmap bmp = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory()+"/DCIM/Camera/1394773554263.jpg",options);
-        Bitmap bmp = BitmapFactory.decodeFile(filePath,options);
+        Bitmap bmp = BitmapFactory.decodeFile(filePath, options);
 
         float maxHeight = 700.0f;
         float maxWidth = 700.0f;
 
-        options.inSampleSize = calculateInSampleSize(options, (int)maxWidth, (int)maxHeight);
+        options.inSampleSize = calculateInSampleSize(options, (int) maxWidth, (int) maxHeight);
         options.inJustDecodeBounds = false;
         options.inDither = false;
         options.inPurgeable = true;
         options.inInputShareable = true;
-        options.inTempStorage = new byte[16*1024];
+        options.inTempStorage = new byte[16 * 1024];
 
-        try{
-            bmp = BitmapFactory.decodeFile(filePath,options);
-        }
-        catch(OutOfMemoryError exception){
+        try {
+            bmp = BitmapFactory.decodeFile(filePath, options);
+        } catch (OutOfMemoryError exception) {
             exception.printStackTrace();
 
         }
-        try{
-            scaledBitmap = Bitmap.createBitmap((int)maxWidth, (int)maxHeight, Bitmap.Config.ARGB_8888);
-        }
-        catch(OutOfMemoryError exception){
+        try {
+            scaledBitmap = Bitmap.createBitmap((int) maxWidth, (int) maxHeight, Bitmap.Config.ARGB_8888);
+        } catch (OutOfMemoryError exception) {
             exception.printStackTrace();
         }
 
         float ratioX = maxWidth / (float) options.outWidth;
-        float ratioY = maxHeight / (float)options.outHeight;
+        float ratioY = maxHeight / (float) options.outHeight;
         float middleX = maxWidth / 2.0f;
         float middleY = maxHeight / 2.0f;
 
@@ -109,7 +107,7 @@ public class ImageUtils {
 
         Canvas canvas = new Canvas(scaledBitmap);
         canvas.setMatrix(scaleMatrix);
-        canvas.drawBitmap(bmp, middleX - bmp.getWidth()/2, middleY - bmp.getHeight() / 2, new Paint(Paint.FILTER_BITMAP_FLAG));
+        canvas.drawBitmap(bmp, middleX - bmp.getWidth() / 2, middleY - bmp.getHeight() / 2, new Paint(Paint.FILTER_BITMAP_FLAG));
 
         ExifInterface exif;
         try {
@@ -124,7 +122,7 @@ public class ImageUtils {
             } else if (orientation == 8) {
                 matrix.postRotate(270);
             }
-            scaledBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0,scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
+            scaledBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -132,11 +130,11 @@ public class ImageUtils {
         return scaledBitmap;
     }
 
-    public Bitmap getCompressedImage(String filePath){
+    public Bitmap getCompressedImage(String filePath) {
 
         try {
             //		String filePath = Environment.getExternalStorageDirectory()+"/DCIM/Camera/1394773554263.jpg";
-            BitmapFactory.Options options  = new BitmapFactory.Options();
+            BitmapFactory.Options options = new BitmapFactory.Options();
             options.inJustDecodeBounds = false;
             options.inPreferredConfig = Bitmap.Config.RGB_565;
             options.inDither = true;
@@ -157,9 +155,9 @@ public class ImageUtils {
 
             int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 0);
 
-            if(orientation == ExifInterface.ORIENTATION_NORMAL){
+            if (orientation == ExifInterface.ORIENTATION_NORMAL) {
                 return bitmap;
-            }else{
+            } else {
                 Matrix matrix = new Matrix();
                 if (orientation == 6) {
                     matrix.postRotate(90);
@@ -169,27 +167,27 @@ public class ImageUtils {
                     matrix.postRotate(270);
                 }
 
-                Bitmap scaledBitmap = Bitmap.createBitmap(bitmap, 0, 0,bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+                Bitmap scaledBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
                 return scaledBitmap;
             }
 
-        }catch (OutOfMemoryError e) {
+        } catch (OutOfMemoryError e) {
             e.printStackTrace();
             return null;
         } catch (IOException e) {
             e.printStackTrace();
             return null;
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    public Bitmap getCompressedBitmap(String filePath){
+    public Bitmap getCompressedBitmap(String filePath) {
         Bitmap scaledBitmap = null;
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
-        Bitmap bmp = BitmapFactory.decodeFile(filePath,options);
+        Bitmap bmp = BitmapFactory.decodeFile(filePath, options);
 
         int actualHeight = options.outHeight;
         int actualWidth = options.outWidth;
@@ -219,24 +217,22 @@ public class ImageUtils {
         options.inDither = false;
         options.inPurgeable = true;
         options.inInputShareable = true;
-        options.inTempStorage = new byte[16*1024];
+        options.inTempStorage = new byte[16 * 1024];
 
-        try{
-            bmp = BitmapFactory.decodeFile(filePath,options);
-        }
-        catch(OutOfMemoryError exception){
+        try {
+            bmp = BitmapFactory.decodeFile(filePath, options);
+        } catch (OutOfMemoryError exception) {
             exception.printStackTrace();
 
         }
-        try{
+        try {
             scaledBitmap = Bitmap.createBitmap(actualWidth, actualHeight, Bitmap.Config.ARGB_8888);
-        }
-        catch(OutOfMemoryError exception){
+        } catch (OutOfMemoryError exception) {
             exception.printStackTrace();
         }
 
         float ratioX = actualWidth / (float) options.outWidth;
-        float ratioY = actualHeight / (float)options.outHeight;
+        float ratioY = actualHeight / (float) options.outHeight;
         float middleX = actualWidth / 2.0f;
         float middleY = actualHeight / 2.0f;
 
@@ -245,7 +241,7 @@ public class ImageUtils {
 
         Canvas canvas = new Canvas(scaledBitmap);
         canvas.setMatrix(scaleMatrix);
-        canvas.drawBitmap(bmp, middleX - bmp.getWidth()/2, middleY - bmp.getHeight() / 2, new Paint(Paint.FILTER_BITMAP_FLAG));
+        canvas.drawBitmap(bmp, middleX - bmp.getWidth() / 2, middleY - bmp.getHeight() / 2, new Paint(Paint.FILTER_BITMAP_FLAG));
 
 
         ExifInterface exif;
@@ -254,14 +250,14 @@ public class ImageUtils {
 
             int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 0);
             Matrix matrix = new Matrix();
-            if (orientation ==  ExifInterface.ORIENTATION_ROTATE_90) {
+            if (orientation == ExifInterface.ORIENTATION_ROTATE_90) {
                 matrix.postRotate(90);
-            } else if (orientation ==  ExifInterface.ORIENTATION_ROTATE_180) {
+            } else if (orientation == ExifInterface.ORIENTATION_ROTATE_180) {
                 matrix.postRotate(180);
-            } else if (orientation ==  ExifInterface.ORIENTATION_ROTATE_270) {
+            } else if (orientation == ExifInterface.ORIENTATION_ROTATE_270) {
                 matrix.postRotate(270);
             }
-            scaledBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0,scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
+            scaledBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
         } catch (IOException e) {
             e.printStackTrace();
         }

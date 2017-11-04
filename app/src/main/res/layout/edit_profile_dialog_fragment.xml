@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical|left"
             android:hint="Username"
-            android:inputType="textCapCharacters" />
+            android:inputType="textCapCharacters"/>
 
         <EditText
             android:id="@+id/firstname_txt"
@@ -26,7 +26,7 @@
             android:layout_marginTop="20dp"
             android:gravity="center_vertical|left"
             android:hint="First Name"
-            android:inputType="text" />
+            android:inputType="text"/>
 
 
         <EditText
@@ -37,7 +37,7 @@
             android:layout_marginTop="20dp"
             android:gravity="center_vertical|left"
             android:hint="Last Name"
-            android:inputType="text" />
+            android:inputType="text"/>
 
 
         <EditText
@@ -48,7 +48,7 @@
             android:layout_marginTop="20dp"
             android:gravity="center_vertical|left"
             android:hint="Email Id"
-            android:inputType="text" />
+            android:inputType="text"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -64,7 +64,7 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical|left"
                 android:hint="Password"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"/>
 
             <EditText
                 android:id="@+id/confirm_password_txt"
@@ -74,7 +74,7 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical|left"
                 android:hint="Confirm Password"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"/>
 
         </LinearLayout>
 
@@ -93,7 +93,7 @@
                 android:background="@color/transparent"
                 android:padding="5dp"
                 android:text="CANCEL"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"/>
 
             <com.education.corsalite.views.CustomButton
                 android:id="@+id/btn_submit"
@@ -104,7 +104,7 @@
                 android:background="@color/transparent"
                 android:padding="5dp"
                 android:text="UPDATE"
-                android:textColor="@color/blue" />
+                android:textColor="@color/blue"/>
 
         </LinearLayout>
     </LinearLayout>

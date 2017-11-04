@@ -6,7 +6,7 @@
             <item>
                 <bitmap
                     android:gravity="right"
-                    android:src="@drawable/ico_dropdown_black" />
+                    android:src="@drawable/ico_dropdown_black"/>
             </item>
         </layer-list>
     </item>

@@ -8,7 +8,8 @@ public class LoginRequest extends AbstractBaseRequest {
     public String loginId;
     public String passwordHash;
 
-    public LoginRequest() {}
+    public LoginRequest() {
+    }
 
     public LoginRequest(String loginId, String passwordHash) {
         this.loginId = loginId;

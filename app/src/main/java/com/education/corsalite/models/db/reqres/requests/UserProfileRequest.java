@@ -7,7 +7,8 @@ public class UserProfileRequest extends AbstractBaseRequest {
 
     public String studentId;
 
-    public UserProfileRequest() {}
+    public UserProfileRequest() {
+    }
 
     public UserProfileRequest(String studentId) {
         this.studentId = studentId;

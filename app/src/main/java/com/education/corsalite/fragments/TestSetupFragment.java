@@ -358,13 +358,15 @@ public class TestSetupFragment extends BaseFragment {
                 for (int i = 0; i < finalSubjectsList.size(); i++) {
                     if (finalSubjectsList.get(i).subjectName.equalsIgnoreCase(adapterView.getItemAtPosition(position).toString())) {
                         chapterList = finalSubjectsList.get(i).chapters;
-                        selectChapSpinner.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.challenge_spinner_item, R.id.mock_test_txt, getChapters(chapterList)));
+                        selectChapSpinner.setAdapter(
+                                new ArrayAdapter<String>(getActivity(), R.layout.challenge_spinner_item, R.id.mock_test_txt, getChapters(chapterList)));
                     }
                 }
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {}
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
         });
         selectChapSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -373,7 +375,8 @@ public class TestSetupFragment extends BaseFragment {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {}
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
         });
     }
 

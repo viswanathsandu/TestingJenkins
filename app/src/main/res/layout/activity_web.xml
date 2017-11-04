@@ -9,7 +9,7 @@
 
     <include
         android:id="@+id/top_layout"
-        layout="@layout/webview_subject_bar" />
+        layout="@layout/webview_subject_bar"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -28,7 +28,7 @@
                     android:id="@+id/headerProgress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center" />
+                    android:layout_gravity="center"/>
 
                 <TextView
                     android:id="@+id/not_available_offline_txt"
@@ -41,7 +41,7 @@
                     android:padding="50dp"
                     android:text="Not available for Offline"
                     android:textSize="25sp"
-                    android:visibility="gone" />
+                    android:visibility="gone"/>
 
             </FrameLayout>
 
@@ -55,7 +55,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginTop="2dp" />
+                    android:layout_marginTop="2dp"/>
 
             </RelativeLayout>
         </ViewSwitcher>
@@ -77,14 +77,14 @@
             android:text="Watch Videos"
             android:textColor="@color/white"
             android:gravity="center_vertical"
-            android:visibility="gone" />
+            android:visibility="gone"/>
 
         <include
             android:id="@+id/footer_layout"
             layout="@layout/webview_footer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true" />
+            android:layout_centerVertical="true"/>
 
     </RelativeLayout>
 </LinearLayout>

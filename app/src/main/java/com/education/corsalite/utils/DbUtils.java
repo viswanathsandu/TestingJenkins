@@ -18,11 +18,11 @@ public class DbUtils {
     private Context context;
 
     public static DbUtils get(Context context) {
-        if(instance == null) {
+        if (instance == null) {
             instance = new DbUtils();
         }
         instance.context = context;
-        return  instance;
+        return instance;
     }
 
     public void backupDatabase() {
@@ -56,7 +56,7 @@ public class DbUtils {
     public boolean isDatabaseExist() {
         SQLiteDatabase checkDB = null;
         try {
-            String myPath = "/data/data/"+BuildConfig.APPLICATION_ID+"/databases/corsalite.db";
+            String myPath = "/data/data/" + BuildConfig.APPLICATION_ID + "/databases/corsalite.db";
             checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
         } catch (SQLiteException e) {
             L.error(e.getMessage(), e);
@@ -69,7 +69,7 @@ public class DbUtils {
 
     public boolean isDatabaseFileExist(Context context) {
         try {
-            String myPath = "/data/data/"+BuildConfig.APPLICATION_ID+"/databases/corsalite.db";
+            String myPath = "/data/data/" + BuildConfig.APPLICATION_ID + "/databases/corsalite.db";
             File file = new File(myPath);
             return file.exists();
         } catch (Exception e) {

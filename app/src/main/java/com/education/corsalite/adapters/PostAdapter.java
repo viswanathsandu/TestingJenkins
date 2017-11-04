@@ -184,7 +184,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
     }
 
     public void deleteForumPost(int position) {
-        if(mForumPostList != null && mForumPostList.size() > position) {
+        if (mForumPostList != null && mForumPostList.size() > position) {
             mForumPostList.remove(position);
             notifyDataSetChanged();
         }

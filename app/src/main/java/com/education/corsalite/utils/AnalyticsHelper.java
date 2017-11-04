@@ -16,10 +16,10 @@ public class AnalyticsHelper {
 
     static ArrayList<Integer> graphColors;
 
-    public static ArrayList<String> parseDate(ArrayList<String> dateList,boolean sort){
+    public static ArrayList<String> parseDate(ArrayList<String> dateList, boolean sort) {
         ArrayList<String> dateListNew = new ArrayList<>();
 
-        if(sort) {
+        if (sort) {
             Collections.sort(dateList, new Comparator<String>() {
                 DateFormat f = new SimpleDateFormat("yyyyMM");
 
@@ -34,57 +34,72 @@ public class AnalyticsHelper {
             });
         }
 
-        for(String date :dateList){
-            if(date == null){
+        for (String date : dateList) {
+            if (date == null) {
                 dateListNew.add("");
                 continue;
             }
             String month = formatDateMonth(Integer.parseInt(date.substring(4, 6)));
-            String newDate = month+","+date.substring(0,4);
+            String newDate = month + "," + date.substring(0, 4);
             dateListNew.add(newDate);
         }
         return dateListNew;
     }
 
-    private static String formatDateMonth(int monthNum){
-        switch (monthNum){
-            case 1: return "Jan";
-            case 2:return "Feb";
-            case 3:return "Mar";
-            case 4:return "Apr";
-            case 5:return "May";
-            case 6:return "Jun";
-            case 7:return "Jul";
-            case 8: return "Aug";
-            case 9 :return "Sep";
-            case 10:return "Oct";
-            case 11:return "Nov";
-            case 12:return "Dec";
+    private static String formatDateMonth(int monthNum) {
+        switch (monthNum) {
+            case 1:
+                return "Jan";
+            case 2:
+                return "Feb";
+            case 3:
+                return "Mar";
+            case 4:
+                return "Apr";
+            case 5:
+                return "May";
+            case 6:
+                return "Jun";
+            case 7:
+                return "Jul";
+            case 8:
+                return "Aug";
+            case 9:
+                return "Sep";
+            case 10:
+                return "Oct";
+            case 11:
+                return "Nov";
+            case 12:
+                return "Dec";
         }
         return null;
 
     }
 
-    public static ArrayList<Integer> getColors(){
-        if(graphColors == null || graphColors.size() < 0) {
+    public static ArrayList<Integer> getColors() {
+        if (graphColors == null || graphColors.size() < 0) {
             graphColors = new ArrayList<>();
-            for (int c : ColorTemplate.JOYFUL_COLORS)
+            for (int c : ColorTemplate.JOYFUL_COLORS) {
                 graphColors.add(c);
+            }
 
-            for (int c : ColorTemplate.COLORFUL_COLORS)
+            for (int c : ColorTemplate.COLORFUL_COLORS) {
                 graphColors.add(c);
+            }
 
-            for (int c : ColorTemplate.PASTEL_COLORS)
+            for (int c : ColorTemplate.PASTEL_COLORS) {
                 graphColors.add(c);
+            }
         }
 
         return graphColors;
     }
 
-    public static String truncateString(String decimal){
-        if(decimal !=null) {
+    public static String truncateString(String decimal) {
+        if (decimal != null) {
             return String.format("%.2f", Float.parseFloat(decimal));
         }
-            return null;
+        return null;
     }
 }

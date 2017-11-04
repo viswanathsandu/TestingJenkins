@@ -19,22 +19,28 @@ import butterknife.ButterKnife;
 /**
  * Created by Aastha on 28/09/15.
  */
-public class AnalyticsTitleFragment extends Fragment{
+public class AnalyticsTitleFragment extends Fragment {
 
-    @Bind(R.id.tv_accuracy)TextView accuracy;
-    @Bind(R.id.tv_progress_report)TextView progressReport;
-    @Bind(R.id.tv_test_coverage)TextView testCoverage;
-    @Bind(R.id.tv_recommended_reading) TextView recommededReading;
-    @Bind(R.id.tv_time_management)TextView timeManagement;
-    @Bind(R.id.tv_usage_analysis)TextView usageAnalysis;
+    @Bind(R.id.tv_accuracy)
+    TextView accuracy;
+    @Bind(R.id.tv_progress_report)
+    TextView progressReport;
+    @Bind(R.id.tv_test_coverage)
+    TextView testCoverage;
+    @Bind(R.id.tv_recommended_reading)
+    TextView recommededReading;
+    @Bind(R.id.tv_time_management)
+    TextView timeManagement;
+    @Bind(R.id.tv_usage_analysis)
+    TextView usageAnalysis;
     IAnalyticsTitleFragmentListener titleSelectedListener;
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        if(activity instanceof IAnalyticsTitleFragmentListener)
+        if (activity instanceof IAnalyticsTitleFragmentListener) {
             titleSelectedListener = (IAnalyticsTitleFragmentListener) activity;
-        else{
+        } else {
             throw new RuntimeException("Activity must implement " + IAnalyticsTitleFragmentListener.class.getCanonicalName());
         }
     }
@@ -42,8 +48,8 @@ public class AnalyticsTitleFragment extends Fragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_analytics_title,container,false);
-        ButterKnife.bind(this,v);
+        View v = inflater.inflate(R.layout.fragment_analytics_title, container, false);
+        ButterKnife.bind(this, v);
 
         accuracy.setOnClickListener(mTitleSelectedListener);
         progressReport.setOnClickListener(mTitleSelectedListener);
@@ -59,17 +65,16 @@ public class AnalyticsTitleFragment extends Fragment{
     }
 
 
-
     View.OnClickListener mTitleSelectedListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.tv_progress_report:
-                    progressReport.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ico_report_selected,0,0);
-                    timeManagement.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ico_time_unselected,0,0);
-                    testCoverage.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ico_test_unselected,0,0);
-                    recommededReading.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ico_recommend_unselected,0,0);
-                    accuracy.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ico_accuracy_unselected,0,0);
+                    progressReport.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ico_report_selected, 0, 0);
+                    timeManagement.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ico_time_unselected, 0, 0);
+                    testCoverage.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ico_test_unselected, 0, 0);
+                    recommededReading.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ico_recommend_unselected, 0, 0);
+                    accuracy.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ico_accuracy_unselected, 0, 0);
                     usageAnalysis.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ico_sidemenu_groups, 0, 0);
                     progressReport.setBackground(getResources().getDrawable(R.drawable.background_rounded_corner_left_bottom));
                     progressReport.setTextColor(getResources().getColor(R.color.green));
@@ -86,11 +91,11 @@ public class AnalyticsTitleFragment extends Fragment{
                     titleSelectedListener.onAnalyticsTitleSelected(AnalyticsActivity.K_TITLE_PROGRESS_REPORT);
                     break;
                 case R.id.tv_time_management:
-                    timeManagement.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ico_time_selected,0,0);
-                    progressReport.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ico_report_unselected,0,0);
-                    testCoverage.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ico_test_unselected,0,0);
-                    recommededReading.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ico_recommend_unselected,0,0);
-                    accuracy.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ico_accuracy_unselected,0,0);
+                    timeManagement.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ico_time_selected, 0, 0);
+                    progressReport.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ico_report_unselected, 0, 0);
+                    testCoverage.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ico_test_unselected, 0, 0);
+                    recommededReading.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ico_recommend_unselected, 0, 0);
+                    accuracy.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ico_accuracy_unselected, 0, 0);
                     usageAnalysis.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ico_sidemenu_groups, 0, 0);
                     titleSelectedListener.onAnalyticsTitleSelected(AnalyticsActivity.K_TITLE_TIME_MANAGEMENT);
                     timeManagement.setBackground(getResources().getDrawable(R.drawable.background_rounded_corner_left_bottom));
@@ -107,9 +112,9 @@ public class AnalyticsTitleFragment extends Fragment{
                     usageAnalysis.setTextColor(Color.WHITE);
                     break;
                 case R.id.tv_test_coverage:
-                    testCoverage.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ico_test_selected,0,0);
-                    progressReport.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ico_report_unselected,0,0);
-                    timeManagement.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ico_time_unselected,0,0);
+                    testCoverage.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ico_test_selected, 0, 0);
+                    progressReport.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ico_report_unselected, 0, 0);
+                    timeManagement.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ico_time_unselected, 0, 0);
                     recommededReading.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ico_recommend_unselected, 0, 0);
                     accuracy.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ico_accuracy_unselected, 0, 0);
                     usageAnalysis.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ico_sidemenu_groups, 0, 0);
@@ -128,9 +133,9 @@ public class AnalyticsTitleFragment extends Fragment{
                     usageAnalysis.setTextColor(Color.WHITE);
                     break;
                 case R.id.tv_accuracy:
-                    accuracy.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ico_accuracy_selected,0,0);
-                    progressReport.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ico_report_unselected,0,0);
-                    timeManagement.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ico_time_unselected,0,0);
+                    accuracy.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ico_accuracy_selected, 0, 0);
+                    progressReport.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ico_report_unselected, 0, 0);
+                    timeManagement.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ico_time_unselected, 0, 0);
                     testCoverage.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ico_test_unselected, 0, 0);
                     recommededReading.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ico_recommend_unselected, 0, 0);
                     usageAnalysis.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ico_sidemenu_groups, 0, 0);
@@ -150,8 +155,8 @@ public class AnalyticsTitleFragment extends Fragment{
                     break;
                 case R.id.tv_recommended_reading:
                     recommededReading.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ico_recommend_selected, 0, 0);
-                    progressReport.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ico_report_unselected,0,0);
-                    timeManagement.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ico_time_unselected,0,0);
+                    progressReport.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ico_report_unselected, 0, 0);
+                    timeManagement.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ico_time_unselected, 0, 0);
                     testCoverage.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ico_test_unselected, 0, 0);
                     accuracy.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ico_accuracy_unselected, 0, 0);
                     usageAnalysis.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ico_sidemenu_groups, 0, 0);
@@ -171,8 +176,8 @@ public class AnalyticsTitleFragment extends Fragment{
                     break;
                 case R.id.tv_usage_analysis:
                     recommededReading.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ico_recommend_unselected, 0, 0);
-                    progressReport.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ico_report_unselected,0,0);
-                    timeManagement.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ico_time_unselected,0,0);
+                    progressReport.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ico_report_unselected, 0, 0);
+                    timeManagement.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ico_time_unselected, 0, 0);
                     testCoverage.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ico_test_unselected, 0, 0);
                     accuracy.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ico_accuracy_unselected, 0, 0);
                     usageAnalysis.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ico_sidemenu_groups, 0, 0);
@@ -193,7 +198,8 @@ public class AnalyticsTitleFragment extends Fragment{
             }
         }
     };
-    public interface IAnalyticsTitleFragmentListener{
+
+    public interface IAnalyticsTitleFragmentListener {
         void onAnalyticsTitleSelected(String title);
     }
 }

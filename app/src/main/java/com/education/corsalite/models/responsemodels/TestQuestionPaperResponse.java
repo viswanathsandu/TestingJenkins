@@ -15,7 +15,8 @@ public class TestQuestionPaperResponse extends BaseResponseModel {
     @SerializedName("ExamDetails")
     public QuestionPaperExamDetails examDetails;
 
-    public TestQuestionPaperResponse() {}
+    public TestQuestionPaperResponse() {
+    }
 
 
 }

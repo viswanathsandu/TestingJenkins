@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/gray"
-    android:gravity="center_vertical"
-    android:paddingBottom="8dp"
-    android:paddingEnd="16dp"
-    android:paddingStart="16dp"
-    android:paddingTop="8dp">
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/gray"
+              android:gravity="center_vertical"
+              android:paddingBottom="8dp"
+              android:paddingEnd="16dp"
+              android:paddingStart="16dp"
+              android:paddingTop="8dp">
 
     <TextView
         android:id="@+id/txt_view_header_test_label"
@@ -15,12 +15,12 @@
         android:layout_height="wrap_content"
         android:text="@string/label_test_coverage_chapter"
         android:textColor="@color/black"
-        android:textSize="20sp" />
+        android:textSize="20sp"/>
 
     <View
         android:layout_width="0dp"
         android:layout_height="1dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"/>
 
     <com.education.corsalite.views.CustomButton
         android:id="@+id/btn_header_test_cancel"
@@ -30,7 +30,7 @@
         android:text="@string/label_cancel"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        android:textSize="16sp" />
+        android:textSize="16sp"/>
 
     <com.education.corsalite.views.CustomButton
         android:id="@+id/btn_header_test_next"
@@ -41,6 +41,6 @@
         android:text="@string/label_next"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        android:textSize="16sp" />
+        android:textSize="16sp"/>
 
 </LinearLayout>

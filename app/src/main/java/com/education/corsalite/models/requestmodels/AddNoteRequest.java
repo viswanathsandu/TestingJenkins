@@ -25,13 +25,13 @@ public class AddNoteRequest {
     }
 
     public AddNoteRequest(String studentId, List<Note> notes) {
-        this.updateTime =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(TimeUtils.getCurrentDate());
+        this.updateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(TimeUtils.getCurrentDate());
         this.studentId = studentId;
         this.notes = notes;
     }
 
     public AddNoteRequest(String studentId, Note note) {
-        this.updateTime =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(TimeUtils.getCurrentDate());
+        this.updateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(TimeUtils.getCurrentDate());
         this.studentId = studentId;
         this.notes = new ArrayList<>();
         notes.add(note);

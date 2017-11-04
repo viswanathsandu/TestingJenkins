@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by Girish on 03/10/15.
  */
-public class ChapterModel extends BaseModel implements Comparable<ChapterModel>, Serializable{
+public class ChapterModel extends BaseModel implements Comparable<ChapterModel>, Serializable {
 
     @SerializedName("idCourseSubjectChapter")
     public String idChapter;

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
     <include
         android:id="@+id/top_layout"
-        layout="@layout/study_centre_subject_bar" />
+        layout="@layout/study_centre_subject_bar"/>
 
     <LinearLayout
         android:id="@+id/headerLayout"
@@ -15,7 +15,7 @@
         android:background="@color/tab_recycler_header"
         android:visibility="gone">
 
-        <include layout="@layout/row_recommended_header_list" />
+        <include layout="@layout/row_recommended_header_list"/>
 
     </LinearLayout>
 
@@ -25,7 +25,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/headerLayout"
         android:scrollbars="vertical"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
     <ProgressBar
         android:id="@+id/progress_bar_tab"
@@ -34,7 +34,7 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_gravity="center_horizontal"
-        android:visibility="visible" />
+        android:visibility="visible"/>
 
     <LinearLayout
         android:id="@+id/failure_container"
@@ -51,6 +51,6 @@
             android:background="@color/white"
             android:drawableTop="@drawable/ico_info"
             android:text="No data found"
-            android:visibility="visible" />
+            android:visibility="visible"/>
     </LinearLayout>
 </RelativeLayout>

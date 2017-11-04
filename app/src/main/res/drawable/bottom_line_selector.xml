@@ -5,12 +5,12 @@
         <layer-list>
             <item>
                 <shape>
-                    <solid android:color="@color/dark_blue_selector" />
+                    <solid android:color="@color/dark_blue_selector"/>
                 </shape>
             </item>
             <item android:bottom="3dp">
                 <shape>
-                    <solid android:color="@color/gray" />
+                    <solid android:color="@color/gray"/>
                 </shape>
             </item>
         </layer-list>

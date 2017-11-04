@@ -90,12 +90,12 @@ public class OfflineTestsFragment extends BaseFragment implements OfflineActivit
             if (model != null && model.testType != null) {
                 switch (model.testType) {
                     case CHAPTER:
-                        if(isCurrentCourse(model)) {
+                        if (isCurrentCourse(model)) {
                             chaptersList.add(model);
                         }
                         break;
                     case PART:
-                        if(isCurrentCourse(model)) {
+                        if (isCurrentCourse(model)) {
                             partTestList.add(model);
                         }
                         break;

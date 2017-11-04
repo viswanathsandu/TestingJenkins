@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/white"
-    android:padding="10dp">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:padding="10dp">
 
     <RelativeLayout
         android:id="@+id/action_buttons_layout"
@@ -21,7 +21,7 @@
             android:layout_gravity="center"
             android:layout_marginRight="5dp"
             android:scaleType="centerInside"
-            android:src="@drawable/ico_correct" />
+            android:src="@drawable/ico_correct"/>
 
         <Button
             android:id="@+id/test_status"
@@ -34,7 +34,7 @@
             android:maxLines="1"
             android:textAllCaps="false"
             android:textColor="@color/text_black"
-            android:textSize="12sp" />
+            android:textSize="12sp"/>
     </RelativeLayout>
 
 
@@ -57,7 +57,7 @@
             android:paddingBottom="3dp"
             android:paddingLeft="5dp"
             android:textColor="@color/text_black"
-            android:textSize="12sp" />
+            android:textSize="12sp"/>
 
         <TextView
             android:id="@+id/mock_test_time_txt"
@@ -68,7 +68,7 @@
             android:paddingLeft="5dp"
             android:maxLines="1"
             android:textColor="@color/text_black"
-            android:textSize="10sp" />
+            android:textSize="10sp"/>
 
     </LinearLayout>
 

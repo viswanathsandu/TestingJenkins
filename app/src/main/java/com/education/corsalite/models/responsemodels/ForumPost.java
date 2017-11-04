@@ -54,64 +54,93 @@ public class ForumPost {
 
         ForumPost forumPost = (ForumPost) o;
 
-        if (idCourseSubject != null ? !idCourseSubject.equals(forumPost.idCourseSubject) : forumPost.idCourseSubject != null)
+        if (idCourseSubject != null ? !idCourseSubject.equals(forumPost.idCourseSubject) : forumPost.idCourseSubject != null) {
             return false;
-        if (CourseName != null ? !CourseName.equals(forumPost.CourseName) : forumPost.CourseName != null)
+        }
+        if (CourseName != null ? !CourseName.equals(forumPost.CourseName) : forumPost.CourseName != null) {
             return false;
-        if (postLikes != null ? !postLikes.equals(forumPost.postLikes) : forumPost.postLikes != null)
+        }
+        if (postLikes != null ? !postLikes.equals(forumPost.postLikes) : forumPost.postLikes != null) {
             return false;
-        if (TopicName != null ? !TopicName.equals(forumPost.TopicName) : forumPost.TopicName != null)
+        }
+        if (TopicName != null ? !TopicName.equals(forumPost.TopicName) : forumPost.TopicName != null) {
             return false;
-        if (createrLastView != null ? !createrLastView.equals(forumPost.createrLastView) : forumPost.createrLastView != null)
+        }
+        if (createrLastView != null ? !createrLastView.equals(forumPost.createrLastView) : forumPost.createrLastView != null) {
             return false;
-        if (ReferidUserPost != null ? !ReferidUserPost.equals(forumPost.ReferidUserPost) : forumPost.ReferidUserPost != null)
+        }
+        if (ReferidUserPost != null ? !ReferidUserPost.equals(forumPost.ReferidUserPost) : forumPost.ReferidUserPost != null) {
             return false;
-        if (idTopic != null ? !idTopic.equals(forumPost.idTopic) : forumPost.idTopic != null)
+        }
+        if (idTopic != null ? !idTopic.equals(forumPost.idTopic) : forumPost.idTopic != null) {
             return false;
-        if (Datetime != null ? !Datetime.equals(forumPost.Datetime) : forumPost.Datetime != null)
+        }
+        if (Datetime != null ? !Datetime.equals(forumPost.Datetime) : forumPost.Datetime != null) {
             return false;
-        if (idUserPost != null ? !idUserPost.equals(forumPost.idUserPost) : forumPost.idUserPost != null)
+        }
+        if (idUserPost != null ? !idUserPost.equals(forumPost.idUserPost) : forumPost.idUserPost != null) {
             return false;
-        if (postReplies != null ? !postReplies.equals(forumPost.postReplies) : forumPost.postReplies != null)
+        }
+        if (postReplies != null ? !postReplies.equals(forumPost.postReplies) : forumPost.postReplies != null) {
             return false;
-        if (htmlText != null ? !htmlText.equals(forumPost.htmlText) : forumPost.htmlText != null)
+        }
+        if (htmlText != null ? !htmlText.equals(forumPost.htmlText) : forumPost.htmlText != null) {
             return false;
-        if (PostTags != null ? !PostTags.equals(forumPost.PostTags) : forumPost.PostTags != null)
+        }
+        if (PostTags != null ? !PostTags.equals(forumPost.PostTags) : forumPost.PostTags != null) {
             return false;
-        if (LockedDate != null ? !LockedDate.equals(forumPost.LockedDate) : forumPost.LockedDate != null)
+        }
+        if (LockedDate != null ? !LockedDate.equals(forumPost.LockedDate) : forumPost.LockedDate != null) {
             return false;
-        if (idCourseSubjectChapter != null ? !idCourseSubjectChapter.equals(forumPost.idCourseSubjectChapter) : forumPost.idCourseSubjectChapter != null)
+        }
+        if (idCourseSubjectChapter != null ? !idCourseSubjectChapter.equals(forumPost.idCourseSubjectChapter) : forumPost.idCourseSubjectChapter != null) {
             return false;
-        if (EditedDate != null ? !EditedDate.equals(forumPost.EditedDate) : forumPost.EditedDate != null)
+        }
+        if (EditedDate != null ? !EditedDate.equals(forumPost.EditedDate) : forumPost.EditedDate != null) {
             return false;
-        if (PhotoUrl != null ? !PhotoUrl.equals(forumPost.PhotoUrl) : forumPost.PhotoUrl != null)
+        }
+        if (PhotoUrl != null ? !PhotoUrl.equals(forumPost.PhotoUrl) : forumPost.PhotoUrl != null) {
             return false;
-        if (SearchPost != null ? !SearchPost.equals(forumPost.SearchPost) : forumPost.SearchPost != null)
+        }
+        if (SearchPost != null ? !SearchPost.equals(forumPost.SearchPost) : forumPost.SearchPost != null) {
             return false;
-        if (LockedBy != null ? !LockedBy.equals(forumPost.LockedBy) : forumPost.LockedBy != null)
+        }
+        if (LockedBy != null ? !LockedBy.equals(forumPost.LockedBy) : forumPost.LockedBy != null) {
             return false;
-        if (postViews != null ? !postViews.equals(forumPost.postViews) : forumPost.postViews != null)
+        }
+        if (postViews != null ? !postViews.equals(forumPost.postViews) : forumPost.postViews != null) {
             return false;
-        if (PostSubject != null ? !PostSubject.equals(forumPost.PostSubject) : forumPost.PostSubject != null)
+        }
+        if (PostSubject != null ? !PostSubject.equals(forumPost.PostSubject) : forumPost.PostSubject != null) {
             return false;
-        if (UserType != null ? !UserType.equals(forumPost.UserType) : forumPost.UserType != null)
+        }
+        if (UserType != null ? !UserType.equals(forumPost.UserType) : forumPost.UserType != null) {
             return false;
-        if (bookmark != null ? !bookmark.equals(forumPost.bookmark) : forumPost.bookmark != null)
+        }
+        if (bookmark != null ? !bookmark.equals(forumPost.bookmark) : forumPost.bookmark != null) {
             return false;
-        if (ChapterName != null ? !ChapterName.equals(forumPost.ChapterName) : forumPost.ChapterName != null)
+        }
+        if (ChapterName != null ? !ChapterName.equals(forumPost.ChapterName) : forumPost.ChapterName != null) {
             return false;
-        if (idCourse != null ? !idCourse.equals(forumPost.idCourse) : forumPost.idCourse != null)
+        }
+        if (idCourse != null ? !idCourse.equals(forumPost.idCourse) : forumPost.idCourse != null) {
             return false;
-        if (DisplayName != null ? !DisplayName.equals(forumPost.DisplayName) : forumPost.DisplayName != null)
+        }
+        if (DisplayName != null ? !DisplayName.equals(forumPost.DisplayName) : forumPost.DisplayName != null) {
             return false;
-        if (SubjectName != null ? !SubjectName.equals(forumPost.SubjectName) : forumPost.SubjectName != null)
+        }
+        if (SubjectName != null ? !SubjectName.equals(forumPost.SubjectName) : forumPost.SubjectName != null) {
             return false;
-        if (isAuthorOnly != null ? !isAuthorOnly.equals(forumPost.isAuthorOnly) : forumPost.isAuthorOnly != null)
+        }
+        if (isAuthorOnly != null ? !isAuthorOnly.equals(forumPost.isAuthorOnly) : forumPost.isAuthorOnly != null) {
             return false;
-        if (idUser != null ? !idUser.equals(forumPost.idUser) : forumPost.idUser != null)
+        }
+        if (idUser != null ? !idUser.equals(forumPost.idUser) : forumPost.idUser != null) {
             return false;
-        if (EditedBy != null ? !EditedBy.equals(forumPost.EditedBy) : forumPost.EditedBy != null)
+        }
+        if (EditedBy != null ? !EditedBy.equals(forumPost.EditedBy) : forumPost.EditedBy != null) {
             return false;
+        }
         return !(Locked != null ? !Locked.equals(forumPost.Locked) : forumPost.Locked != null);
 
     }

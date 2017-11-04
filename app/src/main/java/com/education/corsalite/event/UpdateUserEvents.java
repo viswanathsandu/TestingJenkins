@@ -29,8 +29,8 @@ public class UpdateUserEvents {
         dbManager = SugarDbManager.get(context);
     }
 
-    public void postUserEvent(Activity activity, UserEventsModel model){
-        if(SystemUtils.isNetworkConnected(activity)) {
+    public void postUserEvent(Activity activity, UserEventsModel model) {
+        if (SystemUtils.isNetworkConnected(activity)) {
             ApiManager.getInstance(activity).postUserEvents(Gson.get().toJson(model), new ApiCallback<UserEventsResponse>(activity) {
                 @Override
                 public void success(UserEventsResponse userEventsResponse, Response response) {
@@ -44,8 +44,8 @@ public class UpdateUserEvents {
         }
     }
 
-    public void postContentReading(Activity activity, ContentReadingEvent event){
-        if(SystemUtils.isNetworkConnected(activity)) {
+    public void postContentReading(Activity activity, ContentReadingEvent event) {
+        if (SystemUtils.isNetworkConnected(activity)) {
             ApiManager.getInstance(activity).postContentUsage(Gson.get().toJson(event), new ApiCallback<BaseResponseModel>(activity) {
                 @Override
                 public void success(BaseResponseModel baseResponse, Response response) {
@@ -57,47 +57,47 @@ public class UpdateUserEvents {
             syncModel.setContentReadingEvent(event);
             dbManager.addSyncModel(syncModel);
         }
-        UserEventsModel model = getUserEventsModel("Content Reading",event.eventStartTime,
+        UserEventsModel model = getUserEventsModel("Content Reading", event.eventStartTime,
                 event.eventEndTime, event.idContent, "");
         postUserEvent(activity, model);
     }
 
-    public void postExerciseAns(Activity activity, ExerciseAnsEvent event){
-        UserEventsModel model = getUserEventsModel("Exercise Answering",event.eventStartTime,
-                event.eventEndTime, event.id,event.pageView);
-        postUserEvent(activity,model);
+    public void postExerciseAns(Activity activity, ExerciseAnsEvent event) {
+        UserEventsModel model = getUserEventsModel("Exercise Answering", event.eventStartTime,
+                event.eventEndTime, event.id, event.pageView);
+        postUserEvent(activity, model);
     }
 
-    public void postTakingTest(Activity activity,TakingTestEvent event){
-        UserEventsModel model = getUserEventsModel("Taking Test",event.eventStartTime,
-                event.eventEndTime, event.id,event.pageView);
-        postUserEvent(activity,model);
+    public void postTakingTest(Activity activity, TakingTestEvent event) {
+        UserEventsModel model = getUserEventsModel("Taking Test", event.eventStartTime,
+                event.eventEndTime, event.id, event.pageView);
+        postUserEvent(activity, model);
     }
 
-    public void postForumPosting(Activity activity,ForumPostingEvent event){
-        UserEventsModel model = getUserEventsModel("Forum Posting",event.eventStartTime,
-                event.eventEndTime, event.id,event.pageView);
-        postUserEvent(activity,model);
+    public void postForumPosting(Activity activity, ForumPostingEvent event) {
+        UserEventsModel model = getUserEventsModel("Forum Posting", event.eventStartTime,
+                event.eventEndTime, event.id, event.pageView);
+        postUserEvent(activity, model);
     }
 
-    public void postLoggedInEvent(Activity activity, String eventTime){
+    public void postLoggedInEvent(Activity activity, String eventTime) {
         UserEventsModel model = getUserEventsModel("Forum Posting", eventTime,
                 null, null, "loggedin");
-        postUserEvent(activity,model);
+        postUserEvent(activity, model);
     }
 
-    public void postLoggedOutEvent(Activity activity, String eventTime){
+    public void postLoggedOutEvent(Activity activity, String eventTime) {
         UserEventsModel model = getUserEventsModel("Forum Posting", eventTime,
                 null, null, "loggedin");
-        postUserEvent(activity,model);
+        postUserEvent(activity, model);
     }
 
-    private UserEventsModel getUserEventsModel(String eventName,String eventStartTime,
-                                               String eventEndTime, String eventSourceId, String pageView){
+    private UserEventsModel getUserEventsModel(String eventName, String eventStartTime,
+            String eventEndTime, String eventSourceId, String pageView) {
         UserEventsModel model = new UserEventsModel();
         model.idUser = LoginUserCache.getInstance().getStudentId();
         model.eventEndTime = eventEndTime;
-        model.eventStartTime =eventStartTime;
+        model.eventStartTime = eventStartTime;
         model.eventName = eventName;
         model.eventSourceId = eventSourceId;
         model.pageView = pageView;

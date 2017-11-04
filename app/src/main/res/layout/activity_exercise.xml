@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#FFFFFF"
-    tools:context=".activities.ExamEngineActivity">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#FFFFFF"
+                tools:context=".activities.ExamEngineActivity">
 
     <ViewSwitcher
         android:id="@+id/vs_container"
@@ -20,7 +20,7 @@
                 android:id="@+id/header_progress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true" />
+                android:layout_centerInParent="true"/>
 
             <TextView
                 android:id="@+id/tv_empty_layout"
@@ -30,7 +30,7 @@
                 android:layout_centerInParent="true"
                 android:text="No Data Found"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:visibility="gone" />
+                android:visibility="gone"/>
         </RelativeLayout>
 
         <RelativeLayout
@@ -61,14 +61,14 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:gravity="center_vertical" />
+                        android:gravity="center_vertical"/>
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/sections_list"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="20dp"
-                        android:visibility="gone" />
+                        android:visibility="gone"/>
 
                 </RelativeLayout>
 
@@ -92,7 +92,7 @@
                         android:enabled="false"
                         android:text="TIME LEFT"
                         android:textColor="#80FFFFFF"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"/>
 
                     <TextView
                         fontPath="@string/roboto_regular"
@@ -104,7 +104,7 @@
                         android:paddingRight="10dp"
                         android:text=" | "
                         android:textColor="#40FFFFFF"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"/>
 
                     <TextView
                         android:id="@+id/tv_timer"
@@ -115,7 +115,7 @@
                         android:enabled="false"
                         android:text=" | "
                         android:textColor="#FFFFFF"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"/>
 
                 </LinearLayout>
 
@@ -131,7 +131,7 @@
                     android:padding="2dp"
                     android:src="@drawable/ico_restart_test"
                     android:text=" | "
-                    android:visibility="gone" />
+                    android:visibility="gone"/>
 
             </LinearLayout>
 
@@ -143,7 +143,7 @@
                 android:layout_below="@id/layout_header"
                 android:layout_marginLeft="40dp"
                 android:layout_marginTop="5dp"
-                android:layout_alignParentRight="true" />
+                android:layout_alignParentRight="true"/>
 
             <TextView
                 android:id="@+id/tv_comment"
@@ -157,7 +157,7 @@
                 android:gravity="center_vertical"
                 android:maxLines="2"
                 android:singleLine="false"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"/>
 
 
             <RelativeLayout
@@ -189,7 +189,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:layout_weight="1" />
+                        android:layout_weight="1"/>
 
                     <ImageView
                         android:id="@+id/imv_flag"
@@ -199,7 +199,7 @@
                         android:layout_below="@id/webview_paragraph"
                         android:layout_gravity="center_vertical"
                         android:layout_marginTop="10dp"
-                        android:src="@drawable/btn_flag_unselect" />
+                        android:src="@drawable/btn_flag_unselect"/>
 
                     <TextView
                         android:id="@+id/tv_serial_no"
@@ -209,14 +209,14 @@
                         android:layout_gravity="center_vertical"
                         android:layout_toRightOf="@id/imv_flag"
                         android:padding="10dp"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/black"/>
 
                     <WebView
                         android:id="@+id/webview_question"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/webview_paragraph"
-                        android:layout_toRightOf="@+id/tv_serial_no" />
+                        android:layout_toRightOf="@+id/tv_serial_no"/>
 
                     <HorizontalScrollView
                         android:id="@+id/answer_scroll_layout"
@@ -262,7 +262,7 @@
                             android:paddingTop="5dp"
                             android:text="Verify Answer"
                             android:textColor="@color/white"
-                            android:visibility="gone" />
+                            android:visibility="gone"/>
 
                         <TextView
                             android:id="@+id/tv_clearanswer"
@@ -279,7 +279,7 @@
                             android:paddingRight="20dp"
                             android:paddingTop="5dp"
                             android:text="Clear Answer"
-                            android:textColor="@color/white" />
+                            android:textColor="@color/white"/>
 
                     </LinearLayout>
 
@@ -302,14 +302,14 @@
                             android:text="Correct Answers"
                             android:textAppearance="?android:attr/textAppearanceLarge"
                             android:textSize="14sp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"/>
 
 
                         <TextView
                             android:id="@+id/txtAnswerCount"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="3" />
+                            android:layout_weight="3"/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -331,14 +331,14 @@
                             android:text="Explanation"
                             android:textAppearance="?android:attr/textAppearanceLarge"
                             android:textSize="14sp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"/>
 
                         <WebView
                             android:id="@+id/txtAnswerExp"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="3"
-                            tools:ignore="WebViewLayout" />
+                            tools:ignore="WebViewLayout"/>
 
                     </LinearLayout>
 
@@ -347,7 +347,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
-                        android:layout_below="@id/layout_choice" />
+                        android:layout_below="@id/layout_choice"/>
 
                 </RelativeLayout>
 
@@ -380,7 +380,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true" />
+                android:layout_centerVertical="true"/>
 
         </RelativeLayout>
 

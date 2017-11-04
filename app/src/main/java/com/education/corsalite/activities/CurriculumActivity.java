@@ -15,8 +15,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class CurriculumActivity extends AbstractBaseActivity {
-    @Bind(R.id.tabLayout) TabLayout mTabLayout;
-    @Bind(R.id.viewPager) ViewPager mViewPager;
+    @Bind(R.id.tabLayout)
+    TabLayout mTabLayout;
+    @Bind(R.id.viewPager)
+    ViewPager mViewPager;
 
     private CurriculumPagerAdapter pagerAdapter;
 

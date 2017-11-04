@@ -8,12 +8,11 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.education.corsalite.activities.ChallengeActivity;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.models.responsemodels.ChallengeUser;
 import com.education.corsalite.models.socket.response.ChallengeTestRequestEvent;
 import com.education.corsalite.models.socket.response.ChallengeTestUpdateEvent;
-import com.education.corsalite.gson.Gson;
 import com.education.corsalite.utils.L;
-
 
 import java.util.List;
 
@@ -31,7 +30,7 @@ public class ChallengeUtils {
     public boolean challengeCompleted = false;
 
     public static ChallengeUtils get(Context context) {
-        if(instance == null) {
+        if (instance == null) {
             instance = new ChallengeUtils();
         }
         instance.context = context;
@@ -52,7 +51,7 @@ public class ChallengeUtils {
     }
 
     private PendingIntent getChallengeRequestIntent(ChallengeTestRequestEvent event) {
-        if(event != null && TextUtils.isEmpty(event.challengeTestParentId)) {
+        if (event != null && TextUtils.isEmpty(event.challengeTestParentId)) {
             return null;
         }
         Intent intent = new Intent(context, ChallengeActivity.class);
@@ -66,7 +65,7 @@ public class ChallengeUtils {
 
     public void showChallengeUpdateNotification(ChallengeTestUpdateEvent event) {
         try {
-            if(!TextUtils.isEmpty(event.challengerStatus)) {
+            if (!TextUtils.isEmpty(event.challengerStatus)) {
                 Bundle extras = new Bundle();
                 String title = extras.getString("title", "Challenge");
                 String subTitle = extras.getString("sub_title", event.challengerName + " has " + event.challengerStatus);
@@ -87,7 +86,7 @@ public class ChallengeUtils {
     }
 
     private PendingIntent getChallengeUpdateIntent(ChallengeTestUpdateEvent event) {
-        if(event != null && (TextUtils.isEmpty(event.challengeTestParentId) || TextUtils.isEmpty(event.challengerName))) {
+        if (event != null && (TextUtils.isEmpty(event.challengeTestParentId) || TextUtils.isEmpty(event.challengerName))) {
             return null;
         }
         Intent intent = new Intent(context, ChallengeActivity.class);

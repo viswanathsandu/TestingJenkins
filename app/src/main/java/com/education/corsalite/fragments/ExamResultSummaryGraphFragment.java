@@ -1,9 +1,7 @@
 package com.education.corsalite.fragments;
 
 
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,20 +10,14 @@ import com.education.corsalite.R;
 import com.education.corsalite.gson.Gson;
 import com.education.corsalite.models.responsemodels.ExamResultSummayBysubject;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.charts.ScatterChart;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.data.ScatterData;
-import com.github.mikephil.charting.data.ScatterDataSet;
-import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.EntryXComparator;
-import com.orm.util.Collection;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,11 +28,12 @@ import butterknife.ButterKnife;
 
 public class ExamResultSummaryGraphFragment extends BaseFragment {
 
-    @Bind(R.id.chart) LineChart chart;
+    @Bind(R.id.chart)
+    LineChart chart;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_exam_result_summary_graph, container, false);
         ButterKnife.bind(this, view);
         return view;
@@ -61,7 +54,7 @@ public class ExamResultSummaryGraphFragment extends BaseFragment {
         List<Entry> recommendedTimeEntries = new ArrayList<>();
         List<Entry> timeTakenEntries = new ArrayList<>();
         List<Entry> levelEntries = new ArrayList<>();
-        for(int i=0; i<data.questions.size(); i++) {
+        for (int i = 0; i < data.questions.size(); i++) {
             maxMarksEntries.add(new Entry(Float.parseFloat(data.questions.get(i).toString()), Float.parseFloat(data.maxMarks.get(i).toString())));
             totalScoreEntries.add(new Entry(Float.parseFloat(data.questions.get(i).toString()), Float.parseFloat(data.totalMarks.get(i).toString())));
             recommendedTimeEntries.add(new Entry(Float.parseFloat(data.questions.get(i).toString()), Float.parseFloat(data.timeRecommended.get(i).toString())));
@@ -100,13 +93,11 @@ public class ExamResultSummaryGraphFragment extends BaseFragment {
         sets.add(recommendedTimeDataset);
 
         LineData lineData = new LineData();
-        for(LineDataSet dataSet : sets) {
+        for (LineDataSet dataSet : sets) {
             lineData.addDataSet(dataSet);
         }
         chart.setData(lineData);
         chart.setDrawGridBackground(false);
-
-
 
 
         // x-axis limit line
@@ -148,7 +139,6 @@ public class ExamResultSummaryGraphFragment extends BaseFragment {
         leftAxis.setDrawLimitLinesBehindData(true);
 
         chart.getAxisRight().setEnabled(false);
-
 
 
         chart.invalidate();

@@ -4,7 +4,7 @@ package com.education.corsalite.enums;
  * Created by vissu on 9/17/15.
  */
 public enum CurriculumTabType {
-    TODO ("ToDo"),
+    TODO("ToDo"),
     UPCOMING("Upcoming"),
     COMPLETED("Completed");
 

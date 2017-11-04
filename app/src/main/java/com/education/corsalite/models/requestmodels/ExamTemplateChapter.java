@@ -18,7 +18,8 @@ public class ExamTemplateChapter {
     @SerializedName("ComplexityTo")
     public String complexityTo;
 
-    public ExamTemplateChapter() {}
+    public ExamTemplateChapter() {
+    }
 
     public ExamTemplateChapter(String chapterId, String questionCount) {
         this.chapterID = chapterId;

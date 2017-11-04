@@ -23,14 +23,13 @@ import com.education.corsalite.adapters.PartTestGridAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.Exam;
 import com.education.corsalite.models.responsemodels.PartTestGridElement;
 import com.education.corsalite.models.responsemodels.PartTestModel;
 import com.education.corsalite.services.TestDownloadService;
 import com.education.corsalite.utils.Constants;
-
-import com.education.corsalite.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 
 import java.util.ArrayList;
@@ -48,14 +47,22 @@ import retrofit.client.Response;
  */
 public class PartTestDialog extends BaseDialogFragment {
 
-    @Bind(R.id.tv_recommended) TextView tvReceommended;
-    @Bind(R.id.tv_all) TextView tvAll;
-    @Bind(R.id.parttest_recyclerView) RecyclerView recyclerView;
-    @Bind(R.id.checkbox_adaptive_learning) CheckBox catCheckBox;
-    @Bind(R.id.btn_download) Button downloadBtn;
-    @Bind(R.id.exam_id_selection_layout) View examSelectionLayout;
-    @Bind(R.id.exam_spinner) Spinner examsSpinner;
-    @Bind(R.id.exam_selected_txt) TextView selectedExamTxt;
+    @Bind(R.id.tv_recommended)
+    TextView tvReceommended;
+    @Bind(R.id.tv_all)
+    TextView tvAll;
+    @Bind(R.id.parttest_recyclerView)
+    RecyclerView recyclerView;
+    @Bind(R.id.checkbox_adaptive_learning)
+    CheckBox catCheckBox;
+    @Bind(R.id.btn_download)
+    Button downloadBtn;
+    @Bind(R.id.exam_id_selection_layout)
+    View examSelectionLayout;
+    @Bind(R.id.exam_spinner)
+    Spinner examsSpinner;
+    @Bind(R.id.exam_selected_txt)
+    TextView selectedExamTxt;
 
     private int idCourseSubject;
     private String subjectName;
@@ -88,7 +95,7 @@ public class PartTestDialog extends BaseDialogFragment {
 
     private void loadExamSpinner(LinkedTreeMap<String, String> examIds) {
         List<Exam> exams = new ArrayList<>();
-        for(Map.Entry<String,String> entry : examIds.entrySet()) {
+        for (Map.Entry<String, String> entry : examIds.entrySet()) {
             Exam exam = new Exam();
             exam.examId = entry.getKey();
             exam.examName = entry.getValue();
@@ -99,8 +106,8 @@ public class PartTestDialog extends BaseDialogFragment {
         examsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedExam = ((Exam)parent.getAdapter().getItem(position));
-                selectedExamTxt.setText(((Exam)parent.getAdapter().getItem(position)).examName);
+                selectedExam = ((Exam) parent.getAdapter().getItem(position));
+                selectedExamTxt.setText(((Exam) parent.getAdapter().getItem(position)).examName);
                 adapter.setSelectedPosition(position);
                 loadPartTest(selectedExam.examId);
             }
@@ -126,7 +133,7 @@ public class PartTestDialog extends BaseDialogFragment {
                     public void failure(CorsaliteError error) {
                         super.failure(error);
                         closeProgress();
-                        if(getActivity() != null) {
+                        if (getActivity() != null) {
                             showToast("No part tests available");
                             dismiss();
                         }
@@ -135,9 +142,9 @@ public class PartTestDialog extends BaseDialogFragment {
                     @Override
                     public void success(PartTestModel partTestModel, Response response) {
                         super.success(partTestModel, response);
-                        if(getActivity() != null) {
+                        if (getActivity() != null) {
                             closeProgress();
-                            if(partTestModel.examIds != null && !partTestModel.examIds.isEmpty()) {
+                            if (partTestModel.examIds != null && !partTestModel.examIds.isEmpty()) {
                                 if (selectedExamId == null) {
                                     if (partTestModel.examIds.size() == 1) {
                                         examSelectionLayout.setVisibility(View.GONE);
@@ -222,7 +229,7 @@ public class PartTestDialog extends BaseDialogFragment {
         intent.putExtra(Constants.SELECTED_SUBJECTID, idCourseSubject + "");
         intent.putExtra(Constants.SELECTED_SUBJECT_NAME, subjectName);
         intent.putExtra(Constants.ADAPIVE_LEAERNING, mIsAdaptiveTest);
-        if(selectedExam != null) {
+        if (selectedExam != null) {
             intent.putExtra(Constants.PARTTEST_EXAMMODEL, Gson.get().toJson(selectedExam));
         }
         if (adapter != null && adapter.getListData() != null) {

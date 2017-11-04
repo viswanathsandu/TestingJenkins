@@ -14,12 +14,11 @@ import com.education.corsalite.adapters.ExamAdapter;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.models.requestmodels.ExamDetailsRequest;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.ExamDetail;
 import com.education.corsalite.models.responsemodels.UpdateExamDetailsResponse;
-import com.education.corsalite.gson.Gson;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +28,7 @@ import retrofit.client.Response;
 /**
  * Created by Girish on 12/09/15.
  */
-public class ExamTabFragment extends BaseFragment implements ExamAdapter.IAddExamOnClickListener,AddExamScheduleDialogFragment.IUpdateExamDetailsListener{
+public class ExamTabFragment extends BaseFragment implements ExamAdapter.IAddExamOnClickListener, AddExamScheduleDialogFragment.IUpdateExamDetailsListener {
 
     private static final String ADAPTER_TYPE = "adapter_type";
     List<ExamDetail> examDetailList;
@@ -41,12 +40,12 @@ public class ExamTabFragment extends BaseFragment implements ExamAdapter.IAddExa
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_user_profile_tab, container, false);
         mRecyclerView = (RecyclerView) v.findViewById(R.id.userdetail_recyclerView);
         layoutEmpty = (LinearLayout) v.findViewById(R.id.layout_empty);
-        tvNoData = (TextView)v.findViewById(R.id.tv_no_data);
+        tvNoData = (TextView) v.findViewById(R.id.tv_no_data);
         tvNoData.setText("No Exam Data Found");
         tvNoData.setTextAppearance(getActivity(), R.style.user_profile_text);
 
@@ -56,8 +55,8 @@ public class ExamTabFragment extends BaseFragment implements ExamAdapter.IAddExa
         //mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-       examDetailList = (List<ExamDetail>) getArguments().getSerializable(ADAPTER_TYPE);
-        if(examDetailList != null && examDetailList.size() > 0) {
+        examDetailList = (List<ExamDetail>) getArguments().getSerializable(ADAPTER_TYPE);
+        if (examDetailList != null && examDetailList.size() > 0) {
             mAdapter = new ExamAdapter((ArrayList) examDetailList, inflater);
             mAdapter.setAddExamOnClickListener(this);
             mRecyclerView.setAdapter(mAdapter);
@@ -72,18 +71,18 @@ public class ExamTabFragment extends BaseFragment implements ExamAdapter.IAddExa
     }
 
     @Override
-    public void onAddExamClickListener(View view, ExamDetail examDetail,String type,int position) {
+    public void onAddExamClickListener(View view, ExamDetail examDetail, String type, int position) {
         AddExamScheduleDialogFragment dialogFragment = new AddExamScheduleDialogFragment();
         dialogFragment.setUpdateExamDetailsListener(this, position);
         Bundle bundle = new Bundle();
         bundle.putSerializable("examDetail", examDetail);
-        bundle.putString("type",type);
+        bundle.putString("type", type);
         dialogFragment.setArguments(bundle);
-        dialogFragment.show(getFragmentManager(),"addExam");
+        dialogFragment.show(getFragmentManager(), "addExam");
     }
 
     @Override
-    public void onUpdateExamDetails(View view, ExamDetail examDetail,int position) {
+    public void onUpdateExamDetails(View view, ExamDetail examDetail, int position) {
         examDetailList.add(position, examDetail);
         mAdapter.notifyItemChanged(position);
         String update = Gson.get().toJson(new ExamDetailsRequest(

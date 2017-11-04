@@ -24,20 +24,20 @@ public class Constants {
     public static final String APK_FILE = "app.apk";
 
     public static final String EXERCISE_MODEL = "exercise_model";
-    public static final String SELECTED_POSITION =  "selectedPosition";
-    public static final String SELECTED_SUBJECT_NAME =  "selectedSubjectName";
-    public static final String SELECTED_SUBJECTID =  "selectedSubjectId";
-    public static final String DB_ROW_ID=  "dbRowId";
-    public static final String SELECTED_CHAPTER =  "selectedChapter";
-    public static final String SELECTED_CHAPTERID =  "selectedChapterId";
-    public static final String SELECTED_CHAPTER_NAME =  "selectedChapterName";
-    public static final String SELECTED_TOPIC_NAME =  "selectedTopic";
-    public static final String SELECTED_TOPICID =  "selectedTopicId";
-    public static final String LEVEL_CROSSED =  "level_crossed";
-    public static final String PART_TEST_GRID_DATA =  "partTestGridData";
-    public static final String TEST_TITLE =  "testTitle";
-    public static final String SELECTED_COURSE =  "selectedCourse";
-    public static final String SELECTED_ENTITY =  "selectedEntity";
+    public static final String SELECTED_POSITION = "selectedPosition";
+    public static final String SELECTED_SUBJECT_NAME = "selectedSubjectName";
+    public static final String SELECTED_SUBJECTID = "selectedSubjectId";
+    public static final String DB_ROW_ID = "dbRowId";
+    public static final String SELECTED_CHAPTER = "selectedChapter";
+    public static final String SELECTED_CHAPTERID = "selectedChapterId";
+    public static final String SELECTED_CHAPTER_NAME = "selectedChapterName";
+    public static final String SELECTED_TOPIC_NAME = "selectedTopic";
+    public static final String SELECTED_TOPICID = "selectedTopicId";
+    public static final String LEVEL_CROSSED = "level_crossed";
+    public static final String PART_TEST_GRID_DATA = "partTestGridData";
+    public static final String TEST_TITLE = "testTitle";
+    public static final String SELECTED_COURSE = "selectedCourse";
+    public static final String SELECTED_ENTITY = "selectedEntity";
     public static final String SELECTED_EXAM_NAME = "selectedExamName";
     public static final String SELECTED_QUESTION_PAPER = "selectedQuestionPaper";
     public static final String EXAM_TEMPLATE_ID = "examTemplateId";
@@ -77,13 +77,13 @@ public class Constants {
         }
 
         public static AnswerState getEnum(String val) {
-            if(val.equalsIgnoreCase(UNATTEMPTED.getValue())) {
+            if (val.equalsIgnoreCase(UNATTEMPTED.getValue())) {
                 return UNATTEMPTED;
-            } else if(val.equalsIgnoreCase(ANSWERED.getValue())) {
+            } else if (val.equalsIgnoreCase(ANSWERED.getValue())) {
                 return ANSWERED;
-            } else if(val.equalsIgnoreCase(SKIPPED.getValue())) {
+            } else if (val.equalsIgnoreCase(SKIPPED.getValue())) {
                 return SKIPPED;
-            } else if(val.equalsIgnoreCase(FLAGGED.getValue())) {
+            } else if (val.equalsIgnoreCase(FLAGGED.getValue())) {
                 return FLAGGED;
             }
             return UNATTEMPTED;

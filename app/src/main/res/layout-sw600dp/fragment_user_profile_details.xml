@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="#f3f3f3"
-    android:orientation="horizontal"
-    tools:ignore="MissingPrefix"
-    android:id="@+id/ll_user_details"
-    android:visibility="visible">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="#f3f3f3"
+              android:orientation="horizontal"
+              tools:ignore="MissingPrefix"
+              android:id="@+id/ll_user_details"
+              android:visibility="visible">
 
     <LinearLayout
         android:layout_width="0dp"
@@ -91,7 +91,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/ll_user_name"
-                style="@style/user_profile_heading_bold" />
+                style="@style/user_profile_heading_bold"/>
 
             <TextView
                 android:id="@+id/tv_emailId"
@@ -140,7 +140,7 @@
         android:layout_marginRight="10dp"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
-        android:background="#d3d3d3" />
+        android:background="#d3d3d3"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -153,20 +153,20 @@
             android:onClick="onClickIntent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ico_currency_profile" />
+            android:src="@drawable/ico_currency_profile"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:text="Virtual Currency"
-            style="@style/user_profile_text" />
+            style="@style/user_profile_text"/>
 
         <TextView
             android:id="@+id/tv_virtual_currency_balance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/user_profile_heading_bold" />
+            style="@style/user_profile_heading_bold"/>
 
         <com.education.corsalite.views.CustomButton
             android:id="@+id/redeem_btn"
