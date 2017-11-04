@@ -230,8 +230,9 @@ public class TestChapterSetupFragment extends DialogFragment
     }
 
     private void requestQuestionPaperDetails() {
+
         if (questionAdapter.isEmpty()) {
-            Toast.makeText(getActivity(), "Please select the number of questions or the level", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Please select the number of questionsor the level", Toast.LENGTH_SHORT).show();
             return;
         }
         mExtras.putBoolean(Constants.ADAPIVE_LEAERNING, mIsAdaptiveLearningEnabled);
@@ -241,8 +242,9 @@ public class TestChapterSetupFragment extends DialogFragment
     }
 
     private void downloadTakeTest(Chapter chapter) {
+
         if (questionAdapter.isEmpty()) {
-            Toast.makeText(getActivity(), "Please select the number of questions or the level", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Please select the number of questionsor the level", Toast.LENGTH_SHORT).show();
             return;
         }
         Intent exerciseIntent = new Intent(getActivity(), TestDownloadService.class);

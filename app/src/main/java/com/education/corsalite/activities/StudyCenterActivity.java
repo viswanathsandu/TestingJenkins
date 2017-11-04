@@ -470,6 +470,8 @@ public class StudyCenterActivity extends AbstractBaseActivity {
         return null;
     }
 
+
+
     private void setSubjectOptionsClickListener() {
         subjectIconImg.setOnClickListener(new View.OnClickListener() {
             @Override
