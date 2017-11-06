@@ -363,10 +363,10 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
     }
 
     private void startVideoActivity(OfflineContent offlinecontent) {
-        String videoUrl = FileUtils.get(getActivity()).getVideoDownloadFilePath(offlinecontent.contentId, false);
+        String videoUrl = FileUtils.get(getActivity()).getVideoDownloadFilePath(offlinecontent.videoSourceContentId, false);
         File file = new File(videoUrl);
         if(!file.exists()) {
-            videoUrl = FileUtils.get(getActivity()).getVideoDownloadFilePath(offlinecontent.contentId, "m3u8", false);
+            videoUrl = FileUtils.get(getActivity()).getVideoDownloadFilePath(offlinecontent.videoSourceContentId, "m3u8", false);
             file = new File(videoUrl);
             if(!file.exists()) {
                 showToast("Unable to play video due to technical error \nPlease try after sometime");

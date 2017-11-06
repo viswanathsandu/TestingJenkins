@@ -25,6 +25,10 @@ public class OfflineContent extends BaseModel {
     @Ignore
     public String contentName;
     @Ignore
+    public String url;
+    @Ignore
+    public String videoSourceContentId;
+    @Ignore
     public String fileName;
     @Ignore
     public String videoStartTime = "0";

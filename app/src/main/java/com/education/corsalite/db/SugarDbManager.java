@@ -14,6 +14,7 @@ import com.education.corsalite.models.db.reqres.LoginReqRes;
 import com.education.corsalite.models.db.reqres.ReqRes;
 import com.education.corsalite.models.db.reqres.requests.AbstractBaseRequest;
 import com.education.corsalite.models.responsemodels.BaseModel;
+import com.education.corsalite.models.responsemodels.Content;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.utils.AppPref;
 import com.education.corsalite.utils.DbUtils;
@@ -235,6 +236,25 @@ public class SugarDbManager {
                 t.reflectionJsonString = null;
                 object.setId(t.getId());
                 return object;
+            }
+        } catch (Exception e) {
+            L.error(e.getMessage(), e);
+        }
+        return null;
+    }
+
+    public OfflineContent fetchOfflineContentWithUrl(String url) {
+        try {
+            List<OfflineContent> offlineContents = Select.from(OfflineContent.class)
+                    .where(Condition.prop("BASE_USER_ID").eq(AppPref.get(context).getUserId())).list();
+            for(OfflineContent content : offlineContents) {
+                if (content.reflectionJsonString != null) {
+                    OfflineContent object = Gson.get().fromJson(Gzip.decompress(content.reflectionJsonString), OfflineContent.class);
+                    if(url.equalsIgnoreCase(object.url)) {
+                        object.setId(content.getId());
+                        return object;
+                    }
+                }
             }
         } catch (Exception e) {
             L.error(e.getMessage(), e);

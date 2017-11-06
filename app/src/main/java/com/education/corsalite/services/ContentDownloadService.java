@@ -72,20 +72,20 @@ public class ContentDownloadService extends IntentService {
     private void startDownload() {
         List<OfflineContent> offlineContentsList = new ArrayList<>(offlineContents);
         for (OfflineContent content : offlineContentsList) {
-            switch (content.status) {
-                case STARTED:
-                case IN_PROGRESS:
-                    int status = downloadManager.query(content.downloadId);
-                    if (status != DownloadManager.STATUS_SUCCESSFUL && status != DownloadManager.STATUS_RUNNING) {
+                switch (content.status) {
+                    case STARTED:
+                    case IN_PROGRESS:
+                        int status = downloadManager.query(content.downloadId);
+                        if (status != DownloadManager.STATUS_SUCCESSFUL && status != DownloadManager.STATUS_RUNNING) {
+                            downloadSync(content);
+                        }
+                        break;
+                    case WAITING:
+                    case FAILED:
                         downloadSync(content);
-                    }
                     break;
-                case WAITING:
-                case FAILED:
-                    downloadSync(content);
-                    break;
+                }
             }
-        }
     }
 
     private void downloadSync(OfflineContent content) {
@@ -112,14 +112,37 @@ public class ContentDownloadService extends IntentService {
 
     private void saveFileToDisk(OfflineContent offlineContent, String htmlText, Content content) {
         FileUtils fileUtils = FileUtils.get(this);
+        // Check if video already exists or not
+        offlineContent.videoSourceContentId = getVideoSourceContentId(content);
+
         if(content.videoSegments != null && !content.videoSegments.isEmpty()) {
-            String url = content.videoSegments.get(0);
-            downloadVideo(offlineContent, content, url,
-                    FileUtils.get(getApplicationContext()).getVideoDownloadFilePath(content.idContent, "m3u8", true));
+            offlineContent.url = content.videoSegments.get(0);
+            if(!offlineContent.videoSourceContentId.equalsIgnoreCase(content.idContent)) {
+                updateOfflineContent(offlineContent, OfflineContentStatus.COMPLETED, content, 100);
+                L.info("Downloader : Video file already exists in the app");
+                NotificationsUtils.showSuccessNotification(getApplicationContext(), Integer.valueOf(content.idContent), content.name);
+                downloandInProgress--;
+                return;
+            } else {
+                String url = content.videoSegments.get(0);
+                offlineContent.contentId = content.idContent;
+                downloadVideo(offlineContent, content, url,
+                        FileUtils.get(getApplicationContext()).getVideoDownloadFilePath(content.idContent, "m3u8", true));
+            }
         } else if (content.type.equalsIgnoreCase(Constants.VIDEO_FILE)) {
-            downloadVideo(offlineContent, content,
-                    ApiClientService.getBaseUrl() + htmlText.replaceFirst("./", ""),
-                    FileUtils.get(getApplicationContext()).getVideoDownloadFilePath(content.idContent));
+            offlineContent.url = content.url;
+            if(!offlineContent.videoSourceContentId.equalsIgnoreCase(content.idContent)) {
+                updateOfflineContent(offlineContent, OfflineContentStatus.COMPLETED, content, 100);
+                L.info("Downloader : Video file already exists in the app");
+                NotificationsUtils.showSuccessNotification(getApplicationContext(), Integer.valueOf(content.idContent), content.name);
+                downloandInProgress--;
+                return;
+            } else {
+                offlineContent.videoSourceContentId = content.idContent;
+                downloadVideo(offlineContent, content,
+                        ApiClientService.getBaseUrl() + htmlText.replaceFirst("./", ""),
+                        FileUtils.get(getApplicationContext()).getVideoDownloadFilePath(content.idContent));
+            }
         } else if (TextUtils.isEmpty(htmlText) || htmlText.endsWith(Constants.HTML_FILE)) {
             Toast.makeText(this, getString(R.string.file_exists), Toast.LENGTH_SHORT).show();
         } else {
@@ -148,7 +171,8 @@ public class ContentDownloadService extends IntentService {
             }
             downloandInProgress++;
             if(downloadUri.toString().endsWith("m3u8")) {
-                downloadUri = Uri.parse(content.videoSegments.get(0));DownloadRequest downloadRequest = new DownloadRequest(downloadUri)
+                downloadUri = Uri.parse(content.videoSegments.get(0));
+                DownloadRequest downloadRequest = new DownloadRequest(downloadUri)
                     .addCustomHeader("cookie", ApiClientService.getSetCookie())
                     .setRetryPolicy(new DefaultRetryPolicy())
                     .setDestinationURI(destinationUri).setPriority(DownloadRequest.Priority.HIGH)
@@ -169,6 +193,17 @@ public class ContentDownloadService extends IntentService {
             L.error(e.getMessage(), e);
             updateOfflineContent(offlineContent, OfflineContentStatus.FAILED, content, 0);
         }
+    }
+
+    private String getVideoSourceContentId(Content content) {
+        String url = null;
+        if(content.videoSegments == null || content.videoSegments.isEmpty()) {
+            url = content.url;
+        } else {
+            url = content.videoSegments.get(0);
+        }
+        OfflineContent offlineContent = dbManager.fetchOfflineContentWithUrl(url);
+        return offlineContent != null ? offlineContent.videoSourceContentId : content.idContent;
     }
 
     private DownloadStatusListenerV1 getVideoDownloadListenerForM3u8(final OfflineContent offlineContent, final Content content) {
@@ -237,7 +272,7 @@ public class ContentDownloadService extends IntentService {
     }
 
     private DownloadStatusListenerV1 getVideoDownloadListener(final OfflineContent offlineContent, final Content content) {
-        returnnew DownloadStatusListenerV1() {
+        return new DownloadStatusListenerV1() {
                         int preProgress = 0;
                         @Override
                         public void onDownloadComplete(DownloadRequest downloadRequest) {
@@ -269,8 +304,8 @@ public class ContentDownloadService extends IntentService {
 
     private void updateOfflineContent(OfflineContent offlineContent, OfflineContentStatus status, Content content, int progress) {
         if (content == null) return;
-        if (!TextUtils.isEmpty(content.idContent) && !TextUtils.isEmpty(offlineContent.contentId) && offlineContent.contentId.equalsIgnoreCase(
-                content.idContent)) {
+        if (!TextUtils.isEmpty(content.idContent) && !TextUtils.isEmpty(offlineContent.contentId)
+                && offlineContent.contentId.equalsIgnoreCase(content.idContent)) {
             String fileName = "";
             if (TextUtils.isEmpty(content.type)) {
                 fileName = content.name + ".html";
