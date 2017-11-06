@@ -44,17 +44,20 @@
             android:layout_alignParentRight="true"
             android:visibility="gone">
 
-            <ImageView
+            <Button
                 android:id="@+id/add_friends_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ico_actionbar_add"/>
+                android:text="@string/add_friend"
+                style="@style/title_style"/>
 
-            <ImageView
+            <Button
                 android:id="@+id/next_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ico_tick_selected"/>
+                android:text="@string/next_in_challenge"
+                style="@style/title_style"/>
+
 
         </LinearLayout>
 

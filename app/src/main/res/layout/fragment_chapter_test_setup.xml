@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:background="@color/white"
-              android:orientation="vertical"
-              android:paddingEnd="16dp"
-              android:paddingStart="16dp">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:paddingEnd="16dp"
+    android:paddingStart="16dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,16 +29,13 @@
                 android:text="No. of Questions"
                 android:textColor="@color/black"/>
 
-            <EditText
-                android:id="@+id/edit_txt_chapter_test_setup_questions"
-                style="?android:attr/spinnerItemStyle"
-                android:layout_width="50dp"
+
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/question_selection_spinner"
+                style="@android:style/Widget.Holo.Light.Spinner"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="00"
-                android:inputType="numberDecimal"
-                android:maxEms="2"
-                android:textColor="@color/black"
-                android:textColorHint="@color/text_gray"/>
+                android:textSize="16sp"/>
 
         </LinearLayout>
 

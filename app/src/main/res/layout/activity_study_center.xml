@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/white"
-                android:splitMotionEvents="false"
-                android:windowEnableSplitTouch="false">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:splitMotionEvents="false"
+    android:windowEnableSplitTouch="false" >
 
-    <include
+    <LinearLayout
         android:id="@+id/top_layout"
-        layout="@layout/study_centre_subject_bar"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include
+            layout="@layout/study_centre_subject_bar"/>
+    </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -17,8 +22,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:paddingTop="16dp"
-        android:paddingLeft="16dp"
+        android:paddingTop="@dimen/tile_margin"
+        android:paddingLeft="@dimen/tile_margin"
         android:visibility="gone"
         android:focusable="true"
         android:clickable="true"
