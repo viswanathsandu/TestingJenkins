@@ -99,7 +99,7 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
         List<OfflineContent> htmlContents = new ArrayList<>();
         List<OfflineContent> videoContents = new ArrayList<>();
         for (OfflineContent content : contents) {
-            if (content.fileName.toLowerCase().endsWith(".mpg")) {
+            if (content.fileName.toLowerCase().endsWith(".mpg") || content.fileName.toLowerCase().endsWith(".m3u8")) {
                 videoContents.add(content);
             } else if (content.fileName.toLowerCase().endsWith(".html")) {
                 htmlContents.add(content);
@@ -112,7 +112,6 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
                     public int compare(OfflineContent content1,
                             OfflineContent content2) {
                         return content1.fileName.compareToIgnoreCase(content2.fileName);
-
                     }
                 });
         contents.clear();
@@ -216,14 +215,13 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
                 }
             }
             if (contentRoot == null) {
-                if (offlineContent.fileName.endsWith(".mpg")) {
-                    contentRoot = new TreeNode(
-                            new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_video, offlineContent.fileName, offlineContent.contentId, "content",
-                                    showProgress, offlineContent.progress));
+                if (offlineContent.fileName.endsWith(".mpg")|| offlineContent.fileName.endsWith(".m3u8")) {
+                    IconTreeItemHolder.IconTreeItem item =new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_video, offlineContent.fileName, offlineContent.contentId, "content", showProgress, offlineContent.progress);item.setData(offlineContent);
+                    contentRoot = new TreeNode(item);
                 } else if (offlineContent.fileName.endsWith(".html")) {
-                    contentRoot = new TreeNode(
-                            new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_topic, offlineContent.fileName, offlineContent.contentId, "content",
-                                    showProgress, 0));
+                    IconTreeItemHolder.IconTreeItem item =new IconTreeItemHolder.IconTreeItem(R.drawable.ico_offline_topic, offlineContent.fileName, offlineContent.contentId, "content", showProgress, 0);
+                    item.setData(offlineContent);
+                    contentRoot = new TreeNode(item);
                 }
                 topicRoot.addChild(contentRoot);
             }
@@ -256,7 +254,7 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
                 if (item.text.endsWith("html")) {
                     startContentActivity(topicId, chapterId, subjectId, item.id, item.text);
                 } else {
-                    startVideoActivity(item.id);
+                    startVideoActivity((OfflineContent)item.data);
                 }
             } else if (item.data != null && item.data instanceof ExerciseOfflineModel) {
                 startExerciseTest((ExerciseOfflineModel) item.data);
@@ -364,17 +362,22 @@ public class OfflineContentFragment extends BaseFragment implements OfflineActiv
         getActivity().startActivity(intent);
     }
 
-    private void startVideoActivity(String contentId) {
-        String videoUrl = FileUtils.get(getActivity()).getVideoDownloadPath(contentId);
+    private void startVideoActivity(OfflineContent offlinecontent) {
+        String videoUrl = FileUtils.get(getActivity()).getVideoDownloadFilePath(offlinecontent.videoSourceContentId, false);
+        File file = new File(videoUrl);
+        if(!file.exists()) {
+            videoUrl = FileUtils.get(getActivity()).getVideoDownloadFilePath(offlinecontent.videoSourceContentId, "m3u8", false);
+            file = new File(videoUrl);
+            if(!file.exists()) {
+                showToast("Unable to play video due to technical error \nPlease try after sometime");
+                return;
+            }
+        }
         Intent intent = new Intent(getActivity(), VideoActivity.class);
         intent.putExtra("videopath", videoUrl);
+        intent.putExtra("videoStartTime", offlinecontent.videoStartTime);
         L.debug("Loading file from : " + videoUrl);
-        File file = new File(videoUrl);
-        if (file.exists()) {
-            getActivity().startActivity(intent);
-        } else {
-            showToast("File does not exist");
-        }
+        getActivity().startActivity(intent);
     }
 
 }

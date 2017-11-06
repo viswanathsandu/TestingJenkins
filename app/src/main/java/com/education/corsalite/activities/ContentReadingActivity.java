@@ -543,7 +543,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
             for (int i = 0; i < listSize; i++) {
                 String contentId = mContentResponse.get(i).idContent;
                 String contentType = mContentResponse.get(i).type + "";
-                String text = contentType.equalsIgnoreCase(Constants.VIDEO_FILE) ?
+                String text = contentType.equalsIgnoreCase(Constants.VIDEO_FILE) || contentType.equalsIgnoreCase("m3u8")?
                         mContentResponse.get(i).url : getHtmlcontent(mContentResponse.get(i).contentHtml);
                 if (mContentId.isEmpty()) {
                     if (!TextUtils.isEmpty(text) && count == 0) {
@@ -662,7 +662,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
         contentModelList = new ArrayList<>();
         videoModelList = new ArrayList<>();
         for (ContentModel contentModel : topicModelList.get(topicPosition).contentMap) {
-            if (contentModel.type.endsWith(Constants.VIDEO_FILE)) {
+            if (contentModel.type.endsWith(Constants.VIDEO_FILE) || contentModel.type.endsWith("m3u8")) {
                 videoModelList.add(contentModel);
             } else {
                 contentModelList.add(contentModel);
@@ -774,7 +774,9 @@ public class ContentReadingActivity extends AbstractBaseActivity {
         FileUtils fileUtils = FileUtils.get(this);
         File file = null;
         if (type.endsWith(Constants.VIDEO_FILE)) {
-            file = new File(fileUtils.getVideoDownloadPath(contentId));
+            file = new File(fileUtils.getVideoDownloadFilePath(contentId));
+        } else if(type.endsWith("m3u8")) {
+            file = new File(fileUtils.getVideoDownloadFilePath(contentId, "m3u8", false));
         } else if (type.endsWith(Constants.HTML_FILE)) {
             file = new File(fileUtils.getParentFolder() + fileUtils.getContentFilePath()
                     + File.separator + fileUtils.getContentFileName(contentId));
@@ -797,7 +799,7 @@ public class ContentReadingActivity extends AbstractBaseActivity {
                     if (videoUrl.length() > 0) {
                         loadWeb(ApiClientService.getBaseUrl() + videoUrl.replace("./", ""));
                     }
-                } else {
+                }else {
                     loadWeb(Constants.HTML_PREFIX_URL + f.getAbsolutePath());
                 }
                 return true;

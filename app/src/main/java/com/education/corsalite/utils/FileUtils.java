@@ -2,6 +2,7 @@ package com.education.corsalite.utils;
 
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.net.Uri;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
@@ -18,6 +19,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Writer;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * Created by vissu on 9/17/15.
@@ -73,8 +76,8 @@ public class FileUtils {
         return parent.getAbsolutePath();
     }
 
-    public String getVideoDownloadPath(String videoId) {
-        String fileName = "v." + Constants.VIDEO_FILE;
+    public String getVideoDownloadPathForTsFile(String videoId, String url) {
+        String fileName = url.substring( url.lastIndexOf('/')+1, url.length() );
         String folderPath = getParentFolder() + File.separator + Constants.VIDEO_FOLDER + File.separator + videoId;
         File folder = new File(folderPath);
         if (!folder.isDirectory() && !folder.exists()) {
@@ -82,6 +85,34 @@ public class FileUtils {
         }
         File file = new File(folder, fileName);
         if (!file.exists()) {
+            try {
+                writer = new BufferedWriter(new FileWriter(file));
+                writer.write("");
+                writer.close();
+            } catch (Exception e) {
+                L.error(e.getMessage(), e);
+            }
+        }
+        return file.getAbsolutePath();
+    }
+
+    public String getVideoDownloadFilePath(String videoId, boolean createFileIfNeeded) {
+        return getVideoDownloadFilePath(videoId, Constants.VIDEO_FILE, createFileIfNeeded);
+    }
+
+    public String getVideoDownloadFilePath(String videoId) {
+        return getVideoDownloadFilePath(videoId, Constants.VIDEO_FILE, true);
+    }
+
+    public String getVideoDownloadFilePath(String videoId, String fileType, boolean createFileIfNeeded) {
+        String fileName = "v." + fileType;
+        String folderPath = getParentFolder() + File.separator + Constants.VIDEO_FOLDER + File.separator + videoId;
+        File folder = new File(folderPath);
+        if(!folder.isDirectory() && !folder.exists() && createFileIfNeeded) {
+            folder.mkdirs();
+        }
+        File file = new File(folder, fileName);
+        if(!file.exists() && createFileIfNeeded) {
             try {
                 writer = new BufferedWriter(new FileWriter(file));
                 writer.write("");

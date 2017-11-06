@@ -47,6 +47,7 @@ public class VideoActivity extends AbstractBaseActivity {
     long selectedPosition = 0;
     List<Content> contents;
     private String videoPath;
+    private String videoStartPosition = "0";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,7 +65,9 @@ public class VideoActivity extends AbstractBaseActivity {
             mContentModels = (List<ContentModel>) getIntent().getExtras().getSerializable("videoList");
             setToolbarForVideo(mContentModels, (int) selectedPosition);
         }
-
+        if(getIntent().hasExtra("videoStartTime")) {
+            videoStartPosition= getIntent().getStringExtra("videoStartTime");
+        }
         if (getIntent().hasExtra("videopath")) {
             videoPath = getIntent().getStringExtra("videopath");
             loadLocalVideo();
@@ -86,7 +89,7 @@ public class VideoActivity extends AbstractBaseActivity {
         try {
             OfflineContent offlineContent = dbManager.getOfflineContentWithContent(contents.get(selectedPosition).idContent);
             if (offlineContent != null && offlineContent.progress == 100) {
-                videoPath = FileUtils.get(this).getVideoDownloadPath(offlineContent.contentId);
+                videoPath = FileUtils.get(this).getVideoDownloadFilePath(offlineContent.contentId);
                 loadLocalVideo();
                 return;
             } else if (!SystemUtils.isNetworkConnected(this)) {
@@ -120,8 +123,13 @@ public class VideoActivity extends AbstractBaseActivity {
                 videoViewRelative.setVisibility(View.VISIBLE);
                 youtubeContainer.setVisibility(View.GONE);
                 videoViewRelative.seekTo(0);
-                //set the uri of the video to be played
-                videoViewRelative.setVideoURI(Uri.parse(ApiClientService.getBaseUrl() + contents.get(selectedPosition).url.replace("./", "")));
+                if(contents.get(selectedPosition).url.startsWith("http")) {
+                    //set the uri of the video to be played
+                    videoViewRelative.setVideoURI(Uri.parse(contents.get(selectedPosition).url));
+                } else {
+                    //set the uri of the video to be played
+                    videoViewRelative.setVideoURI(Uri.parse(ApiClientService.getBaseUrl() + contents.get(selectedPosition).url.replace("./", "")));
+                }
                 // videoViewRelative.setVideoURI(Uri.parse("http://staging.corsalite.com/stagenewchanges/files/topics/1315/sunil/output.mpd"));
                 videoViewRelative.setOnPreparedListener(new OnPreparedListener() {
 
@@ -190,6 +198,12 @@ public class VideoActivity extends AbstractBaseActivity {
         youtubeContainer.setVisibility(View.GONE);
         videoViewRelative.requestFocus();
         videoViewRelative.setVideoPath(videoPath);
-//        videoViewRelative.start();
+        if(videoPath.endsWith("m3u8")) {
+            videoViewRelative.start();
+        }
+        if(videoStartPosition != null) {
+            int secs = Integer.parseInt(videoStartPosition);
+            videoViewRelative.seekTo(secs * 1000);
+        }
     }
 }

@@ -40,7 +40,7 @@ public class NotificationsUtils {
                 .load()
                 .identifier(id)
                 .title("Downloading video")
-                .message("Downloading video " + videoName)
+                .message(videoName)
                 .smallIcon(R.drawable.ic_launcher)
                 .progress()
                 .value(progress, 100, false)

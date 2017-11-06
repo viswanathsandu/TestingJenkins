@@ -56,7 +56,7 @@ public class CheckedItemViewHolder extends TreeNode.BaseNodeViewHolder<String> {
         if (!isFile) {
             checkboxImage.setImageDrawable(view.getResources().getDrawable(R.drawable.ico_offline_chapter));
         } else {
-            if (value.endsWith(".mpg")) {
+            if (value.endsWith(".mpg") || value.endsWith(".m3u8")) {
                 checkboxImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ico_offline_video));
             } else if (value.endsWith(".html")) {
                 checkboxImage.setImageDrawable(context.getResources().getDrawable(R.drawable.ico_offline_topic));
