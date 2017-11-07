@@ -310,6 +310,11 @@ public class StudyCenterActivity extends AbstractBaseActivity {
                             }
                             getOfflineStudyCenterData(studyCenters, true);
                         } else {
+                            mCourseData = new CourseData();
+                            mCourseData.StudyCenter = studyCenters;
+                            if(!studyCenters.isEmpty()) {
+                                mStudyCenter = studyCenters.get(0);
+                            }
                             getOfflineStudyCenterData(studyCenters, false);
                         }
                         if (subjectViews != null && !subjectViews.isEmpty()) {

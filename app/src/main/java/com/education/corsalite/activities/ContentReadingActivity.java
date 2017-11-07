@@ -840,6 +840,14 @@ public class ContentReadingActivity extends AbstractBaseActivity {
         if (mViewSwitcher.getNextView() instanceof RelativeLayout) {
             mViewSwitcher.showNext();
         }
+        if(SystemUtils.isNetworkConnected(this)) {
+            ivForum.setVisibility(View.VISIBLE);
+            ivEditNotes.setVisibility(View.VISIBLE);
+        } else {
+            ivForum.setVisibility(View.GONE);
+            ivEditNotes.setVisibility(View.GONE);
+        }
+
         ContentIndex mContentIndex = contentIndexList.get(0);
         subjectModelList = new ArrayList<>(mContentIndex.subjectModelList);
         final SubjectAdapter subjectAdapter = new SubjectAdapter(subjectModelList, this);
