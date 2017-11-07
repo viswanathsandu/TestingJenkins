@@ -229,6 +229,9 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         } catch (Exception e) {
             L.error(e.getMessage(), e);
         }
+        if(dataSyncAlertDialog != null && dataSyncAlertDialog.isShowing()) {
+            dataSyncAlertDialog.cancel();
+        }
         super.onPause();
         isShown = false;
         L.writeLogToFile();
@@ -1303,7 +1306,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         }
     }
 
-    private static AlertDialog dataSyncAlertDialog;
+    private AlertDialog dataSyncAlertDialog;
 
     private void showDataSyncAlert(long eventsCount) {
         if (dataSyncAlertDialog == null || !dataSyncAlertDialog.isShowing()) {
@@ -1335,17 +1338,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .setCancelable(false)
                     .setMessage("There are " + eventsCount + " offline events available to be synced to the server. Do you want to sync now?")
-                    /*.setNegativeButton("Ask Later", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            try {
-                                AppPref.get(getApplicationContext()).save("data_sync_later", String.valueOf(new Date().getTime()));
-                                dialogInterface.dismiss();
-                            }catch (Exception e) {
-                                L.error(e.getMessage(), e);
-                            }
-                        }
-                    })*/.show();
+                    .show();
         }
     }
 
