@@ -85,9 +85,6 @@ public class StudyCenterActivity extends AbstractBaseActivity {
         subjectSpinnerLayout = (LinearLayout) findViewById(R.id.subject_spinner_layout);
         subjectBarLayout = (LinearLayout) findViewById(R.id.top_layout);
         subjectsSpinner = (AppCompatSpinner) myView.findViewById(R.id.spinner_subjects_list);
-        subjectSpinnerAdpater = new ArrayAdapter<>(
-                this, R.layout.support_simple_spinner_dropdown_item, new ArrayList<StudyCenter>());
-        subjectsSpinner.setAdapter(subjectSpinnerAdpater);
         subjectIconImg = (ImageButton) myView.findViewById(R.id.subject_icon);
         setSubjectOptionsClickListener();
         subjects = new ArrayList<String>();
@@ -436,9 +433,10 @@ public class StudyCenterActivity extends AbstractBaseActivity {
     }
 
     private void setupSubjects(CourseData courseData) {
-        subjectSpinnerAdpater.clear();
+        subjectSpinnerAdpater = new ArrayAdapter<>(
+                this, R.layout.support_simple_spinner_dropdown_item, new ArrayList<StudyCenter>());
+        subjectsSpinner.setAdapter(subjectSpinnerAdpater);
         subjectSpinnerAdpater.addAll(courseData.StudyCenter);
-        subjectSpinnerAdpater.notifyDataSetChanged();
         subjectsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -467,6 +465,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+        subjectSpinnerAdpater.notifyDataSetChanged();
 
     }
 
