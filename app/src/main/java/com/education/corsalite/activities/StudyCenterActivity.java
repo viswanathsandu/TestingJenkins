@@ -3,6 +3,7 @@ package com.education.corsalite.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -296,7 +297,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
                                 dbManager.saveReqRes(ApiCacheHolder.getInstance().studyCenter);
                                 mCourseData = new CourseData();
                                 mCourseData.StudyCenter = studyCenters;
-                                if(!studyCenters.isEmpty()) {
+                                if (!studyCenters.isEmpty()) {
                                     mStudyCenter = studyCenters.get(0);
                                 }
                             }
@@ -312,7 +313,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
                         } else {
                             mCourseData = new CourseData();
                             mCourseData.StudyCenter = studyCenters;
-                            if(!studyCenters.isEmpty()) {
+                            if (!studyCenters.isEmpty()) {
                                 mStudyCenter = studyCenters.get(0);
                             }
                             getOfflineStudyCenterData(studyCenters, false);
@@ -442,7 +443,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 showList();
-                mStudyCenter = (StudyCenter)(parent.getSelectedItem());
+                mStudyCenter = (StudyCenter) (parent.getSelectedItem());
                 if (!SystemUtils.isNetworkConnected(StudyCenterActivity.this)) {
                     List<OfflineContent> offlineContents = dbManager.getOfflineContents(AbstractBaseActivity.getSelectedCourseId());
                     for (Chapter chapter : mStudyCenter.chapters) {
@@ -470,11 +471,10 @@ public class StudyCenterActivity extends AbstractBaseActivity {
 
     public String getSelectedSubjectId() {
         if (subjectsSpinner != null) {
-            return ((StudyCenter)(subjectsSpinner.getSelectedItem())).idCourseSubject + "";
+            return ((StudyCenter) (subjectsSpinner.getSelectedItem())).idCourseSubject + "";
         }
         return null;
     }
-
 
 
     private void setSubjectOptionsClickListener() {
