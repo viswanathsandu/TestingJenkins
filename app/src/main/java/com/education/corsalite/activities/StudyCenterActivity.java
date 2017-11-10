@@ -434,14 +434,15 @@ public class StudyCenterActivity extends AbstractBaseActivity {
 
     private void setupSubjects(CourseData courseData) {
         subjectSpinnerAdpater = new ArrayAdapter<>(
-                this, R.layout.support_simple_spinner_dropdown_item, new ArrayList<StudyCenter>());
+                this, R.layout.support_simple_spinner_dropdown_item,
+                new ArrayList<StudyCenter>());
         subjectsSpinner.setAdapter(subjectSpinnerAdpater);
         subjectSpinnerAdpater.addAll(courseData.StudyCenter);
         subjectsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 showList();
-                ((TextView)parent.getChildAt(0)).setTextColor(Color.WHITE);
+                ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
                 mStudyCenter = (StudyCenter) (parent.getSelectedItem());
                 if (!SystemUtils.isNetworkConnected(StudyCenterActivity.this)) {
                     List<OfflineContent> offlineContents = dbManager.getOfflineContents(AbstractBaseActivity.getSelectedCourseId());
