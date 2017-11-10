@@ -65,6 +65,7 @@ public class TestChapterSetupFragment extends DialogFragment
     private String subjectId;
     private int levelCrossed;
     private int questionCount;
+    private int index=20;
     private Integer maxQuestionLimit;
     ArrayAdapter<Integer> questionAdapter;
 
@@ -147,7 +148,11 @@ public class TestChapterSetupFragment extends DialogFragment
                                 questionAdapter.clear();
                                 questionAdapter.addAll(getListTill(1, getMaxQuestionCount(questionCount)));
                                 questionAdapter.notifyDataSetChanged();
-                                questionSelectionSpinner.setSelection(questionAdapter.getCount() - 1);
+                                if (questionAdapter.getCount() < 20) {
+                                    questionSelectionSpinner.setSelection(questionAdapter.getCount() - 1);
+                                } else {
+                                    questionSelectionSpinner.setSelection(index-1);
+                                }
                                 break;
                             }
                         }
@@ -178,7 +183,11 @@ public class TestChapterSetupFragment extends DialogFragment
                             questionAdapter.clear();
                             questionAdapter.addAll(getListTill(1, getMaxQuestionCount(questionCount)));
                             questionAdapter.notifyDataSetChanged();
-                            questionSelectionSpinner.setSelection(questionAdapter.getCount() - 1);
+                            if (questionAdapter.getCount() < 20) {
+                                questionSelectionSpinner.setSelection(questionAdapter.getCount() - 1);
+                            } else {
+                                questionSelectionSpinner.setSelection(index-1);
+                            }
                         }
                     }
                 });
