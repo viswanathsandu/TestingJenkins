@@ -443,6 +443,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 showList();
+                ((TextView)parent.getChildAt(0)).setTextColor(Color.WHITE);
                 mStudyCenter = (StudyCenter) (parent.getSelectedItem());
                 if (!SystemUtils.isNetworkConnected(StudyCenterActivity.this)) {
                     List<OfflineContent> offlineContents = dbManager.getOfflineContents(AbstractBaseActivity.getSelectedCourseId());
