@@ -120,27 +120,27 @@
         android:id="@+id/subject_spinner_layout"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:gravity="center_vertical"
         android:layout_centerVertical="true"
-        android:orientation="horizontal"
         android:layout_marginLeft="@dimen/tile_margin"
-        android:paddingLeft="15dp"
-        android:background="@drawable/blueshape">
+        android:background="@drawable/blueshape"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="15dp">
 
         <android.support.v7.widget.AppCompatSpinner
             android:id="@+id/spinner_subjects_list"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="left"
-            android:padding="10dp"/>
+            android:padding="5dp"/>
 
         <ImageButton
             android:id="@+id/subject_icon"
             android:layout_width="30dp"
             android:layout_height="match_parent"
-            android:src="@drawable/ico_three_dots"
+            android:layout_toRightOf="@+id/subject_spinner_layout"
             android:background="@drawable/white_shape"
-            android:layout_toRightOf="@+id/subject_spinner_layout"/>
+            android:src="@drawable/ico_three_dots"/>
 
     </LinearLayout>
 

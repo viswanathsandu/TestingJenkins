@@ -3,6 +3,7 @@ package com.education.corsalite.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -84,9 +85,6 @@ public class StudyCenterActivity extends AbstractBaseActivity {
         subjectSpinnerLayout = (LinearLayout) findViewById(R.id.subject_spinner_layout);
         subjectBarLayout = (LinearLayout) findViewById(R.id.top_layout);
         subjectsSpinner = (AppCompatSpinner) myView.findViewById(R.id.spinner_subjects_list);
-        subjectSpinnerAdpater = new ArrayAdapter<>(
-                this, R.layout.support_simple_spinner_dropdown_item, new ArrayList<StudyCenter>());
-        subjectsSpinner.setAdapter(subjectSpinnerAdpater);
         subjectIconImg = (ImageButton) myView.findViewById(R.id.subject_icon);
         setSubjectOptionsClickListener();
         subjects = new ArrayList<String>();
@@ -296,7 +294,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
                                 dbManager.saveReqRes(ApiCacheHolder.getInstance().studyCenter);
                                 mCourseData = new CourseData();
                                 mCourseData.StudyCenter = studyCenters;
-                                if(!studyCenters.isEmpty()) {
+                                if (!studyCenters.isEmpty()) {
                                     mStudyCenter = studyCenters.get(0);
                                 }
                             }
@@ -312,7 +310,7 @@ public class StudyCenterActivity extends AbstractBaseActivity {
                         } else {
                             mCourseData = new CourseData();
                             mCourseData.StudyCenter = studyCenters;
-                            if(!studyCenters.isEmpty()) {
+                            if (!studyCenters.isEmpty()) {
                                 mStudyCenter = studyCenters.get(0);
                             }
                             getOfflineStudyCenterData(studyCenters, false);
@@ -435,14 +433,17 @@ public class StudyCenterActivity extends AbstractBaseActivity {
     }
 
     private void setupSubjects(CourseData courseData) {
-        subjectSpinnerAdpater.clear();
+        subjectSpinnerAdpater = new ArrayAdapter<>(
+                this, R.layout.support_simple_spinner_dropdown_item,
+                new ArrayList<StudyCenter>());
+        subjectsSpinner.setAdapter(subjectSpinnerAdpater);
         subjectSpinnerAdpater.addAll(courseData.StudyCenter);
-        subjectSpinnerAdpater.notifyDataSetChanged();
         subjectsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 showList();
-                mStudyCenter = (StudyCenter)(parent.getSelectedItem());
+                ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
+                mStudyCenter = (StudyCenter) (parent.getSelectedItem());
                 if (!SystemUtils.isNetworkConnected(StudyCenterActivity.this)) {
                     List<OfflineContent> offlineContents = dbManager.getOfflineContents(AbstractBaseActivity.getSelectedCourseId());
                     for (Chapter chapter : mStudyCenter.chapters) {
@@ -465,16 +466,16 @@ public class StudyCenterActivity extends AbstractBaseActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+        subjectSpinnerAdpater.notifyDataSetChanged();
 
     }
 
     public String getSelectedSubjectId() {
         if (subjectsSpinner != null) {
-            return ((StudyCenter)(subjectsSpinner.getSelectedItem())).idCourseSubject + "";
+            return ((StudyCenter) (subjectsSpinner.getSelectedItem())).idCourseSubject + "";
         }
         return null;
     }
-
 
 
     private void setSubjectOptionsClickListener() {
