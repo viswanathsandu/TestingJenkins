@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="5dp"
-    android:orientation="vertical">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:orientation="vertical">
 
     <TextView
         android:id="@+id/comment_txt"
@@ -31,14 +31,14 @@
         android:layout_gravity="center_vertical"
         android:padding="10dp"
         android:text="1) "
-        android:textColor="@color/black" />
+        android:textColor="@color/black"/>
 
     <WebView
         android:id="@+id/question_webview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/paragraph_webview"
-        android:layout_toRightOf="@+id/tv_serial_no" />
+        android:layout_toRightOf="@+id/tv_serial_no"/>
 
     <HorizontalScrollView
         android:id="@+id/answer_scroll_layout"

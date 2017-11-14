@@ -154,6 +154,13 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         return "";
     }
 
+    public static String getSelectedCourseInstanceId() {
+        if (selectedCourse != null && selectedCourse.courseInstanceId != null) {
+            return selectedCourse.courseInstanceId;
+        }
+        return "";
+    }
+
     public static String getSelectedCourseName() {
         if (selectedCourse != null && selectedCourse.name != null) {
             return selectedCourse.name;
@@ -221,6 +228,9 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
             }
         } catch (Exception e) {
             L.error(e.getMessage(), e);
+        }
+        if(dataSyncAlertDialog != null && dataSyncAlertDialog.isShowing()) {
+            dataSyncAlertDialog.cancel();
         }
         super.onPause();
         isShown = false;
@@ -1055,24 +1065,25 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                 });
-                ApiManager.getInstance(this).getVirtualCurrencyBalance(LoginUserCache.getInstance().getStudentId(), new ApiCallback<VirtualCurrencyBalanceResponse>(this) {
-                    @Override
-                    public void success(VirtualCurrencyBalanceResponse virtualCurrencyBalanceResponse, Response response) {
-                        super.success(virtualCurrencyBalanceResponse, response);
-                        toolbar.findViewById(R.id.ProgressBar).setVisibility(View.GONE);
-                        if (virtualCurrencyBalanceResponse != null && virtualCurrencyBalanceResponse.balance != null) {
-                            appPref.setVirtualCurrency(virtualCurrencyBalanceResponse.balance.intValue() + "");
-                            TextView textView = (TextView) toolbar.findViewById(R.id.tv_virtual_currency);
-                            textView.setText(virtualCurrencyBalanceResponse.balance.intValue() + "");
-                        }
-                    }
+                ApiManager.getInstance(this).getVirtualCurrencyBalance(LoginUserCache.getInstance().getStudentId(),
+                        new ApiCallback<VirtualCurrencyBalanceResponse>(this) {
+                            @Override
+                            public void success(VirtualCurrencyBalanceResponse virtualCurrencyBalanceResponse, Response response) {
+                                super.success(virtualCurrencyBalanceResponse, response);
+                                toolbar.findViewById(R.id.ProgressBar).setVisibility(View.GONE);
+                                if (virtualCurrencyBalanceResponse != null && virtualCurrencyBalanceResponse.balance != null) {
+                                    appPref.setVirtualCurrency(virtualCurrencyBalanceResponse.balance.intValue() + "");
+                                    TextView textView = (TextView) toolbar.findViewById(R.id.tv_virtual_currency);
+                                    textView.setText(virtualCurrencyBalanceResponse.balance.intValue() + "");
+                                }
+                            }
 
-                    @Override
-                    public void failure(CorsaliteError error) {
-                        super.failure(error);
-                        toolbar.findViewById(R.id.ProgressBar).setVisibility(View.GONE);
-                    }
-                });
+                            @Override
+                            public void failure(CorsaliteError error) {
+                                super.failure(error);
+                                toolbar.findViewById(R.id.ProgressBar).setVisibility(View.GONE);
+                            }
+                        });
             }
         } catch (Exception e) {
             L.error(e.getMessage(), e);
@@ -1295,7 +1306,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
         }
     }
 
-    private static AlertDialog dataSyncAlertDialog;
+    private AlertDialog dataSyncAlertDialog;
 
     private void showDataSyncAlert(long eventsCount) {
         if (dataSyncAlertDialog == null || !dataSyncAlertDialog.isShowing()) {
@@ -1327,17 +1338,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .setCancelable(false)
                     .setMessage("There are " + eventsCount + " offline events available to be synced to the server. Do you want to sync now?")
-                    /*.setNegativeButton("Ask Later", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            try {
-                                AppPref.get(getApplicationContext()).save("data_sync_later", String.valueOf(new Date().getTime()));
-                                dialogInterface.dismiss();
-                            }catch (Exception e) {
-                                L.error(e.getMessage(), e);
-                            }
-                        }
-                    })*/.show();
+                    .show();
         }
     }
 
@@ -1549,7 +1550,7 @@ public abstract class AbstractBaseActivity extends AppCompatActivity {
 
     protected void loadScheduledTests() {
         String timeString = appPref.getValue("last_time_scheduled_tests_loaded");
-        if(!TextUtils.isEmpty(timeString)
+        if (!TextUtils.isEmpty(timeString)
                 && Long.parseLong(timeString) > (new Date().getTime() - 30 * 60 * 60 * 1000)) {
             return;
         }

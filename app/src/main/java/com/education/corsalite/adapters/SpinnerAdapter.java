@@ -22,24 +22,24 @@ public class SpinnerAdapter extends ArrayAdapter<Course> {
     private List<Course> data;
     private int selectedPosition;
 
-    public SpinnerAdapter(Context context, int resource,List<Course> data) {
-        super(context, resource,data);
+    public SpinnerAdapter(Context context, int resource, List<Course> data) {
+        super(context, resource, data);
         this.context = context;
         this.data = data;
     }
 
     @Override
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
-        View itemView =  ((Activity)context).getLayoutInflater().inflate(R.layout.spinner_drop_down,null);
-        TextView textView = (TextView)itemView.findViewById(R.id.text);
-        ImageView imageView = (ImageView)itemView.findViewById(R.id.selected_item);
+        View itemView = ((Activity) context).getLayoutInflater().inflate(R.layout.spinner_drop_down, null);
+        TextView textView = (TextView) itemView.findViewById(R.id.text);
+        ImageView imageView = (ImageView) itemView.findViewById(R.id.selected_item);
         Course course = data.get(position);
         textView.setText(course.name);
         imageView.setVisibility(position == selectedPosition ? View.VISIBLE : View.INVISIBLE);
         return itemView;
     }
 
-   public void setSelectedPosition(int position){
-       selectedPosition = position;
-   }
+    public void setSelectedPosition(int position) {
+        selectedPosition = position;
+    }
 }

@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by Girish on 30/09/15.
  */
-public class ContentResponse implements Serializable{
+public class ContentResponse implements Serializable {
     @Ignore
     @SerializedName("contentData")
     public List<Content> contents;

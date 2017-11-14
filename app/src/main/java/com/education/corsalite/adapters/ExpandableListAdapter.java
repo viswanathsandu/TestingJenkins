@@ -44,7 +44,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private HashMap<String, List<OfflineTestObjectModel>> childs;
 
     public ExpandableListAdapter(Context context, List<String> listDataHeader,
-                                 HashMap<String, List<OfflineTestObjectModel>> listChildData) {
+            HashMap<String, List<OfflineTestObjectModel>> listChildData) {
         this.context = context;
         this.headers = listDataHeader;
         this.childs = listChildData;
@@ -105,7 +105,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 Date date = df.parse(childs.get(this.headers.get(groupPosition)).get(childPosition).scheduledTest.startTime);
                 textViewTime.setText(TimeUtils.getDateTime(date.getTime()));
-            } catch(Exception e) {
+            } catch (Exception e) {
                 L.error(e.getMessage(), e);
                 textViewTime.setText(TimeUtils.getDateTime(childs.get(this.headers.get(groupPosition)).get(childPosition).dateTime));
             }
@@ -224,7 +224,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             intent.putExtra(Constants.DB_ROW_ID, model.getId());
             intent.putExtra("mock_test_data_json", Gson.get().toJson(model.mockTest));
             intent.putExtra("OfflineTestObjectModel", model.dateTime);
-            if(model.status == Constants.STATUS_SUSPENDED) {
+            if (model.status == Constants.STATUS_SUSPENDED) {
                 intent.putExtra("test_status", "Suspended");
             }
             context.startActivity(intent);
@@ -264,7 +264,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             intent.putExtra(Constants.SELECTED_SUBJECTID, subjectId);
             intent.putExtra("test_question_paper_id", model.testQuestionPaperId);
             intent.putExtra("test_answer_paper_id", model.testAnswerPaperId);
-            if(model.status == Constants.STATUS_SUSPENDED) {
+            if (model.status == Constants.STATUS_SUSPENDED) {
                 intent.putExtra("test_status", "Suspended");
             }
             context.startActivity(intent);
@@ -285,7 +285,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             intent.putExtra(Constants.SELECTED_TOPIC_NAME, subjectName);
             intent.putExtra("test_question_paper_id", model.testQuestionPaperId);
             intent.putExtra("test_answer_paper_id", model.testAnswerPaperId);
-            if(model.status == Constants.STATUS_SUSPENDED) {
+            if (model.status == Constants.STATUS_SUSPENDED) {
                 intent.putExtra("test_status", "Suspended");
             }
             context.startActivity(intent);

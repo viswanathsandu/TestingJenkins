@@ -40,21 +40,21 @@ public class ClientEntityAppConfig extends BaseResponseModel {
     }
 
     public boolean isAppFromUnknownSources() {
-        return  isUpdateAvailable() && updateMethod.equalsIgnoreCase("Update URL") && !TextUtils.isEmpty(updateUrl);
+        return isUpdateAvailable() && updateMethod.equalsIgnoreCase("Update URL") && !TextUtils.isEmpty(updateUrl);
     }
 
     public boolean isAppFromPlayStore() {
-        return  isUpdateAvailable() && updateMethod.equalsIgnoreCase("Play tore");
+        return isUpdateAvailable() && updateMethod.equalsIgnoreCase("Play tore");
     }
 
     public String getAppVersionName() {
         try {
-            if(isAppFromPlayStore()) {
+            if (isAppFromPlayStore()) {
                 AppConfig config = AbstractBaseActivity.appConfig;
-                if(config != null) {
+                if (config != null) {
                     return String.valueOf(config.getLatestVersionName());
                 }
-            } else if(isAppFromUnknownSources() && !TextUtils.isEmpty(getUpdateUrl())) {
+            } else if (isAppFromUnknownSources() && !TextUtils.isEmpty(getUpdateUrl())) {
                 Uri uri = Uri.parse(getUpdateUrl());
                 String apkFileName = new String(uri.getLastPathSegment());
                 L.info("Apk File Name :" + apkFileName);
@@ -71,12 +71,12 @@ public class ClientEntityAppConfig extends BaseResponseModel {
 
     public String getAppVersionNumber() {
         try {
-            if(isAppFromPlayStore()) {
+            if (isAppFromPlayStore()) {
                 AppConfig config = AbstractBaseActivity.appConfig;
-                if(config != null && config.getLatestVersionCode() != 0) {
+                if (config != null && config.getLatestVersionCode() != 0) {
                     return String.valueOf(config.getLatestVersionCode());
                 }
-            } else if(isAppFromUnknownSources() && !TextUtils.isEmpty(getUpdateUrl())) {
+            } else if (isAppFromUnknownSources() && !TextUtils.isEmpty(getUpdateUrl())) {
                 if (!TextUtils.isEmpty(getUpdateUrl())) {
                     Uri uri = Uri.parse(getUpdateUrl());
                     String apkFileName = new String(uri.getLastPathSegment());

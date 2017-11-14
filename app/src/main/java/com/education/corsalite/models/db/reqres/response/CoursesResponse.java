@@ -11,6 +11,7 @@ import java.util.List;
 public class CoursesResponse extends BaseResponseModel {
 
     public List<Course> courses;
+
     public CoursesResponse() {
     }
 }

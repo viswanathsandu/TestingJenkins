@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#0c1029"
-    android:fitsSystemWindows="true"
-    tools:context="com.education.corsalite.activities.ChallengeActivity">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#0c1029"
+                android:fitsSystemWindows="true"
+                tools:context="com.education.corsalite.activities.ChallengeActivity">
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:scaleType="fitXY"
-        android:src="@drawable/field" />
+        android:src="@drawable/field"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,16 +31,17 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <ImageView
+                <pl.droidsonroids.gif.GifImageView
                     android:id="@+id/left_player"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/character_anim_left"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="Me" />
+                    android:text="Me"/>
             </LinearLayout>
 
         </LinearLayout>
@@ -49,6 +50,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:weightSum="4"
             android:orientation="horizontal"
             android:gravity="bottom">
 
@@ -58,18 +60,20 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:gravity="center_horizontal"
+                android:layout_weight="1"
                 android:visibility="gone">
 
-                <ImageView
+                <pl.droidsonroids.gif.GifImageView
                     android:id="@+id/right_player1"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/character_anim_right"/>
 
                 <TextView
                     android:id="@+id/player1_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Player1" />
+                    android:text="Player1"/>
             </LinearLayout>
 
 
@@ -79,18 +83,20 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
                 android:visibility="gone">
 
-                <ImageView
+                <pl.droidsonroids.gif.GifImageView
                     android:id="@+id/right_player2"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/character_anim_right"/>
 
                 <TextView
                     android:id="@+id/player2_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Player2" />
+                    android:text="Player2"/>
             </LinearLayout>
 
             <LinearLayout
@@ -99,18 +105,20 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:orientation="vertical"
+                android:layout_weight="1"
                 android:visibility="gone">
 
-                <ImageView
+                <pl.droidsonroids.gif.GifImageView
                     android:id="@+id/right_player3"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/character_anim_right"/>
 
                 <TextView
                     android:id="@+id/player3_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Player3" />
+                    android:text="Player3"/>
             </LinearLayout>
 
             <LinearLayout
@@ -119,18 +127,20 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
                 android:visibility="gone">
 
-                <ImageView
+                <pl.droidsonroids.gif.GifImageView
                     android:id="@+id/right_player4"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/character_anim_right"/>
 
                 <TextView
                     android:id="@+id/player4_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Player4" />
+                    android:text="Player4"/>
             </LinearLayout>
 
         </LinearLayout>
@@ -140,7 +150,7 @@
         android:id="@+id/fragment_container"
         android:layout_width="wrap_content"
         android:layout_height="420dp"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"/>
 
     <TextView
         android:id="@+id/tvInviteFriends"

@@ -135,11 +135,11 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
                         int contentCount = 0;
                         for (TreeNode innerMostNode : innerNode.getChildren()) {
                             ContentModel contentModel = topicModel.contentMap.get(contentCount);
-                            if(contentModel.isDownloadable()) {
+                            if (contentModel.isDownloadable()) {
                                 if (innerMostNode.isSelected()) {
                                     contentText += "\t\t" + innerMostNode.getValue().toString() + "\n";
                                     contentName = contentModel.contentName;
-                                    if (contentModel.type.equals(Constants.VIDEO_FILE)) {
+                                    if (contentModel.type.equals(Constants.VIDEO_FILE) || contentModel.type.equals("m3u8")) {
                                         videoContentId += contentModel.idContent + ",";
                                     } else if (contentModel.type.equals(Constants.HTML_FILE)) {
                                         htmlContentId += contentModel.idContent + ",";
@@ -183,10 +183,10 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
 
     // store the in-progress in db
     private void storeInProgressItemsInDb(List<OfflineContent> offlineContents, List<ExerciseOfflineModel> offlineExerciseModels) {
-        if(offlineContents != null && !offlineContents.isEmpty()) {
+        if (offlineContents != null && !offlineContents.isEmpty()) {
             dbManager.save(offlineContents);
         }
-        if(offlineExerciseModels != null && !offlineExerciseModels.isEmpty()) {
+        if (offlineExerciseModels != null && !offlineExerciseModels.isEmpty()) {
             dbManager.saveOfflineExerciseTests(offlineExerciseModels);
         }
     }
@@ -364,8 +364,9 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
     private void setChapterNameAndChildren(ChapterModel chapters, int pos) {
         dialog = getDisplayDialog();
         headerProgress.setVisibility(View.GONE);
-        TreeNode subjectName = new TreeNode(chapters.chapterName+" "+"("+chapters.topicMap.size()+")").setViewHolder(new CheckedItemViewHolder(this, null, false));
-    //   <chapter name> + " ("+chapter.topics.size()+")"
+        TreeNode subjectName = new TreeNode(chapters.chapterName + " " + "(" + chapters.topicMap.size() + ")").setViewHolder(
+                new CheckedItemViewHolder(this, null, false));
+        //   <chapter name> + " ("+chapter.topics.size()+")"
         topicModelList = (ArrayList<TopicModel>) chapters.topicMap;
         Collections.sort(topicModelList);
 
@@ -376,7 +377,8 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
     }
 
     private void addTopic(TopicModel topicModel, TreeNode subjectName, Dialog d) {
-        TreeNode topicName = new TreeNode(topicModel.topicName+" "+"("+topicModel.contentMap.size()+")").setViewHolder(new CheckedItemViewHolder(this, null, false));
+        TreeNode topicName = new TreeNode(topicModel.topicName + " " + "(" + topicModel.contentMap.size() + ")").setViewHolder(
+                new CheckedItemViewHolder(this, null, false));
         TreeNode file1 = null;
 
         List<ContentModel> contentModelArrayList = getSortedList(topicModel.contentMap);
@@ -400,7 +402,7 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
         List<ContentModel> htmlContents = new ArrayList<>();
         List<ContentModel> videoContents = new ArrayList<>();
         for (ContentModel content : contents) {
-            if (content.type.toLowerCase().endsWith("mpg")) {
+            if (content.type.toLowerCase().endsWith("mpg") || content.type.toLowerCase().endsWith("m3u4")) {
                 videoContents.add(content);
             } else if (content.type.toLowerCase().endsWith("html")) {
                 htmlContents.add(content);
@@ -434,7 +436,7 @@ public class SaveForOfflineActivity extends AbstractBaseActivity {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if(outState != null && tView != null) {
+        if (outState != null && tView != null) {
             outState.putString("tState", tView.getSaveState());
         }
     }

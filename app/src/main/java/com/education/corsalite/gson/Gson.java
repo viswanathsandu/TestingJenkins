@@ -11,7 +11,7 @@ public class Gson {
     private static com.google.gson.Gson instance;
 
     public static com.google.gson.Gson get() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new GsonBuilder().create();
         }
         return instance;

@@ -12,12 +12,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.education.corsalite.R;
 import com.education.corsalite.listener.SocialEventsListener;
 import com.education.corsalite.models.responsemodels.ForumPost;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.AppPref;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,13 +112,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
         Drawable img = mActivity.getResources().getDrawable(!TextUtils.isEmpty(forumPost.bookmark) ? R.drawable.bookmark_green : R.drawable.bookmark);
         holder.tvActionBookmark.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
 
-        Glide.with(holder.ivUserPic.getContext())
+        Picasso.with(holder.ivUserPic.getContext())
                 .load(ApiClientService.getBaseUrl() + forumPost.PhotoUrl)
-                .centerCrop()
                 .placeholder(R.drawable.profile_pic)
-                .crossFade()
+                .error(R.drawable.profile_pic).fit()
                 .into(holder.ivUserPic);
-
     }
 
     private void setupActionListener(PostHolder holder, final int position) {
@@ -186,7 +184,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
     }
 
     public void deleteForumPost(int position) {
-        if(mForumPostList != null && mForumPostList.size() > position) {
+        if (mForumPostList != null && mForumPostList.size() > position) {
             mForumPostList.remove(position);
             notifyDataSetChanged();
         }

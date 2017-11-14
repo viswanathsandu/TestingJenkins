@@ -10,12 +10,14 @@ import java.util.List;
 /**
  * Created by Girish on 02/10/15.
  */
-public class SubjectModel extends BaseModel implements Serializable{
+public class SubjectModel extends BaseModel implements Serializable {
 
     @SerializedName("idCourseSubject")
     public String idSubject;
     @SerializedName("SubjectName")
     public String subjectName;
+
+
     @SerializedName("SubjectStatus")
     public String subjectStatus;
     @SerializedName("ScoreRed")
@@ -27,5 +29,6 @@ public class SubjectModel extends BaseModel implements Serializable{
 
     @Ignore
     public List<ChapterModel> chapters;
+
 
 }

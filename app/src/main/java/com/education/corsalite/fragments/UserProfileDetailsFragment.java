@@ -3,21 +3,16 @@ package com.education.corsalite.fragments;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.Html;
 import android.text.TextUtils;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -31,6 +26,7 @@ import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.ApiCacheHolder;
 import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.models.requestmodels.Defaultcourserequest;
 import com.education.corsalite.models.requestmodels.UserProfileModel;
 import com.education.corsalite.models.responsemodels.BasicProfile;
@@ -40,11 +36,11 @@ import com.education.corsalite.models.responsemodels.DefaultCourseResponse;
 import com.education.corsalite.models.responsemodels.ExamDetail;
 import com.education.corsalite.models.responsemodels.UserProfileResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencyBalanceResponse;
-import com.education.corsalite.gson.Gson;
+import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.SystemUtils;
 import com.education.corsalite.utils.WebUrls;
-
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -56,18 +52,30 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
         EditProfileDialogFragment.IUpdateProfileDetailsListener {
 
     private final String COURSES_ENROLLED_HTML = "<b><font color=#000000>Enrolled Courses:</font></b>&nbsp;";
-    @Bind(R.id.iv_userProfilePic) ImageView profilePicImg;
-    @Bind(R.id.tv_userName) TextView usernameTxt;
-    @Bind(R.id.tv_userFullName) TextView userFullNameTxt;
-    @Bind(R.id.tv_emailId) TextView emailTxt;
-    @Bind(R.id.tv_institute) TextView instituteTxt;
-    @Bind(R.id.tv_enrolled_course) TextView enrolledCoursesTxt;
-    @Bind(R.id.tv_virtual_currency_balance) TextView virtualCurrencyBalanceTxt;
-    @Bind(R.id.sp_default_course) Spinner coursesSpinner;
-    @Bind(R.id.btn_default_course) TextView coursesBtn;
-    @Bind(R.id.redeem_btn)Button redeemBtn;
-    @Bind(R.id.btn_edit_pic)ImageView editProfilePic;
-    @Bind(R.id.ll_user_details)View mainLayout;
+    @Bind(R.id.iv_userProfilePic)
+    ImageView profilePicImg;
+    @Bind(R.id.tv_userName)
+    TextView usernameTxt;
+    @Bind(R.id.tv_userFullName)
+    TextView userFullNameTxt;
+    @Bind(R.id.tv_emailId)
+    TextView emailTxt;
+    @Bind(R.id.tv_institute)
+    TextView instituteTxt;
+    @Bind(R.id.tv_enrolled_course)
+    TextView enrolledCoursesTxt;
+    @Bind(R.id.tv_virtual_currency_balance)
+    TextView virtualCurrencyBalanceTxt;
+    @Bind(R.id.sp_default_course)
+    Spinner coursesSpinner;
+    @Bind(R.id.btn_default_course)
+    TextView coursesBtn;
+    @Bind(R.id.redeem_btn)
+    Button redeemBtn;
+    @Bind(R.id.btn_edit_pic)
+    ImageView editProfilePic;
+    @Bind(R.id.ll_user_details)
+    View mainLayout;
 
     private UserProfileResponse user;
     private UpdateExamData updateExamData;
@@ -87,7 +95,7 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user_profile_details, container, false);
         ButterKnife.bind(this, view);
         setListeners();
@@ -127,7 +135,7 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
         coursesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(SystemUtils.isNetworkConnected(getActivity())) {
+                if (SystemUtils.isNetworkConnected(getActivity())) {
                     coursesSpinner.performClick();
                     coursesSpinnerCLicked = true;
                 } else {
@@ -180,7 +188,7 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
     }
 
     private void showEditProfileFragment() {
-        if(!SystemUtils.isNetworkConnected(getActivity())) {
+        if (!SystemUtils.isNetworkConnected(getActivity())) {
             showToast("This feature is not available for offline. Please come online.");
             return;
         }
@@ -276,18 +284,11 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
     private void showProfileData(BasicProfile profile) {
         if (profile.photoUrl != null && !profile.photoUrl.isEmpty()) {
             try {
-
-                byte[] decodedString = Base64.decode(profile.photoBase64EncodedString, Base64.DEFAULT);
-                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                profilePicImg.setImageBitmap(decodedByte);
-
-//                URL url = new URL(new URL(ApiClientService.getBaseUrl()), profile.photoUrl);
-//                Glide.with(getActivity())
-//                        .load(url)
-//                        .signature(new StringSignature(TimeUtils.currentTimeInMillis()+""))
-//                        .placeholder(getResources().getDrawable(R.drawable.user))
-//                        .error(getResources().getDrawable(R.drawable.user))
-//                        .into(profilePicImg);
+                Picasso.with(getActivity())
+                        .load(ApiClientService.getBaseUrl() + profile.photoUrl.replaceFirst("./", ""))
+                        .placeholder(getResources().getDrawable(R.drawable.profile_pic))
+                        .error(getResources().getDrawable(R.drawable.profile_pic)).fit()
+                        .into(profilePicImg);
             } catch (Exception e) {
                 L.error(e.getMessage(), e);
             }
@@ -344,7 +345,7 @@ public class UserProfileDetailsFragment extends BaseFragment implements EditProf
     }
 
     @Override
-    public void onUpdateProfilePic(Bitmap image) {
+    public void onUpdateProfilePic() {
         fetchUserProfileData();
     }
 

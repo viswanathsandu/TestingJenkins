@@ -88,7 +88,7 @@ public class TestInstructionsActivity extends AbstractBaseActivity {
         fetchTestPaperIndex();
         hideDrawerIcon();
         isFromExamEngine = getIntent().getExtras().getBoolean("is_for_information", false);
-        if(isFromExamEngine) {
+        if (isFromExamEngine) {
             btStart.setVisibility(View.GONE);
         }
     }
@@ -96,7 +96,7 @@ public class TestInstructionsActivity extends AbstractBaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(testPaperIndex != null) {
+        if (testPaperIndex != null) {
             showData();
         }
     }
@@ -149,7 +149,7 @@ public class TestInstructionsActivity extends AbstractBaseActivity {
 
     private void showData() {
         setToolbarTitle(testPaperIndex.examDetails.get(0).examName);
-        if(!isFromExamEngine) {
+        if (!isFromExamEngine) {
             if (!TextUtils.isEmpty(testStatus) && testStatus.equalsIgnoreCase("Suspended")) {
                 btStart.setText("Restart");
             } else {
@@ -158,7 +158,7 @@ public class TestInstructionsActivity extends AbstractBaseActivity {
         }
         if (testPaperIndex != null && testPaperIndex.examDetails != null && !testPaperIndex.examDetails.isEmpty()) {
             ExamDetails exam = testPaperIndex.examDetails.get(0);
-            if(!isFromExamEngine) {
+            if (!isFromExamEngine) {
                 if (!TextUtils.isEmpty(exam.dueDateTime)) {
                     long dueDateInMillis = TimeUtils.getMillisFromDate(exam.dueDateTime);
                     if (dueDateInMillis < TimeUtils.currentTimeInMillis()) {
@@ -181,7 +181,7 @@ public class TestInstructionsActivity extends AbstractBaseActivity {
                     }
                 }
             }
-            if(exam != null && exam.examInstucation != null) {
+            if (exam != null && exam.examInstucation != null) {
                 String baseUrl = ApiClientService.getBaseUrl().replace("/v1", "");
                 instuctions.loadDataWithBaseURL(baseUrl, testPaperIndex.examDetails.get(0).examInstucation, "text/html", "UTF-8", null);
             } else {
@@ -248,7 +248,7 @@ public class TestInstructionsActivity extends AbstractBaseActivity {
 
 
     private void setTimer(long millis) {
-        if(timer != null) {
+        if (timer != null) {
             timer.cancel();
         }
         timer = new CountDownTimer(millis, 1 * 1000) {
@@ -259,7 +259,7 @@ public class TestInstructionsActivity extends AbstractBaseActivity {
                     daysLayout.setVisibility(View.GONE);
                 } else {
                     millisUntilFinished -= TimeUnit.DAYS.toMillis(days);
-                    daysTxt.setText(days+"");
+                    daysTxt.setText(days + "");
                 }
                 long hours = TimeUnit.MILLISECONDS.toHours(millisUntilFinished);
                 if (days == 0 && hours == 0) {
@@ -297,7 +297,7 @@ public class TestInstructionsActivity extends AbstractBaseActivity {
     @Override
     public void onStop() {
         super.onStop();
-        if(timer != null) {
+        if (timer != null) {
             timer.cancel();
         }
     }

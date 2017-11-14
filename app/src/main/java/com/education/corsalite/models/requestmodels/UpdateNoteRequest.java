@@ -23,7 +23,7 @@ public class UpdateNoteRequest {
     }
 
     public UpdateNoteRequest(String studentId, String notesId, String notesHtml) {
-        this.updateTime =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(TimeUtils.getCurrentDate());
+        this.updateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(TimeUtils.getCurrentDate());
         this.studentId = studentId;
         this.notesId = notesId;
         this.notesHtml = notesHtml;

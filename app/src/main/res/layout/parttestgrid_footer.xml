@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="right"
-    android:orientation="horizontal">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:gravity="right"
+              android:orientation="horizontal">
 
 
     <com.education.corsalite.views.CustomButton
@@ -16,7 +16,7 @@
         android:padding="5dp"
         android:text="Cancel"
         android:textAllCaps="false"
-        android:textColor="@color/black" />
+        android:textColor="@color/black"/>
 
     <com.education.corsalite.views.CustomButton
         android:id="@+id/btn_download"
@@ -28,7 +28,7 @@
         android:padding="5dp"
         android:text="Download"
         android:textAllCaps="false"
-        android:textColor="@color/green" />
+        android:textColor="@color/green"/>
 
     <com.education.corsalite.views.CustomButton
         android:id="@+id/btn_next"
@@ -40,5 +40,5 @@
         android:padding="5dp"
         android:text="Take Test"
         android:textAllCaps="false"
-        android:textColor="@color/green" />
+        android:textColor="@color/green"/>
 </LinearLayout>

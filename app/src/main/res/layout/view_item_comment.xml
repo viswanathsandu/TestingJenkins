@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,7 +20,7 @@
             android:layout_height="100dp"
             android:padding="10dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/profile_pic" />
+            android:src="@drawable/profile_pic"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -37,7 +37,7 @@
                 android:maxLines="1"
                 android:text="how to solve the given problem. and also can I get a clear explanations for these sums?"
                 android:textColor="@android:color/holo_blue_light"
-                android:textSize="14sp" />
+                android:textSize="14sp"/>
 
             <TextView
                 android:id="@+id/tv_comment_date"
@@ -49,13 +49,13 @@
                 android:text="07/09/2015 06:49:18 by"
                 android:textColor="@color/text_gray"
                 android:textSize="12sp"
-                android:textStyle="italic" />
+                android:textStyle="italic"/>
 
             <WebView
                 android:id="@+id/comment_webview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="visible" />
+                android:visibility="visible"/>
 
             <LinearLayout
                 android:id="@+id/ll_post_actions"
@@ -79,7 +79,7 @@
                     android:paddingTop="5dp"
                     android:text="Delete"
                     android:textColor="@android:color/white"
-                    android:visibility="gone" />
+                    android:visibility="gone"/>
 
                 <TextView
                     android:id="@+id/tv_comment_action_edit"
@@ -97,7 +97,7 @@
                     android:paddingTop="5dp"
                     android:text="Edit"
                     android:textColor="@android:color/white"
-                    android:visibility="gone" />
+                    android:visibility="gone"/>
 
             </LinearLayout>
         </LinearLayout>

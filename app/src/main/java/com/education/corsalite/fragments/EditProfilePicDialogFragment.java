@@ -55,7 +55,9 @@ public class EditProfilePicDialogFragment extends DialogFragment {
     TextView takePicCamera;
     @Bind(R.id.upload_pic_gallery)
     TextView uploadPicGallery;
-    @Bind(R.id.cancel) TextView cancel;
+    @Bind(R.id.cancel)
+    TextView cancel;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -76,32 +78,32 @@ public class EditProfilePicDialogFragment extends DialogFragment {
 
     private void setListeners() {
         takePicCamera.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        try {
-                            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                            File file = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
-                            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
-                            startActivityForResult(takePictureIntent, REQUEST_CODE_TAKE_PICTURE);
-                        } catch (ActivityNotFoundException e) {
-                            ((AbstractBaseActivity) getActivity()).showToast("Device couldn't start camera");
-                        }
+            @Override
+            public void onClick(View view) {
+                try {
+                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    File file = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
+                    startActivityForResult(takePictureIntent, REQUEST_CODE_TAKE_PICTURE);
+                } catch (ActivityNotFoundException e) {
+                    ((AbstractBaseActivity) getActivity()).showToast("Device couldn't start camera");
+                }
 
-                    }
-                });
+            }
+        });
 
         uploadPicGallery.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        intent.setType("image/*");
-                        try {
-                            startActivityForResult(intent, REQUEST_CODE_PICK_GALLERY);
-                        } catch (ActivityNotFoundException e) {
-                            ((AbstractBaseActivity) getActivity()).showToast("No image source available");
-                        }
-                    }
-                });
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                intent.setType("image/*");
+                try {
+                    startActivityForResult(intent, REQUEST_CODE_PICK_GALLERY);
+                } catch (ActivityNotFoundException e) {
+                    ((AbstractBaseActivity) getActivity()).showToast("No image source available");
+                }
+            }
+        });
 
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,31 +126,33 @@ public class EditProfilePicDialogFragment extends DialogFragment {
                 try {
                     Uri selectedImage = data.getData();
                     updateUserProfile(BitmapFactory.decodeStream(getActivity().getContentResolver().openInputStream(selectedImage)));
-                }catch (FileNotFoundException e){
-                    Log.e(TAG,"File not found");
+                } catch (FileNotFoundException e) {
+                    Log.e(TAG, "File not found");
                 }
             }
-        }else{
+        } else {
             //Do nothing
             //User cancelled operation
         }
     }
 
     public String getPath(Uri uri, Activity activity) {
-        String[] projection = { MediaStore.MediaColumns.DATA };
+        String[] projection = {MediaStore.MediaColumns.DATA};
         Cursor cursor = activity.getContentResolver().query(uri, projection, null, null, null);
         int column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
         cursor.moveToFirst();
         return cursor.getString(column_index);
     }
-    private void getCameraPic(){
+
+    private void getCameraPic() {
         File file = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
         String path = file.getAbsolutePath();
         //Not saving the captured image in the gallery
-        if(path != null){
-           Bitmap selectedImage = new ImageUtils(getActivity()).getCompressedProfileImage(path);
-            if(selectedImage != null)
+        if (path != null) {
+            Bitmap selectedImage = new ImageUtils(getActivity()).getCompressedProfileImage(path);
+            if (selectedImage != null) {
                 updateUserProfile(selectedImage);
+            }
         }
     }
 
@@ -160,7 +164,7 @@ public class EditProfilePicDialogFragment extends DialogFragment {
     }
 
     private void updateUserProfile(final Bitmap image) {
-        if(image == null){
+        if (image == null) {
             return;
         }
         String userProfileJson = Gson.get().toJson(getUserData(image));
@@ -169,7 +173,7 @@ public class EditProfilePicDialogFragment extends DialogFragment {
             public void failure(CorsaliteError error) {
                 super.failure(error);
                 L.error(error.message);
-                if(getActivity() != null) {
+                if (getActivity() != null) {
                     ((AbstractBaseActivity) getActivity()).showToast("Failed to update profile pic");
                     getDialog().cancel();
                 }
@@ -180,9 +184,9 @@ public class EditProfilePicDialogFragment extends DialogFragment {
             public void success(EditProfileModel editProfileResponse, Response response) {
                 super.success(editProfileResponse, response);
                 if (editProfileResponse.isSuccessful() && getActivity() != null) {
-                    ((AbstractBaseActivity)getActivity()).showToast("Updated User Profile Pic Successfully");
+                    ((AbstractBaseActivity) getActivity()).showToast("Updated User Profile Pic Successfully");
                     getDialog().cancel();
-                    updateProfilePicListener.onUpdateProfilePic(image);
+                    updateProfilePicListener.onUpdateProfilePic();
                     deleteTempFile();
                 }
             }
@@ -192,22 +196,23 @@ public class EditProfilePicDialogFragment extends DialogFragment {
 
     private UserProfileModel getUserData(Bitmap image) {
         UserProfileModel model = new UserProfileModel();
-        model.updateTime =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(TimeUtils.getCurrentDate());
+        model.updateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(TimeUtils.getCurrentDate());
         model.userId = AppPref.get(getActivity()).getUserId();
         model.studentId = LoginUserCache.getInstance().getStudentId();
         //encode and update
-        if(image != null) {
+        if (image != null) {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
             byte[] b = baos.toByteArray();
             model.photoBase64Data = Base64.encodeToString(b, Base64.DEFAULT);
-            model.photoBase64Data = model.photoBase64Data.replace("+","%2B");
-        }else{
+            model.photoBase64Data = model.photoBase64Data.replace("+", "%2B");
+        } else {
             model.photoBase64Data = null;
         }
         return model;
     }
+
     public interface IUpdateProfilePicListener {
-        void onUpdateProfilePic(Bitmap image);
+        void onUpdateProfilePic();
     }
 }

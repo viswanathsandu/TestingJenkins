@@ -15,7 +15,8 @@ public class AddRemoveFriendRequest {
     @SerializedName("Request")
     public String request;
 
-    public AddRemoveFriendRequest() {}
+    public AddRemoveFriendRequest() {
+    }
 
     public AddRemoveFriendRequest(String userId, String friendUserId, String request) {
         this.userId = userId;

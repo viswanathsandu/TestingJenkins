@@ -8,7 +8,8 @@ public class StudyCenterRequest extends AbstractBaseRequest {
     public String studentId;
     public String courseId;
 
-    public StudyCenterRequest() {}
+    public StudyCenterRequest() {
+    }
 
     public StudyCenterRequest(String studentId, String courseId) {
         this.studentId = studentId;

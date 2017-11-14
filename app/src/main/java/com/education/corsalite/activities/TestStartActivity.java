@@ -14,7 +14,7 @@ import com.education.corsalite.fragments.TestScheduledFragment;
 
 import butterknife.ButterKnife;
 
-public class  TestStartActivity extends AbstractBaseActivity {
+public class TestStartActivity extends AbstractBaseActivity {
 
     public static final String KEY_TEST_TYPE = "key_test_type";
 
@@ -39,14 +39,14 @@ public class  TestStartActivity extends AbstractBaseActivity {
         Tests test = Tests.getTest(testType);
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         switch (test) {
-            case INVALID :
+            case INVALID:
                 finish();
                 break;
-            case CHAPTER :
+            case CHAPTER:
                 fragmentTransaction.add(R.id.fragment_container, TestChapterFragment.newInstance(getIntent().getExtras()), TestChapterFragment.getMyTag())
                         .commit();
                 break;
-            case SCHEDULED :
+            case SCHEDULED:
                 fragmentTransaction.add(R.id.fragment_container, TestScheduledFragment.newInstance(getIntent().getExtras()), TestScheduledFragment.getMyTag())
                         .commit();
                 break;

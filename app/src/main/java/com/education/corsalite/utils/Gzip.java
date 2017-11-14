@@ -19,13 +19,13 @@ public class Gzip {
             return str;
         }
         long initTime = TimeUtils.currentTimeInMillis();
-        L.debug("Before Compression\t" + str.length() +"\t"+ initTime);
+        L.debug("Before Compression\t" + str.length() + "\t" + initTime);
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         GZIPOutputStream gzip = new GZIPOutputStream(out);
         gzip.write(str.getBytes("UTF-8"));
         gzip.close();
         String outStr = out.toString("ISO-8859-1");
-        L.debug("After Compression\t" + outStr.length() +"\t"+ (TimeUtils.currentTimeInMillis() - initTime));
+        L.debug("After Compression\t" + outStr.length() + "\t" + (TimeUtils.currentTimeInMillis() - initTime));
         return outStr;
     }
 
@@ -34,7 +34,7 @@ public class Gzip {
             return str;
         }
         long initTime = TimeUtils.currentTimeInMillis();
-        L.debug("Before Decompression\t" + str.length() +"\t"+ initTime);
+        L.debug("Before Decompression\t" + str.length() + "\t" + initTime);
         GZIPInputStream gis = new GZIPInputStream(new ByteArrayInputStream(str.getBytes("ISO-8859-1")));
         BufferedReader bf = new BufferedReader(new InputStreamReader(gis, "UTF-8"));
         String outStr = "";
@@ -42,7 +42,7 @@ public class Gzip {
         while ((line = bf.readLine()) != null) {
             outStr += line;
         }
-        L.debug("After Decompression\t" + outStr.length() +"\t"+ (TimeUtils.currentTimeInMillis() - initTime));
+        L.debug("After Decompression\t" + outStr.length() + "\t" + (TimeUtils.currentTimeInMillis() - initTime));
         return outStr;
     }
 }

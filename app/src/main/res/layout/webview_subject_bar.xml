@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="50dp"
-    android:background="@color/gray"
-    android:orientation="horizontal"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp">
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/gray"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
 
     <LinearLayout
         android:id="@+id/color_bar"
@@ -71,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:padding="10dp"
-                android:src="@drawable/ico_dropdown_black" />
+                android:src="@drawable/ico_dropdown_black"/>
 
             <Spinner
                 android:id="@+id/sp_subject"
@@ -79,7 +79,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@id/subject_icon"
                 android:background="@null"
-                android:paddingLeft="10dp" />
+                android:paddingLeft="10dp"/>
 
         </RelativeLayout>
 
@@ -93,7 +93,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:padding="10dp"
-                android:src="@drawable/ico_dropdown_black" />
+                android:src="@drawable/ico_dropdown_black"/>
 
             <Spinner
                 android:id="@+id/sp_chapter"
@@ -102,7 +102,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_toLeftOf="@id/chapter_icon"
                 android:background="@null"
-                android:paddingLeft="5dp" />
+                android:paddingLeft="5dp"/>
 
         </RelativeLayout>
 
@@ -120,7 +120,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:src="@drawable/ico_dropdown_black" />
+                android:src="@drawable/ico_dropdown_black"/>
 
             <Spinner
                 android:id="@+id/sp_topic"
@@ -129,7 +129,7 @@
                 android:background="@null"
                 android:dropDownSelector="@drawable/ico_dropdown_black"
                 android:paddingLeft="5dp"
-                android:spinnerMode="dropdown" />
+                android:spinnerMode="dropdown"/>
 
         </LinearLayout>
 

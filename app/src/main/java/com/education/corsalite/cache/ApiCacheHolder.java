@@ -1,5 +1,6 @@
 package com.education.corsalite.cache;
 
+import com.education.corsalite.models.db.AppConfig;
 import com.education.corsalite.models.db.ScheduledTestList;
 import com.education.corsalite.models.db.reqres.AppConfigReqRes;
 import com.education.corsalite.models.db.reqres.AppentityconfigReqRes;
@@ -35,7 +36,6 @@ import com.education.corsalite.models.responsemodels.TestSeriesResponse;
 import com.education.corsalite.models.responsemodels.UserProfileResponse;
 import com.education.corsalite.models.responsemodels.VirtualCurrencyBalanceResponse;
 import com.education.corsalite.models.responsemodels.WelcomeDetails;
-import com.education.corsalite.models.db.AppConfig;
 
 import java.util.List;
 
@@ -72,14 +72,14 @@ public class ApiCacheHolder {
     public TestSeriesReqRes testSeriesReqRes;
 
     public static ApiCacheHolder getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new ApiCacheHolder();
         }
         return instance;
     }
 
     public void setAppConfigResponse(AppConfig response) {
-        if(appConfigRequest != null && response != null) {
+        if (appConfigRequest != null && response != null) {
             appConfigReqRes = new AppConfigReqRes();
             appConfigReqRes.request = appConfigRequest;
             appConfigReqRes.response = response;
@@ -87,7 +87,7 @@ public class ApiCacheHolder {
     }
 
     public void setAppEntityConfigResponse(ClientEntityAppConfig response) {
-        if(appentityconfigRequest != null && response != null) {
+        if (appentityconfigRequest != null && response != null) {
             appentityconfigReqRes = new AppentityconfigReqRes();
             appentityconfigReqRes.request = appentityconfigRequest;
             appentityconfigReqRes.response = response;
@@ -99,7 +99,7 @@ public class ApiCacheHolder {
     }
 
     public void setLoginResponse(LoginResponse response) {
-        if(loginRequest != null && response != null) {
+        if (loginRequest != null && response != null) {
             login = new LoginReqRes();
             login.request = loginRequest;
             login.response = response;
@@ -111,7 +111,7 @@ public class ApiCacheHolder {
     }
 
     public void setUserProfileRespose(UserProfileResponse response) {
-        if(userProfileRequest != null && response != null) {
+        if (userProfileRequest != null && response != null) {
             userProfile = new UserProfileReqRes();
             userProfile.request = userProfileRequest;
             userProfile.response = response;
@@ -123,7 +123,7 @@ public class ApiCacheHolder {
     }
 
     public void setWelcomeRespose(WelcomeDetails response) {
-        if(welcomeRequest != null && response != null) {
+        if (welcomeRequest != null && response != null) {
             welcome = new WelcomeReqRes();
             welcome.request = welcomeRequest;
             welcome.response = response;
@@ -131,11 +131,11 @@ public class ApiCacheHolder {
     }
 
     public void setCoursesRequest(String studentId) {
-        courseRequest= new CourseRequest(studentId);
+        courseRequest = new CourseRequest(studentId);
     }
 
     public void setCoursesResponse(List<Course> courseList) {
-        if(courseRequest != null && courseList != null) {
+        if (courseRequest != null && courseList != null) {
             courses = new CoursesReqRes();
             courses.request = courseRequest;
             courses.response = courseList;
@@ -147,7 +147,7 @@ public class ApiCacheHolder {
     }
 
     public void setStudyCenterResponse(List<StudyCenter> response) {
-        if(studyCenterRequest != null && response != null) {
+        if (studyCenterRequest != null && response != null) {
             studyCenter = new StudyCenterReqRes();
             studyCenter.request = studyCenterRequest;
             studyCenter.response = response;
@@ -160,7 +160,7 @@ public class ApiCacheHolder {
     }
 
     public void setcontentIndexResponse(List<ContentIndex> response) {
-        if(contentIndexRequest != null && response != null) {
+        if (contentIndexRequest != null && response != null) {
             contentIndex = new ContentIndexReqRes();
             contentIndex.request = contentIndexRequest;
             contentIndex.response = response;
@@ -172,7 +172,7 @@ public class ApiCacheHolder {
     }
 
     public void setContentResponse(List<Content> response) {
-        if(contentRequest != null && response != null) {
+        if (contentRequest != null && response != null) {
             contentReqIndex = new ContentReqRes();
             contentReqIndex.request = contentRequest;
             contentReqIndex.response = response;
@@ -184,7 +184,7 @@ public class ApiCacheHolder {
     }
 
     public void setScheduleTestsResponse(ScheduledTestList response) {
-        if(scheduleTestsRequest != null && response != null) {
+        if (scheduleTestsRequest != null && response != null) {
             scheduleTests = new ScheduleTestsReqRes();
             scheduleTests.request = scheduleTestsRequest;
             scheduleTests.response = response;
@@ -196,7 +196,7 @@ public class ApiCacheHolder {
     }
 
     public void setVirtualCurrencyBalanceResponse(VirtualCurrencyBalanceResponse response) {
-        if(virtualCurrencyBalanceRequest != null && response != null) {
+        if (virtualCurrencyBalanceRequest != null && response != null) {
             virtualCurrencyBalance = new VirtualCurrencyBalanceReqRes();
             virtualCurrencyBalance.request = virtualCurrencyBalanceRequest;
             virtualCurrencyBalance.response = response;
@@ -208,7 +208,7 @@ public class ApiCacheHolder {
     }
 
     public void setTestSeriesResponse(TestSeriesResponse response) {
-        if(testSeriesRequest != null && response != null) {
+        if (testSeriesRequest != null && response != null) {
             testSeriesReqRes = new TestSeriesReqRes();
             testSeriesReqRes.request = testSeriesRequest;
             testSeriesReqRes.response = response;

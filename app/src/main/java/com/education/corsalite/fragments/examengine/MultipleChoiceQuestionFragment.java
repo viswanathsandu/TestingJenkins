@@ -33,7 +33,7 @@ public class MultipleChoiceQuestionFragment extends ChoiceQuestionFragment {
         String answer = null;
         for (int i = 0; i < question.answerChoice.size(); i++) {
             if (question.answerChoice.get(i).isCorrectAnswer.equalsIgnoreCase("Y")) {
-                answer = (answer == null) ? String.valueOf(i+1) : String.format("%s,%s", answer, i+1);
+                answer = (answer == null) ? String.valueOf(i + 1) : String.format("%s,%s", answer, i + 1);
             }
         }
         return answer;
@@ -64,8 +64,8 @@ public class MultipleChoiceQuestionFragment extends ChoiceQuestionFragment {
                 int index = Integer.parseInt(question.selectedAnswers);
                 options[index].setChecked(true);
             } else {
-                String [] selectedChoices = question.selectedAnswers.split(",");
-                for(int i=0; i<selectedChoices.length; i++) {
+                String[] selectedChoices = question.selectedAnswers.split(",");
+                for (int i = 0; i < selectedChoices.length; i++) {
                     int index = Integer.parseInt(selectedChoices[i]);
                     options[index].setChecked(true);
                 }
@@ -75,7 +75,7 @@ public class MultipleChoiceQuestionFragment extends ChoiceQuestionFragment {
 
     @Override
     public void updateAnswer(AnswerChoiceModel model, boolean isSelected) {
-        if(isSelected) {
+        if (isSelected) {
             selectedAnswers.add(question.answerChoice.indexOf(model));
         } else {
             selectedAnswers.remove(question.answerChoice.indexOf(model));

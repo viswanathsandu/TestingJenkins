@@ -25,7 +25,7 @@ public enum CurriculumTypeEntity {
     }
 
     public static CurriculumTypeEntity getCurriculumEntityType(String entityValue) {
-        if(!TextUtils.isEmpty(entityValue)) {
+        if (!TextUtils.isEmpty(entityValue)) {
             for (CurriculumTypeEntity entity : CurriculumTypeEntity.values()) {
                 if (entity.toString().equalsIgnoreCase(entityValue)) {
                     return entity;

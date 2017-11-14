@@ -71,16 +71,16 @@ public class ExamEngineGridAdapter extends BaseAdapter {
         } else {
             btnCounter.setText(String.valueOf(position + 1));
         }
-        if(!TextUtils.isEmpty(mModelList.get(position).sectionName) && !mModelList.get(position).sectionName.equals(selectedSectionName)) {
+        if (!TextUtils.isEmpty(mModelList.get(position).sectionName) && !mModelList.get(position).sectionName.equals(selectedSectionName)) {
             btnCounter.setEnabled(false);
             btnCounter.setClickable(false);
             btnCounter.setBackgroundResource(R.drawable.rounded_corners_gray);
             btnCounter.setTextColor(mActivity.getResources().getColor(R.color.dark_gray));
         } else {
-            if(mModelList.get(position).isFlagged) {
+            if (mModelList.get(position).isFlagged) {
                 btnCounter.setBackgroundResource(R.drawable.rounded_corners_yellow);
                 btnCounter.setTextColor(mActivity.getResources().getColor(R.color.black));
-            } else if(!isColorsDisabled) {
+            } else if (!isColorsDisabled) {
                 switch (Constants.AnswerState.getEnum(mModelList.get(position).answerColorSelection)) {
                     case UNATTEMPTED:
                         btnCounter.setBackgroundResource(R.drawable.rounded_corners_gray);

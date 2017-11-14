@@ -29,8 +29,8 @@ public class UserTabBaseAdapter extends FragmentPagerAdapter {
     }
 
     private void setExamTitle() {
-        if(examDetailList != null && examDetailList.size() > 0) {
-            examTitle = " ("+String.format("%02d", examDetailList.size())+")";
+        if (examDetailList != null && examDetailList.size() > 0) {
+            examTitle = " (" + String.format("%02d", examDetailList.size()) + ")";
         }
     }
 
@@ -40,7 +40,6 @@ public class UserTabBaseAdapter extends FragmentPagerAdapter {
         notifyDataSetChanged();
 
     }
-
 
 
     @Override
@@ -79,7 +78,7 @@ public class UserTabBaseAdapter extends FragmentPagerAdapter {
         String title = null;
         switch (position) {
             case 0:
-                title = "Exam Schedule"+examTitle;
+                title = "Exam Schedule" + examTitle;
                 break;
             case 1:
                 title = "Messages";

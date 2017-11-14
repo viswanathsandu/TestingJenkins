@@ -19,6 +19,7 @@ import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
 import com.education.corsalite.event.SocketConnectionStatusEvent;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.helpers.WebSocketHelper;
 import com.education.corsalite.models.requestmodels.ChallengeStatusRequest;
 import com.education.corsalite.models.responsemodels.ChallengeCompleteResponseModel;
@@ -27,10 +28,8 @@ import com.education.corsalite.models.responsemodels.CommonResponseModel;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.socket.requests.ChallengeTestUpdateRequestEvent;
 import com.education.corsalite.models.socket.response.ChallengeTestCompletedEvent;
-import com.education.corsalite.gson.Gson;
 import com.education.corsalite.utils.L;
 import com.education.corsalite.utils.WebUrls;
-
 
 import java.util.List;
 
@@ -44,12 +43,18 @@ import retrofit.client.Response;
  */
 public class ChallengeResultActivity extends AbstractBaseActivity {
 
-    @Bind(R.id.refresh_btn) ImageButton refreshBtn;
-    @Bind(R.id.refresh_txt) TextView refreshTxt;
-    @Bind(R.id.status_image) ImageView statusImage;
-    @Bind(R.id.results_recycelr_view) RecyclerView resultsList;
-    @Bind(R.id.challengepart_refresh_layout) View refreshLayout;
-    @Bind(R.id.challenge_result_layout) View resultsLayout;
+    @Bind(R.id.refresh_btn)
+    ImageButton refreshBtn;
+    @Bind(R.id.refresh_txt)
+    TextView refreshTxt;
+    @Bind(R.id.status_image)
+    ImageView statusImage;
+    @Bind(R.id.results_recycelr_view)
+    RecyclerView resultsList;
+    @Bind(R.id.challengepart_refresh_layout)
+    View refreshLayout;
+    @Bind(R.id.challenge_result_layout)
+    View resultsLayout;
 
     private String challengeTestId;
     private String testQuestionPaperId;
@@ -74,7 +79,7 @@ public class ChallengeResultActivity extends AbstractBaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(!WebSocketHelper.get(this).isConnected()) {
+        if (!WebSocketHelper.get(this).isConnected()) {
             showSocketDisconnectionAlert(false);
         }
     }
@@ -102,8 +107,8 @@ public class ChallengeResultActivity extends AbstractBaseActivity {
                     @Override
                     public void success(ChallengeCompleteResponseModel challengeCompleteResponseModel, Response response) {
                         super.success(challengeCompleteResponseModel, response);
-                        if(challengeCompleteResponseModel.leaderBoardUsers != null) {
-                            if(challengeCompleteResponseModel.examRemainUsers == null || challengeCompleteResponseModel.examRemainUsers == 0) {
+                        if (challengeCompleteResponseModel.leaderBoardUsers != null) {
+                            if (challengeCompleteResponseModel.examRemainUsers == null || challengeCompleteResponseModel.examRemainUsers == 0) {
                                 getChallengeResults();
                             }
                             updateChallengeStatus("Completed");
@@ -127,7 +132,7 @@ public class ChallengeResultActivity extends AbstractBaseActivity {
                     @Override
                     public void success(List<ChallengeUser> challengeUsers, Response response) {
                         super.success(challengeUsers, response);
-                        if(challengeUsers != null) {
+                        if (challengeUsers != null) {
                             ChallengeResultActivity.this.challengeUsers = challengeUsers;
                             showResults();
                         }
@@ -175,15 +180,15 @@ public class ChallengeResultActivity extends AbstractBaseActivity {
 
     private void showResults() {
         int pendingUsers = 0;
-        for(ChallengeUser user : challengeUsers) {
-            if(!user.status.equals("Completed")) {
+        for (ChallengeUser user : challengeUsers) {
+            if (!user.status.equals("Completed")) {
                 pendingUsers++;
             }
-            if(user.idStudent.equalsIgnoreCase(LoginUserCache.getInstance().getStudentId())) {
+            if (user.idStudent.equalsIgnoreCase(LoginUserCache.getInstance().getStudentId())) {
                 mCurrentUser = user;
             }
         }
-        if(pendingUsers > 0) {
+        if (pendingUsers > 0) {
             resultsLayout.setVisibility(View.GONE);
             refreshLayout.setVisibility(View.VISIBLE);
             refreshTxt.setText(String.format("%s more participants are still battling out", pendingUsers));
@@ -196,12 +201,12 @@ public class ChallengeResultActivity extends AbstractBaseActivity {
         ChallengeResultsAdapter adapter = new ChallengeResultsAdapter(challengeUsers, inflater);
         resultsList.setLayoutManager(new LinearLayoutManager(this));
         resultsList.setAdapter(adapter);
-        if(mCurrentUser != null) {
-            if(mCurrentUser.getChallengeStatus().equals("WON")) {
+        if (mCurrentUser != null) {
+            if (mCurrentUser.getChallengeStatus().equals("WON")) {
                 statusImage.setImageDrawable(getResources().getDrawable(R.drawable.won_trophy));
-            } else if(mCurrentUser.getChallengeStatus().equals("LOST")) {
+            } else if (mCurrentUser.getChallengeStatus().equals("LOST")) {
                 statusImage.setImageDrawable(getResources().getDrawable(R.drawable.lost));
-            } else if(mCurrentUser.getChallengeStatus().equals("TIE")) {
+            } else if (mCurrentUser.getChallengeStatus().equals("TIE")) {
                 statusImage.setImageDrawable(getResources().getDrawable(R.drawable.ico_challenge_cup));
             }
         }
@@ -220,7 +225,7 @@ public class ChallengeResultActivity extends AbstractBaseActivity {
 
     @OnClick(R.id.exam_summary_btn)
     public void onExamHistoryClicked() {
-        if(mCurrentUser != null && !TextUtils.isEmpty(mCurrentUser.testAnswerPaperId)) {
+        if (mCurrentUser != null && !TextUtils.isEmpty(mCurrentUser.testAnswerPaperId)) {
             Intent intent = new Intent(this, WebviewActivity.class);
             L.info("URL : " + WebUrls.getExamResultsSummaryUrl() + mCurrentUser.testAnswerPaperId);
             intent.putExtra(LoginActivity.URL, WebUrls.getExamResultsSummaryUrl() + mCurrentUser.testAnswerPaperId);

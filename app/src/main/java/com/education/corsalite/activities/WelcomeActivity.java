@@ -2,7 +2,6 @@ package com.education.corsalite.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -94,7 +93,7 @@ public class WelcomeActivity extends AbstractBaseActivity implements View.OnClic
         } else {
             courseEndedTxt.setVisibility(View.GONE);
         }
-        if(course.isTestSeries()) {
+        if (course.isTestSeries()) {
             studyCenterBtn.setText("Test Series");
         } else {
             studyCenterBtn.setText("Study Center");
@@ -122,7 +121,7 @@ public class WelcomeActivity extends AbstractBaseActivity implements View.OnClic
                             Picasso.with(WelcomeActivity.this)
                                     .load(ApiClientService.getBaseUrl() + welcomeDetails.photoUrl.replaceFirst("./", ""))
                                     .placeholder(getResources().getDrawable(R.drawable.profile_pic))
-                                    .error(getResources().getDrawable(R.drawable.profile_pic))
+                                    .error(getResources().getDrawable(R.drawable.profile_pic)).fit()
                                     .into(profilePic);
                         }
                         if (!TextUtils.isEmpty(welcomeDetails.firstName) && !TextUtils.isEmpty(welcomeDetails.lastName)) {

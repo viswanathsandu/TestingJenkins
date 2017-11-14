@@ -44,28 +44,28 @@ public class LoginUserCache {
     }
 
     public String getStudentId() {
-        if(loginResponse != null && !TextUtils.isEmpty(loginResponse.studentId)) {
+        if (loginResponse != null && !TextUtils.isEmpty(loginResponse.studentId)) {
             return loginResponse.studentId;
         }
         return "";
     }
 
     public String getEntityId() {
-        if(loginResponse != null && !TextUtils.isEmpty(loginResponse.entitiyId)) {
+        if (loginResponse != null && !TextUtils.isEmpty(loginResponse.entitiyId)) {
             return loginResponse.entitiyId;
         }
         return "";
     }
 
     public String getAuthtoken() {
-        if(loginResponse != null && !TextUtils.isEmpty(loginResponse.authtoken)) {
+        if (loginResponse != null && !TextUtils.isEmpty(loginResponse.authtoken)) {
             return loginResponse.authtoken;
         }
         return "";
     }
 
     public String getDisplayName() {
-        if(loginResponse != null && !TextUtils.isEmpty(loginResponse.displayName)) {
+        if (loginResponse != null && !TextUtils.isEmpty(loginResponse.displayName)) {
             return loginResponse.displayName;
         }
         return "";

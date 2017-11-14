@@ -271,7 +271,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(isChallengeTest() && !WebSocketHelper.get(this).isConnected()) {
+        if (isChallengeTest() && !WebSocketHelper.get(this).isConnected()) {
             showSocketDisconnectionAlert(false);
         }
     }
@@ -410,7 +410,7 @@ public class ExamEngineActivity extends AbstractBaseActivity {
     }
 
     public void onEventMainThread(SocketConnectionStatusEvent event) {
-        if(isChallengeTest()) {
+        if (isChallengeTest()) {
             showSocketDisconnectionAlert(event.isConnected);
         }
     }
@@ -918,59 +918,60 @@ public class ExamEngineActivity extends AbstractBaseActivity {
             }
             return;
         }
-        ApiManager.getInstance(ExamEngineActivity.this).submitTestAnswerPaper(testanswerPaper, new ApiCallback<TestAnswerPaperResponse>(ExamEngineActivity.this) {
-            @Override
-            public void failure(CorsaliteError error) {
-                super.failure(error);
-                showToast(error.message);
-                if (state == TestanswerPaperState.STARTED) {
+        ApiManager.getInstance(ExamEngineActivity.this).submitTestAnswerPaper(testanswerPaper,
+                new ApiCallback<TestAnswerPaperResponse>(ExamEngineActivity.this) {
+                    @Override
+                    public void failure(CorsaliteError error) {
+                        super.failure(error);
+                        showToast(error.message);
+                        if (state == TestanswerPaperState.STARTED) {
 
-                } else if (state == TestanswerPaperState.SUSPENDED) {
-                    TestQuestionPaperResponse response = new TestQuestionPaperResponse();
-                    response.questions = localExamModelList;
-                    response.examDetails = examDetails;
-                    new ExamUtils(ExamEngineActivity.this).saveTestQuestionPaper(testQuestionPaperId, response);
-                    new ExamUtils(ExamEngineActivity.this).saveTestAnswerPaper(testQuestionPaperId, testanswerPaper);
-                    finish();
-                } else if (state == TestanswerPaperState.COMPLETED) {
-                    headerProgress.setVisibility(View.GONE);
-                    mViewSwitcher.showNext();
-                    new ExamUtils(ExamEngineActivity.this).deleteTestQuestionPaper(testQuestionPaperId);
-                }
-            }
-
-            @Override
-            public void success(TestAnswerPaperResponse testAnswerPaperResponse, Response response) {
-                super.success(testAnswerPaperResponse, response);
-                sendLederBoardRequestEvent();
-                if (testAnswerPaperResponse != null && !TextUtils.isEmpty(testAnswerPaperResponse.testAnswerPaperId)) {
-                    testAnswerPaperId = testAnswerPaperResponse.testAnswerPaperId;
-                }
-                if (state == TestanswerPaperState.STARTED) {
-
-                } else if (state == TestanswerPaperState.SUSPENDED) {
-                    showToast("Exam has been suspended");
-                    dbManager.updateOfflineTestModel(testQuestionPaperId, Constants.STATUS_SUSPENDED, TimeUtils.currentTimeInMillis());
-                    TestQuestionPaperResponse questionPaperResponse = new TestQuestionPaperResponse();
-                    questionPaperResponse.questions = localExamModelList;
-                    questionPaperResponse.examDetails = examDetails;
-                    new ExamUtils(ExamEngineActivity.this).saveTestQuestionPaper(testQuestionPaperId, questionPaperResponse);
-                    new ExamUtils(ExamEngineActivity.this).saveTestAnswerPaper(testQuestionPaperId, testanswerPaper);
-                    finish();
-                } else if (state == TestanswerPaperState.COMPLETED) {
-                    headerProgress.setVisibility(View.GONE);
-                    new ExamUtils(ExamEngineActivity.this).deleteTestQuestionPaper(testQuestionPaperId);
-                    mViewSwitcher.showNext();
-                    if (isChallengeTest()) {
-                        openChallengeTestResults();
-                    } else if (testAnswerPaperResponse != null && !TextUtils.isEmpty(testAnswerPaperResponse.testAnswerPaperId)) {
-                        openAdvancedExamResultSummary(testAnswerPaperResponse.testAnswerPaperId);
+                        } else if (state == TestanswerPaperState.SUSPENDED) {
+                            TestQuestionPaperResponse response = new TestQuestionPaperResponse();
+                            response.questions = localExamModelList;
+                            response.examDetails = examDetails;
+                            new ExamUtils(ExamEngineActivity.this).saveTestQuestionPaper(testQuestionPaperId, response);
+                            new ExamUtils(ExamEngineActivity.this).saveTestAnswerPaper(testQuestionPaperId, testanswerPaper);
+                            finish();
+                        } else if (state == TestanswerPaperState.COMPLETED) {
+                            headerProgress.setVisibility(View.GONE);
+                            mViewSwitcher.showNext();
+                            new ExamUtils(ExamEngineActivity.this).deleteTestQuestionPaper(testQuestionPaperId);
+                        }
                     }
-                    // TO remove the exam if submitted
-                    new ExamUtils(ExamEngineActivity.this).deleteTestQuestionPaper(testQuestionPaperId);
-                }
-            }
-        });
+
+                    @Override
+                    public void success(TestAnswerPaperResponse testAnswerPaperResponse, Response response) {
+                        super.success(testAnswerPaperResponse, response);
+                        sendLederBoardRequestEvent();
+                        if (testAnswerPaperResponse != null && !TextUtils.isEmpty(testAnswerPaperResponse.testAnswerPaperId)) {
+                            testAnswerPaperId = testAnswerPaperResponse.testAnswerPaperId;
+                        }
+                        if (state == TestanswerPaperState.STARTED) {
+
+                        } else if (state == TestanswerPaperState.SUSPENDED) {
+                            showToast("Exam has been suspended");
+                            dbManager.updateOfflineTestModel(testQuestionPaperId, Constants.STATUS_SUSPENDED, TimeUtils.currentTimeInMillis());
+                            TestQuestionPaperResponse questionPaperResponse = new TestQuestionPaperResponse();
+                            questionPaperResponse.questions = localExamModelList;
+                            questionPaperResponse.examDetails = examDetails;
+                            new ExamUtils(ExamEngineActivity.this).saveTestQuestionPaper(testQuestionPaperId, questionPaperResponse);
+                            new ExamUtils(ExamEngineActivity.this).saveTestAnswerPaper(testQuestionPaperId, testanswerPaper);
+                            finish();
+                        } else if (state == TestanswerPaperState.COMPLETED) {
+                            headerProgress.setVisibility(View.GONE);
+                            new ExamUtils(ExamEngineActivity.this).deleteTestQuestionPaper(testQuestionPaperId);
+                            mViewSwitcher.showNext();
+                            if (isChallengeTest()) {
+                                openChallengeTestResults();
+                            } else if (testAnswerPaperResponse != null && !TextUtils.isEmpty(testAnswerPaperResponse.testAnswerPaperId)) {
+                                openAdvancedExamResultSummary(testAnswerPaperResponse.testAnswerPaperId);
+                            }
+                            // TO remove the exam if submitted
+                            new ExamUtils(ExamEngineActivity.this).deleteTestQuestionPaper(testQuestionPaperId);
+                        }
+                    }
+                });
     }
 
     private void showSuspendDialog() {
@@ -1161,7 +1162,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
                 localExamModelList.get(selectedPosition).selectedAnswerKeyIds = questionFragment.getSelectedAnswerKeyIds();
 
                 testanswerPaper.testAnswers.get(selectedPosition).status = questionFragment.getAnswerState();
-                testanswerPaper.testAnswers.get(selectedPosition).answerKeyId = questionFragment.getSelectedAnswerKeyIds();// localExamModelList.get(selectedPosition).answerChoice.get(0).idAnswerKey;
+                testanswerPaper.testAnswers.get(selectedPosition).answerKeyId =
+                        questionFragment.getSelectedAnswerKeyIds();// localExamModelList.get(selectedPosition).answerChoice.get(0).idAnswerKey;
                 testanswerPaper.testAnswers.get(selectedPosition).answerText = questionFragment.getSelectedAnswer();
                 gridAdapter.notifyDataSetChanged();
             }
@@ -1309,7 +1311,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 //                case NUMERIC:
 //                    if(localExamModelList.get(previousQuestionPosition).isFlagged) {
 //                        testanswerPaper.testAnswers.get(previousQuestionPosition).status = Constants.AnswerState.FLAGGED.getValue();
-//                    } else if (testanswerPaper != null && testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty() && !TextUtils.isEmpty(testanswerPaper.testAnswers.get(previousQuestionPosition).answerKeyId)) {
+//                    } else if (testanswerPaper != null && testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty() && !TextUtils
+// .isEmpty(testanswerPaper.testAnswers.get(previousQuestionPosition).answerKeyId)) {
 //                        testanswerPaper.testAnswers.get(previousQuestionPosition).status = Constants.AnswerState.ANSWERED.getValue();
 //                        localExamModelList.get(previousQuestionPosition).answerColorSelection = Constants.AnswerState.ANSWERED.getValue();
 //                    }
@@ -1321,7 +1324,8 @@ public class ExamEngineActivity extends AbstractBaseActivity {
 //                case GRID:
 //                    if(localExamModelList.get(previousQuestionPosition).isFlagged) {
 //                        testanswerPaper.testAnswers.get(previousQuestionPosition).status = Constants.AnswerState.FLAGGED.getValue();
-//                    } else if (testanswerPaper != null && testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty() && !TextUtils.isEmpty(testanswerPaper.testAnswers.get(previousQuestionPosition).answerText)) {
+//                    } else if (testanswerPaper != null && testanswerPaper.testAnswers != null && !testanswerPaper.testAnswers.isEmpty() && !TextUtils
+// .isEmpty(testanswerPaper.testAnswers.get(previousQuestionPosition).answerText)) {
 //                        testanswerPaper.testAnswers.get(previousQuestionPosition).status = Constants.AnswerState.ANSWERED.getValue();
 //                        localExamModelList.get(previousQuestionPosition).answerColorSelection = Constants.AnswerState.ANSWERED.getValue();
 //                    }

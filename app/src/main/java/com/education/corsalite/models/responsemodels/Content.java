@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 import com.orm.dsl.Ignore;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by Girish on 30/09/15.
@@ -28,6 +29,14 @@ public class Content extends BaseModel implements Serializable {
     public String status;
     @SerializedName("UpdateTime")
     public String updateTime;
+    @Ignore
+    public List<String> videoSegments;
+    @Ignore
+    @SerializedName("VideoStartTime")
+    public String videoStartTime;
+    @Ignore
+    @SerializedName("VideoEndTime")
+    public String videoEndTime;
 
     @Override
     public boolean equals(Object o) {
@@ -36,15 +45,18 @@ public class Content extends BaseModel implements Serializable {
 
         Content content = (Content) o;
 
-        if (idContent != null ? !idContent.equals(content.idContent) : content.idContent != null)
+        if (idContent != null ? !idContent.equals(content.idContent) : content.idContent != null) {
             return false;
-        if (idEntity != null ? !idEntity.equals(content.idEntity) : content.idEntity != null)
+        }
+        if (idEntity != null ? !idEntity.equals(content.idEntity) : content.idEntity != null) {
             return false;
+        }
         if (type != null ? !type.equals(content.type) : content.type != null) return false;
         if (name != null ? !name.equals(content.name) : content.name != null) return false;
         if (url != null ? !url.equals(content.url) : content.url != null) return false;
-        if (contentHtml != null ? !contentHtml.equals(content.contentHtml) : content.contentHtml != null)
+        if (contentHtml != null ? !contentHtml.equals(content.contentHtml) : content.contentHtml != null) {
             return false;
+        }
         if (status != null ? !status.equals(content.status) : content.status != null) return false;
         return !(updateTime != null ? !updateTime.equals(content.updateTime) : content.updateTime != null);
 

@@ -92,7 +92,7 @@ public class EditorActivity extends AbstractBaseActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         toolbar.setTitleTextColor(0xFFFFFFFF);
-        edit_btn = (CustomButton)findViewById(R.id.edit_btn);
+        edit_btn = (CustomButton) findViewById(R.id.edit_btn);
 
         type = getIntent().getExtras().getString("type", "Note");
         Bundle bundle = getIntent().getExtras();
@@ -112,7 +112,7 @@ public class EditorActivity extends AbstractBaseActivity {
             isAuthorOnly = bundle.getString("is_author_only", "");
             postsubject = bundle.getString("post_subject", "");
         }
-        getSupportActionBar().setTitle(operation+" "+type);
+        getSupportActionBar().setTitle(operation + " " + type);
         initUi();
         loadWebview();
 
@@ -190,7 +190,7 @@ public class EditorActivity extends AbstractBaseActivity {
                         L.info("UpdatedContent : " + updateContent);
                         try {
 //                            updateContent = updateContent.replace("+", "%2B");
-                            if(updateContent.endsWith("\n")) {
+                            if (updateContent.endsWith("\n")) {
                                 updateContent = updateContent.substring(0, updateContent.lastIndexOf("\n"));
                             }
                             updateContent = URLEncoder.encode(updateContent, "UTF-8");
@@ -215,13 +215,14 @@ public class EditorActivity extends AbstractBaseActivity {
     private void addComment(ForumModel post) {
         try {
             showProgress();
-            ApiManager.getInstance(this).addComment(post, new ApiCallback<CommonResponseModel>(this){
+            ApiManager.getInstance(this).addComment(post, new ApiCallback<CommonResponseModel>(this) {
                 @Override
                 public void failure(CorsaliteError error) {
                     super.failure(error);
                     closeProgress();
                     showToast("Failed to add comment");
                 }
+
                 @Override
                 public void success(CommonResponseModel commonResponseModel, Response response) {
                     super.success(commonResponseModel, response);
@@ -244,18 +245,18 @@ public class EditorActivity extends AbstractBaseActivity {
         post.idCourseSubjectChapter = chapterId;
         post.topicId = topicId;
         post.postSubject = postsubject;
-        if(!TextUtils.isEmpty(postId)) {
+        if (!TextUtils.isEmpty(postId)) {
             post.idUserPost = null;
             post.referIdUserPost = postId;
         }
         post.postContent = updateContent;
         post.isAuthorOnly = isAuthorOnly;
-        post.locked="Y";
+        post.locked = "Y";
         return post;
     }
 
     private void addContent() {
-        if(updateContent.trim().isEmpty()) {
+        if (updateContent.trim().isEmpty()) {
             showToast("Content can not be empty");
             return;
         }
@@ -263,13 +264,13 @@ public class EditorActivity extends AbstractBaseActivity {
             addNotes();
         } else if (type.equalsIgnoreCase("Forum")) {
             addEditPostToForum(getForumPost());
-        }else if(type.equalsIgnoreCase("Comment")) {
+        } else if (type.equalsIgnoreCase("Comment")) {
             addComment(getComment());
         }
     }
 
     private void editContent() {
-        if(updateContent.trim().isEmpty()) {
+        if (updateContent.trim().isEmpty()) {
             showToast("Content can not be empty");
             return;
         }

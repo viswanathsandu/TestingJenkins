@@ -37,14 +37,14 @@ public class ExamAdapter extends AbstractRecycleViewAdapter {
     public int getItemViewType(int position) {
         return position;
     }
+
     @Override
     public ExamDataHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view  =inflater.inflate(R.layout.row_exams_list, parent, false) ;
-        if((viewType+1)% 2 == 0)
-        {
+        View view = inflater.inflate(R.layout.row_exams_list, parent, false);
+        if ((viewType + 1) % 2 == 0) {
             view.setBackgroundColor(inflater.getContext().getResources().getColor(R.color.tab_recycler_alternate_row));
 
-        }else {
+        } else {
             view.setBackgroundColor(inflater.getContext().getResources().getColor(R.color.white));
         }
         return new ExamDataHolder(view);
@@ -55,16 +55,21 @@ public class ExamAdapter extends AbstractRecycleViewAdapter {
         ((ExamDataHolder) holder).bindData(position, (ExamDetail) getItem(position));
     }
 
-    public void setAddExamOnClickListener(IAddExamOnClickListener addExamOnClickListener){
+    public void setAddExamOnClickListener(IAddExamOnClickListener addExamOnClickListener) {
         this.addExamOnClickListener = addExamOnClickListener;
     }
+
     public class ExamDataHolder extends RecyclerView.ViewHolder {
         private final String EMPTY_STRING = "";
         private final String ADD_HTML = "<u><font color=#125291>Add</font></u>&nbsp;";
-        @Bind(R.id.tv_exam) TextView examTxt;
-        @Bind(R.id.tv_days_remaining) TextView daysRemainingTxt;
-        @Bind(R.id.tv_exam_date) TextView examDateTxt;
-        @Bind(R.id.tv_hall_ticket_number) TextView hallTicketTxt;
+        @Bind(R.id.tv_exam)
+        TextView examTxt;
+        @Bind(R.id.tv_days_remaining)
+        TextView daysRemainingTxt;
+        @Bind(R.id.tv_exam_date)
+        TextView examDateTxt;
+        @Bind(R.id.tv_hall_ticket_number)
+        TextView hallTicketTxt;
 
         View parent;
 
@@ -78,41 +83,42 @@ public class ExamAdapter extends AbstractRecycleViewAdapter {
 
             examTxt.setText(examDetail.name == null ? EMPTY_STRING : examDetail.name);
             daysRemainingTxt.setText(examDetail.daysRemaining == null ? "--" : String.valueOf(examDetail.daysRemaining));
-            if(examDetail.examDate == null || examDetail.examDate.isEmpty()){
+            if (examDetail.examDate == null || examDetail.examDate.isEmpty()) {
                 examDateTxt.setText(Html.fromHtml(ADD_HTML));
                 examDateTxt.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        addExamOnClickListener.onAddExamClickListener(view, examDetail, AddExamScheduleDialogFragment.ADD_EXAM_DATE,position);
+                        addExamOnClickListener.onAddExamClickListener(view, examDetail, AddExamScheduleDialogFragment.ADD_EXAM_DATE, position);
                     }
                 });
-            }else{
+            } else {
                 boolean isWhitespace = examDetail.examDate.contains(" ");
-                if(isWhitespace) {
+                if (isWhitespace) {
                     examDateTxt.setText(examDetail.examDate.split(" ")[0]);
-                }else{
+                } else {
                     examDateTxt.setText(examDetail.examDate);
                 }
                 examDateTxt.setClickable(false);
             }
 
-            if(examDetail.hallTicketNumber == null || examDetail.hallTicketNumber.isEmpty()){
+            if (examDetail.hallTicketNumber == null || examDetail.hallTicketNumber.isEmpty()) {
                 hallTicketTxt.setText(Html.fromHtml(ADD_HTML));
                 hallTicketTxt.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        addExamOnClickListener.onAddExamClickListener(view,examDetail,AddExamScheduleDialogFragment.ADD_HALL_TICKET,position);
+                        addExamOnClickListener.onAddExamClickListener(view, examDetail, AddExamScheduleDialogFragment.ADD_HALL_TICKET, position);
                     }
                 });
-            }else{
+            } else {
                 hallTicketTxt.setClickable(false);
                 hallTicketTxt.setText(examDetail.hallTicketNumber);
             }
 
         }
     }
+
     public interface IAddExamOnClickListener {
-        void onAddExamClickListener(View view,ExamDetail examDetail,String type,int position);
+        void onAddExamClickListener(View view, ExamDetail examDetail, String type, int position);
     }
 
 }

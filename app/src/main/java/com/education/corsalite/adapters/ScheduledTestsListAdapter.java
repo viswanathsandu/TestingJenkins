@@ -35,7 +35,7 @@ public class ScheduledTestsListAdapter extends AbstractRecycleViewAdapter {
         addAll(scheduledTest.MockTest);
     }
 
-    public void setScheduledTestSelectedListener(IScheduledTestSelectedListener mListener){
+    public void setScheduledTestSelectedListener(IScheduledTestSelectedListener mListener) {
         this.mListener = mListener;
     }
 
@@ -51,9 +51,12 @@ public class ScheduledTestsListAdapter extends AbstractRecycleViewAdapter {
 
     public class ScheduledTestDataHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.mock_test_txt) TextView tvName;
-        @Bind(R.id.mock_test_time_txt) TextView tvTime;
-        @Bind(R.id.download_test)ImageView ivDownload;
+        @Bind(R.id.mock_test_txt)
+        TextView tvName;
+        @Bind(R.id.mock_test_time_txt)
+        TextView tvTime;
+        @Bind(R.id.download_test)
+        ImageView ivDownload;
         View parent;
 
         public ScheduledTestDataHolder(View view) {
@@ -73,9 +76,9 @@ public class ScheduledTestsListAdapter extends AbstractRecycleViewAdapter {
             tvName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                if(mListener != null) {
-                    mListener.onScheduledTestSelected(position);
-                }
+                    if (mListener != null) {
+                        mListener.onScheduledTestSelected(position);
+                    }
                 }
             });
             ivDownload.setOnClickListener(new View.OnClickListener() {
@@ -89,8 +92,9 @@ public class ScheduledTestsListAdapter extends AbstractRecycleViewAdapter {
         }
     }
 
-    public interface IScheduledTestSelectedListener{
+    public interface IScheduledTestSelectedListener {
         void onScheduledTestSelected(int position);
+
         void onSchedledDownload(int position);
     }
 }

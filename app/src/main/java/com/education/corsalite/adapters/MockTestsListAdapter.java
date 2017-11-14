@@ -52,7 +52,7 @@ public class MockTestsListAdapter extends AbstractRecycleViewAdapter {
         }
 
         public void bindData(final int position, final MockTest mockTest) {
-            tvName.setText(mockTest.displayName+"");
+            tvName.setText(mockTest.displayName + "");
             tvName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -74,6 +74,7 @@ public class MockTestsListAdapter extends AbstractRecycleViewAdapter {
 
     public interface IMockTestSelectedListener {
         void onMockTestSelected(int position);
+
         void onMockTestDownload(int position);
     }
 }

@@ -152,20 +152,22 @@ public class ApiManager {
     }
 
     public void getCourseAnalysisData(String studentId, String courseId, String subjectId,
-                                      String groupLevel, String breakUpByDate,
-                                      String durationInDays, String returnAllRowsWithourPerfData,
-                                      ApiCallback<List<CourseAnalysis>> callback) {
+            String groupLevel, String breakUpByDate,
+            String durationInDays, String returnAllRowsWithourPerfData,
+            ApiCallback<List<CourseAnalysis>> callback) {
         if (isApiOnline()) {
-            ApiClientService.get().getCourseAnalysis(studentId, courseId, subjectId, groupLevel, breakUpByDate, durationInDays, returnAllRowsWithourPerfData, callback);
+            ApiClientService.get().getCourseAnalysis(studentId, courseId, subjectId, groupLevel, breakUpByDate, durationInDays, returnAllRowsWithourPerfData,
+                    callback);
         }
     }
 
     public void getCourseAnalysisAsPercentile(String studentId, String courseId, String subjectId,
-                                              String groupLevel, String breakUpByDate,
-                                              String durationInDays, String returnAllRowsWithourPerfData,
-                                              ApiCallback<List<CourseAnalysisPercentile>> callback) {
+            String groupLevel, String breakUpByDate,
+            String durationInDays, String returnAllRowsWithourPerfData,
+            ApiCallback<List<CourseAnalysisPercentile>> callback) {
         if (isApiOnline()) {
-            ApiClientService.get().getCourseAnalysisPercentile(studentId, courseId, subjectId, groupLevel, breakUpByDate, durationInDays, returnAllRowsWithourPerfData, callback);
+            ApiClientService.get().getCourseAnalysisPercentile(studentId, courseId, subjectId, groupLevel, breakUpByDate, durationInDays,
+                    returnAllRowsWithourPerfData, callback);
         }
 
     }
@@ -192,7 +194,7 @@ public class ApiManager {
         apiCacheHolder.setWelcomeRequest(idStudent);
         if (isApiOnline() && isNetworkConnected()) {
             ApiClientService.get().getWelcomeDetails(idStudent, callback);
-        } else if(!isNetworkConnected()) {
+        } else if (!isNetworkConnected()) {
             WelcomeReqRes reqRes = new WelcomeReqRes();
             reqRes.request = apiCacheHolder.welcomeRequest;
             SugarDbManager.get(context).getResponse(reqRes, callback);
@@ -263,7 +265,7 @@ public class ApiManager {
         apiCacheHolder.setContentRequest(idContents, UpdateTime);
         if (isApiOnline()) {
             ApiClientService.get().getContentData(idStudent, idContents, UpdateTime, callback);
-        } else if(!isNetworkConnected()) {
+        } else if (!isNetworkConnected()) {
             ContentReqRes reqRes = new ContentReqRes();
             reqRes.request = apiCacheHolder.contentRequest;
             SugarDbManager.get(context).getResponse(reqRes, callback);
@@ -315,7 +317,7 @@ public class ApiManager {
         apiCacheHolder.setScheduleTestsRequest(studentId);
         if (isApiOnline()) {
             ApiClientService.get().getScheduledTestsList(studentId, callback);
-        } else if(!isNetworkConnected()) {
+        } else if (!isNetworkConnected()) {
             ScheduleTestsReqRes reqRes = new ScheduleTestsReqRes();
             reqRes.request = apiCacheHolder.scheduleTestsRequest;
             SugarDbManager.get(context).getResponse(reqRes, callback);
@@ -335,14 +337,14 @@ public class ApiManager {
     }
 
     public void addFriend(String userId, String friendUserId, ApiCallback<CommonResponseModel> callback) {
-        if(isApiOnline()) {
+        if (isApiOnline()) {
             AddRemoveFriendRequest request = new AddRemoveFriendRequest(userId, friendUserId, "AddFriend");
             ApiClientService.get().addRemoveFriend(new TypedString("Update=" + Gson.get().toJson(request)), callback);
         }
     }
 
     public void unFriend(String userId, String friendUserId, ApiCallback<CommonResponseModel> callback) {
-        if(isApiOnline()) {
+        if (isApiOnline()) {
             AddRemoveFriendRequest request = new AddRemoveFriendRequest(userId, friendUserId, "UnFriend");
             ApiClientService.get().addRemoveFriend(new TypedString("Update=" + Gson.get().toJson(request)), callback);
         }
@@ -497,7 +499,7 @@ public class ApiManager {
 
     public UserEventsResponse postUserEvents(String update) {
         if (isApiOnline()) {
-            return  ApiClientService.get().postUserEvents(new TypedString("Insert=" + update));
+            return ApiClientService.get().postUserEvents(new TypedString("Insert=" + update));
         }
         return null;
     }
@@ -510,7 +512,7 @@ public class ApiManager {
 
     public BaseResponseModel postContentUsage(String insert) {
         if (isApiOnline()) {
-            return  ApiClientService.get().postContentUsage(new TypedString("Insert=" + insert));
+            return ApiClientService.get().postContentUsage(new TypedString("Insert=" + insert));
         }
         return null;
     }
@@ -523,7 +525,7 @@ public class ApiManager {
 
     public TestPaperIndex getTestPaperIndex(String questionPaperId, String answerPaperId, String allPosts) {
         if (isApiOnline()) {
-            return  ApiClientService.get().getTestPaperIndex(questionPaperId, answerPaperId, allPosts);
+            return ApiClientService.get().getTestPaperIndex(questionPaperId, answerPaperId, allPosts);
         }
         return null;
     }
@@ -558,7 +560,8 @@ public class ApiManager {
         }
     }
 
-    public void completeChallengeTest(String challengeTestId, String testQuestionPaperId, String studentId, ApiCallback<ChallengeCompleteResponseModel> callback) {
+    public void completeChallengeTest(String challengeTestId, String testQuestionPaperId, String studentId,
+            ApiCallback<ChallengeCompleteResponseModel> callback) {
         if (isApiOnline()) {
             ApiClientService.get().completeChallenge(challengeTestId, testQuestionPaperId, studentId, callback);
         }
@@ -586,7 +589,7 @@ public class ApiManager {
         apiCacheHolder.appConfigRequest = new AppConfigRequest();
         if (isApiOnline()) {
             ApiClientService.get().getAppConfig(callback);
-        }  else if(!isNetworkConnected()) {
+        } else if (!isNetworkConnected()) {
             AppConfigReqRes reqRes = new AppConfigReqRes();
             reqRes.request = apiCacheHolder.appConfigRequest;
             SugarDbManager.get(context).getResponse(reqRes, callback);
@@ -603,8 +606,9 @@ public class ApiManager {
         }
     }
 
-    public void getCurriculumData(String studentId, String courseId, String entityId, String pageType, String sortBy, ApiCallback<CurriculumResponseModel> callback) {
-        if(isApiOnline()) {
+    public void getCurriculumData(String studentId, String courseId, String entityId, String pageType, String sortBy,
+            ApiCallback<CurriculumResponseModel> callback) {
+        if (isApiOnline()) {
             ApiClientService.get().getCurriculumData(studentId, courseId, entityId, pageType, sortBy, callback);
         }
     }
@@ -613,7 +617,7 @@ public class ApiManager {
         apiCacheHolder.appentityconfigRequest = new AppEntityConfigRequest(userId, entityId);
         if (isApiOnline()) {
             ApiClientService.get().getClientEntityAppConfig(userId, entityId, callback);
-        } else if(!isNetworkConnected()) {
+        } else if (!isNetworkConnected()) {
             AppentityconfigReqRes reqRes = new AppentityconfigReqRes();
             reqRes.request = apiCacheHolder.appentityconfigRequest;
             SugarDbManager.get(context).getResponse(reqRes, callback);
@@ -625,7 +629,7 @@ public class ApiManager {
     }
 
     public void postClientEntityAppConfig(String userId, String deviceId, ApiCallback<CommonResponseModel> callback) {
-        if(isApiOnline()) {
+        if (isApiOnline()) {
             ClientEntityConfigRequest request = new ClientEntityConfigRequest(userId, deviceId);
             ApiClientService.get().postClientEntityAppConfig(new TypedString("Update=" + Gson.get().toJson(request)), callback);
         }
@@ -634,9 +638,9 @@ public class ApiManager {
     public void getTestSeries(String idStudent, String idCourse, String idCourseInstance, ApiCallback<TestSeriesResponse> callback) {
         TestSeriesRequest request = new TestSeriesRequest(idStudent, idCourse, idCourseInstance);
         apiCacheHolder.testSeriesRequest = request;
-        if(isApiOnline()) {
+        if (isApiOnline()) {
             ApiClientService.get().getTestSeries(new TypedString("Update=" + Gson.get().toJson(request)), callback);
-        } else if(!isNetworkConnected()) {
+        } else if (!isNetworkConnected()) {
             TestSeriesReqRes reqRes = new TestSeriesReqRes();
             reqRes.request = apiCacheHolder.testSeriesRequest;
             SugarDbManager.get(context).getResponse(reqRes, callback);
@@ -644,7 +648,7 @@ public class ApiManager {
     }
 
     public void getExamResultSummaryData(String testAnswerPAperIds, String studentId, ApiCallback<ExamResultSummaryResponse> callback) {
-        if(isApiOnline()) {
+        if (isApiOnline()) {
             ApiClientService.get().getExamResultSummary(testAnswerPAperIds, studentId, callback);
         }
     }

@@ -1,7 +1,6 @@
 package com.education.corsalite.activities;
 
 
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,8 +26,10 @@ import butterknife.ButterKnife;
  * Created by ayush on 27/10/15.
  */
 public class ForumActivity extends AbstractBaseActivity {
-    @Bind(R.id.tabLayout) TabLayout mTabLayout;
-    @Bind(R.id.viewPager) ViewPager mViewPager;
+    @Bind(R.id.tabLayout)
+    TabLayout mTabLayout;
+    @Bind(R.id.viewPager)
+    ViewPager mViewPager;
     private List<Chapter> allChapters = new ArrayList<>();
     private LayoutInflater inflater;
     private CourseData mCourseData;

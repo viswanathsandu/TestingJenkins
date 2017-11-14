@@ -49,10 +49,10 @@ public class PartTestGridAdapter extends AbstractRecycleViewAdapter {
 
     public List<PartTestGridElement> getListData() {
         List<PartTestGridElement> elements = new ArrayList<>();
-        for(Object item : data) {
-            if(item instanceof PartTestGridElement) {
-                String count = ((PartTestGridElement)item).recommendedQuestionCount;
-                if(!TextUtils.isEmpty(count) && !count.equalsIgnoreCase("0")) {
+        for (Object item : data) {
+            if (item instanceof PartTestGridElement) {
+                String count = ((PartTestGridElement) item).recommendedQuestionCount;
+                if (!TextUtils.isEmpty(count) && !count.equalsIgnoreCase("0")) {
                     elements.add((PartTestGridElement) item);
                 }
             }
@@ -85,13 +85,15 @@ public class PartTestGridAdapter extends AbstractRecycleViewAdapter {
             }
             tvChapter.setText(element.chapterName);
             etRecommended.setText(element.recommendedQuestionCount + "");
-            etRecommended.setFilters(new InputFilter[]{new InputFilterMinMax("0", element.questionCount+"")});
+            etRecommended.setFilters(new InputFilter[]{new InputFilterMinMax("0", element.questionCount + "")});
             etRecommended.addTextChangedListener(new TextWatcher() {
                 @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                }
 
                 @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                }
 
                 @Override
                 public void afterTextChanged(Editable editable) {

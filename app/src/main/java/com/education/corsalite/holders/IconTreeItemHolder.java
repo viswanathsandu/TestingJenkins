@@ -33,7 +33,7 @@ public class IconTreeItemHolder extends TreeNode.BaseNodeViewHolder<IconTreeItem
         final LayoutInflater inflater = LayoutInflater.from(context);
         final View view = inflater.inflate(R.layout.icon_node, null, false);
         tvValue = (TextView) view.findViewById(R.id.node_value);
-        RelativeLayout mainLayout = (RelativeLayout)view.findViewById(R.id.rl_container);
+        RelativeLayout mainLayout = (RelativeLayout) view.findViewById(R.id.rl_container);
         tvValue.setText(value.text);
         tvValue.setTag(value.tag);
         this.value = value;
@@ -44,7 +44,7 @@ public class IconTreeItemHolder extends TreeNode.BaseNodeViewHolder<IconTreeItem
         arrowView = (ImageView) view.findViewById(R.id.arrow_icon);
 
 
-        ImageView update = (ImageView)view.findViewById(R.id.btn_update);
+        ImageView update = (ImageView) view.findViewById(R.id.btn_update);
         update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,26 +52,26 @@ public class IconTreeItemHolder extends TreeNode.BaseNodeViewHolder<IconTreeItem
             }
         });
 
-        ImageView delete =(ImageView)view.findViewById(R.id.btn_delete);
+        ImageView delete = (ImageView) view.findViewById(R.id.btn_delete);
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FragmentManager fragmentManager = ((OfflineActivity) context).getFragmentManager();
-                AlertDialogFragment dialogFragment = new AlertDialogFragment ();
+                AlertDialogFragment dialogFragment = new AlertDialogFragment();
                 dialogFragment.show(fragmentManager, "AlertDialog");
             }
         });
 
-        progressBar = (ProgressBar)view.findViewById(R.id.pb_content);
-        if(value.showProgress){
+        progressBar = (ProgressBar) view.findViewById(R.id.pb_content);
+        if (value.showProgress) {
             progressBar.setVisibility(View.VISIBLE);
             progressBar.setProgress(value.progress);
-        }else {
+        } else {
             progressBar.setVisibility(View.GONE);
         }
-        if(value.tag.equalsIgnoreCase("content")){
+        if (value.tag.equalsIgnoreCase("content")) {
             arrowView.setVisibility(View.INVISIBLE);
-        }else if(value.tag.equalsIgnoreCase("subject")){
+        } else if (value.tag.equalsIgnoreCase("subject")) {
             mainLayout.setBackgroundColor(context.getResources().getColor(R.color.red));
             tvValue.setTextColor(context.getResources().getColor(R.color.text_white));
             arrowView.setImageDrawable(context.getResources().getDrawable(R.drawable.ico_offline_arrow_white));
@@ -85,10 +85,12 @@ public class IconTreeItemHolder extends TreeNode.BaseNodeViewHolder<IconTreeItem
 
     @Override
     public void toggle(boolean active) {
-        if(((String)tvValue.getTag()).equalsIgnoreCase("subject")) {
-            arrowView.setImageDrawable(context.getResources().getDrawable(active ? R.drawable.ico_offline_arrow_down_white : R.drawable.ico_offline_arrow_white));
-        }else{
-            arrowView.setImageDrawable(context.getResources().getDrawable(active ? R.drawable.ico_offline_arrow_down_black : R.drawable.ico_offline_arrow_black));
+        if (((String) tvValue.getTag()).equalsIgnoreCase("subject")) {
+            arrowView.setImageDrawable(
+                    context.getResources().getDrawable(active ? R.drawable.ico_offline_arrow_down_white : R.drawable.ico_offline_arrow_white));
+        } else {
+            arrowView.setImageDrawable(
+                    context.getResources().getDrawable(active ? R.drawable.ico_offline_arrow_down_black : R.drawable.ico_offline_arrow_black));
 
         }
     }
@@ -102,7 +104,7 @@ public class IconTreeItemHolder extends TreeNode.BaseNodeViewHolder<IconTreeItem
         public boolean showProgress;
         public Object data;
 
-        public IconTreeItem(int icon, String text,String id,String tag,boolean showProgress, int progress) {
+        public IconTreeItem(int icon, String text, String id, String tag, boolean showProgress, int progress) {
             this.icon = icon;
             this.text = text;
             this.id = id;
@@ -116,7 +118,7 @@ public class IconTreeItemHolder extends TreeNode.BaseNodeViewHolder<IconTreeItem
         }
     }
 
-    public static class AlertDialogFragment extends DialogFragment{
+    public static class AlertDialogFragment extends DialogFragment {
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -126,7 +128,7 @@ public class IconTreeItemHolder extends TreeNode.BaseNodeViewHolder<IconTreeItem
                     .setPositiveButton("Confirm",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int whichButton) {
-                                    ((OfflineActivity)getActivity()).onDelete(value.id,value.tag);
+                                    ((OfflineActivity) getActivity()).onDelete(value.id, value.tag);
                                 }
                             }
                     )

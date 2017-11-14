@@ -21,8 +21,8 @@ public class MockSubjectsAdapter extends AbstractRecycleViewAdapter<String, Mock
     }
 
     public void setSelectedItem(String section) {
-        for(int i=0; i<getItemCount(); i++) {
-            if(section.equalsIgnoreCase(getItem(i))) {
+        for (int i = 0; i < getItemCount(); i++) {
+            if (section.equalsIgnoreCase(getItem(i))) {
                 selectedItem = i;
                 notifyDataSetChanged();
             }
@@ -45,7 +45,7 @@ public class MockSubjectsAdapter extends AbstractRecycleViewAdapter<String, Mock
                 notifyItemChanged(selectedItem);
                 selectedItem = position;
                 notifyItemChanged(selectedItem);
-                if(onMockSectionClickListener != null) {
+                if (onMockSectionClickListener != null) {
                     onMockSectionClickListener.onSectionClick(getItem(position));
                 }
             }

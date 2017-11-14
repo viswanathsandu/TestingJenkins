@@ -36,8 +36,10 @@ import butterknife.ButterKnife;
  */
 public class VideoListDialog extends DialogFragment implements VideoListAdapter.IVideoSelectedListener {
 
-    @Bind(R.id.tv_title)TextView tvTitle;
-    @Bind(R.id.rv_videolist)RecyclerView rvVideoList;
+    @Bind(R.id.tv_title)
+    TextView tvTitle;
+    @Bind(R.id.rv_videolist)
+    RecyclerView rvVideoList;
 
     List<ContentModel> mVideoList;
 
@@ -54,12 +56,12 @@ public class VideoListDialog extends DialogFragment implements VideoListAdapter.
         View v = inflater.inflate(R.layout.fragment_video_list, container, false);
         ButterKnife.bind(this, v);
 
-        if(getArguments().getString("title") != null && getArguments().getString("title").length() >0 ) {
+        if (getArguments().getString("title") != null && getArguments().getString("title").length() > 0) {
             String title = tvTitle.getText().toString() + "<b>" + getArguments().getString("title") + "</b>";
             tvTitle.setText(Html.fromHtml(title));
         }
 
-        if(getArguments().getSerializable("videolist") != null) {
+        if (getArguments().getSerializable("videolist") != null) {
             mVideoList = (List<ContentModel>) getArguments().getSerializable("videolist");
         }
 
@@ -78,8 +80,10 @@ public class VideoListDialog extends DialogFragment implements VideoListAdapter.
             if (offlineContent != null && offlineContent.progress == 100) {
                 Intent intent = new Intent(getActivity(), VideoActivity.class);
                 intent.putExtra("selectedPosition", position);
-                intent.putExtra("videopath", FileUtils.get(getActivity()).getVideoDownloadPath(mVideoList.get(position).idContent));
+                intent.putExtra("videopath", FileUtils.get(getActivity())
+                        .getVideoDownloadFilePath(offlineContent.videoSourceContentId, offlineContent.fileName.endsWith("m3u8") ? "m3u8" : "mpg", false));
                 intent.putExtra("videoList", (Serializable) mVideoList);
+                intent.putExtra("videoStartTime", offlineContent.videoStartTime);
                 startActivity(intent);
             } else if (SystemUtils.isNetworkConnected(getActivity())) {
                 Intent intent = new Intent(getActivity(), VideoActivity.class);

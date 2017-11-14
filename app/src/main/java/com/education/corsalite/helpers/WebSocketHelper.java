@@ -41,10 +41,11 @@ public class WebSocketHelper {
     private WebSocketClient mWebSocketClient;
     private boolean isWebsocketConnected = false;
 
-    private WebSocketHelper() {}
+    private WebSocketHelper() {
+    }
 
     public static WebSocketHelper get(Context context) {
-        if(instance == null) {
+        if (instance == null) {
             instance = new WebSocketHelper();
         }
         instance.mContext = context;
@@ -56,14 +57,14 @@ public class WebSocketHelper {
     }
 
     public void connectWebSocket() {
-        if(mContext == null || !SystemUtils.isNetworkConnected(mContext)) {
+        if (mContext == null || !SystemUtils.isNetworkConnected(mContext)) {
             return;
         }
         URI uri;
         isWebsocketConnected = false;
         try {
             uri = new URI(ApiClientService.getSocketUrl());
-            L.info("Websocket", "Url : "+ApiClientService.getSocketUrl());
+            L.info("Websocket", "Url : " + ApiClientService.getSocketUrl());
         } catch (URISyntaxException e) {
             L.error(e.getMessage(), e);
             return;
@@ -75,7 +76,7 @@ public class WebSocketHelper {
             @Override
             public void onOpen(ServerHandshake serverHandshake) {
                 L.info("Websocket", "Opened");
-                if(!isWebsocketConnected) {
+                if (!isWebsocketConnected) {
                     isWebsocketConnected = true;
                     EventBus.getDefault().post(new SocketConnectionStatusEvent(isWebsocketConnected));
                 }
@@ -84,14 +85,14 @@ public class WebSocketHelper {
 
             @Override
             public void onMessage(String message) {
-                L.info("Websocket", "message : "+message);
+                L.info("Websocket", "message : " + message);
                 postResponseEvents(message);
             }
 
             @Override
             public void onClose(int i, String s, boolean b) {
                 L.info("Websocket", "Closed " + s);
-                if(isWebsocketConnected) {
+                if (isWebsocketConnected) {
                     isWebsocketConnected = false;
                     EventBus.getDefault().post(new SocketConnectionStatusEvent(isWebsocketConnected));
                 }
@@ -101,7 +102,7 @@ public class WebSocketHelper {
             @Override
             public void onError(Exception e) {
                 L.info("Websocket", "Error " + e.getMessage());
-                if(isWebsocketConnected) {
+                if (isWebsocketConnected) {
                     isWebsocketConnected = false;
                     EventBus.getDefault().post(new SocketConnectionStatusEvent(isWebsocketConnected));
                 }
@@ -118,7 +119,7 @@ public class WebSocketHelper {
 
     public void disconnectWebSocket() {
         try {
-            if(mContext == null || !SystemUtils.isNetworkConnected(mContext)) {
+            if (mContext == null || !SystemUtils.isNetworkConnected(mContext)) {
                 return;
             }
             mWebSocketClient.close();
@@ -129,7 +130,7 @@ public class WebSocketHelper {
 
     public void reconnectWebSocket() {
         try {
-            if(mContext == null || !SystemUtils.isNetworkConnected(mContext)) {
+            if (mContext == null || !SystemUtils.isNetworkConnected(mContext)) {
                 return;
             }
             if (LoginUserCache.getInstance().getLoginResponse() != null) {
@@ -212,7 +213,8 @@ public class WebSocketHelper {
         sendEvent(Gson.get().toJson(event));
     }
 
-    // send('{"event":"ChallengeTestStart", "ChallengeTestParentID":"1", "ChallengerName":"test name", "ChallengerStatus":"accepted","TestQuestionPaperId":"32125" }');
+    // send('{"event":"ChallengeTestStart", "ChallengeTestParentID":"1", "ChallengerName":"test name", "ChallengerStatus":"accepted",
+    // "TestQuestionPaperId":"32125" }');
     public void sendChallengeStartEvent(ChallengeTestStartRequestEvent event) {
         sendEvent(Gson.get().toJson(event));
     }

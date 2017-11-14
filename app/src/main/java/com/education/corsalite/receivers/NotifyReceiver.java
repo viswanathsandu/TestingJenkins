@@ -18,7 +18,7 @@ public class NotifyReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         try {
-            if(TextUtils.isEmpty(LoginUserCache.getInstance().getStudentId())) {
+            if (TextUtils.isEmpty(LoginUserCache.getInstance().getStudentId())) {
                 return;
             }
             String action = intent.getAction();
@@ -31,7 +31,7 @@ public class NotifyReceiver extends BroadcastReceiver {
                     NotificationsUtils.cancelNotification(context, id);
                     PugNotification.with(context).cancel(id);
                 }
-            } else if(startExam){
+            } else if (startExam) {
                 ScheduledTestStartEvent event = new ScheduledTestStartEvent();
                 event.testQuestionPaperId = testQuestionPaperId;
                 EventBus.getDefault().post(event);

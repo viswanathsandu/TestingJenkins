@@ -7,7 +7,8 @@ public class WelcomeRequest extends AbstractBaseRequest {
 
     public String studentId;
 
-    public WelcomeRequest() {}
+    public WelcomeRequest() {
+    }
 
     public WelcomeRequest(String studentId) {
         this.studentId = studentId;

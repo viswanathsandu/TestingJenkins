@@ -10,13 +10,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.education.corsalite.R;
 import com.education.corsalite.activities.ChallengeActivity;
 import com.education.corsalite.gson.Gson;
 import com.education.corsalite.models.responsemodels.FriendsData;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.L;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -35,7 +35,7 @@ public class FriendsAdapter extends AbstractRecycleViewAdapter {
 
     public FriendsAdapter(Activity activity, FriendsData friendsData, ChallengeActivity.FriendsListCallback friendsListCallback) {
         this.mActivity = activity;
-        if(mActivity != null) {
+        if (mActivity != null) {
             this.inflater = activity.getLayoutInflater();
         }
         updateData(friendsData);
@@ -51,7 +51,7 @@ public class FriendsAdapter extends AbstractRecycleViewAdapter {
     }
 
     public void updateData(FriendsData friendsData) {
-        if(friendsData != null) {
+        if (friendsData != null) {
             removeAllData();
             addAll(friendsData.friendsList);
             notifyDataSetChanged();
@@ -73,8 +73,10 @@ public class FriendsAdapter extends AbstractRecycleViewAdapter {
         TextView tvName;
         @Bind(R.id.tv_friend_email)
         TextView tvEmail;
-        @Bind(R.id.status_view) View statusView;
-        @Bind(R.id.tile_view) View tileView;
+        @Bind(R.id.status_view)
+        View statusView;
+        @Bind(R.id.tile_view)
+        View tileView;
         View parent;
 
         public FriendViewHolder(View itemView) {
@@ -88,9 +90,13 @@ public class FriendsAdapter extends AbstractRecycleViewAdapter {
             tvEmail.setText(clickedFriend.emailID);
             statusView.setBackgroundColor(mActivity.getResources().getColor(clickedFriend.isOnline() ? R.color.green : R.color.gray));
             if (!TextUtils.isEmpty(clickedFriend.photoUrl)) {
-                Glide.with(mActivity).load(ApiClientService.getBaseUrl() + clickedFriend.photoUrl.replaceFirst("./", "")).into(ivProfilePic);
+                Picasso.with(mActivity)
+                        .load(ApiClientService.getBaseUrl() + clickedFriend.photoUrl.replaceFirst("./", ""))
+                        .placeholder(R.drawable.profile_pic)
+                        .error(R.drawable.profile_pic).fit()
+                        .into(ivProfilePic);
             }
-            if(clickedFriend.isOnline()) {
+            if (clickedFriend.isOnline()) {
                 if (selectedFriends.contains(clickedFriend)) {
                     tileView.setBackgroundColor(mActivity.getResources().getColor(R.color.green));
                     ivActionBtn.setImageResource(android.R.drawable.ic_delete);

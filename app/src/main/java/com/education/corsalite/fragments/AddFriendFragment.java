@@ -16,14 +16,13 @@ import com.education.corsalite.adapters.DividerItemDecoration;
 import com.education.corsalite.api.ApiCallback;
 import com.education.corsalite.api.ApiManager;
 import com.education.corsalite.cache.LoginUserCache;
+import com.education.corsalite.gson.Gson;
 import com.education.corsalite.helpers.WebSocketHelper;
 import com.education.corsalite.models.responsemodels.CommonResponseModel;
 import com.education.corsalite.models.responsemodels.CorsaliteError;
 import com.education.corsalite.models.responsemodels.FriendsData;
 import com.education.corsalite.models.socket.response.ChallengeUserList;
-import com.education.corsalite.gson.Gson;
 import com.education.corsalite.utils.L;
-
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -36,7 +35,8 @@ import retrofit.client.Response;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class AddFriendFragment extends BaseFragment implements SearchView.OnQueryTextListener, SearchView.OnCloseListener, AddFriendsAdapter.OnFriendClickListener {
+public class AddFriendFragment extends BaseFragment implements SearchView.OnQueryTextListener, SearchView.OnCloseListener,
+        AddFriendsAdapter.OnFriendClickListener {
 
     private static final String ARG_CALLBACK = "ARG_CALLBACK";
     private SearchView mFriendSearchView;
@@ -47,7 +47,8 @@ public class AddFriendFragment extends BaseFragment implements SearchView.OnQuer
     private Set<String> challengeFriendsId = new HashSet<>();
     private List<FriendsData.Friend> friends;
 
-    public AddFriendFragment(){}
+    public AddFriendFragment() {
+    }
 
     public static AddFriendFragment newInstance() {
         AddFriendFragment fragment = new AddFriendFragment();
@@ -58,7 +59,7 @@ public class AddFriendFragment extends BaseFragment implements SearchView.OnQuer
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_friend, container, false);
         mFriendSearchView = (SearchView) view.findViewById(R.id.sv_friend_search);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_friends_list);
@@ -78,7 +79,7 @@ public class AddFriendFragment extends BaseFragment implements SearchView.OnQuer
     }
 
     private void loadFriendsList(String searchKey) {
-        if(getActivity() != null) {
+        if (getActivity() != null) {
             if (TextUtils.isEmpty(searchKey)) {
                 showToast("Plean enter the search text");
                 return;
@@ -104,7 +105,7 @@ public class AddFriendFragment extends BaseFragment implements SearchView.OnQuer
                         @Override
                         public void failure(CorsaliteError error) {
                             super.failure(error);
-                            if(getActivity() != null) {
+                            if (getActivity() != null) {
                                 ((AbstractBaseActivity) getActivity()).showToast("No results found");
                             }
                         }
@@ -114,7 +115,7 @@ public class AddFriendFragment extends BaseFragment implements SearchView.OnQuer
 
     private void showFriendsList() {
         updateFriendsListStatus();
-        if(getActivity() != null && friends != null && friends != null) {
+        if (getActivity() != null && friends != null && friends != null) {
             mAdapter = new AddFriendsAdapter(getActivity(), friends, this);
             mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), R.drawable.horizontal_line, true, true));
             mRecyclerView.setAdapter(mAdapter);
@@ -123,8 +124,9 @@ public class AddFriendFragment extends BaseFragment implements SearchView.OnQuer
 
     @Override
     public boolean onClose() {
-        if (friends != null && friends != null && friends.size() > 0)
+        if (friends != null && friends != null && friends.size() > 0) {
             mAdapter.setFilter(friends);
+        }
         return false;
     }
 
@@ -155,7 +157,7 @@ public class AddFriendFragment extends BaseFragment implements SearchView.OnQuer
     }
 
     private void updateFriendsListStatus() {
-        if (friends != null ) {
+        if (friends != null) {
             for (FriendsData.Friend friend : friends) {
                 friend.isOnline = challengeFriendsId.contains(friend.idStudent);
             }
@@ -169,7 +171,7 @@ public class AddFriendFragment extends BaseFragment implements SearchView.OnQuer
     }
 
     private void fetchDisplayName() {
-        if (friends != null ) {
+        if (friends != null) {
             for (FriendsData.Friend friend : friends) {
                 if (friend.idStudent.equals(LoginUserCache.getInstance().getLoginResponse().studentId)) {
                     LoginUserCache.getInstance().getLoginResponse().displayName = friend.displayName;
@@ -183,33 +185,33 @@ public class AddFriendFragment extends BaseFragment implements SearchView.OnQuer
         showProgress();
         ApiManager.getInstance(getActivity()).addFriend(appPref.getUserId(), friend.idUser,
                 new ApiCallback<CommonResponseModel>(getActivity()) {
-            @Override
-            public void failure(CorsaliteError error) {
-                super.failure(error);
-                if(getActivity() != null) {
-                    closeProgress();
-                    showToast("Failed adding friend. Please try again");
-                }
-            }
+                    @Override
+                    public void failure(CorsaliteError error) {
+                        super.failure(error);
+                        if (getActivity() != null) {
+                            closeProgress();
+                            showToast("Failed adding friend. Please try again");
+                        }
+                    }
 
-            @Override
-            public void success(CommonResponseModel commonResponseModel, Response response) {
-                super.success(commonResponseModel, response);
-                closeProgress();
-                if(getActivity() != null && commonResponseModel.status.equalsIgnoreCase("SUCCESS")) {
-                    loadFriendsList(searchKey);
-                    showToast("Added friend successfully");
-                }
-            }
+                    @Override
+                    public void success(CommonResponseModel commonResponseModel, Response response) {
+                        super.success(commonResponseModel, response);
+                        closeProgress();
+                        if (getActivity() != null && commonResponseModel.status.equalsIgnoreCase("SUCCESS")) {
+                            loadFriendsList(searchKey);
+                            showToast("Added friend successfully");
+                        }
+                    }
 
-            @Override
-            public void failure(RetrofitError error) {
-                super.failure(error);
-                if(getActivity() != null) {
-                    closeProgress();
-                }
-            }
-        });
+                    @Override
+                    public void failure(RetrofitError error) {
+                        super.failure(error);
+                        if (getActivity() != null) {
+                            closeProgress();
+                        }
+                    }
+                });
     }
 
     @Override
@@ -217,32 +219,32 @@ public class AddFriendFragment extends BaseFragment implements SearchView.OnQuer
         showProgress();
         ApiManager.getInstance(getActivity()).unFriend(appPref.getUserId(), friend.idUser,
                 new ApiCallback<CommonResponseModel>(getActivity()) {
-            @Override
-            public void failure(CorsaliteError error) {
-                super.failure(error);
-                if(getActivity() != null) {
-                    closeProgress();
-                    showToast("Failed removeing friend. Please try again");
-                }
-            }
+                    @Override
+                    public void failure(CorsaliteError error) {
+                        super.failure(error);
+                        if (getActivity() != null) {
+                            closeProgress();
+                            showToast("Failed removeing friend. Please try again");
+                        }
+                    }
 
-            @Override
-            public void success(CommonResponseModel commonResponseModel, Response response) {
-                super.success(commonResponseModel, response);
-                closeProgress();
-                if(getActivity() != null && commonResponseModel.status.equalsIgnoreCase("SUCCESS")) {
-                    loadFriendsList(searchKey);
-                    showToast("Removed friend successfully");
-                }
-            }
+                    @Override
+                    public void success(CommonResponseModel commonResponseModel, Response response) {
+                        super.success(commonResponseModel, response);
+                        closeProgress();
+                        if (getActivity() != null && commonResponseModel.status.equalsIgnoreCase("SUCCESS")) {
+                            loadFriendsList(searchKey);
+                            showToast("Removed friend successfully");
+                        }
+                    }
 
-            @Override
-            public void failure(RetrofitError error) {
-                super.failure(error);
-                if(getActivity() != null) {
-                    closeProgress();
-                }
-            }
-        });
+                    @Override
+                    public void failure(RetrofitError error) {
+                        super.failure(error);
+                        if (getActivity() != null) {
+                            closeProgress();
+                        }
+                    }
+                });
     }
 }

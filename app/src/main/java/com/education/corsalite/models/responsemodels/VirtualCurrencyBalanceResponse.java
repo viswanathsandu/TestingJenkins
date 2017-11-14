@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * Created by vissu on 9/12/15.
  */
-public class VirtualCurrencyBalanceResponse extends BaseResponseModel implements Serializable{
+public class VirtualCurrencyBalanceResponse extends BaseResponseModel implements Serializable {
     @SerializedName("VirtualCurrencyBalance")
     public Double balance;
 

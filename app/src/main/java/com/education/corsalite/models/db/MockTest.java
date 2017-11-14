@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * Created by Girish on 03/10/15.
  */
-public class MockTest extends BaseModel implements Comparable<MockTest>, Serializable{
+public class MockTest extends BaseModel implements Comparable<MockTest>, Serializable {
 
     @SerializedName("DisplayTestName")
     public String displayName;
@@ -21,7 +21,8 @@ public class MockTest extends BaseModel implements Comparable<MockTest>, Seriali
     @SerializedName("subjectName")
     public String subjectName;
 
-    public MockTest() {}
+    public MockTest() {
+    }
 
     @Override
     public int compareTo(MockTest another) {

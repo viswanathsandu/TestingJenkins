@@ -26,12 +26,12 @@ public class SubjectAdapter extends BaseAdapter {
     public SubjectAdapter(List<SubjectModel> subjectModelList, Context mContext) {
         this.subjectModelList = subjectModelList;
         this.mContext = mContext;
-        inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public int getCount() {
-        if(subjectModelList != null) {
+        if (subjectModelList != null) {
             return subjectModelList.size();
         }
         return 0;
@@ -50,22 +50,22 @@ public class SubjectAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = inflater.inflate(R.layout.row_spinner_text, parent, false);
-        TextView tv = (TextView)convertView.findViewById(R.id.tv_spn);
+        TextView tv = (TextView) convertView.findViewById(R.id.tv_spn);
         tv.setText(subjectModelList.get(position).subjectName);
         return convertView;
     }
 
     @Override
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
-        View itemView =  inflater.inflate(R.layout.spinner_drop_down, null);
-        TextView textView = (TextView)itemView.findViewById(R.id.text);
-        ImageView imageView = (ImageView)itemView.findViewById(R.id.selected_item);
+        View itemView = inflater.inflate(R.layout.spinner_drop_down, null);
+        TextView textView = (TextView) itemView.findViewById(R.id.text);
+        ImageView imageView = (ImageView) itemView.findViewById(R.id.selected_item);
         textView.setText(subjectModelList.get(position).subjectName);
         imageView.setVisibility(position == selectedPosition ? View.VISIBLE : View.INVISIBLE);
         return itemView;
     }
 
-    public void setSelectedPosition(int position){
+    public void setSelectedPosition(int position) {
         selectedPosition = position;
         notifyDataSetChanged();
     }

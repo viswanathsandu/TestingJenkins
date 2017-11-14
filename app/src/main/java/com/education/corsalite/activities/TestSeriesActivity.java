@@ -62,16 +62,18 @@ public class TestSeriesActivity extends AbstractBaseActivity implements iTestSer
         frameLayout.addView(myView);
         setToolbarForTestSeries();
         initUi();
-        if(savedInstanceState != null) {
+        if (savedInstanceState != null) {
             String subjectsJson = savedInstanceState.getString("subjects");
-            if(!TextUtils.isEmpty(subjectsJson)) {
-                mSubjects = Gson.get().fromJson(subjectsJson, new TypeToken<List<TestSubject>>() {}.getType());
+            if (!TextUtils.isEmpty(subjectsJson)) {
+                mSubjects = Gson.get().fromJson(subjectsJson, new TypeToken<List<TestSubject>>() {
+                }.getType());
             }
             String mockJson = savedInstanceState.getString("mockdata");
-            if(!TextUtils.isEmpty(mockJson)) {
-                mMockData = Gson.get().fromJson(mockJson, new TypeToken<List<TestSeriesMockData>>(){}.getType());
+            if (!TextUtils.isEmpty(mockJson)) {
+                mMockData = Gson.get().fromJson(mockJson, new TypeToken<List<TestSeriesMockData>>() {
+                }.getType());
             }
-            if(mSubjects != null) {
+            if (mSubjects != null) {
                 addSubjectsAndCreateViews();
             }
         } else {
@@ -82,17 +84,17 @@ public class TestSeriesActivity extends AbstractBaseActivity implements iTestSer
     @Override
     protected void onResume() {
         super.onResume();
-        if(mSubjects == null) {
+        if (mSubjects == null) {
             loadTestSeries();
         }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        if(mSubjects != null) {
+        if (mSubjects != null) {
             outState.putString("subjects", Gson.get().toJson(mSubjects));
         }
-        if(mMockData != null) {
+        if (mMockData != null) {
             outState.putString("mockdata", Gson.get().toJson(mMockData));
         }
         super.onSaveInstanceState(outState);
@@ -107,7 +109,7 @@ public class TestSeriesActivity extends AbstractBaseActivity implements iTestSer
     @Override
     protected void onCourseChanged(Course course) {
         super.onCourseChanged(course);
-        if(course.isTestSeries()) {
+        if (course.isTestSeries()) {
             loadTestSeries();
         } else {
             startActivity(new Intent(this, StudyCenterActivity.class));
@@ -171,7 +173,7 @@ public class TestSeriesActivity extends AbstractBaseActivity implements iTestSer
     }
 
     private Drawable getSubjectColor(TestSubject subject) {
-        if(TextUtils.isEmpty(subject.btncolor)) {
+        if (TextUtils.isEmpty(subject.btncolor)) {
             return getResources().getDrawable(R.drawable.blueshape);
         }
         switch (subject.btncolor) {
@@ -208,8 +210,8 @@ public class TestSeriesActivity extends AbstractBaseActivity implements iTestSer
                     public void success(TestSeriesResponse testSeriesResponse, Response response) {
                         super.success(testSeriesResponse, response);
                         closeProgress();
-                        if(testSeriesResponse != null && testSeriesResponse.subjects != null) {
-                            if(SystemUtils.isNetworkConnected(TestSeriesActivity.this)) {
+                        if (testSeriesResponse != null && testSeriesResponse.subjects != null) {
+                            if (SystemUtils.isNetworkConnected(TestSeriesActivity.this)) {
                                 ApiCacheHolder.getInstance().setTestSeriesResponse(testSeriesResponse);
                                 dbManager.saveReqRes(ApiCacheHolder.getInstance().testSeriesReqRes);
                             }
@@ -228,7 +230,7 @@ public class TestSeriesActivity extends AbstractBaseActivity implements iTestSer
 
     @Override
     public void onTakeTest(TestChapter chapter) {
-        if(SystemUtils.isNetworkConnected(this)) {
+        if (SystemUtils.isNetworkConnected(this)) {
             Intent exerciseIntent = new Intent(this, TestStartActivity.class);
             exerciseIntent.putExtra(TestStartActivity.KEY_TEST_TYPE, Tests.CHAPTER.getType());
             exerciseIntent.putExtra(Constants.TEST_TITLE, "Take Test");
@@ -241,7 +243,7 @@ public class TestSeriesActivity extends AbstractBaseActivity implements iTestSer
             exerciseIntent.putExtra(Constants.QUESTIONS_COUNT, Integer.parseInt(chapter.NumberOfQuestions));
             exerciseIntent.putExtra("chapter", Gson.get().toJson(chapter));
             startActivity(exerciseIntent);
-        }else {
+        } else {
             Intent exerciseIntent = new Intent(this, OfflineActivity.class);
             exerciseIntent.putExtra("selection", 1);
             startActivity(exerciseIntent);
@@ -252,7 +254,7 @@ public class TestSeriesActivity extends AbstractBaseActivity implements iTestSer
 
     @Override
     public void onMockTest(TestSeriesMockData mock) {
-        if(TextUtils.isEmpty(mock.idExamTemplate)) {
+        if (TextUtils.isEmpty(mock.idExamTemplate)) {
             return;
         }
         MockTest mockTest = new MockTest();
@@ -269,7 +271,7 @@ public class TestSeriesActivity extends AbstractBaseActivity implements iTestSer
 
     @Override
     public void onMockTest(TestChapter chapter) {
-        if(TextUtils.isEmpty(chapter.idExamTemplate)) {
+        if (TextUtils.isEmpty(chapter.idExamTemplate)) {
             return;
         }
         MockTest mockTest = new MockTest();

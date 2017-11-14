@@ -42,15 +42,16 @@ public class SplashActivity extends AbstractBaseActivity {
             }
 
             @Override
-            public void onTick(long millisUntilFinished) {}
+            public void onTick(long millisUntilFinished) {
+            }
         }.start();
         checkAutoLogin();
     }
 
     private void checkAutoLogin() {
         String username = appPref.getValue("loginId");
-        String passwordHash =  appPref.getValue("passwordHash");
-        if(!TextUtils.isEmpty(username) && !TextUtils.isEmpty(passwordHash)) {
+        String passwordHash = appPref.getValue("passwordHash");
+        if (!TextUtils.isEmpty(username) && !TextUtils.isEmpty(passwordHash)) {
             login(username, passwordHash, false);
         } else {
             isLoginApiFinished = true;
@@ -85,7 +86,7 @@ public class SplashActivity extends AbstractBaseActivity {
                     appPref.save("loginId", username);
                     appPref.save("passwordHash", password);
                     appPref.setUserId(loginResponse.idUser);
-                    if(SystemUtils.isNetworkConnected(SplashActivity.this)) {
+                    if (SystemUtils.isNetworkConnected(SplashActivity.this)) {
                         startWebSocket();
                         loadAppConfig();
                     }
@@ -98,9 +99,9 @@ public class SplashActivity extends AbstractBaseActivity {
     }
 
     private void onLoginsuccess(LoginResponse response, boolean fetchLocal) {
-        if(response != null && response.studentId != null) {
+        if (response != null && response.studentId != null) {
             LoginUserCache.getInstance().setLoginResponse(response);
-            if(!fetchLocal) {
+            if (!fetchLocal) {
                 isLoginSuccess = true;
                 showToast(getResources().getString(R.string.login_successful));
             }
@@ -113,13 +114,13 @@ public class SplashActivity extends AbstractBaseActivity {
     @Override
     protected void onLoginFlowCompleted() {
         super.onLoginFlowCompleted();
-        if(isShown() && !isDaFuDialogShown && isAppConfigApiFinished && isClientEntityConfigApiFinished) {
+        if (isShown() && !isDaFuDialogShown && isAppConfigApiFinished && isClientEntityConfigApiFinished) {
             navigateToNextScreen();
         }
     }
 
     private void navigateToNextScreen() {
-        if(isShown() && !isDaFuDialogShown && isTimerFinished && isLoginApiFinished) {
+        if (isShown() && !isDaFuDialogShown && isTimerFinished && isLoginApiFinished) {
             startActivity(new Intent(SplashActivity.this, isLoginSuccess ? WelcomeActivity.class : LoginActivity.class));
             finish();
         }

@@ -8,11 +8,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.education.corsalite.R;
 import com.education.corsalite.models.socket.response.LeaderBoardStudent;
 import com.education.corsalite.services.ApiClientService;
 import com.education.corsalite.utils.L;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -36,10 +36,12 @@ public class LeaderBoardAdapter extends AbstractRecycleViewAdapter {
     public LeaderBoardDataHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new LeaderBoardDataHolder(inflater.inflate(R.layout.leader_board_item, parent, false));
     }
+
     @Override
     public int getItemViewType(int position) {
         return position;
     }
+
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ((LeaderBoardDataHolder) holder).bindData((LeaderBoardStudent) getItem(position));
@@ -47,10 +49,14 @@ public class LeaderBoardAdapter extends AbstractRecycleViewAdapter {
 
     public class LeaderBoardDataHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.rank_txt) TextView rankTxt;
-        @Bind(R.id.display_name_txt) TextView displayNameTxt;
-        @Bind(R.id.questions_answered_txt) TextView questionsAnsweredTxt;
-        @Bind(R.id.player_img) ImageView playerImg;
+        @Bind(R.id.rank_txt)
+        TextView rankTxt;
+        @Bind(R.id.display_name_txt)
+        TextView displayNameTxt;
+        @Bind(R.id.questions_answered_txt)
+        TextView questionsAnsweredTxt;
+        @Bind(R.id.player_img)
+        ImageView playerImg;
 
         private View parent;
 
@@ -64,17 +70,21 @@ public class LeaderBoardAdapter extends AbstractRecycleViewAdapter {
             rankTxt.setVisibility(View.GONE);
             displayNameTxt.setText(user.title);
             questionsAnsweredTxt.setText(user.questionsAnswered);
-            if(!TextUtils.isEmpty(user.imageUrl)) {
+            if (!TextUtils.isEmpty(user.imageUrl)) {
                 String url = "";
-                if(user.imageUrl.startsWith("./")) {
+                if (user.imageUrl.startsWith("./")) {
                     url = ApiClientService.getBaseUrl() + user.imageUrl.replaceFirst("./", "");
-                } else if(user.imageUrl.startsWith("./")) {
+                } else if (user.imageUrl.startsWith("./")) {
                     url = ApiClientService.getBaseUrl() + user.imageUrl.replaceFirst("/", "");
                 } else {
                     url = ApiClientService.getBaseUrl() + user.imageUrl;
                 }
-                    L.info("ImageURL : "+url);
-                Glide.with(parent.getContext()).load(url).into(playerImg);
+                L.info("ImageURL : " + url);
+                Picasso.with(parent.getContext())
+                        .load(url)
+                        .placeholder(R.drawable.profile_pic)
+                        .error(R.drawable.profile_pic).fit()
+                        .into(playerImg);
             }
         }
     }

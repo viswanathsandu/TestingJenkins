@@ -7,13 +7,14 @@ import com.orm.dsl.Ignore;
 /**
  * Created by vissu on 11/28/15.
  */
-public class ReqRes<P extends AbstractBaseRequest, T> extends BaseModel{
+public class ReqRes<P extends AbstractBaseRequest, T> extends BaseModel {
 
     public P request;
     @Ignore
     public T response;
 
-    public ReqRes() {}
+    public ReqRes() {
+    }
 
     public void setResponse(T response) {
         this.response = response;
