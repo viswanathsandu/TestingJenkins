@@ -92,7 +92,8 @@ public class ExamHistoryActivity extends AbstractBaseActivity implements ExamHis
                         recyclerView.setVisibility(View.VISIBLE);
 
                         if (examHistoryAdapter == null) {
-                            examHistoryAdapter = new ExamHistoryAdapter(examHistories, getLayoutInflater(), ExamHistoryActivity.this);
+                            examHistoryAdapter = new ExamHistoryAdapter(examHistories, getLayoutInflater(),
+                                    ExamHistoryActivity.this);
                             recyclerView.setAdapter(examHistoryAdapter);
                         } else {
                             examHistoryAdapter.addAll(examHistories);

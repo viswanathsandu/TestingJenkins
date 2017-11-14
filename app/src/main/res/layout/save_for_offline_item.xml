@@ -1,66 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
-   <!-- <data>
-
-        <import type="android.view.View"/>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
         <variable
-            name="content"
-            type="com.education.corsalite.models.responsemodels.ContentIndex"/>
-
-        &lt;!&ndash;  <variable
-              name="clickListener"
-              type="com.education.corsalite.listeners.OnProductClickListener"/>&ndash;&gt;
-    </data>-->
+            name="subject"
+            type="com.education.corsalite.models.SubjectModel"/>
+    </data>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
+        <CheckBox
+            android:id="@+id/node_selector"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
-            <CheckBox
-                android:id="@+id/node_selector"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/index_count"
-                android:layout_alignParentStart="true"
-                android:buttonTint="@color/black"/>
-            <ImageView
-                android:id="@+id/node_selectors"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_gravity="center"
-                android:layout_toEndOf="@+id/node_selector"
-                android:src="@drawable/ico_offline_exercise"/>
-            <TextView
-                android:id="@+id/index_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_toEndOf="@+id/node_selectors"
+            android:buttonTint="@color/black"/>
 
-            />
-            <TextView
-                android:id="@+id/index_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_toEndOf="@+id/index_text"
-                android:text="(5)"/>
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentTop="true"
-                android:layout_gravity="right"
-                android:src="@drawable/ico_arrow_next"/>
+        <ImageView
+            android:id="@+id/node_selectors"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ico_offline_exercise"/>
 
-        </RelativeLayout>
+        <TextView
+            android:id="@+id/index_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{subject.subjectName}"/>
+
+        <TextView
+            android:id="@+id/index_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{` (` + subject.chapters.size() + `)`}"/>
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ico_arrow_next"/>
     </LinearLayout>
 
 </layout>

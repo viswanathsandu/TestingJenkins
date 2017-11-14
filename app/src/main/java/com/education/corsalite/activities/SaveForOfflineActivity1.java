@@ -34,7 +34,7 @@ import retrofit.client.Response;
  * Created by Praveen on 14-11-2017.
  */
 
-public class SaveForOfflineActivity1 extends AbstractBaseActivity {
+public class SaveForOfflineActivity1 extends AbstractBaseActivity implements SaveForOfflineAdapter.OnItemClickListener{
     @Bind(R.id.content_recyclerview)
     RecyclerView contentRecyclerview;
     @Bind(R.id.headerProgress)
@@ -130,44 +130,45 @@ public class SaveForOfflineActivity1 extends AbstractBaseActivity {
 
     protected void getContentIndex(String courseId, String studentId) {
         ApiManager.getInstance(this).getContentIndex(courseId, studentId,
-                new ApiCallback<List<ContentIndex>>(this) {
-                    @Override
-                    public void failure(CorsaliteError error) {
-                        super.failure(error);
-                        if (error != null && !TextUtils.isEmpty(error.message)) {
-                            showToast(error.message);
-                        }
-                        mProgressBar.setVisibility(View.GONE);
-                        mLoading = false;
+            new ApiCallback<List<ContentIndex>>(this) {
+                @Override
+                public void failure(CorsaliteError error) {
+                    super.failure(error);
+                    if (error != null && !TextUtils.isEmpty(error.message)) {
+                        showToast(error.message);
                     }
+                    mProgressBar.setVisibility(View.GONE);
+                    mLoading = false;
+                }
 
-                    @Override
-                    public void success(List<ContentIndex> mContentIndexs, Response response) {
-                        mLoading = false;
-                        super.success(mContentIndexs, response);
-                        mProgressBar.setVisibility(View.GONE);
-                        if (mContentIndexs != null || mContentIndexs.isEmpty()) {
-                            contentIndexList = mContentIndexs.get(0);
-
-                          System.out.println("Hello " + contentIndexList.subjectModelList);
-                            return;
-                        }
-                        contentRecyclerview.setVisibility(View.VISIBLE);
-                       /* if (saveForOfflineAdapter == null) {
-                          //  saveForOfflineAdapter = new SaveForOfflineAdapter(mContentIndexs, getLayoutInflater(),
-                          //          SaveForOfflineActivity1.this);
-                            contentRecyclerview.setAdapter(saveForOfflineAdapter);
-                        } else {
-                            saveForOfflineAdapter.addAll(mContentIndexs);
-                            saveForOfflineAdapter.notifyDataSetChanged();
-                        }*/
-
+                @Override
+                public void success(List<ContentIndex> mContentIndexs, Response response) {
+                    mLoading = false;
+                    super.success(mContentIndexs, response);
+                    mProgressBar.setVisibility(View.GONE);
+                    if (mContentIndexs == null || mContentIndexs.isEmpty()) {
+                        return;
                     }
-                });
+                    contentIndexList = mContentIndexs.get(0);
+                    contentRecyclerview.setVisibility(View.VISIBLE);
+                    if (saveForOfflineAdapter == null) {
+                        saveForOfflineAdapter = new SaveForOfflineAdapter(getLayoutInflater(), SaveForOfflineActivity1.this);
+                        contentRecyclerview.setAdapter(saveForOfflineAdapter);
+                    }
+                    saveForOfflineAdapter.addAll(contentIndexList.subjectModelList);
+                    saveForOfflineAdapter.notifyDataSetChanged();
+
+                }
+            });
     }
 
     private void setSaveForOfflineData() {
         mProgressBar.setVisibility(View.VISIBLE);
         contentRecyclerview.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onItemClick(int position) {
+
     }
 }
