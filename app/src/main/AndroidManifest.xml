@@ -175,6 +175,11 @@
             android:label="Notes"
             android:theme="@style/UserProfileTheme" />
         <activity
+            android:name=".activities.SaveForOfflineActivity1"
+            android:configChanges="keyboard|keyboardHidden|layoutDirection|orientation|uiMode|screenLayout|screenSize"
+            android:label="Notes"
+            android:theme="@style/UserProfileTheme" />
+        <activity
             android:name=".activities.ChallengeActivity"
             android:label="@string/title_activity_challenge"
             android:launchMode="singleTask"
