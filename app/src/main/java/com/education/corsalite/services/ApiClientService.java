@@ -76,7 +76,7 @@ public class ApiClientService {
         client = restAdapter.create(ICorsaliteApi.class);
     }
 
-    private static OkHttpClient getOkHttpClient() {
+    public static OkHttpClient getOkHttpClient() {
         OkHttpClient client = new OkHttpClient();
         client.setConnectTimeout(1, TimeUnit.MINUTES);
         client.setReadTimeout(1, TimeUnit.MINUTES);

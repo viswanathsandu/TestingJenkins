@@ -15,6 +15,7 @@ public class Constants {
     public final static String TESTS_FOLDER = "Tests";
     public final static String APK_FOLDER = "Apks";
     public final static String LOGS_FOLDER = "Logs";
+    public final static String IMAGE_FOLDER = "Images";
 
     public static final String HTML_PREFIX_URL = "file:///";
 

@@ -70,6 +70,13 @@ public class L {
         }
     }
 
+    public static void error(Throwable throwable) {
+        if (throwable != null) {
+            error(TAG, throwable);
+        }
+    }
+
+
     public static void error(String message, Throwable throwable) {
         if (message != null) {
             error(TAG, message, throwable);

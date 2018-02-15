@@ -44,6 +44,22 @@ public class FileUtils {
         return instance;
     }
 
+    public String getLocalFilePath(String url) {
+        Uri uri = Uri.parse(url);
+        String uriPath = uri.getPath();
+        return getAppRootFolder() + File.separator  + Constants.IMAGE_FOLDER + (uriPath.startsWith("/") ? "" : File.separator) + uriPath;
+    }
+
+    public boolean fileExists(String path) {
+        try {
+            File file = new File(path);
+            return file.exists();
+        } catch (Exception e) {
+            L.error(e);
+            return false;
+        }
+    }
+
 
     private FileUtils() {
         super();
